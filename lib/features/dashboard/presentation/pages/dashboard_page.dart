@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
+import 'package:savvy_pos/features/reports/presentation/pages/reports_hub_page.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -45,9 +46,19 @@ class _DashboardView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Business Insights',
-                  style: typography.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Business Insights',
+                      style: typography.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ReportsHubPage())),
+                      icon: const Icon(Icons.bar_chart),
+                      label: const Text('Reports Hub'),
+                    ),
+                  ],
                 ),
                 SizedBox(height: shapes.spacingLg),
                 

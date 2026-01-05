@@ -44,6 +44,24 @@ class RestaurantTable extends Table {
 }
 
 // ==============================================================================
+// 1.3. RESERVATIONS
+// ==============================================================================
+class ReservationTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get uuid => text().unique()();
+  TextColumn get customerName => text()();
+  TextColumn get phone => text().nullable()();
+  IntColumn get pax => integer()();
+  DateTimeColumn get reservationTime => dateTime()();
+  TextColumn get tableUuid => text().nullable()(); // Assigned Table
+  TextColumn get status => text().withDefault(const Constant('PENDING'))(); // PENDING, SEATED, CANCELLED
+  TextColumn get note => text().nullable()();
+  
+  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+}
+
+// ==============================================================================
 // 1.1. EMPLOYEE & SECURITY (RBAC)
 // ==============================================================================
 class EmployeeTable extends Table {

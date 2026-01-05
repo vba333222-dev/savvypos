@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get_it/get_it.dart';
-import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
-import 'package:savvy_pos/core/config/theme_config.dart';
-import 'package:savvy_pos/core/hal/printer_interface.dart';
-import 'package:savvy_pos/core/hal/printer_service.dart';
+import 'package:savvy_pos/features/settings/presentation/pages/printer_settings_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savvy_pos/features/inventory/presentation/pages/inventory_list_page.dart';
 import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
@@ -22,26 +19,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final PrinterService _printerService = GetIt.I<IPrinterService>() as PrinterService;
-  List<BluetoothInfo> _devices = [];
-  bool _isScanning = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _scanForDevices();
-  }
-
-  Future<void> _scanForDevices() async {
-    setState(() => _isScanning = true);
-    final devices = await _printerService.scanDevices();
-    if (mounted) {
-      setState(() {
-        _devices = devices;
-        _isScanning = false;
-      });
-    }
-  }
+  // Printer Service moved to PrinterSettingsPage
 
   @override
   Widget build(BuildContext context) {
@@ -89,67 +67,17 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           Divider(color: colors.borderDefault),
           
-          // Printer Header
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Printer Configuration',
-                style: typography.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              IconButton(
-                icon: const Icon(Icons.refresh),
-                onPressed: _isScanning ? null : _scanForDevices,
-              ),
-            ],
+          // Printer Management
+          ListTile(
+            leading: const Icon(Icons.print),
+            title: const Text('Printer Setup'),
+            subtitle: const Text('Configure Kitchen, Bar, and Receipt printers'),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+            onTap: () => Navigator.push(
+              context, 
+              MaterialPageRoute(builder: (_) => const PrinterSettingsPage())
+            ),
           ),
-          
-          // Connection Status
-          StreamBuilder<String>(
-            stream: _printerService.status,
-            builder: (context, snapshot) {
-               final status = snapshot.data ?? 'Disconnected';
-               return Padding(
-                 padding: EdgeInsets.symmetric(vertical: shapes.spacingSm),
-                 child: Row(
-                   children: [
-                     Icon(
-                       status == 'Connected' ? Icons.check_circle : Icons.info,
-                       color: status == 'Connected' ? colors.stateSuccess : colors.textMuted,
-                     ),
-                     SizedBox(width: shapes.spacingSm),
-                     Text('Status: $status'),
-                   ],
-                 ),
-               );
-            },
-          ),
-          
-          const SizedBox(height: 16),
-          
-          if (_isScanning)
-             const Center(child: CircularProgressIndicator())
-          else if (_devices.isEmpty)
-             const Center(child: Text('No Bluetooth devices found'))
-          else
-            ..._devices.map((device) => Card(
-              color: colors.bgElevated,
-              margin: EdgeInsets.symmetric(vertical: shapes.spacingXs),
-              child: ListTile(
-                title: Text(device.name),
-                subtitle: Text(device.macAdress),
-                trailing: ElevatedButton(
-                  onPressed: () {
-                    _printerService.connect(device.macAdress).catchError((e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Connection Failed: $e')),
-                      );
-                    });
-                  },
-                  child: const Text('Connect'),
-                ),
-              ),
-            ).animate().slideX()),
 
           const SizedBox(height: 32),
           Divider(color: colors.borderDefault),

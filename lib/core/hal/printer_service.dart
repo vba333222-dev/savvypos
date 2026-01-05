@@ -47,17 +47,78 @@ class PrinterService implements IPrinterService {
     }
   }
 
-  // Helper method for settings page
-  Future<List<BluetoothInfo>> scanDevices() async {
+
+
+  @override
+  Future<void> disconnect() async {
+     await PrintBluetoothThermal.disconnect;
+     _statusController.add('Disconnected');
+  }
+
+  @override
+  Future<List<PrinterDevice>> scan() async {
     try {
-      if (await Permission.bluetoothScan.request().isGranted &&
-          await Permission.bluetoothConnect.request().isGranted) {
-          return await PrintBluetoothThermal.pairedBluetooths;
+      // Check permissions again just in case (though UI should handle asking)
+       if (await Permission.bluetoothScan.request().isGranted &&
+           await Permission.bluetoothConnect.request().isGranted) {
+        final list = await PrintBluetoothThermal.pairedBluetooths;
+        return list.map((e) => PrinterDevice(name: e.name, address: e.macAdress)).toList();
       }
       return [];
     } catch (e) {
       _logger.e('Error scanning devices', error: e);
       return [];
+    }
+  }
+
+  @override
+  Future<void> printText(String text, {bool isBold = false, bool isLarge = false}) async {
+    try {
+      final bool? isConnected = await PrintBluetoothThermal.connectionStatus;
+      if (isConnected != true) {
+         // Try to reconnect if we have a stored mac? 
+         // For now, simple fail or rely on Router to have called connect.
+         throw Exception('Printer not connected');
+      }
+
+      final profile = await CapabilityProfile.load();
+      final generator = Generator(PaperSize.mm58, profile);
+      List<int> bytes = [];
+
+      // Simple Text Processing
+      // Split by newline
+      final lines = text.split('\n');
+      for (final line in lines) {
+        if (line.contains('!SIZE_DOUBLE!')) {
+           // Skip marker, print rest large
+           final content = line.replaceAll('!SIZE_DOUBLE!', '');
+           bytes += generator.text(
+             content, 
+             styles: const PosStyles(
+               height: PosTextSize.size2, 
+               width: PosTextSize.size2,
+               bold: true
+             )
+           );
+        } else {
+           bytes += generator.text(
+             line, 
+             styles: PosStyles(
+               bold: isBold, 
+               height: isLarge ? PosTextSize.size2 : PosTextSize.size1,
+               width: isLarge ? PosTextSize.size2 : PosTextSize.size1,
+             )
+           );
+        }
+      }
+      
+      bytes += generator.feed(2);
+      bytes += generator.cut();
+
+      await PrintBluetoothThermal.writeBytes(bytes);
+    } catch (e) {
+      _logger.e('Error printing text', error: e);
+      rethrow;
     }
   }
 
@@ -92,12 +153,6 @@ class PrinterService implements IPrinterService {
       bytes += generator.text('Date: ${order.createdAt}');
       bytes += generator.text('--------------------------------');
 
-      // Items (Since we only accept OrderTableData here, we might not have items if not passed.
-      // NOTE: Ideally this method receives a full Order entity with items. 
-      // For this step, we will print the totals.
-      // If the user wants granular items, we'd need to fetch them or pass them.
-      // Assuming for now we just print totals as per interface signature.)
-      
       // Totals
       bytes += generator.row([
         PosColumn(text: 'Subtotal:', width: 8, styles: const PosStyles(align: PosAlign.left)),

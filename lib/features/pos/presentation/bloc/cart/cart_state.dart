@@ -10,7 +10,9 @@ class CartItem with _$CartItem {
   const factory CartItem({
     required Product product,
     required int quantity,
+    required int quantity,
     required double total, // price * quantity - discount
+    String? note,
   }) = _CartItem;
 }
 

@@ -195,7 +195,6 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       value: _trackStock,
                       onChanged: (v) => setState(() => _trackStock = v),
                     ),
-                    ),
                      SwitchListTile(
                       title: const Text('Is Service'),
                       value: _isService,

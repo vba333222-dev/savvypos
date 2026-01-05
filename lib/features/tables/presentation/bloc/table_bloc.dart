@@ -13,6 +13,7 @@ class TableEvent with _$TableEvent {
   const factory TableEvent.addTable(String name, double x, double y) = _AddTable;
   const factory TableEvent.moveTable(String uuid, double x, double y) = _MoveTable;
   const factory TableEvent.deleteTable(String uuid) = _DeleteTable;
+  const factory TableEvent.toggleOccupied(String uuid, bool isOccupied) = _ToggleOccupied; // Added
 }
 
 @freezed
@@ -34,6 +35,7 @@ class TableBloc extends Bloc<TableEvent, TableState> {
     on<_AddTable>(_onAddTable);
     on<_MoveTable>(_onMoveTable);
     on<_DeleteTable>(_onDeleteTable);
+    on<_ToggleOccupied>(_onToggleOccupied); // Register
   }
 
   Future<void> _onLoadTables(_LoadTables event, Emitter<TableState> emit) async {
@@ -63,6 +65,16 @@ class TableBloc extends Bloc<TableEvent, TableState> {
     final table = state.tables.firstWhere((t) => t.uuid == event.uuid);
     final updated = table.copyWith(x: event.x, y: event.y, updatedAt: DateTime.now());
     await _repository.updateTable(updated);
+  }
+  
+  Future<void> _onToggleOccupied(_ToggleOccupied event, Emitter<TableState> emit) async {
+    try {
+      final table = state.tables.firstWhere((t) => t.uuid == event.uuid);
+      final updated = table.copyWith(isOccupied: event.isOccupied, updatedAt: DateTime.now());
+      await _repository.updateTable(updated);
+    } catch (e) {
+      // Handle error
+    }
   }
 
   Future<void> _onDeleteTable(_DeleteTable event, Emitter<TableState> emit) async {

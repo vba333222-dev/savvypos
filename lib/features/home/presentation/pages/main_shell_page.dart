@@ -12,8 +12,8 @@ import 'package:savvy_pos/features/settings/presentation/pages/settings_page.dar
 import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
 import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:savvy_pos/features/auth/presentation/widgets/pin_pad_dialog.dart';
-import 'package:savvy_pos/features/tables/presentation/pages/floor_plan_page.dart';
-import 'package:savvy_pos/core/config/business_mode.dart';
+import 'package:savvy_pos/features/tables/presentation/bloc/table_bloc.dart';
+import 'package:savvy_pos/features/reservations/presentation/bloc/reservation_bloc.dart';
 
 class MainShellPage extends StatefulWidget {
   const MainShellPage({Key? key}) : super(key: key);
@@ -25,33 +25,17 @@ class MainShellPage extends StatefulWidget {
 class _MainShellPageState extends State<MainShellPage> {
   int _selectedIndex = 1; // Default to POS
 
-  // Pages
-  // Using IndexedStack to keep POS state alive.
-  // Note: We need to wrap pages that need specific blocs if not global.
-  // Currently PosPage already wraps itself in MultiBlocProviderproviders.
-  // DashboardPage wraps itself.
-  // History wraps itself.
-  // Settings relies on passed Bloc or needs provider. Settings relies on ShiftBloc.
-  
-  // To allow correct access to ShiftBloc across Navigation, we should provide it globally here or in MainShell.
-  // PosPage creates ShiftBloc locally. This is problematic if we want to share state strictly.
-  // BUT PosPage uses GetIt.I<ShiftBloc> in create.
-  // If we move ShiftBloc higher up, we access the same singleton instance if registered as LazySingleton.
-  // Let's assume ShiftBloc is registered as Factory or Singleton?
-  // It is @injectable, so Factory by default unless @singleton.
-  // CHECK: shift_bloc.dart used @injectable.
-  // Wait, if it's factory, creating it multiple times means different states.
-  // We MUST register ShiftBloc as Singleton or provide it here once.
-  // For safety, let's provide ShiftBloc here to the whole shell.
-  
   @override
   Widget build(BuildContext context) {
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => GetIt.I<ShiftBloc>()..add(const ShiftEvent.checkStatus())),
         BlocProvider(create: (_) => GetIt.I<CartBloc>()),
         BlocProvider(create: (_) => GetIt.I<CustomerBloc>()),
         BlocProvider(create: (_) => GetIt.I<AuthBloc>()),
+        BlocProvider(create: (_) => GetIt.I<TableBloc>()..add(const TableEvent.loadTables())),
+        BlocProvider(create: (_) => GetIt.I<ReservationBloc>()..add(const ReservationEvent.loadReservations())),
       ],
       child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {

@@ -6,6 +6,7 @@ import 'package:savvy_pos/features/tables/presentation/bloc/table_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 import 'package:savvy_pos/core/database/database.dart';
+import 'package:savvy_pos/features/reservations/presentation/pages/reservation_list_page.dart';
 
 class FloorPlanPage extends StatefulWidget {
   final Function(int)? onNavigateToPos; // Callback to switch tab
@@ -21,24 +22,31 @@ class _FloorPlanPageState extends State<FloorPlanPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => GetIt.I<TableBloc>()..add(const TableEvent.loadTables()),
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: const Text('Floor Plan'),
           actions: [
+             IconButton(
+               icon: const Icon(Icons.calendar_today),
+               tooltip: 'Reservations',
+               onPressed: () => Navigator.push(
+                 context, 
+                 MaterialPageRoute(builder: (_) => const ReservationListPage())
+               ),
+             ),
+             const SizedBox(width: 8),
             IconButton(
               icon: Icon(_isEditMode ? Icons.check : Icons.edit),
               onPressed: () => setState(() => _isEditMode = !_isEditMode),
             ),
-            if (_isEditMode)
-              IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: () {
-                   // Add random table at center
-                   GetIt.I<TableBloc>().add(const TableEvent.addTable('New', 0.5, 0.5));
-                },
-              ),
+             if (_isEditMode)
+               IconButton(
+                 icon: const Icon(Icons.add),
+                 onPressed: () {
+                    // Add random table at center
+                    GetIt.I<TableBloc>().add(const TableEvent.addTable('New', 0.5, 0.5));
+                 },
+               ),
           ],
         ),
         body: BlocBuilder<TableBloc, TableState>(
@@ -65,8 +73,7 @@ class _FloorPlanPageState extends State<FloorPlanPage> {
             );
           },
         ),
-      ),
-    );
+      );
   }
 
   Widget _buildTable(BuildContext context, RestaurantTableData table) {

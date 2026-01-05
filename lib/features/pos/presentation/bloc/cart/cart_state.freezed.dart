@@ -18,7 +18,10 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$CartItem {
   Product get product => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
-  double get total => throw _privateConstructorUsedError;
+  int get quantity => throw _privateConstructorUsedError;
+  double get total =>
+      throw _privateConstructorUsedError; // price * quantity - discount
+  String? get note => throw _privateConstructorUsedError;
 
   /// Create a copy of CartItem
   /// with the given fields replaced by the non-null parameter values.
@@ -32,7 +35,12 @@ abstract class $CartItemCopyWith<$Res> {
   factory $CartItemCopyWith(CartItem value, $Res Function(CartItem) then) =
       _$CartItemCopyWithImpl<$Res, CartItem>;
   @useResult
-  $Res call({Product product, int quantity, double total});
+  $Res call(
+      {Product product,
+      int quantity,
+      int quantity,
+      double total,
+      String? note});
 }
 
 /// @nodoc
@@ -52,7 +60,9 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
   $Res call({
     Object? product = null,
     Object? quantity = null,
+    Object? quantity = null,
     Object? total = null,
+    Object? note = freezed,
   }) {
     return _then(_value.copyWith(
       product: null == product
@@ -63,10 +73,18 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as int,
+      quantity: null == quantity
+          ? _value.quantity
+          : quantity // ignore: cast_nullable_to_non_nullable
+              as int,
       total: null == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as double,
+      note: freezed == note
+          ? _value.note
+          : note // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -79,7 +97,12 @@ abstract class _$$CartItemImplCopyWith<$Res>
       __$$CartItemImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Product product, int quantity, double total});
+  $Res call(
+      {Product product,
+      int quantity,
+      int quantity,
+      double total,
+      String? note});
 }
 
 /// @nodoc
@@ -97,7 +120,9 @@ class __$$CartItemImplCopyWithImpl<$Res>
   $Res call({
     Object? product = null,
     Object? quantity = null,
+    Object? quantity = null,
     Object? total = null,
+    Object? note = freezed,
   }) {
     return _then(_$CartItemImpl(
       product: null == product
@@ -108,10 +133,18 @@ class __$$CartItemImplCopyWithImpl<$Res>
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as int,
+      quantity: null == quantity
+          ? _value.quantity
+          : quantity // ignore: cast_nullable_to_non_nullable
+              as int,
       total: null == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as double,
+      note: freezed == note
+          ? _value.note
+          : note // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -120,18 +153,27 @@ class __$$CartItemImplCopyWithImpl<$Res>
 
 class _$CartItemImpl implements _CartItem {
   const _$CartItemImpl(
-      {required this.product, required this.quantity, required this.total});
+      {required this.product,
+      required this.quantity,
+      required this.quantity,
+      required this.total,
+      this.note});
 
   @override
   final Product product;
   @override
   final int quantity;
   @override
+  final int quantity;
+  @override
   final double total;
+// price * quantity - discount
+  @override
+  final String? note;
 
   @override
   String toString() {
-    return 'CartItem(product: $product, quantity: $quantity, total: $total)';
+    return 'CartItem(product: $product, quantity: $quantity, quantity: $quantity, total: $total, note: $note)';
   }
 
   @override
@@ -142,11 +184,15 @@ class _$CartItemImpl implements _CartItem {
             (identical(other.product, product) || other.product == product) &&
             (identical(other.quantity, quantity) ||
                 other.quantity == quantity) &&
-            (identical(other.total, total) || other.total == total));
+            (identical(other.quantity, quantity) ||
+                other.quantity == quantity) &&
+            (identical(other.total, total) || other.total == total) &&
+            (identical(other.note, note) || other.note == note));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, product, quantity, total);
+  int get hashCode =>
+      Object.hash(runtimeType, product, quantity, quantity, total, note);
 
   /// Create a copy of CartItem
   /// with the given fields replaced by the non-null parameter values.
@@ -161,14 +207,20 @@ abstract class _CartItem implements CartItem {
   const factory _CartItem(
       {required final Product product,
       required final int quantity,
-      required final double total}) = _$CartItemImpl;
+      required final int quantity,
+      required final double total,
+      final String? note}) = _$CartItemImpl;
 
   @override
   Product get product;
   @override
   int get quantity;
   @override
-  double get total;
+  int get quantity;
+  @override
+  double get total; // price * quantity - discount
+  @override
+  String? get note;
 
   /// Create a copy of CartItem
   /// with the given fields replaced by the non-null parameter values.

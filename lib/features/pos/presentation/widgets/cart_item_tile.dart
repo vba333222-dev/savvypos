@@ -37,14 +37,26 @@ class CartItemTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  item.product.name,
-                  style: typography.bodyMedium?.copyWith(
-                    color: colors.textPrimary,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        item.product.name,
+                        style: typography.bodyMedium?.copyWith(
+                          color: colors.textPrimary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    IconButton(
+                        icon: Icon(Icons.edit_note, size: 16, color: item.note != null && item.note!.isNotEmpty ? colors.brandPrimary : colors.textSecondary), // Highlight if note exists
+                        onPressed: () => _showNoteDialog(context, item),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                    ),
+                  ],
                 ),
                 SizedBox(height: shapes.spacingXs),
                 Text(
@@ -54,6 +66,19 @@ class CartItemTile extends StatelessWidget {
                     color: colors.textSecondary,
                   ),
                 ),
+                if (item.note != null && item.note!.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4.0),
+                    child: Text(
+                      'Note: ${item.note}',
+                      style: typography.bodySmall?.copyWith(
+                        color: colors.textSecondary,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
               ],
             ),
           ),
@@ -116,6 +141,34 @@ class CartItemTile extends StatelessWidget {
         ],
       ),
     ).animate().fadeIn(duration: motion.durationFast).slideX(begin: 0.1, duration: motion.durationFast, curve: motion.curveDefault);
+  }
+
+  void _showNoteDialog(BuildContext context, CartItem item) {
+     final controller = TextEditingController(text: item.note);
+     showDialog(
+       context: context,
+       builder: (ctx) => AlertDialog(
+         title: Text('Note for ${item.product.name}'),
+         content: TextField(
+           controller: controller,
+           decoration: const InputDecoration(hintText: 'e.g., No Spicy, Extra Ice'),
+           autofocus: true,
+         ),
+         actions: [
+           TextButton(
+             onPressed: () => Navigator.pop(ctx),
+             child: const Text('Cancel'),
+           ),
+           ElevatedButton(
+             onPressed: () {
+               context.read<CartBloc>().add(CartEvent.updateNote(item.product.uuid, controller.text));
+               Navigator.pop(ctx);
+             },
+             child: const Text('Save'),
+           ),
+         ],
+       ),
+     );
   }
 }
 

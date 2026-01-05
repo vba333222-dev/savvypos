@@ -20,4 +20,12 @@ class CartEvent with _$CartEvent {
     double? tenderedAmount,
     double? changeAmount,
   }) = _CheckoutProcessed;
+
+  // Dine-In
+  const factory CartEvent.parkOrder(String tableUuid) = _ParkOrder;
+  const factory CartEvent.retrieveOrder(String orderUuid, String tableUuid) = _RetrieveOrder;
+  const factory CartEvent.checkoutSplit(List<CartItem> items, String paymentMethod) = _CheckoutSplit;
+  
+  // Kitchen Flow
+  const factory CartEvent.updateNote(String productUuid, String? note) = _UpdateNote;
 }

@@ -25,7 +25,23 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<_CheckoutProcessed>(_onCheckoutProcessed);
     on<_ParkOrder>(_onParkOrder);
     on<_RetrieveOrder>(_onRetrieveOrder);
+    on<_RetrieveOrder>(_onRetrieveOrder);
     on<_CheckoutSplit>(_onCheckoutSplit);
+    on<_UpdateNote>(_onUpdateNote);
+  }
+
+  void _onUpdateNote(_UpdateNote event, Emitter<CartState> emit) {
+    if (state.items.isEmpty) return;
+    
+    // Find item and update note
+    final updatedItems = state.items.map((item) {
+      if (item.product.uuid == event.productUuid) {
+        return item.copyWith(note: event.note);
+      }
+      return item;
+    }).toList();
+    
+    emit(state.copyWith(items: updatedItems));
   }
 
   void _onSelectCustomer(_SelectCustomer event, Emitter<CartState> emit) {

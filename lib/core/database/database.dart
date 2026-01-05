@@ -22,12 +22,13 @@ part 'database.g.dart';
   SyncQueue,
   EmployeeTable,
   RestaurantTable,
+  ReservationTable,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 8;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -84,7 +85,6 @@ class AppDatabase extends _$AppDatabase {
            createdAt: DateTime.now(),
          ));
       }
-       }
        if (from < 6) {
          await m.createTable(restaurantTable);
          // Optionally seed some tables?
@@ -110,6 +110,9 @@ class AppDatabase extends _$AppDatabase {
        if (from < 7) {
          await m.addColumn(productTable, productTable.printerCategory);
          await m.addColumn(orderItemTable, orderItemTable.paidQty);
+       }
+       if (from < 8) {
+         await m.createTable(reservationTable);
        }
     },
   );

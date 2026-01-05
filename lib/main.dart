@@ -7,7 +7,10 @@ import 'package:savvy_pos/features/auth/presentation/pages/onboarding_page.dart'
 import 'package:savvy_pos/features/home/presentation/pages/main_shell_page.dart';
 import 'package:savvy_pos/features/employees/presentation/pages/employee_login_page.dart';
 import 'package:workmanager/workmanager.dart';
+import 'package:savvy_pos/core/hal/printer_router.dart';
 import 'package:get_it/get_it.dart';
+
+import 'core/database/database.dart';
 
 void main() async {
   // Ensure binding
@@ -58,13 +61,16 @@ class _AppLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     // Check Tenant Config
     return FutureBuilder(
-      future: GetIt.I<ITenantRepository>().getConfig(),
+      future: Future.wait([
+        GetIt.I<ITenantRepository>().getConfig(),
+        GetIt.I<PrinterRouter>().loadSettings(),
+      ]),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(body: Center(child: CircularProgressIndicator()));
         }
         
-        final config = snapshot.data;
+        final config = snapshot.data?[0] as TenantConfig?;
         if (config == null) {
           return const OnboardingPage();
         } else {

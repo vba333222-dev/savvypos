@@ -43,6 +43,12 @@ import '../../features/inventory/presentation/bloc/inventory_management_bloc.dar
 import '../../features/pos/presentation/bloc/cart/cart_bloc.dart' as _i177;
 import '../../features/pos/presentation/bloc/product/product_bloc.dart'
     as _i313;
+import '../../features/reservations/data/repositories/reservation_repository_impl.dart'
+    as _i386;
+import '../../features/reservations/domain/repositories/i_reservation_repository.dart'
+    as _i856;
+import '../../features/reservations/presentation/bloc/reservation_bloc.dart'
+    as _i118;
 import '../../features/settings/presentation/bloc/backup_bloc.dart' as _i521;
 import '../../features/shift/data/repositories/shift_repository_impl.dart'
     as _i139;
@@ -72,6 +78,7 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     gh.factory<_i521.BackupBloc>(() => _i521.BackupBloc());
+    gh.lazySingleton<_i660.AppDatabase>(() => _i660.AppDatabase());
     gh.lazySingleton<_i842.SoundHelper>(() => _i842.SoundHelper());
     gh.lazySingleton<_i240.IShiftRepository>(
         () => _i139.ShiftRepositoryImpl(gh<_i660.AppDatabase>()));
@@ -90,6 +97,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i485.IDashboardRepository>(
         () => _i509.DashboardRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i560.IPrinterService>(() => _i16.PrinterService());
+    gh.lazySingleton<_i856.IReservationRepository>(
+        () => _i386.ReservationRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i884.ICustomerRepository>(
         () => _i877.CustomerRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.factory<_i797.AuthBloc>(() => _i797.AuthBloc(gh<_i660.AppDatabase>()));
@@ -101,6 +110,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i430.PrinterRouter(gh<_i560.IPrinterService>()));
     gh.lazySingleton<_i246.ShiftBloc>(
         () => _i246.ShiftBloc(gh<_i240.IShiftRepository>()));
+    gh.factory<_i118.ReservationBloc>(
+        () => _i118.ReservationBloc(gh<_i856.IReservationRepository>()));
     gh.factory<_i1070.HistoryBloc>(
         () => _i1070.HistoryBloc(gh<_i67.IOrderRepository>()));
     gh.factory<_i965.InventoryManagementBloc>(

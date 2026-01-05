@@ -4,4 +4,8 @@ abstract class IOrderRepository {
   Stream<List<OrderTableData>> getOrders();
   Future<List<OrderItemTableData>> getOrderItems(String orderUuid);
   Future<List<OrderTableData>> getOrdersByDateRange(DateTime start, DateTime end);
+  
+  // KDS
+  Stream<List<OrderTableData>> watchKitchenOrders();
+  Future<void> markOrderFulfilled(String uuid);
 }

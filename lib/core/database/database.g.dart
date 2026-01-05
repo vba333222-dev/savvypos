@@ -1972,6 +1972,16 @@ class $OrderTableTable extends OrderTable
       type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
+  static const VerificationMeta _isFulfilledMeta =
+      const VerificationMeta('isFulfilled');
+  @override
+  late final GeneratedColumn<bool> isFulfilled = GeneratedColumn<bool>(
+      'is_fulfilled', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("is_fulfilled" IN (0, 1))'),
+      defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -1991,7 +2001,8 @@ class $OrderTableTable extends OrderTable
         tenderedAmount,
         changeAmount,
         isSynced,
-        syncAttempts
+        syncAttempts,
+        isFulfilled
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -2110,6 +2121,12 @@ class $OrderTableTable extends OrderTable
           syncAttempts.isAcceptableOrUnknown(
               data['sync_attempts']!, _syncAttemptsMeta));
     }
+    if (data.containsKey('is_fulfilled')) {
+      context.handle(
+          _isFulfilledMeta,
+          isFulfilled.isAcceptableOrUnknown(
+              data['is_fulfilled']!, _isFulfilledMeta));
+    }
     return context;
   }
 
@@ -2155,6 +2172,8 @@ class $OrderTableTable extends OrderTable
           .read(DriftSqlType.bool, data['${effectivePrefix}is_synced'])!,
       syncAttempts: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}sync_attempts'])!,
+      isFulfilled: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_fulfilled'])!,
     );
   }
 
@@ -2183,6 +2202,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
   final double? changeAmount;
   final bool isSynced;
   final int syncAttempts;
+  final bool isFulfilled;
   const OrderTableData(
       {required this.id,
       required this.uuid,
@@ -2201,7 +2221,8 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       this.tenderedAmount,
       this.changeAmount,
       required this.isSynced,
-      required this.syncAttempts});
+      required this.syncAttempts,
+      required this.isFulfilled});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -2233,6 +2254,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
     }
     map['is_synced'] = Variable<bool>(isSynced);
     map['sync_attempts'] = Variable<int>(syncAttempts);
+    map['is_fulfilled'] = Variable<bool>(isFulfilled);
     return map;
   }
 
@@ -2266,6 +2288,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
           : Value(changeAmount),
       isSynced: Value(isSynced),
       syncAttempts: Value(syncAttempts),
+      isFulfilled: Value(isFulfilled),
     );
   }
 
@@ -2291,6 +2314,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       changeAmount: serializer.fromJson<double?>(json['changeAmount']),
       isSynced: serializer.fromJson<bool>(json['isSynced']),
       syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
+      isFulfilled: serializer.fromJson<bool>(json['isFulfilled']),
     );
   }
   @override
@@ -2315,6 +2339,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       'changeAmount': serializer.toJson<double?>(changeAmount),
       'isSynced': serializer.toJson<bool>(isSynced),
       'syncAttempts': serializer.toJson<int>(syncAttempts),
+      'isFulfilled': serializer.toJson<bool>(isFulfilled),
     };
   }
 
@@ -2336,7 +2361,8 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
           Value<double?> tenderedAmount = const Value.absent(),
           Value<double?> changeAmount = const Value.absent(),
           bool? isSynced,
-          int? syncAttempts}) =>
+          int? syncAttempts,
+          bool? isFulfilled}) =>
       OrderTableData(
         id: id ?? this.id,
         uuid: uuid ?? this.uuid,
@@ -2359,6 +2385,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
             changeAmount.present ? changeAmount.value : this.changeAmount,
         isSynced: isSynced ?? this.isSynced,
         syncAttempts: syncAttempts ?? this.syncAttempts,
+        isFulfilled: isFulfilled ?? this.isFulfilled,
       );
   OrderTableData copyWithCompanion(OrderTableCompanion data) {
     return OrderTableData(
@@ -2398,6 +2425,8 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       syncAttempts: data.syncAttempts.present
           ? data.syncAttempts.value
           : this.syncAttempts,
+      isFulfilled:
+          data.isFulfilled.present ? data.isFulfilled.value : this.isFulfilled,
     );
   }
 
@@ -2421,7 +2450,8 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
           ..write('tenderedAmount: $tenderedAmount, ')
           ..write('changeAmount: $changeAmount, ')
           ..write('isSynced: $isSynced, ')
-          ..write('syncAttempts: $syncAttempts')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('isFulfilled: $isFulfilled')
           ..write(')'))
         .toString();
   }
@@ -2445,7 +2475,8 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       tenderedAmount,
       changeAmount,
       isSynced,
-      syncAttempts);
+      syncAttempts,
+      isFulfilled);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2467,7 +2498,8 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
           other.tenderedAmount == this.tenderedAmount &&
           other.changeAmount == this.changeAmount &&
           other.isSynced == this.isSynced &&
-          other.syncAttempts == this.syncAttempts);
+          other.syncAttempts == this.syncAttempts &&
+          other.isFulfilled == this.isFulfilled);
 }
 
 class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
@@ -2489,6 +2521,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
   final Value<double?> changeAmount;
   final Value<bool> isSynced;
   final Value<int> syncAttempts;
+  final Value<bool> isFulfilled;
   const OrderTableCompanion({
     this.id = const Value.absent(),
     this.uuid = const Value.absent(),
@@ -2508,6 +2541,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
     this.changeAmount = const Value.absent(),
     this.isSynced = const Value.absent(),
     this.syncAttempts = const Value.absent(),
+    this.isFulfilled = const Value.absent(),
   });
   OrderTableCompanion.insert({
     this.id = const Value.absent(),
@@ -2528,6 +2562,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
     this.changeAmount = const Value.absent(),
     this.isSynced = const Value.absent(),
     this.syncAttempts = const Value.absent(),
+    this.isFulfilled = const Value.absent(),
   })  : uuid = Value(uuid),
         orderNumber = Value(orderNumber),
         transactionDate = Value(transactionDate),
@@ -2555,6 +2590,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
     Expression<double>? changeAmount,
     Expression<bool>? isSynced,
     Expression<int>? syncAttempts,
+    Expression<bool>? isFulfilled,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2575,6 +2611,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
       if (changeAmount != null) 'change_amount': changeAmount,
       if (isSynced != null) 'is_synced': isSynced,
       if (syncAttempts != null) 'sync_attempts': syncAttempts,
+      if (isFulfilled != null) 'is_fulfilled': isFulfilled,
     });
   }
 
@@ -2596,7 +2633,8 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
       Value<double?>? tenderedAmount,
       Value<double?>? changeAmount,
       Value<bool>? isSynced,
-      Value<int>? syncAttempts}) {
+      Value<int>? syncAttempts,
+      Value<bool>? isFulfilled}) {
     return OrderTableCompanion(
       id: id ?? this.id,
       uuid: uuid ?? this.uuid,
@@ -2616,6 +2654,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
       changeAmount: changeAmount ?? this.changeAmount,
       isSynced: isSynced ?? this.isSynced,
       syncAttempts: syncAttempts ?? this.syncAttempts,
+      isFulfilled: isFulfilled ?? this.isFulfilled,
     );
   }
 
@@ -2676,6 +2715,9 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
     if (syncAttempts.present) {
       map['sync_attempts'] = Variable<int>(syncAttempts.value);
     }
+    if (isFulfilled.present) {
+      map['is_fulfilled'] = Variable<bool>(isFulfilled.value);
+    }
     return map;
   }
 
@@ -2699,7 +2741,8 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
           ..write('tenderedAmount: $tenderedAmount, ')
           ..write('changeAmount: $changeAmount, ')
           ..write('isSynced: $isSynced, ')
-          ..write('syncAttempts: $syncAttempts')
+          ..write('syncAttempts: $syncAttempts, ')
+          ..write('isFulfilled: $isFulfilled')
           ..write(')'))
         .toString();
   }
@@ -7983,6 +8026,422 @@ class RecipeTableCompanion extends UpdateCompanion<RecipeTableData> {
   }
 }
 
+class $CashTransactionTableTable extends CashTransactionTable
+    with TableInfo<$CashTransactionTableTable, CashTransactionTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $CashTransactionTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  @override
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+      'uuid', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _shiftUuidMeta =
+      const VerificationMeta('shiftUuid');
+  @override
+  late final GeneratedColumn<String> shiftUuid = GeneratedColumn<String>(
+      'shift_uuid', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+      'type', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _amountMeta = const VerificationMeta('amount');
+  @override
+  late final GeneratedColumn<double> amount = GeneratedColumn<double>(
+      'amount', aliasedName, false,
+      type: DriftSqlType.double, requiredDuringInsert: true);
+  static const VerificationMeta _reasonMeta = const VerificationMeta('reason');
+  @override
+  late final GeneratedColumn<String> reason = GeneratedColumn<String>(
+      'reason', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _isSyncedMeta =
+      const VerificationMeta('isSynced');
+  @override
+  late final GeneratedColumn<bool> isSynced = GeneratedColumn<bool>(
+      'is_synced', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("is_synced" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, uuid, shiftUuid, type, amount, reason, createdAt, isSynced];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'cash_transaction_table';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<CashTransactionTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('uuid')) {
+      context.handle(
+          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
+    } else if (isInserting) {
+      context.missing(_uuidMeta);
+    }
+    if (data.containsKey('shift_uuid')) {
+      context.handle(_shiftUuidMeta,
+          shiftUuid.isAcceptableOrUnknown(data['shift_uuid']!, _shiftUuidMeta));
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+    } else if (isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (data.containsKey('amount')) {
+      context.handle(_amountMeta,
+          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
+    } else if (isInserting) {
+      context.missing(_amountMeta);
+    }
+    if (data.containsKey('reason')) {
+      context.handle(_reasonMeta,
+          reason.isAcceptableOrUnknown(data['reason']!, _reasonMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    if (data.containsKey('is_synced')) {
+      context.handle(_isSyncedMeta,
+          isSynced.isAcceptableOrUnknown(data['is_synced']!, _isSyncedMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  CashTransactionTableData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CashTransactionTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      uuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
+      shiftUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}shift_uuid']),
+      type: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type'])!,
+      amount: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}amount'])!,
+      reason: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}reason']),
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      isSynced: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_synced'])!,
+    );
+  }
+
+  @override
+  $CashTransactionTableTable createAlias(String alias) {
+    return $CashTransactionTableTable(attachedDatabase, alias);
+  }
+}
+
+class CashTransactionTableData extends DataClass
+    implements Insertable<CashTransactionTableData> {
+  final int id;
+  final String uuid;
+  final String? shiftUuid;
+  final String type;
+  final double amount;
+  final String? reason;
+  final DateTime createdAt;
+  final bool isSynced;
+  const CashTransactionTableData(
+      {required this.id,
+      required this.uuid,
+      this.shiftUuid,
+      required this.type,
+      required this.amount,
+      this.reason,
+      required this.createdAt,
+      required this.isSynced});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['uuid'] = Variable<String>(uuid);
+    if (!nullToAbsent || shiftUuid != null) {
+      map['shift_uuid'] = Variable<String>(shiftUuid);
+    }
+    map['type'] = Variable<String>(type);
+    map['amount'] = Variable<double>(amount);
+    if (!nullToAbsent || reason != null) {
+      map['reason'] = Variable<String>(reason);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['is_synced'] = Variable<bool>(isSynced);
+    return map;
+  }
+
+  CashTransactionTableCompanion toCompanion(bool nullToAbsent) {
+    return CashTransactionTableCompanion(
+      id: Value(id),
+      uuid: Value(uuid),
+      shiftUuid: shiftUuid == null && nullToAbsent
+          ? const Value.absent()
+          : Value(shiftUuid),
+      type: Value(type),
+      amount: Value(amount),
+      reason:
+          reason == null && nullToAbsent ? const Value.absent() : Value(reason),
+      createdAt: Value(createdAt),
+      isSynced: Value(isSynced),
+    );
+  }
+
+  factory CashTransactionTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CashTransactionTableData(
+      id: serializer.fromJson<int>(json['id']),
+      uuid: serializer.fromJson<String>(json['uuid']),
+      shiftUuid: serializer.fromJson<String?>(json['shiftUuid']),
+      type: serializer.fromJson<String>(json['type']),
+      amount: serializer.fromJson<double>(json['amount']),
+      reason: serializer.fromJson<String?>(json['reason']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      isSynced: serializer.fromJson<bool>(json['isSynced']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'uuid': serializer.toJson<String>(uuid),
+      'shiftUuid': serializer.toJson<String?>(shiftUuid),
+      'type': serializer.toJson<String>(type),
+      'amount': serializer.toJson<double>(amount),
+      'reason': serializer.toJson<String?>(reason),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'isSynced': serializer.toJson<bool>(isSynced),
+    };
+  }
+
+  CashTransactionTableData copyWith(
+          {int? id,
+          String? uuid,
+          Value<String?> shiftUuid = const Value.absent(),
+          String? type,
+          double? amount,
+          Value<String?> reason = const Value.absent(),
+          DateTime? createdAt,
+          bool? isSynced}) =>
+      CashTransactionTableData(
+        id: id ?? this.id,
+        uuid: uuid ?? this.uuid,
+        shiftUuid: shiftUuid.present ? shiftUuid.value : this.shiftUuid,
+        type: type ?? this.type,
+        amount: amount ?? this.amount,
+        reason: reason.present ? reason.value : this.reason,
+        createdAt: createdAt ?? this.createdAt,
+        isSynced: isSynced ?? this.isSynced,
+      );
+  CashTransactionTableData copyWithCompanion(
+      CashTransactionTableCompanion data) {
+    return CashTransactionTableData(
+      id: data.id.present ? data.id.value : this.id,
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      shiftUuid: data.shiftUuid.present ? data.shiftUuid.value : this.shiftUuid,
+      type: data.type.present ? data.type.value : this.type,
+      amount: data.amount.present ? data.amount.value : this.amount,
+      reason: data.reason.present ? data.reason.value : this.reason,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      isSynced: data.isSynced.present ? data.isSynced.value : this.isSynced,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CashTransactionTableData(')
+          ..write('id: $id, ')
+          ..write('uuid: $uuid, ')
+          ..write('shiftUuid: $shiftUuid, ')
+          ..write('type: $type, ')
+          ..write('amount: $amount, ')
+          ..write('reason: $reason, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('isSynced: $isSynced')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id, uuid, shiftUuid, type, amount, reason, createdAt, isSynced);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CashTransactionTableData &&
+          other.id == this.id &&
+          other.uuid == this.uuid &&
+          other.shiftUuid == this.shiftUuid &&
+          other.type == this.type &&
+          other.amount == this.amount &&
+          other.reason == this.reason &&
+          other.createdAt == this.createdAt &&
+          other.isSynced == this.isSynced);
+}
+
+class CashTransactionTableCompanion
+    extends UpdateCompanion<CashTransactionTableData> {
+  final Value<int> id;
+  final Value<String> uuid;
+  final Value<String?> shiftUuid;
+  final Value<String> type;
+  final Value<double> amount;
+  final Value<String?> reason;
+  final Value<DateTime> createdAt;
+  final Value<bool> isSynced;
+  const CashTransactionTableCompanion({
+    this.id = const Value.absent(),
+    this.uuid = const Value.absent(),
+    this.shiftUuid = const Value.absent(),
+    this.type = const Value.absent(),
+    this.amount = const Value.absent(),
+    this.reason = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.isSynced = const Value.absent(),
+  });
+  CashTransactionTableCompanion.insert({
+    this.id = const Value.absent(),
+    required String uuid,
+    this.shiftUuid = const Value.absent(),
+    required String type,
+    required double amount,
+    this.reason = const Value.absent(),
+    required DateTime createdAt,
+    this.isSynced = const Value.absent(),
+  })  : uuid = Value(uuid),
+        type = Value(type),
+        amount = Value(amount),
+        createdAt = Value(createdAt);
+  static Insertable<CashTransactionTableData> custom({
+    Expression<int>? id,
+    Expression<String>? uuid,
+    Expression<String>? shiftUuid,
+    Expression<String>? type,
+    Expression<double>? amount,
+    Expression<String>? reason,
+    Expression<DateTime>? createdAt,
+    Expression<bool>? isSynced,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (uuid != null) 'uuid': uuid,
+      if (shiftUuid != null) 'shift_uuid': shiftUuid,
+      if (type != null) 'type': type,
+      if (amount != null) 'amount': amount,
+      if (reason != null) 'reason': reason,
+      if (createdAt != null) 'created_at': createdAt,
+      if (isSynced != null) 'is_synced': isSynced,
+    });
+  }
+
+  CashTransactionTableCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? uuid,
+      Value<String?>? shiftUuid,
+      Value<String>? type,
+      Value<double>? amount,
+      Value<String?>? reason,
+      Value<DateTime>? createdAt,
+      Value<bool>? isSynced}) {
+    return CashTransactionTableCompanion(
+      id: id ?? this.id,
+      uuid: uuid ?? this.uuid,
+      shiftUuid: shiftUuid ?? this.shiftUuid,
+      type: type ?? this.type,
+      amount: amount ?? this.amount,
+      reason: reason ?? this.reason,
+      createdAt: createdAt ?? this.createdAt,
+      isSynced: isSynced ?? this.isSynced,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
+    }
+    if (shiftUuid.present) {
+      map['shift_uuid'] = Variable<String>(shiftUuid.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (amount.present) {
+      map['amount'] = Variable<double>(amount.value);
+    }
+    if (reason.present) {
+      map['reason'] = Variable<String>(reason.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (isSynced.present) {
+      map['is_synced'] = Variable<bool>(isSynced.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CashTransactionTableCompanion(')
+          ..write('id: $id, ')
+          ..write('uuid: $uuid, ')
+          ..write('shiftUuid: $shiftUuid, ')
+          ..write('type: $type, ')
+          ..write('amount: $amount, ')
+          ..write('reason: $reason, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('isSynced: $isSynced')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -8013,6 +8472,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $IngredientTableTable ingredientTable =
       $IngredientTableTable(this);
   late final $RecipeTableTable recipeTable = $RecipeTableTable(this);
+  late final $CashTransactionTableTable cashTransactionTable =
+      $CashTransactionTableTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -8034,7 +8495,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         modifierItemTable,
         productModifierLinkTable,
         ingredientTable,
-        recipeTable
+        recipeTable,
+        cashTransactionTable
       ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules(
@@ -9119,6 +9581,7 @@ typedef $$OrderTableTableCreateCompanionBuilder = OrderTableCompanion Function({
   Value<double?> changeAmount,
   Value<bool> isSynced,
   Value<int> syncAttempts,
+  Value<bool> isFulfilled,
 });
 typedef $$OrderTableTableUpdateCompanionBuilder = OrderTableCompanion Function({
   Value<int> id,
@@ -9139,6 +9602,7 @@ typedef $$OrderTableTableUpdateCompanionBuilder = OrderTableCompanion Function({
   Value<double?> changeAmount,
   Value<bool> isSynced,
   Value<int> syncAttempts,
+  Value<bool> isFulfilled,
 });
 
 final class $$OrderTableTableReferences
@@ -9226,6 +9690,9 @@ class $$OrderTableTableFilterComposer
 
   ColumnFilters<int> get syncAttempts => $composableBuilder(
       column: $table.syncAttempts, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isFulfilled => $composableBuilder(
+      column: $table.isFulfilled, builder: (column) => ColumnFilters(column));
 
   Expression<bool> orderItemTableRefs(
       Expression<bool> Function($$OrderItemTableTableFilterComposer f) f) {
@@ -9319,6 +9786,9 @@ class $$OrderTableTableOrderingComposer
   ColumnOrderings<int> get syncAttempts => $composableBuilder(
       column: $table.syncAttempts,
       builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isFulfilled => $composableBuilder(
+      column: $table.isFulfilled, builder: (column) => ColumnOrderings(column));
 }
 
 class $$OrderTableTableAnnotationComposer
@@ -9384,6 +9854,9 @@ class $$OrderTableTableAnnotationComposer
   GeneratedColumn<int> get syncAttempts => $composableBuilder(
       column: $table.syncAttempts, builder: (column) => column);
 
+  GeneratedColumn<bool> get isFulfilled => $composableBuilder(
+      column: $table.isFulfilled, builder: (column) => column);
+
   Expression<T> orderItemTableRefs<T extends Object>(
       Expression<T> Function($$OrderItemTableTableAnnotationComposer a) f) {
     final $$OrderItemTableTableAnnotationComposer composer = $composerBuilder(
@@ -9447,6 +9920,7 @@ class $$OrderTableTableTableManager extends RootTableManager<
             Value<double?> changeAmount = const Value.absent(),
             Value<bool> isSynced = const Value.absent(),
             Value<int> syncAttempts = const Value.absent(),
+            Value<bool> isFulfilled = const Value.absent(),
           }) =>
               OrderTableCompanion(
             id: id,
@@ -9467,6 +9941,7 @@ class $$OrderTableTableTableManager extends RootTableManager<
             changeAmount: changeAmount,
             isSynced: isSynced,
             syncAttempts: syncAttempts,
+            isFulfilled: isFulfilled,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
@@ -9487,6 +9962,7 @@ class $$OrderTableTableTableManager extends RootTableManager<
             Value<double?> changeAmount = const Value.absent(),
             Value<bool> isSynced = const Value.absent(),
             Value<int> syncAttempts = const Value.absent(),
+            Value<bool> isFulfilled = const Value.absent(),
           }) =>
               OrderTableCompanion.insert(
             id: id,
@@ -9507,6 +9983,7 @@ class $$OrderTableTableTableManager extends RootTableManager<
             changeAmount: changeAmount,
             isSynced: isSynced,
             syncAttempts: syncAttempts,
+            isFulfilled: isFulfilled,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) => (
@@ -13096,6 +13573,224 @@ typedef $$RecipeTableTableProcessedTableManager = ProcessedTableManager<
     (RecipeTableData, $$RecipeTableTableReferences),
     RecipeTableData,
     PrefetchHooks Function({bool productUuid, bool ingredientUuid})>;
+typedef $$CashTransactionTableTableCreateCompanionBuilder
+    = CashTransactionTableCompanion Function({
+  Value<int> id,
+  required String uuid,
+  Value<String?> shiftUuid,
+  required String type,
+  required double amount,
+  Value<String?> reason,
+  required DateTime createdAt,
+  Value<bool> isSynced,
+});
+typedef $$CashTransactionTableTableUpdateCompanionBuilder
+    = CashTransactionTableCompanion Function({
+  Value<int> id,
+  Value<String> uuid,
+  Value<String?> shiftUuid,
+  Value<String> type,
+  Value<double> amount,
+  Value<String?> reason,
+  Value<DateTime> createdAt,
+  Value<bool> isSynced,
+});
+
+class $$CashTransactionTableTableFilterComposer
+    extends Composer<_$AppDatabase, $CashTransactionTableTable> {
+  $$CashTransactionTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get uuid => $composableBuilder(
+      column: $table.uuid, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get shiftUuid => $composableBuilder(
+      column: $table.shiftUuid, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get amount => $composableBuilder(
+      column: $table.amount, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get reason => $composableBuilder(
+      column: $table.reason, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isSynced => $composableBuilder(
+      column: $table.isSynced, builder: (column) => ColumnFilters(column));
+}
+
+class $$CashTransactionTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $CashTransactionTableTable> {
+  $$CashTransactionTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get uuid => $composableBuilder(
+      column: $table.uuid, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get shiftUuid => $composableBuilder(
+      column: $table.shiftUuid, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get amount => $composableBuilder(
+      column: $table.amount, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get reason => $composableBuilder(
+      column: $table.reason, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isSynced => $composableBuilder(
+      column: $table.isSynced, builder: (column) => ColumnOrderings(column));
+}
+
+class $$CashTransactionTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $CashTransactionTableTable> {
+  $$CashTransactionTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get uuid =>
+      $composableBuilder(column: $table.uuid, builder: (column) => column);
+
+  GeneratedColumn<String> get shiftUuid =>
+      $composableBuilder(column: $table.shiftUuid, builder: (column) => column);
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<double> get amount =>
+      $composableBuilder(column: $table.amount, builder: (column) => column);
+
+  GeneratedColumn<String> get reason =>
+      $composableBuilder(column: $table.reason, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get isSynced =>
+      $composableBuilder(column: $table.isSynced, builder: (column) => column);
+}
+
+class $$CashTransactionTableTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $CashTransactionTableTable,
+    CashTransactionTableData,
+    $$CashTransactionTableTableFilterComposer,
+    $$CashTransactionTableTableOrderingComposer,
+    $$CashTransactionTableTableAnnotationComposer,
+    $$CashTransactionTableTableCreateCompanionBuilder,
+    $$CashTransactionTableTableUpdateCompanionBuilder,
+    (
+      CashTransactionTableData,
+      BaseReferences<_$AppDatabase, $CashTransactionTableTable,
+          CashTransactionTableData>
+    ),
+    CashTransactionTableData,
+    PrefetchHooks Function()> {
+  $$CashTransactionTableTableTableManager(
+      _$AppDatabase db, $CashTransactionTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$CashTransactionTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$CashTransactionTableTableOrderingComposer(
+                  $db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$CashTransactionTableTableAnnotationComposer(
+                  $db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> uuid = const Value.absent(),
+            Value<String?> shiftUuid = const Value.absent(),
+            Value<String> type = const Value.absent(),
+            Value<double> amount = const Value.absent(),
+            Value<String?> reason = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+            Value<bool> isSynced = const Value.absent(),
+          }) =>
+              CashTransactionTableCompanion(
+            id: id,
+            uuid: uuid,
+            shiftUuid: shiftUuid,
+            type: type,
+            amount: amount,
+            reason: reason,
+            createdAt: createdAt,
+            isSynced: isSynced,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String uuid,
+            Value<String?> shiftUuid = const Value.absent(),
+            required String type,
+            required double amount,
+            Value<String?> reason = const Value.absent(),
+            required DateTime createdAt,
+            Value<bool> isSynced = const Value.absent(),
+          }) =>
+              CashTransactionTableCompanion.insert(
+            id: id,
+            uuid: uuid,
+            shiftUuid: shiftUuid,
+            type: type,
+            amount: amount,
+            reason: reason,
+            createdAt: createdAt,
+            isSynced: isSynced,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$CashTransactionTableTableProcessedTableManager
+    = ProcessedTableManager<
+        _$AppDatabase,
+        $CashTransactionTableTable,
+        CashTransactionTableData,
+        $$CashTransactionTableTableFilterComposer,
+        $$CashTransactionTableTableOrderingComposer,
+        $$CashTransactionTableTableAnnotationComposer,
+        $$CashTransactionTableTableCreateCompanionBuilder,
+        $$CashTransactionTableTableUpdateCompanionBuilder,
+        (
+          CashTransactionTableData,
+          BaseReferences<_$AppDatabase, $CashTransactionTableTable,
+              CashTransactionTableData>
+        ),
+        CashTransactionTableData,
+        PrefetchHooks Function()>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -13135,4 +13830,6 @@ class $AppDatabaseManager {
       $$IngredientTableTableTableManager(_db, _db.ingredientTable);
   $$RecipeTableTableTableManager get recipeTable =>
       $$RecipeTableTableTableManager(_db, _db.recipeTable);
+  $$CashTransactionTableTableTableManager get cashTransactionTable =>
+      $$CashTransactionTableTableTableManager(_db, _db.cashTransactionTable);
 }

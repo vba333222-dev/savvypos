@@ -12,6 +12,9 @@ import 'package:savvy_pos/features/settings/presentation/pages/settings_page.dar
 import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
 import 'package:savvy_pos/features/shift/presentation/pages/open_shift_page.dart';
 import 'package:savvy_pos/features/shift/presentation/widgets/close_shift_dialog.dart';
+import 'package:savvy_pos/features/shift/presentation/widgets/cash_management_dialog.dart';
+import 'package:savvy_pos/features/kitchen/presentation/pages/kitchen_monitor_page.dart';
+import 'package:savvy_pos/core/utils/global_search_delegate.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class PosPage extends StatelessWidget {
@@ -40,7 +43,50 @@ class _PosPageContent extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Savvy POS'),
         backgroundColor: colors.bgPrimary,
-        // Actions removed as they are in MainShell
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              showSearch(context: context, delegate: GlobalSearchDelegate(context));
+            },
+          ),
+        ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(color: colors.brandPrimary),
+              child: Text('Operations', style: TextStyle(color: colors.textInverse, fontSize: 24)),
+            ),
+            ListTile(
+              leading: Icon(Icons.add_circle_outline, color: colors.stateSuccess),
+              title: const Text('Pay In (Cash Drop)'),
+              onTap: () {
+                Navigator.pop(context);
+                showDialog(context: context, builder: (_) => const CashManagementDialog(type: 'PAY_IN'));
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.remove_circle_outline, color: colors.stateError),
+              title: const Text('Pay Out (Expenses)'),
+              onTap: () {
+                Navigator.pop(context);
+                showDialog(context: context, builder: (_) => const CashManagementDialog(type: 'PAY_OUT'));
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: Icon(Icons.kitchen, color: colors.brandPrimary),
+              title: const Text('Kitchen Monitor (KDS)'),
+              onTap: () {
+                Navigator.pop(context); // Close drawer
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const KitchenMonitorPage()));
+              },
+            ),
+          ],
+        ),
       ),
       body: BlocConsumer<ShiftBloc, ShiftState>(
         listener: (context, state) {

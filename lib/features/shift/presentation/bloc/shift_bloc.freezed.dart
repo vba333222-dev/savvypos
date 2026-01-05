@@ -21,6 +21,8 @@ mixin _$ShiftEvent {
     required TResult Function() checkStatus,
     required TResult Function(double startCash) openShift,
     required TResult Function(double actualCash) closeShift,
+    required TResult Function(double amount, String reason) payIn,
+    required TResult Function(double amount, String reason) payOut,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -28,6 +30,8 @@ mixin _$ShiftEvent {
     TResult? Function()? checkStatus,
     TResult? Function(double startCash)? openShift,
     TResult? Function(double actualCash)? closeShift,
+    TResult? Function(double amount, String reason)? payIn,
+    TResult? Function(double amount, String reason)? payOut,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -35,6 +39,8 @@ mixin _$ShiftEvent {
     TResult Function()? checkStatus,
     TResult Function(double startCash)? openShift,
     TResult Function(double actualCash)? closeShift,
+    TResult Function(double amount, String reason)? payIn,
+    TResult Function(double amount, String reason)? payOut,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -43,6 +49,8 @@ mixin _$ShiftEvent {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_PayIn value) payIn,
+    required TResult Function(_PayOut value) payOut,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -50,6 +58,8 @@ mixin _$ShiftEvent {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_PayIn value)? payIn,
+    TResult? Function(_PayOut value)? payOut,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -57,6 +67,8 @@ mixin _$ShiftEvent {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_PayIn value)? payIn,
+    TResult Function(_PayOut value)? payOut,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -127,6 +139,8 @@ class _$CheckStatusImpl implements _CheckStatus {
     required TResult Function() checkStatus,
     required TResult Function(double startCash) openShift,
     required TResult Function(double actualCash) closeShift,
+    required TResult Function(double amount, String reason) payIn,
+    required TResult Function(double amount, String reason) payOut,
   }) {
     return checkStatus();
   }
@@ -137,6 +151,8 @@ class _$CheckStatusImpl implements _CheckStatus {
     TResult? Function()? checkStatus,
     TResult? Function(double startCash)? openShift,
     TResult? Function(double actualCash)? closeShift,
+    TResult? Function(double amount, String reason)? payIn,
+    TResult? Function(double amount, String reason)? payOut,
   }) {
     return checkStatus?.call();
   }
@@ -147,6 +163,8 @@ class _$CheckStatusImpl implements _CheckStatus {
     TResult Function()? checkStatus,
     TResult Function(double startCash)? openShift,
     TResult Function(double actualCash)? closeShift,
+    TResult Function(double amount, String reason)? payIn,
+    TResult Function(double amount, String reason)? payOut,
     required TResult orElse(),
   }) {
     if (checkStatus != null) {
@@ -161,6 +179,8 @@ class _$CheckStatusImpl implements _CheckStatus {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_PayIn value) payIn,
+    required TResult Function(_PayOut value) payOut,
   }) {
     return checkStatus(this);
   }
@@ -171,6 +191,8 @@ class _$CheckStatusImpl implements _CheckStatus {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_PayIn value)? payIn,
+    TResult? Function(_PayOut value)? payOut,
   }) {
     return checkStatus?.call(this);
   }
@@ -181,6 +203,8 @@ class _$CheckStatusImpl implements _CheckStatus {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_PayIn value)? payIn,
+    TResult Function(_PayOut value)? payOut,
     required TResult orElse(),
   }) {
     if (checkStatus != null) {
@@ -266,6 +290,8 @@ class _$OpenShiftImpl implements _OpenShift {
     required TResult Function() checkStatus,
     required TResult Function(double startCash) openShift,
     required TResult Function(double actualCash) closeShift,
+    required TResult Function(double amount, String reason) payIn,
+    required TResult Function(double amount, String reason) payOut,
   }) {
     return openShift(startCash);
   }
@@ -276,6 +302,8 @@ class _$OpenShiftImpl implements _OpenShift {
     TResult? Function()? checkStatus,
     TResult? Function(double startCash)? openShift,
     TResult? Function(double actualCash)? closeShift,
+    TResult? Function(double amount, String reason)? payIn,
+    TResult? Function(double amount, String reason)? payOut,
   }) {
     return openShift?.call(startCash);
   }
@@ -286,6 +314,8 @@ class _$OpenShiftImpl implements _OpenShift {
     TResult Function()? checkStatus,
     TResult Function(double startCash)? openShift,
     TResult Function(double actualCash)? closeShift,
+    TResult Function(double amount, String reason)? payIn,
+    TResult Function(double amount, String reason)? payOut,
     required TResult orElse(),
   }) {
     if (openShift != null) {
@@ -300,6 +330,8 @@ class _$OpenShiftImpl implements _OpenShift {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_PayIn value) payIn,
+    required TResult Function(_PayOut value) payOut,
   }) {
     return openShift(this);
   }
@@ -310,6 +342,8 @@ class _$OpenShiftImpl implements _OpenShift {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_PayIn value)? payIn,
+    TResult? Function(_PayOut value)? payOut,
   }) {
     return openShift?.call(this);
   }
@@ -320,6 +354,8 @@ class _$OpenShiftImpl implements _OpenShift {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_PayIn value)? payIn,
+    TResult Function(_PayOut value)? payOut,
     required TResult orElse(),
   }) {
     if (openShift != null) {
@@ -413,6 +449,8 @@ class _$CloseShiftImpl implements _CloseShift {
     required TResult Function() checkStatus,
     required TResult Function(double startCash) openShift,
     required TResult Function(double actualCash) closeShift,
+    required TResult Function(double amount, String reason) payIn,
+    required TResult Function(double amount, String reason) payOut,
   }) {
     return closeShift(actualCash);
   }
@@ -423,6 +461,8 @@ class _$CloseShiftImpl implements _CloseShift {
     TResult? Function()? checkStatus,
     TResult? Function(double startCash)? openShift,
     TResult? Function(double actualCash)? closeShift,
+    TResult? Function(double amount, String reason)? payIn,
+    TResult? Function(double amount, String reason)? payOut,
   }) {
     return closeShift?.call(actualCash);
   }
@@ -433,6 +473,8 @@ class _$CloseShiftImpl implements _CloseShift {
     TResult Function()? checkStatus,
     TResult Function(double startCash)? openShift,
     TResult Function(double actualCash)? closeShift,
+    TResult Function(double amount, String reason)? payIn,
+    TResult Function(double amount, String reason)? payOut,
     required TResult orElse(),
   }) {
     if (closeShift != null) {
@@ -447,6 +489,8 @@ class _$CloseShiftImpl implements _CloseShift {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_PayIn value) payIn,
+    required TResult Function(_PayOut value) payOut,
   }) {
     return closeShift(this);
   }
@@ -457,6 +501,8 @@ class _$CloseShiftImpl implements _CloseShift {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_PayIn value)? payIn,
+    TResult? Function(_PayOut value)? payOut,
   }) {
     return closeShift?.call(this);
   }
@@ -467,6 +513,8 @@ class _$CloseShiftImpl implements _CloseShift {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_PayIn value)? payIn,
+    TResult Function(_PayOut value)? payOut,
     required TResult orElse(),
   }) {
     if (closeShift != null) {
@@ -489,12 +537,349 @@ abstract class _CloseShift implements ShiftEvent {
 }
 
 /// @nodoc
+abstract class _$$PayInImplCopyWith<$Res> {
+  factory _$$PayInImplCopyWith(
+          _$PayInImpl value, $Res Function(_$PayInImpl) then) =
+      __$$PayInImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({double amount, String reason});
+}
+
+/// @nodoc
+class __$$PayInImplCopyWithImpl<$Res>
+    extends _$ShiftEventCopyWithImpl<$Res, _$PayInImpl>
+    implements _$$PayInImplCopyWith<$Res> {
+  __$$PayInImplCopyWithImpl(
+      _$PayInImpl _value, $Res Function(_$PayInImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ShiftEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? amount = null,
+    Object? reason = null,
+  }) {
+    return _then(_$PayInImpl(
+      null == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as double,
+      null == reason
+          ? _value.reason
+          : reason // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$PayInImpl implements _PayIn {
+  const _$PayInImpl(this.amount, this.reason);
+
+  @override
+  final double amount;
+  @override
+  final String reason;
+
+  @override
+  String toString() {
+    return 'ShiftEvent.payIn(amount: $amount, reason: $reason)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PayInImpl &&
+            (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.reason, reason) || other.reason == reason));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, amount, reason);
+
+  /// Create a copy of ShiftEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PayInImplCopyWith<_$PayInImpl> get copyWith =>
+      __$$PayInImplCopyWithImpl<_$PayInImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() checkStatus,
+    required TResult Function(double startCash) openShift,
+    required TResult Function(double actualCash) closeShift,
+    required TResult Function(double amount, String reason) payIn,
+    required TResult Function(double amount, String reason) payOut,
+  }) {
+    return payIn(amount, reason);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? checkStatus,
+    TResult? Function(double startCash)? openShift,
+    TResult? Function(double actualCash)? closeShift,
+    TResult? Function(double amount, String reason)? payIn,
+    TResult? Function(double amount, String reason)? payOut,
+  }) {
+    return payIn?.call(amount, reason);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? checkStatus,
+    TResult Function(double startCash)? openShift,
+    TResult Function(double actualCash)? closeShift,
+    TResult Function(double amount, String reason)? payIn,
+    TResult Function(double amount, String reason)? payOut,
+    required TResult orElse(),
+  }) {
+    if (payIn != null) {
+      return payIn(amount, reason);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_CheckStatus value) checkStatus,
+    required TResult Function(_OpenShift value) openShift,
+    required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_PayIn value) payIn,
+    required TResult Function(_PayOut value) payOut,
+  }) {
+    return payIn(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_CheckStatus value)? checkStatus,
+    TResult? Function(_OpenShift value)? openShift,
+    TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_PayIn value)? payIn,
+    TResult? Function(_PayOut value)? payOut,
+  }) {
+    return payIn?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_CheckStatus value)? checkStatus,
+    TResult Function(_OpenShift value)? openShift,
+    TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_PayIn value)? payIn,
+    TResult Function(_PayOut value)? payOut,
+    required TResult orElse(),
+  }) {
+    if (payIn != null) {
+      return payIn(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _PayIn implements ShiftEvent {
+  const factory _PayIn(final double amount, final String reason) = _$PayInImpl;
+
+  double get amount;
+  String get reason;
+
+  /// Create a copy of ShiftEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$PayInImplCopyWith<_$PayInImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$PayOutImplCopyWith<$Res> {
+  factory _$$PayOutImplCopyWith(
+          _$PayOutImpl value, $Res Function(_$PayOutImpl) then) =
+      __$$PayOutImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({double amount, String reason});
+}
+
+/// @nodoc
+class __$$PayOutImplCopyWithImpl<$Res>
+    extends _$ShiftEventCopyWithImpl<$Res, _$PayOutImpl>
+    implements _$$PayOutImplCopyWith<$Res> {
+  __$$PayOutImplCopyWithImpl(
+      _$PayOutImpl _value, $Res Function(_$PayOutImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ShiftEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? amount = null,
+    Object? reason = null,
+  }) {
+    return _then(_$PayOutImpl(
+      null == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as double,
+      null == reason
+          ? _value.reason
+          : reason // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$PayOutImpl implements _PayOut {
+  const _$PayOutImpl(this.amount, this.reason);
+
+  @override
+  final double amount;
+  @override
+  final String reason;
+
+  @override
+  String toString() {
+    return 'ShiftEvent.payOut(amount: $amount, reason: $reason)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PayOutImpl &&
+            (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.reason, reason) || other.reason == reason));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, amount, reason);
+
+  /// Create a copy of ShiftEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PayOutImplCopyWith<_$PayOutImpl> get copyWith =>
+      __$$PayOutImplCopyWithImpl<_$PayOutImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() checkStatus,
+    required TResult Function(double startCash) openShift,
+    required TResult Function(double actualCash) closeShift,
+    required TResult Function(double amount, String reason) payIn,
+    required TResult Function(double amount, String reason) payOut,
+  }) {
+    return payOut(amount, reason);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? checkStatus,
+    TResult? Function(double startCash)? openShift,
+    TResult? Function(double actualCash)? closeShift,
+    TResult? Function(double amount, String reason)? payIn,
+    TResult? Function(double amount, String reason)? payOut,
+  }) {
+    return payOut?.call(amount, reason);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? checkStatus,
+    TResult Function(double startCash)? openShift,
+    TResult Function(double actualCash)? closeShift,
+    TResult Function(double amount, String reason)? payIn,
+    TResult Function(double amount, String reason)? payOut,
+    required TResult orElse(),
+  }) {
+    if (payOut != null) {
+      return payOut(amount, reason);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_CheckStatus value) checkStatus,
+    required TResult Function(_OpenShift value) openShift,
+    required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_PayIn value) payIn,
+    required TResult Function(_PayOut value) payOut,
+  }) {
+    return payOut(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_CheckStatus value)? checkStatus,
+    TResult? Function(_OpenShift value)? openShift,
+    TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_PayIn value)? payIn,
+    TResult? Function(_PayOut value)? payOut,
+  }) {
+    return payOut?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_CheckStatus value)? checkStatus,
+    TResult Function(_OpenShift value)? openShift,
+    TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_PayIn value)? payIn,
+    TResult Function(_PayOut value)? payOut,
+    required TResult orElse(),
+  }) {
+    if (payOut != null) {
+      return payOut(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _PayOut implements ShiftEvent {
+  const factory _PayOut(final double amount, final String reason) =
+      _$PayOutImpl;
+
+  double get amount;
+  String get reason;
+
+  /// Create a copy of ShiftEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$PayOutImplCopyWith<_$PayOutImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$ShiftState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(ShiftSessionTableData shift) open,
+    required TResult Function(
+            ShiftSessionTableData shift, double totalPayIn, double totalPayOut)
+        open,
     required TResult Function() closed,
     required TResult Function(String message) error,
   }) =>
@@ -503,7 +888,9 @@ mixin _$ShiftState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(ShiftSessionTableData shift)? open,
+    TResult? Function(
+            ShiftSessionTableData shift, double totalPayIn, double totalPayOut)?
+        open,
     TResult? Function()? closed,
     TResult? Function(String message)? error,
   }) =>
@@ -512,7 +899,9 @@ mixin _$ShiftState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(ShiftSessionTableData shift)? open,
+    TResult Function(
+            ShiftSessionTableData shift, double totalPayIn, double totalPayOut)?
+        open,
     TResult Function()? closed,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -612,7 +1001,9 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(ShiftSessionTableData shift) open,
+    required TResult Function(
+            ShiftSessionTableData shift, double totalPayIn, double totalPayOut)
+        open,
     required TResult Function() closed,
     required TResult Function(String message) error,
   }) {
@@ -624,7 +1015,9 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(ShiftSessionTableData shift)? open,
+    TResult? Function(
+            ShiftSessionTableData shift, double totalPayIn, double totalPayOut)?
+        open,
     TResult? Function()? closed,
     TResult? Function(String message)? error,
   }) {
@@ -636,7 +1029,9 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(ShiftSessionTableData shift)? open,
+    TResult Function(
+            ShiftSessionTableData shift, double totalPayIn, double totalPayOut)?
+        open,
     TResult Function()? closed,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -735,7 +1130,9 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(ShiftSessionTableData shift) open,
+    required TResult Function(
+            ShiftSessionTableData shift, double totalPayIn, double totalPayOut)
+        open,
     required TResult Function() closed,
     required TResult Function(String message) error,
   }) {
@@ -747,7 +1144,9 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(ShiftSessionTableData shift)? open,
+    TResult? Function(
+            ShiftSessionTableData shift, double totalPayIn, double totalPayOut)?
+        open,
     TResult? Function()? closed,
     TResult? Function(String message)? error,
   }) {
@@ -759,7 +1158,9 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(ShiftSessionTableData shift)? open,
+    TResult Function(
+            ShiftSessionTableData shift, double totalPayIn, double totalPayOut)?
+        open,
     TResult Function()? closed,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -821,7 +1222,8 @@ abstract class _$$OpenImplCopyWith<$Res> {
           _$OpenImpl value, $Res Function(_$OpenImpl) then) =
       __$$OpenImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({ShiftSessionTableData shift});
+  $Res call(
+      {ShiftSessionTableData shift, double totalPayIn, double totalPayOut});
 }
 
 /// @nodoc
@@ -837,12 +1239,22 @@ class __$$OpenImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? shift = freezed,
+    Object? totalPayIn = null,
+    Object? totalPayOut = null,
   }) {
     return _then(_$OpenImpl(
       freezed == shift
           ? _value.shift
           : shift // ignore: cast_nullable_to_non_nullable
               as ShiftSessionTableData,
+      totalPayIn: null == totalPayIn
+          ? _value.totalPayIn
+          : totalPayIn // ignore: cast_nullable_to_non_nullable
+              as double,
+      totalPayOut: null == totalPayOut
+          ? _value.totalPayOut
+          : totalPayOut // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -850,14 +1262,20 @@ class __$$OpenImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$OpenImpl implements _Open {
-  const _$OpenImpl(this.shift);
+  const _$OpenImpl(this.shift, {this.totalPayIn = 0.0, this.totalPayOut = 0.0});
 
   @override
   final ShiftSessionTableData shift;
+  @override
+  @JsonKey()
+  final double totalPayIn;
+  @override
+  @JsonKey()
+  final double totalPayOut;
 
   @override
   String toString() {
-    return 'ShiftState.open(shift: $shift)';
+    return 'ShiftState.open(shift: $shift, totalPayIn: $totalPayIn, totalPayOut: $totalPayOut)';
   }
 
   @override
@@ -865,12 +1283,16 @@ class _$OpenImpl implements _Open {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$OpenImpl &&
-            const DeepCollectionEquality().equals(other.shift, shift));
+            const DeepCollectionEquality().equals(other.shift, shift) &&
+            (identical(other.totalPayIn, totalPayIn) ||
+                other.totalPayIn == totalPayIn) &&
+            (identical(other.totalPayOut, totalPayOut) ||
+                other.totalPayOut == totalPayOut));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(shift));
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(shift), totalPayIn, totalPayOut);
 
   /// Create a copy of ShiftState
   /// with the given fields replaced by the non-null parameter values.
@@ -885,11 +1307,13 @@ class _$OpenImpl implements _Open {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(ShiftSessionTableData shift) open,
+    required TResult Function(
+            ShiftSessionTableData shift, double totalPayIn, double totalPayOut)
+        open,
     required TResult Function() closed,
     required TResult Function(String message) error,
   }) {
-    return open(shift);
+    return open(shift, totalPayIn, totalPayOut);
   }
 
   @override
@@ -897,11 +1321,13 @@ class _$OpenImpl implements _Open {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(ShiftSessionTableData shift)? open,
+    TResult? Function(
+            ShiftSessionTableData shift, double totalPayIn, double totalPayOut)?
+        open,
     TResult? Function()? closed,
     TResult? Function(String message)? error,
   }) {
-    return open?.call(shift);
+    return open?.call(shift, totalPayIn, totalPayOut);
   }
 
   @override
@@ -909,13 +1335,15 @@ class _$OpenImpl implements _Open {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(ShiftSessionTableData shift)? open,
+    TResult Function(
+            ShiftSessionTableData shift, double totalPayIn, double totalPayOut)?
+        open,
     TResult Function()? closed,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (open != null) {
-      return open(shift);
+      return open(shift, totalPayIn, totalPayOut);
     }
     return orElse();
   }
@@ -962,9 +1390,12 @@ class _$OpenImpl implements _Open {
 }
 
 abstract class _Open implements ShiftState {
-  const factory _Open(final ShiftSessionTableData shift) = _$OpenImpl;
+  const factory _Open(final ShiftSessionTableData shift,
+      {final double totalPayIn, final double totalPayOut}) = _$OpenImpl;
 
   ShiftSessionTableData get shift;
+  double get totalPayIn;
+  double get totalPayOut;
 
   /// Create a copy of ShiftState
   /// with the given fields replaced by the non-null parameter values.
@@ -1016,7 +1447,9 @@ class _$ClosedImpl implements _Closed {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(ShiftSessionTableData shift) open,
+    required TResult Function(
+            ShiftSessionTableData shift, double totalPayIn, double totalPayOut)
+        open,
     required TResult Function() closed,
     required TResult Function(String message) error,
   }) {
@@ -1028,7 +1461,9 @@ class _$ClosedImpl implements _Closed {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(ShiftSessionTableData shift)? open,
+    TResult? Function(
+            ShiftSessionTableData shift, double totalPayIn, double totalPayOut)?
+        open,
     TResult? Function()? closed,
     TResult? Function(String message)? error,
   }) {
@@ -1040,7 +1475,9 @@ class _$ClosedImpl implements _Closed {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(ShiftSessionTableData shift)? open,
+    TResult Function(
+            ShiftSessionTableData shift, double totalPayIn, double totalPayOut)?
+        open,
     TResult Function()? closed,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -1166,7 +1603,9 @@ class _$ErrorImpl implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(ShiftSessionTableData shift) open,
+    required TResult Function(
+            ShiftSessionTableData shift, double totalPayIn, double totalPayOut)
+        open,
     required TResult Function() closed,
     required TResult Function(String message) error,
   }) {
@@ -1178,7 +1617,9 @@ class _$ErrorImpl implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(ShiftSessionTableData shift)? open,
+    TResult? Function(
+            ShiftSessionTableData shift, double totalPayIn, double totalPayOut)?
+        open,
     TResult? Function()? closed,
     TResult? Function(String message)? error,
   }) {
@@ -1190,7 +1631,9 @@ class _$ErrorImpl implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(ShiftSessionTableData shift)? open,
+    TResult Function(
+            ShiftSessionTableData shift, double totalPayIn, double totalPayOut)?
+        open,
     TResult Function()? closed,
     TResult Function(String message)? error,
     required TResult orElse(),

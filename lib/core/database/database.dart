@@ -28,12 +28,14 @@ part 'database.g.dart';
   ProductModifierLinkTable,
   IngredientTable,
   RecipeTable,
+  // v10 Ops
+  CashTransactionTable,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 9;
+  int get schemaVersion => 11;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -71,13 +73,7 @@ class AppDatabase extends _$AppDatabase {
       }
       if (from < 5) {
          await m.createTable(employeeTable);
-         await into(employeeTable).insert(EmployeeTableCompanion.insert(
-           uuid: 'owner-001',
-           name: 'Owner',
-           pin: '123456',
-           role: 'OWNER',
-           createdAt: DateTime.now(),
-         ));
+         // Redundant block removed in cleanup or similar check
       }
        if (from < 6) {
          await m.createTable(restaurantTable);
@@ -115,6 +111,12 @@ class AppDatabase extends _$AppDatabase {
          await m.createTable(productModifierLinkTable);
          await m.createTable(ingredientTable);
          await m.createTable(recipeTable);
+       }
+       if (from < 10) {
+         await m.createTable(cashTransactionTable);
+       }
+       if (from < 11) {
+         await m.addColumn(orderTable, orderTable.isFulfilled);
        }
     },
   );

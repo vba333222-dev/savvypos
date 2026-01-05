@@ -213,6 +213,9 @@ class OrderTable extends Table {
   // Sync
   BoolColumn get isSynced => boolean().withDefault(const Constant(false))();
   IntColumn get syncAttempts => integer().withDefault(const Constant(0))();
+  
+  // Kitchen
+  BoolColumn get isFulfilled => boolean().withDefault(const Constant(false))();
 }
 
 class OrderItemTable extends Table {
@@ -280,4 +283,19 @@ class SyncQueue extends Table {
   TextColumn get idempotencyKey => text().unique()(); // UUID
   DateTimeColumn get createdAt => dateTime()();
   IntColumn get retryCount => integer().withDefault(const Constant(0))();
+}
+
+// ==============================================================================
+// 7. CASH TRANSACTIONS (v10)
+// ==============================================================================
+class CashTransactionTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get uuid => text().unique()();
+  TextColumn get shiftUuid => text().nullable()(); 
+  TextColumn get type => text()(); // 'PAY_IN', 'PAY_OUT'
+  RealColumn get amount => real()();
+  TextColumn get reason => text().nullable()();
+  
+  DateTimeColumn get createdAt => dateTime()();
+  BoolColumn get isSynced => boolean().withDefault(const Constant(false))();
 }

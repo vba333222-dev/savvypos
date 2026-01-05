@@ -28,4 +28,19 @@ class OrderRepositoryImpl implements IOrderRepository {
       ..orderBy([(tbl) => OrderingTerm.desc(tbl.transactionDate)]))
       .get();
   }
+
+  @override
+  Stream<List<OrderTableData>> watchKitchenOrders() {
+    return (db.select(db.orderTable)
+      ..where((t) => t.isFulfilled.equals(false))
+      ..orderBy([(t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.asc)]))
+      .watch();
+  }
+
+  @override
+  Future<void> markOrderFulfilled(String uuid) async {
+    await (db.update(db.orderTable)..where((t) => t.uuid.equals(uuid))).write(
+      const OrderTableCompanion(isFulfilled: Value(true))
+    );
+  }
 }

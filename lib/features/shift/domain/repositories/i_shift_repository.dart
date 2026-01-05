@@ -4,4 +4,7 @@ abstract class IShiftRepository {
   Future<ShiftSessionTableData?> getCurrentShift();
   Future<void> openShift(double startCash, String staffId, String staffName);
   Future<void> closeShift(String shiftUuid, double actualCash);
+  
+  Future<void> addCashTransaction(String shiftUuid, String type, double amount, String reason);
+  Future<Map<String, double>> getCashTransactionSummary(String shiftUuid);
 }

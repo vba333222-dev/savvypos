@@ -37,34 +37,58 @@ class ShiftRepositoryImpl implements IShiftRepository {
 
   @override
   Future<void> closeShift(String shiftUuid, double actualCash) async {
-    // 1. Calculate Expected Cash (Start + Sales)
-    // Query all orders in this shift
-    // NOTE: In a real app we'd link orders to shiftUuid.
-    // For now, we assume all orders since Open time are part of it, or we rely on logic update.
-    // Here we'll do a simple update assuming expectedCash was updated incrementally or we calculate it now.
-    // Let's keep it simple: We just update the end state.
-    
-    // In a robust system, we would:
-    // final orders = await (db.select(db.orderTable)..where((t) => t.shiftUuid.equals(shiftUuid))).get();
-    // double totalSales = orders.fold(0, (sum, o) => sum + o.grandTotal);
-    
-    // For this step, we'll create a transaction to update
     await db.transaction(() async {
       final shift = await (db.select(db.shiftSessionTable)..where((t) => t.uuid.equals(shiftUuid))).getSingle();
       
-      // Calculate variance (Simplified: We assume expectedCash is static startCash for now unless we query sales)
-      // IMPROVEMENT: We should sum sales. 
-      // Let's do a quick sum of today's orders for better realism if possible, but adhering to "Pragmatic Execution"
-      // we will just save the values provided.
+      // Calculate Totals
+      // 1. Sales (Orders linked to shift)
+      // Note: Ensure CartBloc saves shiftUuid. If null, we might miss sales here.
+      final orders = await (db.select(db.orderTable)..where((t) => t.shiftUuid.equals(shiftUuid))).get();
+      final totalSales = orders.fold(0.0, (sum, o) => sum + o.grandTotal);
+
+      // 2. Cash Transactions
+      final txs = await (db.select(db.cashTransactionTable)..where((t) => t.shiftUuid.equals(shiftUuid))).get();
+      double payIn = 0;
+      double payOut = 0;
+      for (var t in txs) {
+        if (t.type == 'PAY_IN') payIn += t.amount;
+        if (t.type == 'PAY_OUT') payOut += t.amount;
+      }
       
-      double difference = actualCash - shift.expectedCash;
+      final expected = shift.startCash + totalSales + payIn - payOut;
+      final difference = actualCash - expected;
 
       await (db.update(db.shiftSessionTable)..where((t) => t.uuid.equals(shiftUuid))).write(ShiftSessionTableCompanion(
         endShift: Value(DateTime.now()),
+        expectedCash: Value(expected),
         actualCash: Value(actualCash),
         difference: Value(difference),
         isClosed: const Value(true),
       ));
     });
+  }
+
+  @override
+  Future<void> addCashTransaction(String shiftUuid, String type, double amount, String reason) async {
+    await db.into(db.cashTransactionTable).insert(CashTransactionTableCompanion.insert(
+      uuid: _uuid.v4(),
+      shiftUuid: Value(shiftUuid),
+      type: type,
+      amount: amount,
+      reason: Value(reason),
+      createdAt: DateTime.now(),
+    ));
+  }
+
+  @override
+  Future<Map<String, double>> getCashTransactionSummary(String shiftUuid) async {
+    final txs = await (db.select(db.cashTransactionTable)..where((t) => t.shiftUuid.equals(shiftUuid))).get();
+    double payIn = 0;
+    double payOut = 0;
+    for (var t in txs) {
+      if (t.type == 'PAY_IN') payIn += t.amount;
+      if (t.type == 'PAY_OUT') payOut += t.amount;
+    }
+    return {'payIn': payIn, 'payOut': payOut};
   }
 }

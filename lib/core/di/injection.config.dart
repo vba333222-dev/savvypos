@@ -25,6 +25,11 @@ import '../../features/inventory/domain/usecases/get_products.dart' as _i1053;
 import '../../features/pos/presentation/bloc/cart/cart_bloc.dart' as _i177;
 import '../../features/pos/presentation/bloc/product/product_bloc.dart'
     as _i313;
+import '../../features/shift/data/repositories/shift_repository_impl.dart'
+    as _i139;
+import '../../features/shift/domain/repositories/i_shift_repository.dart'
+    as _i240;
+import '../../features/shift/presentation/bloc/shift_bloc.dart' as _i246;
 import '../database/database.dart' as _i660;
 import '../hal/printer_interface.dart' as _i560;
 import '../hal/printer_service.dart' as _i16;
@@ -41,12 +46,16 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     gh.lazySingleton<_i660.AppDatabase>(() => _i660.AppDatabase());
+    gh.lazySingleton<_i240.IShiftRepository>(
+        () => _i139.ShiftRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i695.IProductRepository>(
         () => _i777.ProductRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i67.IOrderRepository>(
         () => _i14.OrderRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i560.IPrinterService>(() => _i16.PrinterService());
     gh.factory<_i177.CartBloc>(() => _i177.CartBloc(gh<_i660.AppDatabase>()));
+    gh.factory<_i246.ShiftBloc>(
+        () => _i246.ShiftBloc(gh<_i240.IShiftRepository>()));
     gh.factory<_i1070.HistoryBloc>(
         () => _i1070.HistoryBloc(gh<_i67.IOrderRepository>()));
     gh.factory<_i1053.GetProductsUseCase>(

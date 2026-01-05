@@ -5,6 +5,9 @@ import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
 import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/core/hal/printer_interface.dart';
 import 'package:savvy_pos/core/hal/printer_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
+import 'package:savvy_pos/features/shift/presentation/widgets/close_shift_dialog.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -126,6 +129,42 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ).animate().slideX()),
 
+          const SizedBox(height: 32),
+          Divider(color: colors.borderDefault),
+          
+          // Shift Management
+          Text(
+            'Shift Management',
+            style: typography.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          BlocBuilder<ShiftBloc, ShiftState>(
+            builder: (context, state) {
+              return state.maybeWhen(
+                open: (shift) => SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => BlocProvider.value(
+                          value: context.read<ShiftBloc>(),
+                          child: CloseShiftDialog(currentShift: shift),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.lock),
+                    label: const Text('Close Register / End Shift'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colors.stateError,
+                      foregroundColor: Colors.white,
+                    ),
+                  ),
+                ),
+                orElse: () => const SizedBox.shrink(),
+              );
+            },
+          ),
         ],
       ),
     );

@@ -9,6 +9,9 @@ import 'package:savvy_pos/features/pos/presentation/pages/product_grid_page.dart
 import 'package:savvy_pos/features/history/presentation/pages/transaction_history_page.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/current_order_view.dart';
 import 'package:savvy_pos/features/settings/presentation/pages/settings_page.dart';
+import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
+import 'package:savvy_pos/features/shift/presentation/pages/open_shift_page.dart';
+import 'package:savvy_pos/features/shift/presentation/widgets/close_shift_dialog.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class PosPage extends StatelessWidget {
@@ -20,6 +23,7 @@ class PosPage extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => GetIt.I<ProductBloc>()..add(const ProductEvent.loadProducts())),
         BlocProvider(create: (_) => GetIt.I<CartBloc>()),
+        BlocProvider(create: (_) => GetIt.I<ShiftBloc>()..add(const ShiftEvent.checkStatus())),
       ],
       child: const _PosPageContent(),
     );
@@ -45,49 +49,71 @@ class _PosPageContent extends StatelessWidget {
            ),
            IconButton(
              icon: const Icon(Icons.settings),
-             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsPage())),
+             onPressed: () => Navigator.push(
+               context, 
+               MaterialPageRoute(
+                 builder: (_) => BlocProvider.value(
+                   value: context.read<ShiftBloc>(),
+                   child: const SettingsPage(),
+                 ),
+               ),
+             ),
            ),
         ],
       ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          // Requirement: Tablet/Desktop > 900px
-          final isLargeScreen = constraints.maxWidth > 900;
+      body: BlocConsumer<ShiftBloc, ShiftState>(
+        listener: (context, state) {
+           // Redirect if error or closed (though the builder handles closed view)
+           if (state is! _Open && state is! _Loading && state is! _Initial) {
+              // Can add specific navigation logic if needed
+           }
+        },
+        builder: (context, state) {
+          return state.maybeWhen(
+            open: (shift) => LayoutBuilder(
+              builder: (context, constraints) {
+                // Requirement: Tablet/Desktop > 900px
+                final isLargeScreen = constraints.maxWidth > 900;
 
-          if (isLargeScreen) {
-            return Row(
-              children: [
-                // Product Grid (Left 65%)
-                const Expanded(
-                  flex: 65,
-                  child: ProductGridPage(),
-                ),
-                
-                // Vertical Divider
-                Container(width: 1, color: colors.borderDefault),
+                if (isLargeScreen) {
+                  return Row(
+                    children: [
+                      // Product Grid (Left 65%)
+                      const Expanded(
+                        flex: 65,
+                        child: ProductGridPage(),
+                      ),
+                      
+                      // Vertical Divider
+                      Container(width: 1, color: colors.borderDefault),
 
-                // Cart (Right 35%)
-                const Expanded(
-                  flex: 35,
-                  child: CurrentOrderView(),
-                ),
-              ],
-            );
-          } else {
-            // Mobile/Small Tablet Layout
-            return const Stack(
-              children: [
-                ProductGridPage(),
-                
-                // Floating Action Button via extended Widget
-                Positioned(
-                  bottom: 16,
-                  right: 16,
-                  child: _MobileCartFab(),
-                ),
-              ],
-            );
-          }
+                      // Cart (Right 35%)
+                      const Expanded(
+                        flex: 35,
+                        child: CurrentOrderView(),
+                      ),
+                    ],
+                  );
+                } else {
+                  // Mobile/Small Tablet Layout
+                  return Stack(
+                    children: [
+                      const ProductGridPage(),
+                      
+                      // Floating Action Button via extended Widget
+                      const Positioned(
+                        bottom: 16,
+                        right: 16,
+                        child: _MobileCartFab(),
+                      ),
+                    ],
+                  );
+                }
+              },
+            ),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            orElse: () => const OpenShiftPage(), // Show OpenShiftPage if closed/initial
+          );
         },
       ),
     );

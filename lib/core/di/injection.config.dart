@@ -12,6 +12,11 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import '../../features/history/data/repositories/order_repository_impl.dart'
+    as _i14;
+import '../../features/history/domain/repositories/i_order_repository.dart'
+    as _i67;
+import '../../features/history/presentation/bloc/history_bloc.dart' as _i1070;
 import '../../features/inventory/data/repositories/product_repository_impl.dart'
     as _i777;
 import '../../features/inventory/domain/repositories/i_product_repository.dart'
@@ -38,11 +43,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i660.AppDatabase>(() => _i660.AppDatabase());
     gh.lazySingleton<_i695.IProductRepository>(
         () => _i777.ProductRepositoryImpl(gh<_i660.AppDatabase>()));
-    gh.lazySingleton<_i560.IPrinterService>(
-      () => _i16.PrinterService(),
-      dispose: (i) => i.dispose(),
-    );
+    gh.lazySingleton<_i67.IOrderRepository>(
+        () => _i14.OrderRepositoryImpl(gh<_i660.AppDatabase>()));
+    gh.lazySingleton<_i560.IPrinterService>(() => _i16.PrinterService());
     gh.factory<_i177.CartBloc>(() => _i177.CartBloc(gh<_i660.AppDatabase>()));
+    gh.factory<_i1070.HistoryBloc>(
+        () => _i1070.HistoryBloc(gh<_i67.IOrderRepository>()));
     gh.factory<_i1053.GetProductsUseCase>(
         () => _i1053.GetProductsUseCase(gh<_i695.IProductRepository>()));
     gh.factory<_i313.ProductBloc>(

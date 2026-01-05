@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -21,7 +22,7 @@ class PrinterService implements IPrinterService {
       _logger.d('Connecting to printer: $address');
       _statusController.add('Connecting...');
 
-      // Request permissions first
+      // Request permissions
       if (await Permission.bluetoothConnect.request().isGranted && 
           await Permission.bluetoothScan.request().isGranted) {
           
@@ -46,6 +47,20 @@ class PrinterService implements IPrinterService {
     }
   }
 
+  // Helper method for settings page
+  Future<List<BluetoothInfo>> scanDevices() async {
+    try {
+      if (await Permission.bluetoothScan.request().isGranted &&
+          await Permission.bluetoothConnect.request().isGranted) {
+          return await PrintBluetoothThermal.pairedBluetooths;
+      }
+      return [];
+    } catch (e) {
+      _logger.e('Error scanning devices', error: e);
+      return [];
+    }
+  }
+
   @override
   Future<void> printReceipt(OrderTableData order) async {
     try {
@@ -54,34 +69,67 @@ class PrinterService implements IPrinterService {
         throw Exception('Printer not connected');
       }
 
-      // Basic Receipt Layout
-      await PrintBluetoothThermal.writeBytes([
-        ...await PrintBluetoothThermal.writeString(
-          printText: PrintTextSize(size: 10, text: 'Savvy POS\n')
+      // Generate ESC/POS bytes
+      final profile = await CapabilityProfile.load();
+      final generator = Generator(PaperSize.mm58, profile);
+      List<int> bytes = [];
+
+      // Header
+      bytes += generator.text(
+        'Savvy POS',
+        styles: const PosStyles(
+          align: PosAlign.center,
+          height: PosTextSize.size2,
+          width: PosTextSize.size2,
+          bold: true,
         ),
-        ...await PrintBluetoothThermal.writeString(
-            printText: PrintTextSize(size: 8, text: 'Order #${order.orderNumber}\n')
-        ),
-        ...await PrintBluetoothThermal.writeString(
-            printText: PrintTextSize(size: 8, text: '--------------------------------\n')
-        ),
-         ...await PrintBluetoothThermal.writeString(
-            printText: PrintTextSize(size: 8, text: 'Total: ${order.grandTotal}\n')
-        ),
-        ...await PrintBluetoothThermal.writeString(
-            printText: PrintTextSize(size: 8, text: '\n\n')
-        ),
+      );
+      bytes += generator.text('Enterprise Solution', styles: const PosStyles(align: PosAlign.center));
+      bytes += generator.text('--------------------------------');
+
+      // Order Info
+      bytes += generator.text('Order #: ${order.orderNumber}');
+      bytes += generator.text('Date: ${order.createdAt}');
+      bytes += generator.text('--------------------------------');
+
+      // Items (Since we only accept OrderTableData here, we might not have items if not passed.
+      // NOTE: Ideally this method receives a full Order entity with items. 
+      // For this step, we will print the totals.
+      // If the user wants granular items, we'd need to fetch them or pass them.
+      // Assuming for now we just print totals as per interface signature.)
+      
+      // Totals
+      bytes += generator.row([
+        PosColumn(text: 'Subtotal:', width: 8, styles: const PosStyles(align: PosAlign.left)),
+        PosColumn(text: order.subTotal.toStringAsFixed(2), width: 4, styles: const PosStyles(align: PosAlign.right)),
       ]);
+      bytes += generator.row([
+        PosColumn(text: 'Tax:', width: 8, styles: const PosStyles(align: PosAlign.left)),
+        PosColumn(text: order.taxTotal.toStringAsFixed(2), width: 4, styles: const PosStyles(align: PosAlign.right)),
+      ]);
+      bytes += generator.text('--------------------------------');
+      bytes += generator.text(
+        'TOTAL: \$${order.grandTotal.toStringAsFixed(2)}',
+        styles: const PosStyles(
+          align: PosAlign.center,
+          height: PosTextSize.size2,
+          bold: true,
+        ),
+      );
+
+      // Footer
+      bytes += generator.feed(2);
+      bytes += generator.text('Thank you for shopping!', styles: const PosStyles(align: PosAlign.center));
+      bytes += generator.feed(1);
+      bytes += generator.cut();
+
+      // Print
+      await PrintBluetoothThermal.writeBytes(bytes);
       
       _logger.i('Receipt printed for order: ${order.uuid}');
     } catch (e) {
       _logger.e('Error printing receipt', error: e);
       rethrow;
     }
-  }
-  
-  @disposeMethod
-  void dispose() {
-    _statusController.close();
   }
 }

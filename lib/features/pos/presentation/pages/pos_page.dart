@@ -6,7 +6,9 @@ import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/product/product_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/pages/product_grid_page.dart';
+import 'package:savvy_pos/features/history/presentation/pages/transaction_history_page.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/current_order_view.dart';
+import 'package:savvy_pos/features/settings/presentation/pages/settings_page.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class PosPage extends StatelessWidget {
@@ -33,6 +35,20 @@ class _PosPageContent extends StatelessWidget {
     
     return Scaffold(
       backgroundColor: colors.bgPrimary,
+      appBar: AppBar(
+        title: const Text('Savvy POS'),
+        backgroundColor: colors.bgPrimary,
+        actions: [
+           IconButton(
+             icon: const Icon(Icons.history),
+             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TransactionHistoryPage())),
+           ),
+           IconButton(
+             icon: const Icon(Icons.settings),
+             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsPage())),
+           ),
+        ],
+      ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           // Requirement: Tablet/Desktop > 900px

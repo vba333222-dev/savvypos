@@ -1800,6 +1800,27 @@ class $OrderTableTable extends OrderTable
   late final GeneratedColumn<String> customerUuid = GeneratedColumn<String>(
       'customer_uuid', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _tenantIdMeta =
+      const VerificationMeta('tenantId');
+  @override
+  late final GeneratedColumn<String> tenantId = GeneratedColumn<String>(
+      'tenant_id', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+      'status', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('COMPLETED'));
+  static const VerificationMeta _paymentStatusMeta =
+      const VerificationMeta('paymentStatus');
+  @override
+  late final GeneratedColumn<String> paymentStatus = GeneratedColumn<String>(
+      'payment_status', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('PAID'));
   static const VerificationMeta _transactionDateMeta =
       const VerificationMeta('transactionDate');
   @override
@@ -1836,18 +1857,18 @@ class $OrderTableTable extends OrderTable
   late final GeneratedColumn<String> paymentMethod = GeneratedColumn<String>(
       'payment_method', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _amountTenderedMeta =
-      const VerificationMeta('amountTendered');
+  static const VerificationMeta _tenderedAmountMeta =
+      const VerificationMeta('tenderedAmount');
   @override
-  late final GeneratedColumn<double> amountTendered = GeneratedColumn<double>(
-      'amount_tendered', aliasedName, false,
-      type: DriftSqlType.double, requiredDuringInsert: true);
+  late final GeneratedColumn<double> tenderedAmount = GeneratedColumn<double>(
+      'tendered_amount', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
   static const VerificationMeta _changeAmountMeta =
       const VerificationMeta('changeAmount');
   @override
   late final GeneratedColumn<double> changeAmount = GeneratedColumn<double>(
-      'change_amount', aliasedName, false,
-      type: DriftSqlType.double, requiredDuringInsert: true);
+      'change_amount', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
   static const VerificationMeta _isSyncedMeta =
       const VerificationMeta('isSynced');
   @override
@@ -1873,13 +1894,16 @@ class $OrderTableTable extends OrderTable
         orderNumber,
         shiftUuid,
         customerUuid,
+        tenantId,
+        status,
+        paymentStatus,
         transactionDate,
         subtotal,
         discountTotal,
         taxTotal,
         grandTotal,
         paymentMethod,
-        amountTendered,
+        tenderedAmount,
         changeAmount,
         isSynced,
         syncAttempts
@@ -1920,6 +1944,20 @@ class $OrderTableTable extends OrderTable
           _customerUuidMeta,
           customerUuid.isAcceptableOrUnknown(
               data['customer_uuid']!, _customerUuidMeta));
+    }
+    if (data.containsKey('tenant_id')) {
+      context.handle(_tenantIdMeta,
+          tenantId.isAcceptableOrUnknown(data['tenant_id']!, _tenantIdMeta));
+    }
+    if (data.containsKey('status')) {
+      context.handle(_statusMeta,
+          status.isAcceptableOrUnknown(data['status']!, _statusMeta));
+    }
+    if (data.containsKey('payment_status')) {
+      context.handle(
+          _paymentStatusMeta,
+          paymentStatus.isAcceptableOrUnknown(
+              data['payment_status']!, _paymentStatusMeta));
     }
     if (data.containsKey('transaction_date')) {
       context.handle(
@@ -1965,21 +2003,17 @@ class $OrderTableTable extends OrderTable
     } else if (isInserting) {
       context.missing(_paymentMethodMeta);
     }
-    if (data.containsKey('amount_tendered')) {
+    if (data.containsKey('tendered_amount')) {
       context.handle(
-          _amountTenderedMeta,
-          amountTendered.isAcceptableOrUnknown(
-              data['amount_tendered']!, _amountTenderedMeta));
-    } else if (isInserting) {
-      context.missing(_amountTenderedMeta);
+          _tenderedAmountMeta,
+          tenderedAmount.isAcceptableOrUnknown(
+              data['tendered_amount']!, _tenderedAmountMeta));
     }
     if (data.containsKey('change_amount')) {
       context.handle(
           _changeAmountMeta,
           changeAmount.isAcceptableOrUnknown(
               data['change_amount']!, _changeAmountMeta));
-    } else if (isInserting) {
-      context.missing(_changeAmountMeta);
     }
     if (data.containsKey('is_synced')) {
       context.handle(_isSyncedMeta,
@@ -2010,6 +2044,12 @@ class $OrderTableTable extends OrderTable
           .read(DriftSqlType.string, data['${effectivePrefix}shift_uuid']),
       customerUuid: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}customer_uuid']),
+      tenantId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}tenant_id']),
+      status: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
+      paymentStatus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}payment_status'])!,
       transactionDate: attachedDatabase.typeMapping.read(
           DriftSqlType.dateTime, data['${effectivePrefix}transaction_date'])!,
       subtotal: attachedDatabase.typeMapping
@@ -2022,10 +2062,10 @@ class $OrderTableTable extends OrderTable
           .read(DriftSqlType.double, data['${effectivePrefix}grand_total'])!,
       paymentMethod: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}payment_method'])!,
-      amountTendered: attachedDatabase.typeMapping.read(
-          DriftSqlType.double, data['${effectivePrefix}amount_tendered'])!,
+      tenderedAmount: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}tendered_amount']),
       changeAmount: attachedDatabase.typeMapping
-          .read(DriftSqlType.double, data['${effectivePrefix}change_amount'])!,
+          .read(DriftSqlType.double, data['${effectivePrefix}change_amount']),
       isSynced: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_synced'])!,
       syncAttempts: attachedDatabase.typeMapping
@@ -2045,14 +2085,17 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
   final String orderNumber;
   final String? shiftUuid;
   final String? customerUuid;
+  final String? tenantId;
+  final String status;
+  final String paymentStatus;
   final DateTime transactionDate;
   final double subtotal;
   final double discountTotal;
   final double taxTotal;
   final double grandTotal;
   final String paymentMethod;
-  final double amountTendered;
-  final double changeAmount;
+  final double? tenderedAmount;
+  final double? changeAmount;
   final bool isSynced;
   final int syncAttempts;
   const OrderTableData(
@@ -2061,14 +2104,17 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       required this.orderNumber,
       this.shiftUuid,
       this.customerUuid,
+      this.tenantId,
+      required this.status,
+      required this.paymentStatus,
       required this.transactionDate,
       required this.subtotal,
       required this.discountTotal,
       required this.taxTotal,
       required this.grandTotal,
       required this.paymentMethod,
-      required this.amountTendered,
-      required this.changeAmount,
+      this.tenderedAmount,
+      this.changeAmount,
       required this.isSynced,
       required this.syncAttempts});
   @override
@@ -2083,14 +2129,23 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
     if (!nullToAbsent || customerUuid != null) {
       map['customer_uuid'] = Variable<String>(customerUuid);
     }
+    if (!nullToAbsent || tenantId != null) {
+      map['tenant_id'] = Variable<String>(tenantId);
+    }
+    map['status'] = Variable<String>(status);
+    map['payment_status'] = Variable<String>(paymentStatus);
     map['transaction_date'] = Variable<DateTime>(transactionDate);
     map['subtotal'] = Variable<double>(subtotal);
     map['discount_total'] = Variable<double>(discountTotal);
     map['tax_total'] = Variable<double>(taxTotal);
     map['grand_total'] = Variable<double>(grandTotal);
     map['payment_method'] = Variable<String>(paymentMethod);
-    map['amount_tendered'] = Variable<double>(amountTendered);
-    map['change_amount'] = Variable<double>(changeAmount);
+    if (!nullToAbsent || tenderedAmount != null) {
+      map['tendered_amount'] = Variable<double>(tenderedAmount);
+    }
+    if (!nullToAbsent || changeAmount != null) {
+      map['change_amount'] = Variable<double>(changeAmount);
+    }
     map['is_synced'] = Variable<bool>(isSynced);
     map['sync_attempts'] = Variable<int>(syncAttempts);
     return map;
@@ -2107,14 +2162,23 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       customerUuid: customerUuid == null && nullToAbsent
           ? const Value.absent()
           : Value(customerUuid),
+      tenantId: tenantId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(tenantId),
+      status: Value(status),
+      paymentStatus: Value(paymentStatus),
       transactionDate: Value(transactionDate),
       subtotal: Value(subtotal),
       discountTotal: Value(discountTotal),
       taxTotal: Value(taxTotal),
       grandTotal: Value(grandTotal),
       paymentMethod: Value(paymentMethod),
-      amountTendered: Value(amountTendered),
-      changeAmount: Value(changeAmount),
+      tenderedAmount: tenderedAmount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(tenderedAmount),
+      changeAmount: changeAmount == null && nullToAbsent
+          ? const Value.absent()
+          : Value(changeAmount),
       isSynced: Value(isSynced),
       syncAttempts: Value(syncAttempts),
     );
@@ -2129,14 +2193,17 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       orderNumber: serializer.fromJson<String>(json['orderNumber']),
       shiftUuid: serializer.fromJson<String?>(json['shiftUuid']),
       customerUuid: serializer.fromJson<String?>(json['customerUuid']),
+      tenantId: serializer.fromJson<String?>(json['tenantId']),
+      status: serializer.fromJson<String>(json['status']),
+      paymentStatus: serializer.fromJson<String>(json['paymentStatus']),
       transactionDate: serializer.fromJson<DateTime>(json['transactionDate']),
       subtotal: serializer.fromJson<double>(json['subtotal']),
       discountTotal: serializer.fromJson<double>(json['discountTotal']),
       taxTotal: serializer.fromJson<double>(json['taxTotal']),
       grandTotal: serializer.fromJson<double>(json['grandTotal']),
       paymentMethod: serializer.fromJson<String>(json['paymentMethod']),
-      amountTendered: serializer.fromJson<double>(json['amountTendered']),
-      changeAmount: serializer.fromJson<double>(json['changeAmount']),
+      tenderedAmount: serializer.fromJson<double?>(json['tenderedAmount']),
+      changeAmount: serializer.fromJson<double?>(json['changeAmount']),
       isSynced: serializer.fromJson<bool>(json['isSynced']),
       syncAttempts: serializer.fromJson<int>(json['syncAttempts']),
     );
@@ -2150,14 +2217,17 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       'orderNumber': serializer.toJson<String>(orderNumber),
       'shiftUuid': serializer.toJson<String?>(shiftUuid),
       'customerUuid': serializer.toJson<String?>(customerUuid),
+      'tenantId': serializer.toJson<String?>(tenantId),
+      'status': serializer.toJson<String>(status),
+      'paymentStatus': serializer.toJson<String>(paymentStatus),
       'transactionDate': serializer.toJson<DateTime>(transactionDate),
       'subtotal': serializer.toJson<double>(subtotal),
       'discountTotal': serializer.toJson<double>(discountTotal),
       'taxTotal': serializer.toJson<double>(taxTotal),
       'grandTotal': serializer.toJson<double>(grandTotal),
       'paymentMethod': serializer.toJson<String>(paymentMethod),
-      'amountTendered': serializer.toJson<double>(amountTendered),
-      'changeAmount': serializer.toJson<double>(changeAmount),
+      'tenderedAmount': serializer.toJson<double?>(tenderedAmount),
+      'changeAmount': serializer.toJson<double?>(changeAmount),
       'isSynced': serializer.toJson<bool>(isSynced),
       'syncAttempts': serializer.toJson<int>(syncAttempts),
     };
@@ -2169,14 +2239,17 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
           String? orderNumber,
           Value<String?> shiftUuid = const Value.absent(),
           Value<String?> customerUuid = const Value.absent(),
+          Value<String?> tenantId = const Value.absent(),
+          String? status,
+          String? paymentStatus,
           DateTime? transactionDate,
           double? subtotal,
           double? discountTotal,
           double? taxTotal,
           double? grandTotal,
           String? paymentMethod,
-          double? amountTendered,
-          double? changeAmount,
+          Value<double?> tenderedAmount = const Value.absent(),
+          Value<double?> changeAmount = const Value.absent(),
           bool? isSynced,
           int? syncAttempts}) =>
       OrderTableData(
@@ -2186,14 +2259,19 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
         shiftUuid: shiftUuid.present ? shiftUuid.value : this.shiftUuid,
         customerUuid:
             customerUuid.present ? customerUuid.value : this.customerUuid,
+        tenantId: tenantId.present ? tenantId.value : this.tenantId,
+        status: status ?? this.status,
+        paymentStatus: paymentStatus ?? this.paymentStatus,
         transactionDate: transactionDate ?? this.transactionDate,
         subtotal: subtotal ?? this.subtotal,
         discountTotal: discountTotal ?? this.discountTotal,
         taxTotal: taxTotal ?? this.taxTotal,
         grandTotal: grandTotal ?? this.grandTotal,
         paymentMethod: paymentMethod ?? this.paymentMethod,
-        amountTendered: amountTendered ?? this.amountTendered,
-        changeAmount: changeAmount ?? this.changeAmount,
+        tenderedAmount:
+            tenderedAmount.present ? tenderedAmount.value : this.tenderedAmount,
+        changeAmount:
+            changeAmount.present ? changeAmount.value : this.changeAmount,
         isSynced: isSynced ?? this.isSynced,
         syncAttempts: syncAttempts ?? this.syncAttempts,
       );
@@ -2207,6 +2285,11 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       customerUuid: data.customerUuid.present
           ? data.customerUuid.value
           : this.customerUuid,
+      tenantId: data.tenantId.present ? data.tenantId.value : this.tenantId,
+      status: data.status.present ? data.status.value : this.status,
+      paymentStatus: data.paymentStatus.present
+          ? data.paymentStatus.value
+          : this.paymentStatus,
       transactionDate: data.transactionDate.present
           ? data.transactionDate.value
           : this.transactionDate,
@@ -2220,9 +2303,9 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       paymentMethod: data.paymentMethod.present
           ? data.paymentMethod.value
           : this.paymentMethod,
-      amountTendered: data.amountTendered.present
-          ? data.amountTendered.value
-          : this.amountTendered,
+      tenderedAmount: data.tenderedAmount.present
+          ? data.tenderedAmount.value
+          : this.tenderedAmount,
       changeAmount: data.changeAmount.present
           ? data.changeAmount.value
           : this.changeAmount,
@@ -2241,13 +2324,16 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
           ..write('orderNumber: $orderNumber, ')
           ..write('shiftUuid: $shiftUuid, ')
           ..write('customerUuid: $customerUuid, ')
+          ..write('tenantId: $tenantId, ')
+          ..write('status: $status, ')
+          ..write('paymentStatus: $paymentStatus, ')
           ..write('transactionDate: $transactionDate, ')
           ..write('subtotal: $subtotal, ')
           ..write('discountTotal: $discountTotal, ')
           ..write('taxTotal: $taxTotal, ')
           ..write('grandTotal: $grandTotal, ')
           ..write('paymentMethod: $paymentMethod, ')
-          ..write('amountTendered: $amountTendered, ')
+          ..write('tenderedAmount: $tenderedAmount, ')
           ..write('changeAmount: $changeAmount, ')
           ..write('isSynced: $isSynced, ')
           ..write('syncAttempts: $syncAttempts')
@@ -2262,13 +2348,16 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       orderNumber,
       shiftUuid,
       customerUuid,
+      tenantId,
+      status,
+      paymentStatus,
       transactionDate,
       subtotal,
       discountTotal,
       taxTotal,
       grandTotal,
       paymentMethod,
-      amountTendered,
+      tenderedAmount,
       changeAmount,
       isSynced,
       syncAttempts);
@@ -2281,13 +2370,16 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
           other.orderNumber == this.orderNumber &&
           other.shiftUuid == this.shiftUuid &&
           other.customerUuid == this.customerUuid &&
+          other.tenantId == this.tenantId &&
+          other.status == this.status &&
+          other.paymentStatus == this.paymentStatus &&
           other.transactionDate == this.transactionDate &&
           other.subtotal == this.subtotal &&
           other.discountTotal == this.discountTotal &&
           other.taxTotal == this.taxTotal &&
           other.grandTotal == this.grandTotal &&
           other.paymentMethod == this.paymentMethod &&
-          other.amountTendered == this.amountTendered &&
+          other.tenderedAmount == this.tenderedAmount &&
           other.changeAmount == this.changeAmount &&
           other.isSynced == this.isSynced &&
           other.syncAttempts == this.syncAttempts);
@@ -2299,14 +2391,17 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
   final Value<String> orderNumber;
   final Value<String?> shiftUuid;
   final Value<String?> customerUuid;
+  final Value<String?> tenantId;
+  final Value<String> status;
+  final Value<String> paymentStatus;
   final Value<DateTime> transactionDate;
   final Value<double> subtotal;
   final Value<double> discountTotal;
   final Value<double> taxTotal;
   final Value<double> grandTotal;
   final Value<String> paymentMethod;
-  final Value<double> amountTendered;
-  final Value<double> changeAmount;
+  final Value<double?> tenderedAmount;
+  final Value<double?> changeAmount;
   final Value<bool> isSynced;
   final Value<int> syncAttempts;
   const OrderTableCompanion({
@@ -2315,13 +2410,16 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
     this.orderNumber = const Value.absent(),
     this.shiftUuid = const Value.absent(),
     this.customerUuid = const Value.absent(),
+    this.tenantId = const Value.absent(),
+    this.status = const Value.absent(),
+    this.paymentStatus = const Value.absent(),
     this.transactionDate = const Value.absent(),
     this.subtotal = const Value.absent(),
     this.discountTotal = const Value.absent(),
     this.taxTotal = const Value.absent(),
     this.grandTotal = const Value.absent(),
     this.paymentMethod = const Value.absent(),
-    this.amountTendered = const Value.absent(),
+    this.tenderedAmount = const Value.absent(),
     this.changeAmount = const Value.absent(),
     this.isSynced = const Value.absent(),
     this.syncAttempts = const Value.absent(),
@@ -2332,14 +2430,17 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
     required String orderNumber,
     this.shiftUuid = const Value.absent(),
     this.customerUuid = const Value.absent(),
+    this.tenantId = const Value.absent(),
+    this.status = const Value.absent(),
+    this.paymentStatus = const Value.absent(),
     required DateTime transactionDate,
     required double subtotal,
     required double discountTotal,
     required double taxTotal,
     required double grandTotal,
     required String paymentMethod,
-    required double amountTendered,
-    required double changeAmount,
+    this.tenderedAmount = const Value.absent(),
+    this.changeAmount = const Value.absent(),
     this.isSynced = const Value.absent(),
     this.syncAttempts = const Value.absent(),
   })  : uuid = Value(uuid),
@@ -2349,22 +2450,23 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
         discountTotal = Value(discountTotal),
         taxTotal = Value(taxTotal),
         grandTotal = Value(grandTotal),
-        paymentMethod = Value(paymentMethod),
-        amountTendered = Value(amountTendered),
-        changeAmount = Value(changeAmount);
+        paymentMethod = Value(paymentMethod);
   static Insertable<OrderTableData> custom({
     Expression<int>? id,
     Expression<String>? uuid,
     Expression<String>? orderNumber,
     Expression<String>? shiftUuid,
     Expression<String>? customerUuid,
+    Expression<String>? tenantId,
+    Expression<String>? status,
+    Expression<String>? paymentStatus,
     Expression<DateTime>? transactionDate,
     Expression<double>? subtotal,
     Expression<double>? discountTotal,
     Expression<double>? taxTotal,
     Expression<double>? grandTotal,
     Expression<String>? paymentMethod,
-    Expression<double>? amountTendered,
+    Expression<double>? tenderedAmount,
     Expression<double>? changeAmount,
     Expression<bool>? isSynced,
     Expression<int>? syncAttempts,
@@ -2375,13 +2477,16 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
       if (orderNumber != null) 'order_number': orderNumber,
       if (shiftUuid != null) 'shift_uuid': shiftUuid,
       if (customerUuid != null) 'customer_uuid': customerUuid,
+      if (tenantId != null) 'tenant_id': tenantId,
+      if (status != null) 'status': status,
+      if (paymentStatus != null) 'payment_status': paymentStatus,
       if (transactionDate != null) 'transaction_date': transactionDate,
       if (subtotal != null) 'subtotal': subtotal,
       if (discountTotal != null) 'discount_total': discountTotal,
       if (taxTotal != null) 'tax_total': taxTotal,
       if (grandTotal != null) 'grand_total': grandTotal,
       if (paymentMethod != null) 'payment_method': paymentMethod,
-      if (amountTendered != null) 'amount_tendered': amountTendered,
+      if (tenderedAmount != null) 'tendered_amount': tenderedAmount,
       if (changeAmount != null) 'change_amount': changeAmount,
       if (isSynced != null) 'is_synced': isSynced,
       if (syncAttempts != null) 'sync_attempts': syncAttempts,
@@ -2394,14 +2499,17 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
       Value<String>? orderNumber,
       Value<String?>? shiftUuid,
       Value<String?>? customerUuid,
+      Value<String?>? tenantId,
+      Value<String>? status,
+      Value<String>? paymentStatus,
       Value<DateTime>? transactionDate,
       Value<double>? subtotal,
       Value<double>? discountTotal,
       Value<double>? taxTotal,
       Value<double>? grandTotal,
       Value<String>? paymentMethod,
-      Value<double>? amountTendered,
-      Value<double>? changeAmount,
+      Value<double?>? tenderedAmount,
+      Value<double?>? changeAmount,
       Value<bool>? isSynced,
       Value<int>? syncAttempts}) {
     return OrderTableCompanion(
@@ -2410,13 +2518,16 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
       orderNumber: orderNumber ?? this.orderNumber,
       shiftUuid: shiftUuid ?? this.shiftUuid,
       customerUuid: customerUuid ?? this.customerUuid,
+      tenantId: tenantId ?? this.tenantId,
+      status: status ?? this.status,
+      paymentStatus: paymentStatus ?? this.paymentStatus,
       transactionDate: transactionDate ?? this.transactionDate,
       subtotal: subtotal ?? this.subtotal,
       discountTotal: discountTotal ?? this.discountTotal,
       taxTotal: taxTotal ?? this.taxTotal,
       grandTotal: grandTotal ?? this.grandTotal,
       paymentMethod: paymentMethod ?? this.paymentMethod,
-      amountTendered: amountTendered ?? this.amountTendered,
+      tenderedAmount: tenderedAmount ?? this.tenderedAmount,
       changeAmount: changeAmount ?? this.changeAmount,
       isSynced: isSynced ?? this.isSynced,
       syncAttempts: syncAttempts ?? this.syncAttempts,
@@ -2441,6 +2552,15 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
     if (customerUuid.present) {
       map['customer_uuid'] = Variable<String>(customerUuid.value);
     }
+    if (tenantId.present) {
+      map['tenant_id'] = Variable<String>(tenantId.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (paymentStatus.present) {
+      map['payment_status'] = Variable<String>(paymentStatus.value);
+    }
     if (transactionDate.present) {
       map['transaction_date'] = Variable<DateTime>(transactionDate.value);
     }
@@ -2459,8 +2579,8 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
     if (paymentMethod.present) {
       map['payment_method'] = Variable<String>(paymentMethod.value);
     }
-    if (amountTendered.present) {
-      map['amount_tendered'] = Variable<double>(amountTendered.value);
+    if (tenderedAmount.present) {
+      map['tendered_amount'] = Variable<double>(tenderedAmount.value);
     }
     if (changeAmount.present) {
       map['change_amount'] = Variable<double>(changeAmount.value);
@@ -2482,13 +2602,16 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
           ..write('orderNumber: $orderNumber, ')
           ..write('shiftUuid: $shiftUuid, ')
           ..write('customerUuid: $customerUuid, ')
+          ..write('tenantId: $tenantId, ')
+          ..write('status: $status, ')
+          ..write('paymentStatus: $paymentStatus, ')
           ..write('transactionDate: $transactionDate, ')
           ..write('subtotal: $subtotal, ')
           ..write('discountTotal: $discountTotal, ')
           ..write('taxTotal: $taxTotal, ')
           ..write('grandTotal: $grandTotal, ')
           ..write('paymentMethod: $paymentMethod, ')
-          ..write('amountTendered: $amountTendered, ')
+          ..write('tenderedAmount: $tenderedAmount, ')
           ..write('changeAmount: $changeAmount, ')
           ..write('isSynced: $isSynced, ')
           ..write('syncAttempts: $syncAttempts')
@@ -5395,14 +5518,17 @@ typedef $$OrderTableTableCreateCompanionBuilder = OrderTableCompanion Function({
   required String orderNumber,
   Value<String?> shiftUuid,
   Value<String?> customerUuid,
+  Value<String?> tenantId,
+  Value<String> status,
+  Value<String> paymentStatus,
   required DateTime transactionDate,
   required double subtotal,
   required double discountTotal,
   required double taxTotal,
   required double grandTotal,
   required String paymentMethod,
-  required double amountTendered,
-  required double changeAmount,
+  Value<double?> tenderedAmount,
+  Value<double?> changeAmount,
   Value<bool> isSynced,
   Value<int> syncAttempts,
 });
@@ -5412,14 +5538,17 @@ typedef $$OrderTableTableUpdateCompanionBuilder = OrderTableCompanion Function({
   Value<String> orderNumber,
   Value<String?> shiftUuid,
   Value<String?> customerUuid,
+  Value<String?> tenantId,
+  Value<String> status,
+  Value<String> paymentStatus,
   Value<DateTime> transactionDate,
   Value<double> subtotal,
   Value<double> discountTotal,
   Value<double> taxTotal,
   Value<double> grandTotal,
   Value<String> paymentMethod,
-  Value<double> amountTendered,
-  Value<double> changeAmount,
+  Value<double?> tenderedAmount,
+  Value<double?> changeAmount,
   Value<bool> isSynced,
   Value<int> syncAttempts,
 });
@@ -5469,6 +5598,15 @@ class $$OrderTableTableFilterComposer
   ColumnFilters<String> get customerUuid => $composableBuilder(
       column: $table.customerUuid, builder: (column) => ColumnFilters(column));
 
+  ColumnFilters<String> get tenantId => $composableBuilder(
+      column: $table.tenantId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get paymentStatus => $composableBuilder(
+      column: $table.paymentStatus, builder: (column) => ColumnFilters(column));
+
   ColumnFilters<DateTime> get transactionDate => $composableBuilder(
       column: $table.transactionDate,
       builder: (column) => ColumnFilters(column));
@@ -5488,8 +5626,8 @@ class $$OrderTableTableFilterComposer
   ColumnFilters<String> get paymentMethod => $composableBuilder(
       column: $table.paymentMethod, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<double> get amountTendered => $composableBuilder(
-      column: $table.amountTendered,
+  ColumnFilters<double> get tenderedAmount => $composableBuilder(
+      column: $table.tenderedAmount,
       builder: (column) => ColumnFilters(column));
 
   ColumnFilters<double> get changeAmount => $composableBuilder(
@@ -5548,6 +5686,16 @@ class $$OrderTableTableOrderingComposer
       column: $table.customerUuid,
       builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get tenantId => $composableBuilder(
+      column: $table.tenantId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get status => $composableBuilder(
+      column: $table.status, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get paymentStatus => $composableBuilder(
+      column: $table.paymentStatus,
+      builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<DateTime> get transactionDate => $composableBuilder(
       column: $table.transactionDate,
       builder: (column) => ColumnOrderings(column));
@@ -5569,8 +5717,8 @@ class $$OrderTableTableOrderingComposer
       column: $table.paymentMethod,
       builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<double> get amountTendered => $composableBuilder(
-      column: $table.amountTendered,
+  ColumnOrderings<double> get tenderedAmount => $composableBuilder(
+      column: $table.tenderedAmount,
       builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<double> get changeAmount => $composableBuilder(
@@ -5609,6 +5757,15 @@ class $$OrderTableTableAnnotationComposer
   GeneratedColumn<String> get customerUuid => $composableBuilder(
       column: $table.customerUuid, builder: (column) => column);
 
+  GeneratedColumn<String> get tenantId =>
+      $composableBuilder(column: $table.tenantId, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get paymentStatus => $composableBuilder(
+      column: $table.paymentStatus, builder: (column) => column);
+
   GeneratedColumn<DateTime> get transactionDate => $composableBuilder(
       column: $table.transactionDate, builder: (column) => column);
 
@@ -5627,8 +5784,8 @@ class $$OrderTableTableAnnotationComposer
   GeneratedColumn<String> get paymentMethod => $composableBuilder(
       column: $table.paymentMethod, builder: (column) => column);
 
-  GeneratedColumn<double> get amountTendered => $composableBuilder(
-      column: $table.amountTendered, builder: (column) => column);
+  GeneratedColumn<double> get tenderedAmount => $composableBuilder(
+      column: $table.tenderedAmount, builder: (column) => column);
 
   GeneratedColumn<double> get changeAmount => $composableBuilder(
       column: $table.changeAmount, builder: (column) => column);
@@ -5689,14 +5846,17 @@ class $$OrderTableTableTableManager extends RootTableManager<
             Value<String> orderNumber = const Value.absent(),
             Value<String?> shiftUuid = const Value.absent(),
             Value<String?> customerUuid = const Value.absent(),
+            Value<String?> tenantId = const Value.absent(),
+            Value<String> status = const Value.absent(),
+            Value<String> paymentStatus = const Value.absent(),
             Value<DateTime> transactionDate = const Value.absent(),
             Value<double> subtotal = const Value.absent(),
             Value<double> discountTotal = const Value.absent(),
             Value<double> taxTotal = const Value.absent(),
             Value<double> grandTotal = const Value.absent(),
             Value<String> paymentMethod = const Value.absent(),
-            Value<double> amountTendered = const Value.absent(),
-            Value<double> changeAmount = const Value.absent(),
+            Value<double?> tenderedAmount = const Value.absent(),
+            Value<double?> changeAmount = const Value.absent(),
             Value<bool> isSynced = const Value.absent(),
             Value<int> syncAttempts = const Value.absent(),
           }) =>
@@ -5706,13 +5866,16 @@ class $$OrderTableTableTableManager extends RootTableManager<
             orderNumber: orderNumber,
             shiftUuid: shiftUuid,
             customerUuid: customerUuid,
+            tenantId: tenantId,
+            status: status,
+            paymentStatus: paymentStatus,
             transactionDate: transactionDate,
             subtotal: subtotal,
             discountTotal: discountTotal,
             taxTotal: taxTotal,
             grandTotal: grandTotal,
             paymentMethod: paymentMethod,
-            amountTendered: amountTendered,
+            tenderedAmount: tenderedAmount,
             changeAmount: changeAmount,
             isSynced: isSynced,
             syncAttempts: syncAttempts,
@@ -5723,14 +5886,17 @@ class $$OrderTableTableTableManager extends RootTableManager<
             required String orderNumber,
             Value<String?> shiftUuid = const Value.absent(),
             Value<String?> customerUuid = const Value.absent(),
+            Value<String?> tenantId = const Value.absent(),
+            Value<String> status = const Value.absent(),
+            Value<String> paymentStatus = const Value.absent(),
             required DateTime transactionDate,
             required double subtotal,
             required double discountTotal,
             required double taxTotal,
             required double grandTotal,
             required String paymentMethod,
-            required double amountTendered,
-            required double changeAmount,
+            Value<double?> tenderedAmount = const Value.absent(),
+            Value<double?> changeAmount = const Value.absent(),
             Value<bool> isSynced = const Value.absent(),
             Value<int> syncAttempts = const Value.absent(),
           }) =>
@@ -5740,13 +5906,16 @@ class $$OrderTableTableTableManager extends RootTableManager<
             orderNumber: orderNumber,
             shiftUuid: shiftUuid,
             customerUuid: customerUuid,
+            tenantId: tenantId,
+            status: status,
+            paymentStatus: paymentStatus,
             transactionDate: transactionDate,
             subtotal: subtotal,
             discountTotal: discountTotal,
             taxTotal: taxTotal,
             grandTotal: grandTotal,
             paymentMethod: paymentMethod,
-            amountTendered: amountTendered,
+            tenderedAmount: tenderedAmount,
             changeAmount: changeAmount,
             isSynced: isSynced,
             syncAttempts: syncAttempts,

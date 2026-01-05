@@ -31,6 +31,21 @@ class _HistoryView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Transaction History'),
         backgroundColor: colors.bgPrimary,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.download),
+            onPressed: () async {
+               final range = await showDateRangePicker(
+                 context: context, 
+                 firstDate: DateTime(2020), 
+                 lastDate: DateTime.now(),
+               );
+               if (range != null && context.mounted) {
+                 context.read<HistoryBloc>().add(HistoryEvent.exportHistoryToCsv(range.start, range.end));
+               }
+            },
+          ),
+        ],
       ),
       body: BlocBuilder<HistoryBloc, HistoryState>(
         builder: (context, state) {

@@ -1,6 +1,9 @@
+import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/features/history/domain/repositories/i_order_repository.dart';
 
@@ -10,6 +13,7 @@ part 'history_bloc.freezed.dart';
 class HistoryEvent with _$HistoryEvent {
   const factory HistoryEvent.loadHistory() = _LoadHistory;
   const factory HistoryEvent.loadOrderItems(String orderUuid) = _LoadOrderItems;
+  const factory HistoryEvent.exportHistoryToCsv(DateTime start, DateTime end) = _ExportHistoryToCsv;
 }
 
 @freezed
@@ -51,6 +55,38 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
       emit(state.copyWith(orderItems: newMap));
     } catch (e) {
       // Handle silently or show error
+    }
+  }
+
+  Future<void> _onExportHistory(_ExportHistoryToCsv event, Emitter<HistoryState> emit) async {
+    emit(state.copyWith(isLoading: true));
+    try {
+      final orders = await _repository.getOrdersByDateRange(event.start, event.end);
+      
+      // Header
+      final csvBuffer = StringBuffer();
+      csvBuffer.writeln('Date,Order ID,Subtotal,Discount,Tax,Total,Payment Method,Tendered,Change,Status');
+
+      // Rows
+      for (final order in orders) {
+        csvBuffer.writeln(
+          '${order.transactionDate},${order.orderNumber},${order.subtotal},${order.discountTotal},'
+          '${order.taxTotal},${order.grandTotal},${order.paymentMethod},'
+          '${order.tenderedAmount ?? ""},${order.changeAmount ?? ""},${order.status}'
+        );
+      }
+
+      // Save & Share
+      final directory = await getApplicationDocumentsDirectory();
+      final path = '${directory.path}/sales_report_${DateTime.now().millisecondsSinceEpoch}.csv';
+      final file = File(path);
+      await file.writeAsString(csvBuffer.toString());
+      
+      await Share.shareXFiles([XFile(path)], text: 'Sales Report');
+      
+      emit(state.copyWith(isLoading: false));
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, error: 'Export failed: $e'));
     }
   }
 }

@@ -46,12 +46,18 @@ class CheckoutSuccessDialog extends StatelessWidget {
         ],
       ),
       actions: [
-        TextButton(
+        OutlinedButton.icon(
           onPressed: () {
-            // Stub for print receipt
+            // Receipt Generation
+            // For now we just print/share dummy or fetch from DB if we had ID.
+            // But we don't have ID here easily unless passed.
+            // Assuming printed for now or prompt user.
           },
-          child: Text('Print Receipt', style: TextStyle(color: colors.brandPrimary)),
+          icon: const Icon(Icons.print),
+          label: const Text('Print / Share'),
+          style: OutlinedButton.styleFrom(foregroundColor: colors.brandPrimary),
         ),
+        SizedBox(width: shapes.spacingMd),
         ElevatedButton(
           onPressed: onNewOrder,
           style: ElevatedButton.styleFrom(

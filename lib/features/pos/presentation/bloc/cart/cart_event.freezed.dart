@@ -24,7 +24,9 @@ mixin _$CartEvent {
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
-    required TResult Function() checkoutProcessed,
+    required TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)
+        checkoutProcessed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -35,7 +37,9 @@ mixin _$CartEvent {
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
-    TResult? Function()? checkoutProcessed,
+    TResult? Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -46,7 +50,9 @@ mixin _$CartEvent {
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
-    TResult Function()? checkoutProcessed,
+    TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -180,7 +186,9 @@ class _$AddProductImpl implements _AddProduct {
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
-    required TResult Function() checkoutProcessed,
+    required TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)
+        checkoutProcessed,
   }) {
     return addProduct(product);
   }
@@ -194,7 +202,9 @@ class _$AddProductImpl implements _AddProduct {
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
-    TResult? Function()? checkoutProcessed,
+    TResult? Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
   }) {
     return addProduct?.call(product);
   }
@@ -208,7 +218,9 @@ class _$AddProductImpl implements _AddProduct {
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
-    TResult Function()? checkoutProcessed,
+    TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
     required TResult orElse(),
   }) {
     if (addProduct != null) {
@@ -361,7 +373,9 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
-    required TResult Function() checkoutProcessed,
+    required TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)
+        checkoutProcessed,
   }) {
     return updateQuantity(productUuid, quantity);
   }
@@ -375,7 +389,9 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
-    TResult? Function()? checkoutProcessed,
+    TResult? Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
   }) {
     return updateQuantity?.call(productUuid, quantity);
   }
@@ -389,7 +405,9 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
-    TResult Function()? checkoutProcessed,
+    TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
     required TResult orElse(),
   }) {
     if (updateQuantity != null) {
@@ -535,7 +553,9 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
-    required TResult Function() checkoutProcessed,
+    required TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)
+        checkoutProcessed,
   }) {
     return removeFromCart(productUuid);
   }
@@ -549,7 +569,9 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
-    TResult? Function()? checkoutProcessed,
+    TResult? Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
   }) {
     return removeFromCart?.call(productUuid);
   }
@@ -563,7 +585,9 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
-    TResult Function()? checkoutProcessed,
+    TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
     required TResult orElse(),
   }) {
     if (removeFromCart != null) {
@@ -679,7 +703,9 @@ class _$ClearCartImpl implements _ClearCart {
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
-    required TResult Function() checkoutProcessed,
+    required TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)
+        checkoutProcessed,
   }) {
     return clearCart();
   }
@@ -693,7 +719,9 @@ class _$ClearCartImpl implements _ClearCart {
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
-    TResult? Function()? checkoutProcessed,
+    TResult? Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
   }) {
     return clearCart?.call();
   }
@@ -707,7 +735,9 @@ class _$ClearCartImpl implements _ClearCart {
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
-    TResult Function()? checkoutProcessed,
+    TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
     required TResult orElse(),
   }) {
     if (clearCart != null) {
@@ -859,7 +889,9 @@ class _$SelectCustomerImpl implements _SelectCustomer {
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
-    required TResult Function() checkoutProcessed,
+    required TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)
+        checkoutProcessed,
   }) {
     return selectCustomer(customer);
   }
@@ -873,7 +905,9 @@ class _$SelectCustomerImpl implements _SelectCustomer {
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
-    TResult? Function()? checkoutProcessed,
+    TResult? Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
   }) {
     return selectCustomer?.call(customer);
   }
@@ -887,7 +921,9 @@ class _$SelectCustomerImpl implements _SelectCustomer {
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
-    TResult Function()? checkoutProcessed,
+    TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
     required TResult orElse(),
   }) {
     if (selectCustomer != null) {
@@ -1038,7 +1074,9 @@ class _$ApplyDiscountImpl implements _ApplyDiscount {
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
-    required TResult Function() checkoutProcessed,
+    required TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)
+        checkoutProcessed,
   }) {
     return applyDiscount(percent, fixed);
   }
@@ -1052,7 +1090,9 @@ class _$ApplyDiscountImpl implements _ApplyDiscount {
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
-    TResult? Function()? checkoutProcessed,
+    TResult? Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
   }) {
     return applyDiscount?.call(percent, fixed);
   }
@@ -1066,7 +1106,9 @@ class _$ApplyDiscountImpl implements _ApplyDiscount {
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
-    TResult Function()? checkoutProcessed,
+    TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
     required TResult orElse(),
   }) {
     if (applyDiscount != null) {
@@ -1141,6 +1183,9 @@ abstract class _$$CheckoutProcessedImplCopyWith<$Res> {
   factory _$$CheckoutProcessedImplCopyWith(_$CheckoutProcessedImpl value,
           $Res Function(_$CheckoutProcessedImpl) then) =
       __$$CheckoutProcessedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {String paymentMethod, double? tenderedAmount, double? changeAmount});
 }
 
 /// @nodoc
@@ -1153,26 +1198,73 @@ class __$$CheckoutProcessedImplCopyWithImpl<$Res>
 
   /// Create a copy of CartEvent
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? paymentMethod = null,
+    Object? tenderedAmount = freezed,
+    Object? changeAmount = freezed,
+  }) {
+    return _then(_$CheckoutProcessedImpl(
+      paymentMethod: null == paymentMethod
+          ? _value.paymentMethod
+          : paymentMethod // ignore: cast_nullable_to_non_nullable
+              as String,
+      tenderedAmount: freezed == tenderedAmount
+          ? _value.tenderedAmount
+          : tenderedAmount // ignore: cast_nullable_to_non_nullable
+              as double?,
+      changeAmount: freezed == changeAmount
+          ? _value.changeAmount
+          : changeAmount // ignore: cast_nullable_to_non_nullable
+              as double?,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$CheckoutProcessedImpl implements _CheckoutProcessed {
-  const _$CheckoutProcessedImpl();
+  const _$CheckoutProcessedImpl(
+      {required this.paymentMethod, this.tenderedAmount, this.changeAmount});
+
+  @override
+  final String paymentMethod;
+  @override
+  final double? tenderedAmount;
+  @override
+  final double? changeAmount;
 
   @override
   String toString() {
-    return 'CartEvent.checkoutProcessed()';
+    return 'CartEvent.checkoutProcessed(paymentMethod: $paymentMethod, tenderedAmount: $tenderedAmount, changeAmount: $changeAmount)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$CheckoutProcessedImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$CheckoutProcessedImpl &&
+            (identical(other.paymentMethod, paymentMethod) ||
+                other.paymentMethod == paymentMethod) &&
+            (identical(other.tenderedAmount, tenderedAmount) ||
+                other.tenderedAmount == tenderedAmount) &&
+            (identical(other.changeAmount, changeAmount) ||
+                other.changeAmount == changeAmount));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      Object.hash(runtimeType, paymentMethod, tenderedAmount, changeAmount);
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CheckoutProcessedImplCopyWith<_$CheckoutProcessedImpl> get copyWith =>
+      __$$CheckoutProcessedImplCopyWithImpl<_$CheckoutProcessedImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -1183,9 +1275,11 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
-    required TResult Function() checkoutProcessed,
+    required TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)
+        checkoutProcessed,
   }) {
-    return checkoutProcessed();
+    return checkoutProcessed(paymentMethod, tenderedAmount, changeAmount);
   }
 
   @override
@@ -1197,9 +1291,11 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
-    TResult? Function()? checkoutProcessed,
+    TResult? Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
   }) {
-    return checkoutProcessed?.call();
+    return checkoutProcessed?.call(paymentMethod, tenderedAmount, changeAmount);
   }
 
   @override
@@ -1211,11 +1307,13 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
-    TResult Function()? checkoutProcessed,
+    TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
     required TResult orElse(),
   }) {
     if (checkoutProcessed != null) {
-      return checkoutProcessed();
+      return checkoutProcessed(paymentMethod, tenderedAmount, changeAmount);
     }
     return orElse();
   }
@@ -1268,5 +1366,18 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
 }
 
 abstract class _CheckoutProcessed implements CartEvent {
-  const factory _CheckoutProcessed() = _$CheckoutProcessedImpl;
+  const factory _CheckoutProcessed(
+      {required final String paymentMethod,
+      final double? tenderedAmount,
+      final double? changeAmount}) = _$CheckoutProcessedImpl;
+
+  String get paymentMethod;
+  double? get tenderedAmount;
+  double? get changeAmount;
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CheckoutProcessedImplCopyWith<_$CheckoutProcessedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

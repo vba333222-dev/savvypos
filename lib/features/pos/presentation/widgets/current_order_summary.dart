@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/features/customers/presentation/pages/customer_list_page.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
+import 'package:savvy_pos/features/pos/presentation/widgets/payment_methods_dialog.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
 
@@ -180,7 +181,13 @@ class CurrentOrderSummary extends StatelessWidget {
                   onPressed: state.isLoading 
                     ? null 
                     : () {
-                        context.read<CartBloc>().add(const CartEvent.checkoutProcessed());
+                         showDialog(
+                           context: context,
+                           builder: (_) => PaymentMethodsDialog(
+                             totalAmount: state.total,
+                             cartBloc: context.read<CartBloc>(),
+                           ),
+                         );
                       },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: colors.brandPrimary,

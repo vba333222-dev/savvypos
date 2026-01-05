@@ -20,4 +20,12 @@ class OrderRepositoryImpl implements IOrderRepository {
   Future<List<OrderItemTableData>> getOrderItems(String orderUuid) {
     return (db.select(db.orderItemTable)..where((t) => t.orderUuid.equals(orderUuid))).get();
   }
+
+  @override
+  Future<List<OrderTableData>> getOrdersByDateRange(DateTime start, DateTime end) {
+    return (db.select(db.orderTable)
+      ..where((tbl) => tbl.transactionDate.isBetween(start, end))
+      ..orderBy([(tbl) => OrderingTerm.desc(tbl.transactionDate)]))
+      .get();
+  }
 }

@@ -47,25 +47,30 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       await db.transaction(() async {
         final orderUuid = _uuid.v4();
         final now = DateTime.now();
+        final orderNumber = 'ORD-${now.millisecondsSinceEpoch}';
 
         // 1. Create Order
         await db.into(db.orderTable).insert(OrderTableCompanion.insert(
           uuid: orderUuid,
-          orderNumber: 'ORD-${now.millisecondsSinceEpoch}', // Simple generation
-          tenantId: 'default-tenant', 
-          status: 'COMPLETED',
-          paymentStatus: 'PAID',
+          orderNumber: orderNumber,
+          tenantId: const Value('default-tenant'), 
+          status: const Value('COMPLETED'),
+          paymentStatus: const Value('PAID'),
           subTotal: state.subtotal,
           taxTotal: state.tax,
           discountTotal: state.discount,
           grandTotal: state.total,
-          customerUuid: Value(state.customer?.uuid), // Link Customer
+          customerUuid: Value(state.customer?.uuid),
+          
+          paymentMethod: event.paymentMethod,
+          tenderedAmount: Value(event.tenderedAmount),
+          changeAmount: Value(event.changeAmount),
+          
           createdAt: now,
           updatedAt: now,
           isSynced: const Value(false),
         ));
 
-        // ... (Item insertion same as before) ...
         // 2. Create Order Items & Update Inventory
         for (final item in state.items) {
            await db.into(db.orderItemTable).insert(OrderItemTableCompanion.insert(
@@ -94,6 +99,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         final payload = {
           'orderUuid': orderUuid,
           'customerUuid': state.customer?.uuid,
+          'paymentMethod': event.paymentMethod,
           'items': state.items.map((e) => {
             'productUuid': e.product.uuid, 
             'quantity': e.quantity
@@ -112,7 +118,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       });
 
       // 4. Success & Cleanup
-      emit(state.copyWith(isLoading: false, isSuccess: true));
+      emit(state.copyWith(isLoading: false, isSuccess: true, lastOrderNumber: orderNumber));
       add(const CartEvent.clearCart());
 
     } catch (e) {

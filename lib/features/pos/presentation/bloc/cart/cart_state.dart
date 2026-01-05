@@ -27,6 +27,9 @@ class CartState with _$CartState {
     Customer? customer,
     @Default(0.0) double discountPercent, // e.g. 10.0 for 10%
     @Default(0.0) double discountFixed,   // e.g. 5000 for Rp 5.000
+    
+    String? lastOrderNumber,
+
     @Default(false) bool isLoading,
     @Default(false) bool isSuccess,
     String? error,

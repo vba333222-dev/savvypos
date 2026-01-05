@@ -15,5 +15,9 @@ class CartEvent with _$CartEvent {
   const factory CartEvent.selectCustomer(Customer? customer) = _SelectCustomer;
   const factory CartEvent.applyDiscount({double? percent, double? fixed}) = _ApplyDiscount;
   
-  const factory CartEvent.checkoutProcessed() = _CheckoutProcessed;
+  const factory CartEvent.checkoutProcessed({
+    required String paymentMethod,
+    double? tenderedAmount,
+    double? changeAmount,
+  }) = _CheckoutProcessed;
 }

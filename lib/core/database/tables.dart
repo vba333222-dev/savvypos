@@ -76,8 +76,11 @@ class OrderTable extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get uuid => text().unique()();
   TextColumn get orderNumber => text()();
-  TextColumn get shiftUuid => text().nullable()(); // Link to ShiftSession
-  TextColumn get customerUuid => text().nullable()(); // Link to Customer
+  TextColumn get shiftUuid => text().nullable()(); 
+  TextColumn get customerUuid => text().nullable()();
+  TextColumn get tenantId => text().nullable()(); // Added missing
+  TextColumn get status => text().withDefault(const Constant('COMPLETED'))(); // Added missing
+  TextColumn get paymentStatus => text().withDefault(const Constant('PAID'))(); // Added missing
   DateTimeColumn get transactionDate => dateTime()();
   
   // Financials
@@ -86,10 +89,10 @@ class OrderTable extends Table {
   RealColumn get taxTotal => real()();
   RealColumn get grandTotal => real()();
   
-  // Payment (Stored as String)
-  TextColumn get paymentMethod => text()(); // 'cash', 'qris', etc.
-  RealColumn get amountTendered => real()();
-  RealColumn get changeAmount => real()();
+  // Payment
+  TextColumn get paymentMethod => text()(); // 'CASH', 'QRIS', 'CARD'
+  RealColumn get tenderedAmount => real().nullable()(); // Renamed & Nullable
+  RealColumn get changeAmount => real().nullable()(); // Nullable
   
   // Sync
   BoolColumn get isSynced => boolean().withDefault(const Constant(false))();

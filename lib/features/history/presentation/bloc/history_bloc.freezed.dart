@@ -20,18 +20,21 @@ mixin _$HistoryEvent {
   TResult when<TResult extends Object?>({
     required TResult Function() loadHistory,
     required TResult Function(String orderUuid) loadOrderItems,
+    required TResult Function(DateTime start, DateTime end) exportHistoryToCsv,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadHistory,
     TResult? Function(String orderUuid)? loadOrderItems,
+    TResult? Function(DateTime start, DateTime end)? exportHistoryToCsv,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadHistory,
     TResult Function(String orderUuid)? loadOrderItems,
+    TResult Function(DateTime start, DateTime end)? exportHistoryToCsv,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -39,18 +42,21 @@ mixin _$HistoryEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(_LoadHistory value) loadHistory,
     required TResult Function(_LoadOrderItems value) loadOrderItems,
+    required TResult Function(_ExportHistoryToCsv value) exportHistoryToCsv,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_LoadHistory value)? loadHistory,
     TResult? Function(_LoadOrderItems value)? loadOrderItems,
+    TResult? Function(_ExportHistoryToCsv value)? exportHistoryToCsv,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoadHistory value)? loadHistory,
     TResult Function(_LoadOrderItems value)? loadOrderItems,
+    TResult Function(_ExportHistoryToCsv value)? exportHistoryToCsv,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -120,6 +126,7 @@ class _$LoadHistoryImpl implements _LoadHistory {
   TResult when<TResult extends Object?>({
     required TResult Function() loadHistory,
     required TResult Function(String orderUuid) loadOrderItems,
+    required TResult Function(DateTime start, DateTime end) exportHistoryToCsv,
   }) {
     return loadHistory();
   }
@@ -129,6 +136,7 @@ class _$LoadHistoryImpl implements _LoadHistory {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadHistory,
     TResult? Function(String orderUuid)? loadOrderItems,
+    TResult? Function(DateTime start, DateTime end)? exportHistoryToCsv,
   }) {
     return loadHistory?.call();
   }
@@ -138,6 +146,7 @@ class _$LoadHistoryImpl implements _LoadHistory {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadHistory,
     TResult Function(String orderUuid)? loadOrderItems,
+    TResult Function(DateTime start, DateTime end)? exportHistoryToCsv,
     required TResult orElse(),
   }) {
     if (loadHistory != null) {
@@ -151,6 +160,7 @@ class _$LoadHistoryImpl implements _LoadHistory {
   TResult map<TResult extends Object?>({
     required TResult Function(_LoadHistory value) loadHistory,
     required TResult Function(_LoadOrderItems value) loadOrderItems,
+    required TResult Function(_ExportHistoryToCsv value) exportHistoryToCsv,
   }) {
     return loadHistory(this);
   }
@@ -160,6 +170,7 @@ class _$LoadHistoryImpl implements _LoadHistory {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_LoadHistory value)? loadHistory,
     TResult? Function(_LoadOrderItems value)? loadOrderItems,
+    TResult? Function(_ExportHistoryToCsv value)? exportHistoryToCsv,
   }) {
     return loadHistory?.call(this);
   }
@@ -169,6 +180,7 @@ class _$LoadHistoryImpl implements _LoadHistory {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoadHistory value)? loadHistory,
     TResult Function(_LoadOrderItems value)? loadOrderItems,
+    TResult Function(_ExportHistoryToCsv value)? exportHistoryToCsv,
     required TResult orElse(),
   }) {
     if (loadHistory != null) {
@@ -254,6 +266,7 @@ class _$LoadOrderItemsImpl implements _LoadOrderItems {
   TResult when<TResult extends Object?>({
     required TResult Function() loadHistory,
     required TResult Function(String orderUuid) loadOrderItems,
+    required TResult Function(DateTime start, DateTime end) exportHistoryToCsv,
   }) {
     return loadOrderItems(orderUuid);
   }
@@ -263,6 +276,7 @@ class _$LoadOrderItemsImpl implements _LoadOrderItems {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadHistory,
     TResult? Function(String orderUuid)? loadOrderItems,
+    TResult? Function(DateTime start, DateTime end)? exportHistoryToCsv,
   }) {
     return loadOrderItems?.call(orderUuid);
   }
@@ -272,6 +286,7 @@ class _$LoadOrderItemsImpl implements _LoadOrderItems {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadHistory,
     TResult Function(String orderUuid)? loadOrderItems,
+    TResult Function(DateTime start, DateTime end)? exportHistoryToCsv,
     required TResult orElse(),
   }) {
     if (loadOrderItems != null) {
@@ -285,6 +300,7 @@ class _$LoadOrderItemsImpl implements _LoadOrderItems {
   TResult map<TResult extends Object?>({
     required TResult Function(_LoadHistory value) loadHistory,
     required TResult Function(_LoadOrderItems value) loadOrderItems,
+    required TResult Function(_ExportHistoryToCsv value) exportHistoryToCsv,
   }) {
     return loadOrderItems(this);
   }
@@ -294,6 +310,7 @@ class _$LoadOrderItemsImpl implements _LoadOrderItems {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_LoadHistory value)? loadHistory,
     TResult? Function(_LoadOrderItems value)? loadOrderItems,
+    TResult? Function(_ExportHistoryToCsv value)? exportHistoryToCsv,
   }) {
     return loadOrderItems?.call(this);
   }
@@ -303,6 +320,7 @@ class _$LoadOrderItemsImpl implements _LoadOrderItems {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoadHistory value)? loadHistory,
     TResult Function(_LoadOrderItems value)? loadOrderItems,
+    TResult Function(_ExportHistoryToCsv value)? exportHistoryToCsv,
     required TResult orElse(),
   }) {
     if (loadOrderItems != null) {
@@ -321,6 +339,163 @@ abstract class _LoadOrderItems implements HistoryEvent {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LoadOrderItemsImplCopyWith<_$LoadOrderItemsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ExportHistoryToCsvImplCopyWith<$Res> {
+  factory _$$ExportHistoryToCsvImplCopyWith(_$ExportHistoryToCsvImpl value,
+          $Res Function(_$ExportHistoryToCsvImpl) then) =
+      __$$ExportHistoryToCsvImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({DateTime start, DateTime end});
+}
+
+/// @nodoc
+class __$$ExportHistoryToCsvImplCopyWithImpl<$Res>
+    extends _$HistoryEventCopyWithImpl<$Res, _$ExportHistoryToCsvImpl>
+    implements _$$ExportHistoryToCsvImplCopyWith<$Res> {
+  __$$ExportHistoryToCsvImplCopyWithImpl(_$ExportHistoryToCsvImpl _value,
+      $Res Function(_$ExportHistoryToCsvImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of HistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? start = null,
+    Object? end = null,
+  }) {
+    return _then(_$ExportHistoryToCsvImpl(
+      null == start
+          ? _value.start
+          : start // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      null == end
+          ? _value.end
+          : end // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ExportHistoryToCsvImpl implements _ExportHistoryToCsv {
+  const _$ExportHistoryToCsvImpl(this.start, this.end);
+
+  @override
+  final DateTime start;
+  @override
+  final DateTime end;
+
+  @override
+  String toString() {
+    return 'HistoryEvent.exportHistoryToCsv(start: $start, end: $end)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ExportHistoryToCsvImpl &&
+            (identical(other.start, start) || other.start == start) &&
+            (identical(other.end, end) || other.end == end));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, start, end);
+
+  /// Create a copy of HistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ExportHistoryToCsvImplCopyWith<_$ExportHistoryToCsvImpl> get copyWith =>
+      __$$ExportHistoryToCsvImplCopyWithImpl<_$ExportHistoryToCsvImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loadHistory,
+    required TResult Function(String orderUuid) loadOrderItems,
+    required TResult Function(DateTime start, DateTime end) exportHistoryToCsv,
+  }) {
+    return exportHistoryToCsv(start, end);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loadHistory,
+    TResult? Function(String orderUuid)? loadOrderItems,
+    TResult? Function(DateTime start, DateTime end)? exportHistoryToCsv,
+  }) {
+    return exportHistoryToCsv?.call(start, end);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadHistory,
+    TResult Function(String orderUuid)? loadOrderItems,
+    TResult Function(DateTime start, DateTime end)? exportHistoryToCsv,
+    required TResult orElse(),
+  }) {
+    if (exportHistoryToCsv != null) {
+      return exportHistoryToCsv(start, end);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoadHistory value) loadHistory,
+    required TResult Function(_LoadOrderItems value) loadOrderItems,
+    required TResult Function(_ExportHistoryToCsv value) exportHistoryToCsv,
+  }) {
+    return exportHistoryToCsv(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadHistory value)? loadHistory,
+    TResult? Function(_LoadOrderItems value)? loadOrderItems,
+    TResult? Function(_ExportHistoryToCsv value)? exportHistoryToCsv,
+  }) {
+    return exportHistoryToCsv?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadHistory value)? loadHistory,
+    TResult Function(_LoadOrderItems value)? loadOrderItems,
+    TResult Function(_ExportHistoryToCsv value)? exportHistoryToCsv,
+    required TResult orElse(),
+  }) {
+    if (exportHistoryToCsv != null) {
+      return exportHistoryToCsv(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ExportHistoryToCsv implements HistoryEvent {
+  const factory _ExportHistoryToCsv(final DateTime start, final DateTime end) =
+      _$ExportHistoryToCsvImpl;
+
+  DateTime get start;
+  DateTime get end;
+
+  /// Create a copy of HistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ExportHistoryToCsvImplCopyWith<_$ExportHistoryToCsvImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

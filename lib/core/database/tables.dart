@@ -77,6 +77,9 @@ class ProductTable extends Table {
   TextColumn get colorHex => text().nullable()();
   TextColumn get imageUrl => text().nullable()();
   
+  // Printer Routing
+  TextColumn get printerCategory => text().withDefault(const Constant('OTHER'))(); // 'FOOD', 'BEVERAGE', 'OTHER'
+  
   // Sync
   DateTimeColumn get updatedAt => dateTime()();
   BoolColumn get isSynced => boolean().withDefault(const Constant(false))();
@@ -144,6 +147,7 @@ class OrderItemTable extends Table {
   TextColumn get name => text()();
   RealColumn get price => real()();
   RealColumn get quantity => real()();
+  RealColumn get paidQty => real().withDefault(const Constant(0))(); // For Split Bill
   TextColumn get note => text().nullable()();
   RealColumn get total => real()(); // price * quantity - discount
 }

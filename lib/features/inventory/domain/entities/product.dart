@@ -20,9 +20,13 @@ class Product extends Equatable {
     this.colorHex,
     required this.categoryId,
     required this.trackStock,
+    required this.trackStock,
     this.isService = false,
+    this.printerCategory = 'OTHER',
   });
+  
+  final String printerCategory; // 'FOOD', 'BEVERAGE', 'OTHER'
 
   @override
-  List<Object?> get props => [uuid, name, sku, price, imageUrl, colorHex, categoryId, trackStock, isService];
+  List<Object?> get props => [uuid, name, sku, price, imageUrl, colorHex, categoryId, trackStock, isService, printerCategory];
 }

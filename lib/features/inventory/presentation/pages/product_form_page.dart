@@ -28,6 +28,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
   
   bool _trackStock = true;
   bool _isService = false;
+  String _printerCategory = 'OTHER';
   File? _imageFile;
   
   @override
@@ -49,6 +50,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
     
     _trackStock = p?.trackStock ?? true;
     _isService = p?.isService ?? false;
+    _printerCategory = p?.printerCategory ?? 'OTHER';
     if (p?.imageUrl != null) {
       _imageFile = File(p!.imageUrl!);
     }
@@ -193,10 +195,22 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       value: _trackStock,
                       onChanged: (v) => setState(() => _trackStock = v),
                     ),
+                    ),
                      SwitchListTile(
                       title: const Text('Is Service'),
                       value: _isService,
                       onChanged: (v) => setState(() => _isService = v),
+                    ),
+                    SizedBox(height: shapes.spacingMd),
+                    DropdownButtonFormField<String>(
+                      value: _printerCategory,
+                      decoration: const InputDecoration(labelText: 'Printer Category', border: OutlineInputBorder()),
+                      items: const [
+                        DropdownMenuItem(value: 'OTHER', child: Text('Other (Main)')),
+                        DropdownMenuItem(value: 'FOOD', child: Text('Food (Kitchen)')),
+                        DropdownMenuItem(value: 'BEVERAGE', child: Text('Beverage (Bar)')),
+                      ],
+                      onChanged: (v) => setState(() => _printerCategory = v!),
                     ),
                     
                     SizedBox(height: shapes.spacingXl),
@@ -216,6 +230,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                               categoryId: 'default',
                               trackStock: _trackStock,
                               isService: _isService,
+                              printerCategory: _printerCategory,
                             );
                             
                             if (widget.product == null) {

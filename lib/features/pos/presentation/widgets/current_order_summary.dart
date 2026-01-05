@@ -137,6 +137,41 @@ class CurrentOrderSummary extends StatelessWidget {
               _SummaryRow(label: 'Tax (10%)', value: '\$${state.tax.toStringAsFixed(2)}'),
               SizedBox(height: shapes.spacingMd),
               
+              // F&B Actions (Split Bill / Park)
+              // Only if there is an active table or business mode is F&B
+              // We'll rely on BusinessMode global for visibility or state.activeTableUuid
+              if (state.activeTableUuid != null || state.activeOrderUuid != null) ...[
+                 Row(
+                   children: [
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                             Navigator.push(context, MaterialPageRoute(builder: (_) => const SplitBillPage()));
+                          },
+                          icon: const Icon(Icons.call_split, size: 16),
+                          label: const Text('Split Bill'),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      // Park Button (If not already parked/retrieved)
+                      if (state.activeOrderUuid == null)
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: () {
+                               // Assuming we know the table from somewhere or prompt for it
+                               // For now, if we don't have activeTable, we can't Park easily without selecting it.
+                               // But requirement said "ParkOrder(tableUuid)".
+                               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Select Table from Floor Plan to Park')));
+                            },
+                            icon: const Icon(Icons.save_alt, size: 16),
+                            label: const Text('Park'),
+                          ),
+                        ),
+                   ],
+                 ),
+                 SizedBox(height: shapes.spacingMd),
+              ],
+
               // Discount Button Area
               Row(
                 children: [

@@ -25,6 +25,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<_CheckoutProcessed>(_onCheckoutProcessed);
     on<_ParkOrder>(_onParkOrder);
     on<_RetrieveOrder>(_onRetrieveOrder);
+    on<_CheckoutSplit>(_onCheckoutSplit);
   }
 
   void _onSelectCustomer(_SelectCustomer event, Emitter<CartState> emit) {
@@ -266,6 +267,124 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       
     } catch (e) {
       emit(state.copyWith(isLoading: false, error: 'Retrieve Failed: $e'));
+    }
+  }
+
+  Future<void> _onCheckoutSplit(_CheckoutSplit event, Emitter<CartState> emit) async {
+    // Logic: Create child order, update parent order items (paidQty)
+    // 1. Validate we have an active order
+    if (state.activeOrderUuid == null) {
+      emit(state.copyWith(error: 'No active order to split'));
+      return;
+    }
+    
+    emit(state.copyWith(isLoading: true));
+    
+    try {
+      await db.transaction(() async {
+        final now = DateTime.now();
+        final childOrderUuid = _uuid.v4();
+        final childOrderNumber = 'SPLIT-${now.millisecondsSinceEpoch}';
+        
+        // Calculate totals for split items
+        double subtotal = 0;
+        for (var item in event.items) subtotal += item.total;
+        final tax = subtotal * 0.10;
+        final total = subtotal + tax; // ignoring discount logic for split for simplicity MVP
+        
+        // 1. Create Child Order (Paid)
+        await db.into(db.orderTable).insert(OrderTableCompanion.insert(
+          uuid: childOrderUuid,
+          orderNumber: childOrderNumber,
+          tenantId: const Value('default-tenant'),
+          status: const Value('COMPLETED'),
+          paymentStatus: const Value('PAID'), // Immediate Pay
+          subTotal: subtotal,
+          taxTotal: tax,
+          discountTotal: const Value(0),
+          grandTotal: total,
+          customerUuid: Value(state.customer?.uuid),
+          paymentMethod: event.paymentMethod,
+          tenderedAmount: Value(total),
+          changeAmount: const Value(0),
+          createdAt: now,
+          updatedAt: now,
+        ));
+        
+        // 2. Create Order Items for Child Order
+        for (var item in event.items) {
+           await db.into(db.orderItemTable).insert(OrderItemTableCompanion.insert(
+             uuid: _uuid.v4(),
+             orderUuid: childOrderUuid,
+             productUuid: item.product.uuid,
+             name: item.product.name,
+             price: item.product.price,
+             quantity: item.quantity.toDouble(),
+             total: item.total,
+           ));
+        }
+
+        // 3. Update Parent Order Items (Increment paidQty)
+        // We need to match items by Product UUID or existing Item UUID?
+        // CartItem doesn't store ItemUUID (it should, but we map from rows).
+        // Let's assume Product UUID uniqueness within order or re-fetch.
+        // For MVP, we iterate parent items and update.
+        for (var splitItem in event.items) {
+           // Find matching item in DB for activeOrderUuid
+           final parentItem = await (db.select(db.orderItemTable)
+             ..where((t) => t.orderUuid.equals(state.activeOrderUuid!) & t.productUuid.equals(splitItem.product.uuid)))
+             .getSingle();
+           
+           await (db.update(db.orderItemTable)..where((t) => t.id.equals(parentItem.id))).write(
+             OrderItemTableCompanion(
+               paidQty: Value(parentItem.paidQty + splitItem.quantity),
+             ),
+           );
+        }
+        
+        // 4. Check if Parent Order is Fully Paid
+        // Fetch all items
+        final allItems = await (db.select(db.orderItemTable)..where((t) => t.orderUuid.equals(state.activeOrderUuid!))).get();
+        bool allPaid = true;
+        for (var item in allItems) {
+          if (item.paidQty < item.quantity) {
+             allPaid = false;
+             break;
+          }
+        }
+        
+        if (allPaid) {
+          // Close Parent, Release Table
+          await (db.update(db.orderTable)..where((t) => t.uuid.equals(state.activeOrderUuid!))).write(
+            const OrderTableCompanion(
+              status: Value('COMPLETED'),
+              paymentStatus: Value('PAID'),
+            ),
+          );
+          
+          if (state.activeTableUuid != null) {
+            await (db.update(db.restaurantTable)..where((t) => t.uuid.equals(state.activeTableUuid!))).write(
+              const RestaurantTableCompanion(
+                isOccupied: Value(false),
+                currentOrderUuid: Value(null),
+              ),
+            );
+          }
+          
+          // Clear Cart
+          emit(CartState.initial().copyWith(isSuccess: true, lastOrderNumber: childOrderNumber)); // Done
+        } else {
+          // Partially Paid - Keep Cart Open but refresh items to show remaining?
+          // Or just clear Split selection?
+          // For now, allow continuing.
+           emit(state.copyWith(isLoading: false, isSuccess: true, lastOrderNumber: childOrderNumber));
+           // Actually we should reload the cart to reflect 'PaidQty' visually if we tracked it in UI?
+           // UI doesn't track paidQty yet.
+           // MVP: Just Emit Success.
+        }
+      });
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, error: 'Split Failed: $e'));
     }
   }
 

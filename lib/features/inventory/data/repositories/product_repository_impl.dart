@@ -44,6 +44,7 @@ class ProductRepositoryImpl implements IProductRepository {
       categoryId: Value(product.categoryId),
       trackStock: Value(product.trackStock),
       isService: Value(product.isService),
+      printerCategory: Value(product.printerCategory),
       updatedAt: Value(DateTime.now()),
       isSynced: const Value(false),
     );
@@ -73,7 +74,9 @@ class ProductRepositoryImpl implements IProductRepository {
       colorHex: row.colorHex,
       categoryId: row.categoryId,
       trackStock: row.trackStock,
+      trackStock: row.trackStock,
       isService: row.isService,
+      printerCategory: row.printerCategory,
     );
   }
 }

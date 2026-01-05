@@ -186,10 +186,11 @@ mixin _$CartState {
   double get discount => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError; // CRM & Advanced
   Customer? get customer => throw _privateConstructorUsedError;
-  double get discountPercent =>
-      throw _privateConstructorUsedError; // e.g. 10.0 for 10%
-  double get discountFixed =>
-      throw _privateConstructorUsedError; // e.g. 5000 for Rp 5.000
+  double get discountPercent => throw _privateConstructorUsedError;
+  double get discountFixed => throw _privateConstructorUsedError; // Dine-In
+  String? get activeTableUuid => throw _privateConstructorUsedError;
+  String? get activeOrderUuid =>
+      throw _privateConstructorUsedError; // Only if retrieving an OPEN order
   String? get lastOrderNumber => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isSuccess => throw _privateConstructorUsedError;
@@ -216,6 +217,8 @@ abstract class $CartStateCopyWith<$Res> {
       Customer? customer,
       double discountPercent,
       double discountFixed,
+      String? activeTableUuid,
+      String? activeOrderUuid,
       String? lastOrderNumber,
       bool isLoading,
       bool isSuccess,
@@ -247,6 +250,8 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
     Object? customer = freezed,
     Object? discountPercent = null,
     Object? discountFixed = null,
+    Object? activeTableUuid = freezed,
+    Object? activeOrderUuid = freezed,
     Object? lastOrderNumber = freezed,
     Object? isLoading = null,
     Object? isSuccess = null,
@@ -285,6 +290,14 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
           ? _value.discountFixed
           : discountFixed // ignore: cast_nullable_to_non_nullable
               as double,
+      activeTableUuid: freezed == activeTableUuid
+          ? _value.activeTableUuid
+          : activeTableUuid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      activeOrderUuid: freezed == activeOrderUuid
+          ? _value.activeOrderUuid
+          : activeOrderUuid // ignore: cast_nullable_to_non_nullable
+              as String?,
       lastOrderNumber: freezed == lastOrderNumber
           ? _value.lastOrderNumber
           : lastOrderNumber // ignore: cast_nullable_to_non_nullable
@@ -336,6 +349,8 @@ abstract class _$$CartStateImplCopyWith<$Res>
       Customer? customer,
       double discountPercent,
       double discountFixed,
+      String? activeTableUuid,
+      String? activeOrderUuid,
       String? lastOrderNumber,
       bool isLoading,
       bool isSuccess,
@@ -366,6 +381,8 @@ class __$$CartStateImplCopyWithImpl<$Res>
     Object? customer = freezed,
     Object? discountPercent = null,
     Object? discountFixed = null,
+    Object? activeTableUuid = freezed,
+    Object? activeOrderUuid = freezed,
     Object? lastOrderNumber = freezed,
     Object? isLoading = null,
     Object? isSuccess = null,
@@ -404,6 +421,14 @@ class __$$CartStateImplCopyWithImpl<$Res>
           ? _value.discountFixed
           : discountFixed // ignore: cast_nullable_to_non_nullable
               as double,
+      activeTableUuid: freezed == activeTableUuid
+          ? _value.activeTableUuid
+          : activeTableUuid // ignore: cast_nullable_to_non_nullable
+              as String?,
+      activeOrderUuid: freezed == activeOrderUuid
+          ? _value.activeOrderUuid
+          : activeOrderUuid // ignore: cast_nullable_to_non_nullable
+              as String?,
       lastOrderNumber: freezed == lastOrderNumber
           ? _value.lastOrderNumber
           : lastOrderNumber // ignore: cast_nullable_to_non_nullable
@@ -436,6 +461,8 @@ class _$CartStateImpl implements _CartState {
       this.customer,
       this.discountPercent = 0.0,
       this.discountFixed = 0.0,
+      this.activeTableUuid,
+      this.activeOrderUuid,
       this.lastOrderNumber,
       this.isLoading = false,
       this.isSuccess = false,
@@ -469,11 +496,15 @@ class _$CartStateImpl implements _CartState {
   @override
   @JsonKey()
   final double discountPercent;
-// e.g. 10.0 for 10%
   @override
   @JsonKey()
   final double discountFixed;
-// e.g. 5000 for Rp 5.000
+// Dine-In
+  @override
+  final String? activeTableUuid;
+  @override
+  final String? activeOrderUuid;
+// Only if retrieving an OPEN order
   @override
   final String? lastOrderNumber;
   @override
@@ -487,7 +518,7 @@ class _$CartStateImpl implements _CartState {
 
   @override
   String toString() {
-    return 'CartState(items: $items, subtotal: $subtotal, tax: $tax, discount: $discount, total: $total, customer: $customer, discountPercent: $discountPercent, discountFixed: $discountFixed, lastOrderNumber: $lastOrderNumber, isLoading: $isLoading, isSuccess: $isSuccess, error: $error)';
+    return 'CartState(items: $items, subtotal: $subtotal, tax: $tax, discount: $discount, total: $total, customer: $customer, discountPercent: $discountPercent, discountFixed: $discountFixed, activeTableUuid: $activeTableUuid, activeOrderUuid: $activeOrderUuid, lastOrderNumber: $lastOrderNumber, isLoading: $isLoading, isSuccess: $isSuccess, error: $error)';
   }
 
   @override
@@ -508,6 +539,10 @@ class _$CartStateImpl implements _CartState {
                 other.discountPercent == discountPercent) &&
             (identical(other.discountFixed, discountFixed) ||
                 other.discountFixed == discountFixed) &&
+            (identical(other.activeTableUuid, activeTableUuid) ||
+                other.activeTableUuid == activeTableUuid) &&
+            (identical(other.activeOrderUuid, activeOrderUuid) ||
+                other.activeOrderUuid == activeOrderUuid) &&
             (identical(other.lastOrderNumber, lastOrderNumber) ||
                 other.lastOrderNumber == lastOrderNumber) &&
             (identical(other.isLoading, isLoading) ||
@@ -528,6 +563,8 @@ class _$CartStateImpl implements _CartState {
       customer,
       discountPercent,
       discountFixed,
+      activeTableUuid,
+      activeOrderUuid,
       lastOrderNumber,
       isLoading,
       isSuccess,
@@ -552,6 +589,8 @@ abstract class _CartState implements CartState {
       final Customer? customer,
       final double discountPercent,
       final double discountFixed,
+      final String? activeTableUuid,
+      final String? activeOrderUuid,
       final String? lastOrderNumber,
       final bool isLoading,
       final bool isSuccess,
@@ -570,9 +609,13 @@ abstract class _CartState implements CartState {
   @override
   Customer? get customer;
   @override
-  double get discountPercent; // e.g. 10.0 for 10%
+  double get discountPercent;
   @override
-  double get discountFixed; // e.g. 5000 for Rp 5.000
+  double get discountFixed; // Dine-In
+  @override
+  String? get activeTableUuid;
+  @override
+  String? get activeOrderUuid; // Only if retrieving an OPEN order
   @override
   String? get lastOrderNumber;
   @override

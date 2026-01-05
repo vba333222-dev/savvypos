@@ -53,8 +53,10 @@ import '../../features/tables/data/repositories/table_repository_impl.dart'
     as _i392;
 import '../../features/tables/domain/repositories/i_table_repository.dart'
     as _i22;
+import '../../features/tables/presentation/bloc/table_bloc.dart' as _i424;
 import '../database/database.dart' as _i660;
 import '../hal/printer_interface.dart' as _i560;
+import '../hal/printer_router.dart' as _i430;
 import '../hal/printer_service.dart' as _i16;
 import '../utils/sound_helper.dart' as _i842;
 
@@ -91,8 +93,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i884.ICustomerRepository>(
         () => _i877.CustomerRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.factory<_i797.AuthBloc>(() => _i797.AuthBloc(gh<_i660.AppDatabase>()));
+    gh.factory<_i424.TableBloc>(
+        () => _i424.TableBloc(gh<_i22.ITableRepository>()));
     gh.factory<_i652.DashboardBloc>(
         () => _i652.DashboardBloc(gh<_i485.IDashboardRepository>()));
+    gh.lazySingleton<_i430.PrinterRouter>(
+        () => _i430.PrinterRouter(gh<_i560.IPrinterService>()));
     gh.lazySingleton<_i246.ShiftBloc>(
         () => _i246.ShiftBloc(gh<_i240.IShiftRepository>()));
     gh.factory<_i1070.HistoryBloc>(

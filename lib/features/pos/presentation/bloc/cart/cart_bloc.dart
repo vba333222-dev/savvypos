@@ -1,20 +1,24 @@
+import 'dart:convert';
 import 'package:bloc/bloc.dart';
+import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
+import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
+import 'package:uuid/uuid.dart';
 
 @injectable
 class CartBloc extends Bloc<CartEvent, CartState> {
-  // In a real app, inject a UseCase to persist/restore from DB
-  // final SaveCartUseCase saveCart;
-  // final RestoreCartUseCase restoreCart;
+  final AppDatabase db;
+  final Uuid _uuid = const Uuid();
 
-  CartBloc() : super(CartState.initial()) {
+  CartBloc(this.db) : super(CartState.initial()) {
     on<_AddProduct>(_onAddProduct);
     on<_UpdateQuantity>(_onUpdateQuantity);
     on<_RemoveFromCart>(_onRemoveFromCart);
     on<_ClearCart>(_onClearCart);
+    on<_CheckoutProcessed>(_onCheckoutProcessed);
   }
 
   void _onAddProduct(_AddProduct event, Emitter<CartState> emit) {
@@ -23,7 +27,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       List<CartItem> updatedItems;
 
       if (existingIndex >= 0) {
-        // Increment quantity
         final existingItem = state.items[existingIndex];
         final newQuantity = existingItem.quantity + 1;
         final newItem = existingItem.copyWith(
@@ -32,7 +35,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         );
         updatedItems = List.from(state.items)..[existingIndex] = newItem;
       } else {
-        // Add new item
         updatedItems = List.from(state.items)
           ..add(CartItem(
             product: event.product,
@@ -75,13 +77,91 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     emit(CartState.initial());
   }
 
+  Future<void> _onCheckoutProcessed(_CheckoutProcessed event, Emitter<CartState> emit) async {
+    if (state.items.isEmpty) return;
+    
+    emit(state.copyWith(isLoading: true, error: null));
+
+    try {
+      await db.transaction(() async {
+        final orderUuid = _uuid.v4();
+        final now = DateTime.now();
+
+        // 1. Create Order
+        await db.into(db.orderTable).insert(OrderTableCompanion.insert(
+          uuid: orderUuid,
+          orderNumber: 'ORD-${now.millisecondsSinceEpoch}', // Simple generation
+          tenantId: 'default-tenant', // Should be dynamic
+          status: 'COMPLETED',
+          paymentStatus: 'PAID',
+          subTotal: state.subtotal,
+          taxTotal: state.tax,
+          discountTotal: state.discount,
+          grandTotal: state.total,
+          createdAt: now,
+          updatedAt: now,
+          isSynced: const Value(false),
+        ));
+
+        // 2. Create Order Items & Update Inventory
+        for (final item in state.items) {
+           await db.into(db.orderItemTable).insert(OrderItemTableCompanion.insert(
+             uuid: _uuid.v4(),
+             orderUuid: orderUuid,
+             productUuid: item.product.uuid,
+             productName: item.product.name,
+             quantity: item.quantity,
+             unitPrice: item.product.price,
+             totalPrice: item.total,
+             createdAt: now,
+           ));
+
+           // Update Inventory Ledger (Deduct Stock)
+           // In a real app, this logic might be more complex (e.g., check stock first)
+           await db.into(db.inventoryLedgerTable).insert(InventoryLedgerTableCompanion.insert(
+             uuid: _uuid.v4(),
+             productUuid: item.product.uuid,
+             referenceId: orderUuid,
+             type: 'SALE',
+             quantityChange: -item.quantity, // Negative for deduction
+             snapshotCost: 0.0, // Should come from product cost
+             createdAt: now,
+           ));
+        }
+
+        // 3. Create Sync Queue Entry
+        final payload = {
+          'orderUuid': orderUuid,
+          'items': state.items.map((e) => {
+            'productUuid': e.product.uuid, 
+            'quantity': e.quantity
+          }).toList(),
+          'total': state.total,
+        };
+
+        await db.into(db.syncQueue).insert(SyncQueueCompanion.insert(
+          actionType: 'CREATE_ORDER',
+          payloadJson: jsonEncode(payload),
+          idempotencyKey: orderUuid, // Use order UUID as idempotency key
+          createdAt: now,
+        ));
+      });
+
+      // 4. Success & Cleanup
+      emit(state.copyWith(isLoading: false, isSuccess: true));
+      add(const CartEvent.clearCart());
+
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, error: 'Checkout Failed: $e'));
+    }
+  }
+
   CartState _calculateTotals(List<CartItem> items) {
     double subtotal = 0.0;
     for (var item in items) {
       subtotal += item.total;
     }
 
-    // Example tax calculation (e.g., 10%) - should come from TenantConfig
     const taxRate = 0.10;
     final tax = subtotal * taxRate;
     final total = subtotal + tax;
@@ -92,6 +172,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       tax: tax,
       total: total,
       error: null,
+      isSuccess: false, // Reset success on modification
     );
   }
 }

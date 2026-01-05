@@ -35,7 +35,6 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    gh.factory<_i177.CartBloc>(() => _i177.CartBloc());
     gh.lazySingleton<_i660.AppDatabase>(() => _i660.AppDatabase());
     gh.lazySingleton<_i695.IProductRepository>(
         () => _i777.ProductRepositoryImpl(gh<_i660.AppDatabase>()));
@@ -43,6 +42,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i16.PrinterService(),
       dispose: (i) => i.dispose(),
     );
+    gh.factory<_i177.CartBloc>(() => _i177.CartBloc(gh<_i660.AppDatabase>()));
     gh.factory<_i1053.GetProductsUseCase>(
         () => _i1053.GetProductsUseCase(gh<_i695.IProductRepository>()));
     gh.factory<_i313.ProductBloc>(

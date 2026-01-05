@@ -16,8 +16,31 @@ class CurrentOrderView extends StatelessWidget {
     final shapes = context.savvy.shapes;
     final typography = Theme.of(context).textTheme;
 
-    return Column(
-      children: [
+    return BlocListener<CartBloc, CartState>(
+      listener: (context, state) {
+        if (state.isSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('Transaction Successful!'),
+              backgroundColor: context.savvy.colors.stateSuccess,
+            ),
+          );
+          // Close Generic BottomSheet if open (Mobile)
+          if (Navigator.canPop(context)) {
+             Navigator.pop(context);
+          }
+        }
+        if (state.error != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.error!),
+              backgroundColor: context.savvy.colors.stateError,
+            ),
+          );
+        }
+      },
+      child: Column(
+        children: [
         // Header
         Padding(
           padding: EdgeInsets.all(shapes.spacingMd),
@@ -73,7 +96,8 @@ class CurrentOrderView extends StatelessWidget {
 
         // Summary & Checkout
         const CurrentOrderSummary(),
-      ],
+        ],
+      ),
     );
   }
 }

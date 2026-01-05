@@ -22,6 +22,7 @@ class CartState with _$CartState {
     @Default(0.0) double discount,
     @Default(0.0) double total,
     @Default(false) bool isLoading,
+    @Default(false) bool isSuccess,
     String? error,
   }) = _CartState;
 

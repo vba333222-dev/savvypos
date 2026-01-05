@@ -186,6 +186,7 @@ mixin _$CartState {
   double get discount => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
+  bool get isSuccess => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
   /// Create a copy of CartState
@@ -207,6 +208,7 @@ abstract class $CartStateCopyWith<$Res> {
       double discount,
       double total,
       bool isLoading,
+      bool isSuccess,
       String? error});
 }
 
@@ -231,6 +233,7 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
     Object? discount = null,
     Object? total = null,
     Object? isLoading = null,
+    Object? isSuccess = null,
     Object? error = freezed,
   }) {
     return _then(_value.copyWith(
@@ -258,6 +261,10 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      isSuccess: null == isSuccess
+          ? _value.isSuccess
+          : isSuccess // ignore: cast_nullable_to_non_nullable
+              as bool,
       error: freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -281,6 +288,7 @@ abstract class _$$CartStateImplCopyWith<$Res>
       double discount,
       double total,
       bool isLoading,
+      bool isSuccess,
       String? error});
 }
 
@@ -303,6 +311,7 @@ class __$$CartStateImplCopyWithImpl<$Res>
     Object? discount = null,
     Object? total = null,
     Object? isLoading = null,
+    Object? isSuccess = null,
     Object? error = freezed,
   }) {
     return _then(_$CartStateImpl(
@@ -330,6 +339,10 @@ class __$$CartStateImplCopyWithImpl<$Res>
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      isSuccess: null == isSuccess
+          ? _value.isSuccess
+          : isSuccess // ignore: cast_nullable_to_non_nullable
+              as bool,
       error: freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -348,6 +361,7 @@ class _$CartStateImpl implements _CartState {
       this.discount = 0.0,
       this.total = 0.0,
       this.isLoading = false,
+      this.isSuccess = false,
       this.error})
       : _items = items;
 
@@ -376,11 +390,14 @@ class _$CartStateImpl implements _CartState {
   @JsonKey()
   final bool isLoading;
   @override
+  @JsonKey()
+  final bool isSuccess;
+  @override
   final String? error;
 
   @override
   String toString() {
-    return 'CartState(items: $items, subtotal: $subtotal, tax: $tax, discount: $discount, total: $total, isLoading: $isLoading, error: $error)';
+    return 'CartState(items: $items, subtotal: $subtotal, tax: $tax, discount: $discount, total: $total, isLoading: $isLoading, isSuccess: $isSuccess, error: $error)';
   }
 
   @override
@@ -397,6 +414,8 @@ class _$CartStateImpl implements _CartState {
             (identical(other.total, total) || other.total == total) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
+            (identical(other.isSuccess, isSuccess) ||
+                other.isSuccess == isSuccess) &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -409,6 +428,7 @@ class _$CartStateImpl implements _CartState {
       discount,
       total,
       isLoading,
+      isSuccess,
       error);
 
   /// Create a copy of CartState
@@ -428,6 +448,7 @@ abstract class _CartState implements CartState {
       final double discount,
       final double total,
       final bool isLoading,
+      final bool isSuccess,
       final String? error}) = _$CartStateImpl;
 
   @override
@@ -442,6 +463,8 @@ abstract class _CartState implements CartState {
   double get total;
   @override
   bool get isLoading;
+  @override
+  bool get isSuccess;
   @override
   String? get error;
 

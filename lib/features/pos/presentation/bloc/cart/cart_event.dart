@@ -9,4 +9,5 @@ class CartEvent with _$CartEvent {
   const factory CartEvent.updateQuantity(String productUuid, int quantity) = _UpdateQuantity;
   const factory CartEvent.removeFromCart(String productUuid) = _RemoveFromCart;
   const factory CartEvent.clearCart() = _ClearCart;
+  const factory CartEvent.checkoutProcessed() = _CheckoutProcessed;
 }

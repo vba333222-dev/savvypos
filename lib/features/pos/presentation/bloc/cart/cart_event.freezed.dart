@@ -22,6 +22,7 @@ mixin _$CartEvent {
     required TResult Function(String productUuid, int quantity) updateQuantity,
     required TResult Function(String productUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function() checkoutProcessed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -30,6 +31,7 @@ mixin _$CartEvent {
     TResult? Function(String productUuid, int quantity)? updateQuantity,
     TResult? Function(String productUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function()? checkoutProcessed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -38,6 +40,7 @@ mixin _$CartEvent {
     TResult Function(String productUuid, int quantity)? updateQuantity,
     TResult Function(String productUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function()? checkoutProcessed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -47,6 +50,7 @@ mixin _$CartEvent {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -55,6 +59,7 @@ mixin _$CartEvent {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -63,6 +68,7 @@ mixin _$CartEvent {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -160,6 +166,7 @@ class _$AddProductImpl implements _AddProduct {
     required TResult Function(String productUuid, int quantity) updateQuantity,
     required TResult Function(String productUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function() checkoutProcessed,
   }) {
     return addProduct(product);
   }
@@ -171,6 +178,7 @@ class _$AddProductImpl implements _AddProduct {
     TResult? Function(String productUuid, int quantity)? updateQuantity,
     TResult? Function(String productUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function()? checkoutProcessed,
   }) {
     return addProduct?.call(product);
   }
@@ -182,6 +190,7 @@ class _$AddProductImpl implements _AddProduct {
     TResult Function(String productUuid, int quantity)? updateQuantity,
     TResult Function(String productUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function()? checkoutProcessed,
     required TResult orElse(),
   }) {
     if (addProduct != null) {
@@ -197,6 +206,7 @@ class _$AddProductImpl implements _AddProduct {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
   }) {
     return addProduct(this);
   }
@@ -208,6 +218,7 @@ class _$AddProductImpl implements _AddProduct {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
   }) {
     return addProduct?.call(this);
   }
@@ -219,6 +230,7 @@ class _$AddProductImpl implements _AddProduct {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
     required TResult orElse(),
   }) {
     if (addProduct != null) {
@@ -323,6 +335,7 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     required TResult Function(String productUuid, int quantity) updateQuantity,
     required TResult Function(String productUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function() checkoutProcessed,
   }) {
     return updateQuantity(productUuid, quantity);
   }
@@ -334,6 +347,7 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     TResult? Function(String productUuid, int quantity)? updateQuantity,
     TResult? Function(String productUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function()? checkoutProcessed,
   }) {
     return updateQuantity?.call(productUuid, quantity);
   }
@@ -345,6 +359,7 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     TResult Function(String productUuid, int quantity)? updateQuantity,
     TResult Function(String productUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function()? checkoutProcessed,
     required TResult orElse(),
   }) {
     if (updateQuantity != null) {
@@ -360,6 +375,7 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
   }) {
     return updateQuantity(this);
   }
@@ -371,6 +387,7 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
   }) {
     return updateQuantity?.call(this);
   }
@@ -382,6 +399,7 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
     required TResult orElse(),
   }) {
     if (updateQuantity != null) {
@@ -479,6 +497,7 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     required TResult Function(String productUuid, int quantity) updateQuantity,
     required TResult Function(String productUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function() checkoutProcessed,
   }) {
     return removeFromCart(productUuid);
   }
@@ -490,6 +509,7 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     TResult? Function(String productUuid, int quantity)? updateQuantity,
     TResult? Function(String productUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function()? checkoutProcessed,
   }) {
     return removeFromCart?.call(productUuid);
   }
@@ -501,6 +521,7 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     TResult Function(String productUuid, int quantity)? updateQuantity,
     TResult Function(String productUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function()? checkoutProcessed,
     required TResult orElse(),
   }) {
     if (removeFromCart != null) {
@@ -516,6 +537,7 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
   }) {
     return removeFromCart(this);
   }
@@ -527,6 +549,7 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
   }) {
     return removeFromCart?.call(this);
   }
@@ -538,6 +561,7 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
     required TResult orElse(),
   }) {
     if (removeFromCart != null) {
@@ -605,6 +629,7 @@ class _$ClearCartImpl implements _ClearCart {
     required TResult Function(String productUuid, int quantity) updateQuantity,
     required TResult Function(String productUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function() checkoutProcessed,
   }) {
     return clearCart();
   }
@@ -616,6 +641,7 @@ class _$ClearCartImpl implements _ClearCart {
     TResult? Function(String productUuid, int quantity)? updateQuantity,
     TResult? Function(String productUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function()? checkoutProcessed,
   }) {
     return clearCart?.call();
   }
@@ -627,6 +653,7 @@ class _$ClearCartImpl implements _ClearCart {
     TResult Function(String productUuid, int quantity)? updateQuantity,
     TResult Function(String productUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function()? checkoutProcessed,
     required TResult orElse(),
   }) {
     if (clearCart != null) {
@@ -642,6 +669,7 @@ class _$ClearCartImpl implements _ClearCart {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
   }) {
     return clearCart(this);
   }
@@ -653,6 +681,7 @@ class _$ClearCartImpl implements _ClearCart {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
   }) {
     return clearCart?.call(this);
   }
@@ -664,6 +693,7 @@ class _$ClearCartImpl implements _ClearCart {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
     required TResult orElse(),
   }) {
     if (clearCart != null) {
@@ -675,4 +705,127 @@ class _$ClearCartImpl implements _ClearCart {
 
 abstract class _ClearCart implements CartEvent {
   const factory _ClearCart() = _$ClearCartImpl;
+}
+
+/// @nodoc
+abstract class _$$CheckoutProcessedImplCopyWith<$Res> {
+  factory _$$CheckoutProcessedImplCopyWith(_$CheckoutProcessedImpl value,
+          $Res Function(_$CheckoutProcessedImpl) then) =
+      __$$CheckoutProcessedImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$CheckoutProcessedImplCopyWithImpl<$Res>
+    extends _$CartEventCopyWithImpl<$Res, _$CheckoutProcessedImpl>
+    implements _$$CheckoutProcessedImplCopyWith<$Res> {
+  __$$CheckoutProcessedImplCopyWithImpl(_$CheckoutProcessedImpl _value,
+      $Res Function(_$CheckoutProcessedImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$CheckoutProcessedImpl implements _CheckoutProcessed {
+  const _$CheckoutProcessedImpl();
+
+  @override
+  String toString() {
+    return 'CartEvent.checkoutProcessed()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$CheckoutProcessedImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Product product) addProduct,
+    required TResult Function(String productUuid, int quantity) updateQuantity,
+    required TResult Function(String productUuid) removeFromCart,
+    required TResult Function() clearCart,
+    required TResult Function() checkoutProcessed,
+  }) {
+    return checkoutProcessed();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Product product)? addProduct,
+    TResult? Function(String productUuid, int quantity)? updateQuantity,
+    TResult? Function(String productUuid)? removeFromCart,
+    TResult? Function()? clearCart,
+    TResult? Function()? checkoutProcessed,
+  }) {
+    return checkoutProcessed?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Product product)? addProduct,
+    TResult Function(String productUuid, int quantity)? updateQuantity,
+    TResult Function(String productUuid)? removeFromCart,
+    TResult Function()? clearCart,
+    TResult Function()? checkoutProcessed,
+    required TResult orElse(),
+  }) {
+    if (checkoutProcessed != null) {
+      return checkoutProcessed();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_AddProduct value) addProduct,
+    required TResult Function(_UpdateQuantity value) updateQuantity,
+    required TResult Function(_RemoveFromCart value) removeFromCart,
+    required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
+  }) {
+    return checkoutProcessed(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_AddProduct value)? addProduct,
+    TResult? Function(_UpdateQuantity value)? updateQuantity,
+    TResult? Function(_RemoveFromCart value)? removeFromCart,
+    TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
+  }) {
+    return checkoutProcessed?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_AddProduct value)? addProduct,
+    TResult Function(_UpdateQuantity value)? updateQuantity,
+    TResult Function(_RemoveFromCart value)? removeFromCart,
+    TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
+    required TResult orElse(),
+  }) {
+    if (checkoutProcessed != null) {
+      return checkoutProcessed(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _CheckoutProcessed implements CartEvent {
+  const factory _CheckoutProcessed() = _$CheckoutProcessedImpl;
 }

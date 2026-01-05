@@ -62,9 +62,11 @@ class CurrentOrderSummary extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Start Checkout Flow
-                  },
+                  onPressed: state.isLoading 
+                    ? null 
+                    : () {
+                        context.read<CartBloc>().add(const CartEvent.checkoutProcessed());
+                      },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: colors.brandPrimary,
                     foregroundColor: colors.textInverse,
@@ -74,13 +76,22 @@ class CurrentOrderSummary extends StatelessWidget {
                     ),
                     elevation: 0, 
                   ),
-                  child: Text(
-                    'Checkout',
-                    style: typography.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: colors.textInverse,
-                    ),
-                  ),
+                  child: state.isLoading
+                    ? SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: colors.textInverse,
+                        ),
+                      )
+                    : Text(
+                        'Charge \$${state.total.toStringAsFixed(2)}',
+                        style: typography.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: colors.textInverse,
+                        ),
+                      ),
                 ),
               ).animate()
                .scale(duration: context.savvy.motion.durationFast, curve: context.savvy.motion.curveBounce), // Antigravity Bounce

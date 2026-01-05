@@ -44,6 +44,11 @@ import '../../features/kitchen/presentation/bloc/kitchen_bloc.dart' as _i86;
 import '../../features/pos/presentation/bloc/cart/cart_bloc.dart' as _i177;
 import '../../features/pos/presentation/bloc/product/product_bloc.dart'
     as _i313;
+import '../../features/reports/data/repositories/report_repository_impl.dart'
+    as _i246;
+import '../../features/reports/domain/repositories/i_report_repository.dart'
+    as _i912;
+import '../../features/reports/presentation/bloc/report_bloc.dart' as _i652;
 import '../../features/reservations/data/repositories/reservation_repository_impl.dart'
     as _i386;
 import '../../features/reservations/domain/repositories/i_reservation_repository.dart'
@@ -65,6 +70,7 @@ import '../database/database.dart' as _i660;
 import '../hal/printer_interface.dart' as _i560;
 import '../hal/printer_router.dart' as _i430;
 import '../hal/printer_service.dart' as _i16;
+import '../network/api_client.dart' as _i557;
 import '../utils/sound_helper.dart' as _i842;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -81,6 +87,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i521.BackupBloc>(() => _i521.BackupBloc());
     gh.lazySingleton<_i660.AppDatabase>(() => _i660.AppDatabase());
     gh.lazySingleton<_i842.SoundHelper>(() => _i842.SoundHelper());
+    gh.lazySingleton<_i557.ApiClient>(() => _i557.ApiClient());
     gh.lazySingleton<_i240.IShiftRepository>(
         () => _i139.ShiftRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i22.ITableRepository>(
@@ -103,10 +110,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i884.ICustomerRepository>(
         () => _i877.CustomerRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.factory<_i797.AuthBloc>(() => _i797.AuthBloc(gh<_i660.AppDatabase>()));
+    gh.lazySingleton<_i912.IReportRepository>(
+        () => _i246.ReportRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.factory<_i424.TableBloc>(
         () => _i424.TableBloc(gh<_i22.ITableRepository>()));
     gh.factory<_i652.DashboardBloc>(
         () => _i652.DashboardBloc(gh<_i485.IDashboardRepository>()));
+    gh.factory<_i652.ReportBloc>(
+        () => _i652.ReportBloc(gh<_i912.IReportRepository>()));
     gh.lazySingleton<_i430.PrinterRouter>(
         () => _i430.PrinterRouter(gh<_i560.IPrinterService>()));
     gh.lazySingleton<_i246.ShiftBloc>(

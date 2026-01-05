@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/core/di/injection.dart';
+import 'package:savvy_pos/core/network/api_client.dart';
 import 'package:workmanager/workmanager.dart';
 
 // Top-level function for background execution
@@ -32,15 +33,9 @@ void callbackDispatcher() {
 }
 
 Future<void> _processSyncQueue(AppDatabase db, Logger logger) async {
-  // 1. Fetch PENDING items
-  // In a real app we'd fetch where status != SYNCED
-  // Since SyncQueue table defined 'actionType', we assume we process all rows here or have a status column.
-  // The provided `SyncQueue` table definition didn't have a 'status' column in `tables.dart` (checking context).
-  // Wait.. `SyncQueue` had `actionType`, `payloadJson`, `idempotencyKey`, `createdAt`.
-  // It seems we missed a 'status' column in the definition step or implied it by deletion?
-  // Let's assume for this mock that we fetch ALL and then delete them or mark them if we had a column.
-  // "Pragmatic Execution": We will read them, simulate sync, then DELETE them from SyncQueue to keep it clean.
+  final apiClient = GetIt.I<ApiClient>();
   
+  // 1. Fetch PENDING items
   final pendingItems = await db.select(db.syncQueue).get();
   
   if (pendingItems.isEmpty) {
@@ -50,30 +45,47 @@ Future<void> _processSyncQueue(AppDatabase db, Logger logger) async {
 
   logger.i('Found ${pendingItems.length} items to sync.');
 
-  for (final item in pendingItems) {
-    // 2. Simulate Network Call (Mock)
-    await Future.delayed(const Duration(milliseconds: 500)); 
-    logger.i('Syncing Action: ${item.actionType} | ID: ${item.idempotencyKey}');
+  // 2. Prepare Payload
+  final List<Map<String, dynamic>> payload = pendingItems.map((item) {
+    return {
+      'id': item.id, // For ack, though we just rely on 200 OK for batch
+      'action': item.actionType,
+      'payload': jsonDecode(item.payloadJson),
+      'idempotency_key': item.idempotencyKey,
+      'created_at': item.createdAt.toIso8601String(),
+    };
+  }).toList();
 
-    // 3. Update related entities (e.g. Order isSynced = true)
-    if (item.actionType == 'CREATE_ORDER') {
-      final payload = jsonDecode(item.payloadJson);
-      final orderUuid = payload['orderUuid'];
+  // 3. Push to Backend
+  final success = await apiClient.pushSyncData(payload);
 
-      // Mark Order as Synced
-      await (db.update(db.orderTable)..where((t) => t.uuid.equals(orderUuid))).write(OrderTableCompanion(
-        isSynced: const Value(true),
-      ));
-      
-      // Mark Inventory Ledger as Synced
-      await (db.update(db.inventoryLedgerTable)..where((t) => t.referenceId.equals(orderUuid))).write(InventoryLedgerTableCompanion(
-        isSynced: const Value(true),
-      ));
-    }
-
+  if (success) {
+    logger.i('Sync Batch Success. Removing items from queue.');
+    
     // 4. Remove from Queue (Success)
-    await (db.delete(db.syncQueue)..where((t) => t.id.equals(item.id))).go();
+    // In a robust system, we might delete only specific IDs if partial success, 
+    // but for now we assume all-or-nothing batch.
+    
+    // Also mark related entities as synced if needed - strictly speaking, 
+    // we should wait for backend ACK to update 'isSynced' on the Entity Table itself?
+    // OR we just rely on the Queue being empty.
+    // Let's update the entities 'isSynced' flag for local UI feedback.
+    
+    for (final item in pendingItems) {
+      if (item.actionType == 'CREATE_ORDER') {
+        final p = jsonDecode(item.payloadJson);
+        final orderUuid = p['orderUuid']; // Ensure consistency in keys
+        if (orderUuid != null) {
+          await (db.update(db.orderTable)..where((t) => t.uuid.equals(orderUuid)))
+            .write(const OrderTableCompanion(isSynced: Value(true)));
+        }
+      }
+      // Add other types here
+      
+      // Delete from Queue
+      await (db.delete(db.syncQueue)..where((t) => t.id.equals(item.id))).go();
+    }
+  } else {
+    logger.w('Sync Batch Failed. Will retry later.');
   }
-  
-  logger.i('Sync Batch Completed.');
 }

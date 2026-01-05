@@ -30,40 +30,40 @@ class _PosPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.savvy.colors;
-    final shapes = context.savvy.shapes;
-
+    
     return Scaffold(
       backgroundColor: colors.bgPrimary,
       body: LayoutBuilder(
         builder: (context, constraints) {
-          final isTablet = constraints.maxWidth > 600;
+          // Requirement: Tablet/Desktop > 900px
+          final isLargeScreen = constraints.maxWidth > 900;
 
-          if (isTablet) {
+          if (isLargeScreen) {
             return Row(
               children: [
-                // Product Grid (Left 60%)
+                // Product Grid (Left 65%)
                 const Expanded(
-                  flex: 6,
+                  flex: 65,
                   child: ProductGridPage(),
                 ),
                 
                 // Vertical Divider
                 Container(width: 1, color: colors.borderDefault),
 
-                // Cart (Right 40%)
+                // Cart (Right 35%)
                 const Expanded(
-                  flex: 4,
+                  flex: 35,
                   child: CurrentOrderView(),
                 ),
               ],
             );
           } else {
-            // Mobile Layout
+            // Mobile/Small Tablet Layout
             return const Stack(
               children: [
                 ProductGridPage(),
                 
-                // Floating Action Button for Cart
+                // Floating Action Button via extended Widget
                 Positioned(
                   bottom: 16,
                   right: 16,
@@ -86,6 +86,7 @@ class _MobileCartFab extends StatelessWidget {
     return BlocBuilder<CartBloc, CartState>(
       builder: (context, state) {
         final itemCount = state.items.fold(0, (sum, item) => sum + item.quantity);
+        final totalFn = state.total.toStringAsFixed(2);
         final colors = context.savvy.colors;
 
         return FloatingActionButton.extended(
@@ -112,7 +113,7 @@ class _MobileCartFab extends StatelessWidget {
           backgroundColor: colors.brandPrimary,
           icon: Icon(Icons.shopping_cart, color: colors.textInverse),
           label: Text(
-            '$itemCount Items',
+            'Items: $itemCount - Total: \$$totalFn',
             style: TextStyle(color: colors.textInverse, fontWeight: FontWeight.bold),
           ),
         );

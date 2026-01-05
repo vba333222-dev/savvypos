@@ -5,6 +5,7 @@ import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/cart_item_tile.dart';
+import 'package:savvy_pos/features/pos/presentation/widgets/checkout_success_dialog.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/current_order_summary.dart';
 
 class CurrentOrderView extends StatelessWidget {
@@ -19,16 +20,22 @@ class CurrentOrderView extends StatelessWidget {
     return BlocListener<CartBloc, CartState>(
       listener: (context, state) {
         if (state.isSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('Transaction Successful!'),
-              backgroundColor: context.savvy.colors.stateSuccess,
-            ),
-          );
           // Close Generic BottomSheet if open (Mobile)
           if (Navigator.canPop(context)) {
              Navigator.pop(context);
           }
+          
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) => CheckoutSuccessDialog(
+              changeAmount: 0.0, // Should be calculated if cash
+              onNewOrder: () {
+                Navigator.pop(context); // Close Dialog
+                // context.read<CartBloc>().add(const CartEvent.clearCart()); // Already cleared in Bloc
+              },
+            ),
+          );
         }
         if (state.error != null) {
           ScaffoldMessenger.of(context).showSnackBar(

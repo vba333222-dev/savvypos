@@ -117,13 +117,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
            ));
 
            // Update Inventory Ledger (Deduct Stock)
-           // In a real app, this logic might be more complex (e.g., check stock first)
+           // CRITICAL: Negative Change
            await db.into(db.inventoryLedgerTable).insert(InventoryLedgerTableCompanion.insert(
              uuid: _uuid.v4(),
              productUuid: item.product.uuid,
              referenceId: orderUuid,
              type: 'SALE',
-             quantityChange: -item.quantity, // Negative for deduction
+             quantityChange: -item.quantity, 
              snapshotCost: 0.0, // Should come from product cost
              createdAt: now,
            ));

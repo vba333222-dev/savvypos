@@ -6,6 +6,7 @@ import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/core/hal/printer_interface.dart';
 import 'package:savvy_pos/core/hal/printer_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:savvy_pos/features/inventory/presentation/pages/inventory_list_page.dart';
 import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
 import 'package:savvy_pos/features/shift/presentation/widgets/close_shift_dialog.dart';
 
@@ -129,6 +130,25 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ).animate().slideX()),
 
+          const SizedBox(height: 32),
+          Divider(color: colors.borderDefault),
+          
+          // Inventory Management
+          Text(
+            'Inventory',
+            style: typography.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          ListTile(
+            leading: const Icon(Icons.inventory_2),
+            title: const Text('Manage Products'),
+             subtitle: const Text('Add, edit, or remove products'),
+            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+             onTap: () => Navigator.push(
+               context, 
+               MaterialPageRoute(builder: (_) => const InventoryListPage())
+             ),
+          ),
           const SizedBox(height: 32),
           Divider(color: colors.borderDefault),
           

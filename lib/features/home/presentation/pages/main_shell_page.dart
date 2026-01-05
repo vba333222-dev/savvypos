@@ -5,6 +5,7 @@ import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/features/auth/domain/repositories/i_tenant_repository.dart';
 import 'package:savvy_pos/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:savvy_pos/features/history/presentation/pages/transaction_history_page.dart';
+import 'package:savvy_pos/features/inventory/presentation/pages/inventory_list_page.dart';
 import 'package:savvy_pos/features/pos/presentation/pages/pos_page.dart';
 import 'package:savvy_pos/features/settings/presentation/pages/settings_page.dart';
 import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
@@ -90,9 +91,10 @@ class _MainShellContentState extends State<_MainShellContent> {
 
   final List<Widget> _pages = const [
     DashboardPage(),
-    PosPage(), // PosPage now should consume existing ShiftBloc if possible or we fix generic
+    PosPage(), 
+    InventoryListPage(), // Added
     TransactionHistoryPage(),
-    SettingsPage(), // Will need ShiftBloc
+    SettingsPage(), 
   ];
 
   @override
@@ -130,6 +132,7 @@ class _MainShellContentState extends State<_MainShellContent> {
                    destinations: const [
                      NavigationRailDestination(icon: Icon(Icons.dashboard), label: Text('Dashboard')),
                      NavigationRailDestination(icon: Icon(Icons.point_of_sale), label: Text('POS')),
+                     NavigationRailDestination(icon: Icon(Icons.inventory_2), label: Text('Products')), // Added
                      NavigationRailDestination(icon: Icon(Icons.history), label: Text('History')),
                      NavigationRailDestination(icon: Icon(Icons.settings), label: Text('Settings')),
                    ],
@@ -161,6 +164,7 @@ class _MainShellContentState extends State<_MainShellContent> {
                items: const [
                  BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Dashboard'),
                  BottomNavigationBarItem(icon: Icon(Icons.point_of_sale), label: 'POS'),
+                 BottomNavigationBarItem(icon: Icon(Icons.inventory_2), label: 'Products'), // Added
                  BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
                  BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
                ],

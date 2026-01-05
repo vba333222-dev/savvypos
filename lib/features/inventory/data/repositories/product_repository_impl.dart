@@ -52,6 +52,17 @@ class ProductRepositoryImpl implements IProductRepository {
     await db.into(db.productTable).insertOnConflictUpdate(companion);
   }
 
+  @override
+  Future<void> deleteProduct(String uuid) async {
+    await (db.update(db.productTable)
+      ..where((t) => t.uuid.equals(uuid)))
+      .write(ProductTableCompanion(
+        isDeleted: const Value(true),
+        updatedAt: Value(DateTime.now()),
+        isSynced: const Value(false),
+      ));
+  }
+
   Product _mapToDomain(ProductTableData row) {
     return Product(
       uuid: row.uuid,

@@ -12,4 +12,7 @@ abstract class IProductRepository {
 
   /// Save or Update product
   Future<void> saveProduct(Product product);
+
+  /// Soft delete product
+  Future<void> deleteProduct(String uuid);
 }

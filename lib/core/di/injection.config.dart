@@ -32,6 +32,8 @@ import '../../features/inventory/data/repositories/product_repository_impl.dart'
 import '../../features/inventory/domain/repositories/i_product_repository.dart'
     as _i695;
 import '../../features/inventory/domain/usecases/get_products.dart' as _i1053;
+import '../../features/inventory/presentation/bloc/inventory_management_bloc.dart'
+    as _i965;
 import '../../features/pos/presentation/bloc/cart/cart_bloc.dart' as _i177;
 import '../../features/pos/presentation/bloc/product/product_bloc.dart'
     as _i313;
@@ -74,6 +76,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i246.ShiftBloc(gh<_i240.IShiftRepository>()));
     gh.factory<_i1070.HistoryBloc>(
         () => _i1070.HistoryBloc(gh<_i67.IOrderRepository>()));
+    gh.factory<_i965.InventoryManagementBloc>(
+        () => _i965.InventoryManagementBloc(gh<_i695.IProductRepository>()));
     gh.factory<_i1053.GetProductsUseCase>(
         () => _i1053.GetProductsUseCase(gh<_i695.IProductRepository>()));
     gh.factory<_i313.ProductBloc>(

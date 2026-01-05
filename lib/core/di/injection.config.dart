@@ -12,6 +12,16 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import '../../features/auth/data/repositories/tenant_repository_impl.dart'
+    as _i422;
+import '../../features/auth/domain/repositories/i_tenant_repository.dart'
+    as _i302;
+import '../../features/dashboard/data/repositories/dashboard_repository_impl.dart'
+    as _i509;
+import '../../features/dashboard/domain/repositories/i_dashboard_repository.dart'
+    as _i485;
+import '../../features/dashboard/presentation/bloc/dashboard_bloc.dart'
+    as _i652;
 import '../../features/history/data/repositories/order_repository_impl.dart'
     as _i14;
 import '../../features/history/domain/repositories/i_order_repository.dart'
@@ -50,11 +60,17 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i139.ShiftRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i695.IProductRepository>(
         () => _i777.ProductRepositoryImpl(gh<_i660.AppDatabase>()));
+    gh.lazySingleton<_i302.ITenantRepository>(
+        () => _i422.TenantRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i67.IOrderRepository>(
         () => _i14.OrderRepositoryImpl(gh<_i660.AppDatabase>()));
+    gh.lazySingleton<_i485.IDashboardRepository>(
+        () => _i509.DashboardRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i560.IPrinterService>(() => _i16.PrinterService());
     gh.factory<_i177.CartBloc>(() => _i177.CartBloc(gh<_i660.AppDatabase>()));
-    gh.factory<_i246.ShiftBloc>(
+    gh.factory<_i652.DashboardBloc>(
+        () => _i652.DashboardBloc(gh<_i485.IDashboardRepository>()));
+    gh.lazySingleton<_i246.ShiftBloc>(
         () => _i246.ShiftBloc(gh<_i240.IShiftRepository>()));
     gh.factory<_i1070.HistoryBloc>(
         () => _i1070.HistoryBloc(gh<_i67.IOrderRepository>()));

@@ -23,7 +23,6 @@ class PosPage extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => GetIt.I<ProductBloc>()..add(const ProductEvent.loadProducts())),
         BlocProvider(create: (_) => GetIt.I<CartBloc>()),
-        BlocProvider(create: (_) => GetIt.I<ShiftBloc>()..add(const ShiftEvent.checkStatus())),
       ],
       child: const _PosPageContent(),
     );
@@ -42,24 +41,7 @@ class _PosPageContent extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Savvy POS'),
         backgroundColor: colors.bgPrimary,
-        actions: [
-           IconButton(
-             icon: const Icon(Icons.history),
-             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TransactionHistoryPage())),
-           ),
-           IconButton(
-             icon: const Icon(Icons.settings),
-             onPressed: () => Navigator.push(
-               context, 
-               MaterialPageRoute(
-                 builder: (_) => BlocProvider.value(
-                   value: context.read<ShiftBloc>(),
-                   child: const SettingsPage(),
-                 ),
-               ),
-             ),
-           ),
-        ],
+        // Actions removed as they are in MainShell
       ),
       body: BlocConsumer<ShiftBloc, ShiftState>(
         listener: (context, state) {

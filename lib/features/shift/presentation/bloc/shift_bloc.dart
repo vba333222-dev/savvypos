@@ -22,7 +22,7 @@ class ShiftState with _$ShiftState {
   const factory ShiftState.error(String message) = _Error;
 }
 
-@injectable
+@lazySingleton
 class ShiftBloc extends Bloc<ShiftEvent, ShiftState> {
   final IShiftRepository _repository;
 

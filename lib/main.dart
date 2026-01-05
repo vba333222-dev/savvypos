@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:savvy_pos/bootstrap.dart';
 import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/core/sync/sync_worker.dart';
-import 'package:savvy_pos/features/pos/presentation/pages/pos_page.dart';
+import 'package:savvy_pos/features/auth/domain/repositories/i_tenant_repository.dart';
+import 'package:savvy_pos/features/auth/presentation/pages/onboarding_page.dart';
+import 'package:savvy_pos/features/home/presentation/pages/main_shell_page.dart';
 import 'package:workmanager/workmanager.dart';
+import 'package:get_it/get_it.dart';
 
 void main() async {
   // Ensure binding
@@ -42,7 +45,31 @@ class App extends StatelessWidget {
           SavvyTheme.dark(),
         ],
       ),
-      home: const PosPage(),
+      home: const _AppLoader(),
+    );
+  }
+}
+
+class _AppLoader extends StatelessWidget {
+  const _AppLoader();
+
+  @override
+  Widget build(BuildContext context) {
+    // Check Tenant Config
+    return FutureBuilder(
+      future: GetIt.I<ITenantRepository>().getConfig(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+        }
+        
+        final config = snapshot.data;
+        if (config == null) {
+          return const OnboardingPage();
+        } else {
+          return const MainShellPage();
+        }
+      },
     );
   }
 }

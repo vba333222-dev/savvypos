@@ -15,7 +15,7 @@ class AuthEvent with _$AuthEvent {
 @freezed
 class AuthState with _$AuthState {
   const factory AuthState({
-    StaffTableData? staff,
+    EmployeeTableData? employee, // Updated from StaffTableData
     @Default(false) bool isLoading,
     String? error,
   }) = _AuthState;
@@ -34,12 +34,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _onLoginWithPin(_LoginWithPin event, Emitter<AuthState> emit) async {
     emit(state.copyWith(isLoading: true, error: null));
     try {
-      // Simple lookup (In prod, hash the PIN and compare)
-      final staff = await (db.select(db.staffTable)..where((tbl) => tbl.pin.equals(event.pin))).getSingleOrNull();
+      // Find employee by PIN
+      final employee = await (db.select(db.employeeTable)..where((tbl) => tbl.pin.equals(event.pin))).getSingleOrNull();
       
-      if (staff != null) {
-        if (staff.isActive) {
-           emit(state.copyWith(isLoading: false, staff: staff));
+      if (employee != null) {
+        if (employee.isActive) {
+           emit(state.copyWith(isLoading: false, employee: employee));
         } else {
            emit(state.copyWith(isLoading: false, error: 'Account is inactive'));
         }
@@ -56,7 +56,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
   
   Future<void> _onCheckSession(_CheckSession event, Emitter<AuthState> emit) async {
-    // For now, no persistence of session across restart implemented in this task scope
-    // But we could check SharedPreferences here.
+    // Stub
   }
 }

@@ -9,6 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savvy_pos/features/inventory/presentation/pages/inventory_list_page.dart';
 import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
 import 'package:savvy_pos/features/shift/presentation/widgets/close_shift_dialog.dart';
+import 'package:savvy_pos/features/settings/presentation/bloc/backup_bloc.dart';
+import 'package:savvy_pos/features/employees/presentation/pages/employee_list_page.dart';
+import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -148,6 +151,63 @@ class _SettingsPageState extends State<SettingsPage> {
                context, 
                MaterialPageRoute(builder: (_) => const InventoryListPage())
              ),
+          ),
+          const SizedBox(height: 32),
+          Divider(color: colors.borderDefault),
+
+          // Employee & Data (Protected)
+          BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+               final role = state.employee?.role;
+               final isOwner = role == 'OWNER';
+               final isManager = role == 'MANAGER' || isOwner;
+               
+               if (!isManager) return const SizedBox.shrink();
+
+               return Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                    Text('Administration', style: typography.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 16),
+                    ListTile(
+                      leading: const Icon(Icons.people),
+                      title: const Text('Employees'),
+                      subtitle: const Text('Manage staff & access'),
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const EmployeeListPage())),
+                    ),
+                    if (isOwner) ...[
+                      // Backup Tiles via BackupBloc
+                      BlocProvider(
+                        create: (_) => GetIt.I<BackupBloc>(),
+                        child: Builder(
+                          builder: (ctx) => Column(
+                            children: [
+                              ListTile(
+                                leading: const Icon(Icons.download),
+                                title: const Text('Backup Data'),
+                                onTap: () {
+                                   ctx.read<BackupBloc>().add(const BackupEvent.createBackup());
+                                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Backup Started...')));
+                                },
+                              ),
+                              ListTile(
+                                leading: const Icon(Icons.upload_file),
+                                title: const Text('Restore Data'),
+                                onTap: () {
+                                   ctx.read<BackupBloc>().add(const BackupEvent.restoreBackup());
+                                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Restore Started... Check file picker.')));
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 32),
+                    Divider(color: colors.borderDefault),
+                 ],
+               );
+            },
           ),
           const SizedBox(height: 32),
           Divider(color: colors.borderDefault),

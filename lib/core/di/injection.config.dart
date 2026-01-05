@@ -16,6 +16,7 @@ import '../../features/auth/data/repositories/tenant_repository_impl.dart'
     as _i422;
 import '../../features/auth/domain/repositories/i_tenant_repository.dart'
     as _i302;
+import '../../features/auth/presentation/bloc/auth_bloc.dart' as _i797;
 import '../../features/customers/data/repositories/customer_repository_impl.dart'
     as _i877;
 import '../../features/customers/domain/repositories/i_customer_repository.dart'
@@ -42,6 +43,7 @@ import '../../features/inventory/presentation/bloc/inventory_management_bloc.dar
 import '../../features/pos/presentation/bloc/cart/cart_bloc.dart' as _i177;
 import '../../features/pos/presentation/bloc/product/product_bloc.dart'
     as _i313;
+import '../../features/settings/presentation/bloc/backup_bloc.dart' as _i521;
 import '../../features/shift/data/repositories/shift_repository_impl.dart'
     as _i139;
 import '../../features/shift/domain/repositories/i_shift_repository.dart'
@@ -50,6 +52,7 @@ import '../../features/shift/presentation/bloc/shift_bloc.dart' as _i246;
 import '../database/database.dart' as _i660;
 import '../hal/printer_interface.dart' as _i560;
 import '../hal/printer_service.dart' as _i16;
+import '../utils/sound_helper.dart' as _i842;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -62,17 +65,19 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
+    gh.factory<_i521.BackupBloc>(() => _i521.BackupBloc());
     gh.lazySingleton<_i660.AppDatabase>(() => _i660.AppDatabase());
+    gh.lazySingleton<_i842.SoundHelper>(() => _i842.SoundHelper());
     gh.lazySingleton<_i240.IShiftRepository>(
         () => _i139.ShiftRepositoryImpl(gh<_i660.AppDatabase>()));
-    gh.factory<_i177.CartBloc>(() => _i177.CartBloc(
-          gh<_i660.AppDatabase>(),
-          gh<InvalidType>(),
-        ));
     gh.lazySingleton<_i695.IProductRepository>(
         () => _i777.ProductRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i302.ITenantRepository>(
         () => _i422.TenantRepositoryImpl(gh<_i660.AppDatabase>()));
+    gh.factory<_i177.CartBloc>(() => _i177.CartBloc(
+          gh<_i660.AppDatabase>(),
+          gh<_i842.SoundHelper>(),
+        ));
     gh.lazySingleton<_i67.IOrderRepository>(
         () => _i14.OrderRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i485.IDashboardRepository>(
@@ -80,6 +85,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i560.IPrinterService>(() => _i16.PrinterService());
     gh.lazySingleton<_i884.ICustomerRepository>(
         () => _i877.CustomerRepositoryImpl(gh<_i660.AppDatabase>()));
+    gh.factory<_i797.AuthBloc>(() => _i797.AuthBloc(gh<_i660.AppDatabase>()));
     gh.factory<_i652.DashboardBloc>(
         () => _i652.DashboardBloc(gh<_i485.IDashboardRepository>()));
     gh.lazySingleton<_i246.ShiftBloc>(

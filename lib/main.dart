@@ -5,6 +5,7 @@ import 'package:savvy_pos/core/sync/sync_worker.dart';
 import 'package:savvy_pos/features/auth/domain/repositories/i_tenant_repository.dart';
 import 'package:savvy_pos/features/auth/presentation/pages/onboarding_page.dart';
 import 'package:savvy_pos/features/home/presentation/pages/main_shell_page.dart';
+import 'package:savvy_pos/features/employees/presentation/pages/employee_login_page.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:get_it/get_it.dart';
 
@@ -67,7 +68,7 @@ class _AppLoader extends StatelessWidget {
         if (config == null) {
           return const OnboardingPage();
         } else {
-          return const MainShellPage();
+          return const EmployeeLoginPage();
         }
       },
     );

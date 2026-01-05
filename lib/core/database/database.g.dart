@@ -4655,12 +4655,12 @@ class SyncQueueCompanion extends UpdateCompanion<SyncQueueData> {
   }
 }
 
-class $StaffTableTable extends StaffTable
-    with TableInfo<$StaffTableTable, StaffTableData> {
+class $EmployeeTableTable extends EmployeeTable
+    with TableInfo<$EmployeeTableTable, EmployeeTableData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $StaffTableTable(this.attachedDatabase, [this._alias]);
+  $EmployeeTableTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -4708,16 +4708,22 @@ class $StaffTableTable extends StaffTable
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, uuid, name, pin, role, isActive, createdAt];
+      [id, uuid, name, pin, role, isActive, createdAt, updatedAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'staff_table';
+  static const String $name = 'employee_table';
   @override
-  VerificationContext validateIntegrity(Insertable<StaffTableData> instance,
+  VerificationContext validateIntegrity(Insertable<EmployeeTableData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -4758,15 +4764,19 @@ class $StaffTableTable extends StaffTable
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    }
     return context;
   }
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  StaffTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  EmployeeTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return StaffTableData(
+    return EmployeeTableData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       uuid: attachedDatabase.typeMapping
@@ -4781,16 +4791,19 @@ class $StaffTableTable extends StaffTable
           .read(DriftSqlType.bool, data['${effectivePrefix}is_active'])!,
       createdAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at']),
     );
   }
 
   @override
-  $StaffTableTable createAlias(String alias) {
-    return $StaffTableTable(attachedDatabase, alias);
+  $EmployeeTableTable createAlias(String alias) {
+    return $EmployeeTableTable(attachedDatabase, alias);
   }
 }
 
-class StaffTableData extends DataClass implements Insertable<StaffTableData> {
+class EmployeeTableData extends DataClass
+    implements Insertable<EmployeeTableData> {
   final int id;
   final String uuid;
   final String name;
@@ -4798,14 +4811,16 @@ class StaffTableData extends DataClass implements Insertable<StaffTableData> {
   final String role;
   final bool isActive;
   final DateTime createdAt;
-  const StaffTableData(
+  final DateTime? updatedAt;
+  const EmployeeTableData(
       {required this.id,
       required this.uuid,
       required this.name,
       required this.pin,
       required this.role,
       required this.isActive,
-      required this.createdAt});
+      required this.createdAt,
+      this.updatedAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -4816,11 +4831,14 @@ class StaffTableData extends DataClass implements Insertable<StaffTableData> {
     map['role'] = Variable<String>(role);
     map['is_active'] = Variable<bool>(isActive);
     map['created_at'] = Variable<DateTime>(createdAt);
+    if (!nullToAbsent || updatedAt != null) {
+      map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
     return map;
   }
 
-  StaffTableCompanion toCompanion(bool nullToAbsent) {
-    return StaffTableCompanion(
+  EmployeeTableCompanion toCompanion(bool nullToAbsent) {
+    return EmployeeTableCompanion(
       id: Value(id),
       uuid: Value(uuid),
       name: Value(name),
@@ -4828,13 +4846,16 @@ class StaffTableData extends DataClass implements Insertable<StaffTableData> {
       role: Value(role),
       isActive: Value(isActive),
       createdAt: Value(createdAt),
+      updatedAt: updatedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(updatedAt),
     );
   }
 
-  factory StaffTableData.fromJson(Map<String, dynamic> json,
+  factory EmployeeTableData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return StaffTableData(
+    return EmployeeTableData(
       id: serializer.fromJson<int>(json['id']),
       uuid: serializer.fromJson<String>(json['uuid']),
       name: serializer.fromJson<String>(json['name']),
@@ -4842,6 +4863,7 @@ class StaffTableData extends DataClass implements Insertable<StaffTableData> {
       role: serializer.fromJson<String>(json['role']),
       isActive: serializer.fromJson<bool>(json['isActive']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
     );
   }
   @override
@@ -4855,18 +4877,20 @@ class StaffTableData extends DataClass implements Insertable<StaffTableData> {
       'role': serializer.toJson<String>(role),
       'isActive': serializer.toJson<bool>(isActive),
       'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime?>(updatedAt),
     };
   }
 
-  StaffTableData copyWith(
+  EmployeeTableData copyWith(
           {int? id,
           String? uuid,
           String? name,
           String? pin,
           String? role,
           bool? isActive,
-          DateTime? createdAt}) =>
-      StaffTableData(
+          DateTime? createdAt,
+          Value<DateTime?> updatedAt = const Value.absent()}) =>
+      EmployeeTableData(
         id: id ?? this.id,
         uuid: uuid ?? this.uuid,
         name: name ?? this.name,
@@ -4874,9 +4898,10 @@ class StaffTableData extends DataClass implements Insertable<StaffTableData> {
         role: role ?? this.role,
         isActive: isActive ?? this.isActive,
         createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
       );
-  StaffTableData copyWithCompanion(StaffTableCompanion data) {
-    return StaffTableData(
+  EmployeeTableData copyWithCompanion(EmployeeTableCompanion data) {
+    return EmployeeTableData(
       id: data.id.present ? data.id.value : this.id,
       uuid: data.uuid.present ? data.uuid.value : this.uuid,
       name: data.name.present ? data.name.value : this.name,
@@ -4884,40 +4909,43 @@ class StaffTableData extends DataClass implements Insertable<StaffTableData> {
       role: data.role.present ? data.role.value : this.role,
       isActive: data.isActive.present ? data.isActive.value : this.isActive,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('StaffTableData(')
+    return (StringBuffer('EmployeeTableData(')
           ..write('id: $id, ')
           ..write('uuid: $uuid, ')
           ..write('name: $name, ')
           ..write('pin: $pin, ')
           ..write('role: $role, ')
           ..write('isActive: $isActive, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode =>
-      Object.hash(id, uuid, name, pin, role, isActive, createdAt);
+      Object.hash(id, uuid, name, pin, role, isActive, createdAt, updatedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is StaffTableData &&
+      (other is EmployeeTableData &&
           other.id == this.id &&
           other.uuid == this.uuid &&
           other.name == this.name &&
           other.pin == this.pin &&
           other.role == this.role &&
           other.isActive == this.isActive &&
-          other.createdAt == this.createdAt);
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt);
 }
 
-class StaffTableCompanion extends UpdateCompanion<StaffTableData> {
+class EmployeeTableCompanion extends UpdateCompanion<EmployeeTableData> {
   final Value<int> id;
   final Value<String> uuid;
   final Value<String> name;
@@ -4925,7 +4953,8 @@ class StaffTableCompanion extends UpdateCompanion<StaffTableData> {
   final Value<String> role;
   final Value<bool> isActive;
   final Value<DateTime> createdAt;
-  const StaffTableCompanion({
+  final Value<DateTime?> updatedAt;
+  const EmployeeTableCompanion({
     this.id = const Value.absent(),
     this.uuid = const Value.absent(),
     this.name = const Value.absent(),
@@ -4933,8 +4962,9 @@ class StaffTableCompanion extends UpdateCompanion<StaffTableData> {
     this.role = const Value.absent(),
     this.isActive = const Value.absent(),
     this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
   });
-  StaffTableCompanion.insert({
+  EmployeeTableCompanion.insert({
     this.id = const Value.absent(),
     required String uuid,
     required String name,
@@ -4942,12 +4972,13 @@ class StaffTableCompanion extends UpdateCompanion<StaffTableData> {
     required String role,
     this.isActive = const Value.absent(),
     required DateTime createdAt,
+    this.updatedAt = const Value.absent(),
   })  : uuid = Value(uuid),
         name = Value(name),
         pin = Value(pin),
         role = Value(role),
         createdAt = Value(createdAt);
-  static Insertable<StaffTableData> custom({
+  static Insertable<EmployeeTableData> custom({
     Expression<int>? id,
     Expression<String>? uuid,
     Expression<String>? name,
@@ -4955,6 +4986,7 @@ class StaffTableCompanion extends UpdateCompanion<StaffTableData> {
     Expression<String>? role,
     Expression<bool>? isActive,
     Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -4964,18 +4996,20 @@ class StaffTableCompanion extends UpdateCompanion<StaffTableData> {
       if (role != null) 'role': role,
       if (isActive != null) 'is_active': isActive,
       if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
     });
   }
 
-  StaffTableCompanion copyWith(
+  EmployeeTableCompanion copyWith(
       {Value<int>? id,
       Value<String>? uuid,
       Value<String>? name,
       Value<String>? pin,
       Value<String>? role,
       Value<bool>? isActive,
-      Value<DateTime>? createdAt}) {
-    return StaffTableCompanion(
+      Value<DateTime>? createdAt,
+      Value<DateTime?>? updatedAt}) {
+    return EmployeeTableCompanion(
       id: id ?? this.id,
       uuid: uuid ?? this.uuid,
       name: name ?? this.name,
@@ -4983,6 +5017,7 @@ class StaffTableCompanion extends UpdateCompanion<StaffTableData> {
       role: role ?? this.role,
       isActive: isActive ?? this.isActive,
       createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -5010,19 +5045,23 @@ class StaffTableCompanion extends UpdateCompanion<StaffTableData> {
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('StaffTableCompanion(')
+    return (StringBuffer('EmployeeTableCompanion(')
           ..write('id: $id, ')
           ..write('uuid: $uuid, ')
           ..write('name: $name, ')
           ..write('pin: $pin, ')
           ..write('role: $role, ')
           ..write('isActive: $isActive, ')
-          ..write('createdAt: $createdAt')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
   }
@@ -5044,7 +5083,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $ShiftSessionTableTable shiftSessionTable =
       $ShiftSessionTableTable(this);
   late final $SyncQueueTable syncQueue = $SyncQueueTable(this);
-  late final $StaffTableTable staffTable = $StaffTableTable(this);
+  late final $EmployeeTableTable employeeTable = $EmployeeTableTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -5059,7 +5098,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         inventoryCacheTable,
         shiftSessionTable,
         syncQueue,
-        staffTable
+        employeeTable
       ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules(
@@ -7483,7 +7522,8 @@ typedef $$SyncQueueTableProcessedTableManager = ProcessedTableManager<
     ),
     SyncQueueData,
     PrefetchHooks Function()>;
-typedef $$StaffTableTableCreateCompanionBuilder = StaffTableCompanion Function({
+typedef $$EmployeeTableTableCreateCompanionBuilder = EmployeeTableCompanion
+    Function({
   Value<int> id,
   required String uuid,
   required String name,
@@ -7491,8 +7531,10 @@ typedef $$StaffTableTableCreateCompanionBuilder = StaffTableCompanion Function({
   required String role,
   Value<bool> isActive,
   required DateTime createdAt,
+  Value<DateTime?> updatedAt,
 });
-typedef $$StaffTableTableUpdateCompanionBuilder = StaffTableCompanion Function({
+typedef $$EmployeeTableTableUpdateCompanionBuilder = EmployeeTableCompanion
+    Function({
   Value<int> id,
   Value<String> uuid,
   Value<String> name,
@@ -7500,11 +7542,12 @@ typedef $$StaffTableTableUpdateCompanionBuilder = StaffTableCompanion Function({
   Value<String> role,
   Value<bool> isActive,
   Value<DateTime> createdAt,
+  Value<DateTime?> updatedAt,
 });
 
-class $$StaffTableTableFilterComposer
-    extends Composer<_$AppDatabase, $StaffTableTable> {
-  $$StaffTableTableFilterComposer({
+class $$EmployeeTableTableFilterComposer
+    extends Composer<_$AppDatabase, $EmployeeTableTable> {
+  $$EmployeeTableTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -7531,11 +7574,14 @@ class $$StaffTableTableFilterComposer
 
   ColumnFilters<DateTime> get createdAt => $composableBuilder(
       column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
 }
 
-class $$StaffTableTableOrderingComposer
-    extends Composer<_$AppDatabase, $StaffTableTable> {
-  $$StaffTableTableOrderingComposer({
+class $$EmployeeTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $EmployeeTableTable> {
+  $$EmployeeTableTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -7562,11 +7608,14 @@ class $$StaffTableTableOrderingComposer
 
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
       column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
 }
 
-class $$StaffTableTableAnnotationComposer
-    extends Composer<_$AppDatabase, $StaffTableTable> {
-  $$StaffTableTableAnnotationComposer({
+class $$EmployeeTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $EmployeeTableTable> {
+  $$EmployeeTableTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -7593,33 +7642,36 @@ class $$StaffTableTableAnnotationComposer
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 }
 
-class $$StaffTableTableTableManager extends RootTableManager<
+class $$EmployeeTableTableTableManager extends RootTableManager<
     _$AppDatabase,
-    $StaffTableTable,
-    StaffTableData,
-    $$StaffTableTableFilterComposer,
-    $$StaffTableTableOrderingComposer,
-    $$StaffTableTableAnnotationComposer,
-    $$StaffTableTableCreateCompanionBuilder,
-    $$StaffTableTableUpdateCompanionBuilder,
+    $EmployeeTableTable,
+    EmployeeTableData,
+    $$EmployeeTableTableFilterComposer,
+    $$EmployeeTableTableOrderingComposer,
+    $$EmployeeTableTableAnnotationComposer,
+    $$EmployeeTableTableCreateCompanionBuilder,
+    $$EmployeeTableTableUpdateCompanionBuilder,
     (
-      StaffTableData,
-      BaseReferences<_$AppDatabase, $StaffTableTable, StaffTableData>
+      EmployeeTableData,
+      BaseReferences<_$AppDatabase, $EmployeeTableTable, EmployeeTableData>
     ),
-    StaffTableData,
+    EmployeeTableData,
     PrefetchHooks Function()> {
-  $$StaffTableTableTableManager(_$AppDatabase db, $StaffTableTable table)
+  $$EmployeeTableTableTableManager(_$AppDatabase db, $EmployeeTableTable table)
       : super(TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$StaffTableTableFilterComposer($db: db, $table: table),
+              $$EmployeeTableTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$StaffTableTableOrderingComposer($db: db, $table: table),
+              $$EmployeeTableTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$StaffTableTableAnnotationComposer($db: db, $table: table),
+              $$EmployeeTableTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<int> id = const Value.absent(),
             Value<String> uuid = const Value.absent(),
@@ -7628,8 +7680,9 @@ class $$StaffTableTableTableManager extends RootTableManager<
             Value<String> role = const Value.absent(),
             Value<bool> isActive = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
+            Value<DateTime?> updatedAt = const Value.absent(),
           }) =>
-              StaffTableCompanion(
+              EmployeeTableCompanion(
             id: id,
             uuid: uuid,
             name: name,
@@ -7637,6 +7690,7 @@ class $$StaffTableTableTableManager extends RootTableManager<
             role: role,
             isActive: isActive,
             createdAt: createdAt,
+            updatedAt: updatedAt,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
@@ -7646,8 +7700,9 @@ class $$StaffTableTableTableManager extends RootTableManager<
             required String role,
             Value<bool> isActive = const Value.absent(),
             required DateTime createdAt,
+            Value<DateTime?> updatedAt = const Value.absent(),
           }) =>
-              StaffTableCompanion.insert(
+              EmployeeTableCompanion.insert(
             id: id,
             uuid: uuid,
             name: name,
@@ -7655,6 +7710,7 @@ class $$StaffTableTableTableManager extends RootTableManager<
             role: role,
             isActive: isActive,
             createdAt: createdAt,
+            updatedAt: updatedAt,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
@@ -7663,20 +7719,20 @@ class $$StaffTableTableTableManager extends RootTableManager<
         ));
 }
 
-typedef $$StaffTableTableProcessedTableManager = ProcessedTableManager<
+typedef $$EmployeeTableTableProcessedTableManager = ProcessedTableManager<
     _$AppDatabase,
-    $StaffTableTable,
-    StaffTableData,
-    $$StaffTableTableFilterComposer,
-    $$StaffTableTableOrderingComposer,
-    $$StaffTableTableAnnotationComposer,
-    $$StaffTableTableCreateCompanionBuilder,
-    $$StaffTableTableUpdateCompanionBuilder,
+    $EmployeeTableTable,
+    EmployeeTableData,
+    $$EmployeeTableTableFilterComposer,
+    $$EmployeeTableTableOrderingComposer,
+    $$EmployeeTableTableAnnotationComposer,
+    $$EmployeeTableTableCreateCompanionBuilder,
+    $$EmployeeTableTableUpdateCompanionBuilder,
     (
-      StaffTableData,
-      BaseReferences<_$AppDatabase, $StaffTableTable, StaffTableData>
+      EmployeeTableData,
+      BaseReferences<_$AppDatabase, $EmployeeTableTable, EmployeeTableData>
     ),
-    StaffTableData,
+    EmployeeTableData,
     PrefetchHooks Function()>;
 
 class $AppDatabaseManager {
@@ -7700,6 +7756,6 @@ class $AppDatabaseManager {
       $$ShiftSessionTableTableTableManager(_db, _db.shiftSessionTable);
   $$SyncQueueTableTableManager get syncQueue =>
       $$SyncQueueTableTableManager(_db, _db.syncQueue);
-  $$StaffTableTableTableManager get staffTable =>
-      $$StaffTableTableTableManager(_db, _db.staffTable);
+  $$EmployeeTableTableTableManager get employeeTable =>
+      $$EmployeeTableTableTableManager(_db, _db.employeeTable);
 }

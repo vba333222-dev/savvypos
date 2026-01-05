@@ -56,9 +56,8 @@ class _MainShellPageState extends State<MainShellPage> {
           if (state.error != null) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error!), backgroundColor: Colors.red));
           }
-          if (state.staff != null && (state.staff!.role == 'ADMIN')) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Welcome ${state.staff!.name}')));
-            // Potentially auto-navigate if we knew pending intent.
+          if (state.employee != null) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Active: ${state.employee!.name} (${state.employee!.role})')));
           }
         },
         child: _MainShellContent(
@@ -140,37 +139,25 @@ class _MainShellContentState extends State<_MainShellContent> {
                  NavigationRail(
                    selectedIndex: _selectedIndex,
                    onDestinationSelected: (index) async {
-                      // Security Check for Settings (4) and Products (2)
+                      // RBAC: Settings (4) and Products (2)
                       if (index == 4 || index == 2) {
                         final authBloc = context.read<AuthBloc>();
-                        final user = authBloc.state.staff;
+                        final user = authBloc.state.employee; // Updated field
                         
-                        if (user == null || user.role != 'ADMIN') {
+                        // Check if user is null or not authorized (CASHIER restricted)
+                        if (user == null || user.role == 'CASHIER') {
                           final pin = await showDialog<String>(
                             context: context,
-                            builder: (_) => const PinPadDialog(isLogin: true),
+                            builder: (_) => const PinPadDialog(isLogin: true), // Force Login/Override
                           );
                           
                           if (pin != null && context.mounted) {
+                            // Try to login as someone else (Manager/Owner)
                             authBloc.add(AuthEvent.loginWithPin(pin));
-                            // Wait for state change? 
-                            // Bloc check is async. We might need to listen to bloc.
-                            // For simplicity, we just trigger login. 
-                            // Ideally we wait for result.
-                            // Let's rely on BlocListener below to handle navigation or just re-check?
-                            // This is async flow.
-                            // Pragma: Let's assume we proceed IF login succeeds immediately? No.
-                            // Better UX: Show PinPad, if correct (AuthBloc logic), then navigate.
-                            // Note: PinPadDialog returns PIN string.
-                            // We need to verify it.
-                            // Simplification: PinPadDialog verifies locally if we passed expectedPin? No, we don't have it.
-                            // We will use AuthBloc to verify.
-                            
-                            // Let's allow navigation ONLY if we are already authenticated as ADMIN.
-                            // If not, we try to login.
-                            // If login success, we then manually switch tab?
+                            // In a real app, we might handle "Override" differently than full login switch.
+                            // Here, we switch user.
                           }
-                          return; // Don't switch yet. Listener will handle or user retries.
+                          return; 
                         }
                       }
                       

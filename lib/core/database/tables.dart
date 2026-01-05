@@ -23,17 +23,18 @@ class TenantConfigTable extends Table {
 }
 
 // ==============================================================================
-// 1.1. STAFF & SECURITY
+// 1.1. EMPLOYEE & SECURITY (RBAC)
 // ==============================================================================
-class StaffTable extends Table {
+class EmployeeTable extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get uuid => text().unique()();
   TextColumn get name => text()();
-  TextColumn get pin => text()(); // Simplified for MVP (In prod, use hash)
-  TextColumn get role => text()(); // 'ADMIN', 'CASHIER'
+  TextColumn get pin => text()(); // MVP: Plain or simple hash
+  TextColumn get role => text()(); // 'OWNER', 'MANAGER', 'CASHIER'
   
   BoolColumn get isActive => boolean().withDefault(const Constant(true))();
   DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime().nullable()();
 }
 
 // ==============================================================================

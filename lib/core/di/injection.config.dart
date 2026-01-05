@@ -65,6 +65,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i660.AppDatabase>(() => _i660.AppDatabase());
     gh.lazySingleton<_i240.IShiftRepository>(
         () => _i139.ShiftRepositoryImpl(gh<_i660.AppDatabase>()));
+    gh.factory<_i177.CartBloc>(() => _i177.CartBloc(
+          gh<_i660.AppDatabase>(),
+          gh<InvalidType>(),
+        ));
     gh.lazySingleton<_i695.IProductRepository>(
         () => _i777.ProductRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i302.ITenantRepository>(
@@ -76,7 +80,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i560.IPrinterService>(() => _i16.PrinterService());
     gh.lazySingleton<_i884.ICustomerRepository>(
         () => _i877.CustomerRepositoryImpl(gh<_i660.AppDatabase>()));
-    gh.factory<_i177.CartBloc>(() => _i177.CartBloc(gh<_i660.AppDatabase>()));
     gh.factory<_i652.DashboardBloc>(
         () => _i652.DashboardBloc(gh<_i485.IDashboardRepository>()));
     gh.lazySingleton<_i246.ShiftBloc>(

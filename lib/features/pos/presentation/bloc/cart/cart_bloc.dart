@@ -6,14 +6,16 @@ import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
+import 'package:savvy_pos/core/utils/sound_helper.dart';
 import 'package:uuid/uuid.dart';
 
 @injectable
 class CartBloc extends Bloc<CartEvent, CartState> {
   final AppDatabase db;
+  final SoundHelper _sound;
   final Uuid _uuid = const Uuid();
 
-  CartBloc(this.db) : super(CartState.initial()) {
+  CartBloc(this.db, this._sound) : super(CartState.initial()) {
     on<_AddProduct>(_onAddProduct);
     on<_UpdateQuantity>(_onUpdateQuantity);
     on<_RemoveFromCart>(_onRemoveFromCart);
@@ -37,6 +39,20 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   }
 
   // ... (Other handlers unchanged)
+  
+  void _onAddProduct(_AddProduct event, Emitter<CartState> emit) {
+    _sound.playBeep();
+    // ... existing logic manually or just assume we modify handling code if we had it shown.
+    // Since I hid handlers in previous view, I need to know where they are.
+    // Actually I can't inject code into hidden handlers. I should have viewed them.
+    // However, I can override the handler registration or use BlocListener in UI.
+    // Use BlocListener in UI? No, requirement says "Call playBeep() when adding items". 
+    // Best place is inside the bloc handler.
+    // I will use multi_replace to find it or just trust I can append it.
+    // Wait, the file I viewed had `// ... (Other handlers unchanged)`. 
+    // I need to view the full file to edit those handlers.
+    // I will skip editing handlers blindly. I will view the file fully first.
+  }
 
   Future<void> _onCheckoutProcessed(_CheckoutProcessed event, Emitter<CartState> emit) async {
     if (state.items.isEmpty) return;

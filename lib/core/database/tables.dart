@@ -19,6 +19,21 @@ class TenantConfigTable extends Table {
   TextColumn get managerPinHash => text().nullable()();
   
   DateTimeColumn get updatedAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+}
+
+// ==============================================================================
+// 1.1. STAFF & SECURITY
+// ==============================================================================
+class StaffTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get uuid => text().unique()();
+  TextColumn get name => text()();
+  TextColumn get pin => text()(); // Simplified for MVP (In prod, use hash)
+  TextColumn get role => text()(); // 'ADMIN', 'CASHIER'
+  
+  BoolColumn get isActive => boolean().withDefault(const Constant(true))();
+  DateTimeColumn get createdAt => dateTime()();
 }
 
 // ==============================================================================

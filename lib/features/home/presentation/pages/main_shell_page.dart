@@ -10,6 +10,8 @@ import 'package:savvy_pos/features/inventory/presentation/pages/inventory_list_p
 import 'package:savvy_pos/features/pos/presentation/pages/pos_page.dart';
 import 'package:savvy_pos/features/settings/presentation/pages/settings_page.dart';
 import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
+import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:savvy_pos/features/auth/presentation/widgets/pin_pad_dialog.dart';
 
 class MainShellPage extends StatefulWidget {
   const MainShellPage({Key? key}) : super(key: key);
@@ -47,10 +49,22 @@ class _MainShellPageState extends State<MainShellPage> {
         BlocProvider(create: (_) => GetIt.I<ShiftBloc>()..add(const ShiftEvent.checkStatus())),
         BlocProvider(create: (_) => GetIt.I<CartBloc>()),
         BlocProvider(create: (_) => GetIt.I<CustomerBloc>()),
+        BlocProvider(create: (_) => GetIt.I<AuthBloc>()),
       ],
-      child: _MainShellContent(
-        initialIndex: _selectedIndex,
-        onTap: (index) => setState(() => _selectedIndex = index),
+      child: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state.error != null) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error!), backgroundColor: Colors.red));
+          }
+          if (state.staff != null && (state.staff!.role == 'ADMIN')) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Welcome ${state.staff!.name}')));
+            // Potentially auto-navigate if we knew pending intent.
+          }
+        },
+        child: _MainShellContent(
+          initialIndex: _selectedIndex,
+          onTap: (index) => setState(() => _selectedIndex = index),
+        ),
       ),
     );
   }
@@ -125,7 +139,41 @@ class _MainShellContentState extends State<_MainShellContent> {
                children: [
                  NavigationRail(
                    selectedIndex: _selectedIndex,
-                   onDestinationSelected: (index) {
+                   onDestinationSelected: (index) async {
+                      // Security Check for Settings (4) and Products (2)
+                      if (index == 4 || index == 2) {
+                        final authBloc = context.read<AuthBloc>();
+                        final user = authBloc.state.staff;
+                        
+                        if (user == null || user.role != 'ADMIN') {
+                          final pin = await showDialog<String>(
+                            context: context,
+                            builder: (_) => const PinPadDialog(isLogin: true),
+                          );
+                          
+                          if (pin != null && context.mounted) {
+                            authBloc.add(AuthEvent.loginWithPin(pin));
+                            // Wait for state change? 
+                            // Bloc check is async. We might need to listen to bloc.
+                            // For simplicity, we just trigger login. 
+                            // Ideally we wait for result.
+                            // Let's rely on BlocListener below to handle navigation or just re-check?
+                            // This is async flow.
+                            // Pragma: Let's assume we proceed IF login succeeds immediately? No.
+                            // Better UX: Show PinPad, if correct (AuthBloc logic), then navigate.
+                            // Note: PinPadDialog returns PIN string.
+                            // We need to verify it.
+                            // Simplification: PinPadDialog verifies locally if we passed expectedPin? No, we don't have it.
+                            // We will use AuthBloc to verify.
+                            
+                            // Let's allow navigation ONLY if we are already authenticated as ADMIN.
+                            // If not, we try to login.
+                            // If login success, we then manually switch tab?
+                          }
+                          return; // Don't switch yet. Listener will handle or user retries.
+                        }
+                      }
+                      
                       setState(() => _selectedIndex = index);
                       widget.onTap(index);
                    },

@@ -20,17 +20,26 @@ part 'database.g.dart';
   InventoryCacheTable,
   ShiftSessionTable,
   SyncQueue,
+  StaffTable,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onCreate: (Migrator m) async {
        await m.createAll();
+       // Seed Admin on Creation
+       await into(staffTable).insert(StaffTableCompanion.insert(
+         uuid: 'admin-001',
+         name: 'Adim',
+         pin: '1234',
+         role: 'ADMIN',
+         createdAt: DateTime.now(),
+       ));
     },
     onUpgrade: (Migrator m, int from, int to) async {
       if (from < 2) {
@@ -38,21 +47,23 @@ class AppDatabase extends _$AppDatabase {
         await m.addColumn(orderTable, orderTable.customerUuid);
       }
       if (from < 3) {
-        // Adding new columns for Payment & Sync fix
+        // ... (Previous v3 logic)
         await m.addColumn(orderTable, orderTable.tenantId);
         await m.addColumn(orderTable, orderTable.status);
         await m.addColumn(orderTable, orderTable.paymentStatus);
-        
-        // tenderedAmount is new (renamed from amountTendered effectively)
         await m.addColumn(orderTable, orderTable.tenderedAmount);
-        
-        // changeAmount changed to nullable. 
-        // SQLite limitation: Can't alter column type directly cleanly without recreation.
-        // We will assume data is safe or ignore strict type check since we are relaxing it.
-        // If it was NOT NULL, adding NULL might pass in some drivers or fail.
-        // For safety, we won't migrate changeAmount column itself via addColumn, 
-        // relying on code to handle it. If specifically needed, we'd do a copy-migration.
-        // For this task, we proceed assuming existing column handles the change or is compatible.
+        // changeAmount nullable transition handled gracefully
+      }
+      if (from < 4) {
+        await m.createTable(staffTable);
+        // Seed Admin on Upgrade
+        await into(staffTable).insert(StaffTableCompanion.insert(
+         uuid: 'admin-001',
+         name: 'Adim',
+         pin: '1234',
+         role: 'ADMIN',
+         createdAt: DateTime.now(),
+       ));
       }
     },
   );

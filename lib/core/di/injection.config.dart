@@ -49,6 +49,10 @@ import '../../features/shift/data/repositories/shift_repository_impl.dart'
 import '../../features/shift/domain/repositories/i_shift_repository.dart'
     as _i240;
 import '../../features/shift/presentation/bloc/shift_bloc.dart' as _i246;
+import '../../features/tables/data/repositories/table_repository_impl.dart'
+    as _i392;
+import '../../features/tables/domain/repositories/i_table_repository.dart'
+    as _i22;
 import '../database/database.dart' as _i660;
 import '../hal/printer_interface.dart' as _i560;
 import '../hal/printer_service.dart' as _i16;
@@ -66,10 +70,11 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     gh.factory<_i521.BackupBloc>(() => _i521.BackupBloc());
-    gh.lazySingleton<_i660.AppDatabase>(() => _i660.AppDatabase());
     gh.lazySingleton<_i842.SoundHelper>(() => _i842.SoundHelper());
     gh.lazySingleton<_i240.IShiftRepository>(
         () => _i139.ShiftRepositoryImpl(gh<_i660.AppDatabase>()));
+    gh.lazySingleton<_i22.ITableRepository>(
+        () => _i392.TableRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i695.IProductRepository>(
         () => _i777.ProductRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i302.ITenantRepository>(

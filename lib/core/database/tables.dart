@@ -20,6 +20,27 @@ class TenantConfigTable extends Table {
   
   DateTimeColumn get updatedAt => dateTime()();
   DateTimeColumn get updatedAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+}
+
+// ==============================================================================
+// 1.2. RESTAURANT TABLES (DINE-IN)
+// ==============================================================================
+class RestaurantTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get uuid => text().unique()();
+  TextColumn get name => text()(); // "Table 1"
+  IntColumn get capacity => integer().withDefault(const Constant(4))();
+  
+  // Coordinates (Percentage 0.0 - 1.0)
+  RealColumn get x => real()();
+  RealColumn get y => real()();
+  
+  // State
+  BoolColumn get isOccupied => boolean().withDefault(const Constant(false))();
+  TextColumn get currentOrderUuid => text().nullable()(); // Linked Open Order
+  
+  DateTimeColumn get updatedAt => dateTime()();
 }
 
 // ==============================================================================

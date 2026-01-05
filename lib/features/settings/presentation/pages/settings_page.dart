@@ -12,6 +12,7 @@ import 'package:savvy_pos/features/shift/presentation/widgets/close_shift_dialog
 import 'package:savvy_pos/features/settings/presentation/bloc/backup_bloc.dart';
 import 'package:savvy_pos/features/employees/presentation/pages/employee_list_page.dart';
 import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:savvy_pos/core/config/business_mode.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -63,11 +64,28 @@ class _SettingsPageState extends State<SettingsPage> {
               value: Theme.of(context).brightness == Brightness.dark,
               onChanged: (val) {
                 // In a real app, use a ThemeCubit to toggle
+                // In a real app, use a ThemeCubit to toggle
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Theme logic not connected yet')),
                 );
               },
             ),
+          ),
+          // Business Mode Toggle (Retail vs F&B)
+          ValueListenableBuilder<bool>(
+            valueListenable: businessModeNotifier,
+            builder: (context, isFoodBev, _) {
+              return ListTile(
+                title: const Text('Restaurant Mode (Tables)'),
+                subtitle: const Text('Enable Dine-In Features'),
+                trailing: Switch(
+                  value: isFoodBev,
+                  onChanged: (val) {
+                    businessModeNotifier.toggle();
+                  },
+                ),
+              );
+            },
           ),
           Divider(color: colors.borderDefault),
           

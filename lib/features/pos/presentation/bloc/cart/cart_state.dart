@@ -25,8 +25,12 @@ class CartState with _$CartState {
     
     // CRM & Advanced
     Customer? customer,
-    @Default(0.0) double discountPercent, // e.g. 10.0 for 10%
-    @Default(0.0) double discountFixed,   // e.g. 5000 for Rp 5.000
+    @Default(0.0) double discountPercent, 
+    @Default(0.0) double discountFixed,
+    
+    // Dine-In
+    String? activeTableUuid,
+    String? activeOrderUuid, // Only if retrieving an OPEN order
     
     String? lastOrderNumber,
 

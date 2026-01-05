@@ -21,12 +21,13 @@ part 'database.g.dart';
   ShiftSessionTable,
   SyncQueue,
   EmployeeTable,
+  RestaurantTable,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -83,6 +84,29 @@ class AppDatabase extends _$AppDatabase {
            createdAt: DateTime.now(),
          ));
       }
+       }
+       if (from < 6) {
+         await m.createTable(restaurantTable);
+         // Optionally seed some tables?
+         // Let's seed 6 default tables for easy demo
+         final tables = [
+           (name: 'T1', x: 0.1, y: 0.1),
+           (name: 'T2', x: 0.4, y: 0.1),
+           (name: 'T3', x: 0.7, y: 0.1),
+           (name: 'T4', x: 0.1, y: 0.4),
+           (name: 'T5', x: 0.4, y: 0.4),
+           (name: 'T6', x: 0.7, y: 0.4),
+         ];
+         for (var t in tables) {
+           await into(restaurantTable).insert(RestaurantTableCompanion.insert(
+             uuid: 'table-${t.name}',
+             name: t.name,
+             x: t.x, 
+             y: t.y,
+             updatedAt: DateTime.now(),
+           ));
+         }
+       }
     },
   );
 }

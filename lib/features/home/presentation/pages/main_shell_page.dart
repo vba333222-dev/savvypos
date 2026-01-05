@@ -12,6 +12,8 @@ import 'package:savvy_pos/features/settings/presentation/pages/settings_page.dar
 import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
 import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:savvy_pos/features/auth/presentation/widgets/pin_pad_dialog.dart';
+import 'package:savvy_pos/features/tables/presentation/pages/floor_plan_page.dart';
+import 'package:savvy_pos/core/config/business_mode.dart';
 
 class MainShellPage extends StatefulWidget {
   const MainShellPage({Key? key}) : super(key: key);
@@ -118,99 +120,113 @@ class _MainShellContentState extends State<_MainShellContent> {
   @override
   Widget build(BuildContext context) {
     final colors = context.savvy.colors;
-    
-    // Pass the provided ShiftBloc down to pages that might look for it via context.read
-    // PosPage creates its own provider, we might need to refactor PosPage to NOT create it if it exists,
-    // Or simpler: PosPage's provider overrides parent. But we want shared state.
-    // Ideally PosPage should use BlocProvider.value if it exists, or we refactor PosPage to just consume.
-    // For "Pragmatic Execution", let's assume PosPage creates a NEW Bloc unless we fix it.
-    // FIX: We should make ShiftBloc a singleton in DI or lift it up.
-    // Assuming for now we lift it up in MainShell, and PosPage logic is "If we want shared state, we must use singleton".
-    // I will check injection. If factory, checking status in shell vs pos yields different results.
-    // I will explicitly Register ShiftBloc as LazySingleton in next step or use existing behaviour
-    
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxWidth > 900) {
-          // Desktop / Tablet
-          return Scaffold(
-             body: Row(
-               children: [
-                 NavigationRail(
-                   selectedIndex: _selectedIndex,
-                   onDestinationSelected: (index) async {
-                      // RBAC: Settings (4) and Products (2)
-                      if (index == 4 || index == 2) {
-                        final authBloc = context.read<AuthBloc>();
-                        final user = authBloc.state.employee; // Updated field
-                        
-                        // Check if user is null or not authorized (CASHIER restricted)
-                        if (user == null || user.role == 'CASHIER') {
-                          final pin = await showDialog<String>(
-                            context: context,
-                            builder: (_) => const PinPadDialog(isLogin: true), // Force Login/Override
-                          );
-                          
-                          if (pin != null && context.mounted) {
-                            // Try to login as someone else (Manager/Owner)
-                            authBloc.add(AuthEvent.loginWithPin(pin));
-                            // In a real app, we might handle "Override" differently than full login switch.
-                            // Here, we switch user.
+
+    return ValueListenableBuilder<bool>(
+      valueListenable: businessModeNotifier,
+      builder: (context, isFoodBev, child) {
+         final pages = [
+            const DashboardPage(),
+            isFoodBev 
+              ? FloorPlanPage(onNavigateToPos: (index) {
+                  // Hacky navigation to POS (which is not in tab list directly? Wait.
+                  // If F&B, Tab 1 is FloorPlan. POS is hidden or accessible via FloorPlan?
+                  // Requirement: "Middle tab changes from POS to Tables. Clicking a table navigates to POS".
+                  // So POS must be accessible.
+                  // Let's make POS valid route pushed on top or swap tab?
+                  // If swap tab, we need POS in the list?
+                  // Maybe Tab 1 is Tables, but where is POS? 
+                  // "Clicking a table then navigates to POS".
+                  // Keep POS as a hidden tab or push standard route?
+                  // Pushing standard route is cleaner for "Check In".
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => const PosPage()));
+                })
+              : const PosPage(),
+            const InventoryListPage(),
+            const TransactionHistoryPage(),
+            const SettingsPage(),
+         ];
+
+         final destinations = [
+             const NavigationRailDestination(icon: Icon(Icons.dashboard), label: Text('Dashboard')),
+             NavigationRailDestination(icon: Icon(isFoodBev ? Icons.table_restaurant : Icons.point_of_sale), label: Text(isFoodBev ? 'Tables' : 'POS')),
+             const NavigationRailDestination(icon: Icon(Icons.inventory_2), label: Text('Products')),
+             const NavigationRailDestination(icon: Icon(Icons.history), label: Text('History')),
+             const NavigationRailDestination(icon: Icon(Icons.settings), label: Text('Settings')),
+         ];
+         
+         final bottomItems = [
+             const BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Dashboard'),
+             BottomNavigationBarItem(icon: Icon(isFoodBev ? Icons.table_restaurant : Icons.point_of_sale), label: isFoodBev ? 'Tables' : 'POS'),
+             const BottomNavigationBarItem(icon: Icon(Icons.inventory_2), label: 'Products'),
+             const BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
+             const BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+         ];
+
+         return LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth > 900) {
+              // Desktop / Tablet
+              return Scaffold(
+                 body: Row(
+                   children: [
+                     NavigationRail(
+                       selectedIndex: _selectedIndex,
+                       onDestinationSelected: (index) async {
+                          // RBAC Check (Same as before)
+                          if (index == 4 || index == 2) {
+                            final authBloc = context.read<AuthBloc>();
+                            final user = authBloc.state.employee;
+                            if (user == null || user.role == 'CASHIER') {
+                              final pin = await showDialog<String>(
+                                context: context,
+                                builder: (_) => const PinPadDialog(isLogin: true),
+                              );
+                              if (pin != null && context.mounted) {
+                                authBloc.add(AuthEvent.loginWithPin(pin));
+                              }
+                              return; 
+                            }
                           }
-                          return; 
-                        }
-                      }
-                      
+                          setState(() => _selectedIndex = index);
+                          widget.onTap(index);
+                       },
+                       labelType: NavigationRailLabelType.all,
+                       leading: Padding(
+                         padding: const EdgeInsets.symmetric(vertical: 24.0),
+                         child: Icon(Icons.storefront, color: colors.brandPrimary, size: 32),
+                       ),
+                       destinations: destinations,
+                     ),
+                     const VerticalDivider(thickness: 1, width: 1),
+                     Expanded(
+                       child: IndexedStack(
+                         index: _selectedIndex,
+                         children: pages,
+                       ),
+                     ),
+                   ],
+                 ),
+              );
+            } else {
+              // Mobile
+              return Scaffold(
+                body: IndexedStack(
+                  index: _selectedIndex,
+                  children: pages,
+                ),
+                bottomNavigationBar: BottomNavigationBar(
+                   currentIndex: _selectedIndex,
+                   onTap: (index) {
                       setState(() => _selectedIndex = index);
                       widget.onTap(index);
                    },
-                   labelType: NavigationRailLabelType.all,
-                   leading: Padding(
-                     padding: const EdgeInsets.symmetric(vertical: 24.0),
-                     child: Icon(Icons.storefront, color: colors.brandPrimary, size: 32),
-                   ),
-                   destinations: const [
-                     NavigationRailDestination(icon: Icon(Icons.dashboard), label: Text('Dashboard')),
-                     NavigationRailDestination(icon: Icon(Icons.point_of_sale), label: Text('POS')),
-                     NavigationRailDestination(icon: Icon(Icons.inventory_2), label: Text('Products')), // Added
-                     NavigationRailDestination(icon: Icon(Icons.history), label: Text('History')),
-                     NavigationRailDestination(icon: Icon(Icons.settings), label: Text('Settings')),
-                   ],
-                 ),
-                 const VerticalDivider(thickness: 1, width: 1),
-                 Expanded(
-                   child: IndexedStack(
-                     index: _selectedIndex,
-                     children: _pages,
-                   ),
-                 ),
-               ],
-             ),
-          );
-        } else {
-          // Mobile
-          return Scaffold(
-            body: IndexedStack(
-              index: _selectedIndex,
-              children: _pages,
-            ),
-            bottomNavigationBar: BottomNavigationBar(
-               currentIndex: _selectedIndex,
-               onTap: (index) {
-                  setState(() => _selectedIndex = index);
-                  widget.onTap(index);
-               },
-               type: BottomNavigationBarType.fixed,
-               items: const [
-                 BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Dashboard'),
-                 BottomNavigationBarItem(icon: Icon(Icons.point_of_sale), label: 'POS'),
-                 BottomNavigationBarItem(icon: Icon(Icons.inventory_2), label: 'Products'), // Added
-                 BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
-                 BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
-               ],
-            ),
-          );
-        }
+                   type: BottomNavigationBarType.fixed,
+                   items: bottomItems,
+                ),
+              );
+            }
+          },
+        );
       },
     );
   }

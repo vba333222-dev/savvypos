@@ -128,3 +128,15 @@ class ShiftSessionTable extends Table {
   BoolColumn get isClosed => boolean().withDefault(const Constant(false))();
   BoolColumn get isSynced => boolean().withDefault(const Constant(false))();
 }
+
+// ==============================================================================
+// 6. SYNC QUEUE
+// ==============================================================================
+class SyncQueue extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get actionType => text()(); // e.g., 'CREATE_ORDER', 'ADJUST_STOCK'
+  TextColumn get payloadJson => text()();
+  TextColumn get idempotencyKey => text().unique()(); // UUID
+  DateTimeColumn get createdAt => dateTime()();
+  IntColumn get retryCount => integer().withDefault(const Constant(0))();
+}

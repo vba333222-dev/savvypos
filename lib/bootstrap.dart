@@ -2,10 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:savvy_pos/core/database/database.dart';
-
-// Global Accessor untuk Drift (Sementara, sebelum pakai Injectable/GetIt)
-late AppDatabase db;
+import 'package:savvy_pos/core/di/injection.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override
@@ -30,8 +27,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
-      // 1. Setup Local Database (Drift)
-      db = AppDatabase();
+      // 1. Setup DI
+      await configureDependencies();
       
       // 2. Setup Bloc Observer
       Bloc.observer = AppBlocObserver();

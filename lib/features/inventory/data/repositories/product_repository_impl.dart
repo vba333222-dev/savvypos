@@ -1,8 +1,10 @@
 import 'package:drift/drift.dart';
+import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
 
+@LazySingleton(as: IProductRepository)
 class ProductRepositoryImpl implements IProductRepository {
   final AppDatabase db;
 

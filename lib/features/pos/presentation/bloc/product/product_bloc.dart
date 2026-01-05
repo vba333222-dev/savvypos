@@ -1,60 +1,42 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:savvy_pos/features/inventory/domain/usecases/get_products.dart';
 
-// --- EVENTS ---
-abstract class ProductEvent extends Equatable {
-  const ProductEvent();
-  @override
-  List<Object> get props => [];
+part 'product_bloc.freezed.dart';
+
+@freezed
+class ProductEvent with _$ProductEvent {
+  const factory ProductEvent.loadProducts() = _LoadProducts;
 }
 
-class LoadProducts extends ProductEvent {}
-
-// --- STATES ---
-abstract class ProductState extends Equatable {
-  const ProductState();
-  @override
-  List<Object> get props => [];
+@freezed
+class ProductState with _$ProductState {
+  const factory ProductState.initial() = _Initial;
+  const factory ProductState.loading() = _Loading;
+  const factory ProductState.loaded(List<Product> products) = _Loaded;
+  const factory ProductState.error(String message) = _Error;
 }
 
-class ProductInitial extends ProductState {}
-
-class ProductLoading extends ProductState {}
-
-class ProductLoaded extends ProductState {
-  final List<Product> products;
-  const ProductLoaded(this.products);
-  @override
-  List<Object> get props => [products];
-}
-
-class ProductError extends ProductState {
-  final String message;
-  const ProductError(this.message);
-  @override
-  List<Object> get props => [message];
-}
-
-// --- BLOC ---
+@injectable
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final GetProductsUseCase getProducts;
 
-  ProductBloc(this.getProducts) : super(ProductInitial()) {
-    on<LoadProducts>(_onLoadProducts);
+  ProductBloc(this.getProducts) : super(const ProductState.initial()) {
+    on<_LoadProducts>(_onLoadProducts);
   }
 
-  Future<void> _onLoadProducts(LoadProducts event, Emitter<ProductState> emit) async {
-    emit(ProductLoading());
+  Future<void> _onLoadProducts(_LoadProducts event, Emitter<ProductState> emit) async {
+    emit(const ProductState.loading());
     try {
       await emit.forEach(
         getProducts.execute(),
-        onData: (List<Product> data) => ProductLoaded(data),
-        onError: (error, stackTrace) => ProductError(error.toString()),
+        onData: (List<Product> data) => ProductState.loaded(data),
+        onError: (error, stackTrace) => ProductState.error(error.toString()),
       );
     } catch (e) {
-      emit(ProductError(e.toString()));
+      emit(ProductState.error(e.toString()));
     }
   }
 }

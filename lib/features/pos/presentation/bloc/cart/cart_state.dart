@@ -2,16 +2,19 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:savvy_pos/features/customers/domain/entities/customer.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 
+import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
+
 part 'cart_state.freezed.dart';
 
 /// Represents a single line item in the cart
 @freezed
 class CartItem with _$CartItem {
   const factory CartItem({
+    required String uuid, // Unique ID for this line item (to distinguish variants)
     required Product product,
     required int quantity,
-    required int quantity,
-    required double total, // price * quantity - discount
+    required double total, // (price + modifiers) * quantity - discount
+    @Default([]) List<ModifierItem> modifiers,
     String? note,
   }) = _CartItem;
 }

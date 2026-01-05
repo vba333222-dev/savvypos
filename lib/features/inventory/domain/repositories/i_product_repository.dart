@@ -1,4 +1,6 @@
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
+import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
+import 'package:savvy_pos/features/inventory/domain/entities/ingredient.dart';
 
 abstract class IProductRepository {
   /// Get all products (paginated or stream)

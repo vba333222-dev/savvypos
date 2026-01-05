@@ -18,22 +18,34 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$InventoryManagementEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Product product, File? imageFile) addProduct,
-    required TResult Function(Product product, File? imageFile) updateProduct,
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        addProduct,
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        updateProduct,
     required TResult Function(String uuid) deleteProduct,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Product product, File? imageFile)? addProduct,
-    TResult? Function(Product product, File? imageFile)? updateProduct,
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
     TResult? Function(String uuid)? deleteProduct,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Product product, File? imageFile)? addProduct,
-    TResult Function(Product product, File? imageFile)? updateProduct,
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
     TResult Function(String uuid)? deleteProduct,
     required TResult orElse(),
   }) =>
@@ -90,7 +102,8 @@ abstract class _$$AddProductImplCopyWith<$Res> {
           _$AddProductImpl value, $Res Function(_$AddProductImpl) then) =
       __$$AddProductImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Product product, File? imageFile});
+  $Res call(
+      {Product product, File? imageFile, List<String>? modifierGroupUuids});
 }
 
 /// @nodoc
@@ -108,6 +121,7 @@ class __$$AddProductImplCopyWithImpl<$Res>
   $Res call({
     Object? product = null,
     Object? imageFile = freezed,
+    Object? modifierGroupUuids = freezed,
   }) {
     return _then(_$AddProductImpl(
       null == product
@@ -118,6 +132,10 @@ class __$$AddProductImplCopyWithImpl<$Res>
           ? _value.imageFile
           : imageFile // ignore: cast_nullable_to_non_nullable
               as File?,
+      modifierGroupUuids: freezed == modifierGroupUuids
+          ? _value._modifierGroupUuids
+          : modifierGroupUuids // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -125,16 +143,28 @@ class __$$AddProductImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$AddProductImpl implements _AddProduct {
-  const _$AddProductImpl(this.product, this.imageFile);
+  const _$AddProductImpl(this.product, this.imageFile,
+      {final List<String>? modifierGroupUuids})
+      : _modifierGroupUuids = modifierGroupUuids;
 
   @override
   final Product product;
   @override
   final File? imageFile;
+  final List<String>? _modifierGroupUuids;
+  @override
+  List<String>? get modifierGroupUuids {
+    final value = _modifierGroupUuids;
+    if (value == null) return null;
+    if (_modifierGroupUuids is EqualUnmodifiableListView)
+      return _modifierGroupUuids;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'InventoryManagementEvent.addProduct(product: $product, imageFile: $imageFile)';
+    return 'InventoryManagementEvent.addProduct(product: $product, imageFile: $imageFile, modifierGroupUuids: $modifierGroupUuids)';
   }
 
   @override
@@ -144,11 +174,14 @@ class _$AddProductImpl implements _AddProduct {
             other is _$AddProductImpl &&
             (identical(other.product, product) || other.product == product) &&
             (identical(other.imageFile, imageFile) ||
-                other.imageFile == imageFile));
+                other.imageFile == imageFile) &&
+            const DeepCollectionEquality()
+                .equals(other._modifierGroupUuids, _modifierGroupUuids));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, product, imageFile);
+  int get hashCode => Object.hash(runtimeType, product, imageFile,
+      const DeepCollectionEquality().hash(_modifierGroupUuids));
 
   /// Create a copy of InventoryManagementEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -161,33 +194,45 @@ class _$AddProductImpl implements _AddProduct {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Product product, File? imageFile) addProduct,
-    required TResult Function(Product product, File? imageFile) updateProduct,
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        addProduct,
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        updateProduct,
     required TResult Function(String uuid) deleteProduct,
   }) {
-    return addProduct(product, imageFile);
+    return addProduct(product, imageFile, modifierGroupUuids);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Product product, File? imageFile)? addProduct,
-    TResult? Function(Product product, File? imageFile)? updateProduct,
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
     TResult? Function(String uuid)? deleteProduct,
   }) {
-    return addProduct?.call(product, imageFile);
+    return addProduct?.call(product, imageFile, modifierGroupUuids);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Product product, File? imageFile)? addProduct,
-    TResult Function(Product product, File? imageFile)? updateProduct,
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
     TResult Function(String uuid)? deleteProduct,
     required TResult orElse(),
   }) {
     if (addProduct != null) {
-      return addProduct(product, imageFile);
+      return addProduct(product, imageFile, modifierGroupUuids);
     }
     return orElse();
   }
@@ -228,11 +273,12 @@ class _$AddProductImpl implements _AddProduct {
 }
 
 abstract class _AddProduct implements InventoryManagementEvent {
-  const factory _AddProduct(final Product product, final File? imageFile) =
-      _$AddProductImpl;
+  const factory _AddProduct(final Product product, final File? imageFile,
+      {final List<String>? modifierGroupUuids}) = _$AddProductImpl;
 
   Product get product;
   File? get imageFile;
+  List<String>? get modifierGroupUuids;
 
   /// Create a copy of InventoryManagementEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -247,7 +293,8 @@ abstract class _$$UpdateProductImplCopyWith<$Res> {
           _$UpdateProductImpl value, $Res Function(_$UpdateProductImpl) then) =
       __$$UpdateProductImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Product product, File? imageFile});
+  $Res call(
+      {Product product, File? imageFile, List<String>? modifierGroupUuids});
 }
 
 /// @nodoc
@@ -265,6 +312,7 @@ class __$$UpdateProductImplCopyWithImpl<$Res>
   $Res call({
     Object? product = null,
     Object? imageFile = freezed,
+    Object? modifierGroupUuids = freezed,
   }) {
     return _then(_$UpdateProductImpl(
       null == product
@@ -275,6 +323,10 @@ class __$$UpdateProductImplCopyWithImpl<$Res>
           ? _value.imageFile
           : imageFile // ignore: cast_nullable_to_non_nullable
               as File?,
+      modifierGroupUuids: freezed == modifierGroupUuids
+          ? _value._modifierGroupUuids
+          : modifierGroupUuids // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -282,16 +334,28 @@ class __$$UpdateProductImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$UpdateProductImpl implements _UpdateProduct {
-  const _$UpdateProductImpl(this.product, this.imageFile);
+  const _$UpdateProductImpl(this.product, this.imageFile,
+      {final List<String>? modifierGroupUuids})
+      : _modifierGroupUuids = modifierGroupUuids;
 
   @override
   final Product product;
   @override
   final File? imageFile;
+  final List<String>? _modifierGroupUuids;
+  @override
+  List<String>? get modifierGroupUuids {
+    final value = _modifierGroupUuids;
+    if (value == null) return null;
+    if (_modifierGroupUuids is EqualUnmodifiableListView)
+      return _modifierGroupUuids;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'InventoryManagementEvent.updateProduct(product: $product, imageFile: $imageFile)';
+    return 'InventoryManagementEvent.updateProduct(product: $product, imageFile: $imageFile, modifierGroupUuids: $modifierGroupUuids)';
   }
 
   @override
@@ -301,11 +365,14 @@ class _$UpdateProductImpl implements _UpdateProduct {
             other is _$UpdateProductImpl &&
             (identical(other.product, product) || other.product == product) &&
             (identical(other.imageFile, imageFile) ||
-                other.imageFile == imageFile));
+                other.imageFile == imageFile) &&
+            const DeepCollectionEquality()
+                .equals(other._modifierGroupUuids, _modifierGroupUuids));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, product, imageFile);
+  int get hashCode => Object.hash(runtimeType, product, imageFile,
+      const DeepCollectionEquality().hash(_modifierGroupUuids));
 
   /// Create a copy of InventoryManagementEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -318,33 +385,45 @@ class _$UpdateProductImpl implements _UpdateProduct {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Product product, File? imageFile) addProduct,
-    required TResult Function(Product product, File? imageFile) updateProduct,
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        addProduct,
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        updateProduct,
     required TResult Function(String uuid) deleteProduct,
   }) {
-    return updateProduct(product, imageFile);
+    return updateProduct(product, imageFile, modifierGroupUuids);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Product product, File? imageFile)? addProduct,
-    TResult? Function(Product product, File? imageFile)? updateProduct,
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
     TResult? Function(String uuid)? deleteProduct,
   }) {
-    return updateProduct?.call(product, imageFile);
+    return updateProduct?.call(product, imageFile, modifierGroupUuids);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Product product, File? imageFile)? addProduct,
-    TResult Function(Product product, File? imageFile)? updateProduct,
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
     TResult Function(String uuid)? deleteProduct,
     required TResult orElse(),
   }) {
     if (updateProduct != null) {
-      return updateProduct(product, imageFile);
+      return updateProduct(product, imageFile, modifierGroupUuids);
     }
     return orElse();
   }
@@ -385,11 +464,12 @@ class _$UpdateProductImpl implements _UpdateProduct {
 }
 
 abstract class _UpdateProduct implements InventoryManagementEvent {
-  const factory _UpdateProduct(final Product product, final File? imageFile) =
-      _$UpdateProductImpl;
+  const factory _UpdateProduct(final Product product, final File? imageFile,
+      {final List<String>? modifierGroupUuids}) = _$UpdateProductImpl;
 
   Product get product;
   File? get imageFile;
+  List<String>? get modifierGroupUuids;
 
   /// Create a copy of InventoryManagementEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -466,8 +546,12 @@ class _$DeleteProductImpl implements _DeleteProduct {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Product product, File? imageFile) addProduct,
-    required TResult Function(Product product, File? imageFile) updateProduct,
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        addProduct,
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        updateProduct,
     required TResult Function(String uuid) deleteProduct,
   }) {
     return deleteProduct(uuid);
@@ -476,8 +560,12 @@ class _$DeleteProductImpl implements _DeleteProduct {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Product product, File? imageFile)? addProduct,
-    TResult? Function(Product product, File? imageFile)? updateProduct,
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
     TResult? Function(String uuid)? deleteProduct,
   }) {
     return deleteProduct?.call(uuid);
@@ -486,8 +574,12 @@ class _$DeleteProductImpl implements _DeleteProduct {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Product product, File? imageFile)? addProduct,
-    TResult Function(Product product, File? imageFile)? updateProduct,
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
     TResult Function(String uuid)? deleteProduct,
     required TResult orElse(),
   }) {

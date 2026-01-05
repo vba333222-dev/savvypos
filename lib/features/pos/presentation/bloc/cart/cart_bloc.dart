@@ -61,16 +61,71 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   
   void _onAddProduct(_AddProduct event, Emitter<CartState> emit) {
     _sound.playBeep();
-    // ... existing logic manually or just assume we modify handling code if we had it shown.
-    // Since I hid handlers in previous view, I need to know where they are.
-    // Actually I can't inject code into hidden handlers. I should have viewed them.
-    // However, I can override the handler registration or use BlocListener in UI.
-    // Use BlocListener in UI? No, requirement says "Call playBeep() when adding items". 
-    // Best place is inside the bloc handler.
-    // I will use multi_replace to find it or just trust I can append it.
-    // Wait, the file I viewed had `// ... (Other handlers unchanged)`. 
-    // I need to view the full file to edit those handlers.
-    // I will skip editing handlers blindly. I will view the file fully first.
+    
+    final existingIndex = state.items.indexWhere((item) => 
+        item.product.uuid == event.product.uuid && 
+        _areModifiersEqual(item.modifiers, event.modifiers));
+
+    List<CartItem> updatedItems;
+    
+    if (existingIndex != -1) {
+      // Update Quantity
+      final existingItem = state.items[existingIndex];
+      final newQuantity = existingItem.quantity + 1;
+      
+      // Recalc Item Total
+      final unitPrice = event.product.price + event.modifiers.fold(0.0, (sum, m) => sum + m.priceDelta);
+      final newTotal = unitPrice * newQuantity;
+
+      updatedItems = List.from(state.items);
+      updatedItems[existingIndex] = existingItem.copyWith(quantity: newQuantity, total: newTotal);
+    } else {
+      // Add New
+      final unitPrice = event.product.price + event.modifiers.fold(0.0, (sum, m) => sum + m.priceDelta);
+      updatedItems = List.from(state.items)..add(CartItem(
+        uuid: _uuid.v4(),
+        product: event.product,
+        quantity: 1,
+        total: unitPrice,
+        modifiers: event.modifiers,
+      ));
+    }
+
+    emit(_calculateTotals(updatedItems));
+  }
+
+  void _onUpdateQuantity(_UpdateQuantity event, Emitter<CartState> emit) {
+    if (event.quantity <= 0) {
+      add(CartEvent.removeFromCart(event.itemUuid));
+      return;
+    }
+
+    final updatedItems = state.items.map((item) {
+      if (item.uuid == event.itemUuid) {
+        // Recalc Total
+        final unitPrice = item.product.price + item.modifiers.fold(0.0, (sum, m) => sum + m.priceDelta);
+        return item.copyWith(
+          quantity: event.quantity,
+          total: unitPrice * event.quantity,
+        );
+      }
+      return item;
+    }).toList();
+
+    emit(_calculateTotals(updatedItems));
+  }
+
+  void _onRemoveFromCart(_RemoveFromCart event, Emitter<CartState> emit) {
+    final updatedItems = state.items.where((item) => item.uuid != event.itemUuid).toList();
+    emit(_calculateTotals(updatedItems));
+  }
+
+  bool _areModifiersEqual(List<ModifierItem> a, List<ModifierItem> b) {
+    if (a.length != b.length) return false;
+    // Simple check: Sort by UUID and match? Or just containsAll?
+    final aIds = a.map((e) => e.uuid).toSet();
+    final bIds = b.map((e) => e.uuid).toSet();
+    return aIds.containsAll(bIds) && bIds.containsAll(aIds);
   }
 
   Future<void> _onCheckoutProcessed(_CheckoutProcessed event, Emitter<CartState> emit) async {
@@ -119,15 +174,33 @@ class CartBloc extends Bloc<CartEvent, CartState> {
              createdAt: now,
            ));
 
-           await db.into(db.inventoryLedgerTable).insert(InventoryLedgerTableCompanion.insert(
-             uuid: _uuid.v4(),
-             productUuid: item.product.uuid,
-             referenceId: orderUuid,
-             type: 'SALE',
-             quantityChange: -item.quantity, 
-             snapshotCost: 0.0, 
-             createdAt: now,
-           ));
+           if (item.product.isComposite) {
+              // Deduct Ingredients
+              final recipeItems = await (db.select(db.recipeTable)..where((r) => r.productUuid.equals(item.product.uuid))).get();
+              for (final r in recipeItems) {
+                 final qtyToDeduct = r.quantityRequired * item.quantity;
+                 
+                 final ingredient = await (db.select(db.ingredientTable)..where((i) => i.uuid.equals(r.ingredientUuid))).getSingleOrNull();
+                 if (ingredient != null) {
+                    await (db.update(db.ingredientTable)..where((i) => i.uuid.equals(ingredient.uuid))).write(
+                       IngredientTableCompanion(
+                          currentStock: Value(ingredient.currentStock - qtyToDeduct)
+                       )
+                    );
+                 }
+              }
+           } else {
+             // Deduct Product Stock via Ledger
+             await db.into(db.inventoryLedgerTable).insert(InventoryLedgerTableCompanion.insert(
+               uuid: _uuid.v4(),
+               productUuid: item.product.uuid,
+               referenceId: orderUuid,
+               type: 'SALE',
+               quantityChange: -item.quantity.toDouble(), 
+               snapshotCost: 0.0, 
+               createdAt: now,
+             ));
+           }
         }
 
         // 3. Create Sync Queue Entry

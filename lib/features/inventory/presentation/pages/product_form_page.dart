@@ -9,6 +9,9 @@ import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:savvy_pos/features/inventory/presentation/bloc/inventory_management_bloc.dart';
 import 'package:uuid/uuid.dart';
+import 'package:savvy_pos/features/inventory/presentation/pages/recipe_setup_page.dart';
+import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
+import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
 
 class ProductFormPage extends StatefulWidget {
   final Product? product;
@@ -24,35 +27,61 @@ class _ProductFormPageState extends State<ProductFormPage> {
   late TextEditingController _nameCtrl;
   late TextEditingController _skuCtrl;
   late TextEditingController _priceCtrl;
-  late TextEditingController _costCtrl;
+  // late TextEditingController _costCtrl; // Skipped
   
   bool _trackStock = true;
   bool _isService = false;
+  bool _isComposite = false; // BoH
   String _printerCategory = 'OTHER';
   File? _imageFile;
+  
+  // BoH State
+  String _productUuid = '';
+  List<ModifierGroup> _allModifierGroups = [];
+  Set<String> _selectedModifierGroupUuids = {};
+  bool _isLoadingModifiers = true;
   
   @override
   void initState() {
     super.initState();
     final p = widget.product;
+    _productUuid = p?.uuid ?? const Uuid().v4();
+    
     _nameCtrl = TextEditingController(text: p?.name);
     _skuCtrl = TextEditingController(text: p?.sku);
     _priceCtrl = TextEditingController(text: p?.price.toString());
-    _costCtrl = TextEditingController(text: "0.0"); // Entity missing costPrice, assuming 0 or add to Entity
-    // Checking Product Entity -> It has costPrice but repo mapping might not?
-    // Let's assume Entity has it based on Table definition, but I need to check Entity class.
-    // If Entity doesn't have costPrice, I can't bind it.
-    // Checking previous steps... Product Entity in implementation_plan or such?
-    // Code snippet for repository showed:
-    // Product(uuid, name, sku, price, imageUrl, colorHex, categoryId, trackStock, isService)
-    // It did NOT show costPrice in the _mapToDomain. 
-    // So I will skip Cost Price in the Form for now to be safe with compilation.
     
     _trackStock = p?.trackStock ?? true;
     _isService = p?.isService ?? false;
+    _isComposite = p?.isComposite ?? false;
     _printerCategory = p?.printerCategory ?? 'OTHER';
     if (p?.imageUrl != null) {
       _imageFile = File(p!.imageUrl!);
+    }
+    
+    _loadBoHData();
+  }
+
+  Future<void> _loadBoHData() async {
+    try {
+      final repo = GetIt.I<IProductRepository>();
+      final allGroups = await repo.getModifierGroups();
+      
+      // If editing, get linked groups
+      List<ModifierGroup> linkedGroups = [];
+      if (widget.product != null) {
+         linkedGroups = await repo.getModifiersForProduct(widget.product!.uuid);
+      }
+      
+      if (mounted) {
+        setState(() {
+          _allModifierGroups = allGroups;
+          _selectedModifierGroupUuids = linkedGroups.map((g) => g.uuid).toSet();
+          _isLoadingModifiers = false;
+        });
+      }
+    } catch (e) {
+      // Handle error
     }
   }
 
@@ -64,7 +93,6 @@ class _ProductFormPageState extends State<ProductFormPage> {
         setState(() => _imageFile = File(picked.path));
       }
     } catch (e) {
-      // Handle permission error
       if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Failed to pick image')));
     }
   }
@@ -103,7 +131,6 @@ class _ProductFormPageState extends State<ProductFormPage> {
                     icon: const Icon(Icons.delete),
                     color: colors.stateError,
                     onPressed: () {
-                      // Confirm dialog
                       showDialog(
                         context: context,
                         builder: (_) => AlertDialog(
@@ -169,6 +196,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                           child: TextFormField(
                             controller: _skuCtrl,
                             decoration: const InputDecoration(labelText: 'SKU', border: OutlineInputBorder()),
+                            // validator: (v) => v?.isEmpty == true ? 'Required' : null, // SKU optional?
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -200,6 +228,60 @@ class _ProductFormPageState extends State<ProductFormPage> {
                       value: _isService,
                       onChanged: (v) => setState(() => _isService = v),
                     ),
+                    
+                    // BoH Fields
+                    const Divider(),
+                    SwitchListTile(
+                      title: const Text('Composite Product (Made of Ingredients)'),
+                      subtitle: const Text('Stocks deducted from recipe ingredients'),
+                      value: _isComposite,
+                      onChanged: (v) => setState(() => _isComposite = v),
+                    ),
+                    
+                    if (_isComposite)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0, bottom: 16.0),
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                             // Must save product first logic? 
+                             // Or just pass dummy product object to page, but page needs repo queries.
+                             // Best: Pass Product with Current UUID.
+                             // If product not saved in DB, linking recipe might fail FK constraints (Recipe Table -> Product).
+                             // So user MUST save product first.
+                             if (widget.product == null) {
+                               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please save product first to manage recipe.')));
+                               return;
+                             }
+                             Navigator.push(context, MaterialPageRoute(
+                               builder: (_) => RecipeSetupPage(product: widget.product!)
+                             ));
+                          }, 
+                          icon: const Icon(Icons.restaurant_menu),
+                          label: const Text('Manage Recipe'),
+                        ),
+                      ),
+
+                    const SizedBox(height: 16),
+                    Text('Modifiers', style: TextStyle(fontWeight: FontWeight.bold, color: colors.textPrimary)),
+                    if (_isLoadingModifiers) const LinearProgressIndicator(),
+                    ..._allModifierGroups.map((group) {
+                       final isSelected = _selectedModifierGroupUuids.contains(group.uuid);
+                       return CheckboxListTile(
+                         title: Text(group.name),
+                         subtitle: Text('${group.items.length} items'),
+                         value: isSelected,
+                         onChanged: (val) {
+                           setState(() {
+                             if (val == true) {
+                               _selectedModifierGroupUuids.add(group.uuid);
+                             } else {
+                               _selectedModifierGroupUuids.remove(group.uuid);
+                             }
+                           });
+                         },
+                       );
+                    }).toList(),
+
                     SizedBox(height: shapes.spacingMd),
                     DropdownButtonFormField<String>(
                       value: _printerCategory,
@@ -220,25 +302,34 @@ class _ProductFormPageState extends State<ProductFormPage> {
                         onPressed: isLoading ? null : () {
                           if (_formKey.currentState!.validate()) {
                             final product = Product(
-                              uuid: widget.product?.uuid ?? '',
+                              uuid: _productUuid, // Use pre-generated or existing
                               name: _nameCtrl.text,
                               sku: _skuCtrl.text,
                               price: double.parse(_priceCtrl.text),
-                              imageUrl: widget.product?.imageUrl, // Will be updated by Bloc logic if file provided
+                              imageUrl: widget.product?.imageUrl, 
                               colorHex: null,
                               categoryId: 'default',
                               trackStock: _trackStock,
                               isService: _isService,
+                              isComposite: _isComposite,
                               printerCategory: _printerCategory,
                             );
                             
                             if (widget.product == null) {
                                context.read<InventoryManagementBloc>().add(
-                                 InventoryManagementEvent.addProduct(product, _imageFile)
+                                 InventoryManagementEvent.addProduct(
+                                    product, 
+                                    _imageFile, 
+                                    modifierGroupUuids: _selectedModifierGroupUuids.toList()
+                                 )
                                );
                             } else {
                                context.read<InventoryManagementBloc>().add(
-                                 InventoryManagementEvent.updateProduct(product, _imageFile)
+                                 InventoryManagementEvent.updateProduct(
+                                    product, 
+                                    _imageFile,
+                                    modifierGroupUuids: _selectedModifierGroupUuids.toList()
+                                 )
                                );
                             }
                           }

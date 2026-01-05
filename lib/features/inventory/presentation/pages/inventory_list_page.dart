@@ -7,6 +7,8 @@ import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
 import 'package:savvy_pos/features/inventory/presentation/bloc/inventory_management_bloc.dart';
+import 'package:savvy_pos/features/inventory/presentation/pages/modifier_group_page.dart';
+import 'package:savvy_pos/features/inventory/presentation/pages/ingredient_list_page.dart';
 import 'package:savvy_pos/features/inventory/presentation/pages/product_form_page.dart';
 
 class InventoryListPage extends StatelessWidget {
@@ -41,6 +43,24 @@ class _InventoryListView extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Inventory Management'),
         backgroundColor: colors.bgPrimary,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.list_alt),
+            tooltip: 'Modifier Groups',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ModifierGroupPage()),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.kitchen),
+            tooltip: 'Ingredients',
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const IngredientListPage()),
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(

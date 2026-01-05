@@ -10,6 +10,7 @@ class Product extends Equatable {
   final String categoryId;
   final bool trackStock;
   final bool isService;
+  final bool isComposite; // Added
 
   const Product({
     required this.uuid,
@@ -20,8 +21,8 @@ class Product extends Equatable {
     this.colorHex,
     required this.categoryId,
     required this.trackStock,
-    required this.trackStock,
-    this.isService = false,
+    required this.isService,
+    this.isComposite = false, // Added
     this.printerCategory = 'OTHER',
   });
   

@@ -14,8 +14,8 @@ part 'inventory_management_bloc.freezed.dart';
 
 @freezed
 class InventoryManagementEvent with _$InventoryManagementEvent {
-  const factory InventoryManagementEvent.addProduct(Product product, File? imageFile) = _AddProduct;
-  const factory InventoryManagementEvent.updateProduct(Product product, File? imageFile) = _UpdateProduct;
+  const factory InventoryManagementEvent.addProduct(Product product, File? imageFile, {List<String>? modifierGroupUuids}) = _AddProduct;
+  const factory InventoryManagementEvent.updateProduct(Product product, File? imageFile, {List<String>? modifierGroupUuids}) = _UpdateProduct;
   const factory InventoryManagementEvent.deleteProduct(String uuid) = _DeleteProduct;
 }
 
@@ -58,12 +58,18 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
         imagePath = await _saveImage(event.imageFile);
       }
 
+      final uuid = event.product.uuid.isEmpty ? _uuid.v4() : event.product.uuid;
       final product = event.product.copyWith(
-        uuid: event.product.uuid.isEmpty ? _uuid.v4() : event.product.uuid,
+        uuid: uuid,
         imageUrl: imagePath,
       );
 
       await _repository.saveProduct(product);
+      
+      if (event.modifierGroupUuids != null) {
+        await _repository.updateProductModifiers(uuid, event.modifierGroupUuids!);
+      }
+      
       emit(const InventoryManagementState.success());
     } catch (e) {
       emit(InventoryManagementState.error(e.toString()));
@@ -80,6 +86,11 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
 
       final product = event.product.copyWith(imageUrl: imagePath);
       await _repository.saveProduct(product);
+      
+      if (event.modifierGroupUuids != null) {
+         await _repository.updateProductModifiers(product.uuid, event.modifierGroupUuids!);
+      }
+      
       emit(const InventoryManagementState.success());
     } catch (e) {
       emit(InventoryManagementState.error(e.toString()));

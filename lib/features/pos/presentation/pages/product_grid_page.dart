@@ -8,6 +8,12 @@ import 'package:savvy_pos/features/inventory/domain/usecases/get_products.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/product/product_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/product_card.dart';
 import 'package:savvy_pos/bootstrap.dart'; // Access global db for now
+import 'package:get_it/get_it.dart';
+import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
+import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
+import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
+import 'package:savvy_pos/features/pos/presentation/widgets/product_modifier_dialog.dart';
+import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
 
 class ProductGridPage extends StatelessWidget {
   const ProductGridPage({super.key});
@@ -70,10 +76,32 @@ class ProductGridView extends StatelessWidget {
               ),
               itemCount: state.products.length,
               itemBuilder: (context, index) {
+                final product = state.products[index];
                 return ProductCard(
-                  product: state.products[index],
-                  onTap: () {
-                    // Add to cart logic later
+                  product: product,
+                  onTap: () async {
+                     // Check Modifiers
+                     try {
+                        final modifiers = await GetIt.I<IProductRepository>().getModifiersForProduct(product.uuid);
+                        if (!context.mounted) return;
+
+                        if (modifiers.isEmpty) {
+                          context.read<CartBloc>().add(CartEvent.addProduct(product));
+                        } else {
+                          // Show Dialog
+                          final result = await showDialog<List<ModifierItem>>(
+                            context: context,
+                            builder: (_) => ProductModifierDialog(product: product),
+                          );
+                          
+                          if (result != null && context.mounted) {
+                            context.read<CartBloc>().add(CartEvent.addProduct(product, modifiers: result));
+                          }
+                        }
+                     } catch (e) {
+                       // Fallback or Toast?
+                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error loading options: $e')));
+                     }
                   },
                 );
               },

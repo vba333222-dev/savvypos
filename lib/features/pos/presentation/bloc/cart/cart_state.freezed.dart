@@ -16,11 +16,13 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$CartItem {
+  String get uuid =>
+      throw _privateConstructorUsedError; // Unique ID for this line item (to distinguish variants)
   Product get product => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
-  int get quantity => throw _privateConstructorUsedError;
   double get total =>
-      throw _privateConstructorUsedError; // price * quantity - discount
+      throw _privateConstructorUsedError; // (price + modifiers) * quantity - discount
+  List<ModifierItem> get modifiers => throw _privateConstructorUsedError;
   String? get note => throw _privateConstructorUsedError;
 
   /// Create a copy of CartItem
@@ -36,10 +38,11 @@ abstract class $CartItemCopyWith<$Res> {
       _$CartItemCopyWithImpl<$Res, CartItem>;
   @useResult
   $Res call(
-      {Product product,
-      int quantity,
+      {String uuid,
+      Product product,
       int quantity,
       double total,
+      List<ModifierItem> modifiers,
       String? note});
 }
 
@@ -58,13 +61,18 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? uuid = null,
     Object? product = null,
     Object? quantity = null,
-    Object? quantity = null,
     Object? total = null,
+    Object? modifiers = null,
     Object? note = freezed,
   }) {
     return _then(_value.copyWith(
+      uuid: null == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String,
       product: null == product
           ? _value.product
           : product // ignore: cast_nullable_to_non_nullable
@@ -73,14 +81,14 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as int,
-      quantity: null == quantity
-          ? _value.quantity
-          : quantity // ignore: cast_nullable_to_non_nullable
-              as int,
       total: null == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as double,
+      modifiers: null == modifiers
+          ? _value.modifiers
+          : modifiers // ignore: cast_nullable_to_non_nullable
+              as List<ModifierItem>,
       note: freezed == note
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
@@ -98,10 +106,11 @@ abstract class _$$CartItemImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {Product product,
-      int quantity,
+      {String uuid,
+      Product product,
       int quantity,
       double total,
+      List<ModifierItem> modifiers,
       String? note});
 }
 
@@ -118,13 +127,18 @@ class __$$CartItemImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? uuid = null,
     Object? product = null,
     Object? quantity = null,
-    Object? quantity = null,
     Object? total = null,
+    Object? modifiers = null,
     Object? note = freezed,
   }) {
     return _then(_$CartItemImpl(
+      uuid: null == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String,
       product: null == product
           ? _value.product
           : product // ignore: cast_nullable_to_non_nullable
@@ -133,14 +147,14 @@ class __$$CartItemImplCopyWithImpl<$Res>
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as int,
-      quantity: null == quantity
-          ? _value.quantity
-          : quantity // ignore: cast_nullable_to_non_nullable
-              as int,
       total: null == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as double,
+      modifiers: null == modifiers
+          ? _value._modifiers
+          : modifiers // ignore: cast_nullable_to_non_nullable
+              as List<ModifierItem>,
       note: freezed == note
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
@@ -153,27 +167,40 @@ class __$$CartItemImplCopyWithImpl<$Res>
 
 class _$CartItemImpl implements _CartItem {
   const _$CartItemImpl(
-      {required this.product,
-      required this.quantity,
+      {required this.uuid,
+      required this.product,
       required this.quantity,
       required this.total,
-      this.note});
+      final List<ModifierItem> modifiers = const [],
+      this.note})
+      : _modifiers = modifiers;
 
+  @override
+  final String uuid;
+// Unique ID for this line item (to distinguish variants)
   @override
   final Product product;
   @override
   final int quantity;
   @override
-  final int quantity;
-  @override
   final double total;
-// price * quantity - discount
+// (price + modifiers) * quantity - discount
+  final List<ModifierItem> _modifiers;
+// (price + modifiers) * quantity - discount
+  @override
+  @JsonKey()
+  List<ModifierItem> get modifiers {
+    if (_modifiers is EqualUnmodifiableListView) return _modifiers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_modifiers);
+  }
+
   @override
   final String? note;
 
   @override
   String toString() {
-    return 'CartItem(product: $product, quantity: $quantity, quantity: $quantity, total: $total, note: $note)';
+    return 'CartItem(uuid: $uuid, product: $product, quantity: $quantity, total: $total, modifiers: $modifiers, note: $note)';
   }
 
   @override
@@ -181,18 +208,19 @@ class _$CartItemImpl implements _CartItem {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CartItemImpl &&
+            (identical(other.uuid, uuid) || other.uuid == uuid) &&
             (identical(other.product, product) || other.product == product) &&
             (identical(other.quantity, quantity) ||
                 other.quantity == quantity) &&
-            (identical(other.quantity, quantity) ||
-                other.quantity == quantity) &&
             (identical(other.total, total) || other.total == total) &&
+            const DeepCollectionEquality()
+                .equals(other._modifiers, _modifiers) &&
             (identical(other.note, note) || other.note == note));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, product, quantity, quantity, total, note);
+  int get hashCode => Object.hash(runtimeType, uuid, product, quantity, total,
+      const DeepCollectionEquality().hash(_modifiers), note);
 
   /// Create a copy of CartItem
   /// with the given fields replaced by the non-null parameter values.
@@ -205,20 +233,23 @@ class _$CartItemImpl implements _CartItem {
 
 abstract class _CartItem implements CartItem {
   const factory _CartItem(
-      {required final Product product,
-      required final int quantity,
+      {required final String uuid,
+      required final Product product,
       required final int quantity,
       required final double total,
+      final List<ModifierItem> modifiers,
       final String? note}) = _$CartItemImpl;
 
+  @override
+  String get uuid; // Unique ID for this line item (to distinguish variants)
   @override
   Product get product;
   @override
   int get quantity;
   @override
-  int get quantity;
+  double get total; // (price + modifiers) * quantity - discount
   @override
-  double get total; // price * quantity - discount
+  List<ModifierItem> get modifiers;
   @override
   String? get note;
 

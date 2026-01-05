@@ -11,7 +11,6 @@ part 'database.g.dart';
 @lazySingleton
 @DriftDatabase(tables: [
   TenantConfigTable,
-  TenantConfigTable,
   ProductTable,
   CustomerTable,
   OrderTable,
@@ -23,12 +22,18 @@ part 'database.g.dart';
   EmployeeTable,
   RestaurantTable,
   ReservationTable,
+  // v9 BoH
+  ModifierGroupTable,
+  ModifierItemTable,
+  ProductModifierLinkTable,
+  IngredientTable,
+  RecipeTable,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 8;
+  int get schemaVersion => 9;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -55,12 +60,6 @@ class AppDatabase extends _$AppDatabase {
         await m.addColumn(orderTable, orderTable.tenderedAmount);
       }
       if (from < 4) {
-        // We might have created staffTable before, but user wants EmployeeTable now.
-        // We will ignore staffTable if it exists or let it be.
-        // If we are strictly following flow, we might rename it or just create new one.
-        // Let's create `employeeTable`.
-        // Note: If staffTable was created in v4, we should drop it or migrate data. 
-        // For this task, we assume fresh or "just works" forward migration.
         await m.createTable(employeeTable);
          await into(employeeTable).insert(EmployeeTableCompanion.insert(
            uuid: 'owner-001',
@@ -71,11 +70,6 @@ class AppDatabase extends _$AppDatabase {
          ));
       }
       if (from < 5) {
-         // If coming from v4 (StaffTable existed), we create EmployeeTable.
-         // Effectively same as above block but explicit for v5 bump.
-         // Check if table exists? createTable checks? No, createTable throws if exists.
-         // We'll trust Drift to handle ifNotExists or we wrap. 
-         // But simplest is just:
          await m.createTable(employeeTable);
          await into(employeeTable).insert(EmployeeTableCompanion.insert(
            uuid: 'owner-001',
@@ -87,8 +81,7 @@ class AppDatabase extends _$AppDatabase {
       }
        if (from < 6) {
          await m.createTable(restaurantTable);
-         // Optionally seed some tables?
-         // Let's seed 6 default tables for easy demo
+         // Seed Default Tables
          final tables = [
            (name: 'T1', x: 0.1, y: 0.1),
            (name: 'T2', x: 0.4, y: 0.1),
@@ -113,6 +106,15 @@ class AppDatabase extends _$AppDatabase {
        }
        if (from < 8) {
          await m.createTable(reservationTable);
+       }
+       if (from < 9) {
+         // BoH Migration
+         await m.addColumn(productTable, productTable.isComposite);
+         await m.createTable(modifierGroupTable);
+         await m.createTable(modifierItemTable);
+         await m.createTable(productModifierLinkTable);
+         await m.createTable(ingredientTable);
+         await m.createTable(recipeTable);
        }
     },
   );

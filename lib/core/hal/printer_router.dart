@@ -117,26 +117,21 @@ class PrinterRouter {
         // Qty x Name
         String line = "${item.quantity}x ${item.product.name}";
         if (showPrices) {
-             // Pad to align price right
-             // line += " ... \$${item.total}"; 
              buffer.writeln(line);
-             buffer.writeln("   @ \$${item.product.price} = \$${item.total}");
+             buffer.writeln("   @ \$${item.product.price.toStringAsFixed(2)} = \$${item.total.toStringAsFixed(2)}");
         } else {
              buffer.writeln(line);
         }
         
-        // Notes
-        // Check `note`? CartItem doesn't have `note` property directly on itself?
-        // Wait, `CartItem` usually has `note` if we added it?
-        // Step 1025 `PrinterRouter` showed: `if (item.product.note != null)`.
-        // But `product.note` is description?
-        // Requirement Task 1: "Add notes column to OrderItemTable". "Save note to CartItem".
-        // So `CartItem` must have `note` field.
-        // I will need to check `CartItem` definition.
-        // Assuming I will add `note` to `CartItem` model.
-        // For now, I will optimistically access `item.note`. (Will fix CartItem model next)
+        // Modifiers
+        if (item.modifiers.isNotEmpty) {
+           for (final m in item.modifiers) {
+              buffer.writeln("    + ${m.name}");
+           }
+        }
         
-        if (item.note != null && item.note!.isNotEmpty) buffer.writeln("  [NOTE]: ${item.note}");
+        // Notes
+        if (item.note != null && item.note!.isNotEmpty) buffer.writeln("    [NOTE]: ${item.note}");
       }
       buffer.writeln("--------------------------------");
       buffer.writeln("\n\n");

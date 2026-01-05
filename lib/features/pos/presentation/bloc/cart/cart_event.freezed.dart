@@ -18,9 +18,10 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$CartEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Product product) addProduct,
-    required TResult Function(String productUuid, int quantity) updateQuantity,
-    required TResult Function(String productUuid) removeFromCart,
+    required TResult Function(Product product, List<ModifierItem> modifiers)
+        addProduct,
+    required TResult Function(String itemUuid, int quantity) updateQuantity,
+    required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
@@ -36,9 +37,10 @@ mixin _$CartEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Product product)? addProduct,
-    TResult? Function(String productUuid, int quantity)? updateQuantity,
-    TResult? Function(String productUuid)? removeFromCart,
+    TResult? Function(Product product, List<ModifierItem> modifiers)?
+        addProduct,
+    TResult? Function(String itemUuid, int quantity)? updateQuantity,
+    TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
@@ -54,9 +56,9 @@ mixin _$CartEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Product product)? addProduct,
-    TResult Function(String productUuid, int quantity)? updateQuantity,
-    TResult Function(String productUuid)? removeFromCart,
+    TResult Function(Product product, List<ModifierItem> modifiers)? addProduct,
+    TResult Function(String itemUuid, int quantity)? updateQuantity,
+    TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
@@ -144,7 +146,7 @@ abstract class _$$AddProductImplCopyWith<$Res> {
           _$AddProductImpl value, $Res Function(_$AddProductImpl) then) =
       __$$AddProductImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Product product});
+  $Res call({Product product, List<ModifierItem> modifiers});
 }
 
 /// @nodoc
@@ -161,12 +163,17 @@ class __$$AddProductImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? product = null,
+    Object? modifiers = null,
   }) {
     return _then(_$AddProductImpl(
       null == product
           ? _value.product
           : product // ignore: cast_nullable_to_non_nullable
               as Product,
+      modifiers: null == modifiers
+          ? _value._modifiers
+          : modifiers // ignore: cast_nullable_to_non_nullable
+              as List<ModifierItem>,
     ));
   }
 }
@@ -174,14 +181,24 @@ class __$$AddProductImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$AddProductImpl implements _AddProduct {
-  const _$AddProductImpl(this.product);
+  const _$AddProductImpl(this.product,
+      {final List<ModifierItem> modifiers = const []})
+      : _modifiers = modifiers;
 
   @override
   final Product product;
+  final List<ModifierItem> _modifiers;
+  @override
+  @JsonKey()
+  List<ModifierItem> get modifiers {
+    if (_modifiers is EqualUnmodifiableListView) return _modifiers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_modifiers);
+  }
 
   @override
   String toString() {
-    return 'CartEvent.addProduct(product: $product)';
+    return 'CartEvent.addProduct(product: $product, modifiers: $modifiers)';
   }
 
   @override
@@ -189,11 +206,14 @@ class _$AddProductImpl implements _AddProduct {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AddProductImpl &&
-            (identical(other.product, product) || other.product == product));
+            (identical(other.product, product) || other.product == product) &&
+            const DeepCollectionEquality()
+                .equals(other._modifiers, _modifiers));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, product);
+  int get hashCode => Object.hash(
+      runtimeType, product, const DeepCollectionEquality().hash(_modifiers));
 
   /// Create a copy of CartEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -206,9 +226,10 @@ class _$AddProductImpl implements _AddProduct {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Product product) addProduct,
-    required TResult Function(String productUuid, int quantity) updateQuantity,
-    required TResult Function(String productUuid) removeFromCart,
+    required TResult Function(Product product, List<ModifierItem> modifiers)
+        addProduct,
+    required TResult Function(String itemUuid, int quantity) updateQuantity,
+    required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
@@ -221,15 +242,16 @@ class _$AddProductImpl implements _AddProduct {
         checkoutSplit,
     required TResult Function(String productUuid, String? note) updateNote,
   }) {
-    return addProduct(product);
+    return addProduct(product, modifiers);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Product product)? addProduct,
-    TResult? Function(String productUuid, int quantity)? updateQuantity,
-    TResult? Function(String productUuid)? removeFromCart,
+    TResult? Function(Product product, List<ModifierItem> modifiers)?
+        addProduct,
+    TResult? Function(String itemUuid, int quantity)? updateQuantity,
+    TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
@@ -242,15 +264,15 @@ class _$AddProductImpl implements _AddProduct {
         checkoutSplit,
     TResult? Function(String productUuid, String? note)? updateNote,
   }) {
-    return addProduct?.call(product);
+    return addProduct?.call(product, modifiers);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Product product)? addProduct,
-    TResult Function(String productUuid, int quantity)? updateQuantity,
-    TResult Function(String productUuid)? removeFromCart,
+    TResult Function(Product product, List<ModifierItem> modifiers)? addProduct,
+    TResult Function(String itemUuid, int quantity)? updateQuantity,
+    TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
@@ -264,7 +286,7 @@ class _$AddProductImpl implements _AddProduct {
     required TResult orElse(),
   }) {
     if (addProduct != null) {
-      return addProduct(product);
+      return addProduct(product, modifiers);
     }
     return orElse();
   }
@@ -329,9 +351,11 @@ class _$AddProductImpl implements _AddProduct {
 }
 
 abstract class _AddProduct implements CartEvent {
-  const factory _AddProduct(final Product product) = _$AddProductImpl;
+  const factory _AddProduct(final Product product,
+      {final List<ModifierItem> modifiers}) = _$AddProductImpl;
 
   Product get product;
+  List<ModifierItem> get modifiers;
 
   /// Create a copy of CartEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -346,7 +370,7 @@ abstract class _$$UpdateQuantityImplCopyWith<$Res> {
           $Res Function(_$UpdateQuantityImpl) then) =
       __$$UpdateQuantityImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String productUuid, int quantity});
+  $Res call({String itemUuid, int quantity});
 }
 
 /// @nodoc
@@ -362,13 +386,13 @@ class __$$UpdateQuantityImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? productUuid = null,
+    Object? itemUuid = null,
     Object? quantity = null,
   }) {
     return _then(_$UpdateQuantityImpl(
-      null == productUuid
-          ? _value.productUuid
-          : productUuid // ignore: cast_nullable_to_non_nullable
+      null == itemUuid
+          ? _value.itemUuid
+          : itemUuid // ignore: cast_nullable_to_non_nullable
               as String,
       null == quantity
           ? _value.quantity
@@ -381,16 +405,16 @@ class __$$UpdateQuantityImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$UpdateQuantityImpl implements _UpdateQuantity {
-  const _$UpdateQuantityImpl(this.productUuid, this.quantity);
+  const _$UpdateQuantityImpl(this.itemUuid, this.quantity);
 
   @override
-  final String productUuid;
+  final String itemUuid;
   @override
   final int quantity;
 
   @override
   String toString() {
-    return 'CartEvent.updateQuantity(productUuid: $productUuid, quantity: $quantity)';
+    return 'CartEvent.updateQuantity(itemUuid: $itemUuid, quantity: $quantity)';
   }
 
   @override
@@ -398,14 +422,14 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UpdateQuantityImpl &&
-            (identical(other.productUuid, productUuid) ||
-                other.productUuid == productUuid) &&
+            (identical(other.itemUuid, itemUuid) ||
+                other.itemUuid == itemUuid) &&
             (identical(other.quantity, quantity) ||
                 other.quantity == quantity));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, productUuid, quantity);
+  int get hashCode => Object.hash(runtimeType, itemUuid, quantity);
 
   /// Create a copy of CartEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -419,9 +443,10 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Product product) addProduct,
-    required TResult Function(String productUuid, int quantity) updateQuantity,
-    required TResult Function(String productUuid) removeFromCart,
+    required TResult Function(Product product, List<ModifierItem> modifiers)
+        addProduct,
+    required TResult Function(String itemUuid, int quantity) updateQuantity,
+    required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
@@ -434,15 +459,16 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
         checkoutSplit,
     required TResult Function(String productUuid, String? note) updateNote,
   }) {
-    return updateQuantity(productUuid, quantity);
+    return updateQuantity(itemUuid, quantity);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Product product)? addProduct,
-    TResult? Function(String productUuid, int quantity)? updateQuantity,
-    TResult? Function(String productUuid)? removeFromCart,
+    TResult? Function(Product product, List<ModifierItem> modifiers)?
+        addProduct,
+    TResult? Function(String itemUuid, int quantity)? updateQuantity,
+    TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
@@ -455,15 +481,15 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
         checkoutSplit,
     TResult? Function(String productUuid, String? note)? updateNote,
   }) {
-    return updateQuantity?.call(productUuid, quantity);
+    return updateQuantity?.call(itemUuid, quantity);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Product product)? addProduct,
-    TResult Function(String productUuid, int quantity)? updateQuantity,
-    TResult Function(String productUuid)? removeFromCart,
+    TResult Function(Product product, List<ModifierItem> modifiers)? addProduct,
+    TResult Function(String itemUuid, int quantity)? updateQuantity,
+    TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
@@ -477,7 +503,7 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     required TResult orElse(),
   }) {
     if (updateQuantity != null) {
-      return updateQuantity(productUuid, quantity);
+      return updateQuantity(itemUuid, quantity);
     }
     return orElse();
   }
@@ -542,10 +568,10 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
 }
 
 abstract class _UpdateQuantity implements CartEvent {
-  const factory _UpdateQuantity(final String productUuid, final int quantity) =
+  const factory _UpdateQuantity(final String itemUuid, final int quantity) =
       _$UpdateQuantityImpl;
 
-  String get productUuid;
+  String get itemUuid;
   int get quantity;
 
   /// Create a copy of CartEvent
@@ -561,7 +587,7 @@ abstract class _$$RemoveFromCartImplCopyWith<$Res> {
           $Res Function(_$RemoveFromCartImpl) then) =
       __$$RemoveFromCartImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String productUuid});
+  $Res call({String itemUuid});
 }
 
 /// @nodoc
@@ -577,12 +603,12 @@ class __$$RemoveFromCartImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? productUuid = null,
+    Object? itemUuid = null,
   }) {
     return _then(_$RemoveFromCartImpl(
-      null == productUuid
-          ? _value.productUuid
-          : productUuid // ignore: cast_nullable_to_non_nullable
+      null == itemUuid
+          ? _value.itemUuid
+          : itemUuid // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -591,14 +617,14 @@ class __$$RemoveFromCartImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$RemoveFromCartImpl implements _RemoveFromCart {
-  const _$RemoveFromCartImpl(this.productUuid);
+  const _$RemoveFromCartImpl(this.itemUuid);
 
   @override
-  final String productUuid;
+  final String itemUuid;
 
   @override
   String toString() {
-    return 'CartEvent.removeFromCart(productUuid: $productUuid)';
+    return 'CartEvent.removeFromCart(itemUuid: $itemUuid)';
   }
 
   @override
@@ -606,12 +632,12 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RemoveFromCartImpl &&
-            (identical(other.productUuid, productUuid) ||
-                other.productUuid == productUuid));
+            (identical(other.itemUuid, itemUuid) ||
+                other.itemUuid == itemUuid));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, productUuid);
+  int get hashCode => Object.hash(runtimeType, itemUuid);
 
   /// Create a copy of CartEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -625,9 +651,10 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Product product) addProduct,
-    required TResult Function(String productUuid, int quantity) updateQuantity,
-    required TResult Function(String productUuid) removeFromCart,
+    required TResult Function(Product product, List<ModifierItem> modifiers)
+        addProduct,
+    required TResult Function(String itemUuid, int quantity) updateQuantity,
+    required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
@@ -640,15 +667,16 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
         checkoutSplit,
     required TResult Function(String productUuid, String? note) updateNote,
   }) {
-    return removeFromCart(productUuid);
+    return removeFromCart(itemUuid);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Product product)? addProduct,
-    TResult? Function(String productUuid, int quantity)? updateQuantity,
-    TResult? Function(String productUuid)? removeFromCart,
+    TResult? Function(Product product, List<ModifierItem> modifiers)?
+        addProduct,
+    TResult? Function(String itemUuid, int quantity)? updateQuantity,
+    TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
@@ -661,15 +689,15 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
         checkoutSplit,
     TResult? Function(String productUuid, String? note)? updateNote,
   }) {
-    return removeFromCart?.call(productUuid);
+    return removeFromCart?.call(itemUuid);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Product product)? addProduct,
-    TResult Function(String productUuid, int quantity)? updateQuantity,
-    TResult Function(String productUuid)? removeFromCart,
+    TResult Function(Product product, List<ModifierItem> modifiers)? addProduct,
+    TResult Function(String itemUuid, int quantity)? updateQuantity,
+    TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
@@ -683,7 +711,7 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     required TResult orElse(),
   }) {
     if (removeFromCart != null) {
-      return removeFromCart(productUuid);
+      return removeFromCart(itemUuid);
     }
     return orElse();
   }
@@ -748,10 +776,9 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
 }
 
 abstract class _RemoveFromCart implements CartEvent {
-  const factory _RemoveFromCart(final String productUuid) =
-      _$RemoveFromCartImpl;
+  const factory _RemoveFromCart(final String itemUuid) = _$RemoveFromCartImpl;
 
-  String get productUuid;
+  String get itemUuid;
 
   /// Create a copy of CartEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -801,9 +828,10 @@ class _$ClearCartImpl implements _ClearCart {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Product product) addProduct,
-    required TResult Function(String productUuid, int quantity) updateQuantity,
-    required TResult Function(String productUuid) removeFromCart,
+    required TResult Function(Product product, List<ModifierItem> modifiers)
+        addProduct,
+    required TResult Function(String itemUuid, int quantity) updateQuantity,
+    required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
@@ -822,9 +850,10 @@ class _$ClearCartImpl implements _ClearCart {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Product product)? addProduct,
-    TResult? Function(String productUuid, int quantity)? updateQuantity,
-    TResult? Function(String productUuid)? removeFromCart,
+    TResult? Function(Product product, List<ModifierItem> modifiers)?
+        addProduct,
+    TResult? Function(String itemUuid, int quantity)? updateQuantity,
+    TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
@@ -843,9 +872,9 @@ class _$ClearCartImpl implements _ClearCart {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Product product)? addProduct,
-    TResult Function(String productUuid, int quantity)? updateQuantity,
-    TResult Function(String productUuid)? removeFromCart,
+    TResult Function(Product product, List<ModifierItem> modifiers)? addProduct,
+    TResult Function(String itemUuid, int quantity)? updateQuantity,
+    TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
@@ -1013,9 +1042,10 @@ class _$SelectCustomerImpl implements _SelectCustomer {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Product product) addProduct,
-    required TResult Function(String productUuid, int quantity) updateQuantity,
-    required TResult Function(String productUuid) removeFromCart,
+    required TResult Function(Product product, List<ModifierItem> modifiers)
+        addProduct,
+    required TResult Function(String itemUuid, int quantity) updateQuantity,
+    required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
@@ -1034,9 +1064,10 @@ class _$SelectCustomerImpl implements _SelectCustomer {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Product product)? addProduct,
-    TResult? Function(String productUuid, int quantity)? updateQuantity,
-    TResult? Function(String productUuid)? removeFromCart,
+    TResult? Function(Product product, List<ModifierItem> modifiers)?
+        addProduct,
+    TResult? Function(String itemUuid, int quantity)? updateQuantity,
+    TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
@@ -1055,9 +1086,9 @@ class _$SelectCustomerImpl implements _SelectCustomer {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Product product)? addProduct,
-    TResult Function(String productUuid, int quantity)? updateQuantity,
-    TResult Function(String productUuid)? removeFromCart,
+    TResult Function(Product product, List<ModifierItem> modifiers)? addProduct,
+    TResult Function(String itemUuid, int quantity)? updateQuantity,
+    TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
@@ -1224,9 +1255,10 @@ class _$ApplyDiscountImpl implements _ApplyDiscount {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Product product) addProduct,
-    required TResult Function(String productUuid, int quantity) updateQuantity,
-    required TResult Function(String productUuid) removeFromCart,
+    required TResult Function(Product product, List<ModifierItem> modifiers)
+        addProduct,
+    required TResult Function(String itemUuid, int quantity) updateQuantity,
+    required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
@@ -1245,9 +1277,10 @@ class _$ApplyDiscountImpl implements _ApplyDiscount {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Product product)? addProduct,
-    TResult? Function(String productUuid, int quantity)? updateQuantity,
-    TResult? Function(String productUuid)? removeFromCart,
+    TResult? Function(Product product, List<ModifierItem> modifiers)?
+        addProduct,
+    TResult? Function(String itemUuid, int quantity)? updateQuantity,
+    TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
@@ -1266,9 +1299,9 @@ class _$ApplyDiscountImpl implements _ApplyDiscount {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Product product)? addProduct,
-    TResult Function(String productUuid, int quantity)? updateQuantity,
-    TResult Function(String productUuid)? removeFromCart,
+    TResult Function(Product product, List<ModifierItem> modifiers)? addProduct,
+    TResult Function(String itemUuid, int quantity)? updateQuantity,
+    TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
@@ -1451,9 +1484,10 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Product product) addProduct,
-    required TResult Function(String productUuid, int quantity) updateQuantity,
-    required TResult Function(String productUuid) removeFromCart,
+    required TResult Function(Product product, List<ModifierItem> modifiers)
+        addProduct,
+    required TResult Function(String itemUuid, int quantity) updateQuantity,
+    required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
@@ -1472,9 +1506,10 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Product product)? addProduct,
-    TResult? Function(String productUuid, int quantity)? updateQuantity,
-    TResult? Function(String productUuid)? removeFromCart,
+    TResult? Function(Product product, List<ModifierItem> modifiers)?
+        addProduct,
+    TResult? Function(String itemUuid, int quantity)? updateQuantity,
+    TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
@@ -1493,9 +1528,9 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Product product)? addProduct,
-    TResult Function(String productUuid, int quantity)? updateQuantity,
-    TResult Function(String productUuid)? removeFromCart,
+    TResult Function(Product product, List<ModifierItem> modifiers)? addProduct,
+    TResult Function(String itemUuid, int quantity)? updateQuantity,
+    TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
@@ -1659,9 +1694,10 @@ class _$ParkOrderImpl implements _ParkOrder {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Product product) addProduct,
-    required TResult Function(String productUuid, int quantity) updateQuantity,
-    required TResult Function(String productUuid) removeFromCart,
+    required TResult Function(Product product, List<ModifierItem> modifiers)
+        addProduct,
+    required TResult Function(String itemUuid, int quantity) updateQuantity,
+    required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
@@ -1680,9 +1716,10 @@ class _$ParkOrderImpl implements _ParkOrder {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Product product)? addProduct,
-    TResult? Function(String productUuid, int quantity)? updateQuantity,
-    TResult? Function(String productUuid)? removeFromCart,
+    TResult? Function(Product product, List<ModifierItem> modifiers)?
+        addProduct,
+    TResult? Function(String itemUuid, int quantity)? updateQuantity,
+    TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
@@ -1701,9 +1738,9 @@ class _$ParkOrderImpl implements _ParkOrder {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Product product)? addProduct,
-    TResult Function(String productUuid, int quantity)? updateQuantity,
-    TResult Function(String productUuid)? removeFromCart,
+    TResult Function(Product product, List<ModifierItem> modifiers)? addProduct,
+    TResult Function(String itemUuid, int quantity)? updateQuantity,
+    TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
@@ -1871,9 +1908,10 @@ class _$RetrieveOrderImpl implements _RetrieveOrder {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Product product) addProduct,
-    required TResult Function(String productUuid, int quantity) updateQuantity,
-    required TResult Function(String productUuid) removeFromCart,
+    required TResult Function(Product product, List<ModifierItem> modifiers)
+        addProduct,
+    required TResult Function(String itemUuid, int quantity) updateQuantity,
+    required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
@@ -1892,9 +1930,10 @@ class _$RetrieveOrderImpl implements _RetrieveOrder {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Product product)? addProduct,
-    TResult? Function(String productUuid, int quantity)? updateQuantity,
-    TResult? Function(String productUuid)? removeFromCart,
+    TResult? Function(Product product, List<ModifierItem> modifiers)?
+        addProduct,
+    TResult? Function(String itemUuid, int quantity)? updateQuantity,
+    TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
@@ -1913,9 +1952,9 @@ class _$RetrieveOrderImpl implements _RetrieveOrder {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Product product)? addProduct,
-    TResult Function(String productUuid, int quantity)? updateQuantity,
-    TResult Function(String productUuid)? removeFromCart,
+    TResult Function(Product product, List<ModifierItem> modifiers)? addProduct,
+    TResult Function(String itemUuid, int quantity)? updateQuantity,
+    TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
@@ -2092,9 +2131,10 @@ class _$CheckoutSplitImpl implements _CheckoutSplit {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Product product) addProduct,
-    required TResult Function(String productUuid, int quantity) updateQuantity,
-    required TResult Function(String productUuid) removeFromCart,
+    required TResult Function(Product product, List<ModifierItem> modifiers)
+        addProduct,
+    required TResult Function(String itemUuid, int quantity) updateQuantity,
+    required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
@@ -2113,9 +2153,10 @@ class _$CheckoutSplitImpl implements _CheckoutSplit {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Product product)? addProduct,
-    TResult? Function(String productUuid, int quantity)? updateQuantity,
-    TResult? Function(String productUuid)? removeFromCart,
+    TResult? Function(Product product, List<ModifierItem> modifiers)?
+        addProduct,
+    TResult? Function(String itemUuid, int quantity)? updateQuantity,
+    TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
@@ -2134,9 +2175,9 @@ class _$CheckoutSplitImpl implements _CheckoutSplit {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Product product)? addProduct,
-    TResult Function(String productUuid, int quantity)? updateQuantity,
-    TResult Function(String productUuid)? removeFromCart,
+    TResult Function(Product product, List<ModifierItem> modifiers)? addProduct,
+    TResult Function(String itemUuid, int quantity)? updateQuantity,
+    TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
@@ -2306,9 +2347,10 @@ class _$UpdateNoteImpl implements _UpdateNote {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(Product product) addProduct,
-    required TResult Function(String productUuid, int quantity) updateQuantity,
-    required TResult Function(String productUuid) removeFromCart,
+    required TResult Function(Product product, List<ModifierItem> modifiers)
+        addProduct,
+    required TResult Function(String itemUuid, int quantity) updateQuantity,
+    required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
@@ -2327,9 +2369,10 @@ class _$UpdateNoteImpl implements _UpdateNote {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(Product product)? addProduct,
-    TResult? Function(String productUuid, int quantity)? updateQuantity,
-    TResult? Function(String productUuid)? removeFromCart,
+    TResult? Function(Product product, List<ModifierItem> modifiers)?
+        addProduct,
+    TResult? Function(String itemUuid, int quantity)? updateQuantity,
+    TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
@@ -2348,9 +2391,9 @@ class _$UpdateNoteImpl implements _UpdateNote {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(Product product)? addProduct,
-    TResult Function(String productUuid, int quantity)? updateQuantity,
-    TResult Function(String productUuid)? removeFromCart,
+    TResult Function(Product product, List<ModifierItem> modifiers)? addProduct,
+    TResult Function(String itemUuid, int quantity)? updateQuantity,
+    TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,

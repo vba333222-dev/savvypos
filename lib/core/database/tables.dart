@@ -103,8 +103,66 @@ class ProductTable extends Table {
   BoolColumn get isSynced => boolean().withDefault(const Constant(false))();
   BoolColumn get isDeleted => boolean().withDefault(const Constant(false))();
   
+  // Back of House (BoH)
+  BoolColumn get isComposite => boolean().withDefault(const Constant(false))(); // True if made of ingredients
+  
   @override
   List<Set<Column>> get uniqueKeys => [{uuid}];
+}
+
+// ==============================================================================
+// 2.1. MODIFIERS
+// ==============================================================================
+class ModifierGroupTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get uuid => text().unique()();
+  TextColumn get name => text()(); // "Sugar Level", "Toppings"
+  BoolColumn get allowMultiSelect => boolean().withDefault(const Constant(false))(); // Radio vs Checkbox
+  IntColumn get minSelection => integer().withDefault(const Constant(0))(); // 0 = Optional, 1 = Required
+  IntColumn get maxSelection => integer().nullable()(); // Null = Unlimited
+  
+  DateTimeColumn get updatedAt => dateTime()();
+  BoolColumn get isDeleted => boolean().withDefault(const Constant(false))();
+}
+
+class ModifierItemTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get uuid => text().unique()();
+  TextColumn get groupUuid => text().references(ModifierGroupTable, #uuid, onDelete: KeyAction.cascade)();
+  TextColumn get name => text()(); // "Less Sugar", "Boba"
+  RealColumn get priceDelta => real().withDefault(const Constant(0))(); // +$0.50, can be 0 or negative
+  
+  DateTimeColumn get updatedAt => dateTime()();
+  BoolColumn get isDeleted => boolean().withDefault(const Constant(false))();
+}
+
+class ProductModifierLinkTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get productUuid => text().references(ProductTable, #uuid, onDelete: KeyAction.cascade)();
+  TextColumn get modifierGroupUuid => text().references(ModifierGroupTable, #uuid, onDelete: KeyAction.cascade)();
+  IntColumn get sortOrder => integer().withDefault(const Constant(0))();
+}
+
+// ==============================================================================
+// 2.2. RECIPES & INGREDIENTS
+// ==============================================================================
+class IngredientTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get uuid => text().unique()();
+  TextColumn get name => text()();
+  TextColumn get unit => text()(); // "g", "ml", "pcs"
+  RealColumn get currentStock => real().withDefault(const Constant(0))();
+  RealColumn get costPerUnit => real().withDefault(const Constant(0))();
+  
+  DateTimeColumn get updatedAt => dateTime()();
+  BoolColumn get isDeleted => boolean().withDefault(const Constant(false))();
+}
+
+class RecipeTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get productUuid => text().references(ProductTable, #uuid, onDelete: KeyAction.cascade)();
+  TextColumn get ingredientUuid => text().references(IngredientTable, #uuid, onDelete: KeyAction.cascade)();
+  RealColumn get quantityRequired => real()();
 }
 
 // ==============================================================================

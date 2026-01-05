@@ -658,6 +658,16 @@ class $ProductTableTable extends ProductTable
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('CHECK ("is_deleted" IN (0, 1))'),
       defaultValue: const Constant(false));
+  static const VerificationMeta _isCompositeMeta =
+      const VerificationMeta('isComposite');
+  @override
+  late final GeneratedColumn<bool> isComposite = GeneratedColumn<bool>(
+      'is_composite', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("is_composite" IN (0, 1))'),
+      defaultValue: const Constant(false));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -675,7 +685,8 @@ class $ProductTableTable extends ProductTable
         printerCategory,
         updatedAt,
         isSynced,
-        isDeleted
+        isDeleted,
+        isComposite
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -770,6 +781,12 @@ class $ProductTableTable extends ProductTable
       context.handle(_isDeletedMeta,
           isDeleted.isAcceptableOrUnknown(data['is_deleted']!, _isDeletedMeta));
     }
+    if (data.containsKey('is_composite')) {
+      context.handle(
+          _isCompositeMeta,
+          isComposite.isAcceptableOrUnknown(
+              data['is_composite']!, _isCompositeMeta));
+    }
     return context;
   }
 
@@ -815,6 +832,8 @@ class $ProductTableTable extends ProductTable
           .read(DriftSqlType.bool, data['${effectivePrefix}is_synced'])!,
       isDeleted: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_deleted'])!,
+      isComposite: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_composite'])!,
     );
   }
 
@@ -842,6 +861,7 @@ class ProductTableData extends DataClass
   final DateTime updatedAt;
   final bool isSynced;
   final bool isDeleted;
+  final bool isComposite;
   const ProductTableData(
       {required this.id,
       required this.uuid,
@@ -858,7 +878,8 @@ class ProductTableData extends DataClass
       required this.printerCategory,
       required this.updatedAt,
       required this.isSynced,
-      required this.isDeleted});
+      required this.isDeleted,
+      required this.isComposite});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -888,6 +909,7 @@ class ProductTableData extends DataClass
     map['updated_at'] = Variable<DateTime>(updatedAt);
     map['is_synced'] = Variable<bool>(isSynced);
     map['is_deleted'] = Variable<bool>(isDeleted);
+    map['is_composite'] = Variable<bool>(isComposite);
     return map;
   }
 
@@ -917,6 +939,7 @@ class ProductTableData extends DataClass
       updatedAt: Value(updatedAt),
       isSynced: Value(isSynced),
       isDeleted: Value(isDeleted),
+      isComposite: Value(isComposite),
     );
   }
 
@@ -940,6 +963,7 @@ class ProductTableData extends DataClass
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       isSynced: serializer.fromJson<bool>(json['isSynced']),
       isDeleted: serializer.fromJson<bool>(json['isDeleted']),
+      isComposite: serializer.fromJson<bool>(json['isComposite']),
     );
   }
   @override
@@ -962,6 +986,7 @@ class ProductTableData extends DataClass
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'isSynced': serializer.toJson<bool>(isSynced),
       'isDeleted': serializer.toJson<bool>(isDeleted),
+      'isComposite': serializer.toJson<bool>(isComposite),
     };
   }
 
@@ -981,7 +1006,8 @@ class ProductTableData extends DataClass
           String? printerCategory,
           DateTime? updatedAt,
           bool? isSynced,
-          bool? isDeleted}) =>
+          bool? isDeleted,
+          bool? isComposite}) =>
       ProductTableData(
         id: id ?? this.id,
         uuid: uuid ?? this.uuid,
@@ -999,6 +1025,7 @@ class ProductTableData extends DataClass
         updatedAt: updatedAt ?? this.updatedAt,
         isSynced: isSynced ?? this.isSynced,
         isDeleted: isDeleted ?? this.isDeleted,
+        isComposite: isComposite ?? this.isComposite,
       );
   ProductTableData copyWithCompanion(ProductTableCompanion data) {
     return ProductTableData(
@@ -1022,6 +1049,8 @@ class ProductTableData extends DataClass
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       isSynced: data.isSynced.present ? data.isSynced.value : this.isSynced,
       isDeleted: data.isDeleted.present ? data.isDeleted.value : this.isDeleted,
+      isComposite:
+          data.isComposite.present ? data.isComposite.value : this.isComposite,
     );
   }
 
@@ -1043,7 +1072,8 @@ class ProductTableData extends DataClass
           ..write('printerCategory: $printerCategory, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('isSynced: $isSynced, ')
-          ..write('isDeleted: $isDeleted')
+          ..write('isDeleted: $isDeleted, ')
+          ..write('isComposite: $isComposite')
           ..write(')'))
         .toString();
   }
@@ -1065,7 +1095,8 @@ class ProductTableData extends DataClass
       printerCategory,
       updatedAt,
       isSynced,
-      isDeleted);
+      isDeleted,
+      isComposite);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1085,7 +1116,8 @@ class ProductTableData extends DataClass
           other.printerCategory == this.printerCategory &&
           other.updatedAt == this.updatedAt &&
           other.isSynced == this.isSynced &&
-          other.isDeleted == this.isDeleted);
+          other.isDeleted == this.isDeleted &&
+          other.isComposite == this.isComposite);
 }
 
 class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
@@ -1105,6 +1137,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
   final Value<DateTime> updatedAt;
   final Value<bool> isSynced;
   final Value<bool> isDeleted;
+  final Value<bool> isComposite;
   const ProductTableCompanion({
     this.id = const Value.absent(),
     this.uuid = const Value.absent(),
@@ -1122,6 +1155,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
     this.updatedAt = const Value.absent(),
     this.isSynced = const Value.absent(),
     this.isDeleted = const Value.absent(),
+    this.isComposite = const Value.absent(),
   });
   ProductTableCompanion.insert({
     this.id = const Value.absent(),
@@ -1140,6 +1174,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
     required DateTime updatedAt,
     this.isSynced = const Value.absent(),
     this.isDeleted = const Value.absent(),
+    this.isComposite = const Value.absent(),
   })  : uuid = Value(uuid),
         name = Value(name),
         price = Value(price),
@@ -1164,6 +1199,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
     Expression<DateTime>? updatedAt,
     Expression<bool>? isSynced,
     Expression<bool>? isDeleted,
+    Expression<bool>? isComposite,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1182,6 +1218,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
       if (updatedAt != null) 'updated_at': updatedAt,
       if (isSynced != null) 'is_synced': isSynced,
       if (isDeleted != null) 'is_deleted': isDeleted,
+      if (isComposite != null) 'is_composite': isComposite,
     });
   }
 
@@ -1201,7 +1238,8 @@ class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
       Value<String>? printerCategory,
       Value<DateTime>? updatedAt,
       Value<bool>? isSynced,
-      Value<bool>? isDeleted}) {
+      Value<bool>? isDeleted,
+      Value<bool>? isComposite}) {
     return ProductTableCompanion(
       id: id ?? this.id,
       uuid: uuid ?? this.uuid,
@@ -1219,6 +1257,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
       updatedAt: updatedAt ?? this.updatedAt,
       isSynced: isSynced ?? this.isSynced,
       isDeleted: isDeleted ?? this.isDeleted,
+      isComposite: isComposite ?? this.isComposite,
     );
   }
 
@@ -1273,6 +1312,9 @@ class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
     if (isDeleted.present) {
       map['is_deleted'] = Variable<bool>(isDeleted.value);
     }
+    if (isComposite.present) {
+      map['is_composite'] = Variable<bool>(isComposite.value);
+    }
     return map;
   }
 
@@ -1294,7 +1336,8 @@ class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
           ..write('printerCategory: $printerCategory, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('isSynced: $isSynced, ')
-          ..write('isDeleted: $isDeleted')
+          ..write('isDeleted: $isDeleted, ')
+          ..write('isComposite: $isComposite')
           ..write(')'))
         .toString();
   }
@@ -6140,6 +6183,1806 @@ class ReservationTableCompanion extends UpdateCompanion<ReservationTableData> {
   }
 }
 
+class $ModifierGroupTableTable extends ModifierGroupTable
+    with TableInfo<$ModifierGroupTableTable, ModifierGroupTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ModifierGroupTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  @override
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+      'uuid', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _allowMultiSelectMeta =
+      const VerificationMeta('allowMultiSelect');
+  @override
+  late final GeneratedColumn<bool> allowMultiSelect = GeneratedColumn<bool>(
+      'allow_multi_select', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("allow_multi_select" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _minSelectionMeta =
+      const VerificationMeta('minSelection');
+  @override
+  late final GeneratedColumn<int> minSelection = GeneratedColumn<int>(
+      'min_selection', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _maxSelectionMeta =
+      const VerificationMeta('maxSelection');
+  @override
+  late final GeneratedColumn<int> maxSelection = GeneratedColumn<int>(
+      'max_selection', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _isDeletedMeta =
+      const VerificationMeta('isDeleted');
+  @override
+  late final GeneratedColumn<bool> isDeleted = GeneratedColumn<bool>(
+      'is_deleted', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("is_deleted" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        uuid,
+        name,
+        allowMultiSelect,
+        minSelection,
+        maxSelection,
+        updatedAt,
+        isDeleted
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'modifier_group_table';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<ModifierGroupTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('uuid')) {
+      context.handle(
+          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
+    } else if (isInserting) {
+      context.missing(_uuidMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('allow_multi_select')) {
+      context.handle(
+          _allowMultiSelectMeta,
+          allowMultiSelect.isAcceptableOrUnknown(
+              data['allow_multi_select']!, _allowMultiSelectMeta));
+    }
+    if (data.containsKey('min_selection')) {
+      context.handle(
+          _minSelectionMeta,
+          minSelection.isAcceptableOrUnknown(
+              data['min_selection']!, _minSelectionMeta));
+    }
+    if (data.containsKey('max_selection')) {
+      context.handle(
+          _maxSelectionMeta,
+          maxSelection.isAcceptableOrUnknown(
+              data['max_selection']!, _maxSelectionMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('is_deleted')) {
+      context.handle(_isDeletedMeta,
+          isDeleted.isAcceptableOrUnknown(data['is_deleted']!, _isDeletedMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ModifierGroupTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ModifierGroupTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      uuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      allowMultiSelect: attachedDatabase.typeMapping.read(
+          DriftSqlType.bool, data['${effectivePrefix}allow_multi_select'])!,
+      minSelection: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}min_selection'])!,
+      maxSelection: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}max_selection']),
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+      isDeleted: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_deleted'])!,
+    );
+  }
+
+  @override
+  $ModifierGroupTableTable createAlias(String alias) {
+    return $ModifierGroupTableTable(attachedDatabase, alias);
+  }
+}
+
+class ModifierGroupTableData extends DataClass
+    implements Insertable<ModifierGroupTableData> {
+  final int id;
+  final String uuid;
+  final String name;
+  final bool allowMultiSelect;
+  final int minSelection;
+  final int? maxSelection;
+  final DateTime updatedAt;
+  final bool isDeleted;
+  const ModifierGroupTableData(
+      {required this.id,
+      required this.uuid,
+      required this.name,
+      required this.allowMultiSelect,
+      required this.minSelection,
+      this.maxSelection,
+      required this.updatedAt,
+      required this.isDeleted});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['uuid'] = Variable<String>(uuid);
+    map['name'] = Variable<String>(name);
+    map['allow_multi_select'] = Variable<bool>(allowMultiSelect);
+    map['min_selection'] = Variable<int>(minSelection);
+    if (!nullToAbsent || maxSelection != null) {
+      map['max_selection'] = Variable<int>(maxSelection);
+    }
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['is_deleted'] = Variable<bool>(isDeleted);
+    return map;
+  }
+
+  ModifierGroupTableCompanion toCompanion(bool nullToAbsent) {
+    return ModifierGroupTableCompanion(
+      id: Value(id),
+      uuid: Value(uuid),
+      name: Value(name),
+      allowMultiSelect: Value(allowMultiSelect),
+      minSelection: Value(minSelection),
+      maxSelection: maxSelection == null && nullToAbsent
+          ? const Value.absent()
+          : Value(maxSelection),
+      updatedAt: Value(updatedAt),
+      isDeleted: Value(isDeleted),
+    );
+  }
+
+  factory ModifierGroupTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ModifierGroupTableData(
+      id: serializer.fromJson<int>(json['id']),
+      uuid: serializer.fromJson<String>(json['uuid']),
+      name: serializer.fromJson<String>(json['name']),
+      allowMultiSelect: serializer.fromJson<bool>(json['allowMultiSelect']),
+      minSelection: serializer.fromJson<int>(json['minSelection']),
+      maxSelection: serializer.fromJson<int?>(json['maxSelection']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      isDeleted: serializer.fromJson<bool>(json['isDeleted']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'uuid': serializer.toJson<String>(uuid),
+      'name': serializer.toJson<String>(name),
+      'allowMultiSelect': serializer.toJson<bool>(allowMultiSelect),
+      'minSelection': serializer.toJson<int>(minSelection),
+      'maxSelection': serializer.toJson<int?>(maxSelection),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'isDeleted': serializer.toJson<bool>(isDeleted),
+    };
+  }
+
+  ModifierGroupTableData copyWith(
+          {int? id,
+          String? uuid,
+          String? name,
+          bool? allowMultiSelect,
+          int? minSelection,
+          Value<int?> maxSelection = const Value.absent(),
+          DateTime? updatedAt,
+          bool? isDeleted}) =>
+      ModifierGroupTableData(
+        id: id ?? this.id,
+        uuid: uuid ?? this.uuid,
+        name: name ?? this.name,
+        allowMultiSelect: allowMultiSelect ?? this.allowMultiSelect,
+        minSelection: minSelection ?? this.minSelection,
+        maxSelection:
+            maxSelection.present ? maxSelection.value : this.maxSelection,
+        updatedAt: updatedAt ?? this.updatedAt,
+        isDeleted: isDeleted ?? this.isDeleted,
+      );
+  ModifierGroupTableData copyWithCompanion(ModifierGroupTableCompanion data) {
+    return ModifierGroupTableData(
+      id: data.id.present ? data.id.value : this.id,
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      name: data.name.present ? data.name.value : this.name,
+      allowMultiSelect: data.allowMultiSelect.present
+          ? data.allowMultiSelect.value
+          : this.allowMultiSelect,
+      minSelection: data.minSelection.present
+          ? data.minSelection.value
+          : this.minSelection,
+      maxSelection: data.maxSelection.present
+          ? data.maxSelection.value
+          : this.maxSelection,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      isDeleted: data.isDeleted.present ? data.isDeleted.value : this.isDeleted,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ModifierGroupTableData(')
+          ..write('id: $id, ')
+          ..write('uuid: $uuid, ')
+          ..write('name: $name, ')
+          ..write('allowMultiSelect: $allowMultiSelect, ')
+          ..write('minSelection: $minSelection, ')
+          ..write('maxSelection: $maxSelection, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('isDeleted: $isDeleted')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, uuid, name, allowMultiSelect,
+      minSelection, maxSelection, updatedAt, isDeleted);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ModifierGroupTableData &&
+          other.id == this.id &&
+          other.uuid == this.uuid &&
+          other.name == this.name &&
+          other.allowMultiSelect == this.allowMultiSelect &&
+          other.minSelection == this.minSelection &&
+          other.maxSelection == this.maxSelection &&
+          other.updatedAt == this.updatedAt &&
+          other.isDeleted == this.isDeleted);
+}
+
+class ModifierGroupTableCompanion
+    extends UpdateCompanion<ModifierGroupTableData> {
+  final Value<int> id;
+  final Value<String> uuid;
+  final Value<String> name;
+  final Value<bool> allowMultiSelect;
+  final Value<int> minSelection;
+  final Value<int?> maxSelection;
+  final Value<DateTime> updatedAt;
+  final Value<bool> isDeleted;
+  const ModifierGroupTableCompanion({
+    this.id = const Value.absent(),
+    this.uuid = const Value.absent(),
+    this.name = const Value.absent(),
+    this.allowMultiSelect = const Value.absent(),
+    this.minSelection = const Value.absent(),
+    this.maxSelection = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.isDeleted = const Value.absent(),
+  });
+  ModifierGroupTableCompanion.insert({
+    this.id = const Value.absent(),
+    required String uuid,
+    required String name,
+    this.allowMultiSelect = const Value.absent(),
+    this.minSelection = const Value.absent(),
+    this.maxSelection = const Value.absent(),
+    required DateTime updatedAt,
+    this.isDeleted = const Value.absent(),
+  })  : uuid = Value(uuid),
+        name = Value(name),
+        updatedAt = Value(updatedAt);
+  static Insertable<ModifierGroupTableData> custom({
+    Expression<int>? id,
+    Expression<String>? uuid,
+    Expression<String>? name,
+    Expression<bool>? allowMultiSelect,
+    Expression<int>? minSelection,
+    Expression<int>? maxSelection,
+    Expression<DateTime>? updatedAt,
+    Expression<bool>? isDeleted,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (uuid != null) 'uuid': uuid,
+      if (name != null) 'name': name,
+      if (allowMultiSelect != null) 'allow_multi_select': allowMultiSelect,
+      if (minSelection != null) 'min_selection': minSelection,
+      if (maxSelection != null) 'max_selection': maxSelection,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (isDeleted != null) 'is_deleted': isDeleted,
+    });
+  }
+
+  ModifierGroupTableCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? uuid,
+      Value<String>? name,
+      Value<bool>? allowMultiSelect,
+      Value<int>? minSelection,
+      Value<int?>? maxSelection,
+      Value<DateTime>? updatedAt,
+      Value<bool>? isDeleted}) {
+    return ModifierGroupTableCompanion(
+      id: id ?? this.id,
+      uuid: uuid ?? this.uuid,
+      name: name ?? this.name,
+      allowMultiSelect: allowMultiSelect ?? this.allowMultiSelect,
+      minSelection: minSelection ?? this.minSelection,
+      maxSelection: maxSelection ?? this.maxSelection,
+      updatedAt: updatedAt ?? this.updatedAt,
+      isDeleted: isDeleted ?? this.isDeleted,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (allowMultiSelect.present) {
+      map['allow_multi_select'] = Variable<bool>(allowMultiSelect.value);
+    }
+    if (minSelection.present) {
+      map['min_selection'] = Variable<int>(minSelection.value);
+    }
+    if (maxSelection.present) {
+      map['max_selection'] = Variable<int>(maxSelection.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (isDeleted.present) {
+      map['is_deleted'] = Variable<bool>(isDeleted.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ModifierGroupTableCompanion(')
+          ..write('id: $id, ')
+          ..write('uuid: $uuid, ')
+          ..write('name: $name, ')
+          ..write('allowMultiSelect: $allowMultiSelect, ')
+          ..write('minSelection: $minSelection, ')
+          ..write('maxSelection: $maxSelection, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('isDeleted: $isDeleted')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ModifierItemTableTable extends ModifierItemTable
+    with TableInfo<$ModifierItemTableTable, ModifierItemTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ModifierItemTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  @override
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+      'uuid', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _groupUuidMeta =
+      const VerificationMeta('groupUuid');
+  @override
+  late final GeneratedColumn<String> groupUuid = GeneratedColumn<String>(
+      'group_uuid', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES modifier_group_table (uuid) ON DELETE CASCADE'));
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _priceDeltaMeta =
+      const VerificationMeta('priceDelta');
+  @override
+  late final GeneratedColumn<double> priceDelta = GeneratedColumn<double>(
+      'price_delta', aliasedName, false,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _isDeletedMeta =
+      const VerificationMeta('isDeleted');
+  @override
+  late final GeneratedColumn<bool> isDeleted = GeneratedColumn<bool>(
+      'is_deleted', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("is_deleted" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, uuid, groupUuid, name, priceDelta, updatedAt, isDeleted];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'modifier_item_table';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<ModifierItemTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('uuid')) {
+      context.handle(
+          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
+    } else if (isInserting) {
+      context.missing(_uuidMeta);
+    }
+    if (data.containsKey('group_uuid')) {
+      context.handle(_groupUuidMeta,
+          groupUuid.isAcceptableOrUnknown(data['group_uuid']!, _groupUuidMeta));
+    } else if (isInserting) {
+      context.missing(_groupUuidMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('price_delta')) {
+      context.handle(
+          _priceDeltaMeta,
+          priceDelta.isAcceptableOrUnknown(
+              data['price_delta']!, _priceDeltaMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('is_deleted')) {
+      context.handle(_isDeletedMeta,
+          isDeleted.isAcceptableOrUnknown(data['is_deleted']!, _isDeletedMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ModifierItemTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ModifierItemTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      uuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
+      groupUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}group_uuid'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      priceDelta: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}price_delta'])!,
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+      isDeleted: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_deleted'])!,
+    );
+  }
+
+  @override
+  $ModifierItemTableTable createAlias(String alias) {
+    return $ModifierItemTableTable(attachedDatabase, alias);
+  }
+}
+
+class ModifierItemTableData extends DataClass
+    implements Insertable<ModifierItemTableData> {
+  final int id;
+  final String uuid;
+  final String groupUuid;
+  final String name;
+  final double priceDelta;
+  final DateTime updatedAt;
+  final bool isDeleted;
+  const ModifierItemTableData(
+      {required this.id,
+      required this.uuid,
+      required this.groupUuid,
+      required this.name,
+      required this.priceDelta,
+      required this.updatedAt,
+      required this.isDeleted});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['uuid'] = Variable<String>(uuid);
+    map['group_uuid'] = Variable<String>(groupUuid);
+    map['name'] = Variable<String>(name);
+    map['price_delta'] = Variable<double>(priceDelta);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['is_deleted'] = Variable<bool>(isDeleted);
+    return map;
+  }
+
+  ModifierItemTableCompanion toCompanion(bool nullToAbsent) {
+    return ModifierItemTableCompanion(
+      id: Value(id),
+      uuid: Value(uuid),
+      groupUuid: Value(groupUuid),
+      name: Value(name),
+      priceDelta: Value(priceDelta),
+      updatedAt: Value(updatedAt),
+      isDeleted: Value(isDeleted),
+    );
+  }
+
+  factory ModifierItemTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ModifierItemTableData(
+      id: serializer.fromJson<int>(json['id']),
+      uuid: serializer.fromJson<String>(json['uuid']),
+      groupUuid: serializer.fromJson<String>(json['groupUuid']),
+      name: serializer.fromJson<String>(json['name']),
+      priceDelta: serializer.fromJson<double>(json['priceDelta']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      isDeleted: serializer.fromJson<bool>(json['isDeleted']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'uuid': serializer.toJson<String>(uuid),
+      'groupUuid': serializer.toJson<String>(groupUuid),
+      'name': serializer.toJson<String>(name),
+      'priceDelta': serializer.toJson<double>(priceDelta),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'isDeleted': serializer.toJson<bool>(isDeleted),
+    };
+  }
+
+  ModifierItemTableData copyWith(
+          {int? id,
+          String? uuid,
+          String? groupUuid,
+          String? name,
+          double? priceDelta,
+          DateTime? updatedAt,
+          bool? isDeleted}) =>
+      ModifierItemTableData(
+        id: id ?? this.id,
+        uuid: uuid ?? this.uuid,
+        groupUuid: groupUuid ?? this.groupUuid,
+        name: name ?? this.name,
+        priceDelta: priceDelta ?? this.priceDelta,
+        updatedAt: updatedAt ?? this.updatedAt,
+        isDeleted: isDeleted ?? this.isDeleted,
+      );
+  ModifierItemTableData copyWithCompanion(ModifierItemTableCompanion data) {
+    return ModifierItemTableData(
+      id: data.id.present ? data.id.value : this.id,
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      groupUuid: data.groupUuid.present ? data.groupUuid.value : this.groupUuid,
+      name: data.name.present ? data.name.value : this.name,
+      priceDelta:
+          data.priceDelta.present ? data.priceDelta.value : this.priceDelta,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      isDeleted: data.isDeleted.present ? data.isDeleted.value : this.isDeleted,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ModifierItemTableData(')
+          ..write('id: $id, ')
+          ..write('uuid: $uuid, ')
+          ..write('groupUuid: $groupUuid, ')
+          ..write('name: $name, ')
+          ..write('priceDelta: $priceDelta, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('isDeleted: $isDeleted')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, uuid, groupUuid, name, priceDelta, updatedAt, isDeleted);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ModifierItemTableData &&
+          other.id == this.id &&
+          other.uuid == this.uuid &&
+          other.groupUuid == this.groupUuid &&
+          other.name == this.name &&
+          other.priceDelta == this.priceDelta &&
+          other.updatedAt == this.updatedAt &&
+          other.isDeleted == this.isDeleted);
+}
+
+class ModifierItemTableCompanion
+    extends UpdateCompanion<ModifierItemTableData> {
+  final Value<int> id;
+  final Value<String> uuid;
+  final Value<String> groupUuid;
+  final Value<String> name;
+  final Value<double> priceDelta;
+  final Value<DateTime> updatedAt;
+  final Value<bool> isDeleted;
+  const ModifierItemTableCompanion({
+    this.id = const Value.absent(),
+    this.uuid = const Value.absent(),
+    this.groupUuid = const Value.absent(),
+    this.name = const Value.absent(),
+    this.priceDelta = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.isDeleted = const Value.absent(),
+  });
+  ModifierItemTableCompanion.insert({
+    this.id = const Value.absent(),
+    required String uuid,
+    required String groupUuid,
+    required String name,
+    this.priceDelta = const Value.absent(),
+    required DateTime updatedAt,
+    this.isDeleted = const Value.absent(),
+  })  : uuid = Value(uuid),
+        groupUuid = Value(groupUuid),
+        name = Value(name),
+        updatedAt = Value(updatedAt);
+  static Insertable<ModifierItemTableData> custom({
+    Expression<int>? id,
+    Expression<String>? uuid,
+    Expression<String>? groupUuid,
+    Expression<String>? name,
+    Expression<double>? priceDelta,
+    Expression<DateTime>? updatedAt,
+    Expression<bool>? isDeleted,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (uuid != null) 'uuid': uuid,
+      if (groupUuid != null) 'group_uuid': groupUuid,
+      if (name != null) 'name': name,
+      if (priceDelta != null) 'price_delta': priceDelta,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (isDeleted != null) 'is_deleted': isDeleted,
+    });
+  }
+
+  ModifierItemTableCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? uuid,
+      Value<String>? groupUuid,
+      Value<String>? name,
+      Value<double>? priceDelta,
+      Value<DateTime>? updatedAt,
+      Value<bool>? isDeleted}) {
+    return ModifierItemTableCompanion(
+      id: id ?? this.id,
+      uuid: uuid ?? this.uuid,
+      groupUuid: groupUuid ?? this.groupUuid,
+      name: name ?? this.name,
+      priceDelta: priceDelta ?? this.priceDelta,
+      updatedAt: updatedAt ?? this.updatedAt,
+      isDeleted: isDeleted ?? this.isDeleted,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
+    }
+    if (groupUuid.present) {
+      map['group_uuid'] = Variable<String>(groupUuid.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (priceDelta.present) {
+      map['price_delta'] = Variable<double>(priceDelta.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (isDeleted.present) {
+      map['is_deleted'] = Variable<bool>(isDeleted.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ModifierItemTableCompanion(')
+          ..write('id: $id, ')
+          ..write('uuid: $uuid, ')
+          ..write('groupUuid: $groupUuid, ')
+          ..write('name: $name, ')
+          ..write('priceDelta: $priceDelta, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('isDeleted: $isDeleted')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ProductModifierLinkTableTable extends ProductModifierLinkTable
+    with
+        TableInfo<$ProductModifierLinkTableTable,
+            ProductModifierLinkTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ProductModifierLinkTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _productUuidMeta =
+      const VerificationMeta('productUuid');
+  @override
+  late final GeneratedColumn<String> productUuid = GeneratedColumn<String>(
+      'product_uuid', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES product_table (uuid) ON DELETE CASCADE'));
+  static const VerificationMeta _modifierGroupUuidMeta =
+      const VerificationMeta('modifierGroupUuid');
+  @override
+  late final GeneratedColumn<String> modifierGroupUuid =
+      GeneratedColumn<String>('modifier_group_uuid', aliasedName, false,
+          type: DriftSqlType.string,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintIsAlways(
+              'REFERENCES modifier_group_table (uuid) ON DELETE CASCADE'));
+  static const VerificationMeta _sortOrderMeta =
+      const VerificationMeta('sortOrder');
+  @override
+  late final GeneratedColumn<int> sortOrder = GeneratedColumn<int>(
+      'sort_order', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, productUuid, modifierGroupUuid, sortOrder];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'product_modifier_link_table';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<ProductModifierLinkTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('product_uuid')) {
+      context.handle(
+          _productUuidMeta,
+          productUuid.isAcceptableOrUnknown(
+              data['product_uuid']!, _productUuidMeta));
+    } else if (isInserting) {
+      context.missing(_productUuidMeta);
+    }
+    if (data.containsKey('modifier_group_uuid')) {
+      context.handle(
+          _modifierGroupUuidMeta,
+          modifierGroupUuid.isAcceptableOrUnknown(
+              data['modifier_group_uuid']!, _modifierGroupUuidMeta));
+    } else if (isInserting) {
+      context.missing(_modifierGroupUuidMeta);
+    }
+    if (data.containsKey('sort_order')) {
+      context.handle(_sortOrderMeta,
+          sortOrder.isAcceptableOrUnknown(data['sort_order']!, _sortOrderMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ProductModifierLinkTableData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ProductModifierLinkTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      productUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}product_uuid'])!,
+      modifierGroupUuid: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}modifier_group_uuid'])!,
+      sortOrder: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}sort_order'])!,
+    );
+  }
+
+  @override
+  $ProductModifierLinkTableTable createAlias(String alias) {
+    return $ProductModifierLinkTableTable(attachedDatabase, alias);
+  }
+}
+
+class ProductModifierLinkTableData extends DataClass
+    implements Insertable<ProductModifierLinkTableData> {
+  final int id;
+  final String productUuid;
+  final String modifierGroupUuid;
+  final int sortOrder;
+  const ProductModifierLinkTableData(
+      {required this.id,
+      required this.productUuid,
+      required this.modifierGroupUuid,
+      required this.sortOrder});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['product_uuid'] = Variable<String>(productUuid);
+    map['modifier_group_uuid'] = Variable<String>(modifierGroupUuid);
+    map['sort_order'] = Variable<int>(sortOrder);
+    return map;
+  }
+
+  ProductModifierLinkTableCompanion toCompanion(bool nullToAbsent) {
+    return ProductModifierLinkTableCompanion(
+      id: Value(id),
+      productUuid: Value(productUuid),
+      modifierGroupUuid: Value(modifierGroupUuid),
+      sortOrder: Value(sortOrder),
+    );
+  }
+
+  factory ProductModifierLinkTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ProductModifierLinkTableData(
+      id: serializer.fromJson<int>(json['id']),
+      productUuid: serializer.fromJson<String>(json['productUuid']),
+      modifierGroupUuid: serializer.fromJson<String>(json['modifierGroupUuid']),
+      sortOrder: serializer.fromJson<int>(json['sortOrder']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'productUuid': serializer.toJson<String>(productUuid),
+      'modifierGroupUuid': serializer.toJson<String>(modifierGroupUuid),
+      'sortOrder': serializer.toJson<int>(sortOrder),
+    };
+  }
+
+  ProductModifierLinkTableData copyWith(
+          {int? id,
+          String? productUuid,
+          String? modifierGroupUuid,
+          int? sortOrder}) =>
+      ProductModifierLinkTableData(
+        id: id ?? this.id,
+        productUuid: productUuid ?? this.productUuid,
+        modifierGroupUuid: modifierGroupUuid ?? this.modifierGroupUuid,
+        sortOrder: sortOrder ?? this.sortOrder,
+      );
+  ProductModifierLinkTableData copyWithCompanion(
+      ProductModifierLinkTableCompanion data) {
+    return ProductModifierLinkTableData(
+      id: data.id.present ? data.id.value : this.id,
+      productUuid:
+          data.productUuid.present ? data.productUuid.value : this.productUuid,
+      modifierGroupUuid: data.modifierGroupUuid.present
+          ? data.modifierGroupUuid.value
+          : this.modifierGroupUuid,
+      sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProductModifierLinkTableData(')
+          ..write('id: $id, ')
+          ..write('productUuid: $productUuid, ')
+          ..write('modifierGroupUuid: $modifierGroupUuid, ')
+          ..write('sortOrder: $sortOrder')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, productUuid, modifierGroupUuid, sortOrder);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ProductModifierLinkTableData &&
+          other.id == this.id &&
+          other.productUuid == this.productUuid &&
+          other.modifierGroupUuid == this.modifierGroupUuid &&
+          other.sortOrder == this.sortOrder);
+}
+
+class ProductModifierLinkTableCompanion
+    extends UpdateCompanion<ProductModifierLinkTableData> {
+  final Value<int> id;
+  final Value<String> productUuid;
+  final Value<String> modifierGroupUuid;
+  final Value<int> sortOrder;
+  const ProductModifierLinkTableCompanion({
+    this.id = const Value.absent(),
+    this.productUuid = const Value.absent(),
+    this.modifierGroupUuid = const Value.absent(),
+    this.sortOrder = const Value.absent(),
+  });
+  ProductModifierLinkTableCompanion.insert({
+    this.id = const Value.absent(),
+    required String productUuid,
+    required String modifierGroupUuid,
+    this.sortOrder = const Value.absent(),
+  })  : productUuid = Value(productUuid),
+        modifierGroupUuid = Value(modifierGroupUuid);
+  static Insertable<ProductModifierLinkTableData> custom({
+    Expression<int>? id,
+    Expression<String>? productUuid,
+    Expression<String>? modifierGroupUuid,
+    Expression<int>? sortOrder,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (productUuid != null) 'product_uuid': productUuid,
+      if (modifierGroupUuid != null) 'modifier_group_uuid': modifierGroupUuid,
+      if (sortOrder != null) 'sort_order': sortOrder,
+    });
+  }
+
+  ProductModifierLinkTableCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? productUuid,
+      Value<String>? modifierGroupUuid,
+      Value<int>? sortOrder}) {
+    return ProductModifierLinkTableCompanion(
+      id: id ?? this.id,
+      productUuid: productUuid ?? this.productUuid,
+      modifierGroupUuid: modifierGroupUuid ?? this.modifierGroupUuid,
+      sortOrder: sortOrder ?? this.sortOrder,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (productUuid.present) {
+      map['product_uuid'] = Variable<String>(productUuid.value);
+    }
+    if (modifierGroupUuid.present) {
+      map['modifier_group_uuid'] = Variable<String>(modifierGroupUuid.value);
+    }
+    if (sortOrder.present) {
+      map['sort_order'] = Variable<int>(sortOrder.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProductModifierLinkTableCompanion(')
+          ..write('id: $id, ')
+          ..write('productUuid: $productUuid, ')
+          ..write('modifierGroupUuid: $modifierGroupUuid, ')
+          ..write('sortOrder: $sortOrder')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $IngredientTableTable extends IngredientTable
+    with TableInfo<$IngredientTableTable, IngredientTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $IngredientTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _uuidMeta = const VerificationMeta('uuid');
+  @override
+  late final GeneratedColumn<String> uuid = GeneratedColumn<String>(
+      'uuid', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _unitMeta = const VerificationMeta('unit');
+  @override
+  late final GeneratedColumn<String> unit = GeneratedColumn<String>(
+      'unit', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _currentStockMeta =
+      const VerificationMeta('currentStock');
+  @override
+  late final GeneratedColumn<double> currentStock = GeneratedColumn<double>(
+      'current_stock', aliasedName, false,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _costPerUnitMeta =
+      const VerificationMeta('costPerUnit');
+  @override
+  late final GeneratedColumn<double> costPerUnit = GeneratedColumn<double>(
+      'cost_per_unit', aliasedName, false,
+      type: DriftSqlType.double,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _isDeletedMeta =
+      const VerificationMeta('isDeleted');
+  @override
+  late final GeneratedColumn<bool> isDeleted = GeneratedColumn<bool>(
+      'is_deleted', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("is_deleted" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, uuid, name, unit, currentStock, costPerUnit, updatedAt, isDeleted];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'ingredient_table';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<IngredientTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('uuid')) {
+      context.handle(
+          _uuidMeta, uuid.isAcceptableOrUnknown(data['uuid']!, _uuidMeta));
+    } else if (isInserting) {
+      context.missing(_uuidMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('unit')) {
+      context.handle(
+          _unitMeta, unit.isAcceptableOrUnknown(data['unit']!, _unitMeta));
+    } else if (isInserting) {
+      context.missing(_unitMeta);
+    }
+    if (data.containsKey('current_stock')) {
+      context.handle(
+          _currentStockMeta,
+          currentStock.isAcceptableOrUnknown(
+              data['current_stock']!, _currentStockMeta));
+    }
+    if (data.containsKey('cost_per_unit')) {
+      context.handle(
+          _costPerUnitMeta,
+          costPerUnit.isAcceptableOrUnknown(
+              data['cost_per_unit']!, _costPerUnitMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('is_deleted')) {
+      context.handle(_isDeletedMeta,
+          isDeleted.isAcceptableOrUnknown(data['is_deleted']!, _isDeletedMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  IngredientTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return IngredientTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      uuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}uuid'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      unit: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}unit'])!,
+      currentStock: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}current_stock'])!,
+      costPerUnit: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}cost_per_unit'])!,
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+      isDeleted: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_deleted'])!,
+    );
+  }
+
+  @override
+  $IngredientTableTable createAlias(String alias) {
+    return $IngredientTableTable(attachedDatabase, alias);
+  }
+}
+
+class IngredientTableData extends DataClass
+    implements Insertable<IngredientTableData> {
+  final int id;
+  final String uuid;
+  final String name;
+  final String unit;
+  final double currentStock;
+  final double costPerUnit;
+  final DateTime updatedAt;
+  final bool isDeleted;
+  const IngredientTableData(
+      {required this.id,
+      required this.uuid,
+      required this.name,
+      required this.unit,
+      required this.currentStock,
+      required this.costPerUnit,
+      required this.updatedAt,
+      required this.isDeleted});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['uuid'] = Variable<String>(uuid);
+    map['name'] = Variable<String>(name);
+    map['unit'] = Variable<String>(unit);
+    map['current_stock'] = Variable<double>(currentStock);
+    map['cost_per_unit'] = Variable<double>(costPerUnit);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    map['is_deleted'] = Variable<bool>(isDeleted);
+    return map;
+  }
+
+  IngredientTableCompanion toCompanion(bool nullToAbsent) {
+    return IngredientTableCompanion(
+      id: Value(id),
+      uuid: Value(uuid),
+      name: Value(name),
+      unit: Value(unit),
+      currentStock: Value(currentStock),
+      costPerUnit: Value(costPerUnit),
+      updatedAt: Value(updatedAt),
+      isDeleted: Value(isDeleted),
+    );
+  }
+
+  factory IngredientTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return IngredientTableData(
+      id: serializer.fromJson<int>(json['id']),
+      uuid: serializer.fromJson<String>(json['uuid']),
+      name: serializer.fromJson<String>(json['name']),
+      unit: serializer.fromJson<String>(json['unit']),
+      currentStock: serializer.fromJson<double>(json['currentStock']),
+      costPerUnit: serializer.fromJson<double>(json['costPerUnit']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      isDeleted: serializer.fromJson<bool>(json['isDeleted']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'uuid': serializer.toJson<String>(uuid),
+      'name': serializer.toJson<String>(name),
+      'unit': serializer.toJson<String>(unit),
+      'currentStock': serializer.toJson<double>(currentStock),
+      'costPerUnit': serializer.toJson<double>(costPerUnit),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'isDeleted': serializer.toJson<bool>(isDeleted),
+    };
+  }
+
+  IngredientTableData copyWith(
+          {int? id,
+          String? uuid,
+          String? name,
+          String? unit,
+          double? currentStock,
+          double? costPerUnit,
+          DateTime? updatedAt,
+          bool? isDeleted}) =>
+      IngredientTableData(
+        id: id ?? this.id,
+        uuid: uuid ?? this.uuid,
+        name: name ?? this.name,
+        unit: unit ?? this.unit,
+        currentStock: currentStock ?? this.currentStock,
+        costPerUnit: costPerUnit ?? this.costPerUnit,
+        updatedAt: updatedAt ?? this.updatedAt,
+        isDeleted: isDeleted ?? this.isDeleted,
+      );
+  IngredientTableData copyWithCompanion(IngredientTableCompanion data) {
+    return IngredientTableData(
+      id: data.id.present ? data.id.value : this.id,
+      uuid: data.uuid.present ? data.uuid.value : this.uuid,
+      name: data.name.present ? data.name.value : this.name,
+      unit: data.unit.present ? data.unit.value : this.unit,
+      currentStock: data.currentStock.present
+          ? data.currentStock.value
+          : this.currentStock,
+      costPerUnit:
+          data.costPerUnit.present ? data.costPerUnit.value : this.costPerUnit,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      isDeleted: data.isDeleted.present ? data.isDeleted.value : this.isDeleted,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('IngredientTableData(')
+          ..write('id: $id, ')
+          ..write('uuid: $uuid, ')
+          ..write('name: $name, ')
+          ..write('unit: $unit, ')
+          ..write('currentStock: $currentStock, ')
+          ..write('costPerUnit: $costPerUnit, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('isDeleted: $isDeleted')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id, uuid, name, unit, currentStock, costPerUnit, updatedAt, isDeleted);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is IngredientTableData &&
+          other.id == this.id &&
+          other.uuid == this.uuid &&
+          other.name == this.name &&
+          other.unit == this.unit &&
+          other.currentStock == this.currentStock &&
+          other.costPerUnit == this.costPerUnit &&
+          other.updatedAt == this.updatedAt &&
+          other.isDeleted == this.isDeleted);
+}
+
+class IngredientTableCompanion extends UpdateCompanion<IngredientTableData> {
+  final Value<int> id;
+  final Value<String> uuid;
+  final Value<String> name;
+  final Value<String> unit;
+  final Value<double> currentStock;
+  final Value<double> costPerUnit;
+  final Value<DateTime> updatedAt;
+  final Value<bool> isDeleted;
+  const IngredientTableCompanion({
+    this.id = const Value.absent(),
+    this.uuid = const Value.absent(),
+    this.name = const Value.absent(),
+    this.unit = const Value.absent(),
+    this.currentStock = const Value.absent(),
+    this.costPerUnit = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.isDeleted = const Value.absent(),
+  });
+  IngredientTableCompanion.insert({
+    this.id = const Value.absent(),
+    required String uuid,
+    required String name,
+    required String unit,
+    this.currentStock = const Value.absent(),
+    this.costPerUnit = const Value.absent(),
+    required DateTime updatedAt,
+    this.isDeleted = const Value.absent(),
+  })  : uuid = Value(uuid),
+        name = Value(name),
+        unit = Value(unit),
+        updatedAt = Value(updatedAt);
+  static Insertable<IngredientTableData> custom({
+    Expression<int>? id,
+    Expression<String>? uuid,
+    Expression<String>? name,
+    Expression<String>? unit,
+    Expression<double>? currentStock,
+    Expression<double>? costPerUnit,
+    Expression<DateTime>? updatedAt,
+    Expression<bool>? isDeleted,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (uuid != null) 'uuid': uuid,
+      if (name != null) 'name': name,
+      if (unit != null) 'unit': unit,
+      if (currentStock != null) 'current_stock': currentStock,
+      if (costPerUnit != null) 'cost_per_unit': costPerUnit,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (isDeleted != null) 'is_deleted': isDeleted,
+    });
+  }
+
+  IngredientTableCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? uuid,
+      Value<String>? name,
+      Value<String>? unit,
+      Value<double>? currentStock,
+      Value<double>? costPerUnit,
+      Value<DateTime>? updatedAt,
+      Value<bool>? isDeleted}) {
+    return IngredientTableCompanion(
+      id: id ?? this.id,
+      uuid: uuid ?? this.uuid,
+      name: name ?? this.name,
+      unit: unit ?? this.unit,
+      currentStock: currentStock ?? this.currentStock,
+      costPerUnit: costPerUnit ?? this.costPerUnit,
+      updatedAt: updatedAt ?? this.updatedAt,
+      isDeleted: isDeleted ?? this.isDeleted,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (uuid.present) {
+      map['uuid'] = Variable<String>(uuid.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (unit.present) {
+      map['unit'] = Variable<String>(unit.value);
+    }
+    if (currentStock.present) {
+      map['current_stock'] = Variable<double>(currentStock.value);
+    }
+    if (costPerUnit.present) {
+      map['cost_per_unit'] = Variable<double>(costPerUnit.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (isDeleted.present) {
+      map['is_deleted'] = Variable<bool>(isDeleted.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('IngredientTableCompanion(')
+          ..write('id: $id, ')
+          ..write('uuid: $uuid, ')
+          ..write('name: $name, ')
+          ..write('unit: $unit, ')
+          ..write('currentStock: $currentStock, ')
+          ..write('costPerUnit: $costPerUnit, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('isDeleted: $isDeleted')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $RecipeTableTable extends RecipeTable
+    with TableInfo<$RecipeTableTable, RecipeTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RecipeTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _productUuidMeta =
+      const VerificationMeta('productUuid');
+  @override
+  late final GeneratedColumn<String> productUuid = GeneratedColumn<String>(
+      'product_uuid', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES product_table (uuid) ON DELETE CASCADE'));
+  static const VerificationMeta _ingredientUuidMeta =
+      const VerificationMeta('ingredientUuid');
+  @override
+  late final GeneratedColumn<String> ingredientUuid = GeneratedColumn<String>(
+      'ingredient_uuid', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES ingredient_table (uuid) ON DELETE CASCADE'));
+  static const VerificationMeta _quantityRequiredMeta =
+      const VerificationMeta('quantityRequired');
+  @override
+  late final GeneratedColumn<double> quantityRequired = GeneratedColumn<double>(
+      'quantity_required', aliasedName, false,
+      type: DriftSqlType.double, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, productUuid, ingredientUuid, quantityRequired];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'recipe_table';
+  @override
+  VerificationContext validateIntegrity(Insertable<RecipeTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('product_uuid')) {
+      context.handle(
+          _productUuidMeta,
+          productUuid.isAcceptableOrUnknown(
+              data['product_uuid']!, _productUuidMeta));
+    } else if (isInserting) {
+      context.missing(_productUuidMeta);
+    }
+    if (data.containsKey('ingredient_uuid')) {
+      context.handle(
+          _ingredientUuidMeta,
+          ingredientUuid.isAcceptableOrUnknown(
+              data['ingredient_uuid']!, _ingredientUuidMeta));
+    } else if (isInserting) {
+      context.missing(_ingredientUuidMeta);
+    }
+    if (data.containsKey('quantity_required')) {
+      context.handle(
+          _quantityRequiredMeta,
+          quantityRequired.isAcceptableOrUnknown(
+              data['quantity_required']!, _quantityRequiredMeta));
+    } else if (isInserting) {
+      context.missing(_quantityRequiredMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  RecipeTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return RecipeTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      productUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}product_uuid'])!,
+      ingredientUuid: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}ingredient_uuid'])!,
+      quantityRequired: attachedDatabase.typeMapping.read(
+          DriftSqlType.double, data['${effectivePrefix}quantity_required'])!,
+    );
+  }
+
+  @override
+  $RecipeTableTable createAlias(String alias) {
+    return $RecipeTableTable(attachedDatabase, alias);
+  }
+}
+
+class RecipeTableData extends DataClass implements Insertable<RecipeTableData> {
+  final int id;
+  final String productUuid;
+  final String ingredientUuid;
+  final double quantityRequired;
+  const RecipeTableData(
+      {required this.id,
+      required this.productUuid,
+      required this.ingredientUuid,
+      required this.quantityRequired});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['product_uuid'] = Variable<String>(productUuid);
+    map['ingredient_uuid'] = Variable<String>(ingredientUuid);
+    map['quantity_required'] = Variable<double>(quantityRequired);
+    return map;
+  }
+
+  RecipeTableCompanion toCompanion(bool nullToAbsent) {
+    return RecipeTableCompanion(
+      id: Value(id),
+      productUuid: Value(productUuid),
+      ingredientUuid: Value(ingredientUuid),
+      quantityRequired: Value(quantityRequired),
+    );
+  }
+
+  factory RecipeTableData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return RecipeTableData(
+      id: serializer.fromJson<int>(json['id']),
+      productUuid: serializer.fromJson<String>(json['productUuid']),
+      ingredientUuid: serializer.fromJson<String>(json['ingredientUuid']),
+      quantityRequired: serializer.fromJson<double>(json['quantityRequired']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'productUuid': serializer.toJson<String>(productUuid),
+      'ingredientUuid': serializer.toJson<String>(ingredientUuid),
+      'quantityRequired': serializer.toJson<double>(quantityRequired),
+    };
+  }
+
+  RecipeTableData copyWith(
+          {int? id,
+          String? productUuid,
+          String? ingredientUuid,
+          double? quantityRequired}) =>
+      RecipeTableData(
+        id: id ?? this.id,
+        productUuid: productUuid ?? this.productUuid,
+        ingredientUuid: ingredientUuid ?? this.ingredientUuid,
+        quantityRequired: quantityRequired ?? this.quantityRequired,
+      );
+  RecipeTableData copyWithCompanion(RecipeTableCompanion data) {
+    return RecipeTableData(
+      id: data.id.present ? data.id.value : this.id,
+      productUuid:
+          data.productUuid.present ? data.productUuid.value : this.productUuid,
+      ingredientUuid: data.ingredientUuid.present
+          ? data.ingredientUuid.value
+          : this.ingredientUuid,
+      quantityRequired: data.quantityRequired.present
+          ? data.quantityRequired.value
+          : this.quantityRequired,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RecipeTableData(')
+          ..write('id: $id, ')
+          ..write('productUuid: $productUuid, ')
+          ..write('ingredientUuid: $ingredientUuid, ')
+          ..write('quantityRequired: $quantityRequired')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, productUuid, ingredientUuid, quantityRequired);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is RecipeTableData &&
+          other.id == this.id &&
+          other.productUuid == this.productUuid &&
+          other.ingredientUuid == this.ingredientUuid &&
+          other.quantityRequired == this.quantityRequired);
+}
+
+class RecipeTableCompanion extends UpdateCompanion<RecipeTableData> {
+  final Value<int> id;
+  final Value<String> productUuid;
+  final Value<String> ingredientUuid;
+  final Value<double> quantityRequired;
+  const RecipeTableCompanion({
+    this.id = const Value.absent(),
+    this.productUuid = const Value.absent(),
+    this.ingredientUuid = const Value.absent(),
+    this.quantityRequired = const Value.absent(),
+  });
+  RecipeTableCompanion.insert({
+    this.id = const Value.absent(),
+    required String productUuid,
+    required String ingredientUuid,
+    required double quantityRequired,
+  })  : productUuid = Value(productUuid),
+        ingredientUuid = Value(ingredientUuid),
+        quantityRequired = Value(quantityRequired);
+  static Insertable<RecipeTableData> custom({
+    Expression<int>? id,
+    Expression<String>? productUuid,
+    Expression<String>? ingredientUuid,
+    Expression<double>? quantityRequired,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (productUuid != null) 'product_uuid': productUuid,
+      if (ingredientUuid != null) 'ingredient_uuid': ingredientUuid,
+      if (quantityRequired != null) 'quantity_required': quantityRequired,
+    });
+  }
+
+  RecipeTableCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? productUuid,
+      Value<String>? ingredientUuid,
+      Value<double>? quantityRequired}) {
+    return RecipeTableCompanion(
+      id: id ?? this.id,
+      productUuid: productUuid ?? this.productUuid,
+      ingredientUuid: ingredientUuid ?? this.ingredientUuid,
+      quantityRequired: quantityRequired ?? this.quantityRequired,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (productUuid.present) {
+      map['product_uuid'] = Variable<String>(productUuid.value);
+    }
+    if (ingredientUuid.present) {
+      map['ingredient_uuid'] = Variable<String>(ingredientUuid.value);
+    }
+    if (quantityRequired.present) {
+      map['quantity_required'] = Variable<double>(quantityRequired.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RecipeTableCompanion(')
+          ..write('id: $id, ')
+          ..write('productUuid: $productUuid, ')
+          ..write('ingredientUuid: $ingredientUuid, ')
+          ..write('quantityRequired: $quantityRequired')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -6161,6 +8004,15 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $RestaurantTableTable(this);
   late final $ReservationTableTable reservationTable =
       $ReservationTableTable(this);
+  late final $ModifierGroupTableTable modifierGroupTable =
+      $ModifierGroupTableTable(this);
+  late final $ModifierItemTableTable modifierItemTable =
+      $ModifierItemTableTable(this);
+  late final $ProductModifierLinkTableTable productModifierLinkTable =
+      $ProductModifierLinkTableTable(this);
+  late final $IngredientTableTable ingredientTable =
+      $IngredientTableTable(this);
+  late final $RecipeTableTable recipeTable = $RecipeTableTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -6177,7 +8029,12 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         syncQueue,
         employeeTable,
         restaurantTable,
-        reservationTable
+        reservationTable,
+        modifierGroupTable,
+        modifierItemTable,
+        productModifierLinkTable,
+        ingredientTable,
+        recipeTable
       ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules(
@@ -6187,6 +8044,43 @@ abstract class _$AppDatabase extends GeneratedDatabase {
                 limitUpdateKind: UpdateKind.delete),
             result: [
               TableUpdate('order_item_table', kind: UpdateKind.delete),
+            ],
+          ),
+          WritePropagation(
+            on: TableUpdateQuery.onTableName('modifier_group_table',
+                limitUpdateKind: UpdateKind.delete),
+            result: [
+              TableUpdate('modifier_item_table', kind: UpdateKind.delete),
+            ],
+          ),
+          WritePropagation(
+            on: TableUpdateQuery.onTableName('product_table',
+                limitUpdateKind: UpdateKind.delete),
+            result: [
+              TableUpdate('product_modifier_link_table',
+                  kind: UpdateKind.delete),
+            ],
+          ),
+          WritePropagation(
+            on: TableUpdateQuery.onTableName('modifier_group_table',
+                limitUpdateKind: UpdateKind.delete),
+            result: [
+              TableUpdate('product_modifier_link_table',
+                  kind: UpdateKind.delete),
+            ],
+          ),
+          WritePropagation(
+            on: TableUpdateQuery.onTableName('product_table',
+                limitUpdateKind: UpdateKind.delete),
+            result: [
+              TableUpdate('recipe_table', kind: UpdateKind.delete),
+            ],
+          ),
+          WritePropagation(
+            on: TableUpdateQuery.onTableName('ingredient_table',
+                limitUpdateKind: UpdateKind.delete),
+            result: [
+              TableUpdate('recipe_table', kind: UpdateKind.delete),
             ],
           ),
         ],
@@ -6464,6 +8358,7 @@ typedef $$ProductTableTableCreateCompanionBuilder = ProductTableCompanion
   required DateTime updatedAt,
   Value<bool> isSynced,
   Value<bool> isDeleted,
+  Value<bool> isComposite,
 });
 typedef $$ProductTableTableUpdateCompanionBuilder = ProductTableCompanion
     Function({
@@ -6483,7 +8378,49 @@ typedef $$ProductTableTableUpdateCompanionBuilder = ProductTableCompanion
   Value<DateTime> updatedAt,
   Value<bool> isSynced,
   Value<bool> isDeleted,
+  Value<bool> isComposite,
 });
+
+final class $$ProductTableTableReferences extends BaseReferences<_$AppDatabase,
+    $ProductTableTable, ProductTableData> {
+  $$ProductTableTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$ProductModifierLinkTableTable,
+      List<ProductModifierLinkTableData>> _productModifierLinkTableRefsTable(
+          _$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(db.productModifierLinkTable,
+          aliasName: $_aliasNameGenerator(
+              db.productTable.uuid, db.productModifierLinkTable.productUuid));
+
+  $$ProductModifierLinkTableTableProcessedTableManager
+      get productModifierLinkTableRefs {
+    final manager = $$ProductModifierLinkTableTableTableManager(
+            $_db, $_db.productModifierLinkTable)
+        .filter(
+            (f) => f.productUuid.uuid.sqlEquals($_itemColumn<String>('uuid')!));
+
+    final cache =
+        $_typedResult.readTableOrNull(_productModifierLinkTableRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$RecipeTableTable, List<RecipeTableData>>
+      _recipeTableRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.recipeTable,
+              aliasName: $_aliasNameGenerator(
+                  db.productTable.uuid, db.recipeTable.productUuid));
+
+  $$RecipeTableTableProcessedTableManager get recipeTableRefs {
+    final manager = $$RecipeTableTableTableManager($_db, $_db.recipeTable)
+        .filter(
+            (f) => f.productUuid.uuid.sqlEquals($_itemColumn<String>('uuid')!));
+
+    final cache = $_typedResult.readTableOrNull(_recipeTableRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+}
 
 class $$ProductTableTableFilterComposer
     extends Composer<_$AppDatabase, $ProductTableTable> {
@@ -6542,6 +8479,53 @@ class $$ProductTableTableFilterComposer
 
   ColumnFilters<bool> get isDeleted => $composableBuilder(
       column: $table.isDeleted, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isComposite => $composableBuilder(
+      column: $table.isComposite, builder: (column) => ColumnFilters(column));
+
+  Expression<bool> productModifierLinkTableRefs(
+      Expression<bool> Function($$ProductModifierLinkTableTableFilterComposer f)
+          f) {
+    final $$ProductModifierLinkTableTableFilterComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.uuid,
+            referencedTable: $db.productModifierLinkTable,
+            getReferencedColumn: (t) => t.productUuid,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$ProductModifierLinkTableTableFilterComposer(
+                  $db: $db,
+                  $table: $db.productModifierLinkTable,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return f(composer);
+  }
+
+  Expression<bool> recipeTableRefs(
+      Expression<bool> Function($$RecipeTableTableFilterComposer f) f) {
+    final $$RecipeTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.uuid,
+        referencedTable: $db.recipeTable,
+        getReferencedColumn: (t) => t.productUuid,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$RecipeTableTableFilterComposer(
+              $db: $db,
+              $table: $db.recipeTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$ProductTableTableOrderingComposer
@@ -6601,6 +8585,9 @@ class $$ProductTableTableOrderingComposer
 
   ColumnOrderings<bool> get isDeleted => $composableBuilder(
       column: $table.isDeleted, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isComposite => $composableBuilder(
+      column: $table.isComposite, builder: (column) => ColumnOrderings(column));
 }
 
 class $$ProductTableTableAnnotationComposer
@@ -6659,6 +8646,54 @@ class $$ProductTableTableAnnotationComposer
 
   GeneratedColumn<bool> get isDeleted =>
       $composableBuilder(column: $table.isDeleted, builder: (column) => column);
+
+  GeneratedColumn<bool> get isComposite => $composableBuilder(
+      column: $table.isComposite, builder: (column) => column);
+
+  Expression<T> productModifierLinkTableRefs<T extends Object>(
+      Expression<T> Function(
+              $$ProductModifierLinkTableTableAnnotationComposer a)
+          f) {
+    final $$ProductModifierLinkTableTableAnnotationComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.uuid,
+            referencedTable: $db.productModifierLinkTable,
+            getReferencedColumn: (t) => t.productUuid,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$ProductModifierLinkTableTableAnnotationComposer(
+                  $db: $db,
+                  $table: $db.productModifierLinkTable,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return f(composer);
+  }
+
+  Expression<T> recipeTableRefs<T extends Object>(
+      Expression<T> Function($$RecipeTableTableAnnotationComposer a) f) {
+    final $$RecipeTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.uuid,
+        referencedTable: $db.recipeTable,
+        getReferencedColumn: (t) => t.productUuid,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$RecipeTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.recipeTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$ProductTableTableTableManager extends RootTableManager<
@@ -6670,12 +8705,10 @@ class $$ProductTableTableTableManager extends RootTableManager<
     $$ProductTableTableAnnotationComposer,
     $$ProductTableTableCreateCompanionBuilder,
     $$ProductTableTableUpdateCompanionBuilder,
-    (
-      ProductTableData,
-      BaseReferences<_$AppDatabase, $ProductTableTable, ProductTableData>
-    ),
+    (ProductTableData, $$ProductTableTableReferences),
     ProductTableData,
-    PrefetchHooks Function()> {
+    PrefetchHooks Function(
+        {bool productModifierLinkTableRefs, bool recipeTableRefs})> {
   $$ProductTableTableTableManager(_$AppDatabase db, $ProductTableTable table)
       : super(TableManagerState(
           db: db,
@@ -6703,6 +8736,7 @@ class $$ProductTableTableTableManager extends RootTableManager<
             Value<DateTime> updatedAt = const Value.absent(),
             Value<bool> isSynced = const Value.absent(),
             Value<bool> isDeleted = const Value.absent(),
+            Value<bool> isComposite = const Value.absent(),
           }) =>
               ProductTableCompanion(
             id: id,
@@ -6721,6 +8755,7 @@ class $$ProductTableTableTableManager extends RootTableManager<
             updatedAt: updatedAt,
             isSynced: isSynced,
             isDeleted: isDeleted,
+            isComposite: isComposite,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
@@ -6739,6 +8774,7 @@ class $$ProductTableTableTableManager extends RootTableManager<
             required DateTime updatedAt,
             Value<bool> isSynced = const Value.absent(),
             Value<bool> isDeleted = const Value.absent(),
+            Value<bool> isComposite = const Value.absent(),
           }) =>
               ProductTableCompanion.insert(
             id: id,
@@ -6757,11 +8793,55 @@ class $$ProductTableTableTableManager extends RootTableManager<
             updatedAt: updatedAt,
             isSynced: isSynced,
             isDeleted: isDeleted,
+            isComposite: isComposite,
           ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map((e) => (
+                    e.readTable(table),
+                    $$ProductTableTableReferences(db, table, e)
+                  ))
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: (
+              {productModifierLinkTableRefs = false, recipeTableRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (productModifierLinkTableRefs) db.productModifierLinkTable,
+                if (recipeTableRefs) db.recipeTable
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (productModifierLinkTableRefs)
+                    await $_getPrefetchedData<ProductTableData,
+                            $ProductTableTable, ProductModifierLinkTableData>(
+                        currentTable: table,
+                        referencedTable: $$ProductTableTableReferences
+                            ._productModifierLinkTableRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$ProductTableTableReferences(db, table, p0)
+                                .productModifierLinkTableRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.productUuid == item.uuid),
+                        typedResults: items),
+                  if (recipeTableRefs)
+                    await $_getPrefetchedData<ProductTableData,
+                            $ProductTableTable, RecipeTableData>(
+                        currentTable: table,
+                        referencedTable: $$ProductTableTableReferences
+                            ._recipeTableRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$ProductTableTableReferences(db, table, p0)
+                                .recipeTableRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.productUuid == item.uuid),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
         ));
 }
 
@@ -6774,12 +8854,10 @@ typedef $$ProductTableTableProcessedTableManager = ProcessedTableManager<
     $$ProductTableTableAnnotationComposer,
     $$ProductTableTableCreateCompanionBuilder,
     $$ProductTableTableUpdateCompanionBuilder,
-    (
-      ProductTableData,
-      BaseReferences<_$AppDatabase, $ProductTableTable, ProductTableData>
-    ),
+    (ProductTableData, $$ProductTableTableReferences),
     ProductTableData,
-    PrefetchHooks Function()>;
+    PrefetchHooks Function(
+        {bool productModifierLinkTableRefs, bool recipeTableRefs})>;
 typedef $$CustomerTableTableCreateCompanionBuilder = CustomerTableCompanion
     Function({
   Value<int> id,
@@ -9338,6 +11416,1686 @@ typedef $$ReservationTableTableProcessedTableManager = ProcessedTableManager<
     ),
     ReservationTableData,
     PrefetchHooks Function()>;
+typedef $$ModifierGroupTableTableCreateCompanionBuilder
+    = ModifierGroupTableCompanion Function({
+  Value<int> id,
+  required String uuid,
+  required String name,
+  Value<bool> allowMultiSelect,
+  Value<int> minSelection,
+  Value<int?> maxSelection,
+  required DateTime updatedAt,
+  Value<bool> isDeleted,
+});
+typedef $$ModifierGroupTableTableUpdateCompanionBuilder
+    = ModifierGroupTableCompanion Function({
+  Value<int> id,
+  Value<String> uuid,
+  Value<String> name,
+  Value<bool> allowMultiSelect,
+  Value<int> minSelection,
+  Value<int?> maxSelection,
+  Value<DateTime> updatedAt,
+  Value<bool> isDeleted,
+});
+
+final class $$ModifierGroupTableTableReferences extends BaseReferences<
+    _$AppDatabase, $ModifierGroupTableTable, ModifierGroupTableData> {
+  $$ModifierGroupTableTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$ModifierItemTableTable,
+      List<ModifierItemTableData>> _modifierItemTableRefsTable(
+          _$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(db.modifierItemTable,
+          aliasName: $_aliasNameGenerator(
+              db.modifierGroupTable.uuid, db.modifierItemTable.groupUuid));
+
+  $$ModifierItemTableTableProcessedTableManager get modifierItemTableRefs {
+    final manager = $$ModifierItemTableTableTableManager(
+            $_db, $_db.modifierItemTable)
+        .filter(
+            (f) => f.groupUuid.uuid.sqlEquals($_itemColumn<String>('uuid')!));
+
+    final cache =
+        $_typedResult.readTableOrNull(_modifierItemTableRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$ProductModifierLinkTableTable,
+      List<ProductModifierLinkTableData>> _productModifierLinkTableRefsTable(
+          _$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(db.productModifierLinkTable,
+          aliasName: $_aliasNameGenerator(db.modifierGroupTable.uuid,
+              db.productModifierLinkTable.modifierGroupUuid));
+
+  $$ProductModifierLinkTableTableProcessedTableManager
+      get productModifierLinkTableRefs {
+    final manager = $$ProductModifierLinkTableTableTableManager(
+            $_db, $_db.productModifierLinkTable)
+        .filter((f) =>
+            f.modifierGroupUuid.uuid.sqlEquals($_itemColumn<String>('uuid')!));
+
+    final cache =
+        $_typedResult.readTableOrNull(_productModifierLinkTableRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+}
+
+class $$ModifierGroupTableTableFilterComposer
+    extends Composer<_$AppDatabase, $ModifierGroupTableTable> {
+  $$ModifierGroupTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get uuid => $composableBuilder(
+      column: $table.uuid, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get allowMultiSelect => $composableBuilder(
+      column: $table.allowMultiSelect,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get minSelection => $composableBuilder(
+      column: $table.minSelection, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get maxSelection => $composableBuilder(
+      column: $table.maxSelection, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isDeleted => $composableBuilder(
+      column: $table.isDeleted, builder: (column) => ColumnFilters(column));
+
+  Expression<bool> modifierItemTableRefs(
+      Expression<bool> Function($$ModifierItemTableTableFilterComposer f) f) {
+    final $$ModifierItemTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.uuid,
+        referencedTable: $db.modifierItemTable,
+        getReferencedColumn: (t) => t.groupUuid,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ModifierItemTableTableFilterComposer(
+              $db: $db,
+              $table: $db.modifierItemTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+
+  Expression<bool> productModifierLinkTableRefs(
+      Expression<bool> Function($$ProductModifierLinkTableTableFilterComposer f)
+          f) {
+    final $$ProductModifierLinkTableTableFilterComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.uuid,
+            referencedTable: $db.productModifierLinkTable,
+            getReferencedColumn: (t) => t.modifierGroupUuid,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$ProductModifierLinkTableTableFilterComposer(
+                  $db: $db,
+                  $table: $db.productModifierLinkTable,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return f(composer);
+  }
+}
+
+class $$ModifierGroupTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $ModifierGroupTableTable> {
+  $$ModifierGroupTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get uuid => $composableBuilder(
+      column: $table.uuid, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get allowMultiSelect => $composableBuilder(
+      column: $table.allowMultiSelect,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get minSelection => $composableBuilder(
+      column: $table.minSelection,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get maxSelection => $composableBuilder(
+      column: $table.maxSelection,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isDeleted => $composableBuilder(
+      column: $table.isDeleted, builder: (column) => ColumnOrderings(column));
+}
+
+class $$ModifierGroupTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ModifierGroupTableTable> {
+  $$ModifierGroupTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get uuid =>
+      $composableBuilder(column: $table.uuid, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<bool> get allowMultiSelect => $composableBuilder(
+      column: $table.allowMultiSelect, builder: (column) => column);
+
+  GeneratedColumn<int> get minSelection => $composableBuilder(
+      column: $table.minSelection, builder: (column) => column);
+
+  GeneratedColumn<int> get maxSelection => $composableBuilder(
+      column: $table.maxSelection, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get isDeleted =>
+      $composableBuilder(column: $table.isDeleted, builder: (column) => column);
+
+  Expression<T> modifierItemTableRefs<T extends Object>(
+      Expression<T> Function($$ModifierItemTableTableAnnotationComposer a) f) {
+    final $$ModifierItemTableTableAnnotationComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.uuid,
+            referencedTable: $db.modifierItemTable,
+            getReferencedColumn: (t) => t.groupUuid,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$ModifierItemTableTableAnnotationComposer(
+                  $db: $db,
+                  $table: $db.modifierItemTable,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return f(composer);
+  }
+
+  Expression<T> productModifierLinkTableRefs<T extends Object>(
+      Expression<T> Function(
+              $$ProductModifierLinkTableTableAnnotationComposer a)
+          f) {
+    final $$ProductModifierLinkTableTableAnnotationComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.uuid,
+            referencedTable: $db.productModifierLinkTable,
+            getReferencedColumn: (t) => t.modifierGroupUuid,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$ProductModifierLinkTableTableAnnotationComposer(
+                  $db: $db,
+                  $table: $db.productModifierLinkTable,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return f(composer);
+  }
+}
+
+class $$ModifierGroupTableTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $ModifierGroupTableTable,
+    ModifierGroupTableData,
+    $$ModifierGroupTableTableFilterComposer,
+    $$ModifierGroupTableTableOrderingComposer,
+    $$ModifierGroupTableTableAnnotationComposer,
+    $$ModifierGroupTableTableCreateCompanionBuilder,
+    $$ModifierGroupTableTableUpdateCompanionBuilder,
+    (ModifierGroupTableData, $$ModifierGroupTableTableReferences),
+    ModifierGroupTableData,
+    PrefetchHooks Function(
+        {bool modifierItemTableRefs, bool productModifierLinkTableRefs})> {
+  $$ModifierGroupTableTableTableManager(
+      _$AppDatabase db, $ModifierGroupTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ModifierGroupTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ModifierGroupTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ModifierGroupTableTableAnnotationComposer(
+                  $db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> uuid = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<bool> allowMultiSelect = const Value.absent(),
+            Value<int> minSelection = const Value.absent(),
+            Value<int?> maxSelection = const Value.absent(),
+            Value<DateTime> updatedAt = const Value.absent(),
+            Value<bool> isDeleted = const Value.absent(),
+          }) =>
+              ModifierGroupTableCompanion(
+            id: id,
+            uuid: uuid,
+            name: name,
+            allowMultiSelect: allowMultiSelect,
+            minSelection: minSelection,
+            maxSelection: maxSelection,
+            updatedAt: updatedAt,
+            isDeleted: isDeleted,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String uuid,
+            required String name,
+            Value<bool> allowMultiSelect = const Value.absent(),
+            Value<int> minSelection = const Value.absent(),
+            Value<int?> maxSelection = const Value.absent(),
+            required DateTime updatedAt,
+            Value<bool> isDeleted = const Value.absent(),
+          }) =>
+              ModifierGroupTableCompanion.insert(
+            id: id,
+            uuid: uuid,
+            name: name,
+            allowMultiSelect: allowMultiSelect,
+            minSelection: minSelection,
+            maxSelection: maxSelection,
+            updatedAt: updatedAt,
+            isDeleted: isDeleted,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$ModifierGroupTableTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: (
+              {modifierItemTableRefs = false,
+              productModifierLinkTableRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (modifierItemTableRefs) db.modifierItemTable,
+                if (productModifierLinkTableRefs) db.productModifierLinkTable
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (modifierItemTableRefs)
+                    await $_getPrefetchedData<ModifierGroupTableData,
+                            $ModifierGroupTableTable, ModifierItemTableData>(
+                        currentTable: table,
+                        referencedTable: $$ModifierGroupTableTableReferences
+                            ._modifierItemTableRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$ModifierGroupTableTableReferences(db, table, p0)
+                                .modifierItemTableRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.groupUuid == item.uuid),
+                        typedResults: items),
+                  if (productModifierLinkTableRefs)
+                    await $_getPrefetchedData<
+                            ModifierGroupTableData,
+                            $ModifierGroupTableTable,
+                            ProductModifierLinkTableData>(
+                        currentTable: table,
+                        referencedTable: $$ModifierGroupTableTableReferences
+                            ._productModifierLinkTableRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$ModifierGroupTableTableReferences(db, table, p0)
+                                .productModifierLinkTableRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.modifierGroupUuid == item.uuid),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$ModifierGroupTableTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $ModifierGroupTableTable,
+    ModifierGroupTableData,
+    $$ModifierGroupTableTableFilterComposer,
+    $$ModifierGroupTableTableOrderingComposer,
+    $$ModifierGroupTableTableAnnotationComposer,
+    $$ModifierGroupTableTableCreateCompanionBuilder,
+    $$ModifierGroupTableTableUpdateCompanionBuilder,
+    (ModifierGroupTableData, $$ModifierGroupTableTableReferences),
+    ModifierGroupTableData,
+    PrefetchHooks Function(
+        {bool modifierItemTableRefs, bool productModifierLinkTableRefs})>;
+typedef $$ModifierItemTableTableCreateCompanionBuilder
+    = ModifierItemTableCompanion Function({
+  Value<int> id,
+  required String uuid,
+  required String groupUuid,
+  required String name,
+  Value<double> priceDelta,
+  required DateTime updatedAt,
+  Value<bool> isDeleted,
+});
+typedef $$ModifierItemTableTableUpdateCompanionBuilder
+    = ModifierItemTableCompanion Function({
+  Value<int> id,
+  Value<String> uuid,
+  Value<String> groupUuid,
+  Value<String> name,
+  Value<double> priceDelta,
+  Value<DateTime> updatedAt,
+  Value<bool> isDeleted,
+});
+
+final class $$ModifierItemTableTableReferences extends BaseReferences<
+    _$AppDatabase, $ModifierItemTableTable, ModifierItemTableData> {
+  $$ModifierItemTableTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $ModifierGroupTableTable _groupUuidTable(_$AppDatabase db) =>
+      db.modifierGroupTable.createAlias($_aliasNameGenerator(
+          db.modifierItemTable.groupUuid, db.modifierGroupTable.uuid));
+
+  $$ModifierGroupTableTableProcessedTableManager get groupUuid {
+    final $_column = $_itemColumn<String>('group_uuid')!;
+
+    final manager =
+        $$ModifierGroupTableTableTableManager($_db, $_db.modifierGroupTable)
+            .filter((f) => f.uuid.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_groupUuidTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$ModifierItemTableTableFilterComposer
+    extends Composer<_$AppDatabase, $ModifierItemTableTable> {
+  $$ModifierItemTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get uuid => $composableBuilder(
+      column: $table.uuid, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get priceDelta => $composableBuilder(
+      column: $table.priceDelta, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isDeleted => $composableBuilder(
+      column: $table.isDeleted, builder: (column) => ColumnFilters(column));
+
+  $$ModifierGroupTableTableFilterComposer get groupUuid {
+    final $$ModifierGroupTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.groupUuid,
+        referencedTable: $db.modifierGroupTable,
+        getReferencedColumn: (t) => t.uuid,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ModifierGroupTableTableFilterComposer(
+              $db: $db,
+              $table: $db.modifierGroupTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$ModifierItemTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $ModifierItemTableTable> {
+  $$ModifierItemTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get uuid => $composableBuilder(
+      column: $table.uuid, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get priceDelta => $composableBuilder(
+      column: $table.priceDelta, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isDeleted => $composableBuilder(
+      column: $table.isDeleted, builder: (column) => ColumnOrderings(column));
+
+  $$ModifierGroupTableTableOrderingComposer get groupUuid {
+    final $$ModifierGroupTableTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.groupUuid,
+        referencedTable: $db.modifierGroupTable,
+        getReferencedColumn: (t) => t.uuid,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ModifierGroupTableTableOrderingComposer(
+              $db: $db,
+              $table: $db.modifierGroupTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$ModifierItemTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ModifierItemTableTable> {
+  $$ModifierItemTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get uuid =>
+      $composableBuilder(column: $table.uuid, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<double> get priceDelta => $composableBuilder(
+      column: $table.priceDelta, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get isDeleted =>
+      $composableBuilder(column: $table.isDeleted, builder: (column) => column);
+
+  $$ModifierGroupTableTableAnnotationComposer get groupUuid {
+    final $$ModifierGroupTableTableAnnotationComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.groupUuid,
+            referencedTable: $db.modifierGroupTable,
+            getReferencedColumn: (t) => t.uuid,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$ModifierGroupTableTableAnnotationComposer(
+                  $db: $db,
+                  $table: $db.modifierGroupTable,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return composer;
+  }
+}
+
+class $$ModifierItemTableTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $ModifierItemTableTable,
+    ModifierItemTableData,
+    $$ModifierItemTableTableFilterComposer,
+    $$ModifierItemTableTableOrderingComposer,
+    $$ModifierItemTableTableAnnotationComposer,
+    $$ModifierItemTableTableCreateCompanionBuilder,
+    $$ModifierItemTableTableUpdateCompanionBuilder,
+    (ModifierItemTableData, $$ModifierItemTableTableReferences),
+    ModifierItemTableData,
+    PrefetchHooks Function({bool groupUuid})> {
+  $$ModifierItemTableTableTableManager(
+      _$AppDatabase db, $ModifierItemTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ModifierItemTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ModifierItemTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ModifierItemTableTableAnnotationComposer(
+                  $db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> uuid = const Value.absent(),
+            Value<String> groupUuid = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<double> priceDelta = const Value.absent(),
+            Value<DateTime> updatedAt = const Value.absent(),
+            Value<bool> isDeleted = const Value.absent(),
+          }) =>
+              ModifierItemTableCompanion(
+            id: id,
+            uuid: uuid,
+            groupUuid: groupUuid,
+            name: name,
+            priceDelta: priceDelta,
+            updatedAt: updatedAt,
+            isDeleted: isDeleted,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String uuid,
+            required String groupUuid,
+            required String name,
+            Value<double> priceDelta = const Value.absent(),
+            required DateTime updatedAt,
+            Value<bool> isDeleted = const Value.absent(),
+          }) =>
+              ModifierItemTableCompanion.insert(
+            id: id,
+            uuid: uuid,
+            groupUuid: groupUuid,
+            name: name,
+            priceDelta: priceDelta,
+            updatedAt: updatedAt,
+            isDeleted: isDeleted,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$ModifierItemTableTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({groupUuid = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (groupUuid) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.groupUuid,
+                    referencedTable:
+                        $$ModifierItemTableTableReferences._groupUuidTable(db),
+                    referencedColumn: $$ModifierItemTableTableReferences
+                        ._groupUuidTable(db)
+                        .uuid,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$ModifierItemTableTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $ModifierItemTableTable,
+    ModifierItemTableData,
+    $$ModifierItemTableTableFilterComposer,
+    $$ModifierItemTableTableOrderingComposer,
+    $$ModifierItemTableTableAnnotationComposer,
+    $$ModifierItemTableTableCreateCompanionBuilder,
+    $$ModifierItemTableTableUpdateCompanionBuilder,
+    (ModifierItemTableData, $$ModifierItemTableTableReferences),
+    ModifierItemTableData,
+    PrefetchHooks Function({bool groupUuid})>;
+typedef $$ProductModifierLinkTableTableCreateCompanionBuilder
+    = ProductModifierLinkTableCompanion Function({
+  Value<int> id,
+  required String productUuid,
+  required String modifierGroupUuid,
+  Value<int> sortOrder,
+});
+typedef $$ProductModifierLinkTableTableUpdateCompanionBuilder
+    = ProductModifierLinkTableCompanion Function({
+  Value<int> id,
+  Value<String> productUuid,
+  Value<String> modifierGroupUuid,
+  Value<int> sortOrder,
+});
+
+final class $$ProductModifierLinkTableTableReferences extends BaseReferences<
+    _$AppDatabase,
+    $ProductModifierLinkTableTable,
+    ProductModifierLinkTableData> {
+  $$ProductModifierLinkTableTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $ProductTableTable _productUuidTable(_$AppDatabase db) =>
+      db.productTable.createAlias($_aliasNameGenerator(
+          db.productModifierLinkTable.productUuid, db.productTable.uuid));
+
+  $$ProductTableTableProcessedTableManager get productUuid {
+    final $_column = $_itemColumn<String>('product_uuid')!;
+
+    final manager = $$ProductTableTableTableManager($_db, $_db.productTable)
+        .filter((f) => f.uuid.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_productUuidTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $ModifierGroupTableTable _modifierGroupUuidTable(_$AppDatabase db) =>
+      db.modifierGroupTable.createAlias($_aliasNameGenerator(
+          db.productModifierLinkTable.modifierGroupUuid,
+          db.modifierGroupTable.uuid));
+
+  $$ModifierGroupTableTableProcessedTableManager get modifierGroupUuid {
+    final $_column = $_itemColumn<String>('modifier_group_uuid')!;
+
+    final manager =
+        $$ModifierGroupTableTableTableManager($_db, $_db.modifierGroupTable)
+            .filter((f) => f.uuid.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_modifierGroupUuidTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$ProductModifierLinkTableTableFilterComposer
+    extends Composer<_$AppDatabase, $ProductModifierLinkTableTable> {
+  $$ProductModifierLinkTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get sortOrder => $composableBuilder(
+      column: $table.sortOrder, builder: (column) => ColumnFilters(column));
+
+  $$ProductTableTableFilterComposer get productUuid {
+    final $$ProductTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.productUuid,
+        referencedTable: $db.productTable,
+        getReferencedColumn: (t) => t.uuid,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ProductTableTableFilterComposer(
+              $db: $db,
+              $table: $db.productTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$ModifierGroupTableTableFilterComposer get modifierGroupUuid {
+    final $$ModifierGroupTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.modifierGroupUuid,
+        referencedTable: $db.modifierGroupTable,
+        getReferencedColumn: (t) => t.uuid,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ModifierGroupTableTableFilterComposer(
+              $db: $db,
+              $table: $db.modifierGroupTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$ProductModifierLinkTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $ProductModifierLinkTableTable> {
+  $$ProductModifierLinkTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get sortOrder => $composableBuilder(
+      column: $table.sortOrder, builder: (column) => ColumnOrderings(column));
+
+  $$ProductTableTableOrderingComposer get productUuid {
+    final $$ProductTableTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.productUuid,
+        referencedTable: $db.productTable,
+        getReferencedColumn: (t) => t.uuid,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ProductTableTableOrderingComposer(
+              $db: $db,
+              $table: $db.productTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$ModifierGroupTableTableOrderingComposer get modifierGroupUuid {
+    final $$ModifierGroupTableTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.modifierGroupUuid,
+        referencedTable: $db.modifierGroupTable,
+        getReferencedColumn: (t) => t.uuid,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ModifierGroupTableTableOrderingComposer(
+              $db: $db,
+              $table: $db.modifierGroupTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$ProductModifierLinkTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ProductModifierLinkTableTable> {
+  $$ProductModifierLinkTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get sortOrder =>
+      $composableBuilder(column: $table.sortOrder, builder: (column) => column);
+
+  $$ProductTableTableAnnotationComposer get productUuid {
+    final $$ProductTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.productUuid,
+        referencedTable: $db.productTable,
+        getReferencedColumn: (t) => t.uuid,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ProductTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.productTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$ModifierGroupTableTableAnnotationComposer get modifierGroupUuid {
+    final $$ModifierGroupTableTableAnnotationComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.modifierGroupUuid,
+            referencedTable: $db.modifierGroupTable,
+            getReferencedColumn: (t) => t.uuid,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$ModifierGroupTableTableAnnotationComposer(
+                  $db: $db,
+                  $table: $db.modifierGroupTable,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return composer;
+  }
+}
+
+class $$ProductModifierLinkTableTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $ProductModifierLinkTableTable,
+    ProductModifierLinkTableData,
+    $$ProductModifierLinkTableTableFilterComposer,
+    $$ProductModifierLinkTableTableOrderingComposer,
+    $$ProductModifierLinkTableTableAnnotationComposer,
+    $$ProductModifierLinkTableTableCreateCompanionBuilder,
+    $$ProductModifierLinkTableTableUpdateCompanionBuilder,
+    (ProductModifierLinkTableData, $$ProductModifierLinkTableTableReferences),
+    ProductModifierLinkTableData,
+    PrefetchHooks Function({bool productUuid, bool modifierGroupUuid})> {
+  $$ProductModifierLinkTableTableTableManager(
+      _$AppDatabase db, $ProductModifierLinkTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ProductModifierLinkTableTableFilterComposer(
+                  $db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ProductModifierLinkTableTableOrderingComposer(
+                  $db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ProductModifierLinkTableTableAnnotationComposer(
+                  $db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> productUuid = const Value.absent(),
+            Value<String> modifierGroupUuid = const Value.absent(),
+            Value<int> sortOrder = const Value.absent(),
+          }) =>
+              ProductModifierLinkTableCompanion(
+            id: id,
+            productUuid: productUuid,
+            modifierGroupUuid: modifierGroupUuid,
+            sortOrder: sortOrder,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String productUuid,
+            required String modifierGroupUuid,
+            Value<int> sortOrder = const Value.absent(),
+          }) =>
+              ProductModifierLinkTableCompanion.insert(
+            id: id,
+            productUuid: productUuid,
+            modifierGroupUuid: modifierGroupUuid,
+            sortOrder: sortOrder,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$ProductModifierLinkTableTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: (
+              {productUuid = false, modifierGroupUuid = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (productUuid) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.productUuid,
+                    referencedTable: $$ProductModifierLinkTableTableReferences
+                        ._productUuidTable(db),
+                    referencedColumn: $$ProductModifierLinkTableTableReferences
+                        ._productUuidTable(db)
+                        .uuid,
+                  ) as T;
+                }
+                if (modifierGroupUuid) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.modifierGroupUuid,
+                    referencedTable: $$ProductModifierLinkTableTableReferences
+                        ._modifierGroupUuidTable(db),
+                    referencedColumn: $$ProductModifierLinkTableTableReferences
+                        ._modifierGroupUuidTable(db)
+                        .uuid,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$ProductModifierLinkTableTableProcessedTableManager
+    = ProcessedTableManager<
+        _$AppDatabase,
+        $ProductModifierLinkTableTable,
+        ProductModifierLinkTableData,
+        $$ProductModifierLinkTableTableFilterComposer,
+        $$ProductModifierLinkTableTableOrderingComposer,
+        $$ProductModifierLinkTableTableAnnotationComposer,
+        $$ProductModifierLinkTableTableCreateCompanionBuilder,
+        $$ProductModifierLinkTableTableUpdateCompanionBuilder,
+        (
+          ProductModifierLinkTableData,
+          $$ProductModifierLinkTableTableReferences
+        ),
+        ProductModifierLinkTableData,
+        PrefetchHooks Function({bool productUuid, bool modifierGroupUuid})>;
+typedef $$IngredientTableTableCreateCompanionBuilder = IngredientTableCompanion
+    Function({
+  Value<int> id,
+  required String uuid,
+  required String name,
+  required String unit,
+  Value<double> currentStock,
+  Value<double> costPerUnit,
+  required DateTime updatedAt,
+  Value<bool> isDeleted,
+});
+typedef $$IngredientTableTableUpdateCompanionBuilder = IngredientTableCompanion
+    Function({
+  Value<int> id,
+  Value<String> uuid,
+  Value<String> name,
+  Value<String> unit,
+  Value<double> currentStock,
+  Value<double> costPerUnit,
+  Value<DateTime> updatedAt,
+  Value<bool> isDeleted,
+});
+
+final class $$IngredientTableTableReferences extends BaseReferences<
+    _$AppDatabase, $IngredientTableTable, IngredientTableData> {
+  $$IngredientTableTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$RecipeTableTable, List<RecipeTableData>>
+      _recipeTableRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.recipeTable,
+              aliasName: $_aliasNameGenerator(
+                  db.ingredientTable.uuid, db.recipeTable.ingredientUuid));
+
+  $$RecipeTableTableProcessedTableManager get recipeTableRefs {
+    final manager = $$RecipeTableTableTableManager($_db, $_db.recipeTable)
+        .filter((f) =>
+            f.ingredientUuid.uuid.sqlEquals($_itemColumn<String>('uuid')!));
+
+    final cache = $_typedResult.readTableOrNull(_recipeTableRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+}
+
+class $$IngredientTableTableFilterComposer
+    extends Composer<_$AppDatabase, $IngredientTableTable> {
+  $$IngredientTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get uuid => $composableBuilder(
+      column: $table.uuid, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get unit => $composableBuilder(
+      column: $table.unit, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get currentStock => $composableBuilder(
+      column: $table.currentStock, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get costPerUnit => $composableBuilder(
+      column: $table.costPerUnit, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isDeleted => $composableBuilder(
+      column: $table.isDeleted, builder: (column) => ColumnFilters(column));
+
+  Expression<bool> recipeTableRefs(
+      Expression<bool> Function($$RecipeTableTableFilterComposer f) f) {
+    final $$RecipeTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.uuid,
+        referencedTable: $db.recipeTable,
+        getReferencedColumn: (t) => t.ingredientUuid,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$RecipeTableTableFilterComposer(
+              $db: $db,
+              $table: $db.recipeTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+}
+
+class $$IngredientTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $IngredientTableTable> {
+  $$IngredientTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get uuid => $composableBuilder(
+      column: $table.uuid, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get name => $composableBuilder(
+      column: $table.name, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get unit => $composableBuilder(
+      column: $table.unit, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get currentStock => $composableBuilder(
+      column: $table.currentStock,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get costPerUnit => $composableBuilder(
+      column: $table.costPerUnit, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isDeleted => $composableBuilder(
+      column: $table.isDeleted, builder: (column) => ColumnOrderings(column));
+}
+
+class $$IngredientTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $IngredientTableTable> {
+  $$IngredientTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get uuid =>
+      $composableBuilder(column: $table.uuid, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get unit =>
+      $composableBuilder(column: $table.unit, builder: (column) => column);
+
+  GeneratedColumn<double> get currentStock => $composableBuilder(
+      column: $table.currentStock, builder: (column) => column);
+
+  GeneratedColumn<double> get costPerUnit => $composableBuilder(
+      column: $table.costPerUnit, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<bool> get isDeleted =>
+      $composableBuilder(column: $table.isDeleted, builder: (column) => column);
+
+  Expression<T> recipeTableRefs<T extends Object>(
+      Expression<T> Function($$RecipeTableTableAnnotationComposer a) f) {
+    final $$RecipeTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.uuid,
+        referencedTable: $db.recipeTable,
+        getReferencedColumn: (t) => t.ingredientUuid,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$RecipeTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.recipeTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+}
+
+class $$IngredientTableTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $IngredientTableTable,
+    IngredientTableData,
+    $$IngredientTableTableFilterComposer,
+    $$IngredientTableTableOrderingComposer,
+    $$IngredientTableTableAnnotationComposer,
+    $$IngredientTableTableCreateCompanionBuilder,
+    $$IngredientTableTableUpdateCompanionBuilder,
+    (IngredientTableData, $$IngredientTableTableReferences),
+    IngredientTableData,
+    PrefetchHooks Function({bool recipeTableRefs})> {
+  $$IngredientTableTableTableManager(
+      _$AppDatabase db, $IngredientTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$IngredientTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$IngredientTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$IngredientTableTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> uuid = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String> unit = const Value.absent(),
+            Value<double> currentStock = const Value.absent(),
+            Value<double> costPerUnit = const Value.absent(),
+            Value<DateTime> updatedAt = const Value.absent(),
+            Value<bool> isDeleted = const Value.absent(),
+          }) =>
+              IngredientTableCompanion(
+            id: id,
+            uuid: uuid,
+            name: name,
+            unit: unit,
+            currentStock: currentStock,
+            costPerUnit: costPerUnit,
+            updatedAt: updatedAt,
+            isDeleted: isDeleted,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String uuid,
+            required String name,
+            required String unit,
+            Value<double> currentStock = const Value.absent(),
+            Value<double> costPerUnit = const Value.absent(),
+            required DateTime updatedAt,
+            Value<bool> isDeleted = const Value.absent(),
+          }) =>
+              IngredientTableCompanion.insert(
+            id: id,
+            uuid: uuid,
+            name: name,
+            unit: unit,
+            currentStock: currentStock,
+            costPerUnit: costPerUnit,
+            updatedAt: updatedAt,
+            isDeleted: isDeleted,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$IngredientTableTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({recipeTableRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (recipeTableRefs) db.recipeTable],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (recipeTableRefs)
+                    await $_getPrefetchedData<IngredientTableData,
+                            $IngredientTableTable, RecipeTableData>(
+                        currentTable: table,
+                        referencedTable: $$IngredientTableTableReferences
+                            ._recipeTableRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$IngredientTableTableReferences(db, table, p0)
+                                .recipeTableRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.ingredientUuid == item.uuid),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$IngredientTableTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $IngredientTableTable,
+    IngredientTableData,
+    $$IngredientTableTableFilterComposer,
+    $$IngredientTableTableOrderingComposer,
+    $$IngredientTableTableAnnotationComposer,
+    $$IngredientTableTableCreateCompanionBuilder,
+    $$IngredientTableTableUpdateCompanionBuilder,
+    (IngredientTableData, $$IngredientTableTableReferences),
+    IngredientTableData,
+    PrefetchHooks Function({bool recipeTableRefs})>;
+typedef $$RecipeTableTableCreateCompanionBuilder = RecipeTableCompanion
+    Function({
+  Value<int> id,
+  required String productUuid,
+  required String ingredientUuid,
+  required double quantityRequired,
+});
+typedef $$RecipeTableTableUpdateCompanionBuilder = RecipeTableCompanion
+    Function({
+  Value<int> id,
+  Value<String> productUuid,
+  Value<String> ingredientUuid,
+  Value<double> quantityRequired,
+});
+
+final class $$RecipeTableTableReferences
+    extends BaseReferences<_$AppDatabase, $RecipeTableTable, RecipeTableData> {
+  $$RecipeTableTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $ProductTableTable _productUuidTable(_$AppDatabase db) =>
+      db.productTable.createAlias($_aliasNameGenerator(
+          db.recipeTable.productUuid, db.productTable.uuid));
+
+  $$ProductTableTableProcessedTableManager get productUuid {
+    final $_column = $_itemColumn<String>('product_uuid')!;
+
+    final manager = $$ProductTableTableTableManager($_db, $_db.productTable)
+        .filter((f) => f.uuid.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_productUuidTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $IngredientTableTable _ingredientUuidTable(_$AppDatabase db) =>
+      db.ingredientTable.createAlias($_aliasNameGenerator(
+          db.recipeTable.ingredientUuid, db.ingredientTable.uuid));
+
+  $$IngredientTableTableProcessedTableManager get ingredientUuid {
+    final $_column = $_itemColumn<String>('ingredient_uuid')!;
+
+    final manager =
+        $$IngredientTableTableTableManager($_db, $_db.ingredientTable)
+            .filter((f) => f.uuid.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_ingredientUuidTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$RecipeTableTableFilterComposer
+    extends Composer<_$AppDatabase, $RecipeTableTable> {
+  $$RecipeTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get quantityRequired => $composableBuilder(
+      column: $table.quantityRequired,
+      builder: (column) => ColumnFilters(column));
+
+  $$ProductTableTableFilterComposer get productUuid {
+    final $$ProductTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.productUuid,
+        referencedTable: $db.productTable,
+        getReferencedColumn: (t) => t.uuid,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ProductTableTableFilterComposer(
+              $db: $db,
+              $table: $db.productTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$IngredientTableTableFilterComposer get ingredientUuid {
+    final $$IngredientTableTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.ingredientUuid,
+        referencedTable: $db.ingredientTable,
+        getReferencedColumn: (t) => t.uuid,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$IngredientTableTableFilterComposer(
+              $db: $db,
+              $table: $db.ingredientTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$RecipeTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $RecipeTableTable> {
+  $$RecipeTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get quantityRequired => $composableBuilder(
+      column: $table.quantityRequired,
+      builder: (column) => ColumnOrderings(column));
+
+  $$ProductTableTableOrderingComposer get productUuid {
+    final $$ProductTableTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.productUuid,
+        referencedTable: $db.productTable,
+        getReferencedColumn: (t) => t.uuid,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ProductTableTableOrderingComposer(
+              $db: $db,
+              $table: $db.productTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$IngredientTableTableOrderingComposer get ingredientUuid {
+    final $$IngredientTableTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.ingredientUuid,
+        referencedTable: $db.ingredientTable,
+        getReferencedColumn: (t) => t.uuid,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$IngredientTableTableOrderingComposer(
+              $db: $db,
+              $table: $db.ingredientTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$RecipeTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $RecipeTableTable> {
+  $$RecipeTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<double> get quantityRequired => $composableBuilder(
+      column: $table.quantityRequired, builder: (column) => column);
+
+  $$ProductTableTableAnnotationComposer get productUuid {
+    final $$ProductTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.productUuid,
+        referencedTable: $db.productTable,
+        getReferencedColumn: (t) => t.uuid,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ProductTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.productTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$IngredientTableTableAnnotationComposer get ingredientUuid {
+    final $$IngredientTableTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.ingredientUuid,
+        referencedTable: $db.ingredientTable,
+        getReferencedColumn: (t) => t.uuid,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$IngredientTableTableAnnotationComposer(
+              $db: $db,
+              $table: $db.ingredientTable,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$RecipeTableTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $RecipeTableTable,
+    RecipeTableData,
+    $$RecipeTableTableFilterComposer,
+    $$RecipeTableTableOrderingComposer,
+    $$RecipeTableTableAnnotationComposer,
+    $$RecipeTableTableCreateCompanionBuilder,
+    $$RecipeTableTableUpdateCompanionBuilder,
+    (RecipeTableData, $$RecipeTableTableReferences),
+    RecipeTableData,
+    PrefetchHooks Function({bool productUuid, bool ingredientUuid})> {
+  $$RecipeTableTableTableManager(_$AppDatabase db, $RecipeTableTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$RecipeTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$RecipeTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$RecipeTableTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> productUuid = const Value.absent(),
+            Value<String> ingredientUuid = const Value.absent(),
+            Value<double> quantityRequired = const Value.absent(),
+          }) =>
+              RecipeTableCompanion(
+            id: id,
+            productUuid: productUuid,
+            ingredientUuid: ingredientUuid,
+            quantityRequired: quantityRequired,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String productUuid,
+            required String ingredientUuid,
+            required double quantityRequired,
+          }) =>
+              RecipeTableCompanion.insert(
+            id: id,
+            productUuid: productUuid,
+            ingredientUuid: ingredientUuid,
+            quantityRequired: quantityRequired,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$RecipeTableTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: (
+              {productUuid = false, ingredientUuid = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (productUuid) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.productUuid,
+                    referencedTable:
+                        $$RecipeTableTableReferences._productUuidTable(db),
+                    referencedColumn:
+                        $$RecipeTableTableReferences._productUuidTable(db).uuid,
+                  ) as T;
+                }
+                if (ingredientUuid) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.ingredientUuid,
+                    referencedTable:
+                        $$RecipeTableTableReferences._ingredientUuidTable(db),
+                    referencedColumn: $$RecipeTableTableReferences
+                        ._ingredientUuidTable(db)
+                        .uuid,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$RecipeTableTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $RecipeTableTable,
+    RecipeTableData,
+    $$RecipeTableTableFilterComposer,
+    $$RecipeTableTableOrderingComposer,
+    $$RecipeTableTableAnnotationComposer,
+    $$RecipeTableTableCreateCompanionBuilder,
+    $$RecipeTableTableUpdateCompanionBuilder,
+    (RecipeTableData, $$RecipeTableTableReferences),
+    RecipeTableData,
+    PrefetchHooks Function({bool productUuid, bool ingredientUuid})>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -9366,4 +13124,15 @@ class $AppDatabaseManager {
       $$RestaurantTableTableTableManager(_db, _db.restaurantTable);
   $$ReservationTableTableTableManager get reservationTable =>
       $$ReservationTableTableTableManager(_db, _db.reservationTable);
+  $$ModifierGroupTableTableTableManager get modifierGroupTable =>
+      $$ModifierGroupTableTableTableManager(_db, _db.modifierGroupTable);
+  $$ModifierItemTableTableTableManager get modifierItemTable =>
+      $$ModifierItemTableTableTableManager(_db, _db.modifierItemTable);
+  $$ProductModifierLinkTableTableTableManager get productModifierLinkTable =>
+      $$ProductModifierLinkTableTableTableManager(
+          _db, _db.productModifierLinkTable);
+  $$IngredientTableTableTableManager get ingredientTable =>
+      $$IngredientTableTableTableManager(_db, _db.ingredientTable);
+  $$RecipeTableTableTableManager get recipeTable =>
+      $$RecipeTableTableTableManager(_db, _db.recipeTable);
 }

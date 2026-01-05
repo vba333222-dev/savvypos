@@ -22,6 +22,8 @@ mixin _$CartEvent {
     required TResult Function(String productUuid, int quantity) updateQuantity,
     required TResult Function(String productUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function(Customer? customer) selectCustomer,
+    required TResult Function(double? percent, double? fixed) applyDiscount,
     required TResult Function() checkoutProcessed,
   }) =>
       throw _privateConstructorUsedError;
@@ -31,6 +33,8 @@ mixin _$CartEvent {
     TResult? Function(String productUuid, int quantity)? updateQuantity,
     TResult? Function(String productUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function(Customer? customer)? selectCustomer,
+    TResult? Function(double? percent, double? fixed)? applyDiscount,
     TResult? Function()? checkoutProcessed,
   }) =>
       throw _privateConstructorUsedError;
@@ -40,6 +44,8 @@ mixin _$CartEvent {
     TResult Function(String productUuid, int quantity)? updateQuantity,
     TResult Function(String productUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function(Customer? customer)? selectCustomer,
+    TResult Function(double? percent, double? fixed)? applyDiscount,
     TResult Function()? checkoutProcessed,
     required TResult orElse(),
   }) =>
@@ -50,6 +56,8 @@ mixin _$CartEvent {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_SelectCustomer value) selectCustomer,
+    required TResult Function(_ApplyDiscount value) applyDiscount,
     required TResult Function(_CheckoutProcessed value) checkoutProcessed,
   }) =>
       throw _privateConstructorUsedError;
@@ -59,6 +67,8 @@ mixin _$CartEvent {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_SelectCustomer value)? selectCustomer,
+    TResult? Function(_ApplyDiscount value)? applyDiscount,
     TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
   }) =>
       throw _privateConstructorUsedError;
@@ -68,6 +78,8 @@ mixin _$CartEvent {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_SelectCustomer value)? selectCustomer,
+    TResult Function(_ApplyDiscount value)? applyDiscount,
     TResult Function(_CheckoutProcessed value)? checkoutProcessed,
     required TResult orElse(),
   }) =>
@@ -166,6 +178,8 @@ class _$AddProductImpl implements _AddProduct {
     required TResult Function(String productUuid, int quantity) updateQuantity,
     required TResult Function(String productUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function(Customer? customer) selectCustomer,
+    required TResult Function(double? percent, double? fixed) applyDiscount,
     required TResult Function() checkoutProcessed,
   }) {
     return addProduct(product);
@@ -178,6 +192,8 @@ class _$AddProductImpl implements _AddProduct {
     TResult? Function(String productUuid, int quantity)? updateQuantity,
     TResult? Function(String productUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function(Customer? customer)? selectCustomer,
+    TResult? Function(double? percent, double? fixed)? applyDiscount,
     TResult? Function()? checkoutProcessed,
   }) {
     return addProduct?.call(product);
@@ -190,6 +206,8 @@ class _$AddProductImpl implements _AddProduct {
     TResult Function(String productUuid, int quantity)? updateQuantity,
     TResult Function(String productUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function(Customer? customer)? selectCustomer,
+    TResult Function(double? percent, double? fixed)? applyDiscount,
     TResult Function()? checkoutProcessed,
     required TResult orElse(),
   }) {
@@ -206,6 +224,8 @@ class _$AddProductImpl implements _AddProduct {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_SelectCustomer value) selectCustomer,
+    required TResult Function(_ApplyDiscount value) applyDiscount,
     required TResult Function(_CheckoutProcessed value) checkoutProcessed,
   }) {
     return addProduct(this);
@@ -218,6 +238,8 @@ class _$AddProductImpl implements _AddProduct {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_SelectCustomer value)? selectCustomer,
+    TResult? Function(_ApplyDiscount value)? applyDiscount,
     TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
   }) {
     return addProduct?.call(this);
@@ -230,6 +252,8 @@ class _$AddProductImpl implements _AddProduct {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_SelectCustomer value)? selectCustomer,
+    TResult Function(_ApplyDiscount value)? applyDiscount,
     TResult Function(_CheckoutProcessed value)? checkoutProcessed,
     required TResult orElse(),
   }) {
@@ -335,6 +359,8 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     required TResult Function(String productUuid, int quantity) updateQuantity,
     required TResult Function(String productUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function(Customer? customer) selectCustomer,
+    required TResult Function(double? percent, double? fixed) applyDiscount,
     required TResult Function() checkoutProcessed,
   }) {
     return updateQuantity(productUuid, quantity);
@@ -347,6 +373,8 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     TResult? Function(String productUuid, int quantity)? updateQuantity,
     TResult? Function(String productUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function(Customer? customer)? selectCustomer,
+    TResult? Function(double? percent, double? fixed)? applyDiscount,
     TResult? Function()? checkoutProcessed,
   }) {
     return updateQuantity?.call(productUuid, quantity);
@@ -359,6 +387,8 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     TResult Function(String productUuid, int quantity)? updateQuantity,
     TResult Function(String productUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function(Customer? customer)? selectCustomer,
+    TResult Function(double? percent, double? fixed)? applyDiscount,
     TResult Function()? checkoutProcessed,
     required TResult orElse(),
   }) {
@@ -375,6 +405,8 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_SelectCustomer value) selectCustomer,
+    required TResult Function(_ApplyDiscount value) applyDiscount,
     required TResult Function(_CheckoutProcessed value) checkoutProcessed,
   }) {
     return updateQuantity(this);
@@ -387,6 +419,8 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_SelectCustomer value)? selectCustomer,
+    TResult? Function(_ApplyDiscount value)? applyDiscount,
     TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
   }) {
     return updateQuantity?.call(this);
@@ -399,6 +433,8 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_SelectCustomer value)? selectCustomer,
+    TResult Function(_ApplyDiscount value)? applyDiscount,
     TResult Function(_CheckoutProcessed value)? checkoutProcessed,
     required TResult orElse(),
   }) {
@@ -497,6 +533,8 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     required TResult Function(String productUuid, int quantity) updateQuantity,
     required TResult Function(String productUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function(Customer? customer) selectCustomer,
+    required TResult Function(double? percent, double? fixed) applyDiscount,
     required TResult Function() checkoutProcessed,
   }) {
     return removeFromCart(productUuid);
@@ -509,6 +547,8 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     TResult? Function(String productUuid, int quantity)? updateQuantity,
     TResult? Function(String productUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function(Customer? customer)? selectCustomer,
+    TResult? Function(double? percent, double? fixed)? applyDiscount,
     TResult? Function()? checkoutProcessed,
   }) {
     return removeFromCart?.call(productUuid);
@@ -521,6 +561,8 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     TResult Function(String productUuid, int quantity)? updateQuantity,
     TResult Function(String productUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function(Customer? customer)? selectCustomer,
+    TResult Function(double? percent, double? fixed)? applyDiscount,
     TResult Function()? checkoutProcessed,
     required TResult orElse(),
   }) {
@@ -537,6 +579,8 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_SelectCustomer value) selectCustomer,
+    required TResult Function(_ApplyDiscount value) applyDiscount,
     required TResult Function(_CheckoutProcessed value) checkoutProcessed,
   }) {
     return removeFromCart(this);
@@ -549,6 +593,8 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_SelectCustomer value)? selectCustomer,
+    TResult? Function(_ApplyDiscount value)? applyDiscount,
     TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
   }) {
     return removeFromCart?.call(this);
@@ -561,6 +607,8 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_SelectCustomer value)? selectCustomer,
+    TResult Function(_ApplyDiscount value)? applyDiscount,
     TResult Function(_CheckoutProcessed value)? checkoutProcessed,
     required TResult orElse(),
   }) {
@@ -629,6 +677,8 @@ class _$ClearCartImpl implements _ClearCart {
     required TResult Function(String productUuid, int quantity) updateQuantity,
     required TResult Function(String productUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function(Customer? customer) selectCustomer,
+    required TResult Function(double? percent, double? fixed) applyDiscount,
     required TResult Function() checkoutProcessed,
   }) {
     return clearCart();
@@ -641,6 +691,8 @@ class _$ClearCartImpl implements _ClearCart {
     TResult? Function(String productUuid, int quantity)? updateQuantity,
     TResult? Function(String productUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function(Customer? customer)? selectCustomer,
+    TResult? Function(double? percent, double? fixed)? applyDiscount,
     TResult? Function()? checkoutProcessed,
   }) {
     return clearCart?.call();
@@ -653,6 +705,8 @@ class _$ClearCartImpl implements _ClearCart {
     TResult Function(String productUuid, int quantity)? updateQuantity,
     TResult Function(String productUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function(Customer? customer)? selectCustomer,
+    TResult Function(double? percent, double? fixed)? applyDiscount,
     TResult Function()? checkoutProcessed,
     required TResult orElse(),
   }) {
@@ -669,6 +723,8 @@ class _$ClearCartImpl implements _ClearCart {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_SelectCustomer value) selectCustomer,
+    required TResult Function(_ApplyDiscount value) applyDiscount,
     required TResult Function(_CheckoutProcessed value) checkoutProcessed,
   }) {
     return clearCart(this);
@@ -681,6 +737,8 @@ class _$ClearCartImpl implements _ClearCart {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_SelectCustomer value)? selectCustomer,
+    TResult? Function(_ApplyDiscount value)? applyDiscount,
     TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
   }) {
     return clearCart?.call(this);
@@ -693,6 +751,8 @@ class _$ClearCartImpl implements _ClearCart {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_SelectCustomer value)? selectCustomer,
+    TResult Function(_ApplyDiscount value)? applyDiscount,
     TResult Function(_CheckoutProcessed value)? checkoutProcessed,
     required TResult orElse(),
   }) {
@@ -705,6 +765,375 @@ class _$ClearCartImpl implements _ClearCart {
 
 abstract class _ClearCart implements CartEvent {
   const factory _ClearCart() = _$ClearCartImpl;
+}
+
+/// @nodoc
+abstract class _$$SelectCustomerImplCopyWith<$Res> {
+  factory _$$SelectCustomerImplCopyWith(_$SelectCustomerImpl value,
+          $Res Function(_$SelectCustomerImpl) then) =
+      __$$SelectCustomerImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({Customer? customer});
+
+  $CustomerCopyWith<$Res>? get customer;
+}
+
+/// @nodoc
+class __$$SelectCustomerImplCopyWithImpl<$Res>
+    extends _$CartEventCopyWithImpl<$Res, _$SelectCustomerImpl>
+    implements _$$SelectCustomerImplCopyWith<$Res> {
+  __$$SelectCustomerImplCopyWithImpl(
+      _$SelectCustomerImpl _value, $Res Function(_$SelectCustomerImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? customer = freezed,
+  }) {
+    return _then(_$SelectCustomerImpl(
+      freezed == customer
+          ? _value.customer
+          : customer // ignore: cast_nullable_to_non_nullable
+              as Customer?,
+    ));
+  }
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomerCopyWith<$Res>? get customer {
+    if (_value.customer == null) {
+      return null;
+    }
+
+    return $CustomerCopyWith<$Res>(_value.customer!, (value) {
+      return _then(_value.copyWith(customer: value));
+    });
+  }
+}
+
+/// @nodoc
+
+class _$SelectCustomerImpl implements _SelectCustomer {
+  const _$SelectCustomerImpl(this.customer);
+
+  @override
+  final Customer? customer;
+
+  @override
+  String toString() {
+    return 'CartEvent.selectCustomer(customer: $customer)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SelectCustomerImpl &&
+            (identical(other.customer, customer) ||
+                other.customer == customer));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, customer);
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SelectCustomerImplCopyWith<_$SelectCustomerImpl> get copyWith =>
+      __$$SelectCustomerImplCopyWithImpl<_$SelectCustomerImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Product product) addProduct,
+    required TResult Function(String productUuid, int quantity) updateQuantity,
+    required TResult Function(String productUuid) removeFromCart,
+    required TResult Function() clearCart,
+    required TResult Function(Customer? customer) selectCustomer,
+    required TResult Function(double? percent, double? fixed) applyDiscount,
+    required TResult Function() checkoutProcessed,
+  }) {
+    return selectCustomer(customer);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Product product)? addProduct,
+    TResult? Function(String productUuid, int quantity)? updateQuantity,
+    TResult? Function(String productUuid)? removeFromCart,
+    TResult? Function()? clearCart,
+    TResult? Function(Customer? customer)? selectCustomer,
+    TResult? Function(double? percent, double? fixed)? applyDiscount,
+    TResult? Function()? checkoutProcessed,
+  }) {
+    return selectCustomer?.call(customer);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Product product)? addProduct,
+    TResult Function(String productUuid, int quantity)? updateQuantity,
+    TResult Function(String productUuid)? removeFromCart,
+    TResult Function()? clearCart,
+    TResult Function(Customer? customer)? selectCustomer,
+    TResult Function(double? percent, double? fixed)? applyDiscount,
+    TResult Function()? checkoutProcessed,
+    required TResult orElse(),
+  }) {
+    if (selectCustomer != null) {
+      return selectCustomer(customer);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_AddProduct value) addProduct,
+    required TResult Function(_UpdateQuantity value) updateQuantity,
+    required TResult Function(_RemoveFromCart value) removeFromCart,
+    required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_SelectCustomer value) selectCustomer,
+    required TResult Function(_ApplyDiscount value) applyDiscount,
+    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
+  }) {
+    return selectCustomer(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_AddProduct value)? addProduct,
+    TResult? Function(_UpdateQuantity value)? updateQuantity,
+    TResult? Function(_RemoveFromCart value)? removeFromCart,
+    TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_SelectCustomer value)? selectCustomer,
+    TResult? Function(_ApplyDiscount value)? applyDiscount,
+    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
+  }) {
+    return selectCustomer?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_AddProduct value)? addProduct,
+    TResult Function(_UpdateQuantity value)? updateQuantity,
+    TResult Function(_RemoveFromCart value)? removeFromCart,
+    TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_SelectCustomer value)? selectCustomer,
+    TResult Function(_ApplyDiscount value)? applyDiscount,
+    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
+    required TResult orElse(),
+  }) {
+    if (selectCustomer != null) {
+      return selectCustomer(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _SelectCustomer implements CartEvent {
+  const factory _SelectCustomer(final Customer? customer) =
+      _$SelectCustomerImpl;
+
+  Customer? get customer;
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$SelectCustomerImplCopyWith<_$SelectCustomerImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ApplyDiscountImplCopyWith<$Res> {
+  factory _$$ApplyDiscountImplCopyWith(
+          _$ApplyDiscountImpl value, $Res Function(_$ApplyDiscountImpl) then) =
+      __$$ApplyDiscountImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({double? percent, double? fixed});
+}
+
+/// @nodoc
+class __$$ApplyDiscountImplCopyWithImpl<$Res>
+    extends _$CartEventCopyWithImpl<$Res, _$ApplyDiscountImpl>
+    implements _$$ApplyDiscountImplCopyWith<$Res> {
+  __$$ApplyDiscountImplCopyWithImpl(
+      _$ApplyDiscountImpl _value, $Res Function(_$ApplyDiscountImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? percent = freezed,
+    Object? fixed = freezed,
+  }) {
+    return _then(_$ApplyDiscountImpl(
+      percent: freezed == percent
+          ? _value.percent
+          : percent // ignore: cast_nullable_to_non_nullable
+              as double?,
+      fixed: freezed == fixed
+          ? _value.fixed
+          : fixed // ignore: cast_nullable_to_non_nullable
+              as double?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ApplyDiscountImpl implements _ApplyDiscount {
+  const _$ApplyDiscountImpl({this.percent, this.fixed});
+
+  @override
+  final double? percent;
+  @override
+  final double? fixed;
+
+  @override
+  String toString() {
+    return 'CartEvent.applyDiscount(percent: $percent, fixed: $fixed)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ApplyDiscountImpl &&
+            (identical(other.percent, percent) || other.percent == percent) &&
+            (identical(other.fixed, fixed) || other.fixed == fixed));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, percent, fixed);
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ApplyDiscountImplCopyWith<_$ApplyDiscountImpl> get copyWith =>
+      __$$ApplyDiscountImplCopyWithImpl<_$ApplyDiscountImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Product product) addProduct,
+    required TResult Function(String productUuid, int quantity) updateQuantity,
+    required TResult Function(String productUuid) removeFromCart,
+    required TResult Function() clearCart,
+    required TResult Function(Customer? customer) selectCustomer,
+    required TResult Function(double? percent, double? fixed) applyDiscount,
+    required TResult Function() checkoutProcessed,
+  }) {
+    return applyDiscount(percent, fixed);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Product product)? addProduct,
+    TResult? Function(String productUuid, int quantity)? updateQuantity,
+    TResult? Function(String productUuid)? removeFromCart,
+    TResult? Function()? clearCart,
+    TResult? Function(Customer? customer)? selectCustomer,
+    TResult? Function(double? percent, double? fixed)? applyDiscount,
+    TResult? Function()? checkoutProcessed,
+  }) {
+    return applyDiscount?.call(percent, fixed);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Product product)? addProduct,
+    TResult Function(String productUuid, int quantity)? updateQuantity,
+    TResult Function(String productUuid)? removeFromCart,
+    TResult Function()? clearCart,
+    TResult Function(Customer? customer)? selectCustomer,
+    TResult Function(double? percent, double? fixed)? applyDiscount,
+    TResult Function()? checkoutProcessed,
+    required TResult orElse(),
+  }) {
+    if (applyDiscount != null) {
+      return applyDiscount(percent, fixed);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_AddProduct value) addProduct,
+    required TResult Function(_UpdateQuantity value) updateQuantity,
+    required TResult Function(_RemoveFromCart value) removeFromCart,
+    required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_SelectCustomer value) selectCustomer,
+    required TResult Function(_ApplyDiscount value) applyDiscount,
+    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
+  }) {
+    return applyDiscount(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_AddProduct value)? addProduct,
+    TResult? Function(_UpdateQuantity value)? updateQuantity,
+    TResult? Function(_RemoveFromCart value)? removeFromCart,
+    TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_SelectCustomer value)? selectCustomer,
+    TResult? Function(_ApplyDiscount value)? applyDiscount,
+    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
+  }) {
+    return applyDiscount?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_AddProduct value)? addProduct,
+    TResult Function(_UpdateQuantity value)? updateQuantity,
+    TResult Function(_RemoveFromCart value)? removeFromCart,
+    TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_SelectCustomer value)? selectCustomer,
+    TResult Function(_ApplyDiscount value)? applyDiscount,
+    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
+    required TResult orElse(),
+  }) {
+    if (applyDiscount != null) {
+      return applyDiscount(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ApplyDiscount implements CartEvent {
+  const factory _ApplyDiscount({final double? percent, final double? fixed}) =
+      _$ApplyDiscountImpl;
+
+  double? get percent;
+  double? get fixed;
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ApplyDiscountImplCopyWith<_$ApplyDiscountImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -752,6 +1181,8 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
     required TResult Function(String productUuid, int quantity) updateQuantity,
     required TResult Function(String productUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function(Customer? customer) selectCustomer,
+    required TResult Function(double? percent, double? fixed) applyDiscount,
     required TResult Function() checkoutProcessed,
   }) {
     return checkoutProcessed();
@@ -764,6 +1195,8 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
     TResult? Function(String productUuid, int quantity)? updateQuantity,
     TResult? Function(String productUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function(Customer? customer)? selectCustomer,
+    TResult? Function(double? percent, double? fixed)? applyDiscount,
     TResult? Function()? checkoutProcessed,
   }) {
     return checkoutProcessed?.call();
@@ -776,6 +1209,8 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
     TResult Function(String productUuid, int quantity)? updateQuantity,
     TResult Function(String productUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function(Customer? customer)? selectCustomer,
+    TResult Function(double? percent, double? fixed)? applyDiscount,
     TResult Function()? checkoutProcessed,
     required TResult orElse(),
   }) {
@@ -792,6 +1227,8 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_SelectCustomer value) selectCustomer,
+    required TResult Function(_ApplyDiscount value) applyDiscount,
     required TResult Function(_CheckoutProcessed value) checkoutProcessed,
   }) {
     return checkoutProcessed(this);
@@ -804,6 +1241,8 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_SelectCustomer value)? selectCustomer,
+    TResult? Function(_ApplyDiscount value)? applyDiscount,
     TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
   }) {
     return checkoutProcessed?.call(this);
@@ -816,6 +1255,8 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_SelectCustomer value)? selectCustomer,
+    TResult Function(_ApplyDiscount value)? applyDiscount,
     TResult Function(_CheckoutProcessed value)? checkoutProcessed,
     required TResult orElse(),
   }) {

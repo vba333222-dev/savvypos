@@ -16,6 +16,11 @@ import '../../features/auth/data/repositories/tenant_repository_impl.dart'
     as _i422;
 import '../../features/auth/domain/repositories/i_tenant_repository.dart'
     as _i302;
+import '../../features/customers/data/repositories/customer_repository_impl.dart'
+    as _i877;
+import '../../features/customers/domain/repositories/i_customer_repository.dart'
+    as _i884;
+import '../../features/customers/presentation/bloc/customer_bloc.dart' as _i676;
 import '../../features/dashboard/data/repositories/dashboard_repository_impl.dart'
     as _i509;
 import '../../features/dashboard/domain/repositories/i_dashboard_repository.dart'
@@ -69,6 +74,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i485.IDashboardRepository>(
         () => _i509.DashboardRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i560.IPrinterService>(() => _i16.PrinterService());
+    gh.lazySingleton<_i884.ICustomerRepository>(
+        () => _i877.CustomerRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.factory<_i177.CartBloc>(() => _i177.CartBloc(gh<_i660.AppDatabase>()));
     gh.factory<_i652.DashboardBloc>(
         () => _i652.DashboardBloc(gh<_i485.IDashboardRepository>()));
@@ -80,6 +87,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i965.InventoryManagementBloc(gh<_i695.IProductRepository>()));
     gh.factory<_i1053.GetProductsUseCase>(
         () => _i1053.GetProductsUseCase(gh<_i695.IProductRepository>()));
+    gh.factory<_i676.CustomerBloc>(
+        () => _i676.CustomerBloc(gh<_i884.ICustomerRepository>()));
     gh.factory<_i313.ProductBloc>(
         () => _i313.ProductBloc(gh<_i1053.GetProductsUseCase>()));
     return this;

@@ -184,7 +184,12 @@ mixin _$CartState {
   double get subtotal => throw _privateConstructorUsedError;
   double get tax => throw _privateConstructorUsedError;
   double get discount => throw _privateConstructorUsedError;
-  double get total => throw _privateConstructorUsedError;
+  double get total => throw _privateConstructorUsedError; // CRM & Advanced
+  Customer? get customer => throw _privateConstructorUsedError;
+  double get discountPercent =>
+      throw _privateConstructorUsedError; // e.g. 10.0 for 10%
+  double get discountFixed =>
+      throw _privateConstructorUsedError; // e.g. 5000 for Rp 5.000
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isSuccess => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
@@ -207,9 +212,14 @@ abstract class $CartStateCopyWith<$Res> {
       double tax,
       double discount,
       double total,
+      Customer? customer,
+      double discountPercent,
+      double discountFixed,
       bool isLoading,
       bool isSuccess,
       String? error});
+
+  $CustomerCopyWith<$Res>? get customer;
 }
 
 /// @nodoc
@@ -232,6 +242,9 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
     Object? tax = null,
     Object? discount = null,
     Object? total = null,
+    Object? customer = freezed,
+    Object? discountPercent = null,
+    Object? discountFixed = null,
     Object? isLoading = null,
     Object? isSuccess = null,
     Object? error = freezed,
@@ -257,6 +270,18 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as double,
+      customer: freezed == customer
+          ? _value.customer
+          : customer // ignore: cast_nullable_to_non_nullable
+              as Customer?,
+      discountPercent: null == discountPercent
+          ? _value.discountPercent
+          : discountPercent // ignore: cast_nullable_to_non_nullable
+              as double,
+      discountFixed: null == discountFixed
+          ? _value.discountFixed
+          : discountFixed // ignore: cast_nullable_to_non_nullable
+              as double,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -270,6 +295,20 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
           : error // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
+  }
+
+  /// Create a copy of CartState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomerCopyWith<$Res>? get customer {
+    if (_value.customer == null) {
+      return null;
+    }
+
+    return $CustomerCopyWith<$Res>(_value.customer!, (value) {
+      return _then(_value.copyWith(customer: value) as $Val);
+    });
   }
 }
 
@@ -287,9 +326,15 @@ abstract class _$$CartStateImplCopyWith<$Res>
       double tax,
       double discount,
       double total,
+      Customer? customer,
+      double discountPercent,
+      double discountFixed,
       bool isLoading,
       bool isSuccess,
       String? error});
+
+  @override
+  $CustomerCopyWith<$Res>? get customer;
 }
 
 /// @nodoc
@@ -310,6 +355,9 @@ class __$$CartStateImplCopyWithImpl<$Res>
     Object? tax = null,
     Object? discount = null,
     Object? total = null,
+    Object? customer = freezed,
+    Object? discountPercent = null,
+    Object? discountFixed = null,
     Object? isLoading = null,
     Object? isSuccess = null,
     Object? error = freezed,
@@ -334,6 +382,18 @@ class __$$CartStateImplCopyWithImpl<$Res>
       total: null == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
+              as double,
+      customer: freezed == customer
+          ? _value.customer
+          : customer // ignore: cast_nullable_to_non_nullable
+              as Customer?,
+      discountPercent: null == discountPercent
+          ? _value.discountPercent
+          : discountPercent // ignore: cast_nullable_to_non_nullable
+              as double,
+      discountFixed: null == discountFixed
+          ? _value.discountFixed
+          : discountFixed // ignore: cast_nullable_to_non_nullable
               as double,
       isLoading: null == isLoading
           ? _value.isLoading
@@ -360,6 +420,9 @@ class _$CartStateImpl implements _CartState {
       this.tax = 0.0,
       this.discount = 0.0,
       this.total = 0.0,
+      this.customer,
+      this.discountPercent = 0.0,
+      this.discountFixed = 0.0,
       this.isLoading = false,
       this.isSuccess = false,
       this.error})
@@ -386,6 +449,17 @@ class _$CartStateImpl implements _CartState {
   @override
   @JsonKey()
   final double total;
+// CRM & Advanced
+  @override
+  final Customer? customer;
+  @override
+  @JsonKey()
+  final double discountPercent;
+// e.g. 10.0 for 10%
+  @override
+  @JsonKey()
+  final double discountFixed;
+// e.g. 5000 for Rp 5.000
   @override
   @JsonKey()
   final bool isLoading;
@@ -397,7 +471,7 @@ class _$CartStateImpl implements _CartState {
 
   @override
   String toString() {
-    return 'CartState(items: $items, subtotal: $subtotal, tax: $tax, discount: $discount, total: $total, isLoading: $isLoading, isSuccess: $isSuccess, error: $error)';
+    return 'CartState(items: $items, subtotal: $subtotal, tax: $tax, discount: $discount, total: $total, customer: $customer, discountPercent: $discountPercent, discountFixed: $discountFixed, isLoading: $isLoading, isSuccess: $isSuccess, error: $error)';
   }
 
   @override
@@ -412,6 +486,12 @@ class _$CartStateImpl implements _CartState {
             (identical(other.discount, discount) ||
                 other.discount == discount) &&
             (identical(other.total, total) || other.total == total) &&
+            (identical(other.customer, customer) ||
+                other.customer == customer) &&
+            (identical(other.discountPercent, discountPercent) ||
+                other.discountPercent == discountPercent) &&
+            (identical(other.discountFixed, discountFixed) ||
+                other.discountFixed == discountFixed) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.isSuccess, isSuccess) ||
@@ -427,6 +507,9 @@ class _$CartStateImpl implements _CartState {
       tax,
       discount,
       total,
+      customer,
+      discountPercent,
+      discountFixed,
       isLoading,
       isSuccess,
       error);
@@ -447,6 +530,9 @@ abstract class _CartState implements CartState {
       final double tax,
       final double discount,
       final double total,
+      final Customer? customer,
+      final double discountPercent,
+      final double discountFixed,
       final bool isLoading,
       final bool isSuccess,
       final String? error}) = _$CartStateImpl;
@@ -460,7 +546,13 @@ abstract class _CartState implements CartState {
   @override
   double get discount;
   @override
-  double get total;
+  double get total; // CRM & Advanced
+  @override
+  Customer? get customer;
+  @override
+  double get discountPercent; // e.g. 10.0 for 10%
+  @override
+  double get discountFixed; // e.g. 5000 for Rp 5.000
   @override
   bool get isLoading;
   @override

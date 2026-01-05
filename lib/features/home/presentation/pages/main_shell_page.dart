@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/features/auth/domain/repositories/i_tenant_repository.dart';
+import 'package:savvy_pos/features/customers/presentation/bloc/customer_bloc.dart';
 import 'package:savvy_pos/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:savvy_pos/features/history/presentation/pages/transaction_history_page.dart';
 import 'package:savvy_pos/features/inventory/presentation/pages/inventory_list_page.dart';
@@ -41,8 +42,12 @@ class _MainShellPageState extends State<MainShellPage> {
   
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => GetIt.I<ShiftBloc>()..add(const ShiftEvent.checkStatus()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => GetIt.I<ShiftBloc>()..add(const ShiftEvent.checkStatus())),
+        BlocProvider(create: (_) => GetIt.I<CartBloc>()),
+        BlocProvider(create: (_) => GetIt.I<CustomerBloc>()),
+      ],
       child: _MainShellContent(
         initialIndex: _selectedIndex,
         onTap: (index) => setState(() => _selectedIndex = index),

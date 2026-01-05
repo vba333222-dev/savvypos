@@ -2,11 +2,56 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savvy_pos/core/config/theme_config.dart';
+import 'package:savvy_pos/features/customers/presentation/pages/customer_list_page.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
+import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
 
 class CurrentOrderSummary extends StatelessWidget {
   const CurrentOrderSummary({Key? key}) : super(key: key);
+
+  void _showDiscountDialog(BuildContext context, CartBloc bloc) {
+    final percentCtrl = TextEditingController();
+    final fixedCtrl = TextEditingController();
+    
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Apply Discount'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+             TextFormField(
+               controller: percentCtrl,
+               decoration: const InputDecoration(labelText: 'Percentage (%)', suffixText: '%'),
+               keyboardType: TextInputType.number,
+             ),
+             const SizedBox(height: 16),
+             const Text('OR'),
+             const SizedBox(height: 16),
+             TextFormField(
+               controller: fixedCtrl,
+               decoration: const InputDecoration(labelText: 'Fixed Amount', prefixText: '\$'),
+               keyboardType: TextInputType.number,
+             ),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          ElevatedButton(
+            onPressed: () {
+               double? percent = double.tryParse(percentCtrl.text);
+               double? fixed = double.tryParse(fixedCtrl.text);
+               
+               bloc.add(CartEvent.applyDiscount(percent: percent, fixed: fixed));
+               Navigator.pop(context);
+            },
+            child: const Text('Apply'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +61,9 @@ class CurrentOrderSummary extends StatelessWidget {
 
     return BlocBuilder<CartBloc, CartState>(
       builder: (context, state) {
+        // We show container even if empty to show customer selection optionally, 
+        // but traditionally we hide until items added.
+        // Let's show always? No, keep behavior: Hide if empty.
         if (state.items.isEmpty) {
           return const SizedBox.shrink(); // Hide if empty
         }
@@ -27,16 +75,83 @@ class CurrentOrderSummary extends StatelessWidget {
             border: Border(
               top: BorderSide(color: colors.borderDefault),
             ),
-            boxShadow: context.savvy.elevations.lg, // Use strict elevation token
+            boxShadow: context.savvy.elevations.lg, 
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              // Customer Selection
+              InkWell(
+                onTap: () async {
+                  // Open Customer List in Selection Mode
+                  final result = await Navigator.push(
+                    context, 
+                    MaterialPageRoute(builder: (_) => const CustomerListPage(isSelectionMode: true))
+                  );
+                  if (result != null && context.mounted) {
+                    context.read<CartBloc>().add(CartEvent.selectCustomer(result));
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.person, color: colors.brandPrimary),
+                          const SizedBox(width: 8),
+                          Text(
+                            state.customer?.name ?? 'Guest Customer',
+                            style: typography.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      if (state.customer != null)
+                        IconButton(
+                          icon: const Icon(Icons.close, size: 16),
+                          onPressed: () => context.read<CartBloc>().add(const CartEvent.selectCustomer(null)),
+                        )
+                      else
+                        Text('Select', style: TextStyle(color: colors.brandPrimary)),
+                    ],
+                  ),
+                ),
+              ),
+              Divider(color: colors.borderDefault),
+              
               // Totals
               _SummaryRow(label: 'Subtotal', value: '\$${state.subtotal.toStringAsFixed(2)}'),
               SizedBox(height: shapes.spacingXs),
+              
+              if (state.discount > 0) ...[
+                 _SummaryRow(
+                   label: 'Discount', 
+                   value: '-\$${state.discount.toStringAsFixed(2)}',
+                   color: colors.stateSuccess,
+                 ),
+                 SizedBox(height: shapes.spacingXs),
+              ],
+              
               _SummaryRow(label: 'Tax (10%)', value: '\$${state.tax.toStringAsFixed(2)}'),
               SizedBox(height: shapes.spacingMd),
+              
+              // Discount Button Area
+              Row(
+                children: [
+                   TextButton.icon(
+                     onPressed: () => _showDiscountDialog(context, context.read<CartBloc>()),
+                     icon: const Icon(Icons.local_offer, size: 16),
+                     label: const Text('Discount'),
+                     style: TextButton.styleFrom(
+                       foregroundColor: colors.brandPrimary,
+                       padding: EdgeInsets.zero,
+                       alignment: Alignment.centerLeft,
+                     ),
+                   ),
+                ],
+              ),
+              
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -94,7 +209,7 @@ class CurrentOrderSummary extends StatelessWidget {
                       ),
                 ),
               ).animate()
-               .scale(duration: context.savvy.motion.durationFast, curve: context.savvy.motion.curveBounce), // Antigravity Bounce
+               .scale(duration: context.savvy.motion.durationFast, curve: context.savvy.motion.curveBounce),
             ],
           ),
         );
@@ -106,8 +221,9 @@ class CurrentOrderSummary extends StatelessWidget {
 class _SummaryRow extends StatelessWidget {
   final String label;
   final String value;
+  final Color? color;
   
-  const _SummaryRow({required this.label, required this.value});
+  const _SummaryRow({required this.label, required this.value, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +240,7 @@ class _SummaryRow extends StatelessWidget {
         Text(
           value,
           style: typography.bodyMedium?.copyWith(
-            color: colors.textPrimary,
+            color: color ?? colors.textPrimary,
             fontWeight: FontWeight.w500,
           ),
         ),

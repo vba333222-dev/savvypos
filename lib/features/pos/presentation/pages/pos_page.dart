@@ -22,7 +22,6 @@ class PosPage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => GetIt.I<ProductBloc>()..add(const ProductEvent.loadProducts())),
-        BlocProvider(create: (_) => GetIt.I<CartBloc>()),
       ],
       child: const _PosPageContent(),
     );

@@ -50,13 +50,34 @@ class ProductTable extends Table {
 }
 
 // ==============================================================================
-// 3. ORDER & TRANSACTION
+// 3. CUSTOMER (CRM)
+// ==============================================================================
+class CustomerTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get uuid => text().unique()();
+  TextColumn get name => text()();
+  TextColumn get phone => text().nullable()();
+  TextColumn get email => text().nullable()();
+  
+  // Loyalty
+  RealColumn get totalPoints => real().withDefault(const Constant(0))();
+  DateTimeColumn get lastVisitAt => dateTime().nullable()();
+  
+  // Sync
+  DateTimeColumn get updatedAt => dateTime()();
+  BoolColumn get isSynced => boolean().withDefault(const Constant(false))();
+  BoolColumn get isDeleted => boolean().withDefault(const Constant(false))();
+}
+
+// ==============================================================================
+// 4. ORDER & TRANSACTION
 // ==============================================================================
 class OrderTable extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get uuid => text().unique()();
   TextColumn get orderNumber => text()();
   TextColumn get shiftUuid => text().nullable()(); // Link to ShiftSession
+  TextColumn get customerUuid => text().nullable()(); // Link to Customer
   DateTimeColumn get transactionDate => dateTime()();
   
   // Financials

@@ -1,196 +1,149 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:savvy_pos/core/config/theme_config.dart';
-import 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart';
-import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
-import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
+import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/features/tables/presentation/bloc/table_bloc.dart';
+import 'package:savvy_pos/features/tables/presentation/widgets/floor_stat_badge.dart';
+import 'package:savvy_pos/features/tables/presentation/widgets/table_node.dart';
+import 'package:savvy_pos/features/pos/presentation/pages/pos_page.dart';
 
 class FloorPlanPage extends StatelessWidget {
-  final Function(int)? onNavigateToPos;
-
-  const FloorPlanPage({super.key, this.onNavigateToPos});
+  const FloorPlanPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value( // Use existing global provider or create?
-      // MainShell provides TableBloc globally.
-      value: GetIt.I<TableBloc>(), 
-      child: _FloorPlanView(onNavigateToPos: onNavigateToPos),
+    return BlocProvider(
+      create: (context) => GetIt.I<TableBloc>()..add(const TableEvent.loadTables()),
+      child: const _FloorPlanView(),
     );
   }
 }
 
 class _FloorPlanView extends StatelessWidget {
-  final Function(int)? onNavigateToPos;
-  const _FloorPlanView({this.onNavigateToPos});
+  const _FloorPlanView();
 
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    // Desktop: 4 columns, Mobile: 2 columns
-    final isDesktop = MediaQuery.of(context).size.width > 900;
     
+    // Canvas dimensions (Fixed virtual canvas for InteractiveViewer)
+    // We map 0.0-1.0 coords to this size.
+    const double canvasWidth = 2000.0;
+    const double canvasHeight = 1500.0;
+
     return Scaffold(
       backgroundColor: theme.colors.bgPrimary,
-      appBar: AppBar(
-        title: SavvyText("Tables", style: SavvyTextStyle.h3, color: theme.colors.textPrimary),
-        backgroundColor: theme.colors.bgSecondary,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () => context.read<TableBloc>().add(const TableEvent.loadTables()),
-          )
+      body: Stack(
+        children: [
+          // 1. Interactive Floor Plan
+          InteractiveViewer(
+            boundaryMargin: const EdgeInsets.all(double.infinity),
+            minScale: 0.5,
+            maxScale: 2.0,
+            constrained: false, // Infinite canvas feeling
+            child: Container(
+              width: canvasWidth,
+              height: canvasHeight,
+              color: theme.colors.bgPrimary,
+              child: CustomPaint(
+                painter: _DotGridPainter(color: theme.colors.borderDefault.withOpacity(0.3)),
+                child: BlocBuilder<TableBloc, TableState>(
+                  builder: (context, state) {
+                    if (state.isLoading) return const Center(child: CircularProgressIndicator());
+                    
+                    return Stack(
+                      children: state.tables.map((tableStatus) {
+                      final t = tableStatus.table;
+                      // Mapping 0.0-1.0 to canvas pixels
+                      final double left = t.x * canvasWidth;
+                      final double top = t.y * canvasHeight;
+                      
+                      // Using fixed sizes for now, could be dynamic
+                      final double width = t.capacity > 4 ? 160.0 : 100.0;
+                      final double height = t.capacity > 4 ? 120.0 : 100.0;
+
+                      return Positioned(
+                        left: left,
+                        top: top,
+                        child: SizedBox(
+                          width: width,
+                          height: height,
+                          child: TableNode(
+                            tableStatus: tableStatus,
+                            onTap: () {
+                              // Navigate to POS with table args
+                              // Mock passing table via route/bloc
+                              // In real app, we set CurrentOrderBloc -> Table
+                              Navigator.push(context, MaterialPageRoute(builder: (_) => const PosPage())); 
+                            },
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  );
+                },
+              ),
+            ),
+          ),
+          
+          // 2. Sticky Header Badge (Top Center)
+          Positioned(
+            top: theme.shapes.spacingLg,
+            left: 0, 
+            right: 0,
+            child: Center(
+              child: BlocBuilder<TableBloc, TableState>(
+                builder: (context, state) {
+                  final free = state.tables.where((t) => !t.table.isOccupied).length;
+                  final occupied = state.tables.where((t) => t.table.isOccupied).length;
+                  // Mock reservations count as it's not in stats yet easily
+                  const reserved = 0; 
+                  
+                  return FloorStatBadge(
+                    freeCount: free,
+                    occupiedCount: occupied,
+                    reservationCount: reserved,
+                  );
+                },
+              ),
+            ),
+          ),
+          
+          // 3. Back Button
+          Positioned(
+            left: theme.shapes.spacingMd,
+            top: theme.shapes.spacingMd,
+            child: FloatingActionButton.small(
+              backgroundColor: theme.colors.bgElevated,
+              child: Icon(Icons.arrow_back, color: theme.colors.textPrimary),
+              onPressed: () => Navigator.pop(context),
+            ),
+          ),
         ],
       ),
-      body: BlocBuilder<TableBloc, TableState>(
-        builder: (context, state) {
-          if (state.isLoading) {
-             return const Center(child: CircularProgressIndicator());
-          }
-          if (state.tables.isEmpty) {
-             return Center(child: SavvyText("No Tables Configured", style: SavvyTextStyle.bodyLg));
-          }
-
-          return GridView.builder(
-            padding: EdgeInsets.all(theme.shapes.spacingLg),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: isDesktop ? 4 : 2,
-              crossAxisSpacing: theme.shapes.spacingLg,
-              mainAxisSpacing: theme.shapes.spacingLg,
-              childAspectRatio: 1.2,
-            ),
-            itemCount: state.tables.length,
-            itemBuilder: (context, index) {
-              final status = state.tables[index];
-              return _TableCard(
-                status: status,
-                onTap: () {
-                  // Action: Select Table -> Navigate to POS
-                  // 1. Set Table in CartBloc
-                  // 2. Navigate
-                  
-                  // NOTE: We need to implement 'setTable' or similar in CartBloc 
-                  // For now, assume parkOrder mechanism or new event.
-                  // User Request: "Tapping a table should navigate to PosPage passing tableId to CartBloc"
-                  // 'CartEvent.parkOrder' is for Parking. 
-                  // 'CartEvent.retrieveOrder' is for retrieving. 
-                  // New Order? 
-                  
-                  // If status is ACTIVE, we retrieveActiveOrder. 
-                  // If status is NONE, we startNewOrder (setTable).
-                  
-                  final cartBloc = context.read<CartBloc>();
-                  
-                  if (status.orderStatus == 'ACTIVE' || status.orderStatus == 'BILL_PRINTED') {
-                     // Check if valid Order UUID exists. 
-                     // Our TableWithStatus logic didn't explicitly pass OrderUUID back yet? 
-                     // Wait, TableRepositoryImpl mapped OrderTable... we need to access it. 
-                     // TableWithStatus has 'orderStatus' but not 'activeOrderUuid'. 
-                     // We should update TableWithStatus to carry the UUID.
-                     
-                     // For MVP fallback: Use currentOrderUuid from table data.
-                     if (status.table.currentOrderUuid != null) {
-                        cartBloc.add(CartEvent.retrieveOrder(status.table.currentOrderUuid!, status.table.uuid));
-                     }
-                  } else {
-                     // Start new empty order for this table
-                     // We use parkOrder as 'Set Table' initial context? No. 
-                     // We need a way to tell Cart "Active Table is X".
-                     // Let's use generic 'startOrder' event we will add.
-                     // Or use 'clearCart' then manual state manipulation? No, explicit event is best.
-                     // "CartEvent.selectCustomer" exists. We need "CartEvent.selectTable".
-                     
-                     // Temporarily using clearCart + custom logic if event missing, but I will add 'selectTable'.
-                     // cartBloc.add(CartEvent.selectTable(status.table.uuid)); // Projected
-                  }
-                  
-                  if (onNavigateToPos != null) {
-                    onNavigateToPos!(1); // Index of POS
-                  } else {
-                     // Direct Push
-                     // Navigator.pushNamed(context, '/pos'); // Or MaterialPageRoute
-  
-                  }
-                },
-              ).animate().scale(delay: (index * 50).ms);
-            },
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: theme.colors.brandPrimary,
-        child: const Icon(Icons.add),
-        onPressed: () {
-          // Add Table Dialog not required but helpful
-          context.read<TableBloc>().add(TableEvent.addTable("T${DateTime.now().second}", 0, 0));
-        },
-      ),
     );
   }
+
 }
 
-class _TableCard extends StatelessWidget {
-  final dynamic status; // TableWithStatus
-  final VoidCallback onTap;
-
-  const _TableCard({required this.status, required this.onTap});
+class _DotGridPainter extends CustomPainter {
+  final Color color;
+  const _DotGridPainter({required this.color});
 
   @override
-  Widget build(BuildContext context) {
-    final theme = context.savvy;
-    final table = status.table;
-    final orderStatus = status.orderStatus; // 'NONE', 'ACTIVE', 'PAID', 'BILL_PRINTED'
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 1.0;
 
-    Color bgColor;
-    Color textColor = Colors.white;
-    IconData icon = Icons.table_restaurant;
-
-    switch (orderStatus) {
-      case 'ACTIVE':
-        bgColor = theme.colors.stateError; // Red (Occupied)
-        break;
-      case 'BILL_PRINTED':
-      case 'PAID': // If we differentiate
-        bgColor = theme.colors.stateWarning; // Orange
-        icon = Icons.receipt;
-        break;
-      case 'NONE':
-      default:
-        bgColor = theme.colors.stateSuccess; // Green
-        textColor = Colors.white;
+    const double step = 40.0;
+    for (double y = 0; y < size.height; y += step) {
+      for (double x = 0; x < size.width; x += step) {
+        canvas.drawCircle(Offset(x, y), 1.5, paint);
+      }
     }
-
-    return GestureDetector(
-      onTap: onTap,
-      child: SavvyBox(
-        color: bgColor,
-        padding: EdgeInsets.all(theme.shapes.spacingMd),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: textColor, size: 32),
-            const SizedBox(height: 8),
-            SavvyText(
-              table.name,
-              style: SavvyTextStyle.h3,
-              color: textColor,
-              align: TextAlign.center,
-            ),
-            if (orderStatus != 'NONE')
-              Padding(
-                 padding: const EdgeInsets.only(top: 4),
-                 child: Text(
-                   orderStatus, 
-                   style: TextStyle(color: textColor.withOpacity(0.8), fontSize: 12)
-                 ),
-              )
-          ],
-        ),
-      ),
-    );
   }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

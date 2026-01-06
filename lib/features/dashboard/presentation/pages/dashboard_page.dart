@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart';
 import 'package:savvy_pos/features/dashboard/presentation/bloc/dashboard_bloc.dart';
+import 'package:savvy_pos/features/auth/presentation/widgets/access_control_widget.dart';
 import 'package:intl/intl.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -15,7 +16,11 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => GetIt.I<DashboardBloc>()..add(const DashboardEvent.loadData()),
-      child: const _DashboardView(),
+      child: AccessControlWidget(
+        permission: 'VIEW_REPORTS',
+        fallback: const Center(child: Text('Access Restricted: Managers Only')),
+        child: const _DashboardView(),
+      ),
     );
   }
 }

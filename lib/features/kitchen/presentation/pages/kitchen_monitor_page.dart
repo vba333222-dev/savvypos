@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -210,8 +211,22 @@ class _KitchenTicketState extends State<_KitchenTicket> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(item.name, style: TextStyle(color: theme.colors.textPrimary, fontSize: 16)),
+                              if (item.modifiersJson != null && item.modifiersJson!.isNotEmpty) ...[
+                                Builder(builder: (c) {
+                                  try {
+                                    final List<dynamic> list = jsonDecode(item.modifiersJson!);
+                                    return Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: list.map((m) => Text(
+                                        "+ ${m['name']}",
+                                        style: TextStyle(color: theme.colors.stateError, fontSize: 13, fontWeight: FontWeight.w500),
+                                      )).toList(),
+                                    );
+                                  } catch (e) { return const SizedBox.shrink(); }
+                                })
+                              ],
                               if (item.note != null && item.note!.isNotEmpty)
-                                Text("Note: ${item.note}", style: TextStyle(color: theme.colors.stateError, fontSize: 12, fontStyle: FontStyle.italic)),
+                                Text("Note: ${item.note}", style: TextStyle(color: theme.colors.stateWarning, fontSize: 12, fontStyle: FontStyle.italic)),
                             ],
                           ),
                         ),

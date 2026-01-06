@@ -228,6 +228,7 @@ class OrderItemTable extends Table {
   RealColumn get quantity => real()();
   RealColumn get paidQty => real().withDefault(const Constant(0))(); // For Split Bill
   TextColumn get note => text().nullable()();
+  TextColumn get modifiersJson => text().nullable()(); // Added for storing snapshot of modifiers
   RealColumn get total => real()(); // price * quantity - discount
 }
 

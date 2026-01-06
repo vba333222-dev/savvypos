@@ -27,6 +27,7 @@ class CartEvent with _$CartEvent {
 
   // Dine-In
   const factory CartEvent.parkOrder(String tableUuid) = _ParkOrder;
+  const factory CartEvent.selectTable(String tableUuid) = _SelectTable; // Added
   const factory CartEvent.retrieveOrder(String orderUuid, String tableUuid) = _RetrieveOrder;
   const factory CartEvent.checkoutSplit(List<CartItem> items, String paymentMethod) = _CheckoutSplit;
   

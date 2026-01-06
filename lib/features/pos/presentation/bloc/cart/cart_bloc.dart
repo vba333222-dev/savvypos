@@ -28,6 +28,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<_ParkOrder>(_onParkOrder);
     on<_RetrieveOrder>(_onRetrieveOrder);
     on<_RetrieveOrder>(_onRetrieveOrder);
+    on<_SelectTable>(_onSelectTable);
     on<_CheckoutSplit>(_onCheckoutSplit);
     on<_UpdateNote>(_onUpdateNote);
     on<_ScanItem>(_onScanItem);
@@ -212,6 +213,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
              quantity: item.quantity,
              unitPrice: item.product.price,
              totalPrice: item.total,
+             modifiersJson: Value(jsonEncode(item.modifiers.map((e) => e.toJson()).toList())),
              createdAt: now,
            ));
 
@@ -347,6 +349,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
              total: item.total, // Fixed column name mismatch? Table has 'total'
              // Note: Check Table Definition for exact column names. 
              // OrderItemTable: name, price, quantity, total.
+             modifiersJson: Value(jsonEncode(item.modifiers.map((e) => e.toJson()).toList())),
            ));
         }
         
@@ -364,6 +367,29 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     } catch (e) {
       emit(state.copyWith(isLoading: false, error: 'Park Failed: $e'));
     }
+  }
+
+    }
+  }
+
+  void _onSelectTable(_SelectTable event, Emitter<CartState> emit) {
+    if (state.items.isNotEmpty && state.activeOrderUuid != null) {
+      // If valid order is in progress, maybe prompt? 
+      // User says: "Tapping a table should navigate to PosPage passing tableId"
+      // Assuming new clean order for that table if not retrieving.
+    }
+    // We clear current context if moving to a new table (unless we support multi-tab logic, unlikely needed yet)
+    // Wait, if we select a table that is empty (Green), we want to start a new order for it.
+    // If we have items in cart currently, they might belong to "Walk-in".
+    // MVP: Just switch table context.
+    emit(state.copyWith(
+      activeTableUuid: event.tableUuid, 
+      activeOrderUuid: null, 
+      customer: null,
+      lastCompletedOrder: null,
+      items: [], // Clear items? Yes, new table = new cart.
+      subtotal: 0, tax: 0, discount: 0, total: 0
+    ));
   }
 
   Future<void> _onRetrieveOrder(_RetrieveOrder event, Emitter<CartState> emit) async {

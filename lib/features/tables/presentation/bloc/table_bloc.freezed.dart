@@ -19,7 +19,7 @@ mixin _$TableEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loadTables,
-    required TResult Function(List<RestaurantTableData> tables) tablesUpdated,
+    required TResult Function(List<TableWithStatus> tables) tablesUpdated,
     required TResult Function(String name, double x, double y) addTable,
     required TResult Function(String uuid, double x, double y) moveTable,
     required TResult Function(String uuid) deleteTable,
@@ -29,7 +29,7 @@ mixin _$TableEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadTables,
-    TResult? Function(List<RestaurantTableData> tables)? tablesUpdated,
+    TResult? Function(List<TableWithStatus> tables)? tablesUpdated,
     TResult? Function(String name, double x, double y)? addTable,
     TResult? Function(String uuid, double x, double y)? moveTable,
     TResult? Function(String uuid)? deleteTable,
@@ -39,7 +39,7 @@ mixin _$TableEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadTables,
-    TResult Function(List<RestaurantTableData> tables)? tablesUpdated,
+    TResult Function(List<TableWithStatus> tables)? tablesUpdated,
     TResult Function(String name, double x, double y)? addTable,
     TResult Function(String uuid, double x, double y)? moveTable,
     TResult Function(String uuid)? deleteTable,
@@ -143,7 +143,7 @@ class _$LoadTablesImpl implements _LoadTables {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loadTables,
-    required TResult Function(List<RestaurantTableData> tables) tablesUpdated,
+    required TResult Function(List<TableWithStatus> tables) tablesUpdated,
     required TResult Function(String name, double x, double y) addTable,
     required TResult Function(String uuid, double x, double y) moveTable,
     required TResult Function(String uuid) deleteTable,
@@ -156,7 +156,7 @@ class _$LoadTablesImpl implements _LoadTables {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadTables,
-    TResult? Function(List<RestaurantTableData> tables)? tablesUpdated,
+    TResult? Function(List<TableWithStatus> tables)? tablesUpdated,
     TResult? Function(String name, double x, double y)? addTable,
     TResult? Function(String uuid, double x, double y)? moveTable,
     TResult? Function(String uuid)? deleteTable,
@@ -169,7 +169,7 @@ class _$LoadTablesImpl implements _LoadTables {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadTables,
-    TResult Function(List<RestaurantTableData> tables)? tablesUpdated,
+    TResult Function(List<TableWithStatus> tables)? tablesUpdated,
     TResult Function(String name, double x, double y)? addTable,
     TResult Function(String uuid, double x, double y)? moveTable,
     TResult Function(String uuid)? deleteTable,
@@ -236,7 +236,7 @@ abstract class _$$TablesUpdatedImplCopyWith<$Res> {
           _$TablesUpdatedImpl value, $Res Function(_$TablesUpdatedImpl) then) =
       __$$TablesUpdatedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<RestaurantTableData> tables});
+  $Res call({List<TableWithStatus> tables});
 }
 
 /// @nodoc
@@ -258,7 +258,7 @@ class __$$TablesUpdatedImplCopyWithImpl<$Res>
       null == tables
           ? _value._tables
           : tables // ignore: cast_nullable_to_non_nullable
-              as List<RestaurantTableData>,
+              as List<TableWithStatus>,
     ));
   }
 }
@@ -266,12 +266,12 @@ class __$$TablesUpdatedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$TablesUpdatedImpl implements _TablesUpdated {
-  const _$TablesUpdatedImpl(final List<RestaurantTableData> tables)
+  const _$TablesUpdatedImpl(final List<TableWithStatus> tables)
       : _tables = tables;
 
-  final List<RestaurantTableData> _tables;
+  final List<TableWithStatus> _tables;
   @override
-  List<RestaurantTableData> get tables {
+  List<TableWithStatus> get tables {
     if (_tables is EqualUnmodifiableListView) return _tables;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_tables);
@@ -306,7 +306,7 @@ class _$TablesUpdatedImpl implements _TablesUpdated {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loadTables,
-    required TResult Function(List<RestaurantTableData> tables) tablesUpdated,
+    required TResult Function(List<TableWithStatus> tables) tablesUpdated,
     required TResult Function(String name, double x, double y) addTable,
     required TResult Function(String uuid, double x, double y) moveTable,
     required TResult Function(String uuid) deleteTable,
@@ -319,7 +319,7 @@ class _$TablesUpdatedImpl implements _TablesUpdated {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadTables,
-    TResult? Function(List<RestaurantTableData> tables)? tablesUpdated,
+    TResult? Function(List<TableWithStatus> tables)? tablesUpdated,
     TResult? Function(String name, double x, double y)? addTable,
     TResult? Function(String uuid, double x, double y)? moveTable,
     TResult? Function(String uuid)? deleteTable,
@@ -332,7 +332,7 @@ class _$TablesUpdatedImpl implements _TablesUpdated {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadTables,
-    TResult Function(List<RestaurantTableData> tables)? tablesUpdated,
+    TResult Function(List<TableWithStatus> tables)? tablesUpdated,
     TResult Function(String name, double x, double y)? addTable,
     TResult Function(String uuid, double x, double y)? moveTable,
     TResult Function(String uuid)? deleteTable,
@@ -390,10 +390,10 @@ class _$TablesUpdatedImpl implements _TablesUpdated {
 }
 
 abstract class _TablesUpdated implements TableEvent {
-  const factory _TablesUpdated(final List<RestaurantTableData> tables) =
+  const factory _TablesUpdated(final List<TableWithStatus> tables) =
       _$TablesUpdatedImpl;
 
-  List<RestaurantTableData> get tables;
+  List<TableWithStatus> get tables;
 
   /// Create a copy of TableEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -487,7 +487,7 @@ class _$AddTableImpl implements _AddTable {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loadTables,
-    required TResult Function(List<RestaurantTableData> tables) tablesUpdated,
+    required TResult Function(List<TableWithStatus> tables) tablesUpdated,
     required TResult Function(String name, double x, double y) addTable,
     required TResult Function(String uuid, double x, double y) moveTable,
     required TResult Function(String uuid) deleteTable,
@@ -500,7 +500,7 @@ class _$AddTableImpl implements _AddTable {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadTables,
-    TResult? Function(List<RestaurantTableData> tables)? tablesUpdated,
+    TResult? Function(List<TableWithStatus> tables)? tablesUpdated,
     TResult? Function(String name, double x, double y)? addTable,
     TResult? Function(String uuid, double x, double y)? moveTable,
     TResult? Function(String uuid)? deleteTable,
@@ -513,7 +513,7 @@ class _$AddTableImpl implements _AddTable {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadTables,
-    TResult Function(List<RestaurantTableData> tables)? tablesUpdated,
+    TResult Function(List<TableWithStatus> tables)? tablesUpdated,
     TResult Function(String name, double x, double y)? addTable,
     TResult Function(String uuid, double x, double y)? moveTable,
     TResult Function(String uuid)? deleteTable,
@@ -670,7 +670,7 @@ class _$MoveTableImpl implements _MoveTable {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loadTables,
-    required TResult Function(List<RestaurantTableData> tables) tablesUpdated,
+    required TResult Function(List<TableWithStatus> tables) tablesUpdated,
     required TResult Function(String name, double x, double y) addTable,
     required TResult Function(String uuid, double x, double y) moveTable,
     required TResult Function(String uuid) deleteTable,
@@ -683,7 +683,7 @@ class _$MoveTableImpl implements _MoveTable {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadTables,
-    TResult? Function(List<RestaurantTableData> tables)? tablesUpdated,
+    TResult? Function(List<TableWithStatus> tables)? tablesUpdated,
     TResult? Function(String name, double x, double y)? addTable,
     TResult? Function(String uuid, double x, double y)? moveTable,
     TResult? Function(String uuid)? deleteTable,
@@ -696,7 +696,7 @@ class _$MoveTableImpl implements _MoveTable {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadTables,
-    TResult Function(List<RestaurantTableData> tables)? tablesUpdated,
+    TResult Function(List<TableWithStatus> tables)? tablesUpdated,
     TResult Function(String name, double x, double y)? addTable,
     TResult Function(String uuid, double x, double y)? moveTable,
     TResult Function(String uuid)? deleteTable,
@@ -837,7 +837,7 @@ class _$DeleteTableImpl implements _DeleteTable {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loadTables,
-    required TResult Function(List<RestaurantTableData> tables) tablesUpdated,
+    required TResult Function(List<TableWithStatus> tables) tablesUpdated,
     required TResult Function(String name, double x, double y) addTable,
     required TResult Function(String uuid, double x, double y) moveTable,
     required TResult Function(String uuid) deleteTable,
@@ -850,7 +850,7 @@ class _$DeleteTableImpl implements _DeleteTable {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadTables,
-    TResult? Function(List<RestaurantTableData> tables)? tablesUpdated,
+    TResult? Function(List<TableWithStatus> tables)? tablesUpdated,
     TResult? Function(String name, double x, double y)? addTable,
     TResult? Function(String uuid, double x, double y)? moveTable,
     TResult? Function(String uuid)? deleteTable,
@@ -863,7 +863,7 @@ class _$DeleteTableImpl implements _DeleteTable {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadTables,
-    TResult Function(List<RestaurantTableData> tables)? tablesUpdated,
+    TResult Function(List<TableWithStatus> tables)? tablesUpdated,
     TResult Function(String name, double x, double y)? addTable,
     TResult Function(String uuid, double x, double y)? moveTable,
     TResult Function(String uuid)? deleteTable,
@@ -1011,7 +1011,7 @@ class _$ToggleOccupiedImpl implements _ToggleOccupied {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loadTables,
-    required TResult Function(List<RestaurantTableData> tables) tablesUpdated,
+    required TResult Function(List<TableWithStatus> tables) tablesUpdated,
     required TResult Function(String name, double x, double y) addTable,
     required TResult Function(String uuid, double x, double y) moveTable,
     required TResult Function(String uuid) deleteTable,
@@ -1024,7 +1024,7 @@ class _$ToggleOccupiedImpl implements _ToggleOccupied {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadTables,
-    TResult? Function(List<RestaurantTableData> tables)? tablesUpdated,
+    TResult? Function(List<TableWithStatus> tables)? tablesUpdated,
     TResult? Function(String name, double x, double y)? addTable,
     TResult? Function(String uuid, double x, double y)? moveTable,
     TResult? Function(String uuid)? deleteTable,
@@ -1037,7 +1037,7 @@ class _$ToggleOccupiedImpl implements _ToggleOccupied {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadTables,
-    TResult Function(List<RestaurantTableData> tables)? tablesUpdated,
+    TResult Function(List<TableWithStatus> tables)? tablesUpdated,
     TResult Function(String name, double x, double y)? addTable,
     TResult Function(String uuid, double x, double y)? moveTable,
     TResult Function(String uuid)? deleteTable,
@@ -1110,7 +1110,7 @@ abstract class _ToggleOccupied implements TableEvent {
 
 /// @nodoc
 mixin _$TableState {
-  List<RestaurantTableData> get tables => throw _privateConstructorUsedError;
+  List<TableWithStatus> get tables => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
@@ -1127,7 +1127,7 @@ abstract class $TableStateCopyWith<$Res> {
           TableState value, $Res Function(TableState) then) =
       _$TableStateCopyWithImpl<$Res, TableState>;
   @useResult
-  $Res call({List<RestaurantTableData> tables, bool isLoading, String? error});
+  $Res call({List<TableWithStatus> tables, bool isLoading, String? error});
 }
 
 /// @nodoc
@@ -1153,7 +1153,7 @@ class _$TableStateCopyWithImpl<$Res, $Val extends TableState>
       tables: null == tables
           ? _value.tables
           : tables // ignore: cast_nullable_to_non_nullable
-              as List<RestaurantTableData>,
+              as List<TableWithStatus>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -1174,7 +1174,7 @@ abstract class _$$TableStateImplCopyWith<$Res>
       __$$TableStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<RestaurantTableData> tables, bool isLoading, String? error});
+  $Res call({List<TableWithStatus> tables, bool isLoading, String? error});
 }
 
 /// @nodoc
@@ -1198,7 +1198,7 @@ class __$$TableStateImplCopyWithImpl<$Res>
       tables: null == tables
           ? _value._tables
           : tables // ignore: cast_nullable_to_non_nullable
-              as List<RestaurantTableData>,
+              as List<TableWithStatus>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -1215,15 +1215,15 @@ class __$$TableStateImplCopyWithImpl<$Res>
 
 class _$TableStateImpl implements _TableState {
   const _$TableStateImpl(
-      {final List<RestaurantTableData> tables = const [],
+      {final List<TableWithStatus> tables = const [],
       this.isLoading = false,
       this.error})
       : _tables = tables;
 
-  final List<RestaurantTableData> _tables;
+  final List<TableWithStatus> _tables;
   @override
   @JsonKey()
-  List<RestaurantTableData> get tables {
+  List<TableWithStatus> get tables {
     if (_tables is EqualUnmodifiableListView) return _tables;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_tables);
@@ -1266,12 +1266,12 @@ class _$TableStateImpl implements _TableState {
 
 abstract class _TableState implements TableState {
   const factory _TableState(
-      {final List<RestaurantTableData> tables,
+      {final List<TableWithStatus> tables,
       final bool isLoading,
       final String? error}) = _$TableStateImpl;
 
   @override
-  List<RestaurantTableData> get tables;
+  List<TableWithStatus> get tables;
   @override
   bool get isLoading;
   @override

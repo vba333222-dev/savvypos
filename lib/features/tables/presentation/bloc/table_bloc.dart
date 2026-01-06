@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
+import 'package:savvy_pos/features/tables/domain/entities/table_with_status.dart';
 import 'package:savvy_pos/features/tables/domain/repositories/i_table_repository.dart';
 
 part 'table_bloc.freezed.dart';
@@ -9,7 +10,7 @@ part 'table_bloc.freezed.dart';
 @freezed
 class TableEvent with _$TableEvent {
   const factory TableEvent.loadTables() = _LoadTables;
-  const factory TableEvent.tablesUpdated(List<RestaurantTableData> tables) = _TablesUpdated;
+  const factory TableEvent.tablesUpdated(List<TableWithStatus> tables) = _TablesUpdated;
   const factory TableEvent.addTable(String name, double x, double y) = _AddTable;
   const factory TableEvent.moveTable(String uuid, double x, double y) = _MoveTable;
   const factory TableEvent.deleteTable(String uuid) = _DeleteTable;
@@ -19,7 +20,7 @@ class TableEvent with _$TableEvent {
 @freezed
 class TableState with _$TableState {
   const factory TableState({
-    @Default([]) List<RestaurantTableData> tables,
+    @Default([]) List<TableWithStatus> tables,
     @Default(false) bool isLoading,
     String? error,
   }) = _TableState;
@@ -60,18 +61,16 @@ class TableBloc extends Bloc<TableEvent, TableState> {
   }
 
   Future<void> _onMoveTable(_MoveTable event, Emitter<TableState> emit) async {
-    // Optimistic update difficult with Stream, assuming generic update
-    // We need to find table and update X/Y
-    final table = state.tables.firstWhere((t) => t.uuid == event.uuid);
-    final updated = table.copyWith(x: event.x, y: event.y, updatedAt: DateTime.now());
+    final status = state.tables.firstWhere((t) => t.table.uuid == event.uuid);
+    final updated = status.table.copyWith(x: event.x, y: event.y, updatedAt: DateTime.now());
     await _repository.updateTable(updated);
   }
   
   Future<void> _onToggleOccupied(_ToggleOccupied event, Emitter<TableState> emit) async {
     try {
-      final table = state.tables.firstWhere((t) => t.uuid == event.uuid);
-      final updated = table.copyWith(isOccupied: event.isOccupied, updatedAt: DateTime.now());
-      await _repository.updateTable(updated);
+      final status = state.tables.firstWhere((t) => t.table.uuid == event.uuid);
+      // We use setTableOccupied to handle logic if needed
+      await _repository.setTableOccupied(event.uuid, event.isOccupied); 
     } catch (e) {
       // Handle error
     }

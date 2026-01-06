@@ -13,6 +13,7 @@ import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
 import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:savvy_pos/features/auth/presentation/widgets/pin_pad_dialog.dart';
 import 'package:savvy_pos/features/tables/presentation/bloc/table_bloc.dart';
+import 'package:savvy_pos/features/tables/presentation/pages/floor_plan_page.dart';
 import 'package:savvy_pos/features/reservations/presentation/bloc/reservation_bloc.dart';
 
 class MainShellPage extends StatefulWidget {

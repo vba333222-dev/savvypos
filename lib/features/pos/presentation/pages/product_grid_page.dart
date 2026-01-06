@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/core/database/database.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart'; // Barrel file usage
 import 'package:savvy_pos/features/inventory/data/repositories/product_repository_impl.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
@@ -11,13 +12,11 @@ import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/product/product_bloc.dart';
-import 'package:savvy_pos/features/pos/presentation/widgets/cart_sidebar.dart';
+import 'package:savvy_pos/features/pos/presentation/widgets/cart_view.dart'; // Updated import
 import 'package:savvy_pos/features/pos/presentation/widgets/product_card.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/product_modifier_dialog.dart';
 import 'package:savvy_pos/bootstrap.dart';
 import 'package:get_it/get_it.dart';
-import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
-import 'package:savvy_pos/core/presentation/widgets/savvy_box.dart';
 import 'package:badges/badges.dart' as badges;
 
 class ProductGridPage extends StatelessWidget {
@@ -47,97 +46,113 @@ class ProductGridView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: theme.colors.bgPrimary,
-      appBar: AppBar(
-        title: SavvyText(
-          "Savvy POS", 
-          style: SavvyTextStyle.h3,
-          color: theme.colors.textPrimary,
-        ),
-        backgroundColor: theme.colors.bgSecondary,
-        elevation: 0,
-        iconTheme: IconThemeData(color: theme.colors.textPrimary),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search, color: theme.colors.textPrimary),
-            onPressed: () {},
-          ),
-          // Mobile Cart Icon
-          if (!isDesktop)
-            Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: BlocBuilder<CartBloc, CartState>(
-                builder: (context, state) {
-                  return badges.Badge(
-                    position: badges.BadgePosition.topEnd(top: 0, end: 3),
-                    showBadge: state.items.isNotEmpty,
-                    ignorePointer: false,
-                    onTap: () {
-                      _showCartBottomSheet(context);
-                    },
-                    badgeContent: Text(
-                      state.items.fold<int>(0, (sum, item) => sum + item.quantity).toString(),
-                      style: const TextStyle(color: Colors.white, fontSize: 10),
-                    ),
-                    child: IconButton(
-                      icon: Icon(Icons.shopping_cart, color: theme.colors.brandPrimary),
-                      onPressed: () => _showCartBottomSheet(context),
-                    ),
-                  );
-                },
-              ),
-            ),
-        ],
-      ),
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // PRODUCT GRID
+          // PRODUCT GRID (CustomScrollView for performance)
           Expanded(
             flex: 7,
-            child: BlocBuilder<ProductBloc, ProductState>(
-              builder: (context, state) {
-                if (state is ProductLoading) {
-                  return Center(child: CircularProgressIndicator(color: theme.colors.brandPrimary));
-                } else if (state is ProductError) {
-                  return Center(child: SavvyText("Error: ${state.message}", color: theme.colors.stateError));
-                } else if (state is ProductLoaded) {
-                  if (state.products.isEmpty) {
-                    return Center(
-                      child: SavvyText(
-                        "No Products Found",
-                        color: theme.colors.textMuted,
-                        style: SavvyTextStyle.h3,
+            child: NestedScrollView(
+              headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                SliverAppBar(
+                  title: SavvyText(
+                    "Savvy POS", 
+                    style: SavvyTextStyle.h3,
+                    color: theme.colors.textPrimary,
+                  ),
+                  backgroundColor: theme.colors.bgSecondary,
+                  elevation: 0,
+                  pinned: true,
+                  floating: true,
+                  iconTheme: IconThemeData(color: theme.colors.textPrimary),
+                  actions: [
+                    IconButton(
+                      icon: Icon(Icons.search, color: theme.colors.textPrimary),
+                      onPressed: () {},
+                    ),
+                    // Mobile Cart Icon
+                    if (!isDesktop)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 16),
+                        child: BlocBuilder<CartBloc, CartState>(
+                          builder: (context, state) {
+                            return badges.Badge(
+                              position: badges.BadgePosition.topEnd(top: 0, end: 3),
+                              showBadge: state.items.isNotEmpty,
+                              ignorePointer: false,
+                              onTap: () {
+                                _showCartBottomSheet(context);
+                              },
+                              badgeContent: Text(
+                                state.items.fold<int>(0, (sum, item) => sum + item.quantity).toString(),
+                                style: const TextStyle(color: Colors.white, fontSize: 10),
+                              ),
+                              child: IconButton(
+                                icon: Icon(Icons.shopping_cart, color: theme.colors.brandPrimary),
+                                onPressed: () => _showCartBottomSheet(context),
+                              ),
+                            );
+                          },
+                        ),
                       ),
+                  ],
+                ),
+              ],
+              body: BlocBuilder<ProductBloc, ProductState>(
+                builder: (context, state) {
+                  if (state is ProductLoading) {
+                    return Center(child: CircularProgressIndicator(color: theme.colors.brandPrimary));
+                  } else if (state is ProductError) {
+                    return Center(child: SavvyText("Error: ${state.message}", color: theme.colors.stateError));
+                  } else if (state is ProductLoaded) {
+                    if (state.products.isEmpty) {
+                      return Center(
+                        child: SavvyText(
+                          "No Products Found",
+                          color: theme.colors.textMuted,
+                          style: SavvyTextStyle.h3,
+                        ),
+                      );
+                    }
+                    
+                    // SliverGrid for large catalogs
+                    return CustomScrollView(
+                      slivers: [
+                        SliverPadding(
+                          padding: EdgeInsets.all(theme.shapes.spacingMd),
+                          sliver: SliverGrid(
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: _getCrossAxisCount(context, isDesktop),
+                              childAspectRatio: 0.75,
+                              crossAxisSpacing: theme.shapes.spacingMd,
+                              mainAxisSpacing: theme.shapes.spacingMd,
+                            ),
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                final product = state.products[index];
+                                return ProductCard(
+                                  product: product,
+                                  onTap: () => _onProductTapped(context, product),
+                                );
+                              },
+                              childCount: state.products.length,
+                            ),
+                          ),
+                        ),
+                      ],
                     );
                   }
-                  return GridView.builder(
-                    padding: EdgeInsets.all(theme.shapes.spacingMd),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: _getCrossAxisCount(context, isDesktop),
-                      childAspectRatio: 0.75,
-                      crossAxisSpacing: theme.shapes.spacingMd,
-                      mainAxisSpacing: theme.shapes.spacingMd,
-                    ),
-                    itemCount: state.products.length,
-                    itemBuilder: (context, index) {
-                      final product = state.products[index];
-                      return ProductCard(
-                        product: product,
-                        onTap: () => _onProductTapped(context, product),
-                      );
-                    },
-                  );
-                }
-                return const SizedBox.shrink();
-              },
+                  return const SizedBox.shrink();
+                },
+              ),
             ),
           ),
           
-          // CART SIDEBAR (Desktop/Tablet)
+          // CART VIEW (Desktop/Tablet)
           if (isDesktop)
             const Expanded(
               flex: 3,
-              child: CartSidebar(),
+              child: CartView(), // Renamed widget
             ),
         ],
       ),
@@ -206,7 +221,7 @@ class ProductGridView extends StatelessWidget {
         maxChildSize: 0.95,
         builder: (_, controller) => ClipRRect(
           borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-          child: const CartSidebar(), // Reusing Sidebar as BottomSheet content
+          child: const CartView(), // Reusing CartView
         ),
       ),
     );

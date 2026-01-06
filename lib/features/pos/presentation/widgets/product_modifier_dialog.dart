@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:savvy_pos/core/config/theme_config.dart';
+import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
+import 'package:savvy_pos/features/pos/data/repositories/mock_product_repository.dart';
 
 class ProductModifierDialog extends StatefulWidget {
   final Product product;
@@ -20,6 +22,9 @@ class _ProductModifierDialogState extends State<ProductModifierDialog> {
   
   // Selection State: GroupUUID -> Set<ModifierItemUUID>
   final Map<String, Set<String>> _selections = {};
+  
+  // Real-time price delta
+  double _currentPriceDelta = 0.0;
 
   @override
   void initState() {
@@ -29,22 +34,39 @@ class _ProductModifierDialogState extends State<ProductModifierDialog> {
 
   Future<void> _loadModifiers() async {
     try {
-      final groups = await GetIt.I<IProductRepository>().getModifiersForProduct(widget.product.uuid);
+      // Use Mock Repository if needed or GetIt
+      // final groups = await GetIt.I<IProductRepository>().getModifiersForProduct(widget.product.uuid);
+      // Forcing MockRepo usage as per previous step consistency
+      final groups = await MockProductRepository().getModifiersForProduct(widget.product.uuid);
+      
+      if (!mounted) return;
+
       setState(() {
         _linkGroups = groups;
         _isLoading = false;
         
-        // Auto-select defaults? Or just empty.
-        // If minSelection > 0, maybe select first? 
-        // For now, empty.
         for (var g in groups) {
           _selections[g.uuid] = {};
         }
       });
     } catch (e) {
-      setState(() => _isLoading = false);
-      // Handle error
+      if (mounted) setState(() => _isLoading = false);
     }
+  }
+
+  void _updatePriceDelta() {
+    double total = 0.0;
+    for (var group in _linkGroups) {
+      final selectedUuids = _selections[group.uuid] ?? {};
+      for (var item in group.items) {
+        if (selectedUuids.contains(item.uuid)) {
+          total += item.priceDelta;
+        }
+      }
+    }
+    setState(() {
+      _currentPriceDelta = total;
+    });
   }
 
   bool _validate() {
@@ -76,91 +98,238 @@ class _ProductModifierDialogState extends State<ProductModifierDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.savvy;
+
+    // Loading State
     if (_isLoading) {
-      return const AlertDialog(content: SizedBox(height: 100, child: Center(child: CircularProgressIndicator())));
+       return Dialog(
+         backgroundColor: theme.colors.bgElevated,
+         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(theme.shapes.radiusLg)),
+         child: const SizedBox(height: 100, child: Center(child: CircularProgressIndicator())),
+       );
     }
 
+    // No Options State
     if (_linkGroups.isEmpty) {
-      // Should not happen if we checked before opening, but safe fallback
-      return AlertDialog(
-        title: const Text('No Options'),
-        content: const Text('This product has no modifiers.'),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Close')),
-          ElevatedButton(onPressed: () => Navigator.pop(context, <ModifierItem>[]), child: const Text('Add to Cart')),
-        ],
+      return Dialog(
+        backgroundColor: theme.colors.bgElevated,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(theme.shapes.radiusLg)),
+        child: Padding(
+          padding: EdgeInsets.all(theme.shapes.spacingMd),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SavvyText('No Options', style: SavvyTextStyle.h3, color: theme.colors.textPrimary),
+              SizedBox(height: theme.shapes.spacingMd),
+              SavvyText('This product has no modifiers available.', style: SavvyTextStyle.bodyMedium, color: theme.colors.textSecondary),
+              SizedBox(height: theme.shapes.spacingLg),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(onPressed: () => Navigator.pop(context), child: const Text('Close')),
+                  SizedBox(width: theme.shapes.spacingSm),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: theme.colors.brandPrimary),
+                    onPressed: () => Navigator.pop(context, <ModifierItem>[]), 
+                    child: Text('Add to Order', style: TextStyle(color: theme.colors.textInverse)),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
       );
     }
 
-    final colors = context.savvy.colors;
-
-    return AlertDialog(
-      title: Text('${widget.product.name} Options'),
-      content: SizedBox(
-        width: 400,
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: _linkGroups.length,
-          itemBuilder: (context, index) {
-            final group = _linkGroups[index];
-            final selection = _selections[group.uuid] ?? {};
-
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text(
-                    '${group.name} ${group.minSelection > 0 ? "*" : ""}',
-                    style: TextStyle(fontWeight: FontWeight.bold, color: colors.textPrimary),
+    // Main Content
+    return Dialog(
+      backgroundColor: theme.colors.bgElevated,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(theme.shapes.radiusLg)),
+      insetPadding: EdgeInsets.all(theme.shapes.spacingMd),
+      child: Container(
+        width: 450, // "Command Center" width
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.8,
+        ),
+        child: Column(
+          children: [
+            // HEADER
+            Container(
+              padding: EdgeInsets.all(theme.shapes.spacingMd),
+              decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: theme.colors.borderDefault)),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SavvyText(widget.product.name, style: SavvyTextStyle.h3, color: theme.colors.textPrimary),
+                        SavvyText('Customize your item', style: SavvyTextStyle.bodySmall, color: theme.colors.textSecondary),
+                      ],
+                    ),
                   ),
-                ),
-                ...group.items.map((item) {
-                  final isSelected = selection.contains(item.uuid);
-                  return CheckboxListTile(
-                    title: Text('${item.name} ${item.priceDelta != 0 ? "(+\$${item.priceDelta})" : ""}'),
-                    value: isSelected,
-                    controlAffinity: ListTileControlAffinity.leading,
-                    onChanged: (val) {
-                      setState(() {
-                         if (group.allowMultiSelect) {
-                           if (val == true) {
-                             // Check Max
-                             if (group.maxSelection != null && selection.length >= group.maxSelection!) {
-                               // Max reached
-                               return; 
-                             }
-                             selection.add(item.uuid);
-                           } else {
-                             selection.remove(item.uuid);
-                           }
-                         } else {
-                           // Single Select (Radio behavior)
-                           selection.clear();
-                           if (val == true) selection.add(item.uuid);
-                         }
-                         _selections[group.uuid] = selection;
-                      });
-                    },
+                  IconButton(
+                    icon: Icon(Icons.close, color: theme.colors.textMuted),
+                    onPressed: () => Navigator.pop(context),
+                  )
+                ],
+              ),
+            ),
+            
+            // BODY SCROLL
+            Expanded(
+              child: ListView.separated(
+                padding: EdgeInsets.all(theme.shapes.spacingMd),
+                itemCount: _linkGroups.length,
+                separatorBuilder: (ctx, i) => SizedBox(height: theme.shapes.spacingLg),
+                itemBuilder: (context, index) {
+                  final group = _linkGroups[index];
+                  final selection = _selections[group.uuid] ?? {};
+                  
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Group Header
+                      Row(
+                        children: [
+                          SavvyText(group.name.toUpperCase(), style: SavvyTextStyle.labelMedium, color: theme.colors.textMuted),
+                          const Spacer(),
+                          if (group.minSelection > 0)
+                             Container(
+                               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                               decoration: BoxDecoration(
+                                 color: theme.colors.bgPrimary,
+                                 borderRadius: BorderRadius.circular(4),
+                                 border: Border.all(color: theme.colors.stateWarning.withOpacity(0.5)),
+                               ),
+                               child: Text(
+                                 'Required', 
+                                 style: TextStyle(fontSize: 10, color: theme.colors.stateWarning, fontWeight: FontWeight.bold)
+                               ),
+                             ),
+                        ],
+                      ),
+                      SizedBox(height: theme.shapes.spacingSm),
+                      
+                      // Options Grid/List
+                      ...group.items.map((item) {
+                        final isSelected = selection.contains(item.uuid);
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                 if (group.allowMultiSelect) {
+                                   if (!isSelected) {
+                                     // Check Max
+                                     if (group.maxSelection != null && selection.length >= group.maxSelection!) return; 
+                                     selection.add(item.uuid);
+                                   } else {
+                                     selection.remove(item.uuid);
+                                   }
+                                 } else {
+                                   // Single Select
+                                   selection.clear();
+                                   if (!isSelected) selection.add(item.uuid);
+                                 }
+                                 _selections[group.uuid] = selection;
+                                 _updatePriceDelta();
+                              });
+                            },
+                            borderRadius: BorderRadius.circular(theme.shapes.radiusSm),
+                            child: Container(
+                              padding: EdgeInsets.all(theme.shapes.spacingSm),
+                              decoration: BoxDecoration(
+                                color: isSelected ? theme.colors.brandPrimary.withOpacity(0.1) : theme.colors.bgPrimary,
+                                border: Border.all(
+                                  color: isSelected ? theme.colors.brandPrimary : theme.colors.borderDefault,
+                                ),
+                                borderRadius: BorderRadius.circular(theme.shapes.radiusSm),
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      item.name,
+                                      style: TextStyle(
+                                        color: isSelected ? theme.colors.brandPrimary : theme.colors.textPrimary,
+                                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ),
+                                  if (item.priceDelta != 0)
+                                    Text(
+                                      '+ \$${item.priceDelta.toStringAsFixed(2)}',
+                                       style: TextStyle(
+                                        color: isSelected ? theme.colors.brandPrimary : theme.colors.textSecondary,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  SizedBox(width: theme.shapes.spacingSm),
+                                  Icon(
+                                    group.allowMultiSelect 
+                                      ? (isSelected ? Icons.check_box : Icons.check_box_outline_blank)
+                                      : (isSelected ? Icons.radio_button_checked : Icons.radio_button_off),
+                                    color: isSelected ? theme.colors.brandPrimary : theme.colors.textMuted,
+                                    size: 20,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ],
                   );
-                }).toList(),
-                const Divider(),
-              ],
-            );
-          },
+                },
+              ),
+            ),
+            
+            // FOOTER (Action)
+            Container(
+              padding: EdgeInsets.all(theme.shapes.spacingMd),
+              decoration: BoxDecoration(
+                border: Border(top: BorderSide(color: theme.colors.borderDefault)),
+                color: theme.colors.bgSecondary, // Contrast footer
+                borderRadius: BorderRadius.vertical(bottom: Radius.circular(theme.shapes.radiusLg)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                   Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       Text('Total Price', style: TextStyle(color: theme.colors.textSecondary, fontSize: 12)),
+                       Text(
+                         '\$${(widget.product.price + _currentPriceDelta).toStringAsFixed(2)}',
+                         style: TextStyle(color: theme.colors.textPrimary, fontWeight: FontWeight.bold, fontSize: 18),
+                       ),
+                     ],
+                   ),
+                   ElevatedButton(
+                     style: ElevatedButton.styleFrom(
+                       backgroundColor: theme.colors.brandPrimary,
+                       padding: EdgeInsets.symmetric(horizontal: theme.shapes.spacingLg, vertical: theme.shapes.spacingMd),
+                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(theme.shapes.radiusMd)),
+                     ),
+                     onPressed: () {
+                        if (_validate()) {
+                          Navigator.pop(context, _getSelectedItems());
+                        }
+                     }, 
+                     child: Text(
+                       'Add to Order', 
+                       style: TextStyle(color: theme.colors.textInverse, fontWeight: FontWeight.bold),
+                     ),
+                   ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
-      actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-        ElevatedButton(
-          onPressed: () {
-            if (_validate()) {
-              Navigator.pop(context, _getSelectedItems());
-            }
-          },
-          child: const Text('Add to Cart'),
-        ),
-      ],
     );
   }
 }

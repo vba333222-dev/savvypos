@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:savvy_pos/core/config/theme_config.dart';
-import 'package:savvy_pos/core/presentation/widgets/savvy_box.dart';
+import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
@@ -17,100 +16,118 @@ class CartItemTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.savvy;
 
-    return Slidable(
+    return Dismissible(
       key: ValueKey(item.uuid),
-      endActionPane: ActionPane(
-        motion: const ScrollMotion(),
-        children: [
-          SlidableAction(
-            onPressed: (_) {
-              context.read<CartBloc>().add(CartEvent.removeFromCart(item.uuid));
-            },
-            backgroundColor: theme.colors.stateError,
-            foregroundColor: Colors.white,
-            icon: Icons.delete,
-            label: 'Delete',
-          ),
-        ],
+      direction: DismissDirection.endToStart,
+      onDismissed: (_) {
+         context.read<CartBloc>().add(CartEvent.removeFromCart(item.uuid));
+      },
+      background: Container(
+        margin: EdgeInsets.only(bottom: theme.shapes.spacingSm),
+        padding: EdgeInsets.only(right: theme.shapes.spacingMd),
+        alignment: Alignment.centerRight,
+        decoration: BoxDecoration(
+          color: theme.colors.stateError,
+          borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
+        ),
+        child: Icon(Icons.delete_outline, color: theme.colors.textInverse),
       ),
-      child: SavvyBox(
+      child: Container(
         margin: EdgeInsets.only(bottom: theme.shapes.spacingSm),
         padding: EdgeInsets.all(theme.shapes.spacingSm),
-        color: theme.colors.bgElevated,
-        border: Border(bottom: BorderSide(color: theme.colors.borderDefault, width: 0.5)),
-        shadow: theme.elevations.none, // Flat list style or minimal shadow
+        decoration: BoxDecoration(
+          color: theme.colors.bgElevated,
+          border: Border.all(color: theme.colors.borderDefault),
+          borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
+        ),
         child: Row(
           children: [
-            // Qty Control
-            Column(
-              children: [
-                _QtyButton(
-                  icon: Icons.add,
-                  onTap: () => context.read<CartBloc>().add(CartEvent.updateQuantity(item.uuid, item.quantity + 1)),
-                ),
-                SavvyText(
-                  '${item.quantity}',
-                  style: SavvyTextStyle.bodyMedium,
-                  color: theme.colors.textPrimary,
-                ),
-                _QtyButton(
-                  icon: Icons.remove,
-                  onTap: () => context.read<CartBloc>().add(CartEvent.updateQuantity(item.uuid, item.quantity - 1)),
-                ),
-              ],
-            ),
-            SizedBox(width: theme.shapes.spacingSm),
-            
-            // Product Info
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SavvyText(
-                    item.product.name,
-                    style: SavvyTextStyle.bodyMedium,
-                    color: theme.colors.textPrimary,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  if (item.modifiers.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 2),
-                      child: SavvyText(
-                        item.modifiers.map((e) => e.name).join(', '),
-                        style: SavvyTextStyle.bodySmall,
-                        color: theme.colors.textMuted,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  if (item.note != null && item.note!.isNotEmpty)
+             // QTY CONTROLS
+             Container(
+               decoration: BoxDecoration(
+                 color: theme.colors.bgPrimary,
+                 borderRadius: BorderRadius.circular(theme.shapes.radiusPill),
+               ),
+               child: Column(
+                 mainAxisSize: MainAxisSize.min,
+                 children: [
+                   _QtyButton(
+                     icon: Icons.add,
+                     onTap: () => context.read<CartBloc>().add(CartEvent.updateQuantity(item.uuid, item.quantity + 1)),
+                   ),
+                   Padding(
+                     padding: const EdgeInsets.symmetric(vertical: 2),
+                     child: SavvyText(
+                       '${item.quantity}',
+                       style: SavvyTextStyle.labelMedium,
+                       color: theme.colors.textPrimary,
+                     ),
+                   ),
+                   _QtyButton(
+                     icon: Icons.remove,
+                     onTap: () {
+                        if (item.quantity > 1) {
+                           context.read<CartBloc>().add(CartEvent.updateQuantity(item.uuid, item.quantity - 1));
+                        } else {
+                           // Maybe confirm delete logic here if wanted, but standard is just min 1 usually or delete.
+                           // User asked for min 1 in some cases, but logic allows 1 -> 0 logic in bloc usually.
+                           // Let's stick to update.
+                           context.read<CartBloc>().add(CartEvent.updateQuantity(item.uuid, item.quantity - 1));
+                        }
+                     },
+                   ),
+                 ],
+               ),
+             ),
+             
+             SizedBox(width: theme.shapes.spacingMd),
+             
+             // INFO
+             Expanded(
+               child: Column(
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                   SavvyText(
+                     item.product.name,
+                     style: SavvyTextStyle.bodyMedium,
+                     color: theme.colors.textPrimary,
+                     maxLines: 2,
+                     overflow: TextOverflow.ellipsis,
+                   ),
+                   if (item.modifiers.isNotEmpty)
                      Padding(
-                      padding: const EdgeInsets.only(top: 2),
-                      child: SavvyText(
-                        "Note: ${item.note}",
-                        style: SavvyTextStyle.bodySmall,
-                        color: theme.colors.brandAccent,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            
-            // Price
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                SavvyText(
-                  "\$${item.total.toStringAsFixed(2)}",
-                  style: SavvyTextStyle.bodyMedium,
-                  color: theme.colors.textPrimary,
-                ),
-                 // Unit price if logic needed?
-              ],
-            )
+                       padding: const EdgeInsets.only(top: 4),
+                       child: Wrap(
+                         spacing: 4,
+                         runSpacing: 4,
+                         children: item.modifiers.map((m) => Container(
+                           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                           decoration: BoxDecoration(
+                             color: theme.colors.bgPrimary,
+                             borderRadius: BorderRadius.circular(4),
+                           ),
+                           child: Text(
+                             m.name,
+                             style: TextStyle(fontSize: 10, color: theme.colors.textMuted),
+                           ),
+                         )).toList(),
+                       ),
+                     ),
+                 ],
+               ),
+             ),
+             
+             // PRICE
+             Column(
+               crossAxisAlignment: CrossAxisAlignment.end,
+               children: [
+                 SavvyText(
+                   "\$${item.total.toStringAsFixed(2)}",
+                   style: SavvyTextStyle.labelLarge,
+                   color: theme.colors.brandPrimary,
+                 ),
+               ],
+             ),
           ],
         ),
       ),
@@ -129,10 +146,10 @@ class _QtyButton extends StatelessWidget {
      final theme = context.savvy;
      return InkWell(
        onTap: onTap,
-       borderRadius: BorderRadius.circular(theme.shapes.radiusSm),
+       borderRadius: BorderRadius.circular(theme.shapes.radiusPill),
        child: Padding(
-         padding: const EdgeInsets.all(4.0),
-         child: Icon(icon, size: 16, color: theme.colors.brandPrimary),
+         padding: const EdgeInsets.all(8.0), // Min touch target approx
+         child: Icon(icon, size: 16, color: theme.colors.textSecondary),
        ),
      );
   }

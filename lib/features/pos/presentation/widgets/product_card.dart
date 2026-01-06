@@ -39,78 +39,101 @@ class _ProductCardState extends State<ProductCard> {
         child: SavvyBox(
           padding: EdgeInsets.zero,
           color: theme.colors.bgElevated,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: Stack(
             children: [
-              // 1. IMAGE AREA
-              Expanded(
-                flex: 3,
-                child: Hero(
-                  tag: 'product_${widget.product.uuid}',
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: widget.product.colorHex != null 
-                        ? Color(int.parse(widget.product.colorHex!.replaceAll('#', '0xFF'))) 
-                        : theme.colors.bgPrimary,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(theme.shapes.radiusMd),
-                        topRight: Radius.circular(theme.shapes.radiusMd),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // 1. IMAGE AREA
+                  Expanded(
+                    flex: 3,
+                    child: Hero(
+                      tag: 'product_${widget.product.uuid}',
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: widget.product.colorHex != null 
+                            ? Color(int.parse(widget.product.colorHex!.replaceAll('#', '0xFF'))) 
+                            : theme.colors.bgPrimary,
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(theme.shapes.radiusMd)),
+                        ),
+                        child: widget.product.imageUrl != null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(theme.shapes.radiusMd)),
+                                child: CachedNetworkImage(
+                                  imageUrl: widget.product.imageUrl!,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) => Center(
+                                    child: CircularProgressIndicator(strokeWidth: 2, color: theme.colors.brandPrimary),
+                                  ),
+                                  errorWidget: (context, url, error) => Icon(
+                                    Icons.broken_image, 
+                                    color: theme.colors.textMuted
+                                  ),
+                                ),
+                              )
+                            : Center(
+                                child: SavvyText(
+                                  widget.product.name.characters.first.toUpperCase(),
+                                  style: SavvyTextStyle.h2,
+                                  color: theme.colors.textSecondary,
+                                ),
+                              ),
                       ),
                     ),
-                    child: widget.product.imageUrl != null
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(theme.shapes.radiusMd),
-                              topRight: Radius.circular(theme.shapes.radiusMd),
-                            ),
-                            child: CachedNetworkImage(
-                              imageUrl: widget.product.imageUrl!,
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => Center(
-                                child: CircularProgressIndicator(strokeWidth: 2, color: theme.colors.brandPrimary),
-                              ),
-                              errorWidget: (context, url, error) => Icon(
-                                Icons.broken_image, 
-                                color: theme.colors.textMuted
-                              ),
-                            ),
-                          )
-                        : Center(
-                            child: SavvyText(
-                              widget.product.name.characters.first.toUpperCase(),
-                              style: SavvyTextStyle.h2,
-                              color: theme.colors.textSecondary,
-                            ),
-                          ),
                   ),
-                ),
+                  
+                  // 2. INFO AREA
+                  Expanded(
+                    flex: 2,
+                    child: Padding(
+                      padding: EdgeInsets.all(theme.shapes.spacingSm),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SavvyText(
+                            widget.product.name,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: SavvyTextStyle.bodyMedium,
+                            color: theme.colors.textPrimary,
+                          ),
+                          SavvyText(
+                            "\$${widget.product.price.toStringAsFixed(2)}", 
+                            style: SavvyTextStyle.h3,
+                            color: theme.colors.brandPrimary,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
               
-              // 2. INFO AREA
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: EdgeInsets.all(theme.shapes.spacingSm),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SavvyText(
-                        widget.product.name,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: SavvyTextStyle.bodyMedium,
-                        color: theme.colors.textPrimary,
+              // 3. OUT OF STOCK OVERLAY
+              if (widget.product.trackStock && widget.product.stockQuantity == 0)
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: theme.colors.bgPrimary.withOpacity(0.7),
+                      borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
+                    ),
+                    child: Center(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: theme.shapes.spacingSm, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: theme.colors.stateError,
+                          borderRadius: BorderRadius.circular(theme.shapes.radiusSm),
+                        ),
+                        child: SavvyText(
+                          'Out of Stock',
+                          style: SavvyTextStyle.labelSmall,
+                          color: theme.colors.textInverse,
+                        ),
                       ),
-                      SavvyText(
-                        "\$${widget.product.price.toStringAsFixed(2)}", 
-                        style: SavvyTextStyle.h3,
-                        color: theme.colors.brandPrimary,
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),

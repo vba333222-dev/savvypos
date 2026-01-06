@@ -78,3 +78,13 @@ type TenantConfig struct {
 	Name     string `json:"name"`
 	Config   string `json:"config"` // JSON string or specific fields
 }
+
+// Employee for Auth
+type Employee struct {
+	Model
+	TenantID string `json:"tenant_id"`
+	Name     string `json:"name"`
+	Username string `json:"username"`
+	Password string `json:"password"` // Hash
+	PIN      string `json:"pin"`      // Alternative Login
+}

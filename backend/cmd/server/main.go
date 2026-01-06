@@ -34,6 +34,7 @@ func main() {
 					&domain.Customer{},
 					&domain.Order{},
 					&domain.OrderItem{},
+					&domain.Employee{},
 				)
 			},
 		),

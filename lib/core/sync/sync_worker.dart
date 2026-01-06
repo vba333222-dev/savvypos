@@ -46,46 +46,83 @@ Future<void> _processSyncQueue(AppDatabase db, Logger logger) async {
   logger.i('Found ${pendingItems.length} items to sync.');
 
   // 2. Prepare Payload
-  final List<Map<String, dynamic>> payload = pendingItems.map((item) {
-    return {
-      'id': item.id, // For ack, though we just rely on 200 OK for batch
-      'action': item.actionType,
-      'payload': jsonDecode(item.payloadJson),
-      'idempotency_key': item.idempotencyKey,
-      'created_at': item.createdAt.toIso8601String(),
-    };
-  }).toList();
-
-  // 3. Push to Backend
-  final success = await apiClient.pushSyncData(payload);
-
-  if (success) {
-    logger.i('Sync Batch Success. Removing items from queue.');
-    
-    // 4. Remove from Queue (Success)
-    // In a robust system, we might delete only specific IDs if partial success, 
-    // but for now we assume all-or-nothing batch.
-    
-    // Also mark related entities as synced if needed - strictly speaking, 
-    // we should wait for backend ACK to update 'isSynced' on the Entity Table itself?
-    // OR we just rely on the Queue being empty.
-    // Let's update the entities 'isSynced' flag for local UI feedback.
-    
-    for (final item in pendingItems) {
-      if (item.actionType == 'CREATE_ORDER') {
-        final p = jsonDecode(item.payloadJson);
-        final orderUuid = p['orderUuid']; // Ensure consistency in keys
-        if (orderUuid != null) {
-          await (db.update(db.orderTable)..where((t) => t.uuid.equals(orderUuid)))
-            .write(const OrderTableCompanion(isSynced: Value(true)));
-        }
-      }
-      // Add other types here
+  // 2. Push to Backend (One by One to match current Backend Handler)
+  // Optimization: Update Backend to Batch later.
+  bool allSuccess = true;
+  
+  for (final item in pendingItems) {
+      final payload = {
+        'action': item.actionType,
+        'payload': jsonDecode(item.payloadJson),
+        'idempotency_key': item.idempotencyKey,
+      };
       
-      // Delete from Queue
-      await (db.delete(db.syncQueue)..where((t) => t.id.equals(item.id))).go();
-    }
+      final success = await apiClient.pushItem(payload);
+      
+      if (success) {
+          // Mark as synced or delete
+          await (db.delete(db.syncQueue)..where((t) => t.id.equals(item.id))).go();
+          
+          if (item.actionType == 'CREATE_ORDER') {
+              final p = jsonDecode(item.payloadJson);
+              final orderUuid = p['orderUuid'] ?? p['uuid']; 
+              if (orderUuid != null) {
+                await (db.update(db.orderTable)..where((t) => t.uuid.equals(orderUuid)))
+                  .write(const OrderTableCompanion(isSynced: Value(true)));
+              }
+          }
+      } else {
+          allSuccess = false;
+      }
+  }
+  
+  if (!allSuccess) {
+      logger.w('Some items failed to push.');
   } else {
-    logger.w('Sync Batch Failed. Will retry later.');
+      logger.i('All pending items pushed.');
+  }
+
+  // 3. Pull Downstream Updates
+  // Get last synced time from Prefs (Mocking Prefs for now)
+  // final prefs = await SharedPreferences.getInstance();
+  // final lastSyncedAt = prefs.getString('last_synced_at') ?? "1970-01-01T00:00:00Z";
+  final lastSyncedAt = "1970-01-01T00:00:00Z"; // Placeholder
+
+  final data = await apiClient.pullSyncData(lastSyncedAt);
+  
+  if (data != null) {
+      final products = List<Map<String, dynamic>>.from(data['products'] ?? []);
+      final customers = List<Map<String, dynamic>>.from(data['customers'] ?? []);
+      
+      // Merge Strategy: Server Wins (InsertOnConflictUpdate)
+      await db.batch((batch) {
+          for (final p in products) {
+             // Map JSON to ProductTableCompanion
+             // simplified mapping:
+             batch.insert(db.productTable, ProductTableCompanion(
+                 uuid: Value(p['uuid']),
+                 name: Value(p['name']),
+                 price: Value((p['price'] as num).toDouble()),
+                 sku: Value(p['sku']),
+                 category: Value(p['category']),
+                 // tenantId: Value(p['tenant_id']), // If table has it
+             ), mode: InsertMode.insertOrReplace);
+          }
+          
+          for (final c in customers) {
+             batch.insert(db.customerTable, CustomerTableCompanion(
+                 uuid: Value(c['uuid']),
+                 name: Value(c['name']),
+                 phone: Value(c['phone']),
+                 email: Value(c['email']),
+             ), mode: InsertMode.insertOrReplace);
+          }
+      });
+      
+      final serverTime = data['server_time'];
+      if (serverTime != null) {
+          // prefs.setString('last_synced_at', serverTime);
+          logger.i('Sync Complete. Updated to $serverTime');
+      }
   }
 }

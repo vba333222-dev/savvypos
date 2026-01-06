@@ -2,6 +2,7 @@ package http
 
 import (
 	"net/http"
+	"time"
 
 	"savvy-pos-backend/internal/core/domain"
 
@@ -97,6 +98,66 @@ func (h *AnalyticsHandler) GetTopProducts(c *gin.Context) {
 		Limit(10).
 		Scan(&results).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch top products"})
+		return
+	}
+
+	c.JSON(http.StatusOK, results)
+}
+
+// GetSummary godoc
+// @Summary Get Dashboard Summary
+// @Description Get today's sales, order count, and low stock count
+// @Tags analytics
+// @Accept json
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Router /v1/analytics/summary [get]
+func (h *AnalyticsHandler) GetSummary(c *gin.Context) {
+	today := time.Now().Format("2006-01-02")
+	var todaySales float64
+	var totalOrders int64
+	var lowStockCount int64
+
+	h.db.Model(&domain.Order{}).Where("DATE(transaction_date) = ?", today).Select("COALESCE(SUM(grand_total), 0)").Scan(&todaySales)
+	h.db.Model(&domain.Order{}).Where("DATE(transaction_date) = ?", today).Count(&totalOrders)
+
+	// Heuristic: Stock < 10
+	h.db.Model(&domain.Product{}).Where("stock < ?", 10).Count(&lowStockCount)
+
+	c.JSON(http.StatusOK, gin.H{
+		"today_sales":     todaySales,
+		"total_orders":    totalOrders,
+		"low_stock_count": lowStockCount,
+	})
+}
+
+// GetSalesChart godoc
+// @Summary Get 7-Day Sales Chart
+// @Description Get sales data for the last 7 days
+// @Tags analytics
+// @Accept json
+// @Produce json
+// @Success 200 {array} map[string]interface{}
+// @Router /v1/analytics/sales_chart [get]
+func (h *AnalyticsHandler) GetSalesChart(c *gin.Context) {
+	type ChartData struct {
+		Date  string  `json:"date"`
+		Total float64 `json:"total"`
+	}
+	var results []ChartData
+
+	// Postgres specific syntax for date grouping
+	// Assuming transaction_date is timestamp
+	err := h.db.Raw(`
+        SELECT TO_CHAR(transaction_date, 'YYYY-MM-DD') as date, SUM(grand_total) as total
+        FROM orders
+        WHERE transaction_date >= NOW() - INTERVAL '7 days'
+        GROUP BY date
+        ORDER BY date ASC
+    `).Scan(&results).Error
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch chart data"})
 		return
 	}
 

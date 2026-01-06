@@ -10,6 +10,8 @@ import 'package:workmanager/workmanager.dart';
 import 'package:savvy_pos/core/hal/printer_router.dart';
 import 'package:get_it/get_it.dart';
 
+import 'package:flutter/foundation.dart'; // for kIsWeb
+import 'package:savvy_pos/features/admin/presentation/pages/web_admin_layout.dart';
 import 'core/database/database.dart';
 
 void main() async {
@@ -58,7 +60,12 @@ class _AppLoader extends StatelessWidget {
   const _AppLoader();
 
   @override
+  @override
   Widget build(BuildContext context) {
+    if (kIsWeb) {
+      return const WebAdminLayout();
+    }
+    
     // Check Tenant Config
     return FutureBuilder(
       future: Future.wait([

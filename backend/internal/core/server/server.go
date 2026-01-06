@@ -11,6 +11,7 @@ import (
 	middleware "savvy-pos-backend/internal/core/middleware"
 	analyticsHttp "savvy-pos-backend/internal/features/analytics/http"
 	authHttp "savvy-pos-backend/internal/features/auth/http"
+	authService "savvy-pos-backend/internal/features/auth/service"
 	syncHttp "savvy-pos-backend/internal/features/sync/http"
 )
 
@@ -39,6 +40,8 @@ func RegisterRoutes(r *gin.Engine, syncHandler *syncHttp.SyncHandler, authHandle
 		analytics.Use(middleware.AuthMiddleware(jwtService))
 		analytics.GET("/sales_summary", analyticsHandler.GetSalesSummary)
 		analytics.GET("/top_products", analyticsHandler.GetTopProducts)
+		analytics.GET("/summary", analyticsHandler.GetSummary)
+		analytics.GET("/sales_chart", analyticsHandler.GetSalesChart)
 	}
 }
 

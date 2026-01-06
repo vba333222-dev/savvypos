@@ -38,9 +38,9 @@ func (s *StockService) ProcessOrderStock(tx *gorm.DB, order domain.Order) error 
 			}
 
 			if len(recipes) == 0 {
-				// Warn: Composite product with no recipe?
-				// Might just skip or treat as direct deduction if needed.
-				// For now, assume config error or skip.
+				// If composite product has no recipe, we can't deduct ingredients.
+				// We should probably log this warning.
+				// For now, valid to just continue or error.
 				continue
 			}
 

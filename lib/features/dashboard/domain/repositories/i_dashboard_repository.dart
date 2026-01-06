@@ -1,18 +1,7 @@
+import 'package:savvy_pos/features/dashboard/domain/entities/dashboard_data.dart';
+
 abstract class IDashboardRepository {
-  Future<List<DailySalesData>> getSalesLast7Days();
-  Future<double> getTodaySales();
-  Future<int> getPendingSyncCount();
-  Future<List<TopSellingItem>> getTopSellingProducts();
-}
-
-class DailySalesData {
-  final DateTime date;
-  final double total;
-  DailySalesData(this.date, this.total);
-}
-
-class TopSellingItem {
-  final String name;
-  final double quantity;
-  TopSellingItem(this.name, this.quantity);
+  Future<DashboardStats> getStatsForPeriod(DateTime start, DateTime end);
+  Future<List<HourlySalesData>> getHourlySales(DateTime date);
+  Future<List<TopProductData>> getTopProducts(DateTime start, DateTime end, {int limit = 5});
 }

@@ -18,45 +18,45 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$KitchenEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() startMonitoring,
-    required TResult Function(String orderUuid) markFulfilled,
-    required TResult Function(List<OrderTableData> orders) ordersUpdated,
+    required TResult Function() startListening,
+    required TResult Function(List<KitchenOrder> orders) ordersUpdated,
+    required TResult Function(String orderUuid) markAsDone,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? startMonitoring,
-    TResult? Function(String orderUuid)? markFulfilled,
-    TResult? Function(List<OrderTableData> orders)? ordersUpdated,
+    TResult? Function()? startListening,
+    TResult? Function(List<KitchenOrder> orders)? ordersUpdated,
+    TResult? Function(String orderUuid)? markAsDone,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? startMonitoring,
-    TResult Function(String orderUuid)? markFulfilled,
-    TResult Function(List<OrderTableData> orders)? ordersUpdated,
+    TResult Function()? startListening,
+    TResult Function(List<KitchenOrder> orders)? ordersUpdated,
+    TResult Function(String orderUuid)? markAsDone,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_StartMonitoring value) startMonitoring,
-    required TResult Function(_MarkFulfilled value) markFulfilled,
+    required TResult Function(_StartListening value) startListening,
     required TResult Function(_OrdersUpdated value) ordersUpdated,
+    required TResult Function(_MarkAsDone value) markAsDone,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_StartMonitoring value)? startMonitoring,
-    TResult? Function(_MarkFulfilled value)? markFulfilled,
+    TResult? Function(_StartListening value)? startListening,
     TResult? Function(_OrdersUpdated value)? ordersUpdated,
+    TResult? Function(_MarkAsDone value)? markAsDone,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_StartMonitoring value)? startMonitoring,
-    TResult Function(_MarkFulfilled value)? markFulfilled,
+    TResult Function(_StartListening value)? startListening,
     TResult Function(_OrdersUpdated value)? ordersUpdated,
+    TResult Function(_MarkAsDone value)? markAsDone,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -84,18 +84,18 @@ class _$KitchenEventCopyWithImpl<$Res, $Val extends KitchenEvent>
 }
 
 /// @nodoc
-abstract class _$$StartMonitoringImplCopyWith<$Res> {
-  factory _$$StartMonitoringImplCopyWith(_$StartMonitoringImpl value,
-          $Res Function(_$StartMonitoringImpl) then) =
-      __$$StartMonitoringImplCopyWithImpl<$Res>;
+abstract class _$$StartListeningImplCopyWith<$Res> {
+  factory _$$StartListeningImplCopyWith(_$StartListeningImpl value,
+          $Res Function(_$StartListeningImpl) then) =
+      __$$StartListeningImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$StartMonitoringImplCopyWithImpl<$Res>
-    extends _$KitchenEventCopyWithImpl<$Res, _$StartMonitoringImpl>
-    implements _$$StartMonitoringImplCopyWith<$Res> {
-  __$$StartMonitoringImplCopyWithImpl(
-      _$StartMonitoringImpl _value, $Res Function(_$StartMonitoringImpl) _then)
+class __$$StartListeningImplCopyWithImpl<$Res>
+    extends _$KitchenEventCopyWithImpl<$Res, _$StartListeningImpl>
+    implements _$$StartListeningImplCopyWith<$Res> {
+  __$$StartListeningImplCopyWithImpl(
+      _$StartListeningImpl _value, $Res Function(_$StartListeningImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of KitchenEvent
@@ -104,18 +104,18 @@ class __$$StartMonitoringImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$StartMonitoringImpl implements _StartMonitoring {
-  const _$StartMonitoringImpl();
+class _$StartListeningImpl implements _StartListening {
+  const _$StartListeningImpl();
 
   @override
   String toString() {
-    return 'KitchenEvent.startMonitoring()';
+    return 'KitchenEvent.startListening()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$StartMonitoringImpl);
+        (other.runtimeType == runtimeType && other is _$StartListeningImpl);
   }
 
   @override
@@ -124,33 +124,33 @@ class _$StartMonitoringImpl implements _StartMonitoring {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() startMonitoring,
-    required TResult Function(String orderUuid) markFulfilled,
-    required TResult Function(List<OrderTableData> orders) ordersUpdated,
+    required TResult Function() startListening,
+    required TResult Function(List<KitchenOrder> orders) ordersUpdated,
+    required TResult Function(String orderUuid) markAsDone,
   }) {
-    return startMonitoring();
+    return startListening();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? startMonitoring,
-    TResult? Function(String orderUuid)? markFulfilled,
-    TResult? Function(List<OrderTableData> orders)? ordersUpdated,
+    TResult? Function()? startListening,
+    TResult? Function(List<KitchenOrder> orders)? ordersUpdated,
+    TResult? Function(String orderUuid)? markAsDone,
   }) {
-    return startMonitoring?.call();
+    return startListening?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? startMonitoring,
-    TResult Function(String orderUuid)? markFulfilled,
-    TResult Function(List<OrderTableData> orders)? ordersUpdated,
+    TResult Function()? startListening,
+    TResult Function(List<KitchenOrder> orders)? ordersUpdated,
+    TResult Function(String orderUuid)? markAsDone,
     required TResult orElse(),
   }) {
-    if (startMonitoring != null) {
-      return startMonitoring();
+    if (startListening != null) {
+      return startListening();
     }
     return orElse();
   }
@@ -158,187 +158,40 @@ class _$StartMonitoringImpl implements _StartMonitoring {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_StartMonitoring value) startMonitoring,
-    required TResult Function(_MarkFulfilled value) markFulfilled,
+    required TResult Function(_StartListening value) startListening,
     required TResult Function(_OrdersUpdated value) ordersUpdated,
+    required TResult Function(_MarkAsDone value) markAsDone,
   }) {
-    return startMonitoring(this);
+    return startListening(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_StartMonitoring value)? startMonitoring,
-    TResult? Function(_MarkFulfilled value)? markFulfilled,
+    TResult? Function(_StartListening value)? startListening,
     TResult? Function(_OrdersUpdated value)? ordersUpdated,
+    TResult? Function(_MarkAsDone value)? markAsDone,
   }) {
-    return startMonitoring?.call(this);
+    return startListening?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_StartMonitoring value)? startMonitoring,
-    TResult Function(_MarkFulfilled value)? markFulfilled,
+    TResult Function(_StartListening value)? startListening,
     TResult Function(_OrdersUpdated value)? ordersUpdated,
+    TResult Function(_MarkAsDone value)? markAsDone,
     required TResult orElse(),
   }) {
-    if (startMonitoring != null) {
-      return startMonitoring(this);
+    if (startListening != null) {
+      return startListening(this);
     }
     return orElse();
   }
 }
 
-abstract class _StartMonitoring implements KitchenEvent {
-  const factory _StartMonitoring() = _$StartMonitoringImpl;
-}
-
-/// @nodoc
-abstract class _$$MarkFulfilledImplCopyWith<$Res> {
-  factory _$$MarkFulfilledImplCopyWith(
-          _$MarkFulfilledImpl value, $Res Function(_$MarkFulfilledImpl) then) =
-      __$$MarkFulfilledImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String orderUuid});
-}
-
-/// @nodoc
-class __$$MarkFulfilledImplCopyWithImpl<$Res>
-    extends _$KitchenEventCopyWithImpl<$Res, _$MarkFulfilledImpl>
-    implements _$$MarkFulfilledImplCopyWith<$Res> {
-  __$$MarkFulfilledImplCopyWithImpl(
-      _$MarkFulfilledImpl _value, $Res Function(_$MarkFulfilledImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of KitchenEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? orderUuid = null,
-  }) {
-    return _then(_$MarkFulfilledImpl(
-      null == orderUuid
-          ? _value.orderUuid
-          : orderUuid // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$MarkFulfilledImpl implements _MarkFulfilled {
-  const _$MarkFulfilledImpl(this.orderUuid);
-
-  @override
-  final String orderUuid;
-
-  @override
-  String toString() {
-    return 'KitchenEvent.markFulfilled(orderUuid: $orderUuid)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$MarkFulfilledImpl &&
-            (identical(other.orderUuid, orderUuid) ||
-                other.orderUuid == orderUuid));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, orderUuid);
-
-  /// Create a copy of KitchenEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$MarkFulfilledImplCopyWith<_$MarkFulfilledImpl> get copyWith =>
-      __$$MarkFulfilledImplCopyWithImpl<_$MarkFulfilledImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() startMonitoring,
-    required TResult Function(String orderUuid) markFulfilled,
-    required TResult Function(List<OrderTableData> orders) ordersUpdated,
-  }) {
-    return markFulfilled(orderUuid);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? startMonitoring,
-    TResult? Function(String orderUuid)? markFulfilled,
-    TResult? Function(List<OrderTableData> orders)? ordersUpdated,
-  }) {
-    return markFulfilled?.call(orderUuid);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? startMonitoring,
-    TResult Function(String orderUuid)? markFulfilled,
-    TResult Function(List<OrderTableData> orders)? ordersUpdated,
-    required TResult orElse(),
-  }) {
-    if (markFulfilled != null) {
-      return markFulfilled(orderUuid);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_StartMonitoring value) startMonitoring,
-    required TResult Function(_MarkFulfilled value) markFulfilled,
-    required TResult Function(_OrdersUpdated value) ordersUpdated,
-  }) {
-    return markFulfilled(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_StartMonitoring value)? startMonitoring,
-    TResult? Function(_MarkFulfilled value)? markFulfilled,
-    TResult? Function(_OrdersUpdated value)? ordersUpdated,
-  }) {
-    return markFulfilled?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_StartMonitoring value)? startMonitoring,
-    TResult Function(_MarkFulfilled value)? markFulfilled,
-    TResult Function(_OrdersUpdated value)? ordersUpdated,
-    required TResult orElse(),
-  }) {
-    if (markFulfilled != null) {
-      return markFulfilled(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _MarkFulfilled implements KitchenEvent {
-  const factory _MarkFulfilled(final String orderUuid) = _$MarkFulfilledImpl;
-
-  String get orderUuid;
-
-  /// Create a copy of KitchenEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$MarkFulfilledImplCopyWith<_$MarkFulfilledImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+abstract class _StartListening implements KitchenEvent {
+  const factory _StartListening() = _$StartListeningImpl;
 }
 
 /// @nodoc
@@ -347,7 +200,7 @@ abstract class _$$OrdersUpdatedImplCopyWith<$Res> {
           _$OrdersUpdatedImpl value, $Res Function(_$OrdersUpdatedImpl) then) =
       __$$OrdersUpdatedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<OrderTableData> orders});
+  $Res call({List<KitchenOrder> orders});
 }
 
 /// @nodoc
@@ -369,7 +222,7 @@ class __$$OrdersUpdatedImplCopyWithImpl<$Res>
       null == orders
           ? _value._orders
           : orders // ignore: cast_nullable_to_non_nullable
-              as List<OrderTableData>,
+              as List<KitchenOrder>,
     ));
   }
 }
@@ -377,12 +230,11 @@ class __$$OrdersUpdatedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$OrdersUpdatedImpl implements _OrdersUpdated {
-  const _$OrdersUpdatedImpl(final List<OrderTableData> orders)
-      : _orders = orders;
+  const _$OrdersUpdatedImpl(final List<KitchenOrder> orders) : _orders = orders;
 
-  final List<OrderTableData> _orders;
+  final List<KitchenOrder> _orders;
   @override
-  List<OrderTableData> get orders {
+  List<KitchenOrder> get orders {
     if (_orders is EqualUnmodifiableListView) return _orders;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_orders);
@@ -416,9 +268,9 @@ class _$OrdersUpdatedImpl implements _OrdersUpdated {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() startMonitoring,
-    required TResult Function(String orderUuid) markFulfilled,
-    required TResult Function(List<OrderTableData> orders) ordersUpdated,
+    required TResult Function() startListening,
+    required TResult Function(List<KitchenOrder> orders) ordersUpdated,
+    required TResult Function(String orderUuid) markAsDone,
   }) {
     return ordersUpdated(orders);
   }
@@ -426,9 +278,9 @@ class _$OrdersUpdatedImpl implements _OrdersUpdated {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? startMonitoring,
-    TResult? Function(String orderUuid)? markFulfilled,
-    TResult? Function(List<OrderTableData> orders)? ordersUpdated,
+    TResult? Function()? startListening,
+    TResult? Function(List<KitchenOrder> orders)? ordersUpdated,
+    TResult? Function(String orderUuid)? markAsDone,
   }) {
     return ordersUpdated?.call(orders);
   }
@@ -436,9 +288,9 @@ class _$OrdersUpdatedImpl implements _OrdersUpdated {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? startMonitoring,
-    TResult Function(String orderUuid)? markFulfilled,
-    TResult Function(List<OrderTableData> orders)? ordersUpdated,
+    TResult Function()? startListening,
+    TResult Function(List<KitchenOrder> orders)? ordersUpdated,
+    TResult Function(String orderUuid)? markAsDone,
     required TResult orElse(),
   }) {
     if (ordersUpdated != null) {
@@ -450,9 +302,9 @@ class _$OrdersUpdatedImpl implements _OrdersUpdated {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_StartMonitoring value) startMonitoring,
-    required TResult Function(_MarkFulfilled value) markFulfilled,
+    required TResult Function(_StartListening value) startListening,
     required TResult Function(_OrdersUpdated value) ordersUpdated,
+    required TResult Function(_MarkAsDone value) markAsDone,
   }) {
     return ordersUpdated(this);
   }
@@ -460,9 +312,9 @@ class _$OrdersUpdatedImpl implements _OrdersUpdated {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_StartMonitoring value)? startMonitoring,
-    TResult? Function(_MarkFulfilled value)? markFulfilled,
+    TResult? Function(_StartListening value)? startListening,
     TResult? Function(_OrdersUpdated value)? ordersUpdated,
+    TResult? Function(_MarkAsDone value)? markAsDone,
   }) {
     return ordersUpdated?.call(this);
   }
@@ -470,9 +322,9 @@ class _$OrdersUpdatedImpl implements _OrdersUpdated {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_StartMonitoring value)? startMonitoring,
-    TResult Function(_MarkFulfilled value)? markFulfilled,
+    TResult Function(_StartListening value)? startListening,
     TResult Function(_OrdersUpdated value)? ordersUpdated,
+    TResult Function(_MarkAsDone value)? markAsDone,
     required TResult orElse(),
   }) {
     if (ordersUpdated != null) {
@@ -483,10 +335,10 @@ class _$OrdersUpdatedImpl implements _OrdersUpdated {
 }
 
 abstract class _OrdersUpdated implements KitchenEvent {
-  const factory _OrdersUpdated(final List<OrderTableData> orders) =
+  const factory _OrdersUpdated(final List<KitchenOrder> orders) =
       _$OrdersUpdatedImpl;
 
-  List<OrderTableData> get orders;
+  List<KitchenOrder> get orders;
 
   /// Create a copy of KitchenEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -496,12 +348,159 @@ abstract class _OrdersUpdated implements KitchenEvent {
 }
 
 /// @nodoc
+abstract class _$$MarkAsDoneImplCopyWith<$Res> {
+  factory _$$MarkAsDoneImplCopyWith(
+          _$MarkAsDoneImpl value, $Res Function(_$MarkAsDoneImpl) then) =
+      __$$MarkAsDoneImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String orderUuid});
+}
+
+/// @nodoc
+class __$$MarkAsDoneImplCopyWithImpl<$Res>
+    extends _$KitchenEventCopyWithImpl<$Res, _$MarkAsDoneImpl>
+    implements _$$MarkAsDoneImplCopyWith<$Res> {
+  __$$MarkAsDoneImplCopyWithImpl(
+      _$MarkAsDoneImpl _value, $Res Function(_$MarkAsDoneImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of KitchenEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? orderUuid = null,
+  }) {
+    return _then(_$MarkAsDoneImpl(
+      null == orderUuid
+          ? _value.orderUuid
+          : orderUuid // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$MarkAsDoneImpl implements _MarkAsDone {
+  const _$MarkAsDoneImpl(this.orderUuid);
+
+  @override
+  final String orderUuid;
+
+  @override
+  String toString() {
+    return 'KitchenEvent.markAsDone(orderUuid: $orderUuid)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$MarkAsDoneImpl &&
+            (identical(other.orderUuid, orderUuid) ||
+                other.orderUuid == orderUuid));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, orderUuid);
+
+  /// Create a copy of KitchenEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$MarkAsDoneImplCopyWith<_$MarkAsDoneImpl> get copyWith =>
+      __$$MarkAsDoneImplCopyWithImpl<_$MarkAsDoneImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() startListening,
+    required TResult Function(List<KitchenOrder> orders) ordersUpdated,
+    required TResult Function(String orderUuid) markAsDone,
+  }) {
+    return markAsDone(orderUuid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? startListening,
+    TResult? Function(List<KitchenOrder> orders)? ordersUpdated,
+    TResult? Function(String orderUuid)? markAsDone,
+  }) {
+    return markAsDone?.call(orderUuid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? startListening,
+    TResult Function(List<KitchenOrder> orders)? ordersUpdated,
+    TResult Function(String orderUuid)? markAsDone,
+    required TResult orElse(),
+  }) {
+    if (markAsDone != null) {
+      return markAsDone(orderUuid);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_StartListening value) startListening,
+    required TResult Function(_OrdersUpdated value) ordersUpdated,
+    required TResult Function(_MarkAsDone value) markAsDone,
+  }) {
+    return markAsDone(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_StartListening value)? startListening,
+    TResult? Function(_OrdersUpdated value)? ordersUpdated,
+    TResult? Function(_MarkAsDone value)? markAsDone,
+  }) {
+    return markAsDone?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_StartListening value)? startListening,
+    TResult Function(_OrdersUpdated value)? ordersUpdated,
+    TResult Function(_MarkAsDone value)? markAsDone,
+    required TResult orElse(),
+  }) {
+    if (markAsDone != null) {
+      return markAsDone(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _MarkAsDone implements KitchenEvent {
+  const factory _MarkAsDone(final String orderUuid) = _$MarkAsDoneImpl;
+
+  String get orderUuid;
+
+  /// Create a copy of KitchenEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$MarkAsDoneImplCopyWith<_$MarkAsDoneImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$KitchenState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<OrderTableData> orders) loaded,
+    required TResult Function(List<KitchenOrder> orders) loaded,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -509,7 +508,7 @@ mixin _$KitchenState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<OrderTableData> orders)? loaded,
+    TResult? Function(List<KitchenOrder> orders)? loaded,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -517,7 +516,7 @@ mixin _$KitchenState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<OrderTableData> orders)? loaded,
+    TResult Function(List<KitchenOrder> orders)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -613,7 +612,7 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<OrderTableData> orders) loaded,
+    required TResult Function(List<KitchenOrder> orders) loaded,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -624,7 +623,7 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<OrderTableData> orders)? loaded,
+    TResult? Function(List<KitchenOrder> orders)? loaded,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -635,7 +634,7 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<OrderTableData> orders)? loaded,
+    TResult Function(List<KitchenOrder> orders)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -730,7 +729,7 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<OrderTableData> orders) loaded,
+    required TResult Function(List<KitchenOrder> orders) loaded,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -741,7 +740,7 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<OrderTableData> orders)? loaded,
+    TResult? Function(List<KitchenOrder> orders)? loaded,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -752,7 +751,7 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<OrderTableData> orders)? loaded,
+    TResult Function(List<KitchenOrder> orders)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -810,7 +809,7 @@ abstract class _$$LoadedImplCopyWith<$Res> {
           _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
       __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<OrderTableData> orders});
+  $Res call({List<KitchenOrder> orders});
 }
 
 /// @nodoc
@@ -832,7 +831,7 @@ class __$$LoadedImplCopyWithImpl<$Res>
       null == orders
           ? _value._orders
           : orders // ignore: cast_nullable_to_non_nullable
-              as List<OrderTableData>,
+              as List<KitchenOrder>,
     ));
   }
 }
@@ -840,11 +839,11 @@ class __$$LoadedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoadedImpl implements _Loaded {
-  const _$LoadedImpl(final List<OrderTableData> orders) : _orders = orders;
+  const _$LoadedImpl(final List<KitchenOrder> orders) : _orders = orders;
 
-  final List<OrderTableData> _orders;
+  final List<KitchenOrder> _orders;
   @override
-  List<OrderTableData> get orders {
+  List<KitchenOrder> get orders {
     if (_orders is EqualUnmodifiableListView) return _orders;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_orders);
@@ -880,7 +879,7 @@ class _$LoadedImpl implements _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<OrderTableData> orders) loaded,
+    required TResult Function(List<KitchenOrder> orders) loaded,
     required TResult Function(String message) error,
   }) {
     return loaded(orders);
@@ -891,7 +890,7 @@ class _$LoadedImpl implements _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<OrderTableData> orders)? loaded,
+    TResult? Function(List<KitchenOrder> orders)? loaded,
     TResult? Function(String message)? error,
   }) {
     return loaded?.call(orders);
@@ -902,7 +901,7 @@ class _$LoadedImpl implements _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<OrderTableData> orders)? loaded,
+    TResult Function(List<KitchenOrder> orders)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -951,9 +950,9 @@ class _$LoadedImpl implements _Loaded {
 }
 
 abstract class _Loaded implements KitchenState {
-  const factory _Loaded(final List<OrderTableData> orders) = _$LoadedImpl;
+  const factory _Loaded(final List<KitchenOrder> orders) = _$LoadedImpl;
 
-  List<OrderTableData> get orders;
+  List<KitchenOrder> get orders;
 
   /// Create a copy of KitchenState
   /// with the given fields replaced by the non-null parameter values.
@@ -1032,7 +1031,7 @@ class _$ErrorImpl implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<OrderTableData> orders) loaded,
+    required TResult Function(List<KitchenOrder> orders) loaded,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -1043,7 +1042,7 @@ class _$ErrorImpl implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<OrderTableData> orders)? loaded,
+    TResult? Function(List<KitchenOrder> orders)? loaded,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -1054,7 +1053,7 @@ class _$ErrorImpl implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<OrderTableData> orders)? loaded,
+    TResult Function(List<KitchenOrder> orders)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

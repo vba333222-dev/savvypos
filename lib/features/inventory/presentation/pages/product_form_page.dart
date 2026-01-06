@@ -33,6 +33,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
   bool _isService = false;
   bool _isComposite = false; // BoH
   String _printerCategory = 'OTHER';
+  String _category = 'OTHER';
   File? _imageFile;
   
   // BoH State
@@ -53,8 +54,10 @@ class _ProductFormPageState extends State<ProductFormPage> {
     
     _trackStock = p?.trackStock ?? true;
     _isService = p?.isService ?? false;
+    _isService = p?.isService ?? false;
     _isComposite = p?.isComposite ?? false;
     _printerCategory = p?.printerCategory ?? 'OTHER';
+    _category = p?.categoryId ?? 'OTHER';
     if (p?.imageUrl != null) {
       _imageFile = File(p!.imageUrl!);
     }
@@ -284,6 +287,23 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
                     SizedBox(height: shapes.spacingMd),
                     DropdownButtonFormField<String>(
+                      value: _category,
+                      decoration: const InputDecoration(labelText: 'Category', border: OutlineInputBorder()),
+                      items: const [
+                        DropdownMenuItem(value: 'STARTER', child: Text('Starter')),
+                        DropdownMenuItem(value: 'MAIN', child: Text('Main Course')),
+                        DropdownMenuItem(value: 'DESSERT', child: Text('Dessert')),
+                        DropdownMenuItem(value: 'BEVERAGE', child: Text('Beverage')),
+                        DropdownMenuItem(value: 'ALCOHOL', child: Text('Alcohol')),
+                        DropdownMenuItem(value: 'MERCH', child: Text('Merchandise')),
+                        DropdownMenuItem(value: 'SERVICE', child: Text('Service')),
+                        DropdownMenuItem(value: 'OTHER', child: Text('Other')),
+                      ],
+                      onChanged: (v) => setState(() => _category = v!),
+                    ),
+                    SizedBox(height: shapes.spacingMd),
+
+                    DropdownButtonFormField<String>(
                       value: _printerCategory,
                       decoration: const InputDecoration(labelText: 'Printer Category', border: OutlineInputBorder()),
                       items: const [
@@ -308,7 +328,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                               price: double.parse(_priceCtrl.text),
                               imageUrl: widget.product?.imageUrl, 
                               colorHex: null,
-                              categoryId: 'default',
+                              categoryId: _category, // Updated
                               trackStock: _trackStock,
                               isService: _isService,
                               isComposite: _isComposite,

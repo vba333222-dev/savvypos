@@ -1,70 +1,108 @@
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
+import 'package:savvy_pos/features/dashboard/domain/entities/dashboard_data.dart';
 import 'package:savvy_pos/features/dashboard/domain/repositories/i_dashboard_repository.dart';
 
-@LazySingleton(as: IDashboardRepository, env: ['mobile'])
+@LazySingleton(as: IDashboardRepository)
 class DashboardRepositoryImpl implements IDashboardRepository {
   final AppDatabase db;
 
   DashboardRepositoryImpl(this.db);
 
   @override
-  Future<List<DailySalesData>> getSalesLast7Days() async {
-    final now = DateTime.now();
-    final sevenDaysAgo = now.subtract(const Duration(days: 7));
-    
-    // Group by Date query (Native SQL or Drift complexity, keeping it simple -> fetch and map)
-    // For large datasets, this should be optimized.
-    final orders = await (db.select(db.orderTable)
-          ..where((t) => t.transactionDate.isBiggerOrEqualValue(sevenDaysAgo)))
-        .get();
+  Future<DashboardStats> getStatsForPeriod(DateTime start, DateTime end) async {
+    final totalSales = db.orderTable.grandTotal.sum();
+    final count = db.orderTable.id.count();
+    final avg = db.orderTable.grandTotal.avg();
 
-    final Map<DateTime, double> grouped = {};
-    
-    // Initialize last 7 days with 0
-    for (int i = 0; i < 7; i++) {
-      final d = now.subtract(Duration(days: i));
-      final dateOnly = DateTime(d.year, d.month, d.day);
-      grouped[dateOnly] = 0.0;
-    }
+    final query = db.selectOnly(db.orderTable)
+      ..addColumns([totalSales, count, avg])
+      ..where(db.orderTable.transactionDate.isBetweenValues(start, end) &
+          db.orderTable.status.equals('COMPLETED'));
 
-    for (var o in orders) {
-      final dateOnly = DateTime(o.transactionDate.year, o.transactionDate.month, o.transactionDate.day);
-      if (grouped.containsKey(dateOnly)) {
-        grouped[dateOnly] = grouped[dateOnly]! + o.grandTotal;
-      }
-    }
+    final result = await query.getSingle();
 
-    return grouped.entries
-        .map((e) => DailySalesData(e.key, e.value))
-        .toList()
-        ..sort((a, b) => a.date.compareTo(b.date));
+    return DashboardStats(
+      totalSales: result.read(totalSales) ?? 0.0,
+      transactionCount: result.read(count) ?? 0,
+      avgBasketSize: result.read(avg) ?? 0.0,
+    );
   }
 
   @override
-  Future<double> getTodaySales() async {
-    final now = DateTime.now();
-    final startOfDay = DateTime(now.year, now.month, now.day);
+  Future<List<HourlySalesData>> getHourlySales(DateTime date) async {
+    // Start and End of the specific day
+    final startOfDay = DateTime(date.year, date.month, date.day);
+    final endOfDay = startOfDay.add(const Duration(days: 1)).subtract(const Duration(seconds: 1));
+
+    // SQLite 'strftime' to extract hour.
+    // Note: Drift stores DateTime as Unix timestamp (seconds) usually in NativeDatabase.
+    // We use 'unixepoch' modifier if it's int, or just %H if text. 
+    // Safer approach in pure Drift: Fetch all for the day and aggregate in Dart 
+    // IF we are unsure of storage. 
+    // BUT the user demanded SQL Group By.
+    // Let's assume standard Drift Native setup: Int (Unix Seconds).
+    // strftime('%H', transaction_date, 'unixepoch', 'localtime')
     
-    final orders = await (db.select(db.orderTable)
-          ..where((t) => t.transactionDate.isBiggerOrEqualValue(startOfDay)))
-        .get();
-        
-    return orders.fold(0.0, (sum, o) => sum + o.grandTotal);
+    // Custom Expression for Hour
+    // We'll trust Drift's `hour` getter if available, otherwise raw SQL.
+    // Drift doesn't have a direct `.hour` on expression yet in all versions.
+    // Let's use custom expression.
+    
+    final hourExp = FunctionCallExpression('strftime', [
+      const Constant<String>('%H'),
+      db.orderTable.transactionDate,
+      const Constant<String>('unixepoch'),
+      const Constant<String>('localtime'),
+    ]);
+    
+    final totalExp = db.orderTable.grandTotal.sum();
+
+    final query = db.selectOnly(db.orderTable)
+      ..addColumns([hourExp, totalExp])
+      ..where(db.orderTable.transactionDate.isBetweenValues(startOfDay, endOfDay) &
+          db.orderTable.status.equals('COMPLETED'))
+      ..groupBy([hourExp]);
+
+    final results = await query.get();
+
+    return results.map((row) {
+      final hourStr = row.read(hourExp); // Returns String '09', '10'
+      final total = row.read(totalExp);
+      return HourlySalesData(int.tryParse(hourStr ?? '0') ?? 0, total ?? 0.0);
+    }).toList();
   }
 
   @override
-  Future<int> getPendingSyncCount() async {
-    final count = countAll();
-    final result = await (db.selectOnly(db.syncQueue)..addColumns([count])).getSingle();
-    return result.read(count) ?? 0;
-  }
+  Future<List<TopProductData>> getTopProducts(DateTime start, DateTime end, {int limit = 5}) async {
+    final qtySum = db.orderItemTable.quantity.sum();
+    final salesSum = db.orderItemTable.total.sum();
 
-  @override
-  Future<List<TopSellingItem>> getTopSellingProducts() async {
-    // Local calculation (Advanced: Group by OrderItems)
-    // For now, return empty or mock for local mobile app to avoid build error.
-    return [];
+    // Join Orders, OrderItems, Products
+    final query = db.selectOnly(db.orderItemTable)
+      ..join([
+        innerJoin(db.orderTable, db.orderTable.uuid.equalsExp(db.orderItemTable.orderUuid)),
+        innerJoin(db.productTable, db.productTable.uuid.equalsExp(db.orderItemTable.productUuid)), // Assuming productUuid link
+        // Note: OrderItemTable has productUuid column based on tables.dart? 
+        // tables.dart: TextColumn get productUuid => text()(); 
+        // It's not a reference() but a manual link. That's fine.
+      ])
+      ..addColumns([db.productTable.name, qtySum, salesSum])
+      ..where(db.orderTable.transactionDate.isBetweenValues(start, end) &
+          db.orderTable.status.equals('COMPLETED'))
+      ..groupBy([db.orderItemTable.productUuid])
+      ..orderBy([OrderingTerm(expression: qtySum, mode: OrderingMode.desc)])
+      ..limit(limit);
+
+    final results = await query.get();
+
+    return results.map((row) {
+      return TopProductData(
+        productName: row.read(db.productTable.name) ?? 'Unknown',
+        quantity: row.read(qtySum)?.toInt() ?? 0,
+        totalSales: row.read(salesSum) ?? 0.0,
+      );
+    }).toList();
   }
 }

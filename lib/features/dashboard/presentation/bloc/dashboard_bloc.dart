@@ -1,52 +1,69 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:savvy_pos/features/dashboard/domain/entities/dashboard_data.dart';
 import 'package:savvy_pos/features/dashboard/domain/repositories/i_dashboard_repository.dart';
 
 part 'dashboard_bloc.freezed.dart';
 
 @freezed
 class DashboardEvent with _$DashboardEvent {
-  const factory DashboardEvent.loadData() = _LoadData;
+  const factory DashboardEvent.loadData([DateTime? date]) = _LoadData;
+  const factory DashboardEvent.refresh() = _Refresh;
 }
 
 @freezed
 class DashboardState with _$DashboardState {
-  const factory DashboardState({
-    @Default([]) List<DailySalesData> recentSales,
-    @Default([]) List<TopSellingItem> topProducts,
-    @Default(0.0) double todaySales,
-    @Default(0) int pendingSyncCount,
-    @Default(true) bool isLoading,
-    String? error,
-  }) = _DashboardState;
+  const factory DashboardState.initial() = _Initial;
+  const factory DashboardState.loading() = _Loading;
+  const factory DashboardState.loaded({
+    required DashboardStats stats,
+    required List<HourlySalesData> hourlySales,
+    required List<TopProductData> topProducts,
+    required DateTime selectedDate,
+  }) = _Loaded;
+  const factory DashboardState.error(String message) = _Error;
 }
 
-@Injectable(env: ['mobile', 'web'])
+@injectable
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   final IDashboardRepository _repository;
 
-  DashboardBloc(this._repository) : super(const DashboardState()) {
+  DashboardBloc(this._repository) : super(const DashboardState.initial()) {
     on<_LoadData>(_onLoadData);
+    on<_Refresh>(_onRefresh);
   }
 
   Future<void> _onLoadData(_LoadData event, Emitter<DashboardState> emit) async {
-    emit(state.copyWith(isLoading: true));
+    emit(const DashboardState.loading());
     try {
-      final recent = await _repository.getSalesLast7Days();
-      final today = await _repository.getTodaySales();
-      final pending = await _repository.getPendingSyncCount();
-      final top = await _repository.getTopSellingProducts();
+      final date = event.date ?? DateTime.now();
       
-      emit(state.copyWith(
-        recentSales: recent,
+      // Define Start/End of Day
+      final start = DateTime(date.year, date.month, date.day);
+      final end = start.add(const Duration(days: 1)).subtract(const Duration(milliseconds: 1));
+      
+      final stats = await _repository.getStatsForPeriod(start, end);
+      final hourly = await _repository.getHourlySales(start);
+      final top = await _repository.getTopProducts(start, end);
+
+      emit(DashboardState.loaded(
+        stats: stats,
+        hourlySales: hourly,
         topProducts: top,
-        todaySales: today,
-        pendingSyncCount: pending,
-        isLoading: false,
+        selectedDate: date,
       ));
     } catch (e) {
-      emit(state.copyWith(error: e.toString(), isLoading: false));
+      emit(DashboardState.error(e.toString()));
+    }
+  }
+
+  Future<void> _onRefresh(_Refresh event, Emitter<DashboardState> emit) async {
+    final currentState = state;
+    if (currentState is _Loaded) {
+      add(DashboardEvent.loadData(currentState.selectedDate));
+    } else {
+      add(const DashboardEvent.loadData());
     }
   }
 }

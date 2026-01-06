@@ -18,9 +18,17 @@ func main() {
 			server.NewGinEngine,
 			http.NewSyncHandler,
 		),
-		fx.Invoke(
 			server.RegisterRoutes,
 			server.Start,
+			func(db *gorm.DB) error {
+				return db.AutoMigrate(
+					&domain.TenantConfig{},
+					&domain.Product{},
+					&domain.Customer{},
+					&domain.Order{},
+					&domain.OrderItem{},
+				)
+			},
 		),
 	)
 

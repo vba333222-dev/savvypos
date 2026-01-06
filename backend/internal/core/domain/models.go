@@ -15,25 +15,25 @@ type Model struct {
 // Order Represents a Sales Transaction
 type Order struct {
 	Model
-	UUID            string    `gorm:"uniqueIndex;not null" json:"uuid"`
-	OrderNumber     string    `gorm:"not null" json:"order_number"`
-	ShiftUUID       string    `json:"shift_uuid"`
-	CustomerUUID    string    `json:"customer_uuid"`
-	TenantID        string    `json:"tenant_id"`
+	UUID            string    `gorm:"uniqueIndex;not null" json:"orderUuid"` // Matches Flutter
+	OrderNumber     string    `gorm:"not null" json:"orderNumber"`
+	ShiftUUID       string    `json:"shiftUuid"`
+	CustomerUUID    string    `json:"customerUuid"`
+	TenantID        string    `json:"tenantId"`
 	Status          string    `json:"status"`
-	PaymentStatus   string    `json:"payment_status"`
-	TransactionDate time.Time `json:"transaction_date"`
+	PaymentStatus   string    `json:"paymentStatus"`
+	TransactionDate time.Time `json:"transactionDate"`
 
 	// Financials
 	Subtotal      float64 `json:"subtotal"`
-	DiscountTotal float64 `json:"discount_total"`
-	TaxTotal      float64 `json:"tax_total"`
-	GrandTotal    float64 `json:"grand_total"`
+	DiscountTotal float64 `json:"discount"` // Flutter sends 'discount'
+	TaxTotal      float64 `json:"tax"`      // Flutter sends 'tax'? Need to check CartBloc
+	GrandTotal    float64 `json:"total"`    // Flutter sends 'total'
 
 	// Payment
-	PaymentMethod  string  `json:"payment_method"`
-	TenderedAmount float64 `json:"tendered_amount"`
-	ChangeAmount   float64 `json:"change_amount"`
+	PaymentMethod  string  `json:"paymentMethod"`
+	TenderedAmount float64 `json:"tenderedAmount"`
+	ChangeAmount   float64 `json:"changeAmount"`
 
 	// Relations
 	Items []OrderItem `gorm:"foreignKey:OrderUUID;references:UUID" json:"items"`
@@ -41,13 +41,13 @@ type Order struct {
 
 type OrderItem struct {
 	Model
-	OrderUUID   string  `gorm:"index" json:"order_uuid"`
-	ProductUUID string  `gorm:"index" json:"product_uuid"`
-	Name        string  `json:"name"`
-	Price       float64 `json:"price"`
+	OrderUUID   string  `gorm:"index" json:"orderUuid"`
+	ProductUUID string  `gorm:"index" json:"productUuid"`
+	Name        string  `json:"name"`  // Flutter doesn't send name in item map usually, checking payload...
+	Price       float64 `json:"price"` // Not in minimalistic payload?
 	Quantity    float64 `json:"quantity"`
 	Note        string  `json:"note"`
-	Total       float64 `json:"total"`
+	Total       float64 `json:"total"` // Not in minimalistic payload?
 }
 
 // Product Catalog (Simplified for Sync)

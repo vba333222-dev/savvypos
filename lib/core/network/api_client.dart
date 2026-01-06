@@ -64,30 +64,61 @@ class ApiClient {
     } catch(e) { return false; }
   }
   
-  // Adjusted Push for Single Item Loop compatibility or Backend Batch update
-  Future<bool> pushItem(Map<String, dynamic> item) async {
-      try {
-          // Backend expects: ActionType, PayloadJson, IdempotencyKey
-          // Mobile SyncQueue: action, payload, idempotency_key
-          final response = await _dio.post('/sync/push', data: {
-              'actionType': item['action'],
-              'payloadJson': item['payload'], // encoding might be needed if Backend defines it as json.RawMessage
-              'idempotencyKey': item['idempotency_key']
-          });
-          return response.statusCode == 200;
-      } catch (e) {
-          _logger.e('Push Failed', error: e);
-          return false;
-      }
+  Future<bool> pushItem(Map<String, dynamic> payload) async {
+    try {
+      // Requirement: Handle timeout (10s) and return true only if 200.
+      // Headers: Authorization: Bearer <token>, X-Tenant-ID
+      
+      // TODO: Get actual token. For MVP/Sync, we use a placeholder or injected value.
+      // Ideally ApiClient should have a `setToken` method or read from secure storage.
+      const token = "mock-token-123"; 
+      const tenantId = "default-tenant";
+
+      final response = await _dio.post(
+        '/sync/push',
+        data: {
+          'actionType': payload['action'],
+          'payloadJson': payload['payload'], // Backend expects json.RawMessage, Dio handles Map automatically? 
+          // If 'payload' is a Map, Dio sends it as JSON object. 
+          // Go binding `json.RawMessage` works with JSON object or string. 
+          // SyncWorker passes `jsonDecode` output (Map) as 'payload'.
+          // So this sends nested JSON object. Correct.
+          'idempotencyKey': payload['idempotency_key']
+        },
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+            'X-Tenant-ID': tenantId,
+          },
+          sendTimeout: const Duration(seconds: 10),
+          receiveTimeout: const Duration(seconds: 10),
+        ),
+      );
+
+      return response.statusCode == 200;
+    } catch (e) {
+      _logger.e('Push Failed', error: e);
+      return false;
+    }
   }
 
   Future<Map<String, dynamic>?> pullSyncData(String lastSyncedAt) async {
     try {
+      const token = "mock-token-123"; 
+      const tenantId = "default-tenant";
+
       final response = await _dio.get(
         '/sync/pull',
         queryParameters: {
           'last_synced_at': lastSyncedAt,
         },
+        options: Options(
+          headers: {
+             'Authorization': 'Bearer $token',
+             'X-Tenant-ID': tenantId,
+          },
+           receiveTimeout: const Duration(seconds: 10),
+        ),
       );
 
       if (response.statusCode == 200) {

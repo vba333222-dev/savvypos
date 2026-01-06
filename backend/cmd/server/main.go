@@ -7,8 +7,10 @@ import (
 	"savvy-pos-backend/internal/core/domain"
 	"savvy-pos-backend/internal/core/server"
 	"savvy-pos-backend/internal/core/storage"
+	analyticsHttp "savvy-pos-backend/internal/features/analytics/http"
 	authHttp "savvy-pos-backend/internal/features/auth/http"
 	authService "savvy-pos-backend/internal/features/auth/service"
+	inventoryService "savvy-pos-backend/internal/features/inventory/service"
 	"savvy-pos-backend/internal/features/sync/http"
 
 	"go.uber.org/fx"
@@ -23,6 +25,8 @@ func main() {
 			http.NewSyncHandler,
 			authHttp.NewAuthHandler,
 			authService.NewJWTService,
+			inventoryService.NewStockService,
+			analyticsHttp.NewAnalyticsHandler,
 		),
 		fx.Invoke(
 			server.RegisterRoutes,
@@ -35,6 +39,8 @@ func main() {
 					&domain.Order{},
 					&domain.OrderItem{},
 					&domain.Employee{},
+					&domain.Ingredient{},
+					&domain.Recipe{},
 				)
 			},
 		),

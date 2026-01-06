@@ -8,9 +8,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"
 
-	"savvy-pos-backend/internal/core/middleware"
+	middleware "savvy-pos-backend/internal/core/middleware"
+	analyticsHttp "savvy-pos-backend/internal/features/analytics/http"
 	authHttp "savvy-pos-backend/internal/features/auth/http"
-	authService "savvy-pos-backend/internal/features/auth/service"
 	syncHttp "savvy-pos-backend/internal/features/sync/http"
 )
 
@@ -24,7 +24,7 @@ func NewGinEngine() *gin.Engine {
 	return r
 }
 
-func RegisterRoutes(r *gin.Engine, syncHandler *syncHttp.SyncHandler, authHandler *authHttp.AuthHandler, jwtService *authService.JWTService) {
+func RegisterRoutes(r *gin.Engine, syncHandler *syncHttp.SyncHandler, authHandler *authHttp.AuthHandler, jwtService *authService.JWTService, analyticsHandler *analyticsHttp.AnalyticsHandler) {
 	v1 := r.Group("/v1")
 	{
 		auth := v1.Group("/auth")
@@ -34,6 +34,11 @@ func RegisterRoutes(r *gin.Engine, syncHandler *syncHttp.SyncHandler, authHandle
 		sync.Use(middleware.AuthMiddleware(jwtService))
 		sync.POST("/push", syncHandler.HandlePush)
 		sync.GET("/pull", syncHandler.HandlePull)
+
+		analytics := v1.Group("/analytics")
+		analytics.Use(middleware.AuthMiddleware(jwtService))
+		analytics.GET("/sales_summary", analyticsHandler.GetSalesSummary)
+		analytics.GET("/top_products", analyticsHandler.GetTopProducts)
 	}
 }
 

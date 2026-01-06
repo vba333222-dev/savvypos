@@ -53,12 +53,31 @@ type OrderItem struct {
 // Product Catalog (Simplified for Sync)
 type Product struct {
 	Model
-	UUID     string  `gorm:"uniqueIndex" json:"uuid"`
-	Name     string  `json:"name"`
-	Price    float64 `json:"price"`
-	SKU      string  `json:"sku"`
-	Category string  `json:"category"`
+	UUID        string  `gorm:"uniqueIndex" json:"uuid"`
+	Name        string  `json:"name"`
+	Price       float64 `json:"price"`
+	SKU         string  `json:"sku"`
+	Category    string  `json:"category"`
+	TenantID    string  `json:"tenant_id"`
+	IsComposite bool    `json:"is_composite"`
+	Stock       float64 `json:"stock"`
+}
+
+type Ingredient struct {
+	Model
 	TenantID string  `json:"tenant_id"`
+	Name     string  `json:"name"`
+	Stock    float64 `json:"stock"`
+	Unit     string  `json:"unit"`
+	Cost     float64 `json:"cost"`
+}
+
+type Recipe struct {
+	Model
+	TenantID       string  `json:"tenant_id"`
+	ProductUUID    string  `gorm:"index" json:"product_uuid"`
+	IngredientUUID string  `gorm:"index" json:"ingredient_uuid"`
+	Quantity       float64 `json:"quantity"`
 }
 
 // Customer (CRM)

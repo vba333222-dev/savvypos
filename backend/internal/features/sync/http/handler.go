@@ -6,24 +6,22 @@ import (
 	"time"
 
 	"savvy-pos-backend/internal/core/domain"
+	service "savvy-pos-backend/internal/features/inventory/service"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
 type SyncHandler struct {
-	db *gorm.DB
+	db           *gorm.DB
+	stockService *service.StockService // Check package import below
 }
 
-func NewSyncHandler(db *gorm.DB) *SyncHandler {
-	return &SyncHandler{db: db}
+func NewSyncHandler(db *gorm.DB, stockService *service.StockService) *SyncHandler {
+	return &SyncHandler{db: db, stockService: stockService}
 }
 
-type SyncRequest struct {
-	ActionType     string          `json:"actionType"`
-	PayloadJson    json.RawMessage `json:"payloadJson"`
-	IdempotencyKey string          `json:"idempotencyKey"`
-}
+// ... SyncRequest struct ...
 
 func (h *SyncHandler) HandlePush(c *gin.Context) {
 	var req SyncRequest
@@ -45,11 +43,19 @@ func (h *SyncHandler) HandlePush(c *gin.Context) {
 			return
 		}
 
-		// Ensure Items are associated correctly if GORM needs help, but usually Unmarshal handles nested if structure matches.
-		// If order.Items has contents, GORM should handle creating them.
+		// Upsert Order
 		if err := tx.Create(&order).Error; err != nil {
 			tx.Rollback()
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save order", "details": err.Error()})
+			return
+		}
+
+		// Trigger Inventory Logic
+		if err := h.stockService.ProcessOrderStock(tx, order); err != nil {
+			// Decide: Rollback transaction if stock deduction fails?
+			// Yes, ensuring data consistency.
+			tx.Rollback()
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Inventory processed failed", "details": err.Error()})
 			return
 		}
 

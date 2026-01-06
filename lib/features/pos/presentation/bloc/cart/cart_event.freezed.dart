@@ -23,6 +23,7 @@ mixin _$CartEvent {
     required TResult Function(String itemUuid, int quantity) updateQuantity,
     required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function(String barcode) scanItem,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
     required TResult Function(
@@ -42,6 +43,7 @@ mixin _$CartEvent {
     TResult? Function(String itemUuid, int quantity)? updateQuantity,
     TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function(String barcode)? scanItem,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
     TResult? Function(
@@ -60,6 +62,7 @@ mixin _$CartEvent {
     TResult Function(String itemUuid, int quantity)? updateQuantity,
     TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function(String barcode)? scanItem,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
     TResult Function(
@@ -78,6 +81,7 @@ mixin _$CartEvent {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_ScanItem value) scanItem,
     required TResult Function(_SelectCustomer value) selectCustomer,
     required TResult Function(_ApplyDiscount value) applyDiscount,
     required TResult Function(_CheckoutProcessed value) checkoutProcessed,
@@ -93,6 +97,7 @@ mixin _$CartEvent {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_ScanItem value)? scanItem,
     TResult? Function(_SelectCustomer value)? selectCustomer,
     TResult? Function(_ApplyDiscount value)? applyDiscount,
     TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -108,6 +113,7 @@ mixin _$CartEvent {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_ScanItem value)? scanItem,
     TResult Function(_SelectCustomer value)? selectCustomer,
     TResult Function(_ApplyDiscount value)? applyDiscount,
     TResult Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -231,6 +237,7 @@ class _$AddProductImpl implements _AddProduct {
     required TResult Function(String itemUuid, int quantity) updateQuantity,
     required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function(String barcode) scanItem,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
     required TResult Function(
@@ -253,6 +260,7 @@ class _$AddProductImpl implements _AddProduct {
     TResult? Function(String itemUuid, int quantity)? updateQuantity,
     TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function(String barcode)? scanItem,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
     TResult? Function(
@@ -274,6 +282,7 @@ class _$AddProductImpl implements _AddProduct {
     TResult Function(String itemUuid, int quantity)? updateQuantity,
     TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function(String barcode)? scanItem,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
     TResult Function(
@@ -298,6 +307,7 @@ class _$AddProductImpl implements _AddProduct {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_ScanItem value) scanItem,
     required TResult Function(_SelectCustomer value) selectCustomer,
     required TResult Function(_ApplyDiscount value) applyDiscount,
     required TResult Function(_CheckoutProcessed value) checkoutProcessed,
@@ -316,6 +326,7 @@ class _$AddProductImpl implements _AddProduct {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_ScanItem value)? scanItem,
     TResult? Function(_SelectCustomer value)? selectCustomer,
     TResult? Function(_ApplyDiscount value)? applyDiscount,
     TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -334,6 +345,7 @@ class _$AddProductImpl implements _AddProduct {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_ScanItem value)? scanItem,
     TResult Function(_SelectCustomer value)? selectCustomer,
     TResult Function(_ApplyDiscount value)? applyDiscount,
     TResult Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -448,6 +460,7 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     required TResult Function(String itemUuid, int quantity) updateQuantity,
     required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function(String barcode) scanItem,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
     required TResult Function(
@@ -470,6 +483,7 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     TResult? Function(String itemUuid, int quantity)? updateQuantity,
     TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function(String barcode)? scanItem,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
     TResult? Function(
@@ -491,6 +505,7 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     TResult Function(String itemUuid, int quantity)? updateQuantity,
     TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function(String barcode)? scanItem,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
     TResult Function(
@@ -515,6 +530,7 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_ScanItem value) scanItem,
     required TResult Function(_SelectCustomer value) selectCustomer,
     required TResult Function(_ApplyDiscount value) applyDiscount,
     required TResult Function(_CheckoutProcessed value) checkoutProcessed,
@@ -533,6 +549,7 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_ScanItem value)? scanItem,
     TResult? Function(_SelectCustomer value)? selectCustomer,
     TResult? Function(_ApplyDiscount value)? applyDiscount,
     TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -551,6 +568,7 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_ScanItem value)? scanItem,
     TResult Function(_SelectCustomer value)? selectCustomer,
     TResult Function(_ApplyDiscount value)? applyDiscount,
     TResult Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -656,6 +674,7 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     required TResult Function(String itemUuid, int quantity) updateQuantity,
     required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function(String barcode) scanItem,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
     required TResult Function(
@@ -678,6 +697,7 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     TResult? Function(String itemUuid, int quantity)? updateQuantity,
     TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function(String barcode)? scanItem,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
     TResult? Function(
@@ -699,6 +719,7 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     TResult Function(String itemUuid, int quantity)? updateQuantity,
     TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function(String barcode)? scanItem,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
     TResult Function(
@@ -723,6 +744,7 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_ScanItem value) scanItem,
     required TResult Function(_SelectCustomer value) selectCustomer,
     required TResult Function(_ApplyDiscount value) applyDiscount,
     required TResult Function(_CheckoutProcessed value) checkoutProcessed,
@@ -741,6 +763,7 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_ScanItem value)? scanItem,
     TResult? Function(_SelectCustomer value)? selectCustomer,
     TResult? Function(_ApplyDiscount value)? applyDiscount,
     TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -759,6 +782,7 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_ScanItem value)? scanItem,
     TResult Function(_SelectCustomer value)? selectCustomer,
     TResult Function(_ApplyDiscount value)? applyDiscount,
     TResult Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -833,6 +857,7 @@ class _$ClearCartImpl implements _ClearCart {
     required TResult Function(String itemUuid, int quantity) updateQuantity,
     required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function(String barcode) scanItem,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
     required TResult Function(
@@ -855,6 +880,7 @@ class _$ClearCartImpl implements _ClearCart {
     TResult? Function(String itemUuid, int quantity)? updateQuantity,
     TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function(String barcode)? scanItem,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
     TResult? Function(
@@ -876,6 +902,7 @@ class _$ClearCartImpl implements _ClearCart {
     TResult Function(String itemUuid, int quantity)? updateQuantity,
     TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function(String barcode)? scanItem,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
     TResult Function(
@@ -900,6 +927,7 @@ class _$ClearCartImpl implements _ClearCart {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_ScanItem value) scanItem,
     required TResult Function(_SelectCustomer value) selectCustomer,
     required TResult Function(_ApplyDiscount value) applyDiscount,
     required TResult Function(_CheckoutProcessed value) checkoutProcessed,
@@ -918,6 +946,7 @@ class _$ClearCartImpl implements _ClearCart {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_ScanItem value)? scanItem,
     TResult? Function(_SelectCustomer value)? selectCustomer,
     TResult? Function(_ApplyDiscount value)? applyDiscount,
     TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -936,6 +965,7 @@ class _$ClearCartImpl implements _ClearCart {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_ScanItem value)? scanItem,
     TResult Function(_SelectCustomer value)? selectCustomer,
     TResult Function(_ApplyDiscount value)? applyDiscount,
     TResult Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -954,6 +984,216 @@ class _$ClearCartImpl implements _ClearCart {
 
 abstract class _ClearCart implements CartEvent {
   const factory _ClearCart() = _$ClearCartImpl;
+}
+
+/// @nodoc
+abstract class _$$ScanItemImplCopyWith<$Res> {
+  factory _$$ScanItemImplCopyWith(
+          _$ScanItemImpl value, $Res Function(_$ScanItemImpl) then) =
+      __$$ScanItemImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String barcode});
+}
+
+/// @nodoc
+class __$$ScanItemImplCopyWithImpl<$Res>
+    extends _$CartEventCopyWithImpl<$Res, _$ScanItemImpl>
+    implements _$$ScanItemImplCopyWith<$Res> {
+  __$$ScanItemImplCopyWithImpl(
+      _$ScanItemImpl _value, $Res Function(_$ScanItemImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? barcode = null,
+  }) {
+    return _then(_$ScanItemImpl(
+      null == barcode
+          ? _value.barcode
+          : barcode // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ScanItemImpl implements _ScanItem {
+  const _$ScanItemImpl(this.barcode);
+
+  @override
+  final String barcode;
+
+  @override
+  String toString() {
+    return 'CartEvent.scanItem(barcode: $barcode)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ScanItemImpl &&
+            (identical(other.barcode, barcode) || other.barcode == barcode));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, barcode);
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ScanItemImplCopyWith<_$ScanItemImpl> get copyWith =>
+      __$$ScanItemImplCopyWithImpl<_$ScanItemImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Product product, List<ModifierItem> modifiers)
+        addProduct,
+    required TResult Function(String itemUuid, int quantity) updateQuantity,
+    required TResult Function(String itemUuid) removeFromCart,
+    required TResult Function() clearCart,
+    required TResult Function(String barcode) scanItem,
+    required TResult Function(Customer? customer) selectCustomer,
+    required TResult Function(double? percent, double? fixed) applyDiscount,
+    required TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)
+        checkoutProcessed,
+    required TResult Function(String tableUuid) parkOrder,
+    required TResult Function(String orderUuid, String tableUuid) retrieveOrder,
+    required TResult Function(List<CartItem> items, String paymentMethod)
+        checkoutSplit,
+    required TResult Function(String productUuid, String? note) updateNote,
+  }) {
+    return scanItem(barcode);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Product product, List<ModifierItem> modifiers)?
+        addProduct,
+    TResult? Function(String itemUuid, int quantity)? updateQuantity,
+    TResult? Function(String itemUuid)? removeFromCart,
+    TResult? Function()? clearCart,
+    TResult? Function(String barcode)? scanItem,
+    TResult? Function(Customer? customer)? selectCustomer,
+    TResult? Function(double? percent, double? fixed)? applyDiscount,
+    TResult? Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
+    TResult? Function(String tableUuid)? parkOrder,
+    TResult? Function(String orderUuid, String tableUuid)? retrieveOrder,
+    TResult? Function(List<CartItem> items, String paymentMethod)?
+        checkoutSplit,
+    TResult? Function(String productUuid, String? note)? updateNote,
+  }) {
+    return scanItem?.call(barcode);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Product product, List<ModifierItem> modifiers)? addProduct,
+    TResult Function(String itemUuid, int quantity)? updateQuantity,
+    TResult Function(String itemUuid)? removeFromCart,
+    TResult Function()? clearCart,
+    TResult Function(String barcode)? scanItem,
+    TResult Function(Customer? customer)? selectCustomer,
+    TResult Function(double? percent, double? fixed)? applyDiscount,
+    TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
+    TResult Function(String tableUuid)? parkOrder,
+    TResult Function(String orderUuid, String tableUuid)? retrieveOrder,
+    TResult Function(List<CartItem> items, String paymentMethod)? checkoutSplit,
+    TResult Function(String productUuid, String? note)? updateNote,
+    required TResult orElse(),
+  }) {
+    if (scanItem != null) {
+      return scanItem(barcode);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_AddProduct value) addProduct,
+    required TResult Function(_UpdateQuantity value) updateQuantity,
+    required TResult Function(_RemoveFromCart value) removeFromCart,
+    required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_ScanItem value) scanItem,
+    required TResult Function(_SelectCustomer value) selectCustomer,
+    required TResult Function(_ApplyDiscount value) applyDiscount,
+    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
+    required TResult Function(_ParkOrder value) parkOrder,
+    required TResult Function(_RetrieveOrder value) retrieveOrder,
+    required TResult Function(_CheckoutSplit value) checkoutSplit,
+    required TResult Function(_UpdateNote value) updateNote,
+  }) {
+    return scanItem(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_AddProduct value)? addProduct,
+    TResult? Function(_UpdateQuantity value)? updateQuantity,
+    TResult? Function(_RemoveFromCart value)? removeFromCart,
+    TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_ScanItem value)? scanItem,
+    TResult? Function(_SelectCustomer value)? selectCustomer,
+    TResult? Function(_ApplyDiscount value)? applyDiscount,
+    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
+    TResult? Function(_ParkOrder value)? parkOrder,
+    TResult? Function(_RetrieveOrder value)? retrieveOrder,
+    TResult? Function(_CheckoutSplit value)? checkoutSplit,
+    TResult? Function(_UpdateNote value)? updateNote,
+  }) {
+    return scanItem?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_AddProduct value)? addProduct,
+    TResult Function(_UpdateQuantity value)? updateQuantity,
+    TResult Function(_RemoveFromCart value)? removeFromCart,
+    TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_ScanItem value)? scanItem,
+    TResult Function(_SelectCustomer value)? selectCustomer,
+    TResult Function(_ApplyDiscount value)? applyDiscount,
+    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
+    TResult Function(_ParkOrder value)? parkOrder,
+    TResult Function(_RetrieveOrder value)? retrieveOrder,
+    TResult Function(_CheckoutSplit value)? checkoutSplit,
+    TResult Function(_UpdateNote value)? updateNote,
+    required TResult orElse(),
+  }) {
+    if (scanItem != null) {
+      return scanItem(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ScanItem implements CartEvent {
+  const factory _ScanItem(final String barcode) = _$ScanItemImpl;
+
+  String get barcode;
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ScanItemImplCopyWith<_$ScanItemImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1047,6 +1287,7 @@ class _$SelectCustomerImpl implements _SelectCustomer {
     required TResult Function(String itemUuid, int quantity) updateQuantity,
     required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function(String barcode) scanItem,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
     required TResult Function(
@@ -1069,6 +1310,7 @@ class _$SelectCustomerImpl implements _SelectCustomer {
     TResult? Function(String itemUuid, int quantity)? updateQuantity,
     TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function(String barcode)? scanItem,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
     TResult? Function(
@@ -1090,6 +1332,7 @@ class _$SelectCustomerImpl implements _SelectCustomer {
     TResult Function(String itemUuid, int quantity)? updateQuantity,
     TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function(String barcode)? scanItem,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
     TResult Function(
@@ -1114,6 +1357,7 @@ class _$SelectCustomerImpl implements _SelectCustomer {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_ScanItem value) scanItem,
     required TResult Function(_SelectCustomer value) selectCustomer,
     required TResult Function(_ApplyDiscount value) applyDiscount,
     required TResult Function(_CheckoutProcessed value) checkoutProcessed,
@@ -1132,6 +1376,7 @@ class _$SelectCustomerImpl implements _SelectCustomer {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_ScanItem value)? scanItem,
     TResult? Function(_SelectCustomer value)? selectCustomer,
     TResult? Function(_ApplyDiscount value)? applyDiscount,
     TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -1150,6 +1395,7 @@ class _$SelectCustomerImpl implements _SelectCustomer {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_ScanItem value)? scanItem,
     TResult Function(_SelectCustomer value)? selectCustomer,
     TResult Function(_ApplyDiscount value)? applyDiscount,
     TResult Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -1260,6 +1506,7 @@ class _$ApplyDiscountImpl implements _ApplyDiscount {
     required TResult Function(String itemUuid, int quantity) updateQuantity,
     required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function(String barcode) scanItem,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
     required TResult Function(
@@ -1282,6 +1529,7 @@ class _$ApplyDiscountImpl implements _ApplyDiscount {
     TResult? Function(String itemUuid, int quantity)? updateQuantity,
     TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function(String barcode)? scanItem,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
     TResult? Function(
@@ -1303,6 +1551,7 @@ class _$ApplyDiscountImpl implements _ApplyDiscount {
     TResult Function(String itemUuid, int quantity)? updateQuantity,
     TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function(String barcode)? scanItem,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
     TResult Function(
@@ -1327,6 +1576,7 @@ class _$ApplyDiscountImpl implements _ApplyDiscount {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_ScanItem value) scanItem,
     required TResult Function(_SelectCustomer value) selectCustomer,
     required TResult Function(_ApplyDiscount value) applyDiscount,
     required TResult Function(_CheckoutProcessed value) checkoutProcessed,
@@ -1345,6 +1595,7 @@ class _$ApplyDiscountImpl implements _ApplyDiscount {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_ScanItem value)? scanItem,
     TResult? Function(_SelectCustomer value)? selectCustomer,
     TResult? Function(_ApplyDiscount value)? applyDiscount,
     TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -1363,6 +1614,7 @@ class _$ApplyDiscountImpl implements _ApplyDiscount {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_ScanItem value)? scanItem,
     TResult Function(_SelectCustomer value)? selectCustomer,
     TResult Function(_ApplyDiscount value)? applyDiscount,
     TResult Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -1489,6 +1741,7 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
     required TResult Function(String itemUuid, int quantity) updateQuantity,
     required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function(String barcode) scanItem,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
     required TResult Function(
@@ -1511,6 +1764,7 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
     TResult? Function(String itemUuid, int quantity)? updateQuantity,
     TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function(String barcode)? scanItem,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
     TResult? Function(
@@ -1532,6 +1786,7 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
     TResult Function(String itemUuid, int quantity)? updateQuantity,
     TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function(String barcode)? scanItem,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
     TResult Function(
@@ -1556,6 +1811,7 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_ScanItem value) scanItem,
     required TResult Function(_SelectCustomer value) selectCustomer,
     required TResult Function(_ApplyDiscount value) applyDiscount,
     required TResult Function(_CheckoutProcessed value) checkoutProcessed,
@@ -1574,6 +1830,7 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_ScanItem value)? scanItem,
     TResult? Function(_SelectCustomer value)? selectCustomer,
     TResult? Function(_ApplyDiscount value)? applyDiscount,
     TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -1592,6 +1849,7 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_ScanItem value)? scanItem,
     TResult Function(_SelectCustomer value)? selectCustomer,
     TResult Function(_ApplyDiscount value)? applyDiscount,
     TResult Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -1699,6 +1957,7 @@ class _$ParkOrderImpl implements _ParkOrder {
     required TResult Function(String itemUuid, int quantity) updateQuantity,
     required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function(String barcode) scanItem,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
     required TResult Function(
@@ -1721,6 +1980,7 @@ class _$ParkOrderImpl implements _ParkOrder {
     TResult? Function(String itemUuid, int quantity)? updateQuantity,
     TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function(String barcode)? scanItem,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
     TResult? Function(
@@ -1742,6 +2002,7 @@ class _$ParkOrderImpl implements _ParkOrder {
     TResult Function(String itemUuid, int quantity)? updateQuantity,
     TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function(String barcode)? scanItem,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
     TResult Function(
@@ -1766,6 +2027,7 @@ class _$ParkOrderImpl implements _ParkOrder {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_ScanItem value) scanItem,
     required TResult Function(_SelectCustomer value) selectCustomer,
     required TResult Function(_ApplyDiscount value) applyDiscount,
     required TResult Function(_CheckoutProcessed value) checkoutProcessed,
@@ -1784,6 +2046,7 @@ class _$ParkOrderImpl implements _ParkOrder {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_ScanItem value)? scanItem,
     TResult? Function(_SelectCustomer value)? selectCustomer,
     TResult? Function(_ApplyDiscount value)? applyDiscount,
     TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -1802,6 +2065,7 @@ class _$ParkOrderImpl implements _ParkOrder {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_ScanItem value)? scanItem,
     TResult Function(_SelectCustomer value)? selectCustomer,
     TResult Function(_ApplyDiscount value)? applyDiscount,
     TResult Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -1913,6 +2177,7 @@ class _$RetrieveOrderImpl implements _RetrieveOrder {
     required TResult Function(String itemUuid, int quantity) updateQuantity,
     required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function(String barcode) scanItem,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
     required TResult Function(
@@ -1935,6 +2200,7 @@ class _$RetrieveOrderImpl implements _RetrieveOrder {
     TResult? Function(String itemUuid, int quantity)? updateQuantity,
     TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function(String barcode)? scanItem,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
     TResult? Function(
@@ -1956,6 +2222,7 @@ class _$RetrieveOrderImpl implements _RetrieveOrder {
     TResult Function(String itemUuid, int quantity)? updateQuantity,
     TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function(String barcode)? scanItem,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
     TResult Function(
@@ -1980,6 +2247,7 @@ class _$RetrieveOrderImpl implements _RetrieveOrder {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_ScanItem value) scanItem,
     required TResult Function(_SelectCustomer value) selectCustomer,
     required TResult Function(_ApplyDiscount value) applyDiscount,
     required TResult Function(_CheckoutProcessed value) checkoutProcessed,
@@ -1998,6 +2266,7 @@ class _$RetrieveOrderImpl implements _RetrieveOrder {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_ScanItem value)? scanItem,
     TResult? Function(_SelectCustomer value)? selectCustomer,
     TResult? Function(_ApplyDiscount value)? applyDiscount,
     TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -2016,6 +2285,7 @@ class _$RetrieveOrderImpl implements _RetrieveOrder {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_ScanItem value)? scanItem,
     TResult Function(_SelectCustomer value)? selectCustomer,
     TResult Function(_ApplyDiscount value)? applyDiscount,
     TResult Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -2136,6 +2406,7 @@ class _$CheckoutSplitImpl implements _CheckoutSplit {
     required TResult Function(String itemUuid, int quantity) updateQuantity,
     required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function(String barcode) scanItem,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
     required TResult Function(
@@ -2158,6 +2429,7 @@ class _$CheckoutSplitImpl implements _CheckoutSplit {
     TResult? Function(String itemUuid, int quantity)? updateQuantity,
     TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function(String barcode)? scanItem,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
     TResult? Function(
@@ -2179,6 +2451,7 @@ class _$CheckoutSplitImpl implements _CheckoutSplit {
     TResult Function(String itemUuid, int quantity)? updateQuantity,
     TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function(String barcode)? scanItem,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
     TResult Function(
@@ -2203,6 +2476,7 @@ class _$CheckoutSplitImpl implements _CheckoutSplit {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_ScanItem value) scanItem,
     required TResult Function(_SelectCustomer value) selectCustomer,
     required TResult Function(_ApplyDiscount value) applyDiscount,
     required TResult Function(_CheckoutProcessed value) checkoutProcessed,
@@ -2221,6 +2495,7 @@ class _$CheckoutSplitImpl implements _CheckoutSplit {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_ScanItem value)? scanItem,
     TResult? Function(_SelectCustomer value)? selectCustomer,
     TResult? Function(_ApplyDiscount value)? applyDiscount,
     TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -2239,6 +2514,7 @@ class _$CheckoutSplitImpl implements _CheckoutSplit {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_ScanItem value)? scanItem,
     TResult Function(_SelectCustomer value)? selectCustomer,
     TResult Function(_ApplyDiscount value)? applyDiscount,
     TResult Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -2352,6 +2628,7 @@ class _$UpdateNoteImpl implements _UpdateNote {
     required TResult Function(String itemUuid, int quantity) updateQuantity,
     required TResult Function(String itemUuid) removeFromCart,
     required TResult Function() clearCart,
+    required TResult Function(String barcode) scanItem,
     required TResult Function(Customer? customer) selectCustomer,
     required TResult Function(double? percent, double? fixed) applyDiscount,
     required TResult Function(
@@ -2374,6 +2651,7 @@ class _$UpdateNoteImpl implements _UpdateNote {
     TResult? Function(String itemUuid, int quantity)? updateQuantity,
     TResult? Function(String itemUuid)? removeFromCart,
     TResult? Function()? clearCart,
+    TResult? Function(String barcode)? scanItem,
     TResult? Function(Customer? customer)? selectCustomer,
     TResult? Function(double? percent, double? fixed)? applyDiscount,
     TResult? Function(
@@ -2395,6 +2673,7 @@ class _$UpdateNoteImpl implements _UpdateNote {
     TResult Function(String itemUuid, int quantity)? updateQuantity,
     TResult Function(String itemUuid)? removeFromCart,
     TResult Function()? clearCart,
+    TResult Function(String barcode)? scanItem,
     TResult Function(Customer? customer)? selectCustomer,
     TResult Function(double? percent, double? fixed)? applyDiscount,
     TResult Function(
@@ -2419,6 +2698,7 @@ class _$UpdateNoteImpl implements _UpdateNote {
     required TResult Function(_UpdateQuantity value) updateQuantity,
     required TResult Function(_RemoveFromCart value) removeFromCart,
     required TResult Function(_ClearCart value) clearCart,
+    required TResult Function(_ScanItem value) scanItem,
     required TResult Function(_SelectCustomer value) selectCustomer,
     required TResult Function(_ApplyDiscount value) applyDiscount,
     required TResult Function(_CheckoutProcessed value) checkoutProcessed,
@@ -2437,6 +2717,7 @@ class _$UpdateNoteImpl implements _UpdateNote {
     TResult? Function(_UpdateQuantity value)? updateQuantity,
     TResult? Function(_RemoveFromCart value)? removeFromCart,
     TResult? Function(_ClearCart value)? clearCart,
+    TResult? Function(_ScanItem value)? scanItem,
     TResult? Function(_SelectCustomer value)? selectCustomer,
     TResult? Function(_ApplyDiscount value)? applyDiscount,
     TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
@@ -2455,6 +2736,7 @@ class _$UpdateNoteImpl implements _UpdateNote {
     TResult Function(_UpdateQuantity value)? updateQuantity,
     TResult Function(_RemoveFromCart value)? removeFromCart,
     TResult Function(_ClearCart value)? clearCart,
+    TResult Function(_ScanItem value)? scanItem,
     TResult Function(_SelectCustomer value)? selectCustomer,
     TResult Function(_ApplyDiscount value)? applyDiscount,
     TResult Function(_CheckoutProcessed value)? checkoutProcessed,

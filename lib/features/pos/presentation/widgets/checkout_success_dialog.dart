@@ -5,14 +5,18 @@ import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart';
 import 'package:savvy_pos/core/hal/printer_interface.dart';
 import 'package:get_it/get_it.dart';
+import 'package:savvy_pos/core/database/database.dart';
+import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
 
 class CheckoutSuccessDialog extends StatefulWidget {
-  final double changeAmount;
+  final OrderTableData? order;
+  final List<CartItem> items;
   final VoidCallback onNewOrder;
 
   const CheckoutSuccessDialog({
     Key? key,
-    required this.changeAmount,
+    this.order,
+    this.items = const [],
     required this.onNewOrder,
   }) : super(key: key);
 
@@ -95,7 +99,7 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> {
               SizedBox(height: theme.shapes.spacingSm),
               
               // 3. Change Display
-              if (widget.changeAmount > 0) ...[
+              if (widget.order != null && widget.order!.changeAmount > 0) ...[
                 SavvyBox(
                    margin: EdgeInsets.symmetric(vertical: theme.shapes.spacingMd),
                    padding: EdgeInsets.all(theme.shapes.spacingMd),
@@ -105,7 +109,7 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> {
                      children: [
                        SavvyText("CHANGE DUE", style: SavvyTextStyle.label, color: theme.colors.stateSuccess),
                        SavvyText(
-                         "\$${widget.changeAmount.toStringAsFixed(2)}", 
+                         "\$${widget.order!.changeAmount.toStringAsFixed(2)}", 
                          style: SavvyTextStyle.h1, 
                          color: theme.colors.stateSuccess
                        ),
@@ -148,7 +152,17 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> {
                      // Actually, Bloc emit success THEN clears. So we might have access to it in the parent?
                      // Let's use a dummy receipt for the visual "Wire Success" demonstration.
                      final printer = GetIt.I<IPrinterService>();
-                     await printer.printText("Savvy POS\nPayment Verified\nCHANGE: \$${widget.changeAmount.toStringAsFixed(2)}\n\n", isBold: true, isLarge: true);
+                     if (widget.order != null) {
+                        final itemsMap = widget.items.map((e) => {
+                          'name': e.product.name,
+                          'qty': e.quantity,
+                          'total': e.total,
+                        }).toList();
+                        
+                        await printer.printReceipt(widget.order!, items: itemsMap);
+                     } else {
+                        await printer.printText("Savvy POS\nPayment Verified\n(Order Data Missing)\n\n", isBold: true, isLarge: true);
+                     }
                    } catch (e) {
                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Print Error: $e')));
                    }

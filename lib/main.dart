@@ -6,6 +6,9 @@ import 'package:savvy_pos/features/auth/domain/repositories/i_tenant_repository.
 import 'package:savvy_pos/features/auth/presentation/pages/onboarding_page.dart';
 import 'package:savvy_pos/features/home/presentation/pages/main_shell_page.dart';
 import 'package:savvy_pos/features/employees/presentation/pages/employee_login_page.dart';
+import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
+import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
+import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:savvy_pos/core/hal/printer_router.dart';
 import 'package:get_it/get_it.dart';
@@ -50,7 +53,14 @@ class App extends StatelessWidget {
           SavvyTheme.dark(),
         ],
       ),
-      home: const _AppLoader(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: GetIt.I<AuthBloc>()),
+          BlocProvider.value(value: GetIt.I<ShiftBloc>()..add(const ShiftEvent.checkStatus())),
+          BlocProvider(create: (_) => GetIt.I<CartBloc>()),
+        ],
+        child: const _AppLoader(),
+      ),
     );
   }
 }

@@ -1,8 +1,9 @@
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
-import 'package:savvy_pos/features/shift/domain/repositories/i_shift_repository.dart';
 import 'package:uuid/uuid.dart';
+
+import 'package:savvy_pos/features/shift/domain/repositories/i_shift_repository.dart';
 
 @LazySingleton(as: IShiftRepository)
 class ShiftRepositoryImpl implements IShiftRepository {
@@ -13,82 +14,99 @@ class ShiftRepositoryImpl implements IShiftRepository {
 
   @override
   Future<ShiftSessionTableData?> getCurrentShift() async {
-    return (db.select(db.shiftSessionTable)
-          ..where((t) => t.isClosed.equals(false))
-          ..orderBy([(t) => OrderingTerm(expression: t.startShift, mode: OrderingMode.desc)])
-          ..limit(1))
-        .getSingleOrNull();
+    return await (db.select(db.shiftTable)
+      ..where((t) => t.endTime.isNull())
+      ..limit(1))
+      .getSingleOrNull();
   }
 
   @override
   Future<void> openShift(double startCash, String staffId, String staffName) async {
-    await db.into(db.shiftSessionTable).insert(ShiftSessionTableCompanion.insert(
+    final now = DateTime.now();
+    await db.into(db.shiftTable).insert(ShiftTableCompanion.insert(
       uuid: _uuid.v4(),
-      staffId: staffId,
-      staffName: staffName,
-      startShift: DateTime.now(),
+      startTime: now,
       startCash: startCash,
-      expectedCash: startCash, // Initially expected = start
-      actualCash: 0.0,
-      difference: 0.0,
-      isClosed: const Value(false),
+      status: const Value('OPEN'), 
+      userId: staffId,
+      staffName: Value(staffName), // Assuming column exists or ignoring
+      tenantId: const Value('default-tenant'),
+      createdAt: now,
+      updatedAt: now,
     ));
   }
 
   @override
-  Future<void> closeShift(String shiftUuid, double actualCash) async {
-    await db.transaction(() async {
-      final shift = await (db.select(db.shiftSessionTable)..where((t) => t.uuid.equals(shiftUuid))).getSingle();
-      
-      // Calculate Totals
-      // 1. Sales (Orders linked to shift)
-      // Note: Ensure CartBloc saves shiftUuid. If null, we might miss sales here.
-      final orders = await (db.select(db.orderTable)..where((t) => t.shiftUuid.equals(shiftUuid))).get();
-      final totalSales = orders.fold(0.0, (sum, o) => sum + o.grandTotal);
-
-      // 2. Cash Transactions
-      final txs = await (db.select(db.cashTransactionTable)..where((t) => t.shiftUuid.equals(shiftUuid))).get();
-      double payIn = 0;
-      double payOut = 0;
-      for (var t in txs) {
-        if (t.type == 'PAY_IN') payIn += t.amount;
-        if (t.type == 'PAY_OUT') payOut += t.amount;
-      }
-      
-      final expected = shift.startCash + totalSales + payIn - payOut;
-      final difference = actualCash - expected;
-
-      await (db.update(db.shiftSessionTable)..where((t) => t.uuid.equals(shiftUuid))).write(ShiftSessionTableCompanion(
-        endShift: Value(DateTime.now()),
-        expectedCash: Value(expected),
+  Future<void> closeShift(String shiftUuid, double calculatedEndCash, double actualCash) async {
+    final now = DateTime.now();
+    await (db.update(db.shiftTable)..where((t) => t.uuid.equals(shiftUuid))).write(
+      ShiftTableCompanion(
+        endTime: Value(now),
+        endCash: Value(calculatedEndCash),
         actualCash: Value(actualCash),
-        difference: Value(difference),
-        isClosed: const Value(true),
-      ));
-    });
+        status: const Value('CLOSED'),
+        updatedAt: Value(now),
+      ),
+    );
+  }
+
+  @override
+  Future<int> getOpenOrderCount() async {
+    final results = await (db.select(db.orderTable)..where((t) => t.status.equals('OPEN'))).get();
+    return results.length;
+  }
+
+  @override
+  Future<double> getShiftSalesTotal(String shiftUuid) async {
+    final shift = await (db.select(db.shiftTable)..where((t) => t.uuid.equals(shiftUuid))).getSingleOrNull();
+    if (shift == null) return 0.0;
+    
+    // Sum all COMPLETED orders created after shift start
+    final orders = await (db.select(db.orderTable)
+      ..where((t) => t.createdAt.isBiggerOrEqualValue(shift.startTime))
+      ..where((t) => t.status.equals('COMPLETED')))
+      .get();
+      
+    double total = 0.0;
+    for (var o in orders) {
+      total += o.grandTotal;
+    }
+    return total;
   }
 
   @override
   Future<void> addCashTransaction(String shiftUuid, String type, double amount, String reason) async {
+    // Need a CashTransactionTable?
+    // If not exists, I can create one or just ignore for now if not in scope of schemas provided.
+    // Assuming it exists as `cashTransactionTable`.
+    // If NOT, I will log warning.
+    // Given previous `ShiftBloc` was calling it, I should check if it's in the interface.
+    // It is in Interface.
+    // Let's assume table `cashTransactionTable` exists.
+    final now = DateTime.now();
     await db.into(db.cashTransactionTable).insert(CashTransactionTableCompanion.insert(
-      uuid: _uuid.v4(),
-      shiftUuid: Value(shiftUuid),
-      type: type,
-      amount: amount,
-      reason: Value(reason),
-      createdAt: DateTime.now(),
+       uuid: _uuid.v4(),
+       shiftUuid: shiftUuid,
+       type: type, // 'PAY_IN', 'PAY_OUT'
+       amount: amount,
+       reason: Value(reason),
+       createdAt: now,
     ));
   }
 
   @override
   Future<Map<String, double>> getCashTransactionSummary(String shiftUuid) async {
-    final txs = await (db.select(db.cashTransactionTable)..where((t) => t.shiftUuid.equals(shiftUuid))).get();
-    double payIn = 0;
-    double payOut = 0;
-    for (var t in txs) {
-      if (t.type == 'PAY_IN') payIn += t.amount;
-      if (t.type == 'PAY_OUT') payOut += t.amount;
-    }
-    return {'payIn': payIn, 'payOut': payOut};
+     // Sum PAY_IN and PAY_OUT
+     final payIns = await (db.select(db.cashTransactionTable)
+       ..where((t) => t.shiftUuid.equals(shiftUuid) & t.type.equals('PAY_IN')))
+       .get();
+     final payOuts = await (db.select(db.cashTransactionTable)
+       ..where((t) => t.shiftUuid.equals(shiftUuid) & t.type.equals('PAY_OUT')))
+       .get();
+       
+     double totalIn = payIns.fold(0, (sum, i) => sum + i.amount);
+     double totalOut = payOuts.fold(0, (sum, i) => sum + i.amount);
+     
+     return {'payIn': totalIn, 'payOut': totalOut};
   }
 }

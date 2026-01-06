@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get_it/get_it.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/core/hal/printer_interface.dart';
-import 'package:savvy_pos/core/hal/printer_router.dart';
-import 'package:gap/gap.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart';
 
 class PrinterSettingsPage extends StatefulWidget {
   const PrinterSettingsPage({super.key});
@@ -12,128 +14,129 @@ class PrinterSettingsPage extends StatefulWidget {
 }
 
 class _PrinterSettingsPageState extends State<PrinterSettingsPage> {
-  final _router = GetIt.I<PrinterRouter>();
+  final IPrinterService _printerService = GetIt.I<IPrinterService>();
   
-  final _kitchenController = TextEditingController();
-  final _barController = TextEditingController();
-  final _cashierController = TextEditingController();
-  
-  bool _isLoading = false;
-  List<PrinterDevice> _scannedDevices = [];
+  List<PrinterDevice> _devices = [];
+  bool _isScanning = false;
+  String _status = "Disconnected";
 
   @override
   void initState() {
     super.initState();
-    _loadSettings();
-  }
-  
-  Future<void> _loadSettings() async {
-    await _router.loadSettings();
-    setState(() {
-      _kitchenController.text = _router.kitchenPrinterMac ?? '';
-      _barController.text = _router.barPrinterMac ?? '';
-      _cashierController.text = _router.cashierPrinterMac ?? '';
+    _scan();
+    _printerService.status.listen((s) {
+       if (mounted) setState(() => _status = s);
     });
   }
 
   Future<void> _scan() async {
-    setState(() => _isLoading = true);
-    try {
-      final devices = await _router.scanDevices();
-      setState(() => _scannedDevices = devices);
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Scan failed: $e')));
-    } finally {
-      setState(() => _isLoading = false);
+    setState(() => _isScanning = true);
+    
+    // Request Permissions first
+    await [
+      Permission.bluetoothScan,
+      Permission.bluetoothConnect,
+      Permission.location, // Sometimes needed for easier BLE discovery
+    ].request();
+
+    final devices = await _printerService.scan();
+    if (mounted) {
+      setState(() {
+        _devices = devices;
+        _isScanning = false;
+      });
     }
   }
 
-  Future<void> _save() async {
-    await _router.saveSettings(
-      kitchen: _kitchenController.text,
-      bar: _barController.text,
-      cashier: _cashierController.text,
-    );
-    if(mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Settings Saved')));
+  Future<void> _connect(PrinterDevice device) async {
+    try {
+       await _printerService.connect(device.address);
+       // Persist preference logic here (SharedPreferences)
+    } catch (e) {
+       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Connect Error: $e')));
+    }
   }
-
-  void _assignMac(String mac, String type) {
-    if (type == 'KITCHEN') _kitchenController.text = mac;
-    if (type == 'BAR') _barController.text = mac;
-    if (type == 'CASHIER') _cashierController.text = mac;
-    setState(() {});
+  
+  Future<void> _testPrint() async {
+    try {
+       await _printerService.printText("Hello Savvy POS!\nTest Print Successful.\n\n\n", isBold: true);
+    } catch (e) {
+       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Print Error: $e')));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.savvy;
+    
     return Scaffold(
-      appBar: AppBar(title: const Text('Printer Configuration')),
+      backgroundColor: theme.colors.bgPrimary,
+      appBar: AppBar(title: SavvyText("Hardware Settings", style: SavvyTextStyle.h3)),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(theme.shapes.spacingMd),
         child: Column(
           children: [
-            _buildInput('Cashier Printer (Receipts)', _cashierController),
-            const Gap(12),
-            _buildInput('Kitchen Printer (Food)', _kitchenController),
-            const Gap(12),
-            _buildInput('Bar Printer (Drinks)', _barController),
-            const Gap(24),
-            ElevatedButton.icon(
-              onPressed: _save, 
-              icon: const Icon(Icons.save), 
-              label: const Text('Save Settings')
+            // Status Card
+            SavvyBox(
+              width: double.infinity,
+              color: theme.colors.bgElevated,
+              padding: EdgeInsets.all(theme.shapes.spacingMd),
+              child: Row(
+                children: [
+                  Icon(Icons.print, color: _status == "Connected" ? theme.colors.stateSuccess : theme.colors.textMuted),
+                  SizedBox(width: theme.shapes.spacingMd),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SavvyText("Printer Status", style: SavvyTextStyle.label),
+                      SavvyText(_status, style: SavvyTextStyle.h3),
+                    ],
+                  ),
+                  const Spacer(),
+                  if (_status == "Connected")
+                    ElevatedButton(onPressed: _testPrint, child: const Text("Test Print"))
+                ],
+              ),
             ),
-            const Divider(height: 48),
+            
+            SizedBox(height: theme.shapes.spacingLg),
+            
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Available Devices', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                if (_isLoading) const CircularProgressIndicator()
-                else TextButton.icon(
-                  onPressed: _scan, 
-                  icon: const Icon(Icons.refresh), 
-                  label: const Text('Scan')
-                ),
+                SavvyText("Discovered Devices", style: SavvyTextStyle.h3),
+                if (_isScanning)
+                  const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                else
+                  IconButton(icon: const Icon(Icons.refresh), onPressed: _scan),
               ],
             ),
+            
             Expanded(
-              child: ListView.builder(
-                itemCount: _scannedDevices.length,
-                itemBuilder: (context, index) {
-                  final device = _scannedDevices[index];
-                  return Card(
-                    child: ListTile(
-                      title: Text(device.name),
-                      subtitle: Text(device.address),
-                      trailing: PopupMenuButton<String>(
-                        onSelected: (type) => _assignMac(device.address, type),
-                        itemBuilder: (context) => [
-                          const PopupMenuItem(value: 'CASHIER', child: Text('Assign to Cashier')),
-                          const PopupMenuItem(value: 'KITCHEN', child: Text('Assign to Kitchen')),
-                          const PopupMenuItem(value: 'BAR', child: Text('Assign to Bar')),
-                        ],
-                        icon: const Icon(Icons.link),
-                      ),
+              child: _devices.isEmpty 
+                  ? Center(child: SavvyText("No devices found", color: theme.colors.textMuted))
+                  : ListView.builder(
+                      itemCount: _devices.length,
+                      itemBuilder: (context, index) {
+                        final device = _devices[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: SavvyBox(
+                             color: theme.colors.bgSecondary,
+                             child: ListTile(
+                               title: Text(device.name),
+                               subtitle: Text(device.address),
+                               trailing: ElevatedButton(
+                                 onPressed: () => _connect(device),
+                                 child: const Text("Connect"),
+                               ),
+                             ),
+                          ).animate().fadeIn(delay: (50 * index).ms).slideX(),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInput(String label, TextEditingController controller) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: label,
-        border: const OutlineInputBorder(),
-        suffixIcon: IconButton(
-          icon: const Icon(Icons.clear),
-          onPressed: () => controller.clear(),
         ),
       ),
     );

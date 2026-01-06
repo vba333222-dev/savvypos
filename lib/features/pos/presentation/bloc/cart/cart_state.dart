@@ -38,6 +38,7 @@ class CartState with _$CartState {
     String? activeOrderUuid, // Only if retrieving an OPEN order
     
     String? lastOrderNumber,
+    OrderTableData? lastCompletedOrder,
 
     @Default(false) bool isLoading,
     @Default(false) bool isSuccess,

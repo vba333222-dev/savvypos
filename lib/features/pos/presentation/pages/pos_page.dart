@@ -85,6 +85,25 @@ class _PosPageContent extends StatelessWidget {
                 Navigator.push(context, MaterialPageRoute(builder: (_) => const KitchenMonitorPage()));
               },
             ),
+            const Divider(),
+            ListTile(
+              leading: Icon(Icons.logout, color: colors.stateError),
+              title: const Text('Close Shift'),
+              onTap: () {
+                Navigator.pop(context);
+                final state = context.read<ShiftBloc>().state;
+                state.mapOrNull(
+                  open: (openState) { // Freezed generates wrapper class or access callback?
+                    // MapOrNull passes the state object _Open.
+                    // Access fields: openState.shift
+                    showDialog(
+                      context: context, 
+                      builder: (_) => CloseShiftDialog(currentShift: openState.shift)
+                    );
+                  }
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -97,7 +116,7 @@ class _PosPageContent extends StatelessWidget {
         },
         builder: (context, state) {
           return state.maybeWhen(
-            open: (shift) => LayoutBuilder(
+            open: (shift, _, __) => LayoutBuilder(
               builder: (context, constraints) {
                 // Requirement: Tablet/Desktop > 900px
                 final isLargeScreen = constraints.maxWidth > 900;

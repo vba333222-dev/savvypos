@@ -21,7 +21,7 @@ class AuthState with _$AuthState {
   }) = _AuthState;
 }
 
-@injectable
+@lazySingleton
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AppDatabase db;
 

@@ -17,7 +17,7 @@ abstract class IPrinterService {
   Future<List<PrinterDevice>> scan();
 
   /// Prints a receipt for the given order
-  Future<void> printReceipt(OrderTableData order);
+  Future<void> printReceipt(OrderTableData order, {List<Map<String, dynamic>>? items});
 
   /// Prints raw text (with optional simple formatting)
   Future<void> printText(String text, {bool isBold = false, bool isLarge = false});

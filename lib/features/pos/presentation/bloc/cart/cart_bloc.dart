@@ -267,7 +267,31 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       });
 
       // 4. Success & Cleanup
-      emit(state.copyWith(isLoading: false, isSuccess: true, lastOrderNumber: orderNumber));
+      final completedOrder = OrderTableData(
+        uuid: orderUuid,
+        orderNumber: orderNumber,
+        tenantId: 'default-tenant', 
+        status: 'COMPLETED',
+        paymentStatus: 'PAID',
+        subTotal: state.subtotal,
+        taxTotal: state.tax,
+        discountTotal: state.discount,
+        grandTotal: state.total,
+        customerUuid: state.customer?.uuid,
+        paymentMethod: event.paymentMethod,
+        tenderedAmount: event.tenderedAmount,
+        changeAmount: event.changeAmount,
+        createdAt: now,
+        updatedAt: now,
+        isSynced: false,
+      );
+
+      emit(state.copyWith(
+        isLoading: false, 
+        isSuccess: true, 
+        lastOrderNumber: orderNumber,
+        lastCompletedOrder: completedOrder
+      ));
       
       // Trigger Background Sync Immediately
       _syncWorker.sync();

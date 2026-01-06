@@ -161,7 +161,8 @@ class ProductGridView extends StatelessWidget {
             ),
         ],
       ),
-      // FAB for Mobile Seeding (Debug)
+    ),
+    // FAB for Mobile Seeding (Debug)
       floatingActionButton: FloatingActionButton(
         backgroundColor: theme.colors.brandPrimary,
         child: const Icon(Icons.add),

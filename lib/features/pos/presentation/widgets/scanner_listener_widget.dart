@@ -46,7 +46,9 @@ class _ScannerListenerWidgetState extends State<ScannerListenerWidget> {
 
       if (event.logicalKey == LogicalKeyboardKey.enter) {
         if (_buffer.isNotEmpty) {
-          widget.onScanned(_buffer.toString());
+          final code = _buffer.toString();
+          widget.onScanned(code);
+          _showScanFeedback(code);
           _buffer.clear();
         }
       } else {
@@ -56,6 +58,48 @@ class _ScannerListenerWidgetState extends State<ScannerListenerWidget> {
         }
       }
     }
+  }
+
+  void _showScanFeedback(String code) {
+    if (!mounted) return;
+    
+    // Quick Overlay
+    final overlay = Overlay.of(context);
+    late OverlayEntry entry;
+    
+    entry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: 80,
+        left: 0,
+        right: 0,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Center(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              decoration: BoxDecoration(
+                color: Colors.black87,
+                borderRadius: BorderRadius.circular(30),
+                boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0, 4))],
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                   const Icon(Icons.qr_code_scanner, color: Colors.white, size: 20),
+                   const SizedBox(width: 12),
+                   Text(code, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    overlay.insert(entry);
+    Future.delayed(const Duration(seconds: 2), () {
+       if (entry.mounted) entry.remove();
+    });
   }
 
   @override

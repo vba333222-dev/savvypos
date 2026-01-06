@@ -29,7 +29,8 @@ class CurrentOrderView extends StatelessWidget {
             context: context,
             barrierDismissible: false,
             builder: (_) => CheckoutSuccessDialog(
-              changeAmount: 0.0, // Should be calculated if cash
+              order: state.lastCompletedOrder,
+              items: state.items,
               onNewOrder: () {
                 Navigator.pop(context); // Close Dialog
                 // context.read<CartBloc>().add(const CartEvent.clearCart()); // Already cleared in Bloc

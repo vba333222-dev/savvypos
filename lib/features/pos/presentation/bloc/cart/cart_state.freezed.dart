@@ -275,6 +275,7 @@ mixin _$CartState {
   String? get activeOrderUuid =>
       throw _privateConstructorUsedError; // Only if retrieving an OPEN order
   String? get lastOrderNumber => throw _privateConstructorUsedError;
+  OrderTableData? get lastCompletedOrder => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isSuccess => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
@@ -303,6 +304,7 @@ abstract class $CartStateCopyWith<$Res> {
       String? activeTableUuid,
       String? activeOrderUuid,
       String? lastOrderNumber,
+      OrderTableData? lastCompletedOrder,
       bool isLoading,
       bool isSuccess,
       String? error});
@@ -336,6 +338,7 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
     Object? activeTableUuid = freezed,
     Object? activeOrderUuid = freezed,
     Object? lastOrderNumber = freezed,
+    Object? lastCompletedOrder = freezed,
     Object? isLoading = null,
     Object? isSuccess = null,
     Object? error = freezed,
@@ -385,6 +388,10 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
           ? _value.lastOrderNumber
           : lastOrderNumber // ignore: cast_nullable_to_non_nullable
               as String?,
+      lastCompletedOrder: freezed == lastCompletedOrder
+          ? _value.lastCompletedOrder
+          : lastCompletedOrder // ignore: cast_nullable_to_non_nullable
+              as OrderTableData?,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -435,6 +442,7 @@ abstract class _$$CartStateImplCopyWith<$Res>
       String? activeTableUuid,
       String? activeOrderUuid,
       String? lastOrderNumber,
+      OrderTableData? lastCompletedOrder,
       bool isLoading,
       bool isSuccess,
       String? error});
@@ -467,6 +475,7 @@ class __$$CartStateImplCopyWithImpl<$Res>
     Object? activeTableUuid = freezed,
     Object? activeOrderUuid = freezed,
     Object? lastOrderNumber = freezed,
+    Object? lastCompletedOrder = freezed,
     Object? isLoading = null,
     Object? isSuccess = null,
     Object? error = freezed,
@@ -516,6 +525,10 @@ class __$$CartStateImplCopyWithImpl<$Res>
           ? _value.lastOrderNumber
           : lastOrderNumber // ignore: cast_nullable_to_non_nullable
               as String?,
+      lastCompletedOrder: freezed == lastCompletedOrder
+          ? _value.lastCompletedOrder
+          : lastCompletedOrder // ignore: cast_nullable_to_non_nullable
+              as OrderTableData?,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -547,6 +560,7 @@ class _$CartStateImpl implements _CartState {
       this.activeTableUuid,
       this.activeOrderUuid,
       this.lastOrderNumber,
+      this.lastCompletedOrder,
       this.isLoading = false,
       this.isSuccess = false,
       this.error})
@@ -591,6 +605,8 @@ class _$CartStateImpl implements _CartState {
   @override
   final String? lastOrderNumber;
   @override
+  final OrderTableData? lastCompletedOrder;
+  @override
   @JsonKey()
   final bool isLoading;
   @override
@@ -601,7 +617,7 @@ class _$CartStateImpl implements _CartState {
 
   @override
   String toString() {
-    return 'CartState(items: $items, subtotal: $subtotal, tax: $tax, discount: $discount, total: $total, customer: $customer, discountPercent: $discountPercent, discountFixed: $discountFixed, activeTableUuid: $activeTableUuid, activeOrderUuid: $activeOrderUuid, lastOrderNumber: $lastOrderNumber, isLoading: $isLoading, isSuccess: $isSuccess, error: $error)';
+    return 'CartState(items: $items, subtotal: $subtotal, tax: $tax, discount: $discount, total: $total, customer: $customer, discountPercent: $discountPercent, discountFixed: $discountFixed, activeTableUuid: $activeTableUuid, activeOrderUuid: $activeOrderUuid, lastOrderNumber: $lastOrderNumber, lastCompletedOrder: $lastCompletedOrder, isLoading: $isLoading, isSuccess: $isSuccess, error: $error)';
   }
 
   @override
@@ -628,6 +644,8 @@ class _$CartStateImpl implements _CartState {
                 other.activeOrderUuid == activeOrderUuid) &&
             (identical(other.lastOrderNumber, lastOrderNumber) ||
                 other.lastOrderNumber == lastOrderNumber) &&
+            const DeepCollectionEquality()
+                .equals(other.lastCompletedOrder, lastCompletedOrder) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.isSuccess, isSuccess) ||
@@ -649,6 +667,7 @@ class _$CartStateImpl implements _CartState {
       activeTableUuid,
       activeOrderUuid,
       lastOrderNumber,
+      const DeepCollectionEquality().hash(lastCompletedOrder),
       isLoading,
       isSuccess,
       error);
@@ -675,6 +694,7 @@ abstract class _CartState implements CartState {
       final String? activeTableUuid,
       final String? activeOrderUuid,
       final String? lastOrderNumber,
+      final OrderTableData? lastCompletedOrder,
       final bool isLoading,
       final bool isSuccess,
       final String? error}) = _$CartStateImpl;
@@ -701,6 +721,8 @@ abstract class _CartState implements CartState {
   String? get activeOrderUuid; // Only if retrieving an OPEN order
   @override
   String? get lastOrderNumber;
+  @override
+  OrderTableData? get lastCompletedOrder;
   @override
   bool get isLoading;
   @override

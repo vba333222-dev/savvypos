@@ -19,7 +19,8 @@ mixin _$ShiftEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() checkStatus,
-    required TResult Function(double startCash) openShift,
+    required TResult Function(double startCash, String userId, String userName)
+        openShift,
     required TResult Function(double actualCash) closeShift,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
@@ -28,7 +29,8 @@ mixin _$ShiftEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? checkStatus,
-    TResult? Function(double startCash)? openShift,
+    TResult? Function(double startCash, String userId, String userName)?
+        openShift,
     TResult? Function(double actualCash)? closeShift,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
@@ -37,7 +39,8 @@ mixin _$ShiftEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? checkStatus,
-    TResult Function(double startCash)? openShift,
+    TResult Function(double startCash, String userId, String userName)?
+        openShift,
     TResult Function(double actualCash)? closeShift,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
@@ -137,7 +140,8 @@ class _$CheckStatusImpl implements _CheckStatus {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() checkStatus,
-    required TResult Function(double startCash) openShift,
+    required TResult Function(double startCash, String userId, String userName)
+        openShift,
     required TResult Function(double actualCash) closeShift,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
@@ -149,7 +153,8 @@ class _$CheckStatusImpl implements _CheckStatus {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? checkStatus,
-    TResult? Function(double startCash)? openShift,
+    TResult? Function(double startCash, String userId, String userName)?
+        openShift,
     TResult? Function(double actualCash)? closeShift,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
@@ -161,7 +166,8 @@ class _$CheckStatusImpl implements _CheckStatus {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? checkStatus,
-    TResult Function(double startCash)? openShift,
+    TResult Function(double startCash, String userId, String userName)?
+        openShift,
     TResult Function(double actualCash)? closeShift,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
@@ -224,7 +230,7 @@ abstract class _$$OpenShiftImplCopyWith<$Res> {
           _$OpenShiftImpl value, $Res Function(_$OpenShiftImpl) then) =
       __$$OpenShiftImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({double startCash});
+  $Res call({double startCash, String userId, String userName});
 }
 
 /// @nodoc
@@ -241,12 +247,22 @@ class __$$OpenShiftImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? startCash = null,
+    Object? userId = null,
+    Object? userName = null,
   }) {
     return _then(_$OpenShiftImpl(
       null == startCash
           ? _value.startCash
           : startCash // ignore: cast_nullable_to_non_nullable
               as double,
+      null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -254,14 +270,18 @@ class __$$OpenShiftImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$OpenShiftImpl implements _OpenShift {
-  const _$OpenShiftImpl(this.startCash);
+  const _$OpenShiftImpl(this.startCash, this.userId, this.userName);
 
   @override
   final double startCash;
+  @override
+  final String userId;
+  @override
+  final String userName;
 
   @override
   String toString() {
-    return 'ShiftEvent.openShift(startCash: $startCash)';
+    return 'ShiftEvent.openShift(startCash: $startCash, userId: $userId, userName: $userName)';
   }
 
   @override
@@ -270,11 +290,14 @@ class _$OpenShiftImpl implements _OpenShift {
         (other.runtimeType == runtimeType &&
             other is _$OpenShiftImpl &&
             (identical(other.startCash, startCash) ||
-                other.startCash == startCash));
+                other.startCash == startCash) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, startCash);
+  int get hashCode => Object.hash(runtimeType, startCash, userId, userName);
 
   /// Create a copy of ShiftEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -288,38 +311,41 @@ class _$OpenShiftImpl implements _OpenShift {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() checkStatus,
-    required TResult Function(double startCash) openShift,
+    required TResult Function(double startCash, String userId, String userName)
+        openShift,
     required TResult Function(double actualCash) closeShift,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
   }) {
-    return openShift(startCash);
+    return openShift(startCash, userId, userName);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? checkStatus,
-    TResult? Function(double startCash)? openShift,
+    TResult? Function(double startCash, String userId, String userName)?
+        openShift,
     TResult? Function(double actualCash)? closeShift,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
   }) {
-    return openShift?.call(startCash);
+    return openShift?.call(startCash, userId, userName);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? checkStatus,
-    TResult Function(double startCash)? openShift,
+    TResult Function(double startCash, String userId, String userName)?
+        openShift,
     TResult Function(double actualCash)? closeShift,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
     required TResult orElse(),
   }) {
     if (openShift != null) {
-      return openShift(startCash);
+      return openShift(startCash, userId, userName);
     }
     return orElse();
   }
@@ -366,9 +392,13 @@ class _$OpenShiftImpl implements _OpenShift {
 }
 
 abstract class _OpenShift implements ShiftEvent {
-  const factory _OpenShift(final double startCash) = _$OpenShiftImpl;
+  const factory _OpenShift(
+          final double startCash, final String userId, final String userName) =
+      _$OpenShiftImpl;
 
   double get startCash;
+  String get userId;
+  String get userName;
 
   /// Create a copy of ShiftEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -447,7 +477,8 @@ class _$CloseShiftImpl implements _CloseShift {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() checkStatus,
-    required TResult Function(double startCash) openShift,
+    required TResult Function(double startCash, String userId, String userName)
+        openShift,
     required TResult Function(double actualCash) closeShift,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
@@ -459,7 +490,8 @@ class _$CloseShiftImpl implements _CloseShift {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? checkStatus,
-    TResult? Function(double startCash)? openShift,
+    TResult? Function(double startCash, String userId, String userName)?
+        openShift,
     TResult? Function(double actualCash)? closeShift,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
@@ -471,7 +503,8 @@ class _$CloseShiftImpl implements _CloseShift {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? checkStatus,
-    TResult Function(double startCash)? openShift,
+    TResult Function(double startCash, String userId, String userName)?
+        openShift,
     TResult Function(double actualCash)? closeShift,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
@@ -613,7 +646,8 @@ class _$PayInImpl implements _PayIn {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() checkStatus,
-    required TResult Function(double startCash) openShift,
+    required TResult Function(double startCash, String userId, String userName)
+        openShift,
     required TResult Function(double actualCash) closeShift,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
@@ -625,7 +659,8 @@ class _$PayInImpl implements _PayIn {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? checkStatus,
-    TResult? Function(double startCash)? openShift,
+    TResult? Function(double startCash, String userId, String userName)?
+        openShift,
     TResult? Function(double actualCash)? closeShift,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
@@ -637,7 +672,8 @@ class _$PayInImpl implements _PayIn {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? checkStatus,
-    TResult Function(double startCash)? openShift,
+    TResult Function(double startCash, String userId, String userName)?
+        openShift,
     TResult Function(double actualCash)? closeShift,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
@@ -780,7 +816,8 @@ class _$PayOutImpl implements _PayOut {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() checkStatus,
-    required TResult Function(double startCash) openShift,
+    required TResult Function(double startCash, String userId, String userName)
+        openShift,
     required TResult Function(double actualCash) closeShift,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
@@ -792,7 +829,8 @@ class _$PayOutImpl implements _PayOut {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? checkStatus,
-    TResult? Function(double startCash)? openShift,
+    TResult? Function(double startCash, String userId, String userName)?
+        openShift,
     TResult? Function(double actualCash)? closeShift,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
@@ -804,7 +842,8 @@ class _$PayOutImpl implements _PayOut {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? checkStatus,
-    TResult Function(double startCash)? openShift,
+    TResult Function(double startCash, String userId, String userName)?
+        openShift,
     TResult Function(double actualCash)? closeShift,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,

@@ -6,6 +6,8 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
 import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/core/hal/printer_interface.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:savvy_pos/core/utils/receipt_generator.dart';
 
 @LazySingleton(as: IPrinterService)
 class PrinterService implements IPrinterService {
@@ -13,8 +15,32 @@ class PrinterService implements IPrinterService {
   
   final _statusController = StreamController<String>.broadcast();
 
+  static const String _prefKeyPrinterAddress = 'savvy_printer_address';
+  
   @override
   Stream<String> get status => _statusController.stream;
+
+  PrinterService() {
+    init();
+  }
+
+  void init() {
+    autoConnect();
+  }
+
+  Future<void> autoConnect() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final savedAddress = prefs.getString(_prefKeyPrinterAddress);
+      
+      if (savedAddress != null && savedAddress.isNotEmpty) {
+        _logger.i('Found saved printer: $savedAddress. Auto-connecting...');
+        connect(savedAddress); // Fire and forget connection
+      }
+    } catch (e) {
+      _logger.w('Error auto-connecting printer', error: e);
+    }
+  }
 
   @override
   Future<void> connect(String address) async {
@@ -31,6 +57,7 @@ class PrinterService implements IPrinterService {
         if (isConnected) {
           _statusController.add('Connected');
           _logger.i('Printer connected: $address');
+          _savePrinterAddress(address); // Persist success
         } else {
           _statusController.add('Disconnected');
           _logger.w('Failed to connect to printer: $address');
@@ -44,6 +71,15 @@ class PrinterService implements IPrinterService {
       _logger.e('Error connecting to printer', error: e);
       _statusController.add('Error: $e');
       rethrow;
+    }
+  }
+
+  Future<void> _savePrinterAddress(String address) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_prefKeyPrinterAddress, address);
+    } catch (e) {
+      _logger.e('Failed to save printer address', error: e);
     }
   }
 
@@ -123,63 +159,39 @@ class PrinterService implements IPrinterService {
   }
 
   @override
-  Future<void> printReceipt(OrderTableData order) async {
+  Future<void> printReceipt(OrderTableData order, {List<Map<String, dynamic>>? items}) async {
     try {
       final bool? isConnected = await PrintBluetoothThermal.connectionStatus;
       if (isConnected != true) {
-        throw Exception('Printer not connected');
+        // Try auto-reconnect if we have an address?
+         final prefs = await SharedPreferences.getInstance();
+         final saved = prefs.getString(_prefKeyPrinterAddress);
+         if (saved != null) {
+            await connect(saved);
+         } else {
+            throw Exception('Printer not connected');
+         }
       }
 
-      // Generate ESC/POS bytes
-      final profile = await CapabilityProfile.load();
-      final generator = Generator(PaperSize.mm58, profile);
-      List<int> bytes = [];
-
-      // Header
-      bytes += generator.text(
-        'Savvy POS',
-        styles: const PosStyles(
-          align: PosAlign.center,
-          height: PosTextSize.size2,
-          width: PosTextSize.size2,
-          bold: true,
-        ),
-      );
-      bytes += generator.text('Enterprise Solution', styles: const PosStyles(align: PosAlign.center));
-      bytes += generator.text('--------------------------------');
-
-      // Order Info
-      bytes += generator.text('Order #: ${order.orderNumber}');
-      bytes += generator.text('Date: ${order.createdAt}');
-      bytes += generator.text('--------------------------------');
-
-      // Totals
-      bytes += generator.row([
-        PosColumn(text: 'Subtotal:', width: 8, styles: const PosStyles(align: PosAlign.left)),
-        PosColumn(text: order.subTotal.toStringAsFixed(2), width: 4, styles: const PosStyles(align: PosAlign.right)),
-      ]);
-      bytes += generator.row([
-        PosColumn(text: 'Tax:', width: 8, styles: const PosStyles(align: PosAlign.left)),
-        PosColumn(text: order.taxTotal.toStringAsFixed(2), width: 4, styles: const PosStyles(align: PosAlign.right)),
-      ]);
-      bytes += generator.text('--------------------------------');
-      bytes += generator.text(
-        'TOTAL: \$${order.grandTotal.toStringAsFixed(2)}',
-        styles: const PosStyles(
-          align: PosAlign.center,
-          height: PosTextSize.size2,
-          bold: true,
-        ),
+      // Convert OrderTableData to ReceiptGenerator format
+      // Note: We need items. If not passed, we can't print a full receipt.
+      // For now, we handle the case where items might be missing by showing a placeholder.
+      
+      final receiptBytes = await ReceiptGenerator.generateReceipt(
+        storeName: 'Savvy POS', // TODO: Get from config
+        orderNumber: '#${order.orderNumber}',
+        date: order.createdAt,
+        items: items ?? [], // Expecting list of maps {name, qty, total}
+        subtotal: order.subTotal,
+        discount: order.discountTotal,
+        tax: order.taxTotal,
+        total: order.grandTotal,
+        paymentMethod: order.paymentMethod,
+        change: order.changeAmount,
+        tendered: order.tenderAmount,
       );
 
-      // Footer
-      bytes += generator.feed(2);
-      bytes += generator.text('Thank you for shopping!', styles: const PosStyles(align: PosAlign.center));
-      bytes += generator.feed(1);
-      bytes += generator.cut();
-
-      // Print
-      await PrintBluetoothThermal.writeBytes(bytes);
+      await PrintBluetoothThermal.writeBytes(receiptBytes);
       
       _logger.i('Receipt printed for order: ${order.uuid}');
     } catch (e) {

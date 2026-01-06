@@ -1,347 +1,359 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:savvy_pos/core/config/theme_config.dart';
-import 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart'; // Barrel file
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 
 class PaymentMethodsDialog extends StatefulWidget {
   final double totalAmount;
-  final CartBloc cartBloc;
 
-  const PaymentMethodsDialog({
-    Key? key,
-    required this.totalAmount,
-    required this.cartBloc,
-  }) : super(key: key);
+  const PaymentMethodsDialog({super.key, required this.totalAmount});
 
   @override
   State<PaymentMethodsDialog> createState() => _PaymentMethodsDialogState();
 }
 
 class _PaymentMethodsDialogState extends State<PaymentMethodsDialog> {
-  // Payment Logic
-  String _selectedMethod = 'CASH'; // CASH, QRIS, CARD
-  String _cashInput = ''; 
-  
-  double get _enteredAmount => double.tryParse(_cashInput) ?? 0.0;
-  double get _change => (_enteredAmount - widget.totalAmount).clamp(0.0, double.infinity);
-  bool get _canPay => _selectedMethod != 'CASH' || _enteredAmount >= widget.totalAmount;
+  String _input = '0';
+  String _selectedMethod = 'CASH'; // CASH, CARD, QRIS
 
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    final currency = NumberFormat.currency(locale: 'en_US', symbol: '\$');
+    final size = MediaQuery.of(context).size;
+    
+    // Parse input
+    double tenderAmount = double.tryParse(_input) ?? 0.0;
+    if (_input.isEmpty) tenderAmount = 0.0;
+    
+    double change = tenderAmount - widget.totalAmount;
+    if (change < 0) change = 0;
 
     return Dialog(
-      backgroundColor: Colors.transparent, // Use SavvyBox for background
-      child: SavvyBox(
-        width: 800,
-        height: 600,
-        color: theme.colors.bgPrimary,
-        padding: EdgeInsets.zero,
+      backgroundColor: theme.colors.bgElevated,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(theme.shapes.radiusLg)),
+      child: Container(
+        width: size.width > 900 ? 800 : size.width * 0.9,
+        height: size.height > 600 ? 600 : size.height * 0.9,
         child: Row(
           children: [
-            // LEFT: Methods & Numpad
+            // LEFT PANEL: Payment Methods & Summary
             Expanded(
-              flex: 3,
-              child: Column(
-                children: [
-                  // Payment Methods Grid
-                  // Payment Methods Grid
-                  FutureBuilder<List<ConnectivityResult>>(
-                    future: Connectivity().checkConnectivity(),
-                    builder: (context, snapshot) {
-                      final isOffline = snapshot.hasData && (snapshot.data!.contains(ConnectivityResult.none) || snapshot.data!.isEmpty); 
-                      // Note: A real implementation should listen to stream, but FutureBuilder on dialog open is decent for MVP.
-                      // Actually, let's just check once or use stream if we want dynamic update.
-                      
-                      return Padding(
-                        padding: EdgeInsets.all(theme.shapes.spacingMd),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            _PaymentMethodCard(
-                              label: 'CASH',
-                              icon: Icons.money,
-                              isSelected: _selectedMethod == 'CASH',
-                              onTap: () => setState(() => _selectedMethod = 'CASH'),
-                            ),
-                            SizedBox(width: theme.shapes.spacingSm),
-                            _PaymentMethodCard(
-                              label: 'QRIS',
-                              icon: Icons.qr_code,
-                              isSelected: _selectedMethod == 'QRIS',
-                              isDisabled: isOffline,
-                              onTap: isOffline ? () {} : () => setState(() => _selectedMethod = 'QRIS'),
-                            ),
-                            SizedBox(width: theme.shapes.spacingSm),
-                            _PaymentMethodCard(
-                              label: 'CARD',
-                              icon: Icons.credit_card,
-                              isSelected: _selectedMethod == 'CARD',
-                              isDisabled: isOffline,
-                              onTap: isOffline ? () {} : () => setState(() => _selectedMethod = 'CARD'),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                  ),
-                  
-                  Divider(color: theme.colors.borderDefault),
-                  
-                  // Content Area
-                  Expanded(
-                    child: _selectedMethod == 'CASH' 
-                      ? _buildCashNumpad(theme)
-                      : _buildTerminalWait(theme),
-                  ),
-                ],
-              ),
-            ),
-            
-            // RIGHT: Summary
-            Container(
-              width: 300,
-              decoration: BoxDecoration(
-                color: theme.colors.bgSecondary,
-                border: Border(left: BorderSide(color: theme.colors.borderDefault)),
-                borderRadius: BorderRadius.horizontal(right: Radius.circular(theme.shapes.radiusMd)),
-              ),
-              padding: EdgeInsets.all(theme.shapes.spacingLg),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SavvyText("Total Due", style: SavvyTextStyle.bodyLarge, color: theme.colors.textSecondary),
-                      IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.close, color: theme.colors.textSecondary)),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  SavvyText(
-                    currency.format(widget.totalAmount),
-                    style: SavvyTextStyle.h1,
-                    color: theme.colors.brandPrimary,
-                  ),
-                  
-                  const Spacer(),
-                  
-                  if (_selectedMethod == 'CASH') ...[
-                    SavvyBox(
-                      color: theme.colors.bgElevated,
-                      child: Column(
+              flex: 4,
+              child: Container(
+                padding: EdgeInsets.all(theme.shapes.spacingLg),
+                decoration: BoxDecoration(
+                  border: Border(right: BorderSide(color: theme.colors.borderDefault)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SavvyText('Payment Method', style: SavvyTextStyle.h3, color: theme.colors.textPrimary),
+                    SizedBox(height: theme.shapes.spacingMd),
+                    
+                    // Methods Grid
+                    Expanded(
+                      child: GridView.count(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: theme.shapes.spacingSm,
+                        mainAxisSpacing: theme.shapes.spacingSm,
+                        childAspectRatio: 1.5,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SavvyText("Tendered", style: SavvyTextStyle.bodyMedium),
-                              SavvyText(currency.format(_enteredAmount), style: SavvyTextStyle.h3),
-                            ],
+                          _MethodCard(
+                            label: 'CASH', 
+                            icon: Icons.money, 
+                            isSelected: _selectedMethod == 'CASH',
+                            onTap: () => setState(() => _selectedMethod = 'CASH'),
                           ),
-                          Divider(color: theme.colors.borderDefault),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SavvyText("Change", style: SavvyTextStyle.bodyMedium, color: theme.colors.stateSuccess),
-                              SavvyText(currency.format(_change), style: SavvyTextStyle.h2, color: theme.colors.stateSuccess),
-                            ],
+                          _MethodCard(
+                            label: 'CARD', 
+                            icon: Icons.credit_card, 
+                             isSelected: _selectedMethod == 'CARD',
+                            onTap: () => setState(() => _selectedMethod = 'CARD'),
+                          ),
+                          _MethodCard(
+                            label: 'QRIS', 
+                            icon: Icons.qr_code, 
+                             isSelected: _selectedMethod == 'QRIS',
+                            onTap: () => setState(() => _selectedMethod = 'QRIS'),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 32),
-                  ],
-                  
-                  SizedBox(
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: _canPay ? _processPayment : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: theme.colors.stateSuccess,
-                        foregroundColor: theme.colors.textInverse,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(theme.shapes.radiusMd)),
-                        // Ensure button looks disabled if canPay is false
+                    
+                    // Summary Box
+                    Container(
+                      padding: EdgeInsets.all(theme.shapes.spacingMd),
+                      decoration: BoxDecoration(
+                        color: theme.colors.bgPrimary,
+                        borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
                       ),
-                      child: SavvyText(
-                        _selectedMethod == 'CASH' 
-                           ? "PAY ${currency.format(_enteredAmount > 0 ? widget.totalAmount : 0)}" 
-                           : "CONFIRM PAYMENT",
-                        style: SavvyTextStyle.h3, 
-                        color: theme.colors.textInverse,
+                      child: Column(
+                        children: [
+                          _SummaryLine('Total Due', widget.totalAmount, theme, isBold: true),
+                          SizedBox(height: 8),
+                          _SummaryLine('Tendered', tenderAmount, theme),
+                          Divider(),
+                          _SummaryLine('Change', change, theme, isHighlight: true),
+                        ],
                       ),
                     ),
-                  )
+                  ],
+                ),
+              ),
+            ),
+            
+            // RIGHT PANEL: Numpad (Only visible for CASH usually, but let's keep it generally open or make it reactive)
+            // If Card/QRIS, maybe show instruction. Assuming CASH flow mainly for numpad.
+            if (_selectedMethod == 'CASH')
+            Expanded(
+              flex: 6,
+              child: Column(
+                children: [
+                  // Amount Display
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(theme.shapes.spacingLg),
+                    color: theme.colors.bgPrimary, // slightly visible header for numpad
+                    alignment: Alignment.centerRight,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        SavvyText('Enter Cash Amount', style: SavvyTextStyle.labelMedium, color: theme.colors.textSecondary),
+                        FittedBox(
+                          child: SavvyText(
+                            '\$${_input == '0' ? '0.00' : double.parse(_input).toStringAsFixed(2)}', 
+                            style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: theme.colors.brandPrimary),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  
+                  // Quick Cash Buttons
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: theme.shapes.spacingMd, vertical: theme.shapes.spacingSm),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _QuickCashBtn('\$Exact', () => setState(() => _input = widget.totalAmount.toStringAsFixed(2))),
+                        _QuickCashBtn('\$10', () => setState(() => _input = '10')),
+                        _QuickCashBtn('\$20', () => setState(() => _input = '20')),
+                        _QuickCashBtn('\$50', () => setState(() => _input = '50')),
+                      ],
+                    ),
+                  ),
+
+                  // Numpad Grid
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(theme.shapes.spacingMd),
+                      child: LayoutBuilder(
+                        builder: (ctx, constraints) {
+                          return GridView.count(
+                            crossAxisCount: 3,
+                            childAspectRatio: (constraints.maxWidth / 3) / (constraints.maxHeight / 5),
+                            physics: NeverScrollableScrollPhysics(),
+                            children: [
+                              _NumpadBtn('1', () => _addNum('1')),
+                              _NumpadBtn('2', () => _addNum('2')),
+                              _NumpadBtn('3', () => _addNum('3')),
+                              _NumpadBtn('4', () => _addNum('4')),
+                              _NumpadBtn('5', () => _addNum('5')),
+                              _NumpadBtn('6', () => _addNum('6')),
+                              _NumpadBtn('7', () => _addNum('7')),
+                              _NumpadBtn('8', () => _addNum('8')),
+                              _NumpadBtn('9', () => _addNum('9')),
+                              _NumpadBtn('C', () => setState(() => _input = '0'), isDestructive: true),
+                              _NumpadBtn('0', () => _addNum('0')),
+                              _NumpadBtn('.', () => _addNum('.')), // Decimal
+                            ],
+                          );
+                        }
+                      ),
+                    ),
+                  ),
+                  
+                  // PAY BUTTON
+                  Padding(
+                    padding: EdgeInsets.all(theme.shapes.spacingMd),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 60,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: theme.colors.stateSuccess,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(theme.shapes.radiusMd)),
+                        ),
+                        onPressed: tenderAmount >= widget.totalAmount 
+                          ? () {
+                              context.read<CartBloc>().add(CartEvent.processCheckout());
+                              Navigator.pop(context); // Close Payment Dialog
+                              // Success Dialog triggered by Bloc Listener in PosPage or CartView
+                            }
+                          : null,
+                        child: SavvyText(
+                           tenderAmount >= widget.totalAmount ? 'PAY' : 'INSUFFICIENT FUNDS',
+                           style: SavvyTextStyle.h3, 
+                           color: theme.colors.textInverse
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             )
+            else
+             // Non-Cash Placeholder
+             Expanded(
+               flex: 6,
+               child: Center(
+                 child: Column(
+                   mainAxisSize: MainAxisSize.min,
+                   children: [
+                     Icon(
+                       _selectedMethod == 'CARD' ? Icons.credit_card : Icons.qr_code_2, 
+                       size: 80, 
+                       color: theme.colors.textMuted
+                     ),
+                     SizedBox(height: 16),
+                     SavvyText('Follow instructions on terminal', style: SavvyTextStyle.h3, color: theme.colors.textSecondary),
+                     SizedBox(height: 32),
+                     ElevatedButton(
+                       onPressed: () {
+                         // Mock Success
+                         context.read<CartBloc>().add(CartEvent.processCheckout());
+                         Navigator.pop(context);
+                       },
+                       style: ElevatedButton.styleFrom(backgroundColor: theme.colors.brandPrimary),
+                       child: Text('Simulate Success', style: TextStyle(color: Colors.white)),
+                     )
+                   ],
+                 ),
+               ),
+             ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildCashNumpad(SavvyTheme theme) {
-    return Padding(
-      padding: EdgeInsets.all(theme.shapes.spacingMd),
-      child: Column(
-        children: [
-          // Display Field
-          SavvyBox(
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: theme.shapes.spacingMd, horizontal: theme.shapes.spacingLg),
-            color: theme.colors.bgElevated,
-            border: Border.all(color: theme.colors.brandPrimary),
-            child: SavvyText(
-              _cashInput.isEmpty ? '0.00' : '\$${double.parse(_cashInput).toStringAsFixed(2)}', // Rough formatting while typing
-              style: SavvyTextStyle.h2,
-              align: TextAlign.right,
-            ),
-          ),
-          const SizedBox(height: 16),
-          // Numpad Grid
-          Expanded(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final btnWidth = constraints.maxWidth / 3;
-                final btnHeight = constraints.maxHeight / 4;
-                return Wrap(
-                  children: [
-                    for (var i = 1; i <= 9; i++)
-                      _NumKey(i.toString(), btnWidth, btnHeight, onTap: () => _addNum(i.toString())),
-                    _NumKey('.', btnWidth, btnHeight, onTap: () => _addNum('.')),
-                    _NumKey('0', btnWidth, btnHeight, onTap: () => _addNum('0')),
-                    _NumKey('⌫', btnWidth, btnHeight, onTap: _backspace),
-                  ],
-                );
-              }
-            ),
-          ),
-          // Quick Amounts
-          SizedBox(
-            height: 50,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                _QuickAmountBtn(10.0),
-                _QuickAmountBtn(20.0),
-                _QuickAmountBtn(50.0),
-                _QuickAmountBtn(100.0),
-                _QuickAmountBtn(widget.totalAmount, label: "EXACT"),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-  
-  Widget _buildTerminalWait(SavvyTheme theme) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          _selectedMethod == 'QRIS' ? Icons.qr_code_scanner : Icons.credit_card, 
-          size: 80, 
-          color: theme.colors.textMuted
-        ),
-        SizedBox(height: theme.shapes.spacingMd),
-        SavvyText("Waiting for External Terminal...", style: SavvyTextStyle.h3, color: theme.colors.textSecondary),
-        SizedBox(height: theme.shapes.spacingSm),
-        SavvyText("Please complete payment on device", style: SavvyTextStyle.bodyMedium, color: theme.colors.textMuted),
-      ],
-    );
-  }
-
-  void _addNum(String val) {
-    if (val == '.' && _cashInput.contains('.')) return;
+  void _addNum(String char) {
     setState(() {
-      _cashInput += val;
+      if (char == '.') {
+        if (!_input.contains('.')) _input += char;
+      } else {
+        if (_input == '0') _input = char;
+        else _input += char;
+      }
     });
   }
 
-  void _backspace() {
-    if (_cashInput.isNotEmpty) {
-      setState(() {
-        _cashInput = _cashInput.substring(0, _cashInput.length - 1);
-      });
-    }
-  }
-
-  void _processPayment() {
-    widget.cartBloc.add(CartEvent.checkoutProcessed(
-      paymentMethod: _selectedMethod,
-      tenderedAmount: _selectedMethod == 'CASH' ? _enteredAmount : widget.totalAmount, // External assumed exact
-      changeAmount: _selectedMethod == 'CASH' ? _change : 0.0,
-    ));
-    Navigator.pop(context);
-  }
-  
-  Widget _NumKey(String label, double w, double h, {required VoidCallback onTap}) {
-    return SizedBox(
-      width: w,
-      height: h,
-      child: TextButton(
-        onPressed: onTap,
-        child: Text(label, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-      ),
+  Widget _SummaryLine(String label, double val, SavvyTheme theme, {bool isBold = false, bool isHighlight = false}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        SavvyText(label, style: isBold ? SavvyTextStyle.bodyLarge : SavvyTextStyle.bodyMedium, color: theme.colors.textSecondary),
+        SavvyText(
+          '\$${val.toStringAsFixed(2)}', 
+          style: isHighlight ? SavvyTextStyle.h3 : (isBold ? SavvyTextStyle.h3 : SavvyTextStyle.bodyMedium), 
+          color: isHighlight ? theme.colors.stateSuccess : theme.colors.textPrimary
+        ),
+      ],
     );
   }
-  
-  Widget _QuickAmountBtn(double amount, {String? label}) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 8.0),
-      child: OutlinedButton(
-        onPressed: () => setState(() => _cashInput = amount.toString()),
-        child: Text(label ?? "\$${amount.toStringAsFixed(0)}"),
+}
+
+class _MethodCard extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _MethodCard({required this.label, required this.icon, required this.isSelected, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.savvy;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
+      child: Container(
+        decoration: BoxDecoration(
+          color: isSelected ? theme.colors.brandPrimary : theme.colors.bgPrimary,
+          borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
+          border: Border.all(color: isSelected ? theme.colors.brandPrimary : theme.colors.borderDefault),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: isSelected ? theme.colors.textInverse : theme.colors.textSecondary),
+            SizedBox(height: 8),
+            SavvyText(label, style: SavvyTextStyle.labelMedium, color: isSelected ? theme.colors.textInverse : theme.colors.textSecondary),
+          ],
+        ),
       ),
     );
   }
 }
 
-class _PaymentMethodCard extends StatelessWidget {
+class _NumpadBtn extends StatelessWidget {
   final String label;
-  final IconData icon;
-  final bool isSelected;
-  final bool isDisabled; // Added
   final VoidCallback onTap;
+  final bool isDestructive;
 
-  const _PaymentMethodCard({required this.label, required this.icon, required this.isSelected, this.isDisabled = false, required this.onTap});
+  const _NumpadBtn(this.label, this.onTap, {this.isDestructive = false});
 
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    return GestureDetector(
-      onTap: onTap,
-        child: AnimatedContainer(
-          duration: theme.motion.durationFast,
-          width: 100,
-          height: 80,
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
+        child: Container(
           decoration: BoxDecoration(
-            color: isDisabled ? theme.colors.bgSecondary.withOpacity(0.5) : (isSelected ? theme.colors.brandPrimary : theme.colors.bgElevated),
+            color: isDestructive ? theme.colors.stateError.withOpacity(0.1) : theme.colors.bgElevated,
             borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
-            border: Border.all(
-              color: isDisabled ? theme.colors.borderDefault : (isSelected ? theme.colors.brandPrimary : theme.colors.borderDefault),
-              width: 2,
+            border: Border.all(color: theme.colors.borderDefault),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 24, 
+              fontWeight: FontWeight.bold, 
+              color: isDestructive ? theme.colors.stateError : theme.colors.textPrimary
             ),
-            boxShadow: isSelected && !isDisabled ? theme.elevations.floating : theme.elevations.sm,
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: isDisabled ? theme.colors.textMuted : (isSelected ? theme.colors.textInverse : theme.colors.textPrimary)),
-              const SizedBox(height: 4),
-              SavvyText(
-                label, 
-                style: SavvyTextStyle.label, 
-                color: isDisabled ? theme.colors.textMuted : (isSelected ? theme.colors.textInverse : theme.colors.textPrimary)
-              ),
-            ],
-          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _QuickCashBtn extends StatelessWidget {
+  final String label;
+  final VoidCallback onTap;
+  
+  const _QuickCashBtn(this.label, this.onTap);
+  
+   @override
+  Widget build(BuildContext context) {
+    final theme = context.savvy;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(theme.shapes.radiusPill),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: theme.colors.bgElevated,
+          border: Border.all(color: theme.colors.brandSecondary),
+          borderRadius: BorderRadius.circular(theme.shapes.radiusPill),
+        ),
+        child: Text(label, style: TextStyle(color: theme.colors.brandSecondary, fontWeight: FontWeight.bold)),
       ),
     );
   }

@@ -1,179 +1,108 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:savvy_pos/core/config/theme_config.dart';
-import 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart';
-import 'package:savvy_pos/core/hal/printer_interface.dart';
-import 'package:get_it/get_it.dart';
-import 'package:savvy_pos/core/database/database.dart';
-import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
+import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
+import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 
-class CheckoutSuccessDialog extends StatefulWidget {
-  final OrderTableData? order;
+class CheckoutSuccessDialog extends StatelessWidget {
+  final dynamic order; // Can be Order entity
   final List<CartItem> items;
   final VoidCallback onNewOrder;
 
   const CheckoutSuccessDialog({
-    Key? key,
-    this.order,
-    this.items = const [],
-    required this.onNewOrder,
-  }) : super(key: key);
-
-  @override
-  State<CheckoutSuccessDialog> createState() => _CheckoutSuccessDialogState();
-}
-
-class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> {
-  int _secondsRemaining = 5;
-  Timer? _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _startTimer();
-  }
-
-  void _startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (!mounted) return;
-      setState(() {
-        if (_secondsRemaining > 0) {
-          _secondsRemaining--;
-        } else {
-          _timer?.cancel();
-          widget.onNewOrder(); // Auto-close
-        }
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
+    super.key, 
+    this.order, 
+    required this.items, 
+    required this.onNewOrder
+  });
 
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
 
-    return PopScope(
-      canPop: false, // Prevent accidental close
-      child: Center(
-        child: SavvyBox(
-          width: 400,
-          padding: EdgeInsets.all(theme.shapes.spacingXl),
+    // Hardcoded change logic visualization for now (since we don't pass tender info in mock flow yet)
+    // In real app, order entity would have 'tender' and 'change'.
+    final double change = 15.50; // Mock
+
+    return Dialog(
+      backgroundColor: Colors.transparent, // Custom shape via container
+      elevation: 0,
+      child: Container(
+        width: 400,
+        padding: EdgeInsets.all(theme.shapes.spacingXl),
+        decoration: BoxDecoration(
           color: theme.colors.bgElevated,
           borderRadius: BorderRadius.circular(theme.shapes.radiusXl),
-          shadow: theme.elevations.floating, // Floating effect
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // 1. Success Icon Animation
-              Container(
-                width: 100, 
-                height: 100,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: theme.colors.stateSuccess.withOpacity(0.2),
-                ),
-                child: Center(
-                  child: Icon(Icons.check_rounded, color: theme.colors.stateSuccess, size: 60)
-                     .animate()
-                     .scale(duration: 600.ms, curve: Curves.elasticOut)
-                     .shimmer(delay: 400.ms, color: Colors.white.withOpacity(0.5)),
-                ),
-              )
-              .animate()
-              .scale(duration: 400.ms, curve: theme.motion.curveBounce), // Dialog Element Entry
-              
-              SizedBox(height: theme.shapes.spacingLg),
-              
-              // 2. Text
-              SavvyText("Payment Successful!", style: SavvyTextStyle.h2, color: theme.colors.textPrimary)
-                  .animate()
-                  .fadeIn(delay: 200.ms)
-                  .slideY(begin: 0.2, end: 0),
-                  
-              SizedBox(height: theme.shapes.spacingSm),
-              
-              // 3. Change Display
-              if (widget.order != null && widget.order!.changeAmount > 0) ...[
-                SavvyBox(
-                   margin: EdgeInsets.symmetric(vertical: theme.shapes.spacingMd),
-                   padding: EdgeInsets.all(theme.shapes.spacingMd),
-                   color: theme.colors.stateSuccess.withOpacity(0.1),
-                   borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
-                   child: Column(
-                     children: [
-                       SavvyText("CHANGE DUE", style: SavvyTextStyle.label, color: theme.colors.stateSuccess),
-                       SavvyText(
-                         "\$${widget.order!.changeAmount.toStringAsFixed(2)}", 
-                         style: SavvyTextStyle.h1, 
-                         color: theme.colors.stateSuccess
-                       ),
-                     ],
-                   ),
-                ).animate().fadeIn(delay: 400.ms).slideY(begin: 0.5, end: 0, curve: Curves.easeOutBack),
-              ],
-
-              SizedBox(height: theme.shapes.spacingLg),
-
-              // 4. Actions
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: widget.onNewOrder,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.colors.brandPrimary,
-                    foregroundColor: theme.colors.textInverse,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(theme.shapes.radiusMd)),
-                  ),
-                  child: Text("New Order ($_secondsRemaining)"), // Using Timer
-                ),
-              ).animate().fadeIn(delay: 800.ms),
-              
-              SizedBox(height: theme.shapes.spacingSm),
-              
-              TextButton.icon(
-                onPressed: () async {
-                   try {
-                     // For MVP we can print a dummy last order re-constructed or passed in.
-                     // Ideally we pass order object. For now let's just toast/log as success.
-                     // Or fetch last order from Bloc?? Bloc clears it. Needs persistence logic.
-                     // Assuming 'onPrint' callback or similar.
-                     // The user requested binding to current success dialog. 
-                     // We can construct a receipt with available info: Change and explicit zeroed items if not passed.
-                     // Wait, we need Order Object to print *Receipt*.
-                     // Let's assume we can fetch the *Last Order* from DB if we had ID or just print a 'Test Receipt' for this step?
-                     // Better: Passed 'lastOrderNumber' is in BlocState but we are invalidating it on Clear.
-                     // Actually, Bloc emit success THEN clears. So we might have access to it in the parent?
-                     // Let's use a dummy receipt for the visual "Wire Success" demonstration.
-                     final printer = GetIt.I<IPrinterService>();
-                     if (widget.order != null) {
-                        final itemsMap = widget.items.map((e) => {
-                          'name': e.product.name,
-                          'qty': e.quantity,
-                          'total': e.total,
-                        }).toList();
-                        
-                        await printer.printReceipt(widget.order!, items: itemsMap);
-                     } else {
-                        await printer.printText("Savvy POS\nPayment Verified\n(Order Data Missing)\n\n", isBold: true, isLarge: true);
-                     }
-                   } catch (e) {
-                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Print Error: $e')));
-                   }
-                },
-                icon: const Icon(Icons.print),
-                label: const Text("Print Receipt"),
-              ).animate().fadeIn(delay: 1000.ms),
-            ],
-          ),
+          boxShadow: theme.elevations.floating,
         ),
-      ).animate().scale(duration: 300.ms, curve: theme.motion.curveDefault), // Whole Dialog Entry
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // checkmark
+            Container(
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: theme.colors.stateSuccess.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.check_rounded, size: 64, color: theme.colors.stateSuccess)
+                  .animate()
+                  .scale(duration: 600.ms, curve: Curves.elasticOut),
+            ),
+            
+            SizedBox(height: theme.shapes.spacingLg),
+            
+            SavvyText('Payment Successful!', style: SavvyTextStyle.h2, color: theme.colors.textPrimary),
+            SizedBox(height: theme.shapes.spacingSm),
+            SavvyText('Transaction #${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}', style: SavvyTextStyle.bodySmall, color: theme.colors.textSecondary),
+
+            Divider(height: theme.shapes.spacingXl, color: theme.colors.borderDefault),
+            
+            if (change > 0)
+            Column(
+              children: [
+                SavvyText('CHANGE DUE', style: SavvyTextStyle.labelMedium, color: theme.colors.textMuted),
+                SavvyText('\$${change.toStringAsFixed(2)}', style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: theme.colors.textPrimary)),
+                SizedBox(height: theme.shapes.spacingLg),
+              ],
+            ),
+
+            // Actions
+            Row(
+              children: [
+                Expanded(
+                   child: OutlinedButton.icon(
+                     onPressed: () {
+                       // Mock Print
+                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Printing receipt...')));
+                     },
+                     icon: Icon(Icons.print, color: theme.colors.textPrimary),
+                     label: Text('Print Receipt', style: TextStyle(color: theme.colors.textPrimary)),
+                     style: OutlinedButton.styleFrom(
+                       padding: EdgeInsets.symmetric(vertical: 16),
+                       side: BorderSide(color: theme.colors.borderDefault),
+                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(theme.shapes.radiusMd)),
+                     ),
+                   ),
+                ),
+                SizedBox(width: theme.shapes.spacingMd),
+                Expanded(
+                   child: ElevatedButton.icon(
+                     onPressed: onNewOrder,
+                     icon: Icon(Icons.add_shopping_cart, color: theme.colors.textInverse),
+                     label: Text('New Order', style: TextStyle(color: theme.colors.textInverse)),
+                     style: ElevatedButton.styleFrom(
+                       backgroundColor: theme.colors.brandPrimary,
+                       padding: EdgeInsets.symmetric(vertical: 16),
+                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(theme.shapes.radiusMd)),
+                     ),
+                   ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ).animate().moveY(begin: 50, end: 0, duration: 400.ms, curve: Curves.easeOutBack).fadeIn(),
     );
   }
 }

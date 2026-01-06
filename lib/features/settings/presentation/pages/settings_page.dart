@@ -10,6 +10,9 @@ import 'package:savvy_pos/features/settings/presentation/bloc/backup_bloc.dart';
 import 'package:savvy_pos/features/employees/presentation/pages/employee_list_page.dart';
 import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:savvy_pos/core/config/business_mode.dart';
+import 'package:savvy_pos/core/sync/sync_worker.dart';
+import 'package:logger/logger.dart';
+import 'package:savvy_pos/core/database/database.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -142,6 +145,25 @@ class _SettingsPageState extends State<SettingsPage> {
                                 onTap: () {
                                    ctx.read<BackupBloc>().add(const BackupEvent.restoreBackup());
                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Restore Started... Check file picker.')));
+                                },
+                              ),
+                              ListTile(
+                                leading: const Icon(Icons.sync),
+                                title: const Text('Sync Data Now'),
+                                subtitle: const Text('Push pending & pull new data'),
+                                onTap: () async {
+                                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Sync Started...')));
+                                   try {
+                                     // Direct usage of Sync Logic
+                                     await processSyncQueue(GetIt.I<AppDatabase>(), Logger());
+                                     if (context.mounted) {
+                                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Sync Complete!')));
+                                     }
+                                   } catch (e) {
+                                     if (context.mounted) {
+                                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Sync Failed: $e')));
+                                     }
+                                   }
                                 },
                               ),
                             ],

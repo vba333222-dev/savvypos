@@ -2,7 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:savvy_pos/core/database/database.dart';
+import 'package:savvy_pos/core/sync/sync_worker.dart';
 
 part 'auth_bloc.freezed.dart';
 
@@ -46,6 +48,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
            // For now, we inject the "Master Key" expected by ApiClient
            await prefs.setString('auth_token', 'mock-token-123'); 
            await prefs.setString('tenant_id', 'default-tenant'); 
+
+           // The Awakening: Trigger Initial Sync
+           try {
+             await processSyncQueue(db, Logger());
+           } catch (e) {
+             // Non-blocking, just log
+             Logger().w('Initial Sync failed: $e');
+           }
            
            emit(state.copyWith(isLoading: false, employee: employee));
         } else {

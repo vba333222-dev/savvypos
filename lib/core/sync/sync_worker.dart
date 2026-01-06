@@ -22,7 +22,7 @@ void callbackDispatcher() {
 
     try {
       if (task == 'fiveMinuteSync') {
-         await _processSyncQueue(db, logger);
+         await processSyncQueue(db, logger);
       }
     } catch (e) {
       logger.e('Sync Worker failed', error: e);
@@ -33,7 +33,7 @@ void callbackDispatcher() {
   });
 }
 
-Future<void> _processSyncQueue(AppDatabase db, Logger logger) async {
+Future<void> processSyncQueue(AppDatabase db, Logger logger) async {
   final apiClient = GetIt.I<ApiClient>();
   
   // 1. Fetch PENDING items

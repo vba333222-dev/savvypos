@@ -13,6 +13,9 @@ import (
 	authHttp "savvy-pos-backend/internal/features/auth/http"
 	authService "savvy-pos-backend/internal/features/auth/service"
 	syncHttp "savvy-pos-backend/internal/features/sync/http"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func NewGinEngine() *gin.Engine {
@@ -22,6 +25,8 @@ func NewGinEngine() *gin.Engine {
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{"status": "ok", "service": "savvy-pos-backend"})
 	})
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	return r
 }

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 
@@ -7,8 +8,11 @@ class ApiClient {
   final Dio _dio;
   final Logger _logger = Logger();
 
-  // Use 10.0.2.2 for Android Emulator to access host localhost
-  static const String baseUrl = 'http://10.0.2.2:8080/v1';
+  // Use 10.0.2.2 for Android Emulator, localhost for Web/iOS Simulator
+  static String get baseUrl {
+    if (kIsWeb) return 'http://localhost:8080/v1';
+    return 'http://10.0.2.2:8080/v1';
+  }
 
   ApiClient() : _dio = Dio(BaseOptions(
     baseUrl: baseUrl,

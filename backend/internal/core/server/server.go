@@ -17,6 +17,7 @@ import (
 
 func NewGinEngine() *gin.Engine {
 	r := gin.Default()
+	r.Use(middleware.CorsMiddleware())
 
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{"status": "ok", "service": "savvy-pos-backend"})

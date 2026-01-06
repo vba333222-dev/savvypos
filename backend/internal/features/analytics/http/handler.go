@@ -151,7 +151,7 @@ func (h *AnalyticsHandler) GetSalesChart(c *gin.Context) {
 	err := h.db.Raw(`
         SELECT TO_CHAR(transaction_date, 'YYYY-MM-DD') as date, SUM(grand_total) as total
         FROM orders
-        WHERE transaction_date >= NOW() - INTERVAL '7 days'
+        WHERE transaction_date >= NOW() - INTERVAL '30 days'
         GROUP BY date
         ORDER BY date ASC
     `).Scan(&results).Error

@@ -61,31 +61,59 @@ class WebDashboardPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Last 7 Days Sales", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const Text("Last 30 Days Sales", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
             Expanded(
-              child: BarChart(
-                BarChartData(
-                  barGroups: state.last7DaysSales.asMap().entries.map((e) {
-                      return BarChartGroupData(
-                          x: e.key,
-                          barRods: [BarChartRodData(toY: e.value.total, color: Colors.blue)]
-                      );
-                  }).toList(),
+              child: LineChart(
+                LineChartData(
+                  gridData: const FlGridData(show: true),
                   titlesData: FlTitlesData(
-                      bottomTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                              showTitles: true,
-                              getTitlesWidget: (value, meta) {
-                                  if (value.toInt() >= 0 && value.toInt() < state.last7DaysSales.length) {
-                                      final date = state.last7DaysSales[value.toInt()].date;
-                                      return Text("${date.day}/${date.month}");
-                                  }
-                                  return const Text("");
-                              }
-                          )
-                      )
-                  )
+                    bottomTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, meta) {
+                          final index = value.toInt();
+                          if (index >= 0 && index < state.last7DaysSales.length) { // Variable name still last7DaysSales in State/Repo but content is 30 days
+                            // Show every 5th day to avoid clutter
+                            if (index % 5 == 0) {
+                              final date = state.last7DaysSales[index].date;
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Text("${date.day}/${date.month}", style: const TextStyle(fontSize: 10)),
+                              );
+                            }
+                          }
+                          return const SizedBox.shrink();
+                        },
+                        interval: 1,
+                      ),
+                    ),
+                    leftTitles: AxisTitles(
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 40,
+                        getTitlesWidget: (value, meta) {
+                          return Text(meta.formattedValue, style: const TextStyle(fontSize: 10));
+                        },
+                      ),
+                    ),
+                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  ),
+                  borderData: FlBorderData(show: true, border: Border.all(color: Colors.grey.withOpacity(0.2))),
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: state.last7DaysSales.asMap().entries.map((e) {
+                        return FlSpot(e.key.toDouble(), e.value.total);
+                      }).toList(),
+                      isCurved: true,
+                      color: Colors.blue,
+                      barWidth: 3,
+                      isStrokeCapRound: true,
+                      dotData: const FlDotData(show: false),
+                      belowBarData: BarAreaData(show: true, color: Colors.blue.withOpacity(0.1)),
+                    ),
+                  ],
                 ),
               ),
             ),

@@ -2,9 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:savvy_pos/core/config/theme_config.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_box.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends StatefulWidget {
   final Product product;
   final VoidCallback? onTap;
 
@@ -15,97 +17,100 @@ class ProductCard extends StatelessWidget {
   });
 
   @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
+  bool _isPressed = false;
+
+  @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
     
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.colors.bgElevated,
-        borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
-        boxShadow: theme.elevations.sm,
-        border: Border.all(color: theme.colors.borderDefault),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // 1. IMAGE AREA
-              Expanded(
-                flex: 3,
-                child: Container(
-                  color: product.colorHex != null 
-                    ? Color(int.parse(product.colorHex!.replaceAll('#', '0xFF'))) 
-                    : theme.colors.bgPrimary,
-                  child: product.imageUrl != null
-                      ? CachedNetworkImage(
-                          imageUrl: product.imageUrl!,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => Center(
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          ),
-                          errorWidget: (context, url, error) => Icon(
-                            Icons.broken_image, 
-                            color: theme.colors.textMuted
-                          ),
-                        )
-                      : Center(
-                          child: Text(
-                            product.name.characters.first.toUpperCase(),
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: theme.colors.textSecondary,
-                            ),
-                          ),
-                        ),
-                ),
-              ),
-              
-              // 2. INFO AREA
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: EdgeInsets.all(theme.shapes.spacingSm),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        product.name,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: theme.colors.textPrimary,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                        ),
+    return SavvyBox(
+      padding: EdgeInsets.zero,
+      color: theme.colors.bgElevated,
+      onTap: () async {
+        if (widget.onTap == null) return;
+        
+        setState(() => _isPressed = true);
+        await Future.delayed(const Duration(milliseconds: 100)); // Short press duration
+        if (mounted) setState(() => _isPressed = false);
+        
+        widget.onTap!();
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // 1. IMAGE AREA
+          Expanded(
+            flex: 3,
+            child: Container(
+              color: widget.product.colorHex != null 
+                ? Color(int.parse(widget.product.colorHex!.replaceAll('#', '0xFF'))) 
+                : theme.colors.bgPrimary,
+              child: widget.product.imageUrl != null
+                  ? CachedNetworkImage(
+                      imageUrl: widget.product.imageUrl!,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Center(
+                        child: CircularProgressIndicator(strokeWidth: 2, color: theme.colors.brandPrimary),
                       ),
-                      Text(
-                        // Simple currency formatting (can use NumberFormat later)
-                        "\$${product.price.toStringAsFixed(2)}", 
-                        style: TextStyle(
-                          color: theme.colors.brandPrimary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                        ),
+                      errorWidget: (context, url, error) => Icon(
+                        Icons.broken_image, 
+                        color: theme.colors.textMuted
                       ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+                    )
+                  : Center(
+                      child: SavvyText(
+                        widget.product.name.characters.first.toUpperCase(),
+                        style: SavvyTextStyle.h2,
+                        color: theme.colors.textSecondary,
+                      ),
+                    ),
+            ),
           ),
-        ),
+          
+          // 2. INFO AREA
+          Expanded(
+            flex: 2,
+            child: Padding(
+              padding: EdgeInsets.all(theme.shapes.spacingSm),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SavvyText(
+                    widget.product.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: SavvyTextStyle.bodyMedium,
+                    color: theme.colors.textPrimary, // Explicit content color
+                  ),
+                  SavvyText(
+                    // Simple currency formatting (can use NumberFormat later)
+                    "\$${widget.product.price.toStringAsFixed(2)}", 
+                    style: SavvyTextStyle.h3,
+                    color: theme.colors.brandPrimary,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
-    ).animate()
-      .fadeIn(duration: theme.motion.durationFast)
-      .scale(
-         duration: theme.motion.durationFast, 
-         curve: theme.motion.curveDefault,
-      );
+    )
+    .animate(target: _isPressed ? 1 : 0)
+    .scaleXY(
+      end: 0.95, 
+      duration: 100.ms, 
+      curve: Curves.easeInOut,
+    )
+    .animate() // Entry Animation
+    .fadeIn(duration: theme.motion.durationFast)
+    .scale(
+       duration: theme.motion.durationFast, 
+       curve: theme.motion.curveDefault,
+    );
   }
 }

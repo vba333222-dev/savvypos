@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"savvy-pos-backend/internal/core/domain"
-	service "savvy-pos-backend/internal/features/inventory/service"
+	salesService "savvy-pos-backend/internal/features/sales/service"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -14,11 +14,11 @@ import (
 
 type SyncHandler struct {
 	db           *gorm.DB
-	stockService *service.StockService // Check package import below
+	orderService *salesService.OrderService
 }
 
-func NewSyncHandler(db *gorm.DB, stockService *service.StockService) *SyncHandler {
-	return &SyncHandler{db: db, stockService: stockService}
+func NewSyncHandler(db *gorm.DB, orderService *salesService.OrderService) *SyncHandler {
+	return &SyncHandler{db: db, orderService: orderService}
 }
 
 type SyncRequest struct {
@@ -47,21 +47,11 @@ func (h *SyncHandler) HandlePush(c *gin.Context) {
 			return
 		}
 
-		// Upsert Order
-		if err := tx.Create(&order).Error; err != nil {
+		// Delegate to OrderService
+		if err := h.orderService.SyncOrder(tx, order); err != nil {
 			tx.Rollback()
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save order", "details": err.Error()})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to sync order", "details": err.Error()})
 			return
-		}
-
-		// Trigger Inventory Logic
-		// Requirement: "If stock deduction fails, log it but don't crash the sync."
-		if err := h.stockService.ProcessOrderStock(tx, order); err != nil {
-			// Log error (fmt.Println or logger)
-			// We DO NOT rollback the transaction because the Order itself is valid and synced.
-			// Inventory inconsistency is better than data loss of the Order.
-			// fmt.Printf("Inventory Deduction Failed: %v\n", err)
-			// Ideally use a logger.
 		}
 
 		// Detect other actions

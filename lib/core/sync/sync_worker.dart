@@ -36,7 +36,7 @@ Future<void> _processSyncQueue(AppDatabase db, Logger logger) async {
   final apiClient = GetIt.I<ApiClient>();
   
   // 1. Fetch PENDING items
-  final pendingItems = await db.select(db.syncQueue).get();
+  final pendingItems = await (db.select(db.syncQueue)..limit(50)).get();
   
   if (pendingItems.isEmpty) {
     logger.d('No pending sync items.');
@@ -45,41 +45,56 @@ Future<void> _processSyncQueue(AppDatabase db, Logger logger) async {
 
   logger.i('Found ${pendingItems.length} items to sync.');
 
-  // 2. Prepare Payload
-  // 2. Push to Backend (One by One to match current Backend Handler)
-  // Optimization: Update Backend to Batch later.
+  // 2. Prepare Payload & Push (One by One)
   bool allSuccess = true;
   
   for (final item in pendingItems) {
-      final payload = {
-        'action': item.actionType,
-        'payload': jsonDecode(item.payloadJson),
-        'idempotency_key': item.idempotencyKey,
-      };
-      
-      final success = await apiClient.pushItem(payload);
-      
-      if (success) {
-          // Mark as synced or delete
-          await (db.delete(db.syncQueue)..where((t) => t.id.equals(item.id))).go();
-          
-          if (item.actionType == 'CREATE_ORDER') {
-              final p = jsonDecode(item.payloadJson);
-              final orderUuid = p['orderUuid'] ?? p['uuid']; 
-              if (orderUuid != null) {
-                await (db.update(db.orderTable)..where((t) => t.uuid.equals(orderUuid)))
-                  .write(const OrderTableCompanion(isSynced: Value(true)));
-              }
-          }
-      } else {
-          allSuccess = false;
+      try {
+        final Map<String, dynamic> payload = {
+          'action': item.actionType,
+          'payload': jsonDecode(item.payloadJson), 
+          'idempotency_key': item.idempotencyKey,
+        };
+        
+        // Simple manual backoff could be added here if needed, but Workmanager has its own retry policy.
+        // We rely on ApiClient to handle immediate HTTP timeouts.
+        
+        final success = await apiClient.pushItem(payload);
+        
+        if (success) {
+            logger.i('Synced Item: ${item.id}');
+            // Delete from queue
+            await (db.delete(db.syncQueue)..where((t) => t.id.equals(item.id))).go();
+            
+            // Mark Order as Synced if applicable
+            if (item.actionType == 'CREATE_ORDER') {
+                final p = jsonDecode(item.payloadJson);
+                // Handle both structures if needed, but we standardized on `uuid` in recent models
+                final orderUuid = p['uuid'] ?? p['orderUuid']; 
+                if (orderUuid != null) {
+                  await (db.update(db.orderTable)..where((t) => t.uuid.equals(orderUuid)))
+                    .write(const OrderTableCompanion(isSynced: Value(true)));
+                }
+            }
+        } else {
+            allSuccess = false;
+            logger.w('Failed to sync Item: ${item.id}. Halt batch to preserve order?');
+            // If strict ordering is required, we should break. 
+            // For Sales, sequential is safer.
+            break; 
+        }
+      } catch (e) {
+         logger.e('Error processing item ${item.id}', error: e);
+         allSuccess = false;
+         break;
       }
   }
   
-  if (!allSuccess) {
-      logger.w('Some items failed to push.');
-  } else {
-      logger.i('All pending items pushed.');
+  if (allSuccess && pendingItems.length == 50) {
+     // If we hit limit and all success, maybe schedule immediate next run?
+     // Workmanager doesn't support "run again now" easily from dart side without native code.
+     // But we returned true, so it finishes.
+     // Timer-based worker in App (Foreground) will pick up next batch.
   }
 
   // 3. Pull Downstream Updates

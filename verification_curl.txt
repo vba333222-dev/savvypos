@@ -1,0 +1,30 @@
+curl -X POST http://localhost:8080/v1/sync/push \
+  -H "Content-Type: application/json" \
+  -H "X-Tenant-ID: default-tenant" \
+  -d '{
+        "action": "CREATE_ORDER",
+        "idempotency_key": "test-uuid-manual-001",
+        "payload": {
+            "orderUuid": "test-order-uuid-001",
+            "orderNumber": "ORD-TEST-001",
+            "tenantId": "default-tenant",
+            "status": "COMPLETED",
+            "paymentStatus": "PAID",
+            "transactionDate": "2024-01-01T12:00:00Z",
+            "subtotal": 100.0,
+            "discount": 0.0,
+            "tax": 10.0,
+            "total": 110.0,
+            "paymentMethod": "CASH",
+            "tenderedAmount": 110.0,
+            "changeAmount": 0.0,
+            "items": [
+                {
+                   "productUuid": "prod-burger-uuid",
+                   "quantity": 1,
+                   "price": 100.0,
+                   "total": 100.0
+                }
+            ]
+        }
+      }'

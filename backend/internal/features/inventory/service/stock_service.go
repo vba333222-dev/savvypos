@@ -53,6 +53,8 @@ func (s *StockService) ProcessOrderStock(tx *gorm.DB, order domain.Order) error 
 			}
 
 			if len(recipes) == 0 {
+				// Warning Logger
+				fmt.Printf("WARNING: Product %s is composite but has no recipe\n", product.Name)
 				continue
 			}
 

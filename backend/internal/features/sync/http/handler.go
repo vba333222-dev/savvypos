@@ -7,6 +7,7 @@ import (
 
 	"savvy-pos-backend/internal/core/domain"
 	salesService "savvy-pos-backend/internal/features/sales/service"
+	"savvy-pos-backend/internal/features/sync/dto"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -21,14 +22,8 @@ func NewSyncHandler(db *gorm.DB, orderService *salesService.OrderService) *SyncH
 	return &SyncHandler{db: db, orderService: orderService}
 }
 
-type SyncRequest struct {
-	ActionType     string          `json:"actionType"`
-	PayloadJson    json.RawMessage `json:"payloadJson"`
-	IdempotencyKey string          `json:"idempotencyKey"`
-}
-
 func (h *SyncHandler) HandlePush(c *gin.Context) {
-	var req SyncRequest
+	var req dto.SyncRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -38,10 +33,10 @@ func (h *SyncHandler) HandlePush(c *gin.Context) {
 
 	tx := h.db.Begin()
 
-	switch req.ActionType {
+	switch req.Action {
 	case "CREATE_ORDER":
 		var order domain.Order
-		if err := json.Unmarshal(req.PayloadJson, &order); err != nil {
+		if err := json.Unmarshal(req.Payload, &order); err != nil {
 			tx.Rollback()
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Order Payload", "details": err.Error()})
 			return

@@ -29,7 +29,14 @@ func AuthMiddleware(jwtService *service.JWTService) gin.HandlerFunc {
 		}
 
 		c.Set("userID", claims.UserID)
-		c.Set("tenantID", claims.TenantID)
+
+		// Prioritize X-Tenant-ID header if present (Multi-tenant support)
+		if tenantID := c.GetHeader("X-Tenant-ID"); tenantID != "" {
+			c.Set("tenantID", tenantID)
+		} else {
+			c.Set("tenantID", claims.TenantID)
+		}
+
 		c.Next()
 	}
 }

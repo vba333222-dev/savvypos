@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @lazySingleton
 class ApiClient {
@@ -24,14 +25,30 @@ class ApiClient {
   )) {
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        // TODO: Get token from SharedPreferences or SecureStorage
-        // For now, assuming a global or static token holder if available,
-        // or purely relying on login flow to inject later.
-        // ideally: final token = await _prefs.getString('auth_token');
-        // options.headers['Authorization'] = 'Bearer $token';
+        final prefs = await SharedPreferences.getInstance();
+        final token = prefs.getString('auth_token');
+        final tenantId = prefs.getString('tenant_id');
+
+        if (token != null && tenantId != null) {
+          options.headers['Authorization'] = 'Bearer $token';
+          options.headers['X-Tenant-ID'] = tenantId;
+        } else {
+           // Abort Sync attempts if not logged in
+           // For simple endpoints, we might want to allow anonymous? 
+           // But user mission says "Secure Identity Injection".
+           // Rejecting here might cause errors in UI if not handled?
+           // Dio doesn't have a clean "Abort" in onRequest without throwing.
+           // We will let it proceed (maybe it's a login request?) or throw?
+           // Check path? '/sync/*' requires auth.
+           if (options.path.contains('/sync/')) {
+               return handler.reject(DioException(
+                   requestOptions: options, 
+                   error: 'Unauthorized: Missing Identity Keys', 
+                   type: DioExceptionType.cancel
+               ));
+           }
+        }
         
-        // Mock token for dev if not set
-        // options.headers['Authorization'] = 'Bearer <mock-token>';
         return handler.next(options);
       },
     ));
@@ -39,12 +56,6 @@ class ApiClient {
 
   Future<bool> pushItem(Map<String, dynamic> payload) async {
     try {
-      // Requirement: Handle timeout (10-15s) and return true only if 200.
-      // Headers: Authorization: Bearer <token>, X-Tenant-ID
-      
-      const token = "mock-token-123"; 
-      const tenantId = "default-tenant";
-
       final response = await _dio.post(
         '/sync/push',
         data: {
@@ -53,13 +64,9 @@ class ApiClient {
           'idempotencyKey': payload['idempotency_key']
         },
         options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-            'X-Tenant-ID': tenantId,
-          },
           sendTimeout: const Duration(seconds: 15),
           receiveTimeout: const Duration(seconds: 15),
-          validateStatus: (status) => status != null && status < 500, // Let us handle status check manually
+          validateStatus: (status) => status != null && status < 500,
         ),
       );
 
@@ -70,23 +77,14 @@ class ApiClient {
     }
   }
   
-
-
   Future<Map<String, dynamic>?> pullSyncData(String lastSyncedAt) async {
     try {
-      const token = "mock-token-123"; 
-      const tenantId = "default-tenant";
-
       final response = await _dio.get(
         '/sync/pull',
         queryParameters: {
           'last_synced_at': lastSyncedAt,
         },
         options: Options(
-          headers: {
-             'Authorization': 'Bearer $token',
-             'X-Tenant-ID': tenantId,
-          },
            receiveTimeout: const Duration(seconds: 10),
         ),
       );

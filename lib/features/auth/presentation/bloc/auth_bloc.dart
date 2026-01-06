@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
 
@@ -39,6 +40,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       
       if (employee != null) {
         if (employee.isActive) {
+           // Save Identity to "Kingdom Keys"
+           final prefs = await SharedPreferences.getInstance();
+           // In real app, we get this from API Response (Login Endpoint)
+           // For now, we inject the "Master Key" expected by ApiClient
+           await prefs.setString('auth_token', 'mock-token-123'); 
+           await prefs.setString('tenant_id', 'default-tenant'); 
+           
            emit(state.copyWith(isLoading: false, employee: employee));
         } else {
            emit(state.copyWith(isLoading: false, error: 'Account is inactive'));
@@ -52,6 +60,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onLogout(_Logout event, Emitter<AuthState> emit) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('auth_token');
+    await prefs.remove('tenant_id');
+    await prefs.remove('last_synced_at'); // Reset memory on logout as requested
+    
     emit(const AuthState());
   }
   

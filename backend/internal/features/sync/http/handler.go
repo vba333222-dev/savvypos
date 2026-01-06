@@ -31,6 +31,12 @@ func (h *SyncHandler) HandlePush(c *gin.Context) {
 
 	// Idempotency check could go here (using Redis or DB)
 
+	tenantID, exists := c.Get("tenantID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Tenant ID not found"})
+		return
+	}
+
 	tx := h.db.Begin()
 
 	switch req.Action {
@@ -41,6 +47,9 @@ func (h *SyncHandler) HandlePush(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Order Payload", "details": err.Error()})
 			return
 		}
+
+		// Enforce Tenant Identity
+		order.TenantID = tenantID.(string)
 
 		// Delegate to OrderService
 		if err := h.orderService.SyncOrder(tx, order); err != nil {

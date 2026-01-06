@@ -15,6 +15,8 @@ import 'package:savvy_pos/features/shift/presentation/widgets/close_shift_dialog
 import 'package:savvy_pos/features/shift/presentation/widgets/cash_management_dialog.dart';
 import 'package:savvy_pos/features/kitchen/presentation/pages/kitchen_monitor_page.dart';
 import 'package:savvy_pos/core/utils/global_search_delegate.dart';
+import 'package:savvy_pos/features/pos/presentation/widgets/cart_view.dart';
+import 'package:savvy_pos/features/pos/presentation/widgets/checkout_success_dialog.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class PosPage extends StatelessWidget {
@@ -107,60 +109,97 @@ class _PosPageContent extends StatelessWidget {
           ],
         ),
       ),
-      body: BlocConsumer<ShiftBloc, ShiftState>(
+      body: BlocListener<CartBloc, CartState>(
         listener: (context, state) {
-           // Redirect if error or closed (though the builder handles closed view)
-           if (state is! _Open && state is! _Loading && state is! _Initial) {
-              // Can add specific navigation logic if needed
-           }
-        },
-        builder: (context, state) {
-          return state.maybeWhen(
-            open: (shift, _, __) => LayoutBuilder(
-              builder: (context, constraints) {
-                // Requirement: Tablet/Desktop > 900px
-                final isLargeScreen = constraints.maxWidth > 900;
-
-                if (isLargeScreen) {
-                  return Row(
-                    children: [
-                      // Product Grid (Left 65%)
-                      const Expanded(
-                        flex: 65,
-                        child: ProductGridPage(),
-                      ),
-                      
-                      // Vertical Divider
-                      Container(width: 1, color: colors.borderDefault),
-
-                      // Cart (Right 35%)
-                      const Expanded(
-                        flex: 35,
-                        child: CurrentOrderView(),
-                      ),
-                    ],
-                  );
-                } else {
-                  // Mobile/Small Tablet Layout
-                  return Stack(
-                    children: [
-                      const ProductGridPage(),
-                      
-                      // Floating Action Button via extended Widget
-                      Positioned(
-                        bottom: context.savvy.shapes.spacingMd,
-                        right: context.savvy.shapes.spacingMd,
-                        child: const _MobileCartFab(),
-                      ),
-                    ],
-                  );
-                }
+          if (state.status == CartStatus.success) {
+            // Close any open dialogs (like payment dialog)
+            Navigator.of(context).popUntil((route) => route.isFirst);
+            
+            // Show Success Dialog
+            showGeneralDialog(
+              context: context,
+              barrierDismissible: true,
+              barrierLabel: 'Success',
+              barrierColor: Colors.black54,
+              pageBuilder: (_, __, ___) => CheckoutSuccessDialog(
+                items: state.items,
+                onNewOrder: () {
+                   context.read<CartBloc>().add(const CartEvent.clearCart());
+                   Navigator.of(context).pop();
+                },
+              ),
+              transitionBuilder: (ctx, anim1, anim2, child) {
+                 return Transform.scale(
+                   scale: Curves.elasticOut.transform(anim1.value),
+                   child: child,
+                 );
               },
-            ),
-            loading: () => const Center(child: CircularProgressIndicator()),
-            orElse: () => const OpenShiftPage(), // Show OpenShiftPage if closed/initial
-          );
+              transitionDuration: const Duration(milliseconds: 600),
+            );
+          } else if (state.status == CartStatus.failure) {
+             ScaffoldMessenger.of(context).showSnackBar(
+               SnackBar(
+                 content: Text(state.errorMessage ?? 'Checkout Failed'),
+                 backgroundColor: context.savvy.colors.stateError,
+               )
+             );
+          }
         },
+        child: BlocConsumer<ShiftBloc, ShiftState>(
+          listener: (context, state) {
+             // Redirect if error or closed (though the builder handles closed view)
+             if (state is! _Open && state is! _Loading && state is! _Initial) {
+                // Can add specific navigation logic if needed
+             }
+          },
+          builder: (context, state) {
+            return state.maybeWhen(
+              open: (shift, _, __) => LayoutBuilder(
+                builder: (context, constraints) {
+                  // Requirement: Tablet/Desktop > 900px
+                  final isLargeScreen = constraints.maxWidth > 900;
+  
+                  if (isLargeScreen) {
+                    return Row(
+                      children: [
+                        // Product Grid (Left 65%)
+                        const Expanded(
+                          flex: 65,
+                          child: ProductGridPage(),
+                        ),
+                        
+                        // Vertical Divider
+                        Container(width: 1, color: colors.borderDefault),
+  
+                        // Cart (Right 35%)
+                        const Expanded(
+                          flex: 35,
+                          child: CartView(),
+                        ),
+                      ],
+                    );
+                  } else {
+                    // Mobile/Small Tablet Layout
+                    return Stack(
+                      children: [
+                        const ProductGridPage(),
+                        
+                        // Floating Action Button via extended Widget
+                        Positioned(
+                          bottom: context.savvy.shapes.spacingMd,
+                          right: context.savvy.shapes.spacingMd,
+                          child: const _MobileCartFab(),
+                        ),
+                      ],
+                    );
+                  }
+                },
+              ),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              orElse: () => const OpenShiftPage(), // Show OpenShiftPage if closed/initial
+            );
+          },
+        ),
       ),
     );
   }
@@ -209,7 +248,7 @@ class _MobileCartFabState extends State<_MobileCartFab> {
                           child: BlocProvider.value(
                             // Re-provide the existing CartBloc to the modal
                             value: context.read<CartBloc>(), 
-                            child: const CurrentOrderView(),
+                            child: const CartView(),
                           ),
                         ),
                       ),

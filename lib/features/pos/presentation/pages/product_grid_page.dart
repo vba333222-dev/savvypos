@@ -7,6 +7,7 @@ import 'package:savvy_pos/features/inventory/data/repositories/product_repositor
 import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
+import 'package:savvy_pos/features/pos/data/repositories/mock_product_repository.dart';
 import 'package:savvy_pos/features/inventory/domain/usecases/get_products.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
@@ -25,8 +26,8 @@ class ProductGridPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Dependency Injection
-    final repo = ProductRepositoryImpl(db); 
+    // Mock Data Injection
+    final repo = MockProductRepository(); 
     final useCase = GetProductsUseCase(repo);
 
     return BlocProvider(
@@ -196,7 +197,8 @@ class ProductGridView extends StatelessWidget {
 
   Future<void> _onProductTapped(BuildContext context, Product product) async {
      try {
-        final modifiers = await GetIt.I<IProductRepository>().getModifiersForProduct(product.uuid);
+        // Use Mock Repository for consistency
+        final modifiers = await MockProductRepository().getModifiersForProduct(product.uuid);
         if (!context.mounted) return;
 
         if (modifiers.isEmpty) {

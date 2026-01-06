@@ -147,10 +147,10 @@ class _PosPageContent extends StatelessWidget {
                       const ProductGridPage(),
                       
                       // Floating Action Button via extended Widget
-                      const Positioned(
-                        bottom: 16,
-                        right: 16,
-                        child: _MobileCartFab(),
+                      Positioned(
+                        bottom: context.savvy.shapes.spacingMd,
+                        right: context.savvy.shapes.spacingMd,
+                        child: const _MobileCartFab(),
                       ),
                     ],
                   );
@@ -166,8 +166,15 @@ class _PosPageContent extends StatelessWidget {
   }
 }
 
-class _MobileCartFab extends StatelessWidget {
+class _MobileCartFab extends StatefulWidget {
   const _MobileCartFab();
+
+  @override
+  State<_MobileCartFab> createState() => _MobileCartFabState();
+}
+
+class _MobileCartFabState extends State<_MobileCartFab> {
+  bool _isPressed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -175,34 +182,48 @@ class _MobileCartFab extends StatelessWidget {
       builder: (context, state) {
         final itemCount = state.items.fold(0, (sum, item) => sum + item.quantity);
         final totalFn = state.total.toStringAsFixed(2);
-        final colors = context.savvy.colors;
+        final theme = context.savvy;
 
-        return FloatingActionButton.extended(
-          onPressed: () {
-            WoltModalSheet.show(
-              context: context,
-              pageListBuilder: (context) {
-                return [
-                  WoltModalSheetPage(
-                    backgroundColor: colors.bgElevated,
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.8,
-                      child: BlocProvider.value(
-                        // Re-provide the existing CartBloc to the modal
-                        value: context.read<CartBloc>(), 
-                        child: const CurrentOrderView(),
+        return GestureDetector(
+          onTapDown: (_) => setState(() => _isPressed = true),
+          onTapUp: (_) => setState(() => _isPressed = false),
+          onTapCancel: () => setState(() => _isPressed = false),
+          child: AnimatedScale(
+            scale: _isPressed ? 0.9 : 1.0,
+            duration: theme.motion.durationFast,
+            curve: theme.motion.curveBounce,
+            child: FloatingActionButton.extended(
+              onPressed: () {
+                WoltModalSheet.show(
+                  context: context,
+                  minPageHeight: 0.5,
+                  maxPageHeight: 0.9,
+                  modalType: WoltModalType.bottomSheet,
+                  transitionDuration: theme.motion.durationMedium,
+                  pageListBuilder: (context) {
+                    return [
+                      WoltModalSheetPage(
+                        backgroundColor: theme.colors.bgElevated,
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.8,
+                          child: BlocProvider.value(
+                            // Re-provide the existing CartBloc to the modal
+                            value: context.read<CartBloc>(), 
+                            child: const CurrentOrderView(),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ];
+                    ];
+                  },
+                );
               },
-            );
-          },
-          backgroundColor: colors.brandPrimary,
-          icon: Icon(Icons.shopping_cart, color: colors.textInverse),
-          label: Text(
-            'Items: $itemCount - Total: \$$totalFn',
-            style: TextStyle(color: colors.textInverse, fontWeight: FontWeight.bold),
+              backgroundColor: theme.colors.brandPrimary,
+              icon: Icon(Icons.shopping_cart, color: theme.colors.textInverse),
+              label: Text(
+                'Items: $itemCount - Total: \$$totalFn',
+                style: TextStyle(color: theme.colors.textInverse, fontWeight: FontWeight.bold),
+              ),
+            ),
           ),
         );
       },

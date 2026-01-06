@@ -1,6 +1,6 @@
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
-import 'package:savvy_pos/features/inventory/domain/entities/ingredient.dart';
+// import 'package:savvy_pos/features/inventory/domain/entities/ingredient.dart'; // Uncomment if needed
 
 abstract class IProductRepository {
   /// Get all products (paginated or stream)
@@ -17,4 +17,9 @@ abstract class IProductRepository {
 
   /// Soft delete product
   Future<void> deleteProduct(String uuid);
+  
+  /// Get modifier groups for a product
+  Future<List<ModifierGroup>> getModifiersForProduct(String productUuid);
+  
+  // Add other methods if stricly required, but this is the critical one for now.
 }

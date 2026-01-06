@@ -4,11 +4,15 @@ import (
 	"context"
 	"log"
 
+	"savvy-pos-backend/internal/core/domain"
 	"savvy-pos-backend/internal/core/server"
 	"savvy-pos-backend/internal/core/storage"
+	authHttp "savvy-pos-backend/internal/features/auth/http"
+	authService "savvy-pos-backend/internal/features/auth/service"
 	"savvy-pos-backend/internal/features/sync/http"
 
 	"go.uber.org/fx"
+	"gorm.io/gorm"
 )
 
 func main() {
@@ -17,7 +21,10 @@ func main() {
 			storage.NewPostgresDB,
 			server.NewGinEngine,
 			http.NewSyncHandler,
+			authHttp.NewAuthHandler,
+			authService.NewJWTService,
 		),
+		fx.Invoke(
 			server.RegisterRoutes,
 			server.Start,
 			func(db *gorm.DB) error {

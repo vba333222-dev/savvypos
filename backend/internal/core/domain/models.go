@@ -58,15 +58,17 @@ type Product struct {
 	Price    float64 `json:"price"`
 	SKU      string  `json:"sku"`
 	Category string  `json:"category"`
+	TenantID string  `json:"tenant_id"`
 }
 
 // Customer (CRM)
 type Customer struct {
 	Model
-	UUID  string `gorm:"uniqueIndex" json:"uuid"`
-	Name  string `json:"name"`
-	Phone string `json:"phone"`
-	Email string `json:"email"`
+	UUID     string `gorm:"uniqueIndex" json:"uuid"`
+	Name     string `json:"name"`
+	Phone    string `json:"phone"`
+	Email    string `json:"email"`
+	TenantID string `json:"tenant_id"`
 }
 
 // TenantConfig for multi-tenant support

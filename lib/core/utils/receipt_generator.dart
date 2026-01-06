@@ -1,11 +1,9 @@
-import 'dart:typed_data';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
+import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:intl/intl.dart';
 
 class ReceiptGenerator {
   
-  static Future<Uint8List> generateReceipt({
+  static Future<List<int>> generateReceipt({
     required String storeName,
     required String orderNumber,
     required DateTime date,
@@ -17,69 +15,85 @@ class ReceiptGenerator {
     required String paymentMethod,
     double? tendered,
     double? change,
+    PaperSize paperSize = PaperSize.mm58,
   }) async {
-    final pdf = pw.Document();
+    final profile = await CapabilityProfile.load();
+    final generator = Generator(paperSize, profile);
+    List<int> bytes = [];
+    
     final currency = NumberFormat.currency(locale: 'en_US', symbol: '\$');
     final dateFormat = DateFormat('yyyy-MM-dd HH:mm');
 
-    pdf.addPage(
-      pw.Page(
-        pageFormat: PdfPageFormat.roll80, // Thermal printer roll width approx 80mm
-        margin: const pw.EdgeInsets.all(10),
-        build: (pw.Context context) {
-          return pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.center,
-            mainAxisSize: pw.MainAxisSize.min,
-            children: [
-              pw.Text(storeName, style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 18)),
-              pw.SizedBox(height: 5),
-              pw.Text(dateFormat.format(date), style: const pw.TextStyle(fontSize: 10)),
-              pw.Text('Order: $orderNumber', style: const pw.TextStyle(fontSize: 10)),
-              pw.Divider(),
-              
-              // Items
-              ...items.map((item) {
-                return pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                  children: [
-                    pw.Expanded(child: pw.Text('${item['qty']}x ${item['name']}', style: const pw.TextStyle(fontSize: 10))),
-                    pw.Text(currency.format(item['total']), style: const pw.TextStyle(fontSize: 10)),
-                  ],
-                );
-              }).toList(),
-              
-              pw.Divider(),
-              
-              // Totals
-              _buildRow('Subtotal', currency.format(subtotal)),
-              if (discount > 0) _buildRow('Discount', '-${currency.format(discount)}'),
-              _buildRow('Tax', currency.format(tax)),
-              pw.Divider(),
-              _buildRow('TOTAL', currency.format(total), isBold: true, fontSize: 14),
-              
-              pw.SizedBox(height: 10),
-              _buildRow('Method', paymentMethod),
-              if (tendered != null) _buildRow('Tendered', currency.format(tendered)),
-              if (change != null) _buildRow('Change', currency.format(change)),
-              
-              pw.SizedBox(height: 20),
-              pw.Text('Thank you for visiting!', style: const pw.TextStyle(fontSize: 10, fontStyle: pw.FontStyle.italic)),
-            ],
-          );
-        },
-      ),
-    );
+    // Header
+    bytes += generator.text(storeName, styles: const PosStyles(
+      align: PosAlign.center,
+      height: PosTextSize.size2,
+      width: PosTextSize.size2,
+      bold: true,
+    ));
+    bytes += generator.text('Enterprise Solution', styles: const PosStyles(align: PosAlign.center));
+    bytes += generator.hr();
+    
+    // Info
+    bytes += generator.text('Date: ${dateFormat.format(date)}', styles: const PosStyles(align: PosAlign.left));
+    bytes += generator.text('Order: $orderNumber', styles: const PosStyles(align: PosAlign.left));
+    bytes += generator.hr();
+    
+    // Items
+    for (final item in items) {
+      // 58mm has limited width (approx 32 chars). 
+      // Qty (4) + Name (18) + Total (10)
+      final name = item['name'].toString();
+      final qty = item['qty'].toString();
+      final price = currency.format(item['total']);
+      
+      bytes += generator.row([
+        PosColumn(text: '${qty}x', width: 2),
+        PosColumn(text: name, width: 6),
+        PosColumn(text: price, width: 4, styles: const PosStyles(align: PosAlign.right)),
+      ]);
+    }
+    
+    bytes += generator.hr();
+    
+    // Totals
+    bytes += generator.row([
+      PosColumn(text: 'Subtotal:', width: 6),
+      PosColumn(text: currency.format(subtotal), width: 6, styles: const PosStyles(align: PosAlign.right)),
+    ]);
+    
+    if (discount > 0) {
+      bytes += generator.row([
+        PosColumn(text: 'Discount:', width: 6),
+        PosColumn(text: '-${currency.format(discount)}', width: 6, styles: const PosStyles(align: PosAlign.right)),
+      ]);
+    }
+    
+    bytes += generator.row([
+      PosColumn(text: 'Tax:', width: 6),
+      PosColumn(text: currency.format(tax), width: 6, styles: const PosStyles(align: PosAlign.right)),
+    ]);
+    
+    bytes += generator.feed(1);
+    
+    bytes += generator.row([
+      PosColumn(text: 'TOTAL', width: 5, styles: const PosStyles(bold: true, height: PosTextSize.size2, width: PosTextSize.size2)),
+      PosColumn(text: currency.format(total), width: 7, styles: const PosStyles(bold: true, align: PosAlign.right, height: PosTextSize.size2, width: PosTextSize.size2)),
+    ]);
 
-    return pdf.save();
-  }
+    bytes += generator.hr();
 
-  static pw.Widget _buildRow(String label, String value, {bool isBold = false, double fontSize = 10}) {
-    return pw.Row(
-      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-      children: [
-        pw.Text(label, style: pw.TextStyle(fontSize: fontSize, fontWeight: isBold ? pw.FontWeight.bold : null)),
-        pw.Text(value, style: pw.TextStyle(fontSize: fontSize, fontWeight: isBold ? pw.FontWeight.bold : null)),
-      ],
-    );
+    // Payment Info
+    bytes += generator.text('Paid via: $paymentMethod');
+    if (tendered != null) bytes += generator.text('Tendered: ${currency.format(tendered)}');
+    if (change != null) bytes += generator.text('Change: ${currency.format(change)}');
+    
+    // Footer
+    bytes += generator.feed(2);
+    bytes += generator.text('Thank you for shopping!', styles: const PosStyles(align: PosAlign.center, bold: true));
+    bytes += generator.feed(1);
+    bytes += generator.cut();
+    
+    return bytes;
   }
 }

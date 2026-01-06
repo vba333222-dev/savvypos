@@ -15,6 +15,7 @@ import 'package:savvy_pos/features/pos/presentation/bloc/product/product_bloc.da
 import 'package:savvy_pos/features/pos/presentation/widgets/cart_view.dart'; // Updated import
 import 'package:savvy_pos/features/pos/presentation/widgets/product_card.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/product_modifier_dialog.dart';
+import 'package:savvy_pos/features/pos/presentation/widgets/scanner_listener_widget.dart';
 import 'package:savvy_pos/bootstrap.dart';
 import 'package:get_it/get_it.dart';
 import 'package:badges/badges.dart' as badges;
@@ -46,9 +47,13 @@ class ProductGridView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: theme.colors.bgPrimary,
-      body: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
+      body: ScannerListenerWidget(
+        onScanned: (barcode) {
+           context.read<CartBloc>().add(CartEvent.scanItem(barcode));
+        },
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
           // PRODUCT GRID (CustomScrollView for performance)
           Expanded(
             flex: 7,

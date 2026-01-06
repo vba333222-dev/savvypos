@@ -30,6 +30,45 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<_RetrieveOrder>(_onRetrieveOrder);
     on<_CheckoutSplit>(_onCheckoutSplit);
     on<_UpdateNote>(_onUpdateNote);
+    on<_ScanItem>(_onScanItem);
+  }
+
+  Future<void> _onScanItem(_ScanItem event, Emitter<CartState> emit) async {
+    try {
+      // 1. Find Product by SKU or Barcode
+      final productRow = await (db.select(db.productTable)
+        ..where((t) => t.sku.equals(event.barcode) | t.barcode.equals(event.barcode)))
+        .getSingleOrNull();
+
+      if (productRow != null) {
+        // Map to Domain Entity
+        final product = Product(
+          uuid: productRow.uuid,
+          name: productRow.name,
+          price: productRow.price,
+          costPrice: productRow.costPrice ?? 0,
+          sku: productRow.sku ?? '',
+          barcode: productRow.barcode ?? '',
+          category: productRow.categoryId,
+          trackStock: productRow.trackStock,
+          isService: productRow.isService,
+          colorHex: productRow.colorHex,
+          imageUrl: productRow.imageUrl,
+        );
+        
+        // 2. Add to Cart
+        add(CartEvent.addProduct(product));
+        
+        // 3. Feedback (Beep) -> Handled in _onAddProduct or here? 
+        // _onAddProduct already beeps, so just adding event is enough.
+      } else {
+        // Product Not Found
+        _sound.playError(); // Needs implementation or separate sound
+        emit(state.copyWith(error: 'Product not found: ${event.barcode}'));
+      }
+    } catch (e) {
+      emit(state.copyWith(error: 'Scan failed: $e'));
+    }
   }
 
   void _onUpdateNote(_UpdateNote event, Emitter<CartState> emit) {

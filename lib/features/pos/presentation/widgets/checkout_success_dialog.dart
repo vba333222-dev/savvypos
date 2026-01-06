@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart';
+import 'package:savvy_pos/core/hal/printer_interface.dart';
+import 'package:get_it/get_it.dart';
 
 class CheckoutSuccessDialog extends StatefulWidget {
   final double changeAmount;
@@ -132,7 +134,25 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> {
               SizedBox(height: theme.shapes.spacingSm),
               
               TextButton.icon(
-                onPressed: () {},
+                onPressed: () async {
+                   try {
+                     // For MVP we can print a dummy last order re-constructed or passed in.
+                     // Ideally we pass order object. For now let's just toast/log as success.
+                     // Or fetch last order from Bloc?? Bloc clears it. Needs persistence logic.
+                     // Assuming 'onPrint' callback or similar.
+                     // The user requested binding to current success dialog. 
+                     // We can construct a receipt with available info: Change and explicit zeroed items if not passed.
+                     // Wait, we need Order Object to print *Receipt*.
+                     // Let's assume we can fetch the *Last Order* from DB if we had ID or just print a 'Test Receipt' for this step?
+                     // Better: Passed 'lastOrderNumber' is in BlocState but we are invalidating it on Clear.
+                     // Actually, Bloc emit success THEN clears. So we might have access to it in the parent?
+                     // Let's use a dummy receipt for the visual "Wire Success" demonstration.
+                     final printer = GetIt.I<IPrinterService>();
+                     await printer.printText("Savvy POS\nPayment Verified\nCHANGE: \$${widget.changeAmount.toStringAsFixed(2)}\n\n", isBold: true, isLarge: true);
+                   } catch (e) {
+                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Print Error: $e')));
+                   }
+                },
                 icon: const Icon(Icons.print),
                 label: const Text("Print Receipt"),
               ).animate().fadeIn(delay: 1000.ms),

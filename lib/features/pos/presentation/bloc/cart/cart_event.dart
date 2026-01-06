@@ -13,6 +13,7 @@ class CartEvent with _$CartEvent {
   const factory CartEvent.updateQuantity(String itemUuid, int quantity) = _UpdateQuantity;
   const factory CartEvent.removeFromCart(String itemUuid) = _RemoveFromCart;
   const factory CartEvent.clearCart() = _ClearCart;
+  const factory CartEvent.scanItem(String barcode) = _ScanItem;
   
   // Advanced Cart
   const factory CartEvent.selectCustomer(Customer? customer) = _SelectCustomer;

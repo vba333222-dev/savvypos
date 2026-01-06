@@ -8,14 +8,16 @@ import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
 import 'package:savvy_pos/core/utils/sound_helper.dart';
 import 'package:uuid/uuid.dart';
+import 'package:savvy_pos/core/sync/sync_worker.dart';
 
 @injectable
 class CartBloc extends Bloc<CartEvent, CartState> {
   final AppDatabase db;
   final SoundHelper _sound;
+  final SyncWorker _syncWorker; // Injected
   final Uuid _uuid = const Uuid();
 
-  CartBloc(this.db, this._sound) : super(CartState.initial()) {
+  CartBloc(this.db, this._sound, this._syncWorker) : super(CartState.initial()) {
     on<_AddProduct>(_onAddProduct);
     on<_UpdateQuantity>(_onUpdateQuantity);
     on<_RemoveFromCart>(_onRemoveFromCart);
@@ -227,6 +229,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
       // 4. Success & Cleanup
       emit(state.copyWith(isLoading: false, isSuccess: true, lastOrderNumber: orderNumber));
+      
+      // Trigger Background Sync Immediately
+      _syncWorker.sync();
+      
       add(const CartEvent.clearCart());
 
     } catch (e) {

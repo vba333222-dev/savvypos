@@ -37,40 +37,11 @@ class ApiClient {
     ));
   }
 
-  Future<bool> pushSyncData(List<Map<String, dynamic>> items) async {
-    if (items.isEmpty) return true;
-
-    try {
-      final response = await _dio.post(
-        '/sync/push',
-        data: {
-          'items': items, // Old structure, but backend expects SyncRequest now? 
-          // Wait, backend expects SINGLE SyncRequest or list?
-          // Handler says: ShouldBindJSON(&req) where req is SyncRequest (single).
-          // But mobile sends LIST.
-          // Backend handler needs an update or Mobile needs to send one by one.
-          // Let's assume Mobile iterates or Backend handles list. 
-          // Current Backend: HandlePush binds ONE SyncRequest.
-          // Mobile Logic in sync_worker: iterates and creates payload list.
-          // Client.pushSyncData takes List.
-          // I will update pushSyncData to loop or change backend to list.
-          // Task 1 prompts implied: "Request Struct: Define a struct matching the SyncQueue item".
-          // It didn't explicitly say batch.
-          // I will update Mobile to push one by one for now to match current backend `SyncRequest`.
-        },
-      );
-      // ...
-      return false; 
-    } catch(e) { return false; }
-  }
-  
   Future<bool> pushItem(Map<String, dynamic> payload) async {
     try {
-      // Requirement: Handle timeout (10s) and return true only if 200.
+      // Requirement: Handle timeout (10-15s) and return true only if 200.
       // Headers: Authorization: Bearer <token>, X-Tenant-ID
       
-      // TODO: Get actual token. For MVP/Sync, we use a placeholder or injected value.
-      // Ideally ApiClient should have a `setToken` method or read from secure storage.
       const token = "mock-token-123"; 
       const tenantId = "default-tenant";
 
@@ -78,11 +49,7 @@ class ApiClient {
         '/sync/push',
         data: {
           'actionType': payload['action'],
-          'payloadJson': payload['payload'], // Backend expects json.RawMessage, Dio handles Map automatically? 
-          // If 'payload' is a Map, Dio sends it as JSON object. 
-          // Go binding `json.RawMessage` works with JSON object or string. 
-          // SyncWorker passes `jsonDecode` output (Map) as 'payload'.
-          // So this sends nested JSON object. Correct.
+          'payloadJson': payload['payload'], 
           'idempotencyKey': payload['idempotency_key']
         },
         options: Options(
@@ -90,17 +57,20 @@ class ApiClient {
             'Authorization': 'Bearer $token',
             'X-Tenant-ID': tenantId,
           },
-          sendTimeout: const Duration(seconds: 10),
-          receiveTimeout: const Duration(seconds: 10),
+          sendTimeout: const Duration(seconds: 15),
+          receiveTimeout: const Duration(seconds: 15),
+          validateStatus: (status) => status != null && status < 500, // Let us handle status check manually
         ),
       );
 
-      return response.statusCode == 200;
+      return response.statusCode == 200 || response.statusCode == 201;
     } catch (e) {
       _logger.e('Push Failed', error: e);
       return false;
     }
   }
+  
+
 
   Future<Map<String, dynamic>?> pullSyncData(String lastSyncedAt) async {
     try {

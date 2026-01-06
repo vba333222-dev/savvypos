@@ -107,3 +107,14 @@ type Employee struct {
 	Password string `json:"password"` // Hash
 	PIN      string `json:"pin"`      // Alternative Login
 }
+
+// InventoryLedger for Audit Trail
+type InventoryLedger struct {
+	Model
+	ProductUUID    string  `gorm:"index" json:"productUuid"`
+	ReferenceID    string  `gorm:"index" json:"referenceId"`
+	Type           string  `json:"type"` // SALE, PURCHASE, ADJUSTMENT
+	QuantityChange float64 `json:"quantityChange"`
+	SnapshotCost   float64 `json:"snapshotCost"`
+	TenantID       string  `json:"tenantId"`
+}

@@ -24,6 +24,8 @@ import '../../features/customers/domain/repositories/i_customer_repository.dart'
 import '../../features/customers/presentation/bloc/customer_bloc.dart' as _i676;
 import '../../features/dashboard/data/repositories/dashboard_repository_impl.dart'
     as _i509;
+import '../../features/dashboard/data/repositories/remote_dashboard_repository_impl.dart'
+    as _i477;
 import '../../features/dashboard/domain/repositories/i_dashboard_repository.dart'
     as _i485;
 import '../../features/dashboard/presentation/bloc/dashboard_bloc.dart'
@@ -73,6 +75,9 @@ import '../hal/printer_service.dart' as _i16;
 import '../network/api_client.dart' as _i557;
 import '../utils/sound_helper.dart' as _i842;
 
+const String _mobile = 'mobile';
+const String _web = 'web';
+
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
   _i174.GetIt init({
@@ -92,6 +97,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i139.ShiftRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i22.ITableRepository>(
         () => _i392.TableRepositoryImpl(gh<_i660.AppDatabase>()));
+    gh.lazySingleton<_i485.IDashboardRepository>(
+      () => _i509.DashboardRepositoryImpl(gh<_i660.AppDatabase>()),
+      registerFor: {_mobile},
+    );
     gh.lazySingleton<_i695.IProductRepository>(
         () => _i777.ProductRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i302.ITenantRepository>(
@@ -102,9 +111,11 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.lazySingleton<_i67.IOrderRepository>(
         () => _i14.OrderRepositoryImpl(gh<_i660.AppDatabase>()));
-    gh.lazySingleton<_i485.IDashboardRepository>(
-        () => _i509.DashboardRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i560.IPrinterService>(() => _i16.PrinterService());
+    gh.lazySingleton<_i485.IDashboardRepository>(
+      () => _i477.RemoteDashboardRepositoryImpl(gh<_i557.ApiClient>()),
+      registerFor: {_web},
+    );
     gh.lazySingleton<_i856.IReservationRepository>(
         () => _i386.ReservationRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i884.ICustomerRepository>(
@@ -114,14 +125,19 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i246.ReportRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.factory<_i424.TableBloc>(
         () => _i424.TableBloc(gh<_i22.ITableRepository>()));
-    gh.factory<_i652.DashboardBloc>(
-        () => _i652.DashboardBloc(gh<_i485.IDashboardRepository>()));
     gh.factory<_i652.ReportBloc>(
         () => _i652.ReportBloc(gh<_i912.IReportRepository>()));
     gh.lazySingleton<_i430.PrinterRouter>(
         () => _i430.PrinterRouter(gh<_i560.IPrinterService>()));
     gh.lazySingleton<_i246.ShiftBloc>(
         () => _i246.ShiftBloc(gh<_i240.IShiftRepository>()));
+    gh.factory<_i652.DashboardBloc>(
+      () => _i652.DashboardBloc(gh<_i485.IDashboardRepository>()),
+      registerFor: {
+        _mobile,
+        _web,
+      },
+    );
     gh.factory<_i118.ReservationBloc>(
         () => _i118.ReservationBloc(gh<_i856.IReservationRepository>()));
     gh.factory<_i1070.HistoryBloc>(

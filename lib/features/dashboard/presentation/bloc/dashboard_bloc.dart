@@ -14,6 +14,7 @@ class DashboardEvent with _$DashboardEvent {
 class DashboardState with _$DashboardState {
   const factory DashboardState({
     @Default([]) List<DailySalesData> recentSales,
+    @Default([]) List<TopSellingItem> topProducts,
     @Default(0.0) double todaySales,
     @Default(0) int pendingSyncCount,
     @Default(true) bool isLoading,
@@ -21,7 +22,7 @@ class DashboardState with _$DashboardState {
   }) = _DashboardState;
 }
 
-@injectable
+@Injectable(env: ['mobile', 'web'])
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   final IDashboardRepository _repository;
 
@@ -35,9 +36,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       final recent = await _repository.getSalesLast7Days();
       final today = await _repository.getTodaySales();
       final pending = await _repository.getPendingSyncCount();
+      final top = await _repository.getTopSellingProducts();
       
       emit(state.copyWith(
         recentSales: recent,
+        topProducts: top,
         todaySales: today,
         pendingSyncCount: pending,
         isLoading: false,

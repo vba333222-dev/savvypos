@@ -20,18 +20,17 @@ void main() async {
   
   // Init Workmanager
   await Workmanager().initialize(
-    callbackDispatcher, // The top level function, aka callbackDispatcher
-    isInDebugMode: true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+    callbackDispatcher, 
+    isInDebugMode: true 
   );
   
-  // Register Periodic Task
   await Workmanager().registerPeriodicTask(
     "1",
     "fiveMinuteSync",
-    frequency: const Duration(minutes: 15), // Minimum interval on Android
+    frequency: const Duration(minutes: 15), 
   );
 
-  bootstrap(() => const App());
+  bootstrap(() => const App(), environment: 'mobile');
 }
 
 class App extends StatelessWidget {

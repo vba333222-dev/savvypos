@@ -173,6 +173,7 @@ abstract class _LoadData implements DashboardEvent {
 /// @nodoc
 mixin _$DashboardState {
   List<DailySalesData> get recentSales => throw _privateConstructorUsedError;
+  List<TopSellingItem> get topProducts => throw _privateConstructorUsedError;
   double get todaySales => throw _privateConstructorUsedError;
   int get pendingSyncCount => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
@@ -193,6 +194,7 @@ abstract class $DashboardStateCopyWith<$Res> {
   @useResult
   $Res call(
       {List<DailySalesData> recentSales,
+      List<TopSellingItem> topProducts,
       double todaySales,
       int pendingSyncCount,
       bool isLoading,
@@ -215,6 +217,7 @@ class _$DashboardStateCopyWithImpl<$Res, $Val extends DashboardState>
   @override
   $Res call({
     Object? recentSales = null,
+    Object? topProducts = null,
     Object? todaySales = null,
     Object? pendingSyncCount = null,
     Object? isLoading = null,
@@ -225,6 +228,10 @@ class _$DashboardStateCopyWithImpl<$Res, $Val extends DashboardState>
           ? _value.recentSales
           : recentSales // ignore: cast_nullable_to_non_nullable
               as List<DailySalesData>,
+      topProducts: null == topProducts
+          ? _value.topProducts
+          : topProducts // ignore: cast_nullable_to_non_nullable
+              as List<TopSellingItem>,
       todaySales: null == todaySales
           ? _value.todaySales
           : todaySales // ignore: cast_nullable_to_non_nullable
@@ -255,6 +262,7 @@ abstract class _$$DashboardStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {List<DailySalesData> recentSales,
+      List<TopSellingItem> topProducts,
       double todaySales,
       int pendingSyncCount,
       bool isLoading,
@@ -275,6 +283,7 @@ class __$$DashboardStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? recentSales = null,
+    Object? topProducts = null,
     Object? todaySales = null,
     Object? pendingSyncCount = null,
     Object? isLoading = null,
@@ -285,6 +294,10 @@ class __$$DashboardStateImplCopyWithImpl<$Res>
           ? _value._recentSales
           : recentSales // ignore: cast_nullable_to_non_nullable
               as List<DailySalesData>,
+      topProducts: null == topProducts
+          ? _value._topProducts
+          : topProducts // ignore: cast_nullable_to_non_nullable
+              as List<TopSellingItem>,
       todaySales: null == todaySales
           ? _value.todaySales
           : todaySales // ignore: cast_nullable_to_non_nullable
@@ -310,11 +323,13 @@ class __$$DashboardStateImplCopyWithImpl<$Res>
 class _$DashboardStateImpl implements _DashboardState {
   const _$DashboardStateImpl(
       {final List<DailySalesData> recentSales = const [],
+      final List<TopSellingItem> topProducts = const [],
       this.todaySales = 0.0,
       this.pendingSyncCount = 0,
       this.isLoading = true,
       this.error})
-      : _recentSales = recentSales;
+      : _recentSales = recentSales,
+        _topProducts = topProducts;
 
   final List<DailySalesData> _recentSales;
   @override
@@ -323,6 +338,15 @@ class _$DashboardStateImpl implements _DashboardState {
     if (_recentSales is EqualUnmodifiableListView) return _recentSales;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_recentSales);
+  }
+
+  final List<TopSellingItem> _topProducts;
+  @override
+  @JsonKey()
+  List<TopSellingItem> get topProducts {
+    if (_topProducts is EqualUnmodifiableListView) return _topProducts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_topProducts);
   }
 
   @override
@@ -339,7 +363,7 @@ class _$DashboardStateImpl implements _DashboardState {
 
   @override
   String toString() {
-    return 'DashboardState(recentSales: $recentSales, todaySales: $todaySales, pendingSyncCount: $pendingSyncCount, isLoading: $isLoading, error: $error)';
+    return 'DashboardState(recentSales: $recentSales, topProducts: $topProducts, todaySales: $todaySales, pendingSyncCount: $pendingSyncCount, isLoading: $isLoading, error: $error)';
   }
 
   @override
@@ -349,6 +373,8 @@ class _$DashboardStateImpl implements _DashboardState {
             other is _$DashboardStateImpl &&
             const DeepCollectionEquality()
                 .equals(other._recentSales, _recentSales) &&
+            const DeepCollectionEquality()
+                .equals(other._topProducts, _topProducts) &&
             (identical(other.todaySales, todaySales) ||
                 other.todaySales == todaySales) &&
             (identical(other.pendingSyncCount, pendingSyncCount) ||
@@ -362,6 +388,7 @@ class _$DashboardStateImpl implements _DashboardState {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_recentSales),
+      const DeepCollectionEquality().hash(_topProducts),
       todaySales,
       pendingSyncCount,
       isLoading,
@@ -380,6 +407,7 @@ class _$DashboardStateImpl implements _DashboardState {
 abstract class _DashboardState implements DashboardState {
   const factory _DashboardState(
       {final List<DailySalesData> recentSales,
+      final List<TopSellingItem> topProducts,
       final double todaySales,
       final int pendingSyncCount,
       final bool isLoading,
@@ -387,6 +415,8 @@ abstract class _DashboardState implements DashboardState {
 
   @override
   List<DailySalesData> get recentSales;
+  @override
+  List<TopSellingItem> get topProducts;
   @override
   double get todaySales;
   @override

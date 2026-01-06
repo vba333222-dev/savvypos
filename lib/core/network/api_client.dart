@@ -95,4 +95,44 @@ class ApiClient {
       return null;
     }
   }
+
+  // Analytics API
+  Future<Map<String, dynamic>?> getAnalyticsSummary() async {
+    try {
+      final response = await _dio.get('/analytics/summary');
+      if (response.statusCode == 200) {
+        return response.data as Map<String, dynamic>;
+      }
+      return null;
+    } catch (e) {
+      _logger.e('Analytics Summary Failed', error: e);
+      return null;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getSalesChart() async {
+    try {
+      final response = await _dio.get('/analytics/sales_chart');
+      if (response.statusCode == 200) {
+        return List<Map<String, dynamic>>.from(response.data);
+      }
+      return [];
+    } catch (e) {
+      _logger.e('Sales Chart Failed', error: e);
+      return [];
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getTopProducts() async {
+    try {
+      final response = await _dio.get('/analytics/top_products');
+      if (response.statusCode == 200) {
+        return List<Map<String, dynamic>>.from(response.data);
+      }
+      return [];
+    } catch (e) {
+      _logger.e('Top Products Failed', error: e);
+      return [];
+    }
+  }
 }

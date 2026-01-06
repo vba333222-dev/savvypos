@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/features/dashboard/domain/repositories/i_dashboard_repository.dart';
 
-@LazySingleton(as: IDashboardRepository)
+@LazySingleton(as: IDashboardRepository, env: ['mobile'])
 class DashboardRepositoryImpl implements IDashboardRepository {
   final AppDatabase db;
 
@@ -59,5 +59,12 @@ class DashboardRepositoryImpl implements IDashboardRepository {
     final count = countAll();
     final result = await (db.selectOnly(db.syncQueue)..addColumns([count])).getSingle();
     return result.read(count) ?? 0;
+  }
+
+  @override
+  Future<List<TopSellingItem>> getTopSellingProducts() async {
+    // Local calculation (Advanced: Group by OrderItems)
+    // For now, return empty or mock for local mobile app to avoid build error.
+    return [];
   }
 }

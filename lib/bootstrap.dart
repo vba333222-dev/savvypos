@@ -18,7 +18,7 @@ class AppBlocObserver extends BlocObserver {
   }
 }
 
-Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
+Future<void> bootstrap(FutureOr<Widget> Function() builder, {String environment = 'mobile'}) async {
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
@@ -28,7 +28,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
       WidgetsFlutterBinding.ensureInitialized();
 
       // 1. Setup DI
-      await configureDependencies();
+      await configureDependencies(environment);
       
       // 2. Setup Bloc Observer
       Bloc.observer = AppBlocObserver();

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart'; // Barrel file
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 
@@ -49,33 +50,45 @@ class _PaymentMethodsDialogState extends State<PaymentMethodsDialog> {
               child: Column(
                 children: [
                   // Payment Methods Grid
-                  Padding(
-                    padding: EdgeInsets.all(theme.shapes.spacingMd),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _PaymentMethodCard(
-                          label: 'CASH',
-                          icon: Icons.money,
-                          isSelected: _selectedMethod == 'CASH',
-                          onTap: () => setState(() => _selectedMethod = 'CASH'),
+                  // Payment Methods Grid
+                  FutureBuilder<List<ConnectivityResult>>(
+                    future: Connectivity().checkConnectivity(),
+                    builder: (context, snapshot) {
+                      final isOffline = snapshot.hasData && (snapshot.data!.contains(ConnectivityResult.none) || snapshot.data!.isEmpty); 
+                      // Note: A real implementation should listen to stream, but FutureBuilder on dialog open is decent for MVP.
+                      // Actually, let's just check once or use stream if we want dynamic update.
+                      
+                      return Padding(
+                        padding: EdgeInsets.all(theme.shapes.spacingMd),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _PaymentMethodCard(
+                              label: 'CASH',
+                              icon: Icons.money,
+                              isSelected: _selectedMethod == 'CASH',
+                              onTap: () => setState(() => _selectedMethod = 'CASH'),
+                            ),
+                            SizedBox(width: theme.shapes.spacingSm),
+                            _PaymentMethodCard(
+                              label: 'QRIS',
+                              icon: Icons.qr_code,
+                              isSelected: _selectedMethod == 'QRIS',
+                              isDisabled: isOffline,
+                              onTap: isOffline ? () {} : () => setState(() => _selectedMethod = 'QRIS'),
+                            ),
+                            SizedBox(width: theme.shapes.spacingSm),
+                            _PaymentMethodCard(
+                              label: 'CARD',
+                              icon: Icons.credit_card,
+                              isSelected: _selectedMethod == 'CARD',
+                              isDisabled: isOffline,
+                              onTap: isOffline ? () {} : () => setState(() => _selectedMethod = 'CARD'),
+                            ),
+                          ],
                         ),
-                        SizedBox(width: theme.shapes.spacingSm),
-                        _PaymentMethodCard(
-                          label: 'QRIS',
-                          icon: Icons.qr_code,
-                          isSelected: _selectedMethod == 'QRIS',
-                          onTap: () => setState(() => _selectedMethod = 'QRIS'),
-                        ),
-                        SizedBox(width: theme.shapes.spacingSm),
-                        _PaymentMethodCard(
-                          label: 'CARD',
-                          icon: Icons.credit_card,
-                          isSelected: _selectedMethod == 'CARD',
-                          onTap: () => setState(() => _selectedMethod = 'CARD'),
-                        ),
-                      ],
-                    ),
+                      );
+                    }
                   ),
                   
                   Divider(color: theme.colors.borderDefault),
@@ -294,40 +307,41 @@ class _PaymentMethodCard extends StatelessWidget {
   final String label;
   final IconData icon;
   final bool isSelected;
+  final bool isDisabled; // Added
   final VoidCallback onTap;
 
-  const _PaymentMethodCard({required this.label, required this.icon, required this.isSelected, required this.onTap});
+  const _PaymentMethodCard({required this.label, required this.icon, required this.isSelected, this.isDisabled = false, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
     return GestureDetector(
       onTap: onTap,
-      child: AnimatedContainer(
-        duration: theme.motion.durationFast,
-        width: 100,
-        height: 80,
-        decoration: BoxDecoration(
-          color: isSelected ? theme.colors.brandPrimary : theme.colors.bgElevated,
-          borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
-          border: Border.all(
-            color: isSelected ? theme.colors.brandPrimary : theme.colors.borderDefault,
-            width: 2,
-          ),
-          boxShadow: isSelected ? theme.elevations.floating : theme.elevations.sm,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: isSelected ? theme.colors.textInverse : theme.colors.textPrimary),
-            const SizedBox(height: 4),
-            SavvyText(
-              label, 
-              style: SavvyTextStyle.label, 
-              color: isSelected ? theme.colors.textInverse : theme.colors.textPrimary
+        child: AnimatedContainer(
+          duration: theme.motion.durationFast,
+          width: 100,
+          height: 80,
+          decoration: BoxDecoration(
+            color: isDisabled ? theme.colors.bgSecondary.withOpacity(0.5) : (isSelected ? theme.colors.brandPrimary : theme.colors.bgElevated),
+            borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
+            border: Border.all(
+              color: isDisabled ? theme.colors.borderDefault : (isSelected ? theme.colors.brandPrimary : theme.colors.borderDefault),
+              width: 2,
             ),
-          ],
-        ),
+            boxShadow: isSelected && !isDisabled ? theme.elevations.floating : theme.elevations.sm,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: isDisabled ? theme.colors.textMuted : (isSelected ? theme.colors.textInverse : theme.colors.textPrimary)),
+              const SizedBox(height: 4),
+              SavvyText(
+                label, 
+                style: SavvyTextStyle.label, 
+                color: isDisabled ? theme.colors.textMuted : (isSelected ? theme.colors.textInverse : theme.colors.textPrimary)
+              ),
+            ],
+          ),
       ),
     );
   }

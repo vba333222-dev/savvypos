@@ -15,6 +15,7 @@ import 'package:savvy_pos/features/auth/presentation/widgets/pin_pad_dialog.dart
 import 'package:savvy_pos/features/tables/presentation/bloc/table_bloc.dart';
 import 'package:savvy_pos/features/tables/presentation/pages/floor_plan_page.dart';
 import 'package:savvy_pos/features/reservations/presentation/bloc/reservation_bloc.dart';
+import 'package:savvy_pos/core/presentation/widgets/network_status_banner.dart';
 
 class MainShellPage extends StatefulWidget {
   const MainShellPage({Key? key}) : super(key: key);
@@ -152,41 +153,48 @@ class _MainShellContentState extends State<_MainShellContent> {
             if (constraints.maxWidth > 900) {
               // Desktop / Tablet
               return Scaffold(
-                 body: Row(
+                 body: Column(
                    children: [
-                     NavigationRail(
-                       selectedIndex: _selectedIndex,
-                       onDestinationSelected: (index) async {
-                          // RBAC Check (Same as before)
-                          if (index == 4 || index == 2) {
-                            final authBloc = context.read<AuthBloc>();
-                            final user = authBloc.state.employee;
-                            if (user == null || user.role == 'CASHIER') {
-                              final pin = await showDialog<String>(
-                                context: context,
-                                builder: (_) => const PinPadDialog(isLogin: true),
-                              );
-                              if (pin != null && context.mounted) {
-                                authBloc.add(AuthEvent.loginWithPin(pin));
-                              }
-                              return; 
-                            }
-                          }
-                          setState(() => _selectedIndex = index);
-                          widget.onTap(index);
-                       },
-                       labelType: NavigationRailLabelType.all,
-                       leading: Padding(
-                         padding: const EdgeInsets.symmetric(vertical: 24.0),
-                         child: Icon(Icons.storefront, color: colors.brandPrimary, size: 32),
-                       ),
-                       destinations: destinations,
-                     ),
-                     const VerticalDivider(thickness: 1, width: 1),
+                     const NetworkStatusBanner(),
                      Expanded(
-                       child: IndexedStack(
-                         index: _selectedIndex,
-                         children: pages,
+                       child: Row(
+                         children: [
+                           NavigationRail(
+                             selectedIndex: _selectedIndex,
+                             onDestinationSelected: (index) async {
+                                // RBAC Check (Same as before)
+                                if (index == 4 || index == 2) {
+                                  final authBloc = context.read<AuthBloc>();
+                                  final user = authBloc.state.employee;
+                                  if (user == null || user.role == 'CASHIER') {
+                                    final pin = await showDialog<String>(
+                                      context: context,
+                                      builder: (_) => const PinPadDialog(isLogin: true),
+                                    );
+                                    if (pin != null && context.mounted) {
+                                      authBloc.add(AuthEvent.loginWithPin(pin));
+                                    }
+                                    return; 
+                                  }
+                                }
+                                setState(() => _selectedIndex = index);
+                                widget.onTap(index);
+                             },
+                             labelType: NavigationRailLabelType.all,
+                             leading: Padding(
+                               padding: const EdgeInsets.symmetric(vertical: 24.0),
+                               child: Icon(Icons.storefront, color: colors.brandPrimary, size: 32),
+                             ),
+                             destinations: destinations,
+                           ),
+                           const VerticalDivider(thickness: 1, width: 1),
+                           Expanded(
+                             child: IndexedStack(
+                               index: _selectedIndex,
+                               children: pages,
+                             ),
+                           ),
+                         ],
                        ),
                      ),
                    ],
@@ -195,9 +203,16 @@ class _MainShellContentState extends State<_MainShellContent> {
             } else {
               // Mobile
               return Scaffold(
-                body: IndexedStack(
-                  index: _selectedIndex,
-                  children: pages,
+                body: Column(
+                  children: [
+                    const NetworkStatusBanner(),
+                    Expanded(
+                      child: IndexedStack(
+                        index: _selectedIndex,
+                        children: pages,
+                      ),
+                    ),
+                  ],
                 ),
                 bottomNavigationBar: BottomNavigationBar(
                    currentIndex: _selectedIndex,

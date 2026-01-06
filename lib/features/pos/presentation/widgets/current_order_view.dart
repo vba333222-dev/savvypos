@@ -6,6 +6,8 @@ import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/cart_item_tile.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/checkout_success_dialog.dart';
+import 'package:savvy_pos/features/customers/domain/entities/customer.dart';
+import 'package:savvy_pos/features/customers/presentation/widgets/customer_selection_dialog.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/current_order_summary.dart';
 
 class CurrentOrderView extends StatelessWidget {
@@ -64,13 +66,60 @@ class CurrentOrderView extends StatelessWidget {
                 ),
               ),
               const Spacer(),
+              // Customer Selector
+              BlocBuilder<CartBloc, CartState>(
+                builder: (context, state) {
+                  final customer = state.customer;
+                  return InkWell(
+                    onTap: () async {
+                      final selected = await showDialog<Customer>(
+                        context: context,
+                        builder: (_) => const Dialog(child: CustomerSelectionDialog()),
+                      );
+                      if (selected != null) {
+                         context.read<CartBloc>().add(CartEvent.selectCustomer(selected));
+                      }
+                    },
+                    borderRadius: BorderRadius.circular(shapes.radiusSm),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: colors.bgElevated,
+                        border: Border.all(color: colors.borderDefault),
+                        borderRadius: BorderRadius.circular(shapes.radiusSm),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.person_outline, size: 16, color: colors.textSecondary),
+                          const SizedBox(width: 8),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                customer?.name ?? 'Walk-In',
+                                style: typography.bodyMedium?.copyWith(fontWeight: FontWeight.bold, color: colors.textPrimary),
+                              ),
+                              if (customer != null)
+                                Text(
+                                  '${customer.totalPoints.toInt()} pts',
+                                  style: typography.bodySmall?.copyWith(fontSize: 10, color: colors.brandPrimary),
+                                ),
+                            ],
+                          ),
+                          const SizedBox(width: 4),
+                          Icon(Icons.arrow_drop_down, color: colors.textSecondary),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(width: 8),
               // Clear Button
               IconButton(
                 icon: Icon(Icons.delete_outline, color: colors.stateError),
                 onPressed: () {
-                   // Add confirmation dialog logic here usually
-                   // direct clear for now
-                   // context.read<CartBloc>().add(const CartEvent.clearCart());
+                   context.read<CartBloc>().add(const CartEvent.clearCart());
                 },
                 tooltip: 'Clear Cart',
               ),

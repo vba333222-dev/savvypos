@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_box.dart';
+import 'package:savvy_pos/core/design_system/savvy_motion.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_slide_counter.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
@@ -85,7 +86,7 @@ class _ProductCardState extends State<ProductCard> {
             sourceKey: _imageKey,
             child: Material(
               elevation: 8,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(theme.shapes.radiusMd), // Tokenized
               clipBehavior: Clip.antiAlias,
               child: widget.product.imageUrl != null 
                 ? CachedNetworkImage(
@@ -110,13 +111,17 @@ class _ProductCardState extends State<ProductCard> {
           
           widget.onTap?.call(); 
         },
+        // KINETIC: Squishy Card Interaction
+        // Scales down to 95% on press, springs back on release.
         child: AnimatedScale(
-          scale: _isPressed ? 0.95 : 1.0,
-          duration: _isPressed ? 100.ms : 500.ms,
-          curve: _isPressed ? Curves.easeOut : Curves.elasticOut,
-          child: SavvyBox(
+           scale: _isPressed ? 0.95 : 1.0,
+           duration: _isPressed ? theme.motion.durationFast : theme.motion.durationMedium,
+           curve: _isPressed ? Curves.easeOut : theme.motion.curveElastic, // Elastic pop back (Antigravity)
+           child: SavvyBox(
             padding: EdgeInsets.zero,
             color: theme.colors.bgElevated,
+            borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
+            shadow: _isPressed ? theme.elevations.sm : theme.elevations.md, // Shadow dips on press
             child: Stack(
               children: [
                 Column(
@@ -216,7 +221,6 @@ class _ProductCardState extends State<ProductCard> {
               ],
             ),
           ),
-        ),
       ),
     );
   }

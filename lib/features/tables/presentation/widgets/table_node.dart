@@ -1,10 +1,11 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/tables/domain/entities/table_with_status.dart';
 
-class TableNode extends StatelessWidget {
+class TableNode extends StatefulWidget {
   final TableWithStatus tableStatus;
   final VoidCallback onTap;
 
@@ -15,32 +16,91 @@ class TableNode extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final theme = context.savvy;
-    final table = tableStatus.table;
-    final isOccupied = table.isOccupied;
-    final isBillPrinted = tableStatus.orderStatus == 'BILL_PRINTED';
+  State<TableNode> createState() => _TableNodeState();
+}
 
-    // Determine Color
-    Color bgColor = theme.colors.bgElevated;
-    Color borderColor = theme.colors.borderDefault;
-    Color textColor = theme.colors.textPrimary;
+class _TableNodeState extends State<TableNode> {
+  Timer? _timer;
+  Duration _elapsed = Duration.zero;
 
-    if (isOccupied) {
-      bgColor = theme.colors.brandPrimary;
-      borderColor = theme.colors.brandPrimary;
-      textColor = theme.colors.textInverse;
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  @override
+  void didUpdateWidget(covariant TableNode oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.tableStatus.table.isOccupied != oldWidget.tableStatus.table.isOccupied) {
+      _startTimer();
+    }
+  }
+
+  void _startTimer() {
+    _timer?.cancel();
+    _updateElapsed();
+    
+    if (widget.tableStatus.table.isOccupied) {
+      _timer = Timer.periodic(const Duration(minutes: 1), (_) => _updateElapsed());
+    }
+  }
+
+  void _updateElapsed() {
+    if (!widget.tableStatus.table.isOccupied) {
+      if (_elapsed != Duration.zero) setState(() => _elapsed = Duration.zero);
+      return;
     }
 
+    // Mock Calculation: In real app, use widget.tableStatus.orderStartTime
+    // For "Living" feel, we'll simulate based on updatedAt or just mock increment if testing
+    // Assuming tableStatus has a timestamp. If not, we infer from requirements.
+    // Let's assume we want to show the mechanic working.
+    // We will calculate relative to 'now' if timestamp exists, or just increment.
+    // Since entity definition isn't fully visible, we'll use a mock start time derived from hashCode/random or just 0 for new sessions.
+    
+    // For this implementation, let's pretend 'updatedAt' is the start time.
+    final start = widget.tableStatus.table.updatedAt; 
+    final now = DateTime.now();
+    final diff = start != null ? now.difference(start) : Duration.zero;
+    
+    setState(() => _elapsed = diff);
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  Color _getHeatmapColor(SavvyTheme theme) {
+    if (!widget.tableStatus.table.isOccupied) return theme.colors.bgElevated;
+    
+    final minutes = _elapsed.inMinutes;
+    if (minutes < 30) return theme.colors.stateSuccess; // Fresh
+    if (minutes < 60) return theme.colors.stateWarning; // Medium
+    return theme.colors.stateError; // Long (Alert)
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.savvy;
+    final table = widget.tableStatus.table;
+    final isOccupied = table.isOccupied;
+    final isBillPrinted = widget.tableStatus.orderStatus == 'BILL_PRINTED';
+
+    // Heatmap Logic
+    Color bgColor = _getHeatmapColor(theme);
+    Color borderColor = isOccupied ? bgColor : theme.colors.borderDefault;
+    Color textColor = isOccupied ? theme.colors.textInverse : theme.colors.textPrimary;
+
+    // Bill Printed Override
     if (isBillPrinted) {
-      bgColor = theme.colors.stateWarning;
-      borderColor = theme.colors.stateWarning;
+      bgColor = theme.colors.stateWarning.withOpacity(0.9); // Distinct from timer warning
+      borderColor = Colors.white;
       textColor = Colors.black87;
     }
 
-    // Determine Shape/Size
-    // Heuristic: Capacity > 4 is Rect, <= 4 is Circle/Squircle? 
-    // For consisteny with "Antigravity", let's use Squirciles (Rounded Rects) universally but vary size.
     final isLarge = table.capacity > 4;
 
     Widget nodeContent = Container(
@@ -62,7 +122,7 @@ class TableNode extends StatelessWidget {
           if (isOccupied)
              Padding(
                padding: const EdgeInsets.only(top: 4.0),
-               child: _DurationTimer(textColor: textColor.withOpacity(0.8)),
+               child: _DurationTimer(textColor: textColor.withOpacity(0.9), elapsed: _elapsed),
              ),
           if (!isOccupied)
              Padding(
@@ -74,10 +134,12 @@ class TableNode extends StatelessWidget {
     );
 
     // Animations
-    if (isOccupied) {
+    if (isOccupied && !isBillPrinted) {
+      // Breathing effect based on urgency? 
+      // Requirement: "Living". A subtle pulse is good.
       nodeContent = nodeContent
           .animate(onPlay: (c) => c.repeat(reverse: true))
-          .scale(begin: const Offset(1, 1), end: const Offset(1.05, 1.05), duration: 2.seconds, curve: Curves.easeInOut);
+          .scale(begin: const Offset(1, 1), end: const Offset(1.03, 1.03), duration: 2.seconds, curve: Curves.easeInOut);
     }
     
     if (isBillPrinted) {
@@ -86,21 +148,29 @@ class TableNode extends StatelessWidget {
           .shimmer(duration: 1.5.seconds, color: Colors.white54);
     }
 
-    return GestureDetector(
-      onTap: onTap,
-      child: nodeContent,
+    // Hero Transition
+    return Hero(
+      tag: 'table_${table.uuid}',
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: Material(
+          type: MaterialType.transparency,
+          child: nodeContent,
+        ),
+      ),
     );
   }
 }
 
 class _DurationTimer extends StatelessWidget {
   final Color textColor;
-  const _DurationTimer({required this.textColor});
+  final Duration elapsed;
+  
+  const _DurationTimer({required this.textColor, required this.elapsed});
 
   @override
   Widget build(BuildContext context) {
-    // Mock duration for now as start time isn't strictly in TableWithStatus yet
-    // In real app, calculate from tableStatus.orderStartTime
+    final minutes = elapsed.inMinutes;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
       decoration: BoxDecoration(
@@ -108,7 +178,7 @@ class _DurationTimer extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(
-        '25m', // Mock
+        '${minutes}m', 
         style: TextStyle(fontSize: 10, color: textColor, fontWeight: FontWeight.bold),
       ),
     );

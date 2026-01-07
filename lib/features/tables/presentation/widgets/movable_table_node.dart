@@ -10,6 +10,7 @@ class MovableTableNode extends StatefulWidget {
   final FloorMode mode;
   final VoidCallback onTap;
   final Function(String sourceUuid, String targetUuid)? onOrderMerge; // Service Mode
+  final Function(DragUpdateDetails)? onDragUpdate; // Layout Mode: for Ghost
 
   const MovableTableNode({
     super.key,
@@ -17,6 +18,7 @@ class MovableTableNode extends StatefulWidget {
     required this.mode,
     required this.onTap,
     this.onOrderMerge,
+    this.onDragUpdate,
   });
 
   @override
@@ -35,25 +37,26 @@ class _MovableTableNodeState extends State<MovableTableNode> {
     if (isLayout) {
       return LongPressDraggable<String>(
         data: t.uuid,
+        onDragUpdate: widget.onDragUpdate,
         feedback: Material(
           color: Colors.transparent,
-          child: Transform.scale(
-            scale: 1.1,
-            child: Opacity(
-              opacity: 0.9,
-              child: ConstrainedBox( // Constrain feedback size
-                 constraints: BoxConstraints(maxWidth: 160, maxHeight: 120),
-                 child: TableNode(tableStatus: widget.tableStatus, onTap: () {}),
-              ),
-            ),
+          type: MaterialType.transparency,
+          child: ConstrainedBox( // Constrain feedback size
+             constraints: const BoxConstraints(maxWidth: 160, maxHeight: 120),
+             child: TableNode(tableStatus: widget.tableStatus, onTap: () {}),
           ),
-        ),
+        )
+        .animate()
+        // Pop Effect: Scale from 1.0 to 1.15 elastic
+        .scale(begin: const Offset(1, 1), end: const Offset(1.15, 1.15), duration: 400.ms, curve: Curves.elasticOut) 
+        .boxShadow(begin: BoxShadow(color: Colors.black26, blurRadius: 0), end: BoxShadow(color: Colors.black45, blurRadius: 20)), 
+        
         childWhenDragging: Opacity(
           opacity: 0.3,
-          child: TableNode(tableStatus: widget.tableStatus, onTap: () {}), // No tap in layout mode mostly
+          child: TableNode(tableStatus: widget.tableStatus, onTap: () {}), 
         ),
         onDragStarted: () => HapticFeedback.selectionClick(),
-        child: TableNode(tableStatus: widget.tableStatus, onTap: () {}), // Disable tap in layout
+        child: TableNode(tableStatus: widget.tableStatus, onTap: () {}), 
       ).animate(target: 1).shimmer(duration: 1.seconds, delay: 2.seconds); // Subtle hint it's editable
     }
 

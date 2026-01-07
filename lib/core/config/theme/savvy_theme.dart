@@ -1,4 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:savvy_pos/core/config/token_service.dart';
+
+extension HexColor on Color {
+  static Color fromHex(String hexString) {
+    if (hexString.isEmpty) return Colors.black;
+    final buffer = StringBuffer();
+    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+    buffer.write(hexString.replaceFirst('#', ''));
+    try {
+      return Color(int.parse(buffer.toString(), radix: 16));
+    } catch (e) {
+      return Colors.black; 
+    }
+  }
+}
 
 // ==============================================================================
 // SAVVY THEME EXTENSION (Antigravity Edition)
@@ -71,6 +86,43 @@ class SavvyTheme extends ThemeExtension<SavvyTheme> {
       shapes: const SavvyShapes.regular(),
       motion: const SavvyMotion.regular(),
       elevations: SavvyElevations.dark(),
+    );
+  }
+
+  // --- FACTORY: DYNAMIC TOKEN THEME ---
+  factory SavvyTheme.loadFromTokens({bool isDark = false}) {
+    final tokens = TokenService();
+    
+    // Helper to get color or fallback safely
+    Color c(String key, Color fallback) {
+      final hex = tokens.getColorHex(key);
+      if (hex != null) return HexColor.fromHex(hex);
+      return fallback;
+    }
+
+    // Default Fallback (Light)
+    final fallback = isDark ? SavvyTheme.dark() : SavvyTheme.light();
+
+    return SavvyTheme(
+      colors: SavvyColors(
+        brandPrimary: c('brandPrimary', fallback.colors.brandPrimary),
+        brandSecondary: c('brandSecondary', fallback.colors.brandSecondary),
+        brandAccent: c('brandAccent', fallback.colors.brandAccent),
+        bgPrimary: c('bgPrimary', fallback.colors.bgPrimary),
+        bgSecondary: c('bgSecondary', fallback.colors.bgSecondary),
+        bgElevated: c('bgElevated', fallback.colors.bgElevated),
+        textPrimary: c('textPrimary', fallback.colors.textPrimary),
+        textSecondary: c('textSecondary', fallback.colors.textSecondary),
+        textMuted: c('textMuted', fallback.colors.textMuted),
+        textInverse: c('textInverse', fallback.colors.textInverse),
+        borderDefault: c('borderDefault', fallback.colors.borderDefault),
+        stateSuccess: c('stateSuccess', fallback.colors.stateSuccess),
+        stateError: c('stateError', fallback.colors.stateError),
+        stateWarning: c('stateWarning', fallback.colors.stateWarning),
+      ),
+      shapes: SavvyShapes.fromTokens(tokens, fallback.shapes),
+      motion: SavvyMotion.fromTokens(tokens, fallback.motion),
+      elevations: SavvyElevations.fromTokens(tokens, fallback.elevations),
     );
   }
 
@@ -199,6 +251,25 @@ class SavvyShapes {
       spacingMd = 16.0,
       spacingLg = 24.0,
       spacingXl = 32.0;
+
+  factory SavvyShapes.fromTokens(TokenService tokens, SavvyShapes fallback) {
+    double s(String key, double fallbackVal) {
+      return tokens.getShape(key) ?? fallbackVal;
+    }
+
+    return SavvyShapes(
+      radiusSm: s('radiusSm', fallback.radiusSm),
+      radiusMd: s('radiusMd', fallback.radiusMd),
+      radiusLg: s('radiusLg', fallback.radiusLg),
+      radiusXl: s('radiusXl', fallback.radiusXl),
+      radiusPill: s('radiusPill', fallback.radiusPill),
+      spacingXs: s('spacingXs', fallback.spacingXs),
+      spacingSm: s('spacingSm', fallback.spacingSm),
+      spacingMd: s('spacingMd', fallback.spacingMd),
+      spacingLg: s('spacingLg', fallback.spacingLg),
+      spacingXl: s('spacingXl', fallback.spacingXl),
+    );
+  }
 }
 
 // ==============================================================================
@@ -241,6 +312,27 @@ class SavvyMotion {
       curveElastic = Curves.elasticOut,
       // Gentle Spring for micro-interactions
       curveSpring = const SpringCurve(0.9, 0.6, 20);
+
+  factory SavvyMotion.fromTokens(TokenService tokens, SavvyMotion fallback) {
+    Duration d(String key, Duration fallbackVal) {
+      final ms = tokens.getDuration(key);
+      if (ms != null) return Duration(milliseconds: ms);
+      return fallbackVal;
+    }
+
+    // Note: Curves are hard to serialize in JSON completely without a complex parser.
+    // We will stick to durations from JSON for now, and keep curves hardcoded or string-mapped if needed later.
+    return SavvyMotion(
+      durationFast: d('durationFast', fallback.durationFast),
+      durationMedium: d('durationMedium', fallback.durationMedium),
+      durationSlow: d('durationSlow', fallback.durationSlow),
+      curveDefault: fallback.curveDefault,
+      curveBounce: fallback.curveBounce,
+      curveFluid: fallback.curveFluid,
+      curveElastic: fallback.curveElastic,
+      curveSpring: fallback.curveSpring,
+    );
+  }
 }
 
 // Simple Spring Curve Class helper if needed, or use predefined
@@ -297,13 +389,36 @@ class SavvyElevations {
       floating: [BoxShadow(color: Color(0x99000000), offset: Offset(0, 20), blurRadius: 25, spreadRadius: -5)],
     );
 
-  SavvyElevations lerp(SavvyElevations other, double t) {
-    return SavvyElevations(
-      none: BoxShadow.lerpList(none, other.none, t)!,
-      sm: BoxShadow.lerpList(sm, other.sm, t)!,
-      md: BoxShadow.lerpList(md, other.md, t)!,
-      lg: BoxShadow.lerpList(lg, other.lg, t)!,
       floating: BoxShadow.lerpList(floating, other.floating, t)!,
+    );
+  }
+
+  factory SavvyElevations.fromTokens(TokenService tokens, SavvyElevations fallback) {
+    List<BoxShadow> e(String key, List<BoxShadow> fallbackVal) {
+      final data = tokens.getElevation(key);
+      if (data != null) {
+        try {
+          return [
+            BoxShadow(
+              color: HexColor.fromHex(data['color'] ?? '#000000'),
+              offset: Offset(0, (data['y'] as num).toDouble()),
+              blurRadius: (data['blur'] as num).toDouble(),
+              spreadRadius: (data['spread'] as num).toDouble(),
+            )
+          ];
+        } catch (_) {
+          return fallbackVal;
+        }
+      }
+      return fallbackVal;
+    }
+
+    return SavvyElevations(
+      none: [],
+      sm: e('sm', fallback.sm),
+      md: e('md', fallback.md),
+      lg: e('lg', fallback.lg),
+      floating: e('floating', fallback.floating),
     );
   }
 }

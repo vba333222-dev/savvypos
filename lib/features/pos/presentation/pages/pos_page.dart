@@ -21,19 +21,31 @@ import 'package:savvy_pos/core/utils/global_search_delegate.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/cart_view.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/checkout_success_dialog.dart';
+import 'package:savvy_pos/features/pos/presentation/widgets/liquid_receipt_overlay.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class PosPage extends StatelessWidget {
-  const PosPage({super.key});
+  final String? heroTag;
+  const PosPage({super.key, this.heroTag});
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    Widget content = MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => GetIt.I<ProductBloc>()..add(const ProductEvent.loadProducts())),
       ],
       child: const _PosPageContent(),
     );
+
+    if (heroTag != null) {
+      return Hero(
+        tag: heroTag!,
+        // Use Material to prevent hero flight visual glitches (transparency issues)
+        child: Material(type: MaterialType.transparency, child: content),
+      );
+    }
+    
+    return content;
   }
 }
 
@@ -183,23 +195,25 @@ class _PosPageContentState extends State<_PosPageContent> with TickerProviderSta
                     
                     showGeneralDialog(
                       context: context,
-                      barrierDismissible: true,
-                      barrierLabel: 'Success',
-                      barrierColor: Colors.black54,
-                      pageBuilder: (_, __, ___) => CheckoutSuccessDialog(
+                      barrierDismissible: false, // Force interaction
+                      barrierLabel: 'Receipt',
+                      barrierColor: Colors.transparent, // Wrapper manages color
+                      pageBuilder: (_, __, ___) => LiquidReceiptOverlay(
                         items: state.items,
-                        onNewOrder: () {
+                        onDismiss: () {
                            context.read<CartBloc>().add(const CartEvent.clearCart());
                            Navigator.of(context).pop();
                         },
+                        onPrint: () {
+                           // Printer Logic
+                           HapticFeedback.mediumImpact();
+                        },
+                        onEmail: () {
+                           // Share Logic
+                           HapticFeedback.lightImpact();
+                        },
                       ),
-                      transitionBuilder: (ctx, anim1, anim2, child) {
-                         return Transform.scale(
-                           scale: Curves.elasticOut.transform(anim1.value),
-                           child: child,
-                         );
-                      },
-                      transitionDuration: const Duration(milliseconds: 600),
+                      transitionDuration: const Duration(milliseconds: 0), // Immediate, widget handles animation
                     );
                   } else if (state.status == CartStatus.failure) {
                      ScaffoldMessenger.of(context).showSnackBar(

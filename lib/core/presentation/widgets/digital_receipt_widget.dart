@@ -46,39 +46,30 @@ class DigitalReceiptWidget extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(24, 32, 24, 48), // Bottom padding for clipper
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-             // HEADER: Animated Checkmark
-             Container(
-               padding: const EdgeInsets.all(12),
-               decoration: BoxDecoration(
-                 shape: BoxShape.circle,
-                 border: Border.all(color: theme.colors.stateSuccess, width: 3),
-               ),
-               child: Icon(Icons.check, size: 32, color: theme.colors.stateSuccess)
-                 .animate(delay: baseDelay + 200.ms).scale(duration: 400.ms, curve: Curves.elasticOut),
-             ).animate(delay: baseDelay).scale(duration: 400.ms, curve: Curves.easeOutBack),
-             
-             SizedBox(height: 16),
-             SavvyText('PAYMENT SUCCESS', style: SavvyTextStyle.h3.copyWith(color: theme.colors.stateSuccess), textAlign: TextAlign.center)
-               .animate(delay: baseDelay + stagger).fadeIn().moveY(begin: 10, end: 0),
-             
+             // LOGO
+             Icon(Icons.storefront, size: 48, color: theme.colors.textPrimary),
              SizedBox(height: 8),
-             Text('Savvy Store #123', style: TextStyle(color: theme.colors.textSecondary, fontSize: 12))
-               .animate(delay: baseDelay + stagger * 2).fadeIn(),
-
+             SavvyText('SAVVY MARKET', style: SavvyTextStyle.h3, color: theme.colors.textPrimary),
+             SavvyText('123 Innovation Dr, Tech City', style: SavvyTextStyle.labelMedium, color: theme.colors.textSecondary),
              SizedBox(height: 24),
-             Divider(color: theme.colors.borderDefault, height: 1)
-               .animate(delay: baseDelay + stagger * 3).scaleX(alignment: Alignment.centerLeft, duration: 400.ms),
+             
+             // DOTTED DIVIDER
+             CustomPaint(
+               size: Size(double.infinity, 1),
+               painter: _DottedLinePainter(color: theme.colors.borderDefault),
+             ),
              SizedBox(height: 16),
 
              // METADATA
-             _RowPair('Order #', orderNumber, delay: baseDelay + stagger * 4),
-             _RowPair('Date', dateFormat.format(date), delay: baseDelay + stagger * 5),
+             _RowPair('Order ID', orderNumber, delay: baseDelay),
+             _RowPair('Date', dateFormat.format(date), delay: baseDelay + stagger),
              
              SizedBox(height: 16),
-             Divider(color: theme.colors.borderDefault, dashed: true)
-                .animate(delay: baseDelay + stagger * 6).fadeIn(),
+             CustomPaint(
+               size: Size(double.infinity, 1),
+               painter: _DottedLinePainter(color: theme.colors.borderDefault),
+             ),
              SizedBox(height: 16),
 
              // ITEMS
@@ -107,29 +98,31 @@ class DigitalReceiptWidget extends StatelessWidget {
                        ),
                        Text(currency.format(item.total), style: TextStyle(color: theme.colors.textPrimary)),
                     ],
-                  ).animate(delay: baseDelay + stagger * (7 + index)).fadeIn().moveX(begin: 10, end: 0),
+                  ).animate(delay: baseDelay + stagger * (2 + index)).fadeIn().moveX(begin: 10, end: 0),
                 );
              }).toList(),
 
              SizedBox(height: 16),
-             Divider(color: theme.colors.borderDefault, height: 1)
-               .animate(delay: baseDelay + stagger * (8 + items.length)).fadeIn(),
+             CustomPaint(
+               size: Size(double.infinity, 1),
+               painter: _DottedLinePainter(color: theme.colors.borderDefault),
+             ),
              SizedBox(height: 16),
 
              // TOTALS
-             _RowPair('Subtotal', currency.format(subtotal), delay: baseDelay + stagger * (9 + items.length)),
+             _RowPair('Subtotal', currency.format(subtotal), delay: baseDelay + 300.ms),
              if (discount > 0)
-               _RowPair('Discount', '-${currency.format(discount)}', color: theme.colors.stateSuccess, delay: baseDelay + stagger * (10 + items.length)),
-             _RowPair('Tax', currency.format(tax), delay: baseDelay + stagger * (11 + items.length)),
+               _RowPair('Discount', '-${currency.format(discount)}', color: theme.colors.stateSuccess, delay: baseDelay + 350.ms),
+             _RowPair('Tax', currency.format(tax), delay: baseDelay + 400.ms),
              
              SizedBox(height: 16),
              Row(
                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                children: [
-                  Text('TOTAL', style: SavvyTextStyle.h3),
-                  Text(currency.format(total), style: SavvyTextStyle.h2),
+                  Text('TOTAL', style: SavvyTextStyle.h2),
+                  Text(currency.format(total), style: SavvyTextStyle.h1),
                ],
-             ).animate(delay: baseDelay + stagger * (12 + items.length)).scale(curve: Curves.elasticOut, duration: 500.ms),
+             ).animate(delay: baseDelay + 450.ms).scale(curve: Curves.elasticOut, duration: 500.ms),
 
              if (change > 0) ...[
                SizedBox(height: 12),
@@ -147,22 +140,35 @@ class DigitalReceiptWidget extends StatelessWidget {
                       Text(currency.format(change), style: TextStyle(fontWeight: FontWeight.bold, color: theme.colors.textPrimary)),
                    ],
                  ),
-               ).animate(delay: baseDelay + stagger * (13 + items.length)).fadeIn().moveY(begin: 10, end: 0),
+               ).animate(delay: baseDelay + 500.ms).fadeIn().moveY(begin: 10, end: 0),
              ],
              
              SizedBox(height: 32),
              
-             // BARCODE DUMMY
-             Container(
-               height: 40,
-               width: 200,
-               color: Colors.black12, // Placeholder
-               child: Center(child: Text('||| || ||| || |||', style: TextStyle(fontFamily: 'Courier', letterSpacing: 4))),
-             ).animate(delay: baseDelay + stagger * (14 + items.length)).fadeIn(),
-             
+             // BARCODE (Procedural)
+             SizedBox(
+               height: 50,
+               child: Row(
+                 mainAxisAlignment: MainAxisAlignment.center,
+                 children: List.generate(40, (index) {
+                    // Random-ish width bars
+                    final width = (index * 7 % 3 + 1).toDouble() * 2;
+                    final space = (index * 3 % 2 + 1).toDouble();
+                    return Container(
+                      margin: EdgeInsets.only(right: space),
+                      width: width,
+                      color: Colors.black87,
+                    );
+                 }),
+               ),
+             ).animate(delay: baseDelay + 550.ms).fadeIn(),
              SizedBox(height: 8),
-             Text('Thank you for shopping!', style: SavvyTextStyle.labelMedium.copyWith(color: theme.colors.textSecondary))
-               .animate(delay: baseDelay + stagger * (15 + items.length)).fadeIn(),
+             Text(orderNumber, style: TextStyle(fontFamily: 'Courier', fontSize: 10, letterSpacing: 2))
+               .animate(delay: baseDelay + 600.ms).fadeIn(),
+             
+             SizedBox(height: 24),
+             Text('Thank you for shopping!', style: SavvyTextStyle.labelMedium.copyWith(color: theme.colors.textSecondary, fontStyle: FontStyle.italic))
+               .animate(delay: baseDelay + 650.ms).fadeIn(),
           ],
         ),
       ),
@@ -193,7 +199,27 @@ class _RowPair extends StatelessWidget {
   }
 }
 
-extension DividerDashed on Divider {
-   // Reusing the extension idea if we want custom painter later, 
-   // but for now standard Divider is used.
+class _DottedLinePainter extends CustomPainter {
+  final Color color;
+  const _DottedLinePainter({required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 1
+      ..strokeCap = StrokeCap.round;
+
+    const dashWidth = 3.0;
+    const dashSpace = 3.0;
+    double startX = 0;
+
+    while (startX < size.width) {
+      canvas.drawLine(Offset(startX, 0), Offset(startX + dashWidth, 0), paint);
+      startX += dashWidth + dashSpace;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

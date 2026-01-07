@@ -12,6 +12,7 @@ import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:savvy_pos/core/hal/printer_router.dart';
 import 'package:get_it/get_it.dart';
+import 'package:savvy_pos/core/config/token_service.dart';
 
 import 'package:flutter/foundation.dart'; // for kIsWeb
 import 'package:savvy_pos/features/admin/presentation/pages/web_admin_layout.dart';
@@ -33,6 +34,9 @@ void main() async {
     frequency: const Duration(minutes: 15), 
   );
 
+  // Initialize Antigravity Design System
+  await GetIt.I.registerSingleton<TokenService>(TokenService()).loadTokens();
+
   bootstrap(() => const App(), environment: 'mobile');
 }
 
@@ -45,7 +49,7 @@ class App extends StatelessWidget {
       title: 'Savvy POS',
       theme: ThemeData(
         extensions: [
-          SavvyTheme.light(),
+          SavvyTheme.loadFromTokens(isDark: false),
         ],
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: {
@@ -56,7 +60,7 @@ class App extends StatelessWidget {
       ),
       darkTheme: ThemeData(
         extensions: [
-          SavvyTheme.dark(),
+          SavvyTheme.loadFromTokens(isDark: true),
         ],
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: {

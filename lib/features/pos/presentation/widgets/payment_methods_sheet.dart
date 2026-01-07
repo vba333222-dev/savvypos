@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
+import 'dart:async';
+import 'package:savvy_pos/features/pos/presentation/widgets/payment/smart_cash_helper.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 
 class PaymentMethodsSheet extends StatefulWidget {
@@ -161,16 +163,19 @@ class _PaymentMethodsSheetState extends State<PaymentMethodsSheet> {
                           ),
                           SizedBox(height: theme.shapes.spacingMd),
                           
-                          // Quick Amount Row
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              _QuickCashBtn('\$Exact', () => setState(() => _input = widget.totalAmount.toStringAsFixed(2))),
-                              _QuickCashBtn('\$10', () => setState(() => _input = '10')),
-                              _QuickCashBtn('\$20', () => setState(() => _input = '20')),
-                              _QuickCashBtn('\$50', () => setState(() => _input = '50')),
-                            ],
-                          ),
+                          // Smart Cash Suggestions
+                          Builder(builder: (context) {
+                            final suggestions = SmartCashHelper.generateSuggestions(widget.totalAmount);
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: suggestions.map((amount) {
+                                final isExact = amount == widget.totalAmount;
+                                final label = isExact ? 'Exact' : '\$${amount.toStringAsFixed(0)}'; // Or 2 decimals if needed
+                                
+                                return _QuickCashBtn(label, () => _handleSmartCash(amount));
+                              }).toList(),
+                            );
+                          }),
                           SizedBox(height: theme.shapes.spacingMd),
 
                           // Numpad
@@ -233,7 +238,51 @@ class _PaymentMethodsSheetState extends State<PaymentMethodsSheet> {
     );
   }
 
+  Timer? _smartPayTimer;
+
+  void _handleSmartCash(double amount) {
+    // 1. Set Input
+    setState(() {
+       _input = amount.toStringAsFixed(2);
+    });
+
+    // 2. Cancel previous timer if any
+    _smartPayTimer?.cancel();
+
+    // 3. Show Local Feedback (e.g. Toast or Snackbar)
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    final snackBar = SnackBar(
+      content: Row(
+        children: [
+           SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)),
+           SizedBox(width: 16),
+           Text('Paying \$${amount.toStringAsFixed(2)}...'),
+        ],
+      ),
+      duration: const Duration(milliseconds: 1000), // Give slightly more visual time, but trigger fast
+      action: SnackBarAction(
+        label: 'UNDO', 
+        textColor: Colors.white,
+        onPressed: () {
+           _smartPayTimer?.cancel();
+        },
+      ),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+    // 4. Buffer Timer
+    _smartPayTimer = Timer(const Duration(milliseconds: 800), () { 
+       // Trigger Checkout
+       if (mounted) {
+           ScaffoldMessenger.of(context).hideCurrentSnackBar();
+           context.read<CartBloc>().add(CartEvent.processCheckout());
+           Navigator.pop(context); // Close Sheet
+       }
+    });
+  }
+
   void _addNum(String char) {
+    _smartPayTimer?.cancel(); // Cancel smart pay if manual input starts
     setState(() {
       if (char == '.') {
         if (!_input.contains('.')) _input += char;

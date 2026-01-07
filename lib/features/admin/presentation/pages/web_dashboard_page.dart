@@ -1,22 +1,17 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:savvy_pos/features/dashboard/presentation/bloc/dashboard_bloc.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
+import 'package:savvy_pos/features/dashboard/presentation/widgets/dashboard_grid.dart';
+import 'package:savvy_pos/features/dashboard/presentation/widgets/sales_velocity_chart.dart';
+import 'package:savvy_pos/features/dashboard/presentation/widgets/live_pulse_tile.dart';
+import 'package:savvy_pos/features/dashboard/presentation/widgets/command_bar.dart';
 
 class WebDashboardPage extends StatelessWidget {
   const WebDashboardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GetIt.I<DashboardBloc>()..add(const LoadDashboardData()),
-      child: BlocBuilder<DashboardBloc, DashboardState>(
-        builder: (context, state) {
-          if (state is DashboardLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (state is DashboardError) {
             return Center(child: Text("Error: ${state.message}"));
           }
           if (state is DashboardLoaded) {

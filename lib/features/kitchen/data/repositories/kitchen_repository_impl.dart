@@ -4,7 +4,7 @@ import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/features/kitchen/domain/entities/kitchen_order.dart';
 import 'package:savvy_pos/features/kitchen/domain/repositories/i_kitchen_repository.dart';
 
-@LazySingleton(as: IKitchenRepository)
+@LazySingleton(as: IKitchenRepository, env: [Environment.prod])
 class KitchenRepositoryImpl implements IKitchenRepository {
   final AppDatabase db;
 

@@ -9,6 +9,7 @@ import 'package:savvy_pos/features/shift/presentation/widgets/close_shift_dialog
 import 'package:savvy_pos/features/settings/presentation/bloc/backup_bloc.dart';
 import 'package:savvy_pos/features/employees/presentation/pages/employee_list_page.dart';
 import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:savvy_pos/features/diagnostics/presentation/pages/diagnostics_hub_page.dart';
 import 'package:savvy_pos/core/config/business_mode.dart';
 import 'package:savvy_pos/core/sync/sync_worker.dart';
 import 'package:logger/logger.dart';
@@ -50,38 +51,6 @@ class _SettingsPageState extends State<SettingsPage> {
                   const SnackBar(content: Text('Theme logic not connected yet')),
                 );
               },
-            ),
-          ),
-          // Business Mode Toggle (Retail vs F&B)
-          ValueListenableBuilder<bool>(
-            valueListenable: businessModeNotifier,
-            builder: (context, isFoodBev, _) {
-              return ListTile(
-                title: const Text('Restaurant Mode (Tables)'),
-                subtitle: const Text('Enable Dine-In Features'),
-                trailing: Switch(
-                  value: isFoodBev,
-                  onChanged: (val) {
-                    businessModeNotifier.toggle();
-                  },
-                ),
-              );
-            },
-          ),
-          Divider(color: colors.borderDefault),
-          
-          // Printer Management
-          ListTile(
-            leading: const Icon(Icons.print),
-            title: const Text('Printer Setup'),
-            subtitle: const Text('Configure Kitchen, Bar, and Receipt printers'),
-            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () => Navigator.push(
-              context, 
-              MaterialPageRoute(builder: (_) => const PrinterSettingsPage())
-            ),
-          ),
-
           const SizedBox(height: 32),
           Divider(color: colors.borderDefault),
           
@@ -100,6 +69,32 @@ class _SettingsPageState extends State<SettingsPage> {
                context, 
                MaterialPageRoute(builder: (_) => const InventoryListPage())
              ),
+          ),
+          // Additional settings tiles (as per the provided snippet context)
+          ...[
+            'Tax Rules',
+            'Staff Permissions',
+            'Business Profile',
+          ].map((title) => ListTile(
+            title: Text(title, style: TextStyle(color: typography.bodyMedium?.color)), // Using typography color
+            trailing: Icon(Icons.arrow_forward_ios, size: 16, color: colors.textMuted),
+            contentPadding: EdgeInsets.zero,
+          )),
+
+          // Secret Entry
+          GestureDetector(
+            onDoubleTap: () {
+               // Hint or easter egg?
+            },
+            onLongPress: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const DiagnosticsHubPage()));
+            },
+            child: ListTile(
+              title: Text('About Antigravity OS', style: TextStyle(color: typography.bodyMedium?.color)), // Using typography color
+              trailing: Icon(Icons.info_outline, size: 16, color: colors.textMuted),
+              subtitle: const Text("v1.0.0 (Build 404)", style: TextStyle(fontSize: 10, color: Colors.grey)),
+              contentPadding: EdgeInsets.zero,
+            ),
           ),
           const SizedBox(height: 32),
           Divider(color: colors.borderDefault),

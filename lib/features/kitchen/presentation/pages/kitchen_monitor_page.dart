@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_ticker.dart';
@@ -22,24 +23,25 @@ class _KitchenMonitorPageState extends State<KitchenMonitorPage> {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
+    final width = MediaQuery.of(context).size.width;
+    final crossAxisCount = width < 600 ? 1 : (width < 1200 ? 3 : 4);
 
     return BlocProvider(
       create: (context) => GetIt.I<KitchenBloc>()..add(const KitchenEvent.startListening()),
       child: Scaffold(
-        backgroundColor: const Color(0xFF1A1F24), // Dark rail background
+        backgroundColor: const Color(0xFF1A1F24), // Kinetic Dark
         appBar: AppBar(
           title: Row(
             children: [
               Icon(Icons.kitchen, color: theme.colors.brandPrimary),
               SizedBox(width: 8),
-              Text('KITCHEN RAIL', style: SavvyTextStyle.h3.style(theme).copyWith(color: Colors.white, letterSpacing: 2)),
+              Text('KINETIC KITCHEN', style: SavvyTextStyle.h3.style(theme).copyWith(color: Colors.white, letterSpacing: 2)),
             ],
           ),
           backgroundColor: const Color(0xFF0F1216),
           foregroundColor: Colors.white,
-          automaticallyImplyLeading: true,
           actions: [
-            // Stats Bar
+            // Header Stats
             BlocBuilder<KitchenBloc, KitchenState>(
               builder: (context, state) {
                 final count = state.maybeWhen(loaded: (orders) => orders.length, orElse: () => 0);
@@ -59,12 +61,13 @@ class _KitchenMonitorPageState extends State<KitchenMonitorPage> {
                          ],
                        ),
                        SizedBox(width: 24),
+                       // Mock Avg Time or Calculate from orders
                        Column(
                          mainAxisAlignment: MainAxisAlignment.center,
                          crossAxisAlignment: CrossAxisAlignment.end,
                          children: [
                            Text('AVG TIME', style: TextStyle(color: Colors.white54, fontSize: 10)),
-                           Text('04:12', style: TextStyle(color: theme.colors.stateSuccess, fontSize: 24, fontWeight: FontWeight.bold)),
+                           Text('06:30', style: TextStyle(color: theme.colors.stateSuccess, fontSize: 24, fontWeight: FontWeight.bold)),
                          ],
                        ),
                     ],
@@ -78,9 +81,8 @@ class _KitchenMonitorPageState extends State<KitchenMonitorPage> {
           listener: (context, state) {
             state.mapOrNull(loaded: (data) {
               if (data.orders.length > _prevCount) {
-                // New Order Arrived! 
-                // Play Ding? SoundHelper needed.
-                HapticFeedback.mediumImpact(); 
+                 HapticFeedback.mediumImpact(); // DING!
+                 // Ideally play sound here
               }
               _prevCount = data.orders.length;
             });
@@ -89,7 +91,7 @@ class _KitchenMonitorPageState extends State<KitchenMonitorPage> {
             return state.when(
               initial: () => const Center(child: CircularProgressIndicator()),
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (msg) => Center(child: Text(msg, style: const TextStyle(color: Colors.red))),
+              error: (msg) => Center(child: Text(msg, style: TextStyle(color: theme.colors.stateError))),
               loaded: (orders) {
                  if (orders.isEmpty) {
                    return Center(
@@ -100,38 +102,30 @@ class _KitchenMonitorPageState extends State<KitchenMonitorPage> {
                            .animate(onPlay: (c) => c.repeat(reverse: true))
                            .scale(begin: const Offset(1, 1), end: const Offset(1.05, 1.05), duration: 2.seconds),
                          const SizedBox(height: 24),
-                         const Text('RAIL CLEAR', style: TextStyle(color: Colors.white24, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: 4)),
+                         const Text('ALL CLEAR', style: TextStyle(color: Colors.white24, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: 4)),
                        ],
                      ),
                    );
                  }
 
-                 // THE RAIL (Horizontal List)
-                 // We reverse it? Or Newest Left? 
-                 // Assuming List is sorted by time. Usually Oldest (Urgent) on Left. 
-                 // If we want "Slide in from Left", implies Newest Left? 
-                 // Standard KDS: Oldest Left (Work Left to Right). New orders appear on Right or push in?
-                 // Requirement: "Slide In from the Left, pushing existing tickets to the right". 
-                 // So Newest is Left.
-                 
-                 final sortedOrders = List.from(orders)..sort((a,b) => b.orderTime.compareTo(a.orderTime)); // Newest first
+                 // Sort: Oldest First (Urgent)
+                 final sortedOrders = List.from(orders)..sort((a,b) => a.orderTime.compareTo(b.orderTime));
 
-                 return ListView.builder(
-                   scrollDirection: Axis.horizontal,
-                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                 return MasonryGridView.count(
+                   crossAxisCount: crossAxisCount,
+                   mainAxisSpacing: 16,
+                   crossAxisSpacing: 16,
+                   padding: const EdgeInsets.all(16),
                    itemCount: sortedOrders.length,
                    itemBuilder: (context, index) {
                      final order = sortedOrders[index];
-                     return Padding(
-                       padding: const EdgeInsets.only(right: 16),
-                       child: KitchenOrderCard(
-                         order: order,
-                         onBump: () => context.read<KitchenBloc>().add(KitchenEvent.markAsDone(order.uuid)),
-                         onVoid: () {}, // Optional
-                       ).animate(key: ValueKey(order.uuid)) // Unique key for entrance
-                        .moveX(begin: -100, duration: 400.ms, curve: Curves.easeOutBack) // Slide from Left
-                        .fadeIn(),
-                     );
+                     return KitchenOrderCard(
+                       key: ValueKey(order.uuid),
+                       order: order,
+                       onBump: () => context.read<KitchenBloc>().add(KitchenEvent.markAsDone(order.uuid)),
+                     ).animate()
+                      .slideX(begin: -0.5, duration: 400.ms, curve: Curves.easeOutQuart)
+                      .fadeIn(duration: 400.ms);
                    },
                  );
               },

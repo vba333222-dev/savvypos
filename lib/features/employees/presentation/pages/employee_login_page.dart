@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:savvy_pos/core/config/theme_config.dart';
+import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:savvy_pos/features/auth/presentation/widgets/pin_pad_dialog.dart';
+import 'package:savvy_pos/features/employees/presentation/widgets/quick_login_view.dart';
 import 'package:savvy_pos/features/home/presentation/pages/main_shell_page.dart';
 
 class EmployeeLoginPage extends StatefulWidget {
@@ -17,7 +17,7 @@ class _EmployeeLoginPageState extends State<EmployeeLoginPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => GetIt.I<AuthBloc>(), // Shared AuthBloc (Singleton/Factory?) - Should be Singleton to hold session
+      create: (_) => GetIt.I<AuthBloc>(), // Shared AuthBloc
       child: const _LoginView(),
     );
   }
@@ -28,8 +28,7 @@ class _LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.savvy.colors;
-    final typography = Theme.of(context).textTheme;
+    final theme = context.savvy;
 
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
@@ -41,45 +40,28 @@ class _LoginView extends StatelessWidget {
           );
         }
         if (state.error != null) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error!)));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.error!), backgroundColor: theme.colors.stateError)
+          );
         }
       },
       child: Scaffold(
-        backgroundColor: colors.bgPrimary,
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.storefront, size: 80, color: colors.brandPrimary),
-              const SizedBox(height: 24),
-              Text('Savvy POS', style: typography.displayMedium?.copyWith(color: colors.textPrimary)),
-              const SizedBox(height: 8),
-              Text('Employee Login', style: typography.titleMedium?.copyWith(color: colors.textSecondary)),
-              const SizedBox(height: 48),
-              
-              SizedBox(
-                width: 250,
-                child: ElevatedButton.icon(
-                  onPressed: () async {
-                    final pin = await showDialog<String>(
-                      context: context,
-                      builder: (_) => const PinPadDialog(isLogin: true),
-                    );
-                    if (pin != null && context.mounted) {
-                      context.read<AuthBloc>().add(AuthEvent.loginWithPin(pin));
-                    }
-                  },
-                  icon: const Icon(Icons.login),
-                  label: const Text('Login with PIN'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    backgroundColor: colors.brandPrimary,
-                    foregroundColor: colors.textInverse,
-                  ),
-                ),
+        backgroundColor: theme.colors.bgCanvas,
+        body: Stack(
+          children: [
+            // Background branding or gradient
+            Positioned.fill(
+              child: Opacity(
+                opacity: 0.05,
+                child: Center(child: Icon(Icons.storefront, size: 400, color: theme.colors.textPrimary)),
               ),
-            ],
-          ),
+            ),
+            
+            // Avatar Grid Login
+            const Center(
+              child: QuickLoginView(),
+            ),
+          ],
         ),
       ),
     );

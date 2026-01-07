@@ -25,6 +25,7 @@ mixin _$InventoryManagementEvent {
             Product product, File? imageFile, List<String>? modifierGroupUuids)
         updateProduct,
     required TResult Function(String uuid) deleteProduct,
+    required TResult Function(String uuid, int delta) updateStock,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -36,6 +37,7 @@ mixin _$InventoryManagementEvent {
             Product product, File? imageFile, List<String>? modifierGroupUuids)?
         updateProduct,
     TResult? Function(String uuid)? deleteProduct,
+    TResult? Function(String uuid, int delta)? updateStock,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -47,6 +49,7 @@ mixin _$InventoryManagementEvent {
             Product product, File? imageFile, List<String>? modifierGroupUuids)?
         updateProduct,
     TResult Function(String uuid)? deleteProduct,
+    TResult Function(String uuid, int delta)? updateStock,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -55,6 +58,7 @@ mixin _$InventoryManagementEvent {
     required TResult Function(_AddProduct value) addProduct,
     required TResult Function(_UpdateProduct value) updateProduct,
     required TResult Function(_DeleteProduct value) deleteProduct,
+    required TResult Function(_UpdateStock value) updateStock,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -62,6 +66,7 @@ mixin _$InventoryManagementEvent {
     TResult? Function(_AddProduct value)? addProduct,
     TResult? Function(_UpdateProduct value)? updateProduct,
     TResult? Function(_DeleteProduct value)? deleteProduct,
+    TResult? Function(_UpdateStock value)? updateStock,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -69,6 +74,7 @@ mixin _$InventoryManagementEvent {
     TResult Function(_AddProduct value)? addProduct,
     TResult Function(_UpdateProduct value)? updateProduct,
     TResult Function(_DeleteProduct value)? deleteProduct,
+    TResult Function(_UpdateStock value)? updateStock,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -201,6 +207,7 @@ class _$AddProductImpl implements _AddProduct {
             Product product, File? imageFile, List<String>? modifierGroupUuids)
         updateProduct,
     required TResult Function(String uuid) deleteProduct,
+    required TResult Function(String uuid, int delta) updateStock,
   }) {
     return addProduct(product, imageFile, modifierGroupUuids);
   }
@@ -215,6 +222,7 @@ class _$AddProductImpl implements _AddProduct {
             Product product, File? imageFile, List<String>? modifierGroupUuids)?
         updateProduct,
     TResult? Function(String uuid)? deleteProduct,
+    TResult? Function(String uuid, int delta)? updateStock,
   }) {
     return addProduct?.call(product, imageFile, modifierGroupUuids);
   }
@@ -229,6 +237,7 @@ class _$AddProductImpl implements _AddProduct {
             Product product, File? imageFile, List<String>? modifierGroupUuids)?
         updateProduct,
     TResult Function(String uuid)? deleteProduct,
+    TResult Function(String uuid, int delta)? updateStock,
     required TResult orElse(),
   }) {
     if (addProduct != null) {
@@ -243,6 +252,7 @@ class _$AddProductImpl implements _AddProduct {
     required TResult Function(_AddProduct value) addProduct,
     required TResult Function(_UpdateProduct value) updateProduct,
     required TResult Function(_DeleteProduct value) deleteProduct,
+    required TResult Function(_UpdateStock value) updateStock,
   }) {
     return addProduct(this);
   }
@@ -253,6 +263,7 @@ class _$AddProductImpl implements _AddProduct {
     TResult? Function(_AddProduct value)? addProduct,
     TResult? Function(_UpdateProduct value)? updateProduct,
     TResult? Function(_DeleteProduct value)? deleteProduct,
+    TResult? Function(_UpdateStock value)? updateStock,
   }) {
     return addProduct?.call(this);
   }
@@ -263,6 +274,7 @@ class _$AddProductImpl implements _AddProduct {
     TResult Function(_AddProduct value)? addProduct,
     TResult Function(_UpdateProduct value)? updateProduct,
     TResult Function(_DeleteProduct value)? deleteProduct,
+    TResult Function(_UpdateStock value)? updateStock,
     required TResult orElse(),
   }) {
     if (addProduct != null) {
@@ -392,6 +404,7 @@ class _$UpdateProductImpl implements _UpdateProduct {
             Product product, File? imageFile, List<String>? modifierGroupUuids)
         updateProduct,
     required TResult Function(String uuid) deleteProduct,
+    required TResult Function(String uuid, int delta) updateStock,
   }) {
     return updateProduct(product, imageFile, modifierGroupUuids);
   }
@@ -406,6 +419,7 @@ class _$UpdateProductImpl implements _UpdateProduct {
             Product product, File? imageFile, List<String>? modifierGroupUuids)?
         updateProduct,
     TResult? Function(String uuid)? deleteProduct,
+    TResult? Function(String uuid, int delta)? updateStock,
   }) {
     return updateProduct?.call(product, imageFile, modifierGroupUuids);
   }
@@ -420,6 +434,7 @@ class _$UpdateProductImpl implements _UpdateProduct {
             Product product, File? imageFile, List<String>? modifierGroupUuids)?
         updateProduct,
     TResult Function(String uuid)? deleteProduct,
+    TResult Function(String uuid, int delta)? updateStock,
     required TResult orElse(),
   }) {
     if (updateProduct != null) {
@@ -434,6 +449,7 @@ class _$UpdateProductImpl implements _UpdateProduct {
     required TResult Function(_AddProduct value) addProduct,
     required TResult Function(_UpdateProduct value) updateProduct,
     required TResult Function(_DeleteProduct value) deleteProduct,
+    required TResult Function(_UpdateStock value) updateStock,
   }) {
     return updateProduct(this);
   }
@@ -444,6 +460,7 @@ class _$UpdateProductImpl implements _UpdateProduct {
     TResult? Function(_AddProduct value)? addProduct,
     TResult? Function(_UpdateProduct value)? updateProduct,
     TResult? Function(_DeleteProduct value)? deleteProduct,
+    TResult? Function(_UpdateStock value)? updateStock,
   }) {
     return updateProduct?.call(this);
   }
@@ -454,6 +471,7 @@ class _$UpdateProductImpl implements _UpdateProduct {
     TResult Function(_AddProduct value)? addProduct,
     TResult Function(_UpdateProduct value)? updateProduct,
     TResult Function(_DeleteProduct value)? deleteProduct,
+    TResult Function(_UpdateStock value)? updateStock,
     required TResult orElse(),
   }) {
     if (updateProduct != null) {
@@ -553,6 +571,7 @@ class _$DeleteProductImpl implements _DeleteProduct {
             Product product, File? imageFile, List<String>? modifierGroupUuids)
         updateProduct,
     required TResult Function(String uuid) deleteProduct,
+    required TResult Function(String uuid, int delta) updateStock,
   }) {
     return deleteProduct(uuid);
   }
@@ -567,6 +586,7 @@ class _$DeleteProductImpl implements _DeleteProduct {
             Product product, File? imageFile, List<String>? modifierGroupUuids)?
         updateProduct,
     TResult? Function(String uuid)? deleteProduct,
+    TResult? Function(String uuid, int delta)? updateStock,
   }) {
     return deleteProduct?.call(uuid);
   }
@@ -581,6 +601,7 @@ class _$DeleteProductImpl implements _DeleteProduct {
             Product product, File? imageFile, List<String>? modifierGroupUuids)?
         updateProduct,
     TResult Function(String uuid)? deleteProduct,
+    TResult Function(String uuid, int delta)? updateStock,
     required TResult orElse(),
   }) {
     if (deleteProduct != null) {
@@ -595,6 +616,7 @@ class _$DeleteProductImpl implements _DeleteProduct {
     required TResult Function(_AddProduct value) addProduct,
     required TResult Function(_UpdateProduct value) updateProduct,
     required TResult Function(_DeleteProduct value) deleteProduct,
+    required TResult Function(_UpdateStock value) updateStock,
   }) {
     return deleteProduct(this);
   }
@@ -605,6 +627,7 @@ class _$DeleteProductImpl implements _DeleteProduct {
     TResult? Function(_AddProduct value)? addProduct,
     TResult? Function(_UpdateProduct value)? updateProduct,
     TResult? Function(_DeleteProduct value)? deleteProduct,
+    TResult? Function(_UpdateStock value)? updateStock,
   }) {
     return deleteProduct?.call(this);
   }
@@ -615,6 +638,7 @@ class _$DeleteProductImpl implements _DeleteProduct {
     TResult Function(_AddProduct value)? addProduct,
     TResult Function(_UpdateProduct value)? updateProduct,
     TResult Function(_DeleteProduct value)? deleteProduct,
+    TResult Function(_UpdateStock value)? updateStock,
     required TResult orElse(),
   }) {
     if (deleteProduct != null) {
@@ -633,6 +657,180 @@ abstract class _DeleteProduct implements InventoryManagementEvent {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DeleteProductImplCopyWith<_$DeleteProductImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$UpdateStockImplCopyWith<$Res> {
+  factory _$$UpdateStockImplCopyWith(
+          _$UpdateStockImpl value, $Res Function(_$UpdateStockImpl) then) =
+      __$$UpdateStockImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String uuid, int delta});
+}
+
+/// @nodoc
+class __$$UpdateStockImplCopyWithImpl<$Res>
+    extends _$InventoryManagementEventCopyWithImpl<$Res, _$UpdateStockImpl>
+    implements _$$UpdateStockImplCopyWith<$Res> {
+  __$$UpdateStockImplCopyWithImpl(
+      _$UpdateStockImpl _value, $Res Function(_$UpdateStockImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of InventoryManagementEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? uuid = null,
+    Object? delta = null,
+  }) {
+    return _then(_$UpdateStockImpl(
+      null == uuid
+          ? _value.uuid
+          : uuid // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == delta
+          ? _value.delta
+          : delta // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$UpdateStockImpl implements _UpdateStock {
+  const _$UpdateStockImpl(this.uuid, this.delta);
+
+  @override
+  final String uuid;
+  @override
+  final int delta;
+
+  @override
+  String toString() {
+    return 'InventoryManagementEvent.updateStock(uuid: $uuid, delta: $delta)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$UpdateStockImpl &&
+            (identical(other.uuid, uuid) || other.uuid == uuid) &&
+            (identical(other.delta, delta) || other.delta == delta));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, uuid, delta);
+
+  /// Create a copy of InventoryManagementEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$UpdateStockImplCopyWith<_$UpdateStockImpl> get copyWith =>
+      __$$UpdateStockImplCopyWithImpl<_$UpdateStockImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        addProduct,
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        updateProduct,
+    required TResult Function(String uuid) deleteProduct,
+    required TResult Function(String uuid, int delta) updateStock,
+  }) {
+    return updateStock(uuid, delta);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
+    TResult? Function(String uuid)? deleteProduct,
+    TResult? Function(String uuid, int delta)? updateStock,
+  }) {
+    return updateStock?.call(uuid, delta);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
+    TResult Function(String uuid)? deleteProduct,
+    TResult Function(String uuid, int delta)? updateStock,
+    required TResult orElse(),
+  }) {
+    if (updateStock != null) {
+      return updateStock(uuid, delta);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_AddProduct value) addProduct,
+    required TResult Function(_UpdateProduct value) updateProduct,
+    required TResult Function(_DeleteProduct value) deleteProduct,
+    required TResult Function(_UpdateStock value) updateStock,
+  }) {
+    return updateStock(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_AddProduct value)? addProduct,
+    TResult? Function(_UpdateProduct value)? updateProduct,
+    TResult? Function(_DeleteProduct value)? deleteProduct,
+    TResult? Function(_UpdateStock value)? updateStock,
+  }) {
+    return updateStock?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_AddProduct value)? addProduct,
+    TResult Function(_UpdateProduct value)? updateProduct,
+    TResult Function(_DeleteProduct value)? deleteProduct,
+    TResult Function(_UpdateStock value)? updateStock,
+    required TResult orElse(),
+  }) {
+    if (updateStock != null) {
+      return updateStock(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _UpdateStock implements InventoryManagementEvent {
+  const factory _UpdateStock(final String uuid, final int delta) =
+      _$UpdateStockImpl;
+
+  String get uuid;
+  int get delta;
+
+  /// Create a copy of InventoryManagementEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$UpdateStockImplCopyWith<_$UpdateStockImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

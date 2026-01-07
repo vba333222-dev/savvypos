@@ -14,21 +14,6 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-Promotion _$PromotionFromJson(Map<String, dynamic> json) {
-  switch (json['runtimeType']) {
-    case 'percentage':
-      return PercentageDiscount.fromJson(json);
-    case 'fixedAmount':
-      return FixedAmountDiscount.fromJson(json);
-    case 'buyXGetY':
-      return BuyXGetYPromotion.fromJson(json);
-
-    default:
-      throw CheckedFromJsonException(json, 'runtimeType', 'Promotion',
-          'Invalid union type "${json['runtimeType']}"!');
-  }
-}
-
 /// @nodoc
 mixin _$Promotion {
   String get id => throw _privateConstructorUsedError;
@@ -97,9 +82,6 @@ mixin _$Promotion {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-
-  /// Serializes this Promotion to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of Promotion
   /// with the given fields replaced by the non-null parameter values.
@@ -234,20 +216,15 @@ class __$$PercentageDiscountImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$PercentageDiscountImpl extends PercentageDiscount {
   const _$PercentageDiscountImpl(
       {required this.id,
       required this.name,
       required this.code,
       required this.percentage,
-      this.constraints = const PromotionConstraints(),
-      final String? $type})
-      : $type = $type ?? 'percentage',
-        super._();
-
-  factory _$PercentageDiscountImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PercentageDiscountImplFromJson(json);
+      this.constraints = const PromotionConstraints()})
+      : super._();
 
   @override
   final String id;
@@ -260,9 +237,6 @@ class _$PercentageDiscountImpl extends PercentageDiscount {
   @override
   @JsonKey()
   final PromotionConstraints constraints;
-
-  @JsonKey(name: 'runtimeType')
-  final String $type;
 
   @override
   String toString() {
@@ -283,7 +257,6 @@ class _$PercentageDiscountImpl extends PercentageDiscount {
                 other.constraints == constraints));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, name, code, percentage, constraints);
@@ -382,13 +355,6 @@ class _$PercentageDiscountImpl extends PercentageDiscount {
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PercentageDiscountImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class PercentageDiscount extends Promotion {
@@ -399,9 +365,6 @@ abstract class PercentageDiscount extends Promotion {
       required final double percentage,
       final PromotionConstraints constraints}) = _$PercentageDiscountImpl;
   const PercentageDiscount._() : super._();
-
-  factory PercentageDiscount.fromJson(Map<String, dynamic> json) =
-      _$PercentageDiscountImpl.fromJson;
 
   @override
   String get id;
@@ -485,20 +448,15 @@ class __$$FixedAmountDiscountImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$FixedAmountDiscountImpl extends FixedAmountDiscount {
   const _$FixedAmountDiscountImpl(
       {required this.id,
       required this.name,
       required this.code,
       required this.amount,
-      this.constraints = const PromotionConstraints(),
-      final String? $type})
-      : $type = $type ?? 'fixedAmount',
-        super._();
-
-  factory _$FixedAmountDiscountImpl.fromJson(Map<String, dynamic> json) =>
-      _$$FixedAmountDiscountImplFromJson(json);
+      this.constraints = const PromotionConstraints()})
+      : super._();
 
   @override
   final String id;
@@ -511,9 +469,6 @@ class _$FixedAmountDiscountImpl extends FixedAmountDiscount {
   @override
   @JsonKey()
   final PromotionConstraints constraints;
-
-  @JsonKey(name: 'runtimeType')
-  final String $type;
 
   @override
   String toString() {
@@ -533,7 +488,6 @@ class _$FixedAmountDiscountImpl extends FixedAmountDiscount {
                 other.constraints == constraints));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, name, code, amount, constraints);
@@ -632,13 +586,6 @@ class _$FixedAmountDiscountImpl extends FixedAmountDiscount {
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$FixedAmountDiscountImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class FixedAmountDiscount extends Promotion {
@@ -649,9 +596,6 @@ abstract class FixedAmountDiscount extends Promotion {
       required final double amount,
       final PromotionConstraints constraints}) = _$FixedAmountDiscountImpl;
   const FixedAmountDiscount._() : super._();
-
-  factory FixedAmountDiscount.fromJson(Map<String, dynamic> json) =
-      _$FixedAmountDiscountImpl.fromJson;
 
   @override
   String get id;
@@ -747,7 +691,7 @@ class __$$BuyXGetYPromotionImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$BuyXGetYPromotionImpl extends BuyXGetYPromotion {
   const _$BuyXGetYPromotionImpl(
       {required this.id,
@@ -756,13 +700,8 @@ class _$BuyXGetYPromotionImpl extends BuyXGetYPromotion {
       required this.buyQty,
       required this.getQty,
       required this.buyProductId,
-      this.constraints = const PromotionConstraints(),
-      final String? $type})
-      : $type = $type ?? 'buyXGetY',
-        super._();
-
-  factory _$BuyXGetYPromotionImpl.fromJson(Map<String, dynamic> json) =>
-      _$$BuyXGetYPromotionImplFromJson(json);
+      this.constraints = const PromotionConstraints()})
+      : super._();
 
   @override
   final String id;
@@ -780,9 +719,6 @@ class _$BuyXGetYPromotionImpl extends BuyXGetYPromotion {
   @override
   @JsonKey()
   final PromotionConstraints constraints;
-
-  @JsonKey(name: 'runtimeType')
-  final String $type;
 
   @override
   String toString() {
@@ -805,7 +741,6 @@ class _$BuyXGetYPromotionImpl extends BuyXGetYPromotion {
                 other.constraints == constraints));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType, id, name, code, buyQty, getQty, buyProductId, constraints);
@@ -906,13 +841,6 @@ class _$BuyXGetYPromotionImpl extends BuyXGetYPromotion {
     }
     return orElse();
   }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$BuyXGetYPromotionImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class BuyXGetYPromotion extends Promotion {
@@ -925,9 +853,6 @@ abstract class BuyXGetYPromotion extends Promotion {
       required final String buyProductId,
       final PromotionConstraints constraints}) = _$BuyXGetYPromotionImpl;
   const BuyXGetYPromotion._() : super._();
-
-  factory BuyXGetYPromotion.fromJson(Map<String, dynamic> json) =
-      _$BuyXGetYPromotionImpl.fromJson;
 
   @override
   String get id;
@@ -949,10 +874,6 @@ abstract class BuyXGetYPromotion extends Promotion {
       throw _privateConstructorUsedError;
 }
 
-PromotionConstraints _$PromotionConstraintsFromJson(Map<String, dynamic> json) {
-  return _PromotionConstraints.fromJson(json);
-}
-
 /// @nodoc
 mixin _$PromotionConstraints {
   double? get minPurchaseAmount => throw _privateConstructorUsedError;
@@ -961,9 +882,6 @@ mixin _$PromotionConstraints {
   List<String>? get applicableProductIds => throw _privateConstructorUsedError;
   HappyHourTimeRange? get happyHourTimeRange =>
       throw _privateConstructorUsedError;
-
-  /// Serializes this PromotionConstraints to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of PromotionConstraints
   /// with the given fields replaced by the non-null parameter values.
@@ -1114,7 +1032,7 @@ class __$$PromotionConstraintsImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$PromotionConstraintsImpl extends _PromotionConstraints {
   const _$PromotionConstraintsImpl(
       {this.minPurchaseAmount,
@@ -1124,9 +1042,6 @@ class _$PromotionConstraintsImpl extends _PromotionConstraints {
       this.happyHourTimeRange})
       : _applicableProductIds = applicableProductIds,
         super._();
-
-  factory _$PromotionConstraintsImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PromotionConstraintsImplFromJson(json);
 
   @override
   final double? minPurchaseAmount;
@@ -1169,7 +1084,6 @@ class _$PromotionConstraintsImpl extends _PromotionConstraints {
                 other.happyHourTimeRange == happyHourTimeRange));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -1188,13 +1102,6 @@ class _$PromotionConstraintsImpl extends _PromotionConstraints {
       get copyWith =>
           __$$PromotionConstraintsImplCopyWithImpl<_$PromotionConstraintsImpl>(
               this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$PromotionConstraintsImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class _PromotionConstraints extends PromotionConstraints {
@@ -1206,9 +1113,6 @@ abstract class _PromotionConstraints extends PromotionConstraints {
           final HappyHourTimeRange? happyHourTimeRange}) =
       _$PromotionConstraintsImpl;
   const _PromotionConstraints._() : super._();
-
-  factory _PromotionConstraints.fromJson(Map<String, dynamic> json) =
-      _$PromotionConstraintsImpl.fromJson;
 
   @override
   double? get minPurchaseAmount;
@@ -1229,19 +1133,12 @@ abstract class _PromotionConstraints extends PromotionConstraints {
       get copyWith => throw _privateConstructorUsedError;
 }
 
-HappyHourTimeRange _$HappyHourTimeRangeFromJson(Map<String, dynamic> json) {
-  return _HappyHourTimeRange.fromJson(json);
-}
-
 /// @nodoc
 mixin _$HappyHourTimeRange {
   int get startHour => throw _privateConstructorUsedError;
   int get startMinute => throw _privateConstructorUsedError;
   int get endHour => throw _privateConstructorUsedError;
   int get endMinute => throw _privateConstructorUsedError;
-
-  /// Serializes this HappyHourTimeRange to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of HappyHourTimeRange
   /// with the given fields replaced by the non-null parameter values.
@@ -1351,7 +1248,7 @@ class __$$HappyHourTimeRangeImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$HappyHourTimeRangeImpl extends _HappyHourTimeRange {
   const _$HappyHourTimeRangeImpl(
       {required this.startHour,
@@ -1359,9 +1256,6 @@ class _$HappyHourTimeRangeImpl extends _HappyHourTimeRange {
       required this.endHour,
       required this.endMinute})
       : super._();
-
-  factory _$HappyHourTimeRangeImpl.fromJson(Map<String, dynamic> json) =>
-      _$$HappyHourTimeRangeImplFromJson(json);
 
   @override
   final int startHour;
@@ -1391,7 +1285,6 @@ class _$HappyHourTimeRangeImpl extends _HappyHourTimeRange {
                 other.endMinute == endMinute));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, startHour, startMinute, endHour, endMinute);
@@ -1404,13 +1297,6 @@ class _$HappyHourTimeRangeImpl extends _HappyHourTimeRange {
   _$$HappyHourTimeRangeImplCopyWith<_$HappyHourTimeRangeImpl> get copyWith =>
       __$$HappyHourTimeRangeImplCopyWithImpl<_$HappyHourTimeRangeImpl>(
           this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$HappyHourTimeRangeImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class _HappyHourTimeRange extends HappyHourTimeRange {
@@ -1420,9 +1306,6 @@ abstract class _HappyHourTimeRange extends HappyHourTimeRange {
       required final int endHour,
       required final int endMinute}) = _$HappyHourTimeRangeImpl;
   const _HappyHourTimeRange._() : super._();
-
-  factory _HappyHourTimeRange.fromJson(Map<String, dynamic> json) =
-      _$HappyHourTimeRangeImpl.fromJson;
 
   @override
   int get startHour;

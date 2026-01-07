@@ -150,7 +150,8 @@ class ProductGridView extends StatelessWidget {
                             ),
                           ),
                         )
-                        .animate().fadeIn(duration: 400.ms).slideY(begin: 0.1, end: 0, curve: Curves.easeOut), 
+                        // Removed grid-level animation to focus on item staggered animation
+                        ; 
                         // Note: To do true staggered on children of a SliverGrid is hard with just .animate() on the list.
                         // Better to animate the children individually inside the builder if we want cascade.
                         // Let's revise the builder above.

@@ -33,33 +33,16 @@ class _ProductCardState extends State<ProductCard> {
     final theme = context.savvy;
     
     return GestureDetector(
-      onTapDown: (_) => setState(() => _isPressed = true),
+      onTapDown: (_) {
+        setState(() => _isPressed = true);
+        HapticFeedback.lightImpact();
+      },
       onTapUp: (_) => setState(() => _isPressed = false),
       onTapCancel: () => setState(() => _isPressed = false),
       onTap: () {
-        // 1. Logic Layer (Immediate)
-        // Note: For now assuming no modifiers for simple rapid tap test, or if there are modifiers, we might not animate flight here?
-        // User request: "Logic Layer (FlyLayerController) ... Animasi tidak boleh memblokir interaksi user."
-        // "Integrasi ke ProductCard ... Jalankan logika bisnis context.read<CartBloc>().add(...) SEGERA"
-        
-        // We will execute the add directly. IF modifiers are needed, ideally we show dialog first.
-        // But for "rapid tapping" usually implies quick add. 
-        // Let's defer to the fact if it has modifiers, we likely need the dialog flow which isn't rapid tap compatible in same way.
-        // I'll keep it simple: Try to add.
-        
-        // However, we are in ProductCard, we don't know if we need modifiers unless we check product logic.
-        // The previous implementation bubbled notification. 
-        // If we want DIRECT trigger, we need context.read<CartBloc>(). It's available.
-        // Since we are moving logic here, we must handle modifiers here or assume simple products for this specific optimization.
-        // The user said "Prioritaskan performa fungsional".
-        // Let's assume standard add for now. 
-        
-        // The user said "Prioritaskan performa fungsional".
-        // Let's assume standard add for now. 
-        
-        HapticHelper.onTap(); // 2. Haptic
-        
-        // 3. Trigger Flight
+        HapticHelper.onTap(); // Use Helper
+
+        // Trigger Flight
         FlyAnimationLayer.of(context)?.trigger(
           sourceKey: _imageKey,
           child: Material(
@@ -70,7 +53,7 @@ class _ProductCardState extends State<ProductCard> {
               ? CachedNetworkImage(
                   imageUrl: widget.product.imageUrl!, 
                   fit: BoxFit.cover,
-                  memCacheWidth: 100, // Optimize memory for flying particle
+                  memCacheWidth: 100, 
                 )
               : Container(
                   color: theme.colors.brandPrimary,
@@ -80,28 +63,19 @@ class _ProductCardState extends State<ProductCard> {
           ),
         );
 
-        // 4. Business Logic (Check modifiers via Notification? Or direct?)
-        // To respect the "Immediate" request, I'll bubble the notification BUT the Flight is now decoupled.
-        // Or I can call Bloc directly if I have access.
-        // Let's bubble the notification for Logic (PosPage will handle logic), but WE handle animation.
-        // Wait, if PosPage handles logic, it might show dialog.
-        // If I animate FLIGHT now, and then Dialog opens, it's weird? 
-        // Usually Flight happens ON SUCCESS add. 
-        // "Jalankan logika bisnis ... SEGERA".
-        // Use Notification for logic, but trigger Flight here.
+        // Notify Logic
         AddToCartNotification(
           product: widget.product,
           modifiers: [], 
           sourceKey: _imageKey,
-          // We set onAnimationComplete to null or handle differently, but here we just notify for the BLOC logic.
         ).dispatch(context);
         
         widget.onTap?.call(); 
       },
       child: AnimatedScale(
-        scale: _isPressed ? 0.92 : 1.0,
-        duration: theme.motion.durationFast,
-        curve: theme.motion.curveBounce,
+        scale: _isPressed ? 0.95 : 1.0,
+        duration: _isPressed ? 100.ms : 500.ms,
+        curve: _isPressed ? Curves.easeOut : Curves.elasticOut,
         child: SavvyBox(
           padding: EdgeInsets.zero,
           color: theme.colors.bgElevated,
@@ -116,7 +90,7 @@ class _ProductCardState extends State<ProductCard> {
                     child: Hero(
                       tag: 'product_${widget.product.uuid}',
                       child: Container(
-                        key: _imageKey, // Key for Flight Animation Source
+                        key: _imageKey,
                         decoration: BoxDecoration(
                           color: widget.product.colorHex != null 
                             ? Color(int.parse(widget.product.colorHex!.replaceAll('#', '0xFF'))) 
@@ -129,9 +103,9 @@ class _ProductCardState extends State<ProductCard> {
                                 child: CachedNetworkImage(
                                   imageUrl: widget.product.imageUrl!,
                                   fit: BoxFit.cover,
-                                  placeholder: (context, url) => Center(
-                                    child: CircularProgressIndicator(strokeWidth: 2, color: theme.colors.brandPrimary),
-                                  ),
+                                  placeholder: (context, url) => Container(
+                                    color: theme.colors.bgSecondary,
+                                  ).animate(onPlay: (c) => c.repeat()).shimmer(duration: 1200.ms, color: theme.colors.bgPrimary),
                                   errorWidget: (context, url, error) => Icon(
                                     Icons.broken_image, 
                                     color: theme.colors.textMuted

@@ -20,6 +20,7 @@ class CartView extends StatefulWidget {
 
 class _CartViewState extends State<CartView> {
   bool _isChargePressed = false;
+  int _bumpTrigger = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -28,19 +29,30 @@ class _CartViewState extends State<CartView> {
     return Column(
       children: [
         // CART HEADER
-        Container(
-          padding: EdgeInsets.all(theme.shapes.spacingMd),
-          decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: theme.colors.borderDefault)),
-          ),
-          child: Row(
-            children: [
-              Icon(Icons.shopping_cart_outlined, key: widget.cartTargetKey, color: theme.colors.brandPrimary),
-              SizedBox(width: theme.shapes.spacingSm),
-              SavvyText('Current Order', style: SavvyTextStyle.h3, color: theme.colors.textPrimary),
-              const Spacer(),
-              _CustomerInfoButton(), // Simplified extract or inline
-            ],
+        BlocListener<CartBloc, CartState>(
+          listenWhen: (previous, current) => current.items.length > previous.items.length,
+          listener: (context, state) {
+             // Trigger bump
+             setState(() => _bumpTrigger++);
+          },
+          child: Container(
+            padding: EdgeInsets.all(theme.shapes.spacingMd),
+            decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(color: theme.colors.borderDefault)),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.shopping_cart_outlined, key: widget.cartTargetKey, color: theme.colors.brandPrimary)
+                  .animate(target: _bumpTrigger.toDouble())
+                  .scale(begin: const Offset(1, 1), end: const Offset(1.2, 1.2), duration: 100.ms, curve: Curves.easeOut)
+                  .then()
+                  .scale(begin: const Offset(1.2, 1.2), end: const Offset(1, 1), duration: 300.ms, curve: Curves.elasticOut),
+                SizedBox(width: theme.shapes.spacingSm),
+                SavvyText('Current Order', style: SavvyTextStyle.h3, color: theme.colors.textPrimary),
+                const Spacer(),
+                _CustomerInfoButton(), 
+              ],
+            ),
           ),
         ),
 

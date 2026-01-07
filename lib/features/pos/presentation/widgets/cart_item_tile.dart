@@ -5,6 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_slide_counter.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_ticker.dart';
+import 'package:intl/intl.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
@@ -23,6 +26,11 @@ class CartItemTile extends StatelessWidget {
     return Dismissible(
       key: ValueKey(item.uuid),
       direction: DismissDirection.endToStart,
+      dismissThresholds: const {DismissDirection.endToStart: 0.6}, // High resistance
+      confirmDismiss: (direction) async {
+         // Return true to allow dismiss when threshold reached
+         return true;
+      },
       onDismissed: (_) {
          HapticFeedback.mediumImpact();
          context.read<CartBloc>().add(CartEvent.removeFromCart(item.uuid));
@@ -65,10 +73,9 @@ class CartItemTile extends StatelessWidget {
                    ),
                    Padding(
                      padding: const EdgeInsets.symmetric(vertical: 2),
-                     child: SavvyText(
-                       '${item.quantity}',
-                       style: SavvyTextStyle.labelMedium,
-                       color: theme.colors.textPrimary,
+                     child: SavvySlideCounter(
+                       value: item.quantity,
+                       style: SavvyTextStyle.labelMedium.copyWith(color: theme.colors.textPrimary),
                      ),
                    ),
                    _QtyButton(

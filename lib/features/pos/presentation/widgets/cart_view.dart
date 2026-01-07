@@ -4,11 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
-import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
-import 'package:savvy_pos/features/pos/presentation/widgets/cart_item_tile.dart';
-import 'package:savvy_pos/features/pos/presentation/widgets/cart_item_tile.dart';
-import 'package:savvy_pos/features/pos/presentation/widgets/payment_methods_sheet.dart';
+import 'package:flutter/services.dart'; // Haptics
+import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
+import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
+import 'package:savvy_pos/features/pos/presentation/widgets/payment/payment_sheet.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/promo_code_input.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_ticker.dart';
+import 'package:intl/intl.dart';
 
 class CartView extends StatefulWidget {
   final GlobalKey? cartTargetKey;
@@ -58,18 +60,39 @@ class _CartViewState extends State<CartView> {
 
         // CART LIST
         Expanded(
-          child: BlocBuilder<CartBloc, CartState>(
-            builder: (context, state) {
-              if (state.items.isEmpty) {
-                return _EmptyCartState();
-              }
-              return ListView.separated(
-                padding: EdgeInsets.all(theme.shapes.spacingMd),
-                itemCount: state.items.length,
-                separatorBuilder: (_, __) => SizedBox(height: theme.shapes.spacingSm),
-                itemBuilder: (context, index) {
-                  return CartItemTile(item: state.items[index]);
-                },
+          child: DragTarget<Product>(
+            onWillAccept: (data) => data != null,
+            onAccept: (product) {
+              HapticFeedback.mediumImpact();
+              // Play "Pop" sound if available, Haptics is key here.
+              context.read<CartBloc>().add(CartEvent.addProduct(product));
+            },
+            builder: (context, candidateData, rejectedData) {
+              final isHovering = candidateData.isNotEmpty;
+              
+              return Container(
+                decoration: isHovering 
+                  ? BoxDecoration(
+                      color: theme.colors.brandPrimary.withOpacity(0.05),
+                      border: Border.all(color: theme.colors.brandPrimary, width: 2),
+                      borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
+                    )
+                  : null,
+                child: BlocBuilder<CartBloc, CartState>(
+                  builder: (context, state) {
+                    if (state.items.isEmpty) {
+                      return _EmptyCartState();
+                    }
+                    return ListView.separated(
+                      padding: EdgeInsets.all(theme.shapes.spacingMd),
+                      itemCount: state.items.length,
+                      separatorBuilder: (_, __) => SizedBox(height: theme.shapes.spacingSm),
+                      itemBuilder: (context, index) {
+                        return CartItemTile(item: state.items[index]);
+                      },
+                    );
+                  },
+                ),
               );
             },
           ),
@@ -126,7 +149,7 @@ class _CartViewState extends State<CartView> {
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
                             barrierColor: Colors.black54,
-                            builder: (_) => PaymentMethodsSheet(totalAmount: state.total),
+                            builder: (_) => PaymentSheet(totalAmount: state.total),
                           );
                         },
                     child: AnimatedScale(
@@ -188,10 +211,25 @@ class _SummaryRow extends StatelessWidget {
             style: isLarge ? SavvyTextStyle.h3 : SavvyTextStyle.bodyMedium,
             color: finalColor,
           ),
-          SavvyText(
-            '\$${value.toStringAsFixed(2)}', 
-            style: isLarge ? SavvyTextStyle.h3 : SavvyTextStyle.bodyMedium,
-            color: isLarge ? theme.colors.brandPrimary : finalColor,
+          // Living Number
+          SavvyTicker(
+             value: value,
+             style: isLarge ? SavvyTextStyle.h3.copyWith(fontSize: 24, fontWeight: FontWeight.bold) : SavvyTextStyle.bodyMedium,
+             format: NumberFormat.currency(symbol: '\$'),
+          )
+          .animate(key: ValueKey(value), target: isLarge ? 1 : 0) // Only pulse if large (Total)
+          .scale(
+             begin: const Offset(1, 1), 
+             end: const Offset(1.1, 1.1), 
+             duration: 100.ms, 
+             curve: Curves.easeOut
+          )
+          .then()
+          .scale(
+             begin: const Offset(1.1, 1.1), 
+             end: const Offset(1, 1), 
+             duration: 200.ms, 
+             curve: Curves.elasticOut
           ),
         ],
       ),

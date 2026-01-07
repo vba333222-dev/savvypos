@@ -111,7 +111,10 @@ class FlyLayerController extends State<FlyAnimationLayer> with TickerProviderSta
               height: currentSize.height,
               child: Opacity(
                 opacity: opacity.clamp(0.0, 1.0),
-                child: child, // The lightweight widget passed in
+                child: Transform.rotate(
+                  angle: t * 2.0, // Rotate slightly during flight (approx 115 degrees)
+                  child: child, 
+                ),
               ),
             );
           },

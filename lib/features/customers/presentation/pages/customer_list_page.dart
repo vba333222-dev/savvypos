@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get_it/get_it.dart';
-import 'package:savvy_pos/core/config/theme_config.dart';
-import 'package:savvy_pos/features/customers/domain/entities/customer.dart';
+import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/features/customers/presentation/bloc/customer_bloc.dart';
+import 'package:savvy_pos/features/customers/presentation/widgets/rolodex_card.dart';
 
 class CustomerListPage extends StatelessWidget {
   final bool isSelectionMode;
@@ -14,73 +15,93 @@ class CustomerListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => GetIt.I<CustomerBloc>()..add(const CustomerEvent.search('')),
-      child: _CustomerListView(isSelectionMode: isSelectionMode),
+      child: _CustomerRolodexView(isSelectionMode: isSelectionMode),
     );
   }
 }
 
-class _CustomerListView extends StatefulWidget {
+class _CustomerRolodexView extends StatelessWidget {
   final bool isSelectionMode;
-  const _CustomerListView({required this.isSelectionMode});
-
-  @override
-  State<_CustomerListView> createState() => _CustomerListViewState();
-}
-
-class _CustomerListViewState extends State<_CustomerListView> {
-  final _searchController = TextEditingController();
-  
-  void _showAddDialog() {
-    final nameCtrl = TextEditingController();
-    final phoneCtrl = TextEditingController();
-    final emailCtrl = TextEditingController();
-    
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add Customer'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'Name')),
-            TextField(controller: phoneCtrl, decoration: const InputDecoration(labelText: 'Phone')),
-            TextField(controller: emailCtrl, decoration: const InputDecoration(labelText: 'Email')),
-          ],
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-          ElevatedButton(
-            onPressed: () {
-               // We need to access the BLOC from outside the dialog but currently it's provided in Page.
-               // Since ShowDialog is a new route, context needs to be right.
-               // We can wrap AlertDialog in BlocProvider.value logic used in Settings, 
-               // OR passing the function.
-               // Simpler: Return data from dialog? No, we want to trigger Bloc.
-               // Let's rely on parent context if using builder correctly, OR pass the Bloc.
-               // But inside showDialog context is different.
-            },
-            child: const Text('Save'),
-          )
-        ],
-      ),
-    );
-     // Since implementing Dialog Logic inside a method is annoying with context, 
-     // I will use a separate small widget or just refactor.
-     // For speed, let's just push a small Page or use a simple persistent bottom sheet logic if desired.
-     // But Requirements say "modal/dialog".
-  }
+  const _CustomerRolodexView({required this.isSelectionMode});
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.savvy.colors;
-    
+    final theme = context.savvy;
+
     return Scaffold(
-      backgroundColor: colors.bgPrimary,
-      appBar: AppBar(
-        title: const Text('Customers'),
-        backgroundColor: colors.bgPrimary,
+      backgroundColor: theme.colors.bgPrimary,
+      body: CustomScrollView(
+        slivers: [
+           SliverAppBar(
+             title: Text('ROLODEX', style: TextStyle(color: theme.colors.textPrimary, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+             centerTitle: true,
+             backgroundColor: theme.colors.bgPrimary,
+             floating: true,
+             pinned: true,
+             elevation: 0,
+             bottom: PreferredSize(
+               preferredSize: const Size.fromHeight(60),
+               child: Padding(
+                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                 child: TextField(
+                   onChanged: (v) => context.read<CustomerBloc>().add(CustomerEvent.search(v)),
+                   style: TextStyle(color: theme.colors.textPrimary),
+                   decoration: InputDecoration(
+                     hintText: 'Search contacts...',
+                     prefixIcon: Icon(Icons.search, color: theme.colors.textMuted),
+                     filled: true,
+                     fillColor: theme.colors.bgElevated,
+                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: BorderSide.none),
+                     contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                   ),
+                 ),
+               ),
+             ),
+           ),
+
+           BlocBuilder<CustomerBloc, CustomerState>(
+             builder: (context, state) {
+               return state.maybeWhen(
+                 loaded: (customers) {
+                    if (customers.isEmpty) return const SliverFillRemaining(child: Center(child: Text('No Contacts')));
+                    
+                    return SliverPadding(
+                      padding: const EdgeInsets.only(bottom: 100, top: 16),
+                      sliver: SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            final c = customers[index];
+                            return Transform.translate(
+                              offset: const Offset(0, 0), // Could add scroll-based stacking here if using ScrollController
+                              child: Container(
+                                margin: const EdgeInsets.only(bottom: 8), // Slight negative margin -> (-10) if we want true stack?
+                                // True stack requires drawing order tricks or specific Stack widget.
+                                // For Rolodex feel, just tight spacing and shadows work well.
+                                child: RolodexCard(
+                                  customer: c,
+                                  onTap: () {
+                                    if (isSelectionMode) Navigator.pop(context, c);
+                                  },
+                                ),
+                              ).animate().fadeIn(duration: 400.ms, delay: (50 * index).ms).slideY(begin: 0.2, end: 0, curve: Curves.easeOutBack),
+                            );
+                          },
+                          childCount: customers.length,
+                        ),
+                      ),
+                    );
+                 },
+                 loading: () => const SliverFillRemaining(child: Center(child: CircularProgressIndicator())),
+                 orElse: () => const SliverFillRemaining(child: SizedBox.shrink()),
+               );
+             },
+           ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: theme.colors.brandPrimary.withAlpha(200),
+        elevation: 10,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         onPressed: () {
            showDialog(
              context: context,
@@ -90,54 +111,7 @@ class _CustomerListViewState extends State<_CustomerListView> {
              ),
            );
         },
-        child: const Icon(Icons.add),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: const InputDecoration(
-                labelText: 'Search by name or phone', 
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder()
-              ),
-              onChanged: (v) => context.read<CustomerBloc>().add(CustomerEvent.search(v)),
-            ),
-          ),
-          Expanded(
-            child: BlocBuilder<CustomerBloc, CustomerState>(
-              builder: (context, state) {
-                return state.maybeWhen(
-                  loading: () => const Center(child: CircularProgressIndicator()),
-                  loaded: (customers) {
-                    if (customers.isEmpty) return const Center(child: Text('No customers found'));
-                    return ListView.builder(
-                      itemCount: customers.length,
-                      itemBuilder: (context, index) {
-                        final c = customers[index];
-                        return ListTile(
-                          leading: CircleAvatar(child: Text(c.name[0].toUpperCase())),
-                          title: Text(c.name),
-                          subtitle: Text(c.phone ?? c.email ?? 'No contact info'),
-                          trailing: widget.isSelectionMode 
-                             ? const Icon(Icons.check_circle_outline)
-                             : null,
-                          onTap: widget.isSelectionMode 
-                             ? () => Navigator.pop(context, c)
-                             : null,
-                        );
-                      },
-                    );
-                  },
-                  error: (msg) => Center(child: Text('Error: $msg')),
-                  orElse: () => const SizedBox.shrink(),
-                );
-              },
-            ),
-          ),
-        ],
+        child: const Icon(Icons.person_add, color: Colors.white),
       ),
     );
   }
@@ -157,19 +131,25 @@ class _AddCustomerDialogState extends State<_AddCustomerDialog> {
   
   @override
   Widget build(BuildContext context) {
+    final theme = context.savvy;
     return AlertDialog(
-        title: const Text('Add Customer'),
+        backgroundColor: theme.colors.bgElevated,
+        title: const Text('New Contact'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'Name*')),
-            TextField(controller: phoneCtrl, decoration: const InputDecoration(labelText: 'Phone')),
-            TextField(controller: emailCtrl, decoration: const InputDecoration(labelText: 'Email')),
+            TextField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'Name', filled: true)),
+            const SizedBox(height: 8),
+            TextField(controller: phoneCtrl, decoration: const InputDecoration(labelText: 'Phone', filled: true)),
+            const SizedBox(height: 8),
+            TextField(controller: emailCtrl, decoration: const InputDecoration(labelText: 'Email', filled: true)),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text('Cancel', style: TextStyle(color: theme.colors.textSecondary))),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: theme.colors.brandPrimary, shape: const StadiumBorder()),
             onPressed: () {
               if (nameCtrl.text.isNotEmpty) {
                 context.read<CustomerBloc>().add(
@@ -178,7 +158,7 @@ class _AddCustomerDialogState extends State<_AddCustomerDialog> {
                 Navigator.pop(context);
               }
             },
-            child: const Text('Save'),
+            child: const Text('Save Contact', style: TextStyle(color: Colors.white)),
           )
         ],
       );

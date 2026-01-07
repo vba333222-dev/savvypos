@@ -17,6 +17,7 @@ class InventoryManagementEvent with _$InventoryManagementEvent {
   const factory InventoryManagementEvent.addProduct(Product product, File? imageFile, {List<String>? modifierGroupUuids}) = _AddProduct;
   const factory InventoryManagementEvent.updateProduct(Product product, File? imageFile, {List<String>? modifierGroupUuids}) = _UpdateProduct;
   const factory InventoryManagementEvent.deleteProduct(String uuid) = _DeleteProduct;
+  const factory InventoryManagementEvent.updateStock(String uuid, int delta) = _UpdateStock;
 }
 
 @freezed
@@ -36,6 +37,7 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
     on<_AddProduct>(_onAddProduct);
     on<_UpdateProduct>(_onUpdateProduct);
     on<_DeleteProduct>(_onDeleteProduct);
+    on<_UpdateStock>(_onUpdateStock);
   }
 
   Future<String?> _saveImage(File? imageFile) async {
@@ -104,6 +106,18 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
       emit(const InventoryManagementState.success());
     } catch (e) {
       emit(InventoryManagementState.error(e.toString()));
+    }
+  }
+
+  Future<void> _onUpdateStock(_UpdateStock event, Emitter<InventoryManagementState> emit) async {
+    // Optimistic update - assume success or just fire and forget for UI speed?
+    // Let's fire and forget for Kinetic feel, repository handles the rest.
+    try {
+       await _repository.updateStock(event.uuid, event.delta);
+       // No emit success needed if we are just listening to stream in UI? 
+       // Ideally we might want to emit a transient state but streams handle data.
+    } catch (e) {
+       // Silent fail or snackbar?
     }
   }
 }

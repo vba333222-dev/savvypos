@@ -1,6 +1,6 @@
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
-// import 'package:savvy_pos/features/inventory/domain/entities/ingredient.dart'; // Uncomment if needed
+import 'package:savvy_pos/features/inventory/domain/entities/ingredient.dart';
 
 abstract class IProductRepository {
   /// Get all products (paginated or stream)
@@ -20,6 +20,9 @@ abstract class IProductRepository {
   
   /// Get modifier groups for a product
   Future<List<ModifierGroup>> getModifiersForProduct(String productUuid);
+
+  /// Quick update stock (for tactile inventory)
+  Future<void> updateStock(String productUuid, int delta);
   
   // Add other methods if stricly required, but this is the critical one for now.
 }

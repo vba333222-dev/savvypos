@@ -2,6 +2,8 @@ import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
+import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
+import 'package:savvy_pos/features/inventory/domain/entities/ingredient.dart';
 import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
 
 @LazySingleton(as: IProductRepository)
@@ -142,6 +144,12 @@ class ProductRepositoryImpl implements IProductRepository {
      return groups;
   }
   
+  @override
+  Future<void> updateStock(String productUuid, int delta) async {
+    // TODO: Implement actual ledger logic
+    return Future.value();
+  }
+
   @override
   Future<void> updateProductModifiers(String productUuid, List<String> modifierGroupUuids) async {
      await (db.delete(db.productModifierLinkTable)..where((t) => t.productUuid.equals(productUuid))).go();

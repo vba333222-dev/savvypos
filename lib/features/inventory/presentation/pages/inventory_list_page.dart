@@ -1,161 +1,175 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get_it/get_it.dart';
-import 'package:savvy_pos/core/config/theme_config.dart';
+import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
 import 'package:savvy_pos/features/inventory/presentation/bloc/inventory_management_bloc.dart';
-import 'package:savvy_pos/features/inventory/presentation/pages/modifier_group_page.dart';
-import 'package:savvy_pos/features/inventory/presentation/pages/ingredient_list_page.dart';
 import 'package:savvy_pos/features/inventory/presentation/pages/product_form_page.dart';
+import 'package:savvy_pos/features/inventory/presentation/widgets/tactile_inventory_card.dart';
 
-class InventoryListPage extends StatelessWidget {
-  const InventoryListPage({Key? key}) : super(key: key);
+class InventoryListPage extends StatefulWidget {
+  const InventoryListPage({super.key});
+
+  @override
+  State<InventoryListPage> createState() => _InventoryListPageState();
+}
+
+class _InventoryListPageState extends State<InventoryListPage> {
+  final TextEditingController _searchCtrl = TextEditingController();
+  final IProductRepository _repo = GetIt.I<IProductRepository>();
+  String _query = '';
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.savvy;
+
     return BlocProvider(
       create: (_) => GetIt.I<InventoryManagementBloc>(),
-      child: const _InventoryListView(),
+      child: Scaffold(
+        backgroundColor: theme.colors.bgPrimary,
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: theme.colors.brandPrimary,
+          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ProductFormPage())),
+          elevation: 4,
+          child: const Icon(Icons.add, color: Colors.white),
+        ),
+        body: StreamBuilder<List<Product>>(
+          stream: _repo.watchAllProducts(),
+          builder: (context, snapshot) {
+            // Loading / Error handled gracefully
+            final allProducts = snapshot.data ?? [];
+            final filtered = _query.isEmpty 
+               ? allProducts 
+               : allProducts.where((p) => 
+                   p.name.toLowerCase().contains(_query.toLowerCase()) || 
+                   (p.sku?.contains(_query) ?? false)
+                 ).toList();
+
+            return CustomScrollView(
+              slivers: [
+                // 1. App Bar
+                SliverAppBar(
+                  title: Text('INVENTORY', style: TextStyle(color: theme.colors.textPrimary, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+                  centerTitle: true,
+                  pinned: true,
+                  floating: false,
+                  backgroundColor: theme.colors.bgPrimary,
+                  elevation: 0,
+                  actions: [
+                     IconButton(icon: Icon(Icons.filter_list, color: theme.colors.textSecondary), onPressed: (){}),
+                  ],
+                ),
+
+                // 2. Dynamic Island Search Header
+                SliverPersistentHeader(
+                  delegate: _DynamicSearchHeader(
+                    minExtent: 80,
+                    maxExtent: 80,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: TextField(
+                        controller: _searchCtrl,
+                        onChanged: (val) => setState(() => _query = val),
+                        style: TextStyle(color: theme.colors.textPrimary),
+                        decoration: InputDecoration(
+                          hintText: 'Search stock...',
+                          hintStyle: TextStyle(color: theme.colors.textMuted),
+                          prefixIcon: Icon(Icons.search, color: theme.colors.textMuted),
+                          filled: true,
+                          fillColor: theme.colors.bgElevated,
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                        ),
+                      ),
+                    ),
+                  ),
+                  pinned: true,
+                ),
+
+                // 3. Product List
+                if (!snapshot.hasData) 
+                   const SliverFillRemaining(child: Center(child: CircularProgressIndicator()))
+                else if (filtered.isEmpty)
+                   SliverFillRemaining(child: Center(child: Text('No items found', style: TextStyle(color: theme.colors.textMuted))))
+                else
+                  SliverPadding(
+                    padding: const EdgeInsets.all(16),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final product = filtered[index];
+                          // Prototyping Stock Logic:
+                          // Ideally this comes from the stream. Accessing `currentStock` from product if available or random/associated map.
+                          // For this implementation we use the product's hashCode based mock if not available, OR 0.
+                          // Assuming Product entity might have been updated or we just mock it for the "Tactile" demo.
+                          int stock = (product.name.hashCode % 50).abs(); 
+
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: TactileInventoryCard(
+                              key: ValueKey(product.uuid), // Important for animation
+                              product: product,
+                              currentStock: stock,
+                              onStockUpdate: (delta) {
+                                context.read<InventoryManagementBloc>().add(InventoryManagementEvent.updateStock(product.uuid, delta));
+                              },
+                              onEdit: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductFormPage(product: product))),
+                            ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.1, end: 0, curve: Curves.easeOutQuint),
+                          );
+                        },
+                        childCount: filtered.length,
+                      ),
+                    ),
+                  ),
+                
+                const SliverToBoxAdapter(child: SizedBox(height: 100)),
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 }
 
-class _InventoryListView extends StatelessWidget {
-  const _InventoryListView();
+class _DynamicSearchHeader extends SliverPersistentHeaderDelegate {
+  final double _minExtent;
+  final double _maxExtent;
+  final Widget child;
+
+  _DynamicSearchHeader({required double minExtent, required double maxExtent, required this.child}) : _minExtent = minExtent, _maxExtent = maxExtent;
 
   @override
-  Widget build(BuildContext context) {
-    final colors = context.savvy.colors;
-    final typography = Theme.of(context).textTheme;
-    final shapes = context.savvy.shapes;
-    
-    // Retrieve repository directly to stream products.
-    // Usually we would use a Bloc for "Listing", but to save complexity we use StreamBuilder directly for now
-    // or reuse ProductBloc if it exposed a stream. 
-    // Since ProductBloc is for POS (grid), let's just use the repo stream here for simplicity and real-time updates.
-    final repo = GetIt.I<IProductRepository>();
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    // "Dynamic Island" Effect
+    final double progress = shrinkOffset / _maxExtent;
+    final double scale = 1.0 - (progress * 0.05); // 1.0 -> 0.95
+    final double elevation = progress * 4;
 
-    return Scaffold(
-      backgroundColor: colors.bgPrimary,
-      appBar: AppBar(
-        title: const Text('Inventory Management'),
-        backgroundColor: colors.bgPrimary,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.list_alt),
-            tooltip: 'Modifier Groups',
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const ModifierGroupPage()),
-            ),
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor, 
+      child: Center(
+        child: Transform.scale(
+          scale: scale.clamp(0.95, 1.0),
+          child: Material(
+            elevation: elevation,
+            borderRadius: BorderRadius.circular(16),
+            color: Colors.transparent,
+            child: child,
           ),
-          IconButton(
-            icon: const Icon(Icons.kitchen),
-            tooltip: 'Ingredients',
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const IngredientListPage()),
-            ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-          context, 
-          MaterialPageRoute(builder: (_) => const ProductFormPage()),
-        ).then((_) {
-            // Trigger refresh if needed, but StreamBuilder handles it.
-        }),
-        backgroundColor: colors.brandPrimary,
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
-      body: StreamBuilder<List<Product>>(
-        stream: repo.watchAllProducts(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-             return Center(child: Text('Error: ${snapshot.error}'));
-          }
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          
-          final products = snapshot.data!;
-          if (products.isEmpty) {
-            return Center(child: Text('No products found', style: typography.bodyLarge));
-          }
-
-          return ListView.separated(
-            padding: EdgeInsets.all(shapes.spacingMd),
-            itemCount: products.length,
-            separatorBuilder: (_, __) => SizedBox(height: shapes.spacingSm),
-            itemBuilder: (context, index) {
-              final product = products[index];
-              return Card(
-                elevation: 0,
-                color: colors.bgElevated,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(shapes.radiusMd),
-                  side: BorderSide(color: colors.borderDefault),
-                ),
-                child: ListTile(
-                  contentPadding: EdgeInsets.all(shapes.spacingMd),
-                  leading: Container(
-                    width: 50, height: 50,
-                    decoration: BoxDecoration(
-                      color: colors.bgPrimary,
-                      borderRadius: BorderRadius.circular(shapes.radiusSm),
-                      image: product.imageUrl != null 
-                        ? DecorationImage(image: FileImage(File(product.imageUrl!)), fit: BoxFit.cover)
-                        : null,
-                    ),
-                    child: product.imageUrl == null 
-                       ? Icon(Icons.inventory_2, color: colors.textSecondary)
-                       : null,
-                  ),
-                  title: Text(product.name, style: typography.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('SKU: ${product.sku ?? '-'}', style: typography.bodySmall),
-                      const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          Text('\$${product.price.toStringAsFixed(2)}', style: typography.bodyMedium?.copyWith(fontWeight: FontWeight.bold)),
-                          if (product.trackStock) ...[
-                            const SizedBox(width: 8),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: colors.stateInfo.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Text('Stock: N/A', style: TextStyle(fontSize: 10, color: colors.stateInfo)), 
-                              // Use InventoryLedger for real stock, but Product entity doesn't have it joined yet.
-                              // Keeping it simple as per Entity definition.
-                            ),
-                          ]
-                        ],
-                      ),
-                    ],
-                  ),
-                  trailing: IconButton(
-                    icon: Icon(Icons.edit, color: colors.brandPrimary),
-                    onPressed: () => Navigator.push(
-                      context, 
-                      MaterialPageRoute(
-                        builder: (_) => ProductFormPage(product: product),
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
-        },
+        ),
       ),
     );
   }
+
+  @override
+  bool shouldRebuild(covariant _DynamicSearchHeader oldDelegate) => false;
+  
+  @override
+  double get minExtent => _minExtent;
+  
+  @override
+  double get maxExtent => _maxExtent;
 }

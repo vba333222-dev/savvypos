@@ -64,7 +64,7 @@ class _ProductCardState extends State<ProductCard> {
         ),
       ),
       childWhenDragging: Opacity(
-        opacity: 0.5,
+        opacity: 0.3,
         child: SavvyBox(
            color: theme.colors.bgSecondary,
            child: Center(child: Icon(Icons.drag_indicator, color: theme.colors.textMuted)),

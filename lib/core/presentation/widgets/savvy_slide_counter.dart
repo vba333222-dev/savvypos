@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 
-class SavvySlideCounter extends StatelessWidget {
+class SavvySlideCounter extends StatefulWidget {
   final int value;
   final TextStyle? style;
   final Duration duration;
@@ -14,32 +14,49 @@ class SavvySlideCounter extends StatelessWidget {
   });
 
   @override
+  State<SavvySlideCounter> createState() => _SavvySlideCounterState();
+}
+
+class _SavvySlideCounterState extends State<SavvySlideCounter> {
+  int? _oldValue;
+
+  @override
+  void didUpdateWidget(covariant SavvySlideCounter oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _oldValue = oldWidget.value;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    final effectiveStyle = style ?? SavvyTextStyle.bodyMedium.copyWith(color: theme.colors.textPrimary);
+    final effectiveStyle = widget.style ?? SavvyTextStyle.bodyMedium.copyWith(color: theme.colors.textPrimary);
+    
+    // Determine direction: Increment = Slide Up (New comes from bottom), Decrement = Slide Down (New comes from top)
+    final bool isIncrement = (widget.value > (_oldValue ?? widget.value));
 
     return AnimatedSwitcher(
-      duration: duration,
+      duration: widget.duration,
       transitionBuilder: (Widget child, Animation<double> animation) {
-        final inAnimation = Tween<Offset>(
-          begin: const Offset(0.0, 1.0), // From bottom
+        final inTween = Tween<Offset>(
+          begin: Offset(0.0, isIncrement ? 1.0 : -1.0), 
           end: Offset.zero,
-        ).animate(animation);
+        );
         
-        final outAnimation = Tween<Offset>(
-          begin: const Offset(0.0, -1.0), // To top
+        final outTween = Tween<Offset>(
+          begin: Offset(0.0, isIncrement ? -1.0 : 1.0), 
           end: Offset.zero,
-        ).animate(animation);
+        );
 
-        if (child.key == ValueKey(value)) {
-           return SlideTransition(position: inAnimation, child: child);
+        if (child.key == ValueKey(widget.value)) {
+           return SlideTransition(position: inTween.animate(animation), child: child);
         } else {
-           return SlideTransition(position: outAnimation, child: child);
+           return SlideTransition(position: outTween.animate(animation), child: child);
         }
       },
       layoutBuilder: (currentChild, previousChildren) {
         return Stack(
           alignment: Alignment.center,
+          clipBehavior: Clip.none,
           children: <Widget>[
             ...previousChildren,
             if (currentChild != null) currentChild,
@@ -47,8 +64,8 @@ class SavvySlideCounter extends StatelessWidget {
         );
       },
       child: Text(
-        '$value',
-        key: ValueKey(value),
+        '${widget.value}',
+        key: ValueKey(widget.value),
         style: effectiveStyle,
       ),
     );

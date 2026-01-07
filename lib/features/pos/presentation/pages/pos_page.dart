@@ -48,6 +48,33 @@ class _PosPageContentState extends State<_PosPageContent> with TickerProviderSta
   final GlobalKey _cartKey = GlobalKey();
 
   void _handleAddToCart(BuildContext context, AddToCartNotification notification) async {
+    // 1. Trigger Antigravity Flight
+    if (notification.sourceKey != null) {
+      FlyAnimationLayer.of(context)?.trigger(
+        sourceKey: notification.sourceKey!,
+        child: Material(
+          elevation: 8,
+          borderRadius: BorderRadius.circular(context.savvy.shapes.radiusMd),
+          clipBehavior: Clip.antiAlias,
+          child: notification.product.imageUrl != null
+              ? CachedNetworkImage(
+                  imageUrl: notification.product.imageUrl!,
+                  fit: BoxFit.cover,
+                )
+              : Container(
+                  color: context.savvy.colors.brandPrimary,
+                  alignment: Alignment.center,
+                  child: SavvyText(
+                    notification.product.name.characters.first.toUpperCase(),
+                    style: SavvyTextStyle.h3,
+                    color: context.savvy.colors.textInverse,
+                  ),
+                ),
+        ),
+      );
+    }
+
+    // 2. Process Cart Logic
     final product = notification.product;
     final modifiers = await MockProductRepository().getModifiersForProduct(product.uuid); 
     

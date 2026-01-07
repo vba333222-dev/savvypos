@@ -1,43 +1,53 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:savvy_pos/core/presentation/animations/flight_animation_controller.dart';
-import 'package:savvy_pos/core/utils/haptic_helper.dart';
 
 class FlyAnimationLayer extends StatefulWidget {
   final Widget child;
 
   const FlyAnimationLayer({super.key, required this.child});
 
-  static FlyLayerController? of(BuildContext context) {
-    return context.findAncestorStateOfType<FlyLayerController>();
+  static FlyAnimationLayerState? of(BuildContext context) {
+    return context.findAncestorStateOfType<FlyAnimationLayerState>();
   }
 
   @override
-  FlyLayerController createState() => FlyLayerController();
+  State<FlyAnimationLayer> createState() => FlyAnimationLayerState();
 }
 
-class FlyLayerController extends State<FlyAnimationLayer> with TickerProviderStateMixin, FlightAnimationController {
-  GlobalKey? _defaultTargetKey;
+class FlyAnimationLayerState extends State<FlyAnimationLayer> with TickerProviderStateMixin, FlightAnimationController {
+  GlobalKey? _targetKey;
+  final StreamController<void> _hitController = StreamController<void>.broadcast();
+
+  Stream<void> get onTargetHit => _hitController.stream;
 
   void registerTarget(GlobalKey key) {
-    _defaultTargetKey = key;
+    _targetKey = key;
   }
 
   void trigger({
     required GlobalKey sourceKey,
-    required Widget child, 
-    GlobalKey? overrideTarget,
+    required Widget child,
   }) {
-    final target = overrideTarget ?? _defaultTargetKey;
-    
-    // Delegate to Mixin
+    if (_targetKey == null) {
+      debugPrint("FlyAnimationLayer: No target registered. Call registerTarget first.");
+      return;
+    }
+
     flyToTarget(
-      startKey: sourceKey,
-      endKey: target,
+      sourceKey: sourceKey,
       child: child,
-      onComplete: () {
-        HapticHelper.onLand();
+      targetKey: _targetKey,
+      onTargetHit: () {
+        _hitController.add(null);
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _hitController.close();
+    super.dispose();
   }
 
   @override

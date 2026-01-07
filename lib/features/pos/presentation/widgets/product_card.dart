@@ -6,7 +6,7 @@ import 'package:savvy_pos/core/presentation/widgets/savvy_box.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 
-import 'package:flutter/services.dart';
+import 'package:savvy_pos/core/utils/haptic_helper.dart';
 import 'package:savvy_pos/core/presentation/widgets/fly_animation_layer.dart';
 import 'package:savvy_pos/features/pos/presentation/notifications/add_to_cart_notification.dart';
 
@@ -54,7 +54,10 @@ class _ProductCardState extends State<ProductCard> {
         // The user said "Prioritaskan performa fungsional".
         // Let's assume standard add for now. 
         
-        HapticFeedback.lightImpact(); // 2. Haptic
+        // The user said "Prioritaskan performa fungsional".
+        // Let's assume standard add for now. 
+        
+        HapticHelper.onTap(); // 2. Haptic
         
         // 3. Trigger Flight
         FlyAnimationLayer.of(context)?.trigger(

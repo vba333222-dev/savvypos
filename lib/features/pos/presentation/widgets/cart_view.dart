@@ -6,7 +6,8 @@ import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/cart_item_tile.dart';
-import 'package:savvy_pos/features/pos/presentation/widgets/payment_methods_dialog.dart';
+import 'package:savvy_pos/features/pos/presentation/widgets/cart_item_tile.dart';
+import 'package:savvy_pos/features/pos/presentation/widgets/payment_methods_sheet.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/promo_code_input.dart';
 
 class CartView extends StatefulWidget {
@@ -108,9 +109,12 @@ class _CartViewState extends State<CartView> {
                     onTap: state.items.isEmpty 
                       ? null 
                       : () {
-                          showDialog(
+                          showModalBottomSheet(
                             context: context,
-                            builder: (_) => PaymentMethodsDialog(totalAmount: state.total),
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            barrierColor: Colors.black54,
+                            builder: (_) => PaymentMethodsSheet(totalAmount: state.total),
                           );
                         },
                     child: AnimatedScale(

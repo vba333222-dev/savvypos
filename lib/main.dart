@@ -47,11 +47,23 @@ class App extends StatelessWidget {
         extensions: [
           SavvyTheme.light(),
         ],
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: ZoomPageTransitionsBuilder(),
+            TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
+          },
+        ),
       ),
       darkTheme: ThemeData(
         extensions: [
           SavvyTheme.dark(),
         ],
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: ZoomPageTransitionsBuilder(),
+            TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
+          },
+        ),
       ),
       home: MultiBlocProvider(
         providers: [

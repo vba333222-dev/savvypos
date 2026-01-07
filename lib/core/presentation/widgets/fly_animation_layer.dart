@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
+import 'package:savvy_pos/core/utils/haptic_helper.dart';
 
 class FlyAnimationLayer extends StatefulWidget {
   final Widget child;
@@ -17,6 +19,9 @@ class FlyAnimationLayer extends StatefulWidget {
 
 class FlyLayerController extends State<FlyAnimationLayer> with TickerProviderStateMixin {
   GlobalKey? _targetKey;
+  final _impactController = StreamController<void>.broadcast();
+
+  Stream<void> get onTargetHit => _impactController.stream;
 
   void registerTarget(GlobalKey key) {
     _targetKey = key;
@@ -24,7 +29,7 @@ class FlyLayerController extends State<FlyAnimationLayer> with TickerProviderSta
 
   void trigger({
     required GlobalKey sourceKey,
-    required Widget child, // Lightweight widget clone
+    required Widget child, 
     GlobalKey? overrideTarget,
   }) {
     final target = overrideTarget ?? _targetKey;
@@ -45,9 +50,9 @@ class FlyLayerController extends State<FlyAnimationLayer> with TickerProviderSta
     
     // Calculate distance for dynamic duration
     final distance = (targetPos - sourcePos).distance;
-    // Speed: pixels per ms. e.g. 1.5px/ms. 
-    // Min 350ms, Max 600ms.
-    final durationMs = (distance / 1.5).clamp(350.0, 600.0).round();
+    // Speed: pixels per ms. e.g. 1.2px/ms. 
+    // Min 400ms, Max 700ms for slightly "heavier" feel with physics
+    final durationMs = (distance / 1.2).clamp(400.0, 700.0).round();
 
     _spawnFlight(
       sourcePos,
@@ -70,10 +75,12 @@ class FlyLayerController extends State<FlyAnimationLayer> with TickerProviderSta
 
     controller = AnimationController(vsync: this, duration: duration);
     
-    // Using a fluid curve as requested
-    // Note: To get a strictly parabolic path (Bézier), we calculate positions manually based on 't' (controller value).
-    // The easing curve applies to 't' itself (time progression).
     final curvedT = CurvedAnimation(parent: controller, curve: Curves.easeInOutCubicEmphasized);
+    
+    // Random rotation direction and slight offset
+    final random = Random();
+    final double rotationTurns = 1.0 + (random.nextDouble() * 0.5); // 1.0 to 1.5 turns
+    final double rotationDirection = random.nextBool() ? 1.0 : -1.0; 
 
     entry = OverlayEntry(
       builder: (context) {
@@ -83,26 +90,17 @@ class FlyLayerController extends State<FlyAnimationLayer> with TickerProviderSta
             final t = curvedT.value;
             
             // Quadratic Bézier Curve
-            // P0 = start
-            // P2 = end
-            // P1 = Control Point.
-            // Let's make P1 be the midpoint X, but higher up Y to create specific arc height.
-            // If dragging down, arc wraps around? Usually flight adds negative Y (goes up).
-            
-            final double arcHeight = 150.0; // Max height of arc above straight line
-            // Simple approach: Linear interpolation for X/Y, plus a Y-offset based on Sine or Parabola of t.
-            // Parabola: 4 * h * t * (1-t)
-            
+            final double arcHeight = 150.0; 
             final linearPos = Offset.lerp(start, end, t)!;
-            final verticalOffset = arcHeight * 4 * t * (1 - t); // Peaks at t=0.5
+            final verticalOffset = arcHeight * 4 * t * (1 - t); 
             
             final currentPos = Offset(linearPos.dx, linearPos.dy - verticalOffset);
             
-            // Shrink effect: Start full size, end small (e.g. 20px)
-            final currentSize = Size.lerp(startSize, const Size(20, 20), t)!;
+            // Scale: Start 1.0, End 0.5 (Zoom into cart)
+            final currentSize = Size.lerp(startSize, startSize * 0.5, t)!;
             
-            // Opacity: Fade out slightly at the very end
-            final opacity = t > 0.9 ? (1.0 - ((t - 0.9) * 10)) : 1.0;
+            // Opacity: Fade out in last 20%
+            final opacity = t > 0.8 ? (1.0 - ((t - 0.8) * 5)) : 1.0;
 
             return Positioned(
               left: currentPos.dx,
@@ -112,8 +110,23 @@ class FlyLayerController extends State<FlyAnimationLayer> with TickerProviderSta
               child: Opacity(
                 opacity: opacity.clamp(0.0, 1.0),
                 child: Transform.rotate(
-                  angle: t * 2.0, // Rotate slightly during flight (approx 115 degrees)
-                  child: child, 
+                  angle: t * pi * 2 * rotationTurns * rotationDirection, 
+                  child: Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2 * (1-t)), // Shadow fades as it lands
+                          blurRadius: 10 + (20 * t), // Shadow blurs more as it flies? Or less? Usually shadow is related to height.
+                          // Let's make shadow simulate height: More blur at peak (t=0.5), less at start/end.
+                          // peak t=0.5. 
+                          // blur = 5 + (20 * 4 * t * (1-t))
+                          spreadRadius: 1,
+                          offset: Offset(0, 10 + (20 * 4 * t * (1-t))),
+                        )
+                      ],
+                    ),
+                    child: child,
+                  ), 
                 ),
               ),
             );
@@ -127,7 +140,15 @@ class FlyLayerController extends State<FlyAnimationLayer> with TickerProviderSta
     controller.forward().then((_) {
       entry.remove();
       controller.dispose();
+      _impactController.add(null);
+      HapticHelper.onLand(); // Haptic on land
     });
+  }
+
+  @override
+  void dispose() {
+    _impactController.close();
+    super.dispose();
   }
 
   @override

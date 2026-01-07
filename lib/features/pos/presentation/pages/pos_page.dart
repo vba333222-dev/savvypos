@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:savvy_pos/core/config/theme_config.dart';
@@ -245,6 +246,18 @@ class _MobileCartFab extends StatefulWidget {
 
 class _MobileCartFabState extends State<_MobileCartFab> {
   bool _isPressed = false;
+  int _impactTrigger = 0; // Increment to trigger animation
+
+  @override
+  void initState() {
+    super.initState();
+    // Use addPostFrameCallback to safely access context/ancestor
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FlyAnimationLayer.of(context)?.onTargetHit.listen((_) {
+        if (mounted) setState(() => _impactTrigger++);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -288,12 +301,22 @@ class _MobileCartFabState extends State<_MobileCartFab> {
                 );
               },
               backgroundColor: theme.colors.brandPrimary,
-              icon: Icon(Icons.shopping_cart, color: theme.colors.textInverse),
+              icon: Icon(Icons.shopping_cart, color: theme.colors.textInverse)
+                  .animate(target: _impactTrigger > 0 ? 1 : 0, onPlay: (c) => c.forward(from: 0))
+                  .scale(begin: const Offset(1, 1), end: const Offset(1.4, 1.4), duration: 100.ms, curve: Curves.easeOut)
+                  .then().scale(begin: const Offset(1.4, 1.4), end: const Offset(1, 1), duration: 300.ms, curve: Curves.elasticOut),
               label: Text(
                 'Items: $itemCount - Total: \$$totalFn',
                 style: TextStyle(color: theme.colors.textInverse, fontWeight: FontWeight.bold),
               ),
-            ),
+            )
+            .animate(target: _impactTrigger > 0 ? 1 : 0, onPlay: (c) => c.forward(from: 0))
+             // Squash effect on correct landing? Or Shake? User said "Squash (tekanan) or Shake (guncangan) ... scale 1.0 -> 1.2 -> 1.0"
+             // I'll apply the scale to the FAB itself too or just icon. User said "Icon/FAB".
+             // Let's do a subtle bounce on the FAB logic.
+            .scaleXY(end: 0.9, duration: 50.ms, curve: Curves.easeIn) // Squash down
+            .then().scaleXY(end: 1.05, duration: 100.ms, curve: Curves.easeOut) // Spring up
+            .then().scaleXY(end: 1.0, duration: 300.ms, curve: Curves.elasticOut), // Settle
           ),
         );
       },

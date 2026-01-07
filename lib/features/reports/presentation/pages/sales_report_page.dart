@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
-import 'package:savvy_pos/core/config/theme_config.dart';
+import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_ticker.dart';
 import 'package:savvy_pos/features/reports/presentation/bloc/report_bloc.dart';
+import 'package:savvy_pos/features/reports/presentation/widgets/interactive_sales_chart.dart';
+import 'package:savvy_pos/features/reports/presentation/widgets/period_selector.dart';
 
 class SalesReportPage extends StatefulWidget {
   const SalesReportPage({super.key});
@@ -13,115 +18,139 @@ class SalesReportPage extends StatefulWidget {
 }
 
 class _SalesReportPageState extends State<SalesReportPage> {
-  DateTime _start = DateTime.now().subtract(const Duration(days: 7));
-  DateTime _end = DateTime.now();
+  SalesPeriod _period = SalesPeriod.week;
 
   @override
   Widget build(BuildContext context) {
+    final theme = context.savvy;
+
     return BlocProvider(
-      create: (_) => GetIt.I<ReportBloc>()..add(ReportEvent.loadSalesReport(_start, _end)),
+      create: (_) => GetIt.I<ReportBloc>()..add(_getEventForPeriod(_period)),
       child: Scaffold(
-        appBar: AppBar(title: const Text('Sales Report')),
+        backgroundColor: theme.colors.bgPrimary,
+        appBar: AppBar(
+          title: Text('ANALYTICS', style: SavvyTextStyle.h3.style(theme)),
+          centerTitle: true,
+          backgroundColor: theme.colors.bgPrimary,
+          elevation: 0,
+        ),
         body: Column(
           children: [
-            // Date Picker Header
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+            // 1. Period Selector (Sticky-ish)
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              height: 48,
               child: Builder(
                 builder: (context) {
-                  return Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: () async {
-                            final picked = await showDateRangePicker(
-                              context: context,
-                              firstDate: DateTime(2020),
-                              lastDate: DateTime.now().add(const Duration(days: 1)),
-                              initialDateRange: DateTimeRange(start: _start, end: _end),
-                            );
-                            if (picked != null) {
-                              setState(() {
-                                _start = picked.start;
-                                _end = picked.end;
-                              });
-                              context.read<ReportBloc>().add(ReportEvent.loadSalesReport(_start, _end));
-                            }
-                          },
-                          child: Text('${DateFormat('MM/dd').format(_start)} - ${DateFormat('MM/dd').format(_end)}'),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      ElevatedButton(
-                         onPressed: () => context.read<ReportBloc>().add(ReportEvent.loadSalesReport(_start, _end)),
-                         child: const Icon(Icons.refresh),
-                      ),
-                    ],
+                  return PeriodSelector(
+                    selected: _period,
+                    onChanged: (p) {
+                      setState(() => _period = p);
+                      context.read<ReportBloc>().add(_getEventForPeriod(p));
+                    },
                   );
                 }
               ),
             ),
             
-            // Data Table
+            // 2. Dash Content
             Expanded(
               child: BlocBuilder<ReportBloc, ReportState>(
                 builder: (context, state) {
-                   return state.maybeWhen(
-                     loading: () => const Center(child: CircularProgressIndicator()),
-                     error: (msg) => Center(child: Text('Error: $msg')),
-                     salesLoaded: (report) {
-                       if (report.isEmpty) return const Center(child: Text('No Sales Reocords'));
-
+                  return state.maybeWhen(
+                    loading: () => const Center(child: CircularProgressIndicator()),
+                    salesLoaded: (report) {
                        final totalSales = report.fold(0.0, (sum, i) => sum + i.grossSales);
-                       final totalProfit = report.fold(0.0, (sum, i) => sum + i.grossProfit);
                        
-                       return Column(
-                         children: [
-                           // Summary Card
-                           Padding(
-                             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                             child: Row(
-                               mainAxisAlignment: MainAxisAlignment.spaceAround,
-                               children: [
-                                 _SummaryItem(label: 'Gross Sales', value: totalSales, color: Colors.blue),
-                                 _SummaryItem(label: 'Total Profit', value: totalProfit, color: Colors.green),
-                               ],
-                             ),
-                           ),
-                           const Divider(),
-                           
-                           // List
-                           Expanded(
-                             child: SingleChildScrollView(
-                               scrollDirection: Axis.vertical,
-                               child: SingleChildScrollView(
-                                 scrollDirection: Axis.horizontal,
-                                 child: DataTable(
-                                   columns: const [
-                                     DataColumn(label: Text('Product')),
-                                     DataColumn(label: Text('Qty', numeric: true)),
-                                     DataColumn(label: Text('Sales', numeric: true)),
-                                     DataColumn(label: Text('Cost', numeric: true)),
-                                     DataColumn(label: Text('Profit', numeric: true)),
-                                   ],
-                                   rows: report.map((item) {
-                                     return DataRow(cells: [
-                                       DataCell(Text(item.productName)),
-                                       DataCell(Text(item.quantitySold.toStringAsFixed(0))),
-                                       DataCell(Text('\$${item.grossSales.toStringAsFixed(2)}')),
-                                       DataCell(Text('\$${item.costOfGoodsSold.toStringAsFixed(2)}')),
-                                       DataCell(Text('\$${item.grossProfit.toStringAsFixed(2)}')),
-                                     ]);
-                                   }).toList(),
-                                 ),
+                       // Prepare Chart Data
+                       // Group by Product for now (Top Sellers) inside list
+                       // For Chart, we need Time Series.
+                       // Mocking Time Series Data as Entity doesn't seem to have Date?
+                       // Actually `SalesReportItem` is product-based summary.
+                       // We'll map Top 5 Products to Chart Bars for this demo 
+                       // (Real app -> Group By Date Query).
+                       
+                       final sorted = List.from(report)..sort((a,b) => b.grossSales.compareTo(a.grossSales));
+                       final top5 = sorted.take(7).toList();
+                       final chartData = top5.asMap().entries.map((e) {
+                         return ChartDataPoint(e.key, e.value.productName, e.value.grossSales);
+                       }).toList();
+                       
+                       double maxY = 0;
+                       for(var p in chartData) { if(p.value > maxY) maxY = p.value; }
+                       if (maxY == 0) maxY = 100;
+
+                       return SingleChildScrollView(
+                         child: Column(
+                           crossAxisAlignment: CrossAxisAlignment.stretch,
+                           children: [
+                             // HERO TOTAL
+                             Padding(
+                               padding: const EdgeInsets.symmetric(vertical: 24.0),
+                               child: Column(
+                                 children: [
+                                   Text('Total Revenue', style: TextStyle(color: theme.colors.textSecondary)),
+                                   Row(
+                                     mainAxisAlignment: MainAxisAlignment.center,
+                                     crossAxisAlignment: CrossAxisAlignment.start,
+                                     children: [
+                                       Text('\$', style: TextStyle(color: theme.colors.textPrimary, fontSize: 32, fontWeight: FontWeight.bold)),
+                                       SavvyTicker(
+                                         value: totalSales,
+                                         style: TextStyle(color: theme.colors.textPrimary, fontSize: 48, fontWeight: FontWeight.bold),
+                                       ),
+                                     ],
+                                   ),
+                                 ],
                                ),
                              ),
-                           ),
-                         ],
+
+                             // CHART
+                             Container(
+                               height: 250,
+                               padding: const EdgeInsets.symmetric(horizontal: 16),
+                               child: chartData.isEmpty 
+                                 ? Center(child: Text('No Data', style: TextStyle(color: theme.colors.textMuted)))
+                                 : InteractiveSalesChart(data: chartData, maxY: maxY),
+                             ),
+                             
+                             const SizedBox(height: 32),
+                             Padding(
+                               padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                               child: Text('Top Performers', style: SavvyTextStyle.labelLg.style(theme)),
+                             ),
+                             const SizedBox(height: 16),
+
+                             // LIST
+                             ListView.separated(
+                               shrinkWrap: true,
+                               physics: const NeverScrollableScrollPhysics(),
+                               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                               itemCount: sorted.length,
+                               separatorBuilder: (_,__) => Divider(height: 1, color: theme.colors.borderDivider.withAlpha(20)),
+                               itemBuilder: (context, index) {
+                                 final item = sorted[index];
+                                 return ListTile(
+                                   leading: CircleAvatar(
+                                      backgroundColor: theme.colors.bgElevated,
+                                      child: Text('${index + 1}', style: TextStyle(color: theme.colors.textSecondary, fontWeight: FontWeight.bold)),
+                                   ),
+                                   title: Text(item.productName, style: const TextStyle(fontWeight: FontWeight.w600)),
+                                   subtitle: Text('${item.quantitySold} sold'),
+                                   trailing: Text(
+                                     '\$${item.grossSales.toStringAsFixed(2)}',
+                                     style: TextStyle(color: theme.colors.brandPrimary, fontWeight: FontWeight.bold),
+                                   ),
+                                 ).animate(delay: (50 * index).ms).fadeIn().slideX(begin: 0.1, end: 0);
+                               },
+                             ),
+                              const SizedBox(height: 48),
+                           ],
+                         ),
                        );
-                     },
-                     orElse: () => const SizedBox.shrink(),
-                   );
+                    },
+                    orElse: () => const SizedBox.shrink(),
+                  );
                 },
               ),
             ),
@@ -130,22 +159,16 @@ class _SalesReportPageState extends State<SalesReportPage> {
       ),
     );
   }
-}
-
-class _SummaryItem extends StatelessWidget {
-  final String label;
-  final double value;
-  final Color color;
   
-  const _SummaryItem({required this.label, required this.value, required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(label, style: const TextStyle(color: Colors.grey)),
-        Text('\$${value.toStringAsFixed(2)}', style: TextStyle(color: color, fontSize: 18, fontWeight: FontWeight.bold)),
-      ],
-    );
+  ReportEvent _getEventForPeriod(SalesPeriod p) {
+    // Determine dates
+    final now = DateTime.now();
+    DateTime start;
+    switch(p) {
+      case SalesPeriod.today: start = now; break; // Today 00:00
+      case SalesPeriod.week: start = now.subtract(const Duration(days: 7)); break;
+      case SalesPeriod.month: start = now.subtract(const Duration(days: 30)); break;
+    }
+    return ReportEvent.loadSalesReport(start, now);
   }
 }

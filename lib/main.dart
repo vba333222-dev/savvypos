@@ -16,11 +16,18 @@ import 'package:savvy_pos/core/config/token_service.dart';
 
 import 'package:flutter/foundation.dart'; // for kIsWeb
 import 'package:savvy_pos/features/admin/presentation/pages/web_admin_layout.dart';
+import 'package:savvy_pos/core/presentation/widgets/global_error_shield.dart';
+import 'package:savvy_pos/core/security/lifecycle_manager.dart';
 import 'core/database/database.dart';
 
 void main() async {
   // Ensure binding
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Anti-Fragile Shield
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    return GlobalErrorShield(details: details);
+  };
   
   // Init Workmanager
   await Workmanager().initialize(
@@ -85,9 +92,33 @@ class _AppLoader extends StatelessWidget {
   const _AppLoader();
 
   @override
+  Widget build(BuildContext context) {
+    // Security Amnesia Wrapper
+    return LifecycleManager(
+      onLockRequest: () {
+        // Trigger generic logout or lock state
+        // For now, we'll force a logout which returns to EmployeeLoginPage
+        // In a real app, we might just push a lock screen over the current stack
+        // to preserve state.
+        if (context.mounted) { // Ensure context is valid
+             GetIt.I<AuthBloc>().add(const AuthEvent.logout());
+             ScaffoldMessenger.of(context).showSnackBar(
+               const SnackBar(
+                 content: Text("Session Locked due to inactivity"), 
+                 backgroundColor: Colors.orange
+               )
+             );
+        }
+      },
+      child: _AppContent(),
+    );
+  }
+}
+
+class _AppContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    if (kIsWeb) {
+     if (kIsWeb) {
       return const WebAdminLayout();
     }
     

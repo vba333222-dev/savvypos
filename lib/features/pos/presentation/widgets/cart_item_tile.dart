@@ -15,6 +15,8 @@ class CartItemTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
+    // Check if discounted (small epsilon for float precision)
+    final isDiscounted = item.discountedTotal < (item.total - 0.01);
 
     return Dismissible(
       key: ValueKey(item.uuid),
@@ -113,6 +115,29 @@ class CartItemTile extends StatelessWidget {
                          )).toList(),
                        ),
                      ),
+                   if (item.appliedPromoCode != null)
+                     Padding(
+                       padding: const EdgeInsets.only(top: 4),
+                       child: Container(
+                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                         decoration: BoxDecoration(
+                           color: theme.colors.stateSuccess.withOpacity(0.1),
+                           borderRadius: BorderRadius.circular(4),
+                           border: Border.all(color: theme.colors.stateSuccess.withOpacity(0.3)),
+                         ),
+                         child: Row(
+                           mainAxisSize: MainAxisSize.min,
+                           children: [
+                             Icon(Icons.discount, size: 10, color: theme.colors.stateSuccess),
+                             const SizedBox(width: 4),
+                             Text(
+                               item.appliedPromoCode!,
+                               style: TextStyle(fontSize: 10, color: theme.colors.stateSuccess, fontWeight: FontWeight.bold),
+                             ),
+                           ],
+                         ),
+                       ),
+                     ),
                  ],
                ),
              ),
@@ -121,10 +146,19 @@ class CartItemTile extends StatelessWidget {
              Column(
                crossAxisAlignment: CrossAxisAlignment.end,
                children: [
+                 if (isDiscounted)
+                   Text(
+                     "\$${item.total.toStringAsFixed(2)}",
+                     style: TextStyle(
+                       fontSize: 12,
+                       decoration: TextDecoration.lineThrough,
+                       color: theme.colors.textMuted,
+                     ),
+                   ),
                  SavvyText(
-                   "\$${item.total.toStringAsFixed(2)}",
+                   "\$${(isDiscounted ? item.discountedTotal : item.total).toStringAsFixed(2)}",
                    style: SavvyTextStyle.labelLarge,
-                   color: theme.colors.brandPrimary,
+                   color: isDiscounted ? theme.colors.stateSuccess : theme.colors.brandPrimary,
                  ),
                ],
              ),

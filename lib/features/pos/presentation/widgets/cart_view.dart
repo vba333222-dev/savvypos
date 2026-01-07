@@ -7,6 +7,7 @@ import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/cart_item_tile.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/payment_methods_dialog.dart';
+import 'package:savvy_pos/features/pos/presentation/widgets/promo_code_input.dart';
 
 class CartView extends StatefulWidget {
   const CartView({Key? key}) : super(key: key);
@@ -65,7 +66,7 @@ class _CartViewState extends State<CartView> {
           builder: (context, state) {
             double tax = state.total * 0.1; // Dummy Tax Logic if not in items
             // Actual calculation usually in BLOC, but for UI display:
-            // Assuming state.total is GRAND TOTAL.
+            // Assuming state.total is GRAND TOTAL (After Tax & Discount).
             
             return Container(
               padding: EdgeInsets.all(theme.shapes.spacingMd),
@@ -77,10 +78,24 @@ class _CartViewState extends State<CartView> {
               child: Column(
                 mainAxisSize: MainAxisSize.min, // Sticky at bottom
                 children: [
-                  _SummaryRow(label: 'Subtotal', value: state.total, isMuted: true),
-                  _SummaryRow(label: 'Tax (10%)', value: tax, isMuted: true), 
+                  // PROMO INPUT
+                  const PromoCodeInput(),
+
+                  SizedBox(height: theme.shapes.spacingMd),
+
+                  _SummaryRow(label: 'Subtotal', value: state.subtotal, isMuted: true),
+                  if (state.discount > 0)
+                    _SummaryRow(
+                      label: 'Discount', 
+                      value: -state.discount, 
+                      isMuted: false, 
+                      color: theme.colors.stateSuccess
+                    ),
+
+                  _SummaryRow(label: 'Tax (10%)', value: state.tax, isMuted: true), 
                   Divider(height: theme.shapes.spacingLg, color: theme.colors.borderDefault),
-                  _SummaryRow(label: 'Total', value: state.total + tax, isLarge: true), // Example logic
+                  Divider(height: theme.shapes.spacingLg, color: theme.colors.borderDefault),
+                  _SummaryRow(label: 'Total', value: state.total, isLarge: true),
 
                   SizedBox(height: theme.shapes.spacingMd),
                   
@@ -94,7 +109,7 @@ class _CartViewState extends State<CartView> {
                       : () {
                           showDialog(
                             context: context,
-                            builder: (_) => PaymentMethodsDialog(totalAmount: state.total + tax),
+                            builder: (_) => PaymentMethodsDialog(totalAmount: state.total),
                           );
                         },
                     child: AnimatedScale(
@@ -111,7 +126,7 @@ class _CartViewState extends State<CartView> {
                         ),
                         alignment: Alignment.center,
                         child: SavvyText(
-                          'Charge \$${(state.total + tax).toStringAsFixed(2)}',
+                          'Charge \$${(state.total).toStringAsFixed(2)}',
                           style: SavvyTextStyle.h3,
                           color: theme.colors.textInverse,
                         ),
@@ -128,17 +143,24 @@ class _CartViewState extends State<CartView> {
   }
 }
 
+}
+
+
+
 class _SummaryRow extends StatelessWidget {
   final String label;
   final double value;
   final bool isLarge;
   final bool isMuted;
+  final Color? color;
 
-  const _SummaryRow({required this.label, required this.value, this.isLarge = false, this.isMuted = false});
+  const _SummaryRow({required this.label, required this.value, this.isLarge = false, this.isMuted = false, this.color});
 
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
+    final finalColor = color ?? (isMuted ? theme.colors.textSecondary : theme.colors.textPrimary);
+    
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
       child: Row(
@@ -147,12 +169,12 @@ class _SummaryRow extends StatelessWidget {
           SavvyText(
             label, 
             style: isLarge ? SavvyTextStyle.h3 : SavvyTextStyle.bodyMedium,
-            color: isMuted ? theme.colors.textSecondary : theme.colors.textPrimary,
+            color: finalColor,
           ),
           SavvyText(
             '\$${value.toStringAsFixed(2)}', 
             style: isLarge ? SavvyTextStyle.h3 : SavvyTextStyle.bodyMedium,
-            color: isLarge ? theme.colors.brandPrimary : (isMuted ? theme.colors.textSecondary : theme.colors.textPrimary),
+            color: isLarge ? theme.colors.brandPrimary : finalColor,
           ),
         ],
       ),

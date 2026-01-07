@@ -18,6 +18,7 @@ class CartEvent with _$CartEvent {
   // Advanced Cart
   const factory CartEvent.selectCustomer(Customer? customer) = _SelectCustomer;
   const factory CartEvent.applyDiscount({double? percent, double? fixed}) = _ApplyDiscount;
+  const factory CartEvent.addPromoCode(String code) = _AddPromoCode;
   
   const factory CartEvent.checkoutProcessed({
     required String paymentMethod,
@@ -29,7 +30,7 @@ class CartEvent with _$CartEvent {
   const factory CartEvent.parkOrder(String tableUuid) = _ParkOrder;
   const factory CartEvent.selectTable(String tableUuid) = _SelectTable; // Added
   const factory CartEvent.retrieveOrder(String orderUuid, String tableUuid) = _RetrieveOrder;
-  const factory CartEvent.checkoutSplit(List<CartItem> items, String paymentMethod) = _CheckoutSplit;
+  const factory CartEvent.checkoutSplit(List<String> itemUuids, String paymentMethod) = _CheckoutSplit;
   
   // Kitchen Flow
   const factory CartEvent.updateNote(String productUuid, String? note) = _UpdateNote;

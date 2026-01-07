@@ -22,8 +22,11 @@ mixin _$CartItem {
   int get quantity => throw _privateConstructorUsedError;
   double get total =>
       throw _privateConstructorUsedError; // (price + modifiers) * quantity - discount
+  double get discountedTotal =>
+      throw _privateConstructorUsedError; // New field for display Strikethrough
   List<ModifierItem> get modifiers => throw _privateConstructorUsedError;
   String? get note => throw _privateConstructorUsedError;
+  String? get appliedPromoCode => throw _privateConstructorUsedError;
 
   /// Create a copy of CartItem
   /// with the given fields replaced by the non-null parameter values.
@@ -42,8 +45,10 @@ abstract class $CartItemCopyWith<$Res> {
       Product product,
       int quantity,
       double total,
+      double discountedTotal,
       List<ModifierItem> modifiers,
-      String? note});
+      String? note,
+      String? appliedPromoCode});
 }
 
 /// @nodoc
@@ -65,8 +70,10 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
     Object? product = null,
     Object? quantity = null,
     Object? total = null,
+    Object? discountedTotal = null,
     Object? modifiers = null,
     Object? note = freezed,
+    Object? appliedPromoCode = freezed,
   }) {
     return _then(_value.copyWith(
       uuid: null == uuid
@@ -85,6 +92,10 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as double,
+      discountedTotal: null == discountedTotal
+          ? _value.discountedTotal
+          : discountedTotal // ignore: cast_nullable_to_non_nullable
+              as double,
       modifiers: null == modifiers
           ? _value.modifiers
           : modifiers // ignore: cast_nullable_to_non_nullable
@@ -92,6 +103,10 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
       note: freezed == note
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
+              as String?,
+      appliedPromoCode: freezed == appliedPromoCode
+          ? _value.appliedPromoCode
+          : appliedPromoCode // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -110,8 +125,10 @@ abstract class _$$CartItemImplCopyWith<$Res>
       Product product,
       int quantity,
       double total,
+      double discountedTotal,
       List<ModifierItem> modifiers,
-      String? note});
+      String? note,
+      String? appliedPromoCode});
 }
 
 /// @nodoc
@@ -131,8 +148,10 @@ class __$$CartItemImplCopyWithImpl<$Res>
     Object? product = null,
     Object? quantity = null,
     Object? total = null,
+    Object? discountedTotal = null,
     Object? modifiers = null,
     Object? note = freezed,
+    Object? appliedPromoCode = freezed,
   }) {
     return _then(_$CartItemImpl(
       uuid: null == uuid
@@ -151,6 +170,10 @@ class __$$CartItemImplCopyWithImpl<$Res>
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as double,
+      discountedTotal: null == discountedTotal
+          ? _value.discountedTotal
+          : discountedTotal // ignore: cast_nullable_to_non_nullable
+              as double,
       modifiers: null == modifiers
           ? _value._modifiers
           : modifiers // ignore: cast_nullable_to_non_nullable
@@ -158,6 +181,10 @@ class __$$CartItemImplCopyWithImpl<$Res>
       note: freezed == note
           ? _value.note
           : note // ignore: cast_nullable_to_non_nullable
+              as String?,
+      appliedPromoCode: freezed == appliedPromoCode
+          ? _value.appliedPromoCode
+          : appliedPromoCode // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -171,8 +198,10 @@ class _$CartItemImpl implements _CartItem {
       required this.product,
       required this.quantity,
       required this.total,
+      this.discountedTotal = 0.0,
       final List<ModifierItem> modifiers = const [],
-      this.note})
+      this.note,
+      this.appliedPromoCode})
       : _modifiers = modifiers;
 
   @override
@@ -185,8 +214,12 @@ class _$CartItemImpl implements _CartItem {
   @override
   final double total;
 // (price + modifiers) * quantity - discount
+  @override
+  @JsonKey()
+  final double discountedTotal;
+// New field for display Strikethrough
   final List<ModifierItem> _modifiers;
-// (price + modifiers) * quantity - discount
+// New field for display Strikethrough
   @override
   @JsonKey()
   List<ModifierItem> get modifiers {
@@ -197,10 +230,12 @@ class _$CartItemImpl implements _CartItem {
 
   @override
   final String? note;
+  @override
+  final String? appliedPromoCode;
 
   @override
   String toString() {
-    return 'CartItem(uuid: $uuid, product: $product, quantity: $quantity, total: $total, modifiers: $modifiers, note: $note)';
+    return 'CartItem(uuid: $uuid, product: $product, quantity: $quantity, total: $total, discountedTotal: $discountedTotal, modifiers: $modifiers, note: $note, appliedPromoCode: $appliedPromoCode)';
   }
 
   @override
@@ -213,14 +248,26 @@ class _$CartItemImpl implements _CartItem {
             (identical(other.quantity, quantity) ||
                 other.quantity == quantity) &&
             (identical(other.total, total) || other.total == total) &&
+            (identical(other.discountedTotal, discountedTotal) ||
+                other.discountedTotal == discountedTotal) &&
             const DeepCollectionEquality()
                 .equals(other._modifiers, _modifiers) &&
-            (identical(other.note, note) || other.note == note));
+            (identical(other.note, note) || other.note == note) &&
+            (identical(other.appliedPromoCode, appliedPromoCode) ||
+                other.appliedPromoCode == appliedPromoCode));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, uuid, product, quantity, total,
-      const DeepCollectionEquality().hash(_modifiers), note);
+  int get hashCode => Object.hash(
+      runtimeType,
+      uuid,
+      product,
+      quantity,
+      total,
+      discountedTotal,
+      const DeepCollectionEquality().hash(_modifiers),
+      note,
+      appliedPromoCode);
 
   /// Create a copy of CartItem
   /// with the given fields replaced by the non-null parameter values.
@@ -237,8 +284,10 @@ abstract class _CartItem implements CartItem {
       required final Product product,
       required final int quantity,
       required final double total,
+      final double discountedTotal,
       final List<ModifierItem> modifiers,
-      final String? note}) = _$CartItemImpl;
+      final String? note,
+      final String? appliedPromoCode}) = _$CartItemImpl;
 
   @override
   String get uuid; // Unique ID for this line item (to distinguish variants)
@@ -249,9 +298,13 @@ abstract class _CartItem implements CartItem {
   @override
   double get total; // (price + modifiers) * quantity - discount
   @override
+  double get discountedTotal; // New field for display Strikethrough
+  @override
   List<ModifierItem> get modifiers;
   @override
   String? get note;
+  @override
+  String? get appliedPromoCode;
 
   /// Create a copy of CartItem
   /// with the given fields replaced by the non-null parameter values.
@@ -270,7 +323,9 @@ mixin _$CartState {
   double get total => throw _privateConstructorUsedError; // CRM & Advanced
   Customer? get customer => throw _privateConstructorUsedError;
   double get discountPercent => throw _privateConstructorUsedError;
-  double get discountFixed => throw _privateConstructorUsedError; // Dine-In
+  double get discountFixed => throw _privateConstructorUsedError; // Promotions
+  List<Promotion> get activePromotions =>
+      throw _privateConstructorUsedError; // Dine-In
   String? get activeTableUuid => throw _privateConstructorUsedError;
   String? get activeOrderUuid =>
       throw _privateConstructorUsedError; // Only if retrieving an OPEN order
@@ -301,6 +356,7 @@ abstract class $CartStateCopyWith<$Res> {
       Customer? customer,
       double discountPercent,
       double discountFixed,
+      List<Promotion> activePromotions,
       String? activeTableUuid,
       String? activeOrderUuid,
       String? lastOrderNumber,
@@ -335,6 +391,7 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
     Object? customer = freezed,
     Object? discountPercent = null,
     Object? discountFixed = null,
+    Object? activePromotions = null,
     Object? activeTableUuid = freezed,
     Object? activeOrderUuid = freezed,
     Object? lastOrderNumber = freezed,
@@ -376,6 +433,10 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
           ? _value.discountFixed
           : discountFixed // ignore: cast_nullable_to_non_nullable
               as double,
+      activePromotions: null == activePromotions
+          ? _value.activePromotions
+          : activePromotions // ignore: cast_nullable_to_non_nullable
+              as List<Promotion>,
       activeTableUuid: freezed == activeTableUuid
           ? _value.activeTableUuid
           : activeTableUuid // ignore: cast_nullable_to_non_nullable
@@ -439,6 +500,7 @@ abstract class _$$CartStateImplCopyWith<$Res>
       Customer? customer,
       double discountPercent,
       double discountFixed,
+      List<Promotion> activePromotions,
       String? activeTableUuid,
       String? activeOrderUuid,
       String? lastOrderNumber,
@@ -472,6 +534,7 @@ class __$$CartStateImplCopyWithImpl<$Res>
     Object? customer = freezed,
     Object? discountPercent = null,
     Object? discountFixed = null,
+    Object? activePromotions = null,
     Object? activeTableUuid = freezed,
     Object? activeOrderUuid = freezed,
     Object? lastOrderNumber = freezed,
@@ -513,6 +576,10 @@ class __$$CartStateImplCopyWithImpl<$Res>
           ? _value.discountFixed
           : discountFixed // ignore: cast_nullable_to_non_nullable
               as double,
+      activePromotions: null == activePromotions
+          ? _value._activePromotions
+          : activePromotions // ignore: cast_nullable_to_non_nullable
+              as List<Promotion>,
       activeTableUuid: freezed == activeTableUuid
           ? _value.activeTableUuid
           : activeTableUuid // ignore: cast_nullable_to_non_nullable
@@ -557,6 +624,7 @@ class _$CartStateImpl implements _CartState {
       this.customer,
       this.discountPercent = 0.0,
       this.discountFixed = 0.0,
+      final List<Promotion> activePromotions = const [],
       this.activeTableUuid,
       this.activeOrderUuid,
       this.lastOrderNumber,
@@ -564,7 +632,8 @@ class _$CartStateImpl implements _CartState {
       this.isLoading = false,
       this.isSuccess = false,
       this.error})
-      : _items = items;
+      : _items = items,
+        _activePromotions = activePromotions;
 
   final List<CartItem> _items;
   @override
@@ -596,6 +665,18 @@ class _$CartStateImpl implements _CartState {
   @override
   @JsonKey()
   final double discountFixed;
+// Promotions
+  final List<Promotion> _activePromotions;
+// Promotions
+  @override
+  @JsonKey()
+  List<Promotion> get activePromotions {
+    if (_activePromotions is EqualUnmodifiableListView)
+      return _activePromotions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_activePromotions);
+  }
+
 // Dine-In
   @override
   final String? activeTableUuid;
@@ -617,7 +698,7 @@ class _$CartStateImpl implements _CartState {
 
   @override
   String toString() {
-    return 'CartState(items: $items, subtotal: $subtotal, tax: $tax, discount: $discount, total: $total, customer: $customer, discountPercent: $discountPercent, discountFixed: $discountFixed, activeTableUuid: $activeTableUuid, activeOrderUuid: $activeOrderUuid, lastOrderNumber: $lastOrderNumber, lastCompletedOrder: $lastCompletedOrder, isLoading: $isLoading, isSuccess: $isSuccess, error: $error)';
+    return 'CartState(items: $items, subtotal: $subtotal, tax: $tax, discount: $discount, total: $total, customer: $customer, discountPercent: $discountPercent, discountFixed: $discountFixed, activePromotions: $activePromotions, activeTableUuid: $activeTableUuid, activeOrderUuid: $activeOrderUuid, lastOrderNumber: $lastOrderNumber, lastCompletedOrder: $lastCompletedOrder, isLoading: $isLoading, isSuccess: $isSuccess, error: $error)';
   }
 
   @override
@@ -638,6 +719,8 @@ class _$CartStateImpl implements _CartState {
                 other.discountPercent == discountPercent) &&
             (identical(other.discountFixed, discountFixed) ||
                 other.discountFixed == discountFixed) &&
+            const DeepCollectionEquality()
+                .equals(other._activePromotions, _activePromotions) &&
             (identical(other.activeTableUuid, activeTableUuid) ||
                 other.activeTableUuid == activeTableUuid) &&
             (identical(other.activeOrderUuid, activeOrderUuid) ||
@@ -664,6 +747,7 @@ class _$CartStateImpl implements _CartState {
       customer,
       discountPercent,
       discountFixed,
+      const DeepCollectionEquality().hash(_activePromotions),
       activeTableUuid,
       activeOrderUuid,
       lastOrderNumber,
@@ -691,6 +775,7 @@ abstract class _CartState implements CartState {
       final Customer? customer,
       final double discountPercent,
       final double discountFixed,
+      final List<Promotion> activePromotions,
       final String? activeTableUuid,
       final String? activeOrderUuid,
       final String? lastOrderNumber,
@@ -714,7 +799,9 @@ abstract class _CartState implements CartState {
   @override
   double get discountPercent;
   @override
-  double get discountFixed; // Dine-In
+  double get discountFixed; // Promotions
+  @override
+  List<Promotion> get activePromotions; // Dine-In
   @override
   String? get activeTableUuid;
   @override

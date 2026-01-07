@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
+import 'package:savvy_pos/features/sales/domain/entities/promotion.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
 import 'package:savvy_pos/core/utils/sound_helper.dart';
@@ -23,10 +24,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<_RemoveFromCart>(_onRemoveFromCart);
     on<_ClearCart>(_onClearCart);
     on<_SelectCustomer>(_onSelectCustomer);
+    on<_AddPromoCode>(_onAddPromoCode); // Handling Promo Code Input
     on<_ApplyDiscount>(_onApplyDiscount);
     on<_CheckoutProcessed>(_onCheckoutProcessed);
     on<_ParkOrder>(_onParkOrder);
-    on<_RetrieveOrder>(_onRetrieveOrder);
     on<_RetrieveOrder>(_onRetrieveOrder);
     on<_SelectTable>(_onSelectTable);
     on<_CheckoutSplit>(_onCheckoutSplit);
@@ -305,6 +306,56 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
   }
 
+  void _onAddPromoCode(_AddPromoCode event, Emitter<CartState> emit) {
+    // MVP: Mock Promo lookup - In real app, verify against repo or backend
+    Promotion? foundPromo;
+    
+    // Demo Logic
+    final code = event.code.toUpperCase();
+    if (code == 'SUMMER10') {
+      foundPromo = const Promotion.percentage(
+        id: 'promo-001', 
+        name: 'Summer Sale', 
+        code: 'SUMMER10', 
+        percentage: 10,
+      );
+    } else if (code == 'MINUS5') {
+       foundPromo = const Promotion.fixedAmount(
+         id: 'promo-002', 
+         name: '$5 OFF', 
+         code: 'MINUS5', 
+         amount: 5.0,
+         constraints: PromotionConstraints(minPurchaseAmount: 20.0),
+       );
+    } else if (code == 'BOGO') {
+       foundPromo = const Promotion.buyXGetY(
+         id: 'promo-003',
+         name: 'Buy 1 Get 1',
+         code: 'BOGO',
+         buyQty: 1,
+         getQty: 1,
+         buyProductId: 'ANY', 
+       );
+    }
+
+    if (foundPromo != null) {
+      if (foundPromo.isValidNow() && foundPromo.meetsMinPurchase(state.subtotal)) {
+         final currentPromos = List<Promotion>.from(state.activePromotions);
+         // Avoid duplicates
+         if (!currentPromos.any((p) => p.code == foundPromo!.code)) {
+            currentPromos.add(foundPromo);
+            emit(_calculateTotals(state.items, state.copyWith(activePromotions: currentPromos)));
+         } else {
+            emit(state.copyWith(error: 'Promotion already applied'));
+         }
+      } else {
+         emit(state.copyWith(error: 'Conditions not met for ${foundPromo.name}'));
+      }
+    } else {
+      emit(state.copyWith(error: 'Invalid Promo Code'));
+    }
+  }
+
   Future<void> _onParkOrder(_ParkOrder event, Emitter<CartState> emit) async {
     if (state.items.isEmpty) return;
     emit(state.copyWith(isLoading: true, error: null));
@@ -366,9 +417,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       emit(CartState.initial().copyWith(isSuccess: true, lastOrderNumber: 'Parked'));
     } catch (e) {
       emit(state.copyWith(isLoading: false, error: 'Park Failed: $e'));
-    }
-  }
-
     }
   }
 
@@ -462,6 +510,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       return;
     }
     
+    // Get items from current state by UUIDs
+    final splitItems = state.items.where((i) => event.itemUuids.contains(i.uuid)).toList();
+    if (splitItems.isEmpty) {
+      emit(state.copyWith(error: 'No items selected for split'));
+      return;
+    }
+    
     emit(state.copyWith(isLoading: true));
     
     try {
@@ -472,7 +527,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         
         // Calculate totals for split items
         double subtotal = 0;
-        for (var item in event.items) subtotal += item.total;
+        for (var item in splitItems) subtotal += item.total;
         final tax = subtotal * 0.10;
         final total = subtotal + tax; // ignoring discount logic for split for simplicity MVP
         
@@ -496,7 +551,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         ));
         
         // 2. Create Order Items for Child Order
-        for (var item in event.items) {
+        for (var item in splitItems) {
            await db.into(db.orderItemTable).insert(OrderItemTableCompanion.insert(
              uuid: _uuid.v4(),
              orderUuid: childOrderUuid,
@@ -513,7 +568,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         // CartItem doesn't store ItemUUID (it should, but we map from rows).
         // Let's assume Product UUID uniqueness within order or re-fetch.
         // For MVP, we iterate parent items and update.
-        for (var splitItem in event.items) {
+        for (var splitItem in splitItems) {
            // Find matching item in DB for activeOrderUuid
            final parentItem = await (db.select(db.orderItemTable)
              ..where((t) => t.orderUuid.equals(state.activeOrderUuid!) & t.productUuid.equals(splitItem.product.uuid)))
@@ -578,35 +633,129 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   CartState _calculateTotals(List<CartItem> items, [CartState? currentState]) {
     final s = currentState ?? state;
     
-    double subtotal = 0.0;
-    for (var item in items) {
-      subtotal += item.total;
-    }
+    // 1. Calculate Base Item Totals (Price * Qty + Modifiers)
+    List<CartItem> calculatedItems = items.map((item) {
+       final unitPrice = item.product.price + item.modifiers.fold(0.0, (sum, m) => sum + m.priceDelta);
+       final baseTotal = unitPrice * item.quantity;
+       return item.copyWith(
+         total: baseTotal,
+         discountedTotal: baseTotal, // Default to base, promo will reduce this
+         appliedPromoCode: null,
+       );
+    }).toList();
 
-    // Calculate Discount
-    double discountVal = 0.0;
-    if (s.discountPercent > 0) {
-      discountVal = subtotal * (s.discountPercent / 100);
-    } else {
-      discountVal = s.discountFixed;
-    }
+    // 2. Calculate Promotions (Modifies calculatedItems and returns discount info)
+    final promoResult = _calculatePromotions(calculatedItems, s.activePromotions);
+    calculatedItems = promoResult.items;
     
-    // Cap discount at subtotal
-    if (discountVal > subtotal) discountVal = subtotal;
+    // Sums
+    double subtotal = 0.0; // Original Price
+    double discountedSubtotal = 0.0; // Price AFTER Item Promos
+    
+    for (var item in calculatedItems) {
+      subtotal += item.total;
+      discountedSubtotal += item.discountedTotal;
+    }
 
-    final taxableAmount = subtotal - discountVal;
+    // 3. Apply Manual/Cart-Level Discounts
+    double manualDiscountVal = 0.0;
+    
+    if (s.discountPercent > 0) {
+      manualDiscountVal += discountedSubtotal * (s.discountPercent / 100);
+    } 
+    manualDiscountVal += s.discountFixed;
+    
+    // Cap manual discount
+    if (manualDiscountVal > discountedSubtotal) manualDiscountVal = discountedSubtotal;
+
+    final taxableAmount = discountedSubtotal - manualDiscountVal;
+    
+    // Total Discount = (Original - DiscountedSubtotal) + ManualDiscount
+    final totalPromoDiscount = subtotal - discountedSubtotal;
+    final totalDiscount = totalPromoDiscount + manualDiscountVal;
+
     const taxRate = 0.10;
     final tax = taxableAmount * taxRate;
     final total = taxableAmount + tax;
 
     return s.copyWith(
-      items: items,
-      subtotal: subtotal,
-      discount: discountVal,
+      items: calculatedItems,
+      subtotal: subtotal, 
+      discount: totalDiscount,
       tax: tax,
       total: total,
       error: null,
       isSuccess: false, 
     );
+  }
+
+  ({List<CartItem> items}) _calculatePromotions(List<CartItem> items, List<Promotion> promotions) {
+    if (promotions.isEmpty) return (items: items);
+
+    List<CartItem> tempItems = List.from(items);
+
+    // Sort promos by priority if needed? For now, insertion order.
+    for (var promo in promotions) {
+      if (!promo.isValidNow()) continue;
+
+      tempItems = promo.map(
+        percentage: (p) => _applyPercentage(tempItems, p),
+        fixedAmount: (p) => tempItems, // Fixed Amount usually Cart Level. Skipping item distribution for MVP.
+        buyXGetY: (p) => _applyBuyXGetY(tempItems, p),
+      );
+    }
+    return (items: tempItems);
+  }
+
+  List<CartItem> _applyPercentage(List<CartItem> items, PercentageDiscount promo) {
+    return items.map((item) {
+      // Check if product is applicable
+      if (promo.constraints.applicableProductIds == null || 
+          promo.constraints.applicableProductIds!.isEmpty ||
+          promo.constraints.applicableProductIds!.contains(item.product.uuid)) {
+            
+        // Apply % off current discounted total (Stacking?)
+        final currentPrice = item.discountedTotal;
+        final discountAmount = currentPrice * (promo.percentage / 100);
+        
+        return item.copyWith(
+          discountedTotal: currentPrice - discountAmount,
+          appliedPromoCode: promo.code,
+        );
+      }
+      return item;
+    }).toList();
+  }
+
+  List<CartItem> _applyBuyXGetY(List<CartItem> items, BuyXGetYPromotion promo) {
+    // MVP Assumption: Same Product (BOGO) and promo.buyProductId == 'ANY' or match.
+    return items.map((item) {
+      bool isMatch = false;
+      if (promo.buyProductId == 'ANY') isMatch = true;
+      else if (promo.buyProductId == item.product.uuid) isMatch = true;
+      
+      if (isMatch) {
+        // sets = quantity / (buy + get)
+        final totalSetSize = promo.buyQty + promo.getQty;
+        // Integer division
+        if (totalSetSize == 0) return item; // Safety
+        
+        final sets = (item.quantity / totalSetSize).floor();
+        
+        if (sets > 0) {
+           final freeQty = sets * promo.getQty;
+           
+           // Calculate deduction based on average unit price of this item line
+           final unitPrice = item.total / item.quantity; 
+           final deduction = unitPrice * freeQty;
+           
+           return item.copyWith(
+             discountedTotal: item.discountedTotal - deduction,
+             appliedPromoCode: promo.code,
+           );
+        }
+      }
+      return item;
+    }).toList();
   }
 }

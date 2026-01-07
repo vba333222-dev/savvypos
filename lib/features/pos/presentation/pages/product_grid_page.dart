@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart'; // Barrel file usage
@@ -134,17 +135,25 @@ class ProductGridView extends StatelessWidget {
                               mainAxisSpacing: theme.shapes.spacingMd,
                             ),
                             delegate: SliverChildBuilderDelegate(
+                            delegate: SliverChildBuilderDelegate(
                               (context, index) {
                                 final product = state.products[index];
                                 return ProductCard(
                                   product: product,
-                                  onTap: () => _onProductTapped(context, product),
-                                );
+                                  // onTap intentionally omitted, handled by NotificationListener in PosPage
+                                )
+                                .animate(delay: (30 * index).ms) // Stagger by index
+                                .fadeIn(duration: theme.motion.durationMedium)
+                                .moveY(begin: 10, end: 0, curve: theme.motion.curveDefault);
                               },
                               childCount: state.products.length,
                             ),
                           ),
-                        ),
+                        )
+                        .animate().fadeIn(duration: 400.ms).slideY(begin: 0.1, end: 0, curve: Curves.easeOut), 
+                        // Note: To do true staggered on children of a SliverGrid is hard with just .animate() on the list.
+                        // Better to animate the children individually inside the builder if we want cascade.
+                        // Let's revise the builder above.
                       ],
                     );
                   }

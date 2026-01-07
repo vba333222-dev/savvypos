@@ -6,6 +6,8 @@ import 'package:savvy_pos/core/presentation/widgets/savvy_box.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 
+import 'package:savvy_pos/features/pos/presentation/notifications/add_to_cart_notification.dart';
+
 class ProductCard extends StatefulWidget {
   final Product product;
   final VoidCallback? onTap;
@@ -22,6 +24,7 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   bool _isPressed = false;
+  final GlobalKey _imageKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +34,17 @@ class _ProductCardState extends State<ProductCard> {
       onTapDown: (_) => setState(() => _isPressed = true),
       onTapUp: (_) => setState(() => _isPressed = false),
       onTapCancel: () => setState(() => _isPressed = false),
-      onTap: widget.onTap,
+      onTap: () {
+        // Dispatch Notification to Parent (PosPage)
+        AddToCartNotification(
+          product: widget.product,
+          modifiers: [], // Empty for now, logic handled in POS Page
+          sourceKey: _imageKey,
+        ).dispatch(context);
+        
+        // Optional: Keep existing callback if needed for other things, but primary logic is now notification
+        widget.onTap?.call(); 
+      },
       child: AnimatedScale(
         scale: _isPressed ? 0.92 : 1.0,
         duration: theme.motion.durationFast,
@@ -50,6 +63,7 @@ class _ProductCardState extends State<ProductCard> {
                     child: Hero(
                       tag: 'product_${widget.product.uuid}',
                       child: Container(
+                        key: _imageKey, // Key for Flight Animation Source
                         decoration: BoxDecoration(
                           color: widget.product.colorHex != null 
                             ? Color(int.parse(widget.product.colorHex!.replaceAll('#', '0xFF'))) 
@@ -138,9 +152,6 @@ class _ProductCardState extends State<ProductCard> {
           ),
         ),
       ),
-    )
-    .animate() // Entry Animation
-    .fadeIn(duration: theme.motion.durationMedium)
-    .moveY(begin: 10, end: 0, curve: theme.motion.curveDefault);
+    );
   }
 }

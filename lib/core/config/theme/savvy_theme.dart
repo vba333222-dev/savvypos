@@ -213,6 +213,8 @@ class SavvyMotion {
   final Curve curveDefault;
   final Curve curveBounce;
   final Curve curveFluid;
+  final Curve curveElastic;
+  final Curve curveSpring;
 
   const SavvyMotion({
     required this.durationFast,
@@ -221,6 +223,8 @@ class SavvyMotion {
     required this.curveDefault,
     required this.curveBounce,
     required this.curveFluid,
+    required this.curveElastic,
+    required this.curveSpring,
   });
 
   const SavvyMotion.regular()
@@ -232,7 +236,29 @@ class SavvyMotion {
       // Bouncy Spring (Antigravity feel)
       curveBounce = const Cubic(0.34, 1.56, 0.64, 1.0), 
       // Fluid easing
-      curveFluid = const Cubic(0.25, 0.46, 0.45, 0.94); 
+      curveFluid = const Cubic(0.25, 0.46, 0.45, 0.94),
+      // Elastic for Cart Pop
+      curveElastic = Curves.elasticOut,
+      // Gentle Spring for micro-interactions
+      curveSpring = const SpringCurve(0.9, 0.6, 20);
+}
+
+// Simple Spring Curve Class helper if needed, or use predefined
+class SpringCurve extends Curve {
+  final double damping;
+  final double stiffness;
+  final double mass;
+
+  const SpringCurve(this.damping, this.stiffness, this.mass);
+
+  @override
+  double transformInternal(double t) {
+    // Simplified spring simulation or use standard Curves.bounceOut / elasticOut for easier maintainability if custom math is too heavy
+    // For now, let's map this to a well-known flutter curve to ensure stability, 
+    // or we can implement real physics simulation but Curve expects a mapping 0..1
+    // Actually, let's use a standard confident curve for "Spring" to avoid complexity overhead
+    return Curves.easeOutBack; 
+  }
 }
 
 // ==============================================================================

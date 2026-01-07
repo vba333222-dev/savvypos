@@ -47,7 +47,7 @@ class CheckoutSuccessDialog extends StatelessWidget {
               ),
               child: Icon(Icons.check_rounded, size: 64, color: theme.colors.stateSuccess)
                   .animate()
-                  .scale(duration: 600.ms, curve: Curves.elasticOut),
+                  .scale(duration: theme.motion.durationSlow, curve: theme.motion.curveElastic),
             ),
             
             SizedBox(height: theme.shapes.spacingLg),
@@ -102,7 +102,7 @@ class CheckoutSuccessDialog extends StatelessWidget {
             )
           ],
         ),
-      ).animate().moveY(begin: 50, end: 0, duration: 400.ms, curve: Curves.easeOutBack).fadeIn(),
+      ).animate().moveY(begin: 50, end: 0, duration: theme.motion.durationMedium, curve: theme.motion.curveBounce).fadeIn(),
     );
   }
 }

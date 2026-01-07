@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
@@ -22,6 +24,7 @@ class CartItemTile extends StatelessWidget {
       key: ValueKey(item.uuid),
       direction: DismissDirection.endToStart,
       onDismissed: (_) {
+         HapticFeedback.mediumImpact();
          context.read<CartBloc>().add(CartEvent.removeFromCart(item.uuid));
       },
       background: Container(
@@ -55,7 +58,10 @@ class CartItemTile extends StatelessWidget {
                  children: [
                    _QtyButton(
                      icon: Icons.add,
-                     onTap: () => context.read<CartBloc>().add(CartEvent.updateQuantity(item.uuid, item.quantity + 1)),
+                     onTap: () {
+                       HapticFeedback.selectionClick();
+                       context.read<CartBloc>().add(CartEvent.updateQuantity(item.uuid, item.quantity + 1));
+                     },
                    ),
                    Padding(
                      padding: const EdgeInsets.symmetric(vertical: 2),
@@ -68,12 +74,10 @@ class CartItemTile extends StatelessWidget {
                    _QtyButton(
                      icon: Icons.remove,
                      onTap: () {
+                        HapticFeedback.selectionClick();
                         if (item.quantity > 1) {
                            context.read<CartBloc>().add(CartEvent.updateQuantity(item.uuid, item.quantity - 1));
                         } else {
-                           // Maybe confirm delete logic here if wanted, but standard is just min 1 usually or delete.
-                           // User asked for min 1 in some cases, but logic allows 1 -> 0 logic in bloc usually.
-                           // Let's stick to update.
                            context.read<CartBloc>().add(CartEvent.updateQuantity(item.uuid, item.quantity - 1));
                         }
                      },
@@ -165,7 +169,7 @@ class CartItemTile extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ).animate().slideX(begin: 1, end: 0, duration: theme.motion.durationMedium, curve: theme.motion.curveElastic);
   }
 }
 

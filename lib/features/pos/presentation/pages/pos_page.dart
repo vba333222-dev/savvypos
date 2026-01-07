@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:savvy_pos/core/config/theme_config.dart';
@@ -7,6 +8,7 @@ import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/product/product_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/pages/product_grid_page.dart';
 import 'package:savvy_pos/features/history/presentation/pages/transaction_history_page.dart';
+import 'package:savvy_pos/features/pos/presentation/notifications/add_to_cart_notification.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/current_order_view.dart';
 import 'package:savvy_pos/features/settings/presentation/pages/settings_page.dart';
 import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
@@ -15,6 +17,7 @@ import 'package:savvy_pos/features/shift/presentation/widgets/close_shift_dialog
 import 'package:savvy_pos/features/shift/presentation/widgets/cash_management_dialog.dart';
 import 'package:savvy_pos/features/kitchen/presentation/pages/kitchen_monitor_page.dart';
 import 'package:savvy_pos/core/utils/global_search_delegate.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/cart_view.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/checkout_success_dialog.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
@@ -33,14 +36,130 @@ class PosPage extends StatelessWidget {
   }
 }
 
-class _PosPageContent extends StatelessWidget {
+class _PosPageContent extends StatefulWidget {
   const _PosPageContent();
+
+  @override
+  State<_PosPageContent> createState() => _PosPageContentState();
+}
+
+class _PosPageContentState extends State<_PosPageContent> with TickerProviderStateMixin {
+  final GlobalKey _cartKey = GlobalKey();
+
+  void _handleAddToCart(BuildContext context, AddToCartNotification notification) async {
+    final product = notification.product;
+    final modifiers = await MockProductRepository().getModifiersForProduct(product.uuid); // Re-fetch or cache?
+    // Note: MockProductRepository call here is sync/async depending on implementation. 
+    // Ideally we shouldn't do repo calls in UI. But following existing pattern in grid page:
+    
+    if (modifiers.isNotEmpty) {
+      if (!mounted) return;
+      final result = await showDialog<List<ModifierItem>>(
+        context: context,
+        builder: (_) => ProductModifierDialog(product: product),
+      );
+
+      if (result != null && mounted) {
+         // After dialog, fly then add
+         _runFlightAnimation(product, notification.sourceKey, () {
+            context.read<CartBloc>().add(CartEvent.addProduct(product, modifiers: result));
+         });
+      }
+    } else {
+      // No modifiers, fly immediate
+      _runFlightAnimation(product, notification.sourceKey, () {
+         context.read<CartBloc>().add(CartEvent.addProduct(product));
+      });
+    }
+  }
+
+  void _runFlightAnimation(Product product, GlobalKey sourceKey, VoidCallback onComplete) {
+    // ... setup
+    final targetContext = _cartKey.currentContext; // ... logic ...
+    final sourceContext = sourceKey.currentContext;
+    
+    if (targetContext == null || sourceContext == null) {
+      onComplete(); return;
+    }
+
+    final sourceBox = sourceContext.findRenderObject() as RenderBox;
+    final targetBox = targetContext.findRenderObject() as RenderBox;
+
+    final sourcePos = sourceBox.localToGlobal(Offset.zero);
+    final targetPos = targetBox.localToGlobal(Offset.zero);
+
+    // Create Overlay
+    late OverlayEntry entry;
+    final animationController = AnimationController(
+        vsync: this, 
+        duration: const Duration(milliseconds: 600) 
+    );
+
+    final curve = CurvedAnimation(parent: animationController, curve: Curves.easeInOutCubicEmphasized);
+
+    entry = OverlayEntry(
+      builder: (context) {
+        return AnimatedBuilder(
+          animation: curve,
+          builder: (context, child) {
+            final currentPos = Offset.lerp(sourcePos, targetPos, curve.value)!;
+            final height = 100.0 * (1 - (2 * curve.value - 1).abs()); 
+            final arcedPos = Offset(currentPos.dx, currentPos.dy - height);
+            final currentSize = Size.lerp(sourceBox.size, const Size(20, 20), curve.value)!;
+
+            return Positioned(
+              left: arcedPos.dx,
+              top: arcedPos.dy,
+              width: currentSize.width,
+              height: currentSize.height,
+              child: Opacity(
+                opacity: 1.0 - (curve.value * 0.5), 
+                child: child,
+              ),
+            );
+          },
+          child: Material(
+            elevation: 8,
+            borderRadius: BorderRadius.circular(8),
+            clipBehavior: Clip.antiAlias,
+            // Try to use true image
+            child: product.imageUrl != null 
+              ? CachedNetworkImage(imageUrl: product.imageUrl!, fit: BoxFit.cover)
+              : Container(
+                  color: context.savvy.colors.brandPrimary,
+                  alignment: Alignment.center,
+                  child: SavvyText(product.name.characters.first.toUpperCase(), color: context.savvy.colors.textInverse),
+                ),
+          ),
+        );
+      },
+    );
+    
+    // Better implementation of Child:
+    // We should pass the image URL or Widget in notification to be perfect.
+    // For now, let's just make a colored box matching brand to represent the item.
+    // Or if we can access product, we can show it. Note: 'product' is not in this method scope strictly 
+    // unless we pass it. But we just have keys.
+    // Let's simplify and just use a Brand Circle.
+    
+    Overlay.of(context).insert(entry);
+    animationController.forward().then((_) {
+      entry.remove();
+      animationController.dispose();
+      onComplete();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final colors = context.savvy.colors;
     
-    return Scaffold(
+    return NotificationListener<AddToCartNotification>(
+      onNotification: (notification) {
+        _handleAddToCart(context, notification);
+        return true; // Stop bubbling
+      },
+      child: Scaffold(
       backgroundColor: colors.bgPrimary,
       appBar: AppBar(
         title: const Text('Savvy POS'),
@@ -172,9 +291,9 @@ class _PosPageContent extends StatelessWidget {
                         Container(width: 1, color: colors.borderDefault),
   
                         // Cart (Right 35%)
-                        const Expanded(
+                        Expanded(
                           flex: 35,
-                          child: CartView(),
+                          child: CartView(cartTargetKey: _cartKey),
                         ),
                       ],
                     );
@@ -188,7 +307,7 @@ class _PosPageContent extends StatelessWidget {
                         Positioned(
                           bottom: context.savvy.shapes.spacingMd,
                           right: context.savvy.shapes.spacingMd,
-                          child: const _MobileCartFab(),
+                          child: _MobileCartFab(key: _cartKey), // Key on widget itself
                         ),
                       ],
                     );
@@ -201,12 +320,13 @@ class _PosPageContent extends StatelessWidget {
           },
         ),
       ),
+     ),
     );
   }
 }
 
 class _MobileCartFab extends StatefulWidget {
-  const _MobileCartFab();
+  const _MobileCartFab({super.key});
 
   @override
   State<_MobileCartFab> createState() => _MobileCartFabState();

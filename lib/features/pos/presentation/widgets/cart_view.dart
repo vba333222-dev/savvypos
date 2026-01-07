@@ -10,7 +10,8 @@ import 'package:savvy_pos/features/pos/presentation/widgets/payment_methods_dial
 import 'package:savvy_pos/features/pos/presentation/widgets/promo_code_input.dart';
 
 class CartView extends StatefulWidget {
-  const CartView({Key? key}) : super(key: key);
+  final GlobalKey? cartTargetKey;
+  const CartView({Key? key, this.cartTargetKey}) : super(key: key);
 
   @override
   State<CartView> createState() => _CartViewState();
@@ -33,7 +34,7 @@ class _CartViewState extends State<CartView> {
           ),
           child: Row(
             children: [
-              Icon(Icons.shopping_cart_outlined, color: theme.colors.brandPrimary),
+              Icon(Icons.shopping_cart_outlined, key: widget.cartTargetKey, color: theme.colors.brandPrimary),
               SizedBox(width: theme.shapes.spacingSm),
               SavvyText('Current Order', style: SavvyTextStyle.h3, color: theme.colors.textPrimary),
               const Spacer(),

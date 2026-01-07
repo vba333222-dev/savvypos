@@ -18,6 +18,10 @@ import 'package:savvy_pos/features/pos/presentation/widgets/cart_view.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/product_card.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/product_modifier_dialog.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/scanner_listener_widget.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_shimmer.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_empty_state.dart';
+import 'package:savvy_pos/core/utils/sound_helper.dart';
+import 'package:get_it/get_it.dart';
 import 'package:badges/badges.dart' as badges;
 
 class ProductGridPage extends StatelessWidget {
@@ -170,7 +174,18 @@ class _ProductGridViewState extends State<ProductGridView> {
                           child: BlocBuilder<ProductBloc, ProductState>(
                             builder: (context, state) {
                               if (state is ProductLoading) {
-                                return Center(child: CircularProgressIndicator(color: theme.colors.brandPrimary));
+                                // 1. SHIMMER LOADING
+                                return GridView.builder(
+                                  padding: EdgeInsets.all(theme.shapes.spacingMd),
+                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: _getCrossAxisCount(context, isDesktop),
+                                    childAspectRatio: 0.75,
+                                    crossAxisSpacing: theme.shapes.spacingMd,
+                                    mainAxisSpacing: theme.shapes.spacingMd,
+                                  ),
+                                  itemCount: 8,
+                                  itemBuilder: (_, __) => const ProductCardShimmer(),
+                                );
                               } else if (state is ProductError) {
                                 return Center(child: SavvyText("Error: ${state.message}", color: theme.colors.stateError));
                               } else if (state is ProductLoaded) {
@@ -182,19 +197,14 @@ class _ProductGridViewState extends State<ProductGridView> {
                                       ).toList();
     
                                 if (filteredProducts.isEmpty) {
-                                  return Center(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.category_outlined, size: 48, color: theme.colors.textMuted),
-                                        SizedBox(height: 16),
-                                        SavvyText(
-                                          "No items in $_selectedCategory",
-                                          color: theme.colors.textMuted,
-                                          style: SavvyTextStyle.bodyLarge,
-                                        ),
-                                      ],
-                                    ).animate().fadeIn().moveY(begin: 10, end: 0),
+                                  // 2. SAVVY EMPTY STATE
+                                  GetIt.I<SoundHelper>().playEmpty();
+                                  return SavvyEmptyState(
+                                    icon: Icons.search_off,
+                                    title: "No Results Found",
+                                    message: "We couldn't find any items in $_selectedCategory.\nTry a different category or sync your catalog.",
+                                    actionLabel: "Clear Filter",
+                                    onAction: () => setState(() => _selectedCategory = 'All'),
                                   );
                                 }
     

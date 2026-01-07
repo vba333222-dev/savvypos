@@ -31,4 +31,18 @@ class SoundHelper {
       await HapticFeedback.vibrate();
     } catch (_) {}
   }
+
+  Future<void> playRefresh() async {
+    try {
+      await HapticFeedback.lightImpact();
+      // await _player.play(AssetSource('sounds/swoosh.mp3'));
+    } catch (_) {}
+  }
+
+  Future<void> playEmpty() async {
+    try {
+      // Subtle cue
+      await HapticFeedback.selectionClick();
+    } catch (_) {}
+  }
 }

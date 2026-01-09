@@ -146,8 +146,31 @@ class ProductRepositoryImpl implements IProductRepository {
   
   @override
   Future<void> updateStock(String productUuid, int delta) async {
-    // TODO: Implement actual ledger logic
+    // Deprecated? Or should update LocalStock?
+    // For now, let's keep it as stub or update local cache if needed for immediate UI feedback
     return Future.value();
+  }
+
+  // Enterprise: Fetch Stock from LocalStocks table
+  // If warehouseUuid is null, it might sum all or pick default?
+  // Ideally Repository should know active warehouse or pass it in.
+  // Assuming strict mode: must pass warehouseUuid or use a default one.
+  Future<double> getStockForProduct(String productUuid, {String? warehouseUuid}) async {
+    final query = db.select(db.localStocksTable)
+      ..where((t) => t.productUuid.equals(productUuid));
+      
+    if (warehouseUuid != null) {
+      query.where((t) => t.warehouseUuid.equals(warehouseUuid));
+    }
+    
+    // Sum or Single?
+    // If warehouseUuid is provided, it's single. If not, maybe sum?
+    final rows = await query.get();
+    
+    if (rows.isEmpty) return 0.0;
+    
+    // Summing just in case
+    return rows.fold(0.0, (sum, row) => sum + row.quantity);
   }
 
   @override

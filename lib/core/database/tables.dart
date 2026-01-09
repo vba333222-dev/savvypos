@@ -253,6 +253,39 @@ class InventoryCacheTable extends Table {
   DateTimeColumn get lastSyncedAt => dateTime()();
 }
 
+class LocalStocksTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get productUuid => text().references(ProductTable, #uuid, onDelete: KeyAction.cascade)();
+  TextColumn get warehouseUuid => text()();
+  RealColumn get quantity => real().withDefault(const Constant(0))();
+  DateTimeColumn get updatedAt => dateTime()();
+  
+  @override
+  List<Set<Column>> get uniqueKeys => [{productUuid, warehouseUuid}];
+}
+
+class SupplierTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get uuid => text().unique()();
+  TextColumn get name => text()();
+  TextColumn get email => text().nullable()();
+  TextColumn get phone => text().nullable()();
+  TextColumn get address => text().nullable()();
+  DateTimeColumn get updatedAt => dateTime()();
+}
+
+class ProductSupplierTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get productUuid => text().references(ProductTable, #uuid, onDelete: KeyAction.cascade)();
+  TextColumn get supplierUuid => text().references(SupplierTable, #uuid, onDelete: KeyAction.cascade)();
+  RealColumn get costPrice => real().withDefault(const Constant(0))();
+  IntColumn get leadTimeDays => integer().withDefault(const Constant(0))();
+  RealColumn get minOrderQty => real().withDefault(const Constant(0))();
+  
+  @override
+  List<Set<Column>> get uniqueKeys => [{productUuid, supplierUuid}];
+}
+
 // ==============================================================================
 // 5. SHIFT & CASH MANAGEMENT
 // ==============================================================================

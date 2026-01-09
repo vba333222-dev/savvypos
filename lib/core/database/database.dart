@@ -30,12 +30,17 @@ part 'database.g.dart';
   RecipeTable,
   // v10 Ops
   CashTransactionTable,
+  // v13 Enterprise
+  // v13 Enterprise
+  LocalStocksTable,
+  SupplierTable,
+  ProductSupplierTable,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 12;
+  int get schemaVersion => 14;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -120,6 +125,13 @@ class AppDatabase extends _$AppDatabase {
        }
        if (from < 12) {
          await m.addColumn(orderItemTable, orderItemTable.modifiersJson);
+       }
+       if (from < 13) {
+         await m.createTable(localStocksTable);
+         await m.createTable(supplierTable);
+       }
+       if (from < 14) {
+         await m.createTable(productSupplierTable);
        }
     },
   );

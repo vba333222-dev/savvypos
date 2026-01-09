@@ -60,7 +60,6 @@ type Product struct {
 	Category    string  `json:"category"`
 	TenantID    string  `json:"tenant_id"`
 	IsComposite bool    `json:"is_composite"`
-	Stock       float64 `json:"stock"`
 }
 
 type Ingredient struct {
@@ -117,4 +116,52 @@ type InventoryLedger struct {
 	QuantityChange float64 `json:"quantityChange"`
 	SnapshotCost   float64 `json:"snapshotCost"`
 	TenantID       string  `json:"tenantId"`
+}
+
+// Enterprise Features
+
+type Outlet struct {
+	Model
+	UUID     string `gorm:"uniqueIndex" json:"uuid"`
+	TenantID string `json:"tenantId"`
+	Name     string `json:"name"`
+	Address  string `json:"address"`
+	Phone    string `json:"phone"`
+}
+
+type Warehouse struct {
+	Model
+	UUID         string `gorm:"uniqueIndex" json:"uuid"`
+	TenantID     string `json:"tenantId"`
+	Name         string `json:"name"`
+	IsStoreFront bool   `json:"isStoreFront"`
+	OutletUUID   string `json:"outletUuid"`
+}
+
+type Supplier struct {
+	Model
+	UUID     string `gorm:"uniqueIndex" json:"uuid"`
+	TenantID string `json:"tenantId"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Phone    string `json:"phone"`
+	Address  string `json:"address"`
+}
+
+type ProductSupplier struct {
+	Model
+	ProductUUID  string  `gorm:"index" json:"productUuid"`
+	SupplierUUID string  `gorm:"index" json:"supplierUuid"`
+	TenantID     string  `json:"tenantId"`
+	CostPrice    float64 `json:"costPrice"`
+	LeadTimeDays int     `json:"leadTimeDays"`
+	MinOrderQty  float64 `json:"minOrderQty"`
+}
+
+type InventoryStock struct {
+	Model
+	ProductUUID   string  `gorm:"index" json:"productUuid"`
+	WarehouseUUID string  `gorm:"index" json:"warehouseUuid"`
+	TenantID      string  `json:"tenantId"`
+	Quantity      float64 `json:"quantity"`
 }

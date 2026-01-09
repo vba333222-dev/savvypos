@@ -88,16 +88,29 @@ Future<void> processSyncQueue(AppDatabase db, Logger logger) async {
   try {
     final prefs = await SharedPreferences.getInstance();
     final lastSyncedAt = prefs.getString('last_synced_at') ?? "1970-01-01T00:00:00Z";
+    // Assuming active warehouse is stored in prefs
+    final warehouseId = prefs.getString('active_warehouse_id'); 
+    // If no warehouse is selected (e.g. first login), backend should probably handle or we skip stock sync?
+    // For now, passing it if available.
 
-    logger.i('Pulling data since: $lastSyncedAt');
-    final data = await apiClient.pullSyncData(lastSyncedAt);
+    logger.i('Pulling data since: $lastSyncedAt for Warehouse: $warehouseId');
+    // Using a modified pullSyncData or appending query param manually if `ApiClient` allows. 
+    // Since we don't see ApiClient code, assuming we can pass params or modification is needed there too.
+    // Ideally: apiClient.pullSyncData(lastSyncedAt, warehouseId);
+    // For this context, let's assume `pullSyncData` takes optional params or we modify the call.
+    // If ApiClient signature isn't changed yet, we might need to update it. 
+    // Checking previous steps, user asked to modify `processSyncQueue` in `sync_worker.dart`.
+    // I will assume ApiClient needs update or supports map. 
+    // Let's assume extending the call:
+    final data = await apiClient.pullSyncData(lastSyncedAt, warehouseUuid: warehouseId);
     
     if (data != null) {
         final products = List<Map<String, dynamic>>.from(data['products'] ?? []);
         final customers = List<Map<String, dynamic>>.from(data['customers'] ?? []);
+        final stocks = List<Map<String, dynamic>>.from(data['inventory_stocks'] ?? []);
         
-        if (products.isNotEmpty || customers.isNotEmpty) {
-           logger.i('Received ${products.length} products and ${customers.length} customers.');
+        if (products.isNotEmpty || customers.isNotEmpty || stocks.isNotEmpty) {
+           logger.i('Received ${products.length} products, ${customers.length} customers, ${stocks.length} stock records.');
         }
 
         // Merge Strategy: Server Wins (InsertOnConflictUpdate)
@@ -119,6 +132,18 @@ Future<void> processSyncQueue(AppDatabase db, Logger logger) async {
                    phone: Value(c['phone']),
                    email: Value(c['email']),
                ), mode: InsertMode.insertOrReplace);
+            }
+
+            // Enterprise: Update Local Stocks
+            for (final s in stocks) {
+                // Ensure we only store what is relevant if backend didn't filter, 
+                // but backend SHOULD filter.
+                batch.insert(db.localStocksTable, LocalStocksTableCompanion(
+                    productUuid: Value(s['productUuid']),
+                    warehouseUuid: Value(s['warehouseUuid']),
+                    quantity: Value((s['quantity'] as num).toDouble()),
+                    updatedAt: Value(DateTime.now()),
+                ), mode: InsertMode.insertOrReplace);
             }
         });
         

@@ -20,6 +20,23 @@ class ProductRepositoryImpl implements IProductRepository {
   }
 
   @override
+  Stream<List<ProductStock>> watchInventory(String warehouseId) {
+    final query = db.select(db.productTable).join([
+      leftOuterJoin(db.localStocksTable, 
+        db.localStocksTable.productUuid.equalsExp(db.productTable.uuid) & 
+        db.localStocksTable.warehouseUuid.equals(warehouseId))
+    ]);
+
+    return query.watch().map((rows) {
+      return rows.map((row) {
+        final product = _mapToDomain(row.readTable(db.productTable));
+        final stockRow = row.readTableOrNull(db.localStocksTable);
+        return ProductStock(product: product, quantity: stockRow?.quantity ?? 0.0);
+      }).toList();
+    });
+  }
+
+  @override
   Future<List<Product>> searchProducts(String query) async {
     final rows = await (db.select(db.productTable)
       ..where((tbl) => tbl.name.contains(query) | tbl.sku.contains(query)))

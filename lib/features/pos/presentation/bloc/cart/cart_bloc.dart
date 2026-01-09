@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
+import 'package:savvy_pos/core/services/socket_service.dart'; // Import SocketService
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:savvy_pos/features/sales/domain/entities/promotion.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
@@ -16,9 +17,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final AppDatabase db;
   final SoundHelper _sound;
   final SyncWorker _syncWorker; // Injected
+  final SocketService _socketService; // Injected
   final Uuid _uuid = const Uuid();
 
-  CartBloc(this.db, this._sound, this._syncWorker) : super(CartState.initial()) {
+  CartBloc(this.db, this._sound, this._syncWorker, this._socketService) : super(CartState.initial()) {
     on<_AddProduct>(_onAddProduct);
     on<_UpdateQuantity>(_onUpdateQuantity);
     on<_RemoveFromCart>(_onRemoveFromCart);
@@ -678,7 +680,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     final tax = taxableAmount * taxRate;
     final total = taxableAmount + tax;
 
-    return s.copyWith(
+    final newState = s.copyWith(
       items: calculatedItems,
       subtotal: subtotal, 
       discount: totalDiscount,
@@ -687,6 +689,29 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       error: null,
       isSuccess: false, 
     );
+    
+    // CDS BROADCAST
+    if (newState.items.isNotEmpty) {
+      _broadcastCartUpdate(newState);
+    } else {
+      _socketService.emit('CDS_IDLE', {});
+    }
+    
+    return newState;
+  }
+
+  void _broadcastCartUpdate(CartState s) {
+    // Basic debounce logic could be added here in real impl
+    _socketService.emit('CDS_UPDATE_CART', {
+      'items': s.items.map((i) => {
+        'name': i.product.name,
+        'qty': i.quantity,
+        'price': i.total,
+        'modifier': i.modifiers.map((m) => m.name).join(', ')
+      }).toList(),
+      'total': s.total,
+      'tax': s.tax
+    });
   }
 
   ({List<CartItem> items}) _calculatePromotions(List<CartItem> items, List<Promotion> promotions) {

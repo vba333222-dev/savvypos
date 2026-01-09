@@ -1,0 +1,36 @@
+{
+    "app_name": "Savvy POS",
+    "login": {
+        "welcome": "Selamat Datang",
+        "subtitle": "Masuk untuk melanjutkan",
+        "username": "Nama Pengguna",
+        "password": "Kata Sandi",
+        "login_btn": "Masuk",
+        "error": "Kredensial tidak valid"
+    },
+    "pos": {
+        "search_hint": "Cari produk...",
+        "cart_title": "Pesanan Saat Ini",
+        "checkout": "Bayar",
+        "total": "Total",
+        "empty_cart": "Keranjang kosong"
+    },
+    "settings": {
+        "title": "Pengaturan",
+        "language": "Bahasa",
+        "theme": "Tema",
+        "dark_mode": "Mode Gelap"
+    },
+    "genesis": {
+        "step1_title": "Mari Mulai",
+        "step1_subtitle": "Ceritakan tentang bisnis Anda",
+        "store_name": "Nama Toko",
+        "currency": "Mata Uang",
+        "step2_title": "Apa gaya Anda?",
+        "step2_subtitle": "Kami akan siapkan menu instan",
+        "type_cafe": "Kafe",
+        "type_retail": "Ritel",
+        "type_service": "Jasa",
+        "building_hq": "Sedang membangun markas..."
+    }
+}

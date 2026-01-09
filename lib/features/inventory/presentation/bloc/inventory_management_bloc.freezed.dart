@@ -26,6 +26,8 @@ mixin _$InventoryManagementEvent {
         updateProduct,
     required TResult Function(String uuid) deleteProduct,
     required TResult Function(String uuid, int delta) updateStock,
+    required TResult Function(String warehouseId) watchInventory,
+    required TResult Function(List<ProductStock> inventory) inventoryUpdated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -38,6 +40,8 @@ mixin _$InventoryManagementEvent {
         updateProduct,
     TResult? Function(String uuid)? deleteProduct,
     TResult? Function(String uuid, int delta)? updateStock,
+    TResult? Function(String warehouseId)? watchInventory,
+    TResult? Function(List<ProductStock> inventory)? inventoryUpdated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -50,6 +54,8 @@ mixin _$InventoryManagementEvent {
         updateProduct,
     TResult Function(String uuid)? deleteProduct,
     TResult Function(String uuid, int delta)? updateStock,
+    TResult Function(String warehouseId)? watchInventory,
+    TResult Function(List<ProductStock> inventory)? inventoryUpdated,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -59,6 +65,8 @@ mixin _$InventoryManagementEvent {
     required TResult Function(_UpdateProduct value) updateProduct,
     required TResult Function(_DeleteProduct value) deleteProduct,
     required TResult Function(_UpdateStock value) updateStock,
+    required TResult Function(_WatchInventory value) watchInventory,
+    required TResult Function(_InventoryUpdated value) inventoryUpdated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -67,6 +75,8 @@ mixin _$InventoryManagementEvent {
     TResult? Function(_UpdateProduct value)? updateProduct,
     TResult? Function(_DeleteProduct value)? deleteProduct,
     TResult? Function(_UpdateStock value)? updateStock,
+    TResult? Function(_WatchInventory value)? watchInventory,
+    TResult? Function(_InventoryUpdated value)? inventoryUpdated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -75,6 +85,8 @@ mixin _$InventoryManagementEvent {
     TResult Function(_UpdateProduct value)? updateProduct,
     TResult Function(_DeleteProduct value)? deleteProduct,
     TResult Function(_UpdateStock value)? updateStock,
+    TResult Function(_WatchInventory value)? watchInventory,
+    TResult Function(_InventoryUpdated value)? inventoryUpdated,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -208,6 +220,8 @@ class _$AddProductImpl implements _AddProduct {
         updateProduct,
     required TResult Function(String uuid) deleteProduct,
     required TResult Function(String uuid, int delta) updateStock,
+    required TResult Function(String warehouseId) watchInventory,
+    required TResult Function(List<ProductStock> inventory) inventoryUpdated,
   }) {
     return addProduct(product, imageFile, modifierGroupUuids);
   }
@@ -223,6 +237,8 @@ class _$AddProductImpl implements _AddProduct {
         updateProduct,
     TResult? Function(String uuid)? deleteProduct,
     TResult? Function(String uuid, int delta)? updateStock,
+    TResult? Function(String warehouseId)? watchInventory,
+    TResult? Function(List<ProductStock> inventory)? inventoryUpdated,
   }) {
     return addProduct?.call(product, imageFile, modifierGroupUuids);
   }
@@ -238,6 +254,8 @@ class _$AddProductImpl implements _AddProduct {
         updateProduct,
     TResult Function(String uuid)? deleteProduct,
     TResult Function(String uuid, int delta)? updateStock,
+    TResult Function(String warehouseId)? watchInventory,
+    TResult Function(List<ProductStock> inventory)? inventoryUpdated,
     required TResult orElse(),
   }) {
     if (addProduct != null) {
@@ -253,6 +271,8 @@ class _$AddProductImpl implements _AddProduct {
     required TResult Function(_UpdateProduct value) updateProduct,
     required TResult Function(_DeleteProduct value) deleteProduct,
     required TResult Function(_UpdateStock value) updateStock,
+    required TResult Function(_WatchInventory value) watchInventory,
+    required TResult Function(_InventoryUpdated value) inventoryUpdated,
   }) {
     return addProduct(this);
   }
@@ -264,6 +284,8 @@ class _$AddProductImpl implements _AddProduct {
     TResult? Function(_UpdateProduct value)? updateProduct,
     TResult? Function(_DeleteProduct value)? deleteProduct,
     TResult? Function(_UpdateStock value)? updateStock,
+    TResult? Function(_WatchInventory value)? watchInventory,
+    TResult? Function(_InventoryUpdated value)? inventoryUpdated,
   }) {
     return addProduct?.call(this);
   }
@@ -275,6 +297,8 @@ class _$AddProductImpl implements _AddProduct {
     TResult Function(_UpdateProduct value)? updateProduct,
     TResult Function(_DeleteProduct value)? deleteProduct,
     TResult Function(_UpdateStock value)? updateStock,
+    TResult Function(_WatchInventory value)? watchInventory,
+    TResult Function(_InventoryUpdated value)? inventoryUpdated,
     required TResult orElse(),
   }) {
     if (addProduct != null) {
@@ -405,6 +429,8 @@ class _$UpdateProductImpl implements _UpdateProduct {
         updateProduct,
     required TResult Function(String uuid) deleteProduct,
     required TResult Function(String uuid, int delta) updateStock,
+    required TResult Function(String warehouseId) watchInventory,
+    required TResult Function(List<ProductStock> inventory) inventoryUpdated,
   }) {
     return updateProduct(product, imageFile, modifierGroupUuids);
   }
@@ -420,6 +446,8 @@ class _$UpdateProductImpl implements _UpdateProduct {
         updateProduct,
     TResult? Function(String uuid)? deleteProduct,
     TResult? Function(String uuid, int delta)? updateStock,
+    TResult? Function(String warehouseId)? watchInventory,
+    TResult? Function(List<ProductStock> inventory)? inventoryUpdated,
   }) {
     return updateProduct?.call(product, imageFile, modifierGroupUuids);
   }
@@ -435,6 +463,8 @@ class _$UpdateProductImpl implements _UpdateProduct {
         updateProduct,
     TResult Function(String uuid)? deleteProduct,
     TResult Function(String uuid, int delta)? updateStock,
+    TResult Function(String warehouseId)? watchInventory,
+    TResult Function(List<ProductStock> inventory)? inventoryUpdated,
     required TResult orElse(),
   }) {
     if (updateProduct != null) {
@@ -450,6 +480,8 @@ class _$UpdateProductImpl implements _UpdateProduct {
     required TResult Function(_UpdateProduct value) updateProduct,
     required TResult Function(_DeleteProduct value) deleteProduct,
     required TResult Function(_UpdateStock value) updateStock,
+    required TResult Function(_WatchInventory value) watchInventory,
+    required TResult Function(_InventoryUpdated value) inventoryUpdated,
   }) {
     return updateProduct(this);
   }
@@ -461,6 +493,8 @@ class _$UpdateProductImpl implements _UpdateProduct {
     TResult? Function(_UpdateProduct value)? updateProduct,
     TResult? Function(_DeleteProduct value)? deleteProduct,
     TResult? Function(_UpdateStock value)? updateStock,
+    TResult? Function(_WatchInventory value)? watchInventory,
+    TResult? Function(_InventoryUpdated value)? inventoryUpdated,
   }) {
     return updateProduct?.call(this);
   }
@@ -472,6 +506,8 @@ class _$UpdateProductImpl implements _UpdateProduct {
     TResult Function(_UpdateProduct value)? updateProduct,
     TResult Function(_DeleteProduct value)? deleteProduct,
     TResult Function(_UpdateStock value)? updateStock,
+    TResult Function(_WatchInventory value)? watchInventory,
+    TResult Function(_InventoryUpdated value)? inventoryUpdated,
     required TResult orElse(),
   }) {
     if (updateProduct != null) {
@@ -572,6 +608,8 @@ class _$DeleteProductImpl implements _DeleteProduct {
         updateProduct,
     required TResult Function(String uuid) deleteProduct,
     required TResult Function(String uuid, int delta) updateStock,
+    required TResult Function(String warehouseId) watchInventory,
+    required TResult Function(List<ProductStock> inventory) inventoryUpdated,
   }) {
     return deleteProduct(uuid);
   }
@@ -587,6 +625,8 @@ class _$DeleteProductImpl implements _DeleteProduct {
         updateProduct,
     TResult? Function(String uuid)? deleteProduct,
     TResult? Function(String uuid, int delta)? updateStock,
+    TResult? Function(String warehouseId)? watchInventory,
+    TResult? Function(List<ProductStock> inventory)? inventoryUpdated,
   }) {
     return deleteProduct?.call(uuid);
   }
@@ -602,6 +642,8 @@ class _$DeleteProductImpl implements _DeleteProduct {
         updateProduct,
     TResult Function(String uuid)? deleteProduct,
     TResult Function(String uuid, int delta)? updateStock,
+    TResult Function(String warehouseId)? watchInventory,
+    TResult Function(List<ProductStock> inventory)? inventoryUpdated,
     required TResult orElse(),
   }) {
     if (deleteProduct != null) {
@@ -617,6 +659,8 @@ class _$DeleteProductImpl implements _DeleteProduct {
     required TResult Function(_UpdateProduct value) updateProduct,
     required TResult Function(_DeleteProduct value) deleteProduct,
     required TResult Function(_UpdateStock value) updateStock,
+    required TResult Function(_WatchInventory value) watchInventory,
+    required TResult Function(_InventoryUpdated value) inventoryUpdated,
   }) {
     return deleteProduct(this);
   }
@@ -628,6 +672,8 @@ class _$DeleteProductImpl implements _DeleteProduct {
     TResult? Function(_UpdateProduct value)? updateProduct,
     TResult? Function(_DeleteProduct value)? deleteProduct,
     TResult? Function(_UpdateStock value)? updateStock,
+    TResult? Function(_WatchInventory value)? watchInventory,
+    TResult? Function(_InventoryUpdated value)? inventoryUpdated,
   }) {
     return deleteProduct?.call(this);
   }
@@ -639,6 +685,8 @@ class _$DeleteProductImpl implements _DeleteProduct {
     TResult Function(_UpdateProduct value)? updateProduct,
     TResult Function(_DeleteProduct value)? deleteProduct,
     TResult Function(_UpdateStock value)? updateStock,
+    TResult Function(_WatchInventory value)? watchInventory,
+    TResult Function(_InventoryUpdated value)? inventoryUpdated,
     required TResult orElse(),
   }) {
     if (deleteProduct != null) {
@@ -744,6 +792,8 @@ class _$UpdateStockImpl implements _UpdateStock {
         updateProduct,
     required TResult Function(String uuid) deleteProduct,
     required TResult Function(String uuid, int delta) updateStock,
+    required TResult Function(String warehouseId) watchInventory,
+    required TResult Function(List<ProductStock> inventory) inventoryUpdated,
   }) {
     return updateStock(uuid, delta);
   }
@@ -759,6 +809,8 @@ class _$UpdateStockImpl implements _UpdateStock {
         updateProduct,
     TResult? Function(String uuid)? deleteProduct,
     TResult? Function(String uuid, int delta)? updateStock,
+    TResult? Function(String warehouseId)? watchInventory,
+    TResult? Function(List<ProductStock> inventory)? inventoryUpdated,
   }) {
     return updateStock?.call(uuid, delta);
   }
@@ -774,6 +826,8 @@ class _$UpdateStockImpl implements _UpdateStock {
         updateProduct,
     TResult Function(String uuid)? deleteProduct,
     TResult Function(String uuid, int delta)? updateStock,
+    TResult Function(String warehouseId)? watchInventory,
+    TResult Function(List<ProductStock> inventory)? inventoryUpdated,
     required TResult orElse(),
   }) {
     if (updateStock != null) {
@@ -789,6 +843,8 @@ class _$UpdateStockImpl implements _UpdateStock {
     required TResult Function(_UpdateProduct value) updateProduct,
     required TResult Function(_DeleteProduct value) deleteProduct,
     required TResult Function(_UpdateStock value) updateStock,
+    required TResult Function(_WatchInventory value) watchInventory,
+    required TResult Function(_InventoryUpdated value) inventoryUpdated,
   }) {
     return updateStock(this);
   }
@@ -800,6 +856,8 @@ class _$UpdateStockImpl implements _UpdateStock {
     TResult? Function(_UpdateProduct value)? updateProduct,
     TResult? Function(_DeleteProduct value)? deleteProduct,
     TResult? Function(_UpdateStock value)? updateStock,
+    TResult? Function(_WatchInventory value)? watchInventory,
+    TResult? Function(_InventoryUpdated value)? inventoryUpdated,
   }) {
     return updateStock?.call(this);
   }
@@ -811,6 +869,8 @@ class _$UpdateStockImpl implements _UpdateStock {
     TResult Function(_UpdateProduct value)? updateProduct,
     TResult Function(_DeleteProduct value)? deleteProduct,
     TResult Function(_UpdateStock value)? updateStock,
+    TResult Function(_WatchInventory value)? watchInventory,
+    TResult Function(_InventoryUpdated value)? inventoryUpdated,
     required TResult orElse(),
   }) {
     if (updateStock != null) {
@@ -835,12 +895,378 @@ abstract class _UpdateStock implements InventoryManagementEvent {
 }
 
 /// @nodoc
+abstract class _$$WatchInventoryImplCopyWith<$Res> {
+  factory _$$WatchInventoryImplCopyWith(_$WatchInventoryImpl value,
+          $Res Function(_$WatchInventoryImpl) then) =
+      __$$WatchInventoryImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String warehouseId});
+}
+
+/// @nodoc
+class __$$WatchInventoryImplCopyWithImpl<$Res>
+    extends _$InventoryManagementEventCopyWithImpl<$Res, _$WatchInventoryImpl>
+    implements _$$WatchInventoryImplCopyWith<$Res> {
+  __$$WatchInventoryImplCopyWithImpl(
+      _$WatchInventoryImpl _value, $Res Function(_$WatchInventoryImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of InventoryManagementEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? warehouseId = null,
+  }) {
+    return _then(_$WatchInventoryImpl(
+      null == warehouseId
+          ? _value.warehouseId
+          : warehouseId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$WatchInventoryImpl implements _WatchInventory {
+  const _$WatchInventoryImpl(this.warehouseId);
+
+  @override
+  final String warehouseId;
+
+  @override
+  String toString() {
+    return 'InventoryManagementEvent.watchInventory(warehouseId: $warehouseId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$WatchInventoryImpl &&
+            (identical(other.warehouseId, warehouseId) ||
+                other.warehouseId == warehouseId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, warehouseId);
+
+  /// Create a copy of InventoryManagementEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$WatchInventoryImplCopyWith<_$WatchInventoryImpl> get copyWith =>
+      __$$WatchInventoryImplCopyWithImpl<_$WatchInventoryImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        addProduct,
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        updateProduct,
+    required TResult Function(String uuid) deleteProduct,
+    required TResult Function(String uuid, int delta) updateStock,
+    required TResult Function(String warehouseId) watchInventory,
+    required TResult Function(List<ProductStock> inventory) inventoryUpdated,
+  }) {
+    return watchInventory(warehouseId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
+    TResult? Function(String uuid)? deleteProduct,
+    TResult? Function(String uuid, int delta)? updateStock,
+    TResult? Function(String warehouseId)? watchInventory,
+    TResult? Function(List<ProductStock> inventory)? inventoryUpdated,
+  }) {
+    return watchInventory?.call(warehouseId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
+    TResult Function(String uuid)? deleteProduct,
+    TResult Function(String uuid, int delta)? updateStock,
+    TResult Function(String warehouseId)? watchInventory,
+    TResult Function(List<ProductStock> inventory)? inventoryUpdated,
+    required TResult orElse(),
+  }) {
+    if (watchInventory != null) {
+      return watchInventory(warehouseId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_AddProduct value) addProduct,
+    required TResult Function(_UpdateProduct value) updateProduct,
+    required TResult Function(_DeleteProduct value) deleteProduct,
+    required TResult Function(_UpdateStock value) updateStock,
+    required TResult Function(_WatchInventory value) watchInventory,
+    required TResult Function(_InventoryUpdated value) inventoryUpdated,
+  }) {
+    return watchInventory(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_AddProduct value)? addProduct,
+    TResult? Function(_UpdateProduct value)? updateProduct,
+    TResult? Function(_DeleteProduct value)? deleteProduct,
+    TResult? Function(_UpdateStock value)? updateStock,
+    TResult? Function(_WatchInventory value)? watchInventory,
+    TResult? Function(_InventoryUpdated value)? inventoryUpdated,
+  }) {
+    return watchInventory?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_AddProduct value)? addProduct,
+    TResult Function(_UpdateProduct value)? updateProduct,
+    TResult Function(_DeleteProduct value)? deleteProduct,
+    TResult Function(_UpdateStock value)? updateStock,
+    TResult Function(_WatchInventory value)? watchInventory,
+    TResult Function(_InventoryUpdated value)? inventoryUpdated,
+    required TResult orElse(),
+  }) {
+    if (watchInventory != null) {
+      return watchInventory(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _WatchInventory implements InventoryManagementEvent {
+  const factory _WatchInventory(final String warehouseId) =
+      _$WatchInventoryImpl;
+
+  String get warehouseId;
+
+  /// Create a copy of InventoryManagementEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$WatchInventoryImplCopyWith<_$WatchInventoryImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$InventoryUpdatedImplCopyWith<$Res> {
+  factory _$$InventoryUpdatedImplCopyWith(_$InventoryUpdatedImpl value,
+          $Res Function(_$InventoryUpdatedImpl) then) =
+      __$$InventoryUpdatedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({List<ProductStock> inventory});
+}
+
+/// @nodoc
+class __$$InventoryUpdatedImplCopyWithImpl<$Res>
+    extends _$InventoryManagementEventCopyWithImpl<$Res, _$InventoryUpdatedImpl>
+    implements _$$InventoryUpdatedImplCopyWith<$Res> {
+  __$$InventoryUpdatedImplCopyWithImpl(_$InventoryUpdatedImpl _value,
+      $Res Function(_$InventoryUpdatedImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of InventoryManagementEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? inventory = null,
+  }) {
+    return _then(_$InventoryUpdatedImpl(
+      null == inventory
+          ? _value._inventory
+          : inventory // ignore: cast_nullable_to_non_nullable
+              as List<ProductStock>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$InventoryUpdatedImpl implements _InventoryUpdated {
+  const _$InventoryUpdatedImpl(final List<ProductStock> inventory)
+      : _inventory = inventory;
+
+  final List<ProductStock> _inventory;
+  @override
+  List<ProductStock> get inventory {
+    if (_inventory is EqualUnmodifiableListView) return _inventory;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_inventory);
+  }
+
+  @override
+  String toString() {
+    return 'InventoryManagementEvent.inventoryUpdated(inventory: $inventory)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$InventoryUpdatedImpl &&
+            const DeepCollectionEquality()
+                .equals(other._inventory, _inventory));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_inventory));
+
+  /// Create a copy of InventoryManagementEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$InventoryUpdatedImplCopyWith<_$InventoryUpdatedImpl> get copyWith =>
+      __$$InventoryUpdatedImplCopyWithImpl<_$InventoryUpdatedImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        addProduct,
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        updateProduct,
+    required TResult Function(String uuid) deleteProduct,
+    required TResult Function(String uuid, int delta) updateStock,
+    required TResult Function(String warehouseId) watchInventory,
+    required TResult Function(List<ProductStock> inventory) inventoryUpdated,
+  }) {
+    return inventoryUpdated(inventory);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
+    TResult? Function(String uuid)? deleteProduct,
+    TResult? Function(String uuid, int delta)? updateStock,
+    TResult? Function(String warehouseId)? watchInventory,
+    TResult? Function(List<ProductStock> inventory)? inventoryUpdated,
+  }) {
+    return inventoryUpdated?.call(inventory);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
+    TResult Function(String uuid)? deleteProduct,
+    TResult Function(String uuid, int delta)? updateStock,
+    TResult Function(String warehouseId)? watchInventory,
+    TResult Function(List<ProductStock> inventory)? inventoryUpdated,
+    required TResult orElse(),
+  }) {
+    if (inventoryUpdated != null) {
+      return inventoryUpdated(inventory);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_AddProduct value) addProduct,
+    required TResult Function(_UpdateProduct value) updateProduct,
+    required TResult Function(_DeleteProduct value) deleteProduct,
+    required TResult Function(_UpdateStock value) updateStock,
+    required TResult Function(_WatchInventory value) watchInventory,
+    required TResult Function(_InventoryUpdated value) inventoryUpdated,
+  }) {
+    return inventoryUpdated(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_AddProduct value)? addProduct,
+    TResult? Function(_UpdateProduct value)? updateProduct,
+    TResult? Function(_DeleteProduct value)? deleteProduct,
+    TResult? Function(_UpdateStock value)? updateStock,
+    TResult? Function(_WatchInventory value)? watchInventory,
+    TResult? Function(_InventoryUpdated value)? inventoryUpdated,
+  }) {
+    return inventoryUpdated?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_AddProduct value)? addProduct,
+    TResult Function(_UpdateProduct value)? updateProduct,
+    TResult Function(_DeleteProduct value)? deleteProduct,
+    TResult Function(_UpdateStock value)? updateStock,
+    TResult Function(_WatchInventory value)? watchInventory,
+    TResult Function(_InventoryUpdated value)? inventoryUpdated,
+    required TResult orElse(),
+  }) {
+    if (inventoryUpdated != null) {
+      return inventoryUpdated(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _InventoryUpdated implements InventoryManagementEvent {
+  const factory _InventoryUpdated(final List<ProductStock> inventory) =
+      _$InventoryUpdatedImpl;
+
+  List<ProductStock> get inventory;
+
+  /// Create a copy of InventoryManagementEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$InventoryUpdatedImplCopyWith<_$InventoryUpdatedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$InventoryManagementState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() success,
+    required TResult Function(List<ProductStock> inventory) loaded,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -849,6 +1275,7 @@ mixin _$InventoryManagementState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function()? success,
+    TResult? Function(List<ProductStock> inventory)? loaded,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -857,6 +1284,7 @@ mixin _$InventoryManagementState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? success,
+    TResult Function(List<ProductStock> inventory)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -866,6 +1294,7 @@ mixin _$InventoryManagementState {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) success,
+    required TResult Function(_Loaded value) loaded,
     required TResult Function(_Error value) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -874,6 +1303,7 @@ mixin _$InventoryManagementState {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? success,
+    TResult? Function(_Loaded value)? loaded,
     TResult? Function(_Error value)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -882,6 +1312,7 @@ mixin _$InventoryManagementState {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? success,
+    TResult Function(_Loaded value)? loaded,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) =>
@@ -954,6 +1385,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() success,
+    required TResult Function(List<ProductStock> inventory) loaded,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -965,6 +1397,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function()? success,
+    TResult? Function(List<ProductStock> inventory)? loaded,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -976,6 +1409,7 @@ class _$InitialImpl implements _Initial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? success,
+    TResult Function(List<ProductStock> inventory)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -991,6 +1425,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) success,
+    required TResult Function(_Loaded value) loaded,
     required TResult Function(_Error value) error,
   }) {
     return initial(this);
@@ -1002,6 +1437,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? success,
+    TResult? Function(_Loaded value)? loaded,
     TResult? Function(_Error value)? error,
   }) {
     return initial?.call(this);
@@ -1013,6 +1449,7 @@ class _$InitialImpl implements _Initial {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? success,
+    TResult Function(_Loaded value)? loaded,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -1071,6 +1508,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() success,
+    required TResult Function(List<ProductStock> inventory) loaded,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -1082,6 +1520,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function()? success,
+    TResult? Function(List<ProductStock> inventory)? loaded,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -1093,6 +1532,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? success,
+    TResult Function(List<ProductStock> inventory)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -1108,6 +1548,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) success,
+    required TResult Function(_Loaded value) loaded,
     required TResult Function(_Error value) error,
   }) {
     return loading(this);
@@ -1119,6 +1560,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? success,
+    TResult? Function(_Loaded value)? loaded,
     TResult? Function(_Error value)? error,
   }) {
     return loading?.call(this);
@@ -1130,6 +1572,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? success,
+    TResult Function(_Loaded value)? loaded,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -1188,6 +1631,7 @@ class _$SuccessImpl implements _Success {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() success,
+    required TResult Function(List<ProductStock> inventory) loaded,
     required TResult Function(String message) error,
   }) {
     return success();
@@ -1199,6 +1643,7 @@ class _$SuccessImpl implements _Success {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function()? success,
+    TResult? Function(List<ProductStock> inventory)? loaded,
     TResult? Function(String message)? error,
   }) {
     return success?.call();
@@ -1210,6 +1655,7 @@ class _$SuccessImpl implements _Success {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? success,
+    TResult Function(List<ProductStock> inventory)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -1225,6 +1671,7 @@ class _$SuccessImpl implements _Success {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) success,
+    required TResult Function(_Loaded value) loaded,
     required TResult Function(_Error value) error,
   }) {
     return success(this);
@@ -1236,6 +1683,7 @@ class _$SuccessImpl implements _Success {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? success,
+    TResult? Function(_Loaded value)? loaded,
     TResult? Function(_Error value)? error,
   }) {
     return success?.call(this);
@@ -1247,6 +1695,7 @@ class _$SuccessImpl implements _Success {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? success,
+    TResult Function(_Loaded value)? loaded,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -1259,6 +1708,172 @@ class _$SuccessImpl implements _Success {
 
 abstract class _Success implements InventoryManagementState {
   const factory _Success() = _$SuccessImpl;
+}
+
+/// @nodoc
+abstract class _$$LoadedImplCopyWith<$Res> {
+  factory _$$LoadedImplCopyWith(
+          _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
+      __$$LoadedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({List<ProductStock> inventory});
+}
+
+/// @nodoc
+class __$$LoadedImplCopyWithImpl<$Res>
+    extends _$InventoryManagementStateCopyWithImpl<$Res, _$LoadedImpl>
+    implements _$$LoadedImplCopyWith<$Res> {
+  __$$LoadedImplCopyWithImpl(
+      _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of InventoryManagementState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? inventory = null,
+  }) {
+    return _then(_$LoadedImpl(
+      null == inventory
+          ? _value._inventory
+          : inventory // ignore: cast_nullable_to_non_nullable
+              as List<ProductStock>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$LoadedImpl implements _Loaded {
+  const _$LoadedImpl(final List<ProductStock> inventory)
+      : _inventory = inventory;
+
+  final List<ProductStock> _inventory;
+  @override
+  List<ProductStock> get inventory {
+    if (_inventory is EqualUnmodifiableListView) return _inventory;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_inventory);
+  }
+
+  @override
+  String toString() {
+    return 'InventoryManagementState.loaded(inventory: $inventory)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$LoadedImpl &&
+            const DeepCollectionEquality()
+                .equals(other._inventory, _inventory));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_inventory));
+
+  /// Create a copy of InventoryManagementState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
+      __$$LoadedImplCopyWithImpl<_$LoadedImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function() success,
+    required TResult Function(List<ProductStock> inventory) loaded,
+    required TResult Function(String message) error,
+  }) {
+    return loaded(inventory);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function()? success,
+    TResult? Function(List<ProductStock> inventory)? loaded,
+    TResult? Function(String message)? error,
+  }) {
+    return loaded?.call(inventory);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function()? success,
+    TResult Function(List<ProductStock> inventory)? loaded,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (loaded != null) {
+      return loaded(inventory);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Success value) success,
+    required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Error value) error,
+  }) {
+    return loaded(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Success value)? success,
+    TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Error value)? error,
+  }) {
+    return loaded?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Success value)? success,
+    TResult Function(_Loaded value)? loaded,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (loaded != null) {
+      return loaded(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Loaded implements InventoryManagementState {
+  const factory _Loaded(final List<ProductStock> inventory) = _$LoadedImpl;
+
+  List<ProductStock> get inventory;
+
+  /// Create a copy of InventoryManagementState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1332,6 +1947,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function() success,
+    required TResult Function(List<ProductStock> inventory) loaded,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -1343,6 +1959,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function()? success,
+    TResult? Function(List<ProductStock> inventory)? loaded,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -1354,6 +1971,7 @@ class _$ErrorImpl implements _Error {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function()? success,
+    TResult Function(List<ProductStock> inventory)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -1369,6 +1987,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) success,
+    required TResult Function(_Loaded value) loaded,
     required TResult Function(_Error value) error,
   }) {
     return error(this);
@@ -1380,6 +1999,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? success,
+    TResult? Function(_Loaded value)? loaded,
     TResult? Function(_Error value)? error,
   }) {
     return error?.call(this);
@@ -1391,6 +2011,7 @@ class _$ErrorImpl implements _Error {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? success,
+    TResult Function(_Loaded value)? loaded,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {

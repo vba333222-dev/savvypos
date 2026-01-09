@@ -35,16 +35,22 @@ class _InventoryListPageState extends State<InventoryListPage> {
           elevation: 4,
           child: const Icon(Icons.add, color: Colors.white),
         ),
-        body: StreamBuilder<List<Product>>(
-          stream: _repo.watchAllProducts(),
-          builder: (context, snapshot) {
-            // Loading / Error handled gracefully
-            final allProducts = snapshot.data ?? [];
+        body: BlocBuilder<InventoryManagementBloc, InventoryManagementState>(
+          builder: (context, state) {
+            
+            // Map state to products list
+            final List<ProductStock> allItems = state.maybeWhen(
+              loaded: (items) => items,
+              orElse: () => [],
+            );
+            
+            final isLoading = state.maybeWhen(loading: () => true, orElse: () => false);
+
             final filtered = _query.isEmpty 
-               ? allProducts 
-               : allProducts.where((p) => 
-                   p.name.toLowerCase().contains(_query.toLowerCase()) || 
-                   (p.sku?.contains(_query) ?? false)
+               ? allItems 
+               : allItems.where((item) => 
+                   item.product.name.toLowerCase().contains(_query.toLowerCase()) || 
+                   (item.product.sku?.contains(_query) ?? false)
                  ).toList();
 
             return CustomScrollView(
@@ -89,7 +95,7 @@ class _InventoryListPageState extends State<InventoryListPage> {
                 ),
 
                 // 3. Product List
-                if (!snapshot.hasData) 
+                if (isLoading && allItems.isEmpty) 
                    const SliverFillRemaining(child: Center(child: CircularProgressIndicator()))
                 else if (filtered.isEmpty)
                    SliverFillRemaining(child: Center(child: Text('No items found', style: TextStyle(color: theme.colors.textMuted))))
@@ -99,17 +105,14 @@ class _InventoryListPageState extends State<InventoryListPage> {
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
-                          final product = filtered[index];
-                          // Prototyping Stock Logic:
-                          // Ideally this comes from the stream. Accessing `currentStock` from product if available or random/associated map.
-                          // For this implementation we use the product's hashCode based mock if not available, OR 0.
-                          // Assuming Product entity might have been updated or we just mock it for the "Tactile" demo.
-                          int stock = (product.name.hashCode % 50).abs(); 
+                          final item = filtered[index];
+                          final product = item.product;
+                          final stock = item.quantity.toInt();
 
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 12),
                             child: TactileInventoryCard(
-                              key: ValueKey(product.uuid), // Important for animation
+                              key: ValueKey(product.uuid), 
                               product: product,
                               currentStock: stock,
                               onStockUpdate: (delta) {

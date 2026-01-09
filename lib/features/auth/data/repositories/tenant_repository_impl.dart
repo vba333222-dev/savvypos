@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/features/auth/domain/repositories/i_tenant_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 @LazySingleton(as: ITenantRepository)
@@ -27,5 +28,20 @@ class TenantRepositoryImpl implements ITenantRepository {
       isAdsEnabled: true,
       updatedAt: DateTime.now(),
     ));
+  }
+  @override
+  Future<void> saveActiveScope(String outletId, String warehouseId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('active_outlet_id', outletId);
+    await prefs.setString('active_warehouse_id', warehouseId);
+  }
+
+  @override
+  Future<Map<String, String?>> getActiveScope() async {
+    final prefs = await SharedPreferences.getInstance();
+    return {
+      'outletId': prefs.getString('active_outlet_id'),
+      'warehouseId': prefs.getString('active_warehouse_id'),
+    };
   }
 }

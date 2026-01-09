@@ -12,35 +12,34 @@ part 'database.g.dart';
 @DriftDatabase(tables: [
   TenantConfigTable,
   ProductTable,
-  CustomerTable,
-  OrderTable,
-  OrderItemTable,
-  InventoryLedgerTable,
-  InventoryCacheTable,
-  ShiftSessionTable,
-  SyncQueue,
-  EmployeeTable,
   RestaurantTable,
   ReservationTable,
-  // v9 BoH
+  EmployeeTable,
+  ProductTable,
   ModifierGroupTable,
   ModifierItemTable,
   ProductModifierLinkTable,
   IngredientTable,
   RecipeTable,
-  // v10 Ops
-  CashTransactionTable,
-  // v13 Enterprise
-  // v13 Enterprise
+  CustomerTable,
+  OrderTable,
+  OrderItemTable,
+  InventoryLedgerTable,
+  InventoryCacheTable,
   LocalStocksTable,
   SupplierTable,
   ProductSupplierTable,
+  PurchaseOrderTable,
+  PurchaseOrderItemTable,
+  ShiftSessionTable,
+  SyncQueue,
+  CashTransactionTable,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 14;
+  int get schemaVersion => 15;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -130,9 +129,13 @@ class AppDatabase extends _$AppDatabase {
          await m.createTable(localStocksTable);
          await m.createTable(supplierTable);
        }
-       if (from < 14) {
-         await m.createTable(productSupplierTable);
-       }
+        if (from < 14) {
+          await m.createTable(productSupplierTable);
+        }
+        if (from < 15) {
+          await m.createTable(purchaseOrderTable);
+          await m.createTable(purchaseOrderItemTable);
+        }
     },
   );
 }

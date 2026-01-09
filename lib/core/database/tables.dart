@@ -286,6 +286,30 @@ class ProductSupplierTable extends Table {
   List<Set<Column>> get uniqueKeys => [{productUuid, supplierUuid}];
 }
 
+class PurchaseOrderTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get uuid => text().unique()();
+  TextColumn get supplierUuid => text().references(SupplierTable, #uuid, onDelete: KeyAction.cascade)();
+  TextColumn get targetWarehouseUuid => text()(); // Destination for goods
+  TextColumn get status => text().withDefault(const Constant('PENDING'))(); // PENDING, PARTIALLY_RECEIVED, COMPLETED, CANCELLED
+  TextColumn get referenceNumber => text().nullable()(); // E.g., PO-2024-001
+  TextColumn get notes => text().nullable()();
+  RealColumn get totalCost => real().withDefault(const Constant(0))();
+  
+  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+  BoolColumn get isSynced => boolean().withDefault(const Constant(false))();
+}
+
+class PurchaseOrderItemTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get poUuid => text().references(PurchaseOrderTable, #uuid, onDelete: KeyAction.cascade)();
+  TextColumn get productUuid => text().references(ProductTable, #uuid, onDelete: KeyAction.cascade)();
+  RealColumn get quantityOrdered => real()();
+  RealColumn get quantityReceived => real().withDefault(const Constant(0))();
+  RealColumn get unitCost => real()(); // Snapshot cost at time of order
+}
+
 // ==============================================================================
 // 5. SHIFT & CASH MANAGEMENT
 // ==============================================================================

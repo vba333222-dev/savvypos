@@ -24,5 +24,15 @@ abstract class IProductRepository {
   /// Quick update stock (for tactile inventory)
   Future<void> updateStock(String productUuid, int delta);
   
+  /// Watch inventory for a specific warehouse
+  Stream<List<ProductStock>> watchInventory(String warehouseId);
+
   // Add other methods if stricly required, but this is the critical one for now.
+}
+
+class ProductStock {
+  final Product product;
+  final double quantity;
+
+  const ProductStock({required this.product, required this.quantity});
 }

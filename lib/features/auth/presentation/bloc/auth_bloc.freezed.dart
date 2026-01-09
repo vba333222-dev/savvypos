@@ -21,6 +21,8 @@ mixin _$AuthEvent {
     required TResult Function(String pin) loginWithPin,
     required TResult Function() logout,
     required TResult Function() checkSession,
+    required TResult Function(String outletId, String warehouseId)
+        changeActiveOutlet,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -28,6 +30,7 @@ mixin _$AuthEvent {
     TResult? Function(String pin)? loginWithPin,
     TResult? Function()? logout,
     TResult? Function()? checkSession,
+    TResult? Function(String outletId, String warehouseId)? changeActiveOutlet,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -35,6 +38,7 @@ mixin _$AuthEvent {
     TResult Function(String pin)? loginWithPin,
     TResult Function()? logout,
     TResult Function()? checkSession,
+    TResult Function(String outletId, String warehouseId)? changeActiveOutlet,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -43,6 +47,7 @@ mixin _$AuthEvent {
     required TResult Function(_LoginWithPin value) loginWithPin,
     required TResult Function(_Logout value) logout,
     required TResult Function(_CheckSession value) checkSession,
+    required TResult Function(_ChangeActiveOutlet value) changeActiveOutlet,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -50,6 +55,7 @@ mixin _$AuthEvent {
     TResult? Function(_LoginWithPin value)? loginWithPin,
     TResult? Function(_Logout value)? logout,
     TResult? Function(_CheckSession value)? checkSession,
+    TResult? Function(_ChangeActiveOutlet value)? changeActiveOutlet,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -57,6 +63,7 @@ mixin _$AuthEvent {
     TResult Function(_LoginWithPin value)? loginWithPin,
     TResult Function(_Logout value)? logout,
     TResult Function(_CheckSession value)? checkSession,
+    TResult Function(_ChangeActiveOutlet value)? changeActiveOutlet,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -153,6 +160,8 @@ class _$LoginWithPinImpl implements _LoginWithPin {
     required TResult Function(String pin) loginWithPin,
     required TResult Function() logout,
     required TResult Function() checkSession,
+    required TResult Function(String outletId, String warehouseId)
+        changeActiveOutlet,
   }) {
     return loginWithPin(pin);
   }
@@ -163,6 +172,7 @@ class _$LoginWithPinImpl implements _LoginWithPin {
     TResult? Function(String pin)? loginWithPin,
     TResult? Function()? logout,
     TResult? Function()? checkSession,
+    TResult? Function(String outletId, String warehouseId)? changeActiveOutlet,
   }) {
     return loginWithPin?.call(pin);
   }
@@ -173,6 +183,7 @@ class _$LoginWithPinImpl implements _LoginWithPin {
     TResult Function(String pin)? loginWithPin,
     TResult Function()? logout,
     TResult Function()? checkSession,
+    TResult Function(String outletId, String warehouseId)? changeActiveOutlet,
     required TResult orElse(),
   }) {
     if (loginWithPin != null) {
@@ -187,6 +198,7 @@ class _$LoginWithPinImpl implements _LoginWithPin {
     required TResult Function(_LoginWithPin value) loginWithPin,
     required TResult Function(_Logout value) logout,
     required TResult Function(_CheckSession value) checkSession,
+    required TResult Function(_ChangeActiveOutlet value) changeActiveOutlet,
   }) {
     return loginWithPin(this);
   }
@@ -197,6 +209,7 @@ class _$LoginWithPinImpl implements _LoginWithPin {
     TResult? Function(_LoginWithPin value)? loginWithPin,
     TResult? Function(_Logout value)? logout,
     TResult? Function(_CheckSession value)? checkSession,
+    TResult? Function(_ChangeActiveOutlet value)? changeActiveOutlet,
   }) {
     return loginWithPin?.call(this);
   }
@@ -207,6 +220,7 @@ class _$LoginWithPinImpl implements _LoginWithPin {
     TResult Function(_LoginWithPin value)? loginWithPin,
     TResult Function(_Logout value)? logout,
     TResult Function(_CheckSession value)? checkSession,
+    TResult Function(_ChangeActiveOutlet value)? changeActiveOutlet,
     required TResult orElse(),
   }) {
     if (loginWithPin != null) {
@@ -272,6 +286,8 @@ class _$LogoutImpl implements _Logout {
     required TResult Function(String pin) loginWithPin,
     required TResult Function() logout,
     required TResult Function() checkSession,
+    required TResult Function(String outletId, String warehouseId)
+        changeActiveOutlet,
   }) {
     return logout();
   }
@@ -282,6 +298,7 @@ class _$LogoutImpl implements _Logout {
     TResult? Function(String pin)? loginWithPin,
     TResult? Function()? logout,
     TResult? Function()? checkSession,
+    TResult? Function(String outletId, String warehouseId)? changeActiveOutlet,
   }) {
     return logout?.call();
   }
@@ -292,6 +309,7 @@ class _$LogoutImpl implements _Logout {
     TResult Function(String pin)? loginWithPin,
     TResult Function()? logout,
     TResult Function()? checkSession,
+    TResult Function(String outletId, String warehouseId)? changeActiveOutlet,
     required TResult orElse(),
   }) {
     if (logout != null) {
@@ -306,6 +324,7 @@ class _$LogoutImpl implements _Logout {
     required TResult Function(_LoginWithPin value) loginWithPin,
     required TResult Function(_Logout value) logout,
     required TResult Function(_CheckSession value) checkSession,
+    required TResult Function(_ChangeActiveOutlet value) changeActiveOutlet,
   }) {
     return logout(this);
   }
@@ -316,6 +335,7 @@ class _$LogoutImpl implements _Logout {
     TResult? Function(_LoginWithPin value)? loginWithPin,
     TResult? Function(_Logout value)? logout,
     TResult? Function(_CheckSession value)? checkSession,
+    TResult? Function(_ChangeActiveOutlet value)? changeActiveOutlet,
   }) {
     return logout?.call(this);
   }
@@ -326,6 +346,7 @@ class _$LogoutImpl implements _Logout {
     TResult Function(_LoginWithPin value)? loginWithPin,
     TResult Function(_Logout value)? logout,
     TResult Function(_CheckSession value)? checkSession,
+    TResult Function(_ChangeActiveOutlet value)? changeActiveOutlet,
     required TResult orElse(),
   }) {
     if (logout != null) {
@@ -383,6 +404,8 @@ class _$CheckSessionImpl implements _CheckSession {
     required TResult Function(String pin) loginWithPin,
     required TResult Function() logout,
     required TResult Function() checkSession,
+    required TResult Function(String outletId, String warehouseId)
+        changeActiveOutlet,
   }) {
     return checkSession();
   }
@@ -393,6 +416,7 @@ class _$CheckSessionImpl implements _CheckSession {
     TResult? Function(String pin)? loginWithPin,
     TResult? Function()? logout,
     TResult? Function()? checkSession,
+    TResult? Function(String outletId, String warehouseId)? changeActiveOutlet,
   }) {
     return checkSession?.call();
   }
@@ -403,6 +427,7 @@ class _$CheckSessionImpl implements _CheckSession {
     TResult Function(String pin)? loginWithPin,
     TResult Function()? logout,
     TResult Function()? checkSession,
+    TResult Function(String outletId, String warehouseId)? changeActiveOutlet,
     required TResult orElse(),
   }) {
     if (checkSession != null) {
@@ -417,6 +442,7 @@ class _$CheckSessionImpl implements _CheckSession {
     required TResult Function(_LoginWithPin value) loginWithPin,
     required TResult Function(_Logout value) logout,
     required TResult Function(_CheckSession value) checkSession,
+    required TResult Function(_ChangeActiveOutlet value) changeActiveOutlet,
   }) {
     return checkSession(this);
   }
@@ -427,6 +453,7 @@ class _$CheckSessionImpl implements _CheckSession {
     TResult? Function(_LoginWithPin value)? loginWithPin,
     TResult? Function(_Logout value)? logout,
     TResult? Function(_CheckSession value)? checkSession,
+    TResult? Function(_ChangeActiveOutlet value)? changeActiveOutlet,
   }) {
     return checkSession?.call(this);
   }
@@ -437,6 +464,7 @@ class _$CheckSessionImpl implements _CheckSession {
     TResult Function(_LoginWithPin value)? loginWithPin,
     TResult Function(_Logout value)? logout,
     TResult Function(_CheckSession value)? checkSession,
+    TResult Function(_ChangeActiveOutlet value)? changeActiveOutlet,
     required TResult orElse(),
   }) {
     if (checkSession != null) {
@@ -451,9 +479,177 @@ abstract class _CheckSession implements AuthEvent {
 }
 
 /// @nodoc
+abstract class _$$ChangeActiveOutletImplCopyWith<$Res> {
+  factory _$$ChangeActiveOutletImplCopyWith(_$ChangeActiveOutletImpl value,
+          $Res Function(_$ChangeActiveOutletImpl) then) =
+      __$$ChangeActiveOutletImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String outletId, String warehouseId});
+}
+
+/// @nodoc
+class __$$ChangeActiveOutletImplCopyWithImpl<$Res>
+    extends _$AuthEventCopyWithImpl<$Res, _$ChangeActiveOutletImpl>
+    implements _$$ChangeActiveOutletImplCopyWith<$Res> {
+  __$$ChangeActiveOutletImplCopyWithImpl(_$ChangeActiveOutletImpl _value,
+      $Res Function(_$ChangeActiveOutletImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of AuthEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? outletId = null,
+    Object? warehouseId = null,
+  }) {
+    return _then(_$ChangeActiveOutletImpl(
+      null == outletId
+          ? _value.outletId
+          : outletId // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == warehouseId
+          ? _value.warehouseId
+          : warehouseId // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ChangeActiveOutletImpl implements _ChangeActiveOutlet {
+  const _$ChangeActiveOutletImpl(this.outletId, this.warehouseId);
+
+  @override
+  final String outletId;
+  @override
+  final String warehouseId;
+
+  @override
+  String toString() {
+    return 'AuthEvent.changeActiveOutlet(outletId: $outletId, warehouseId: $warehouseId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ChangeActiveOutletImpl &&
+            (identical(other.outletId, outletId) ||
+                other.outletId == outletId) &&
+            (identical(other.warehouseId, warehouseId) ||
+                other.warehouseId == warehouseId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, outletId, warehouseId);
+
+  /// Create a copy of AuthEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ChangeActiveOutletImplCopyWith<_$ChangeActiveOutletImpl> get copyWith =>
+      __$$ChangeActiveOutletImplCopyWithImpl<_$ChangeActiveOutletImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String pin) loginWithPin,
+    required TResult Function() logout,
+    required TResult Function() checkSession,
+    required TResult Function(String outletId, String warehouseId)
+        changeActiveOutlet,
+  }) {
+    return changeActiveOutlet(outletId, warehouseId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String pin)? loginWithPin,
+    TResult? Function()? logout,
+    TResult? Function()? checkSession,
+    TResult? Function(String outletId, String warehouseId)? changeActiveOutlet,
+  }) {
+    return changeActiveOutlet?.call(outletId, warehouseId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String pin)? loginWithPin,
+    TResult Function()? logout,
+    TResult Function()? checkSession,
+    TResult Function(String outletId, String warehouseId)? changeActiveOutlet,
+    required TResult orElse(),
+  }) {
+    if (changeActiveOutlet != null) {
+      return changeActiveOutlet(outletId, warehouseId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoginWithPin value) loginWithPin,
+    required TResult Function(_Logout value) logout,
+    required TResult Function(_CheckSession value) checkSession,
+    required TResult Function(_ChangeActiveOutlet value) changeActiveOutlet,
+  }) {
+    return changeActiveOutlet(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoginWithPin value)? loginWithPin,
+    TResult? Function(_Logout value)? logout,
+    TResult? Function(_CheckSession value)? checkSession,
+    TResult? Function(_ChangeActiveOutlet value)? changeActiveOutlet,
+  }) {
+    return changeActiveOutlet?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoginWithPin value)? loginWithPin,
+    TResult Function(_Logout value)? logout,
+    TResult Function(_CheckSession value)? checkSession,
+    TResult Function(_ChangeActiveOutlet value)? changeActiveOutlet,
+    required TResult orElse(),
+  }) {
+    if (changeActiveOutlet != null) {
+      return changeActiveOutlet(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ChangeActiveOutlet implements AuthEvent {
+  const factory _ChangeActiveOutlet(
+          final String outletId, final String warehouseId) =
+      _$ChangeActiveOutletImpl;
+
+  String get outletId;
+  String get warehouseId;
+
+  /// Create a copy of AuthEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ChangeActiveOutletImplCopyWith<_$ChangeActiveOutletImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$AuthState {
-  EmployeeTableData? get employee =>
-      throw _privateConstructorUsedError; // Updated from StaffTableData
+  EmployeeTableData? get employee => throw _privateConstructorUsedError;
+  String? get activeOutletId => throw _privateConstructorUsedError;
+  String? get activeWarehouseId => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
@@ -469,7 +665,12 @@ abstract class $AuthStateCopyWith<$Res> {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) then) =
       _$AuthStateCopyWithImpl<$Res, AuthState>;
   @useResult
-  $Res call({EmployeeTableData? employee, bool isLoading, String? error});
+  $Res call(
+      {EmployeeTableData? employee,
+      String? activeOutletId,
+      String? activeWarehouseId,
+      bool isLoading,
+      String? error});
 }
 
 /// @nodoc
@@ -488,6 +689,8 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
   @override
   $Res call({
     Object? employee = freezed,
+    Object? activeOutletId = freezed,
+    Object? activeWarehouseId = freezed,
     Object? isLoading = null,
     Object? error = freezed,
   }) {
@@ -496,6 +699,14 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
           ? _value.employee
           : employee // ignore: cast_nullable_to_non_nullable
               as EmployeeTableData?,
+      activeOutletId: freezed == activeOutletId
+          ? _value.activeOutletId
+          : activeOutletId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      activeWarehouseId: freezed == activeWarehouseId
+          ? _value.activeWarehouseId
+          : activeWarehouseId // ignore: cast_nullable_to_non_nullable
+              as String?,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -516,7 +727,12 @@ abstract class _$$AuthStateImplCopyWith<$Res>
       __$$AuthStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({EmployeeTableData? employee, bool isLoading, String? error});
+  $Res call(
+      {EmployeeTableData? employee,
+      String? activeOutletId,
+      String? activeWarehouseId,
+      bool isLoading,
+      String? error});
 }
 
 /// @nodoc
@@ -533,6 +749,8 @@ class __$$AuthStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? employee = freezed,
+    Object? activeOutletId = freezed,
+    Object? activeWarehouseId = freezed,
     Object? isLoading = null,
     Object? error = freezed,
   }) {
@@ -541,6 +759,14 @@ class __$$AuthStateImplCopyWithImpl<$Res>
           ? _value.employee
           : employee // ignore: cast_nullable_to_non_nullable
               as EmployeeTableData?,
+      activeOutletId: freezed == activeOutletId
+          ? _value.activeOutletId
+          : activeOutletId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      activeWarehouseId: freezed == activeWarehouseId
+          ? _value.activeWarehouseId
+          : activeWarehouseId // ignore: cast_nullable_to_non_nullable
+              as String?,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -556,11 +782,19 @@ class __$$AuthStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$AuthStateImpl implements _AuthState {
-  const _$AuthStateImpl({this.employee, this.isLoading = false, this.error});
+  const _$AuthStateImpl(
+      {this.employee,
+      this.activeOutletId,
+      this.activeWarehouseId,
+      this.isLoading = false,
+      this.error});
 
   @override
   final EmployeeTableData? employee;
-// Updated from StaffTableData
+  @override
+  final String? activeOutletId;
+  @override
+  final String? activeWarehouseId;
   @override
   @JsonKey()
   final bool isLoading;
@@ -569,7 +803,7 @@ class _$AuthStateImpl implements _AuthState {
 
   @override
   String toString() {
-    return 'AuthState(employee: $employee, isLoading: $isLoading, error: $error)';
+    return 'AuthState(employee: $employee, activeOutletId: $activeOutletId, activeWarehouseId: $activeWarehouseId, isLoading: $isLoading, error: $error)';
   }
 
   @override
@@ -578,14 +812,23 @@ class _$AuthStateImpl implements _AuthState {
         (other.runtimeType == runtimeType &&
             other is _$AuthStateImpl &&
             const DeepCollectionEquality().equals(other.employee, employee) &&
+            (identical(other.activeOutletId, activeOutletId) ||
+                other.activeOutletId == activeOutletId) &&
+            (identical(other.activeWarehouseId, activeWarehouseId) ||
+                other.activeWarehouseId == activeWarehouseId) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.error, error) || other.error == error));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(employee), isLoading, error);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(employee),
+      activeOutletId,
+      activeWarehouseId,
+      isLoading,
+      error);
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
@@ -599,11 +842,17 @@ class _$AuthStateImpl implements _AuthState {
 abstract class _AuthState implements AuthState {
   const factory _AuthState(
       {final EmployeeTableData? employee,
+      final String? activeOutletId,
+      final String? activeWarehouseId,
       final bool isLoading,
       final String? error}) = _$AuthStateImpl;
 
   @override
-  EmployeeTableData? get employee; // Updated from StaffTableData
+  EmployeeTableData? get employee;
+  @override
+  String? get activeOutletId;
+  @override
+  String? get activeWarehouseId;
   @override
   bool get isLoading;
   @override

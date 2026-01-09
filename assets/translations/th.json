@@ -1,0 +1,36 @@
+{
+    "app_name": "Savvy POS",
+    "login": {
+        "welcome": "ยินดีต้อนรับกลับ",
+        "subtitle": "เข้าสู่ระบบเพื่อดำเนินการต่อ",
+        "username": "ชื่อผู้ใช้",
+        "password": "รหัสผ่าน",
+        "login_btn": "เข้าสู่ระบบ",
+        "error": "ข้อมูลไม่ถูกต้อง"
+    },
+    "pos": {
+        "search_hint": "ค้นหาสินค้า...",
+        "cart_title": "รายการสั่งซื้อ",
+        "checkout": "ชำระเงิน",
+        "total": "รวม",
+        "empty_cart": "ตะกร้าว่างเปล่า"
+    },
+    "settings": {
+        "title": "การตั้งค่า",
+        "language": "ภาษา",
+        "theme": "ธีม",
+        "dark_mode": "โหมดมืด"
+    },
+    "genesis": {
+        "step1_title": "เริ่มต้นกันเลย",
+        "step1_subtitle": "บอกเราเกี่ยวกับธุรกิจของคุณ",
+        "store_name": "ชื่อร้าน",
+        "currency": "สกุลเงิน",
+        "step2_title": "สไตล์ของคุณคืออะไร?",
+        "step2_subtitle": "เราจะเตรียมเมนูให้คุณทันที",
+        "type_cafe": "คาเฟ่",
+        "type_retail": "ค้าปลีก",
+        "type_service": "บริการ",
+        "building_hq": "กำลังสร้างสำนักงานใหญ่..."
+    }
+}

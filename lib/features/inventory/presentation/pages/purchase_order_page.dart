@@ -5,7 +5,7 @@ import 'package:savvy_pos/core/presentation/widgets/savvy_box.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart'; // Contains SavvyButton, SavvyTextField (assumed)
 import 'package:savvy_pos/features/inventory/domain/usecases/recommend_supplier.dart';
-import 'package:savvy_pos/features/inventory/presentation\widgets/supplier_comparison_table.dart';
+import 'package:savvy_pos/features/inventory/presentation/widgets/supplier_card.dart';
 
 // MOCKING BLOC for brevity since full implementation requires defining events/states in separate files
 // In a real scenario, this would import the actual PurchaseOrderBloc
@@ -137,13 +137,31 @@ class _PurchaseOrderPageState extends State<PurchaseOrderPage> {
              
              const SizedBox(height: 24),
              
-             // 2. Comparison Table
-             SavvyText.h4('Supplier Recommendations'),
+             // 2. Visual Supplier Selection
+             SavvyText.h4('Select Supplier'),
              const SizedBox(height: 16),
-             SupplierComparisonTable(
-               suppliers: recommendations, 
-               selectedSupplierUuid: selectedSupplierUuid,
-               onSelect: (uuid) => setState(() => selectedSupplierUuid = uuid),
+             SizedBox(
+               height: 160,
+               child: ListView.separated(
+                 scrollDirection: Axis.horizontal,
+                 itemCount: recommendations.length,
+                 separatorBuilder: (c, i) => const SizedBox(width: 16),
+                 itemBuilder: (context, index) {
+                   final s = recommendations[index];
+                   final isBest = index == 0 && strategy == ReplenishmentStrategy.LOWEST_COST; // First is best due to sort
+                   final isFastest = strategy == ReplenishmentStrategy.FASTEST_DELIVERY && index == 0;
+
+                   return SupplierCard(
+                     name: s.supplierName,
+                     cost: s.cost,
+                     leadTimeDays: s.leadTime,
+                     isSelected: s.supplierUuid == selectedSupplierUuid,
+                     isBestPrice: isBest,
+                     isFastest: isFastest,
+                     onTap: () => setState(() => selectedSupplierUuid = s.supplierUuid),
+                   );
+                 },
+               ),
              ),
              
              const SizedBox(height: 32),

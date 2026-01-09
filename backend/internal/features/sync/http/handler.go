@@ -83,6 +83,8 @@ func (h *SyncHandler) HandlePull(c *gin.Context) {
 	}
 
 	lastSyncedAtStr := c.Query("last_synced_at")
+	warehouseID := c.Query("warehouse_id") // Optional: Filter stocks by warehouse
+
 	var lastSyncedAt string
 	if lastSyncedAtStr == "" {
 		lastSyncedAt = "1970-01-01T00:00:00Z"
@@ -92,14 +94,23 @@ func (h *SyncHandler) HandlePull(c *gin.Context) {
 
 	var products []domain.Product
 	var customers []domain.Customer
+	var stocks []domain.InventoryStock
 
 	// Query for changes
 	h.db.Where("tenant_id = ? AND updated_at > ?", tenantID, lastSyncedAt).Find(&products)
 	h.db.Where("tenant_id = ? AND updated_at > ?", tenantID, lastSyncedAt).Find(&customers)
 
+	// Fetch Stocks (Filtered by Warehouse if provided)
+	stockQuery := h.db.Where("tenant_id = ? AND updated_at > ?", tenantID, lastSyncedAt)
+	if warehouseID != "" {
+		stockQuery = stockQuery.Where("warehouse_uuid = ?", warehouseID)
+	}
+	stockQuery.Find(&stocks)
+
 	c.JSON(http.StatusOK, gin.H{
-		"products":    products,
-		"customers":   customers,
-		"server_time": time.Now().Format(time.RFC3339),
+		"products":         products,
+		"customers":        customers,
+		"inventory_stocks": stocks, // Return the stock data!
+		"server_time":      time.Now().Format(time.RFC3339),
 	})
 }

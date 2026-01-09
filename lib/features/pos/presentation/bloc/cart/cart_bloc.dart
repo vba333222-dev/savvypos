@@ -322,7 +322,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     } else if (code == 'MINUS5') {
        foundPromo = const Promotion.fixedAmount(
          id: 'promo-002', 
-         name: '$5 OFF', 
+         name: '\$5 OFF', 
          code: 'MINUS5', 
          amount: 5.0,
          constraints: PromotionConstraints(minPurchaseAmount: 20.0),

@@ -389,6 +389,12 @@ class SavvyElevations {
       floating: [BoxShadow(color: Color(0x99000000), offset: Offset(0, 20), blurRadius: 25, spreadRadius: -5)],
     );
 
+  SavvyElevations lerp(SavvyElevations other, double t) {
+    return SavvyElevations(
+      none: other.none,
+      sm: BoxShadow.lerpList(sm, other.sm, t)!,
+      md: BoxShadow.lerpList(md, other.md, t)!,
+      lg: BoxShadow.lerpList(lg, other.lg, t)!,
       floating: BoxShadow.lerpList(floating, other.floating, t)!,
     );
   }

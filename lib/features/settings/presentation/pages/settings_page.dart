@@ -51,6 +51,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   const SnackBar(content: Text('Theme logic not connected yet')),
                 );
               },
+            ),
+          ),
           const SizedBox(height: 32),
           Divider(color: colors.borderDefault),
           

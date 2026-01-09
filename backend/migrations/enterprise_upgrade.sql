@@ -1,5 +1,6 @@
 -- =============================================
--- Enterprise Upgrade Migration
+-- Enterprise Upgrade Migration (REMEDIATED)
+-- Safe Data Seeding & Schema Evolution
 -- =============================================
 
 BEGIN;
@@ -50,7 +51,7 @@ CREATE TABLE IF NOT EXISTS product_suppliers (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP WITH TIME ZONE,
-    product_uuid VARCHAR(255) NOT NULL, -- references products(uuid) - assuming generic loose FK for UUIDs or exact constraint if products.uuid is unique
+    product_uuid VARCHAR(255) NOT NULL, 
     supplier_uuid VARCHAR(255) REFERENCES suppliers(uuid),
     tenant_id VARCHAR(255) NOT NULL,
     cost_price NUMERIC(15, 2) DEFAULT 0,
@@ -72,33 +73,49 @@ CREATE TABLE IF NOT EXISTS inventory_stocks (
     UNIQUE(product_uuid, warehouse_uuid)
 );
 
--- 6. DATA MIGRATION
--- Create a default warehouse for existing stock
+-- 6. SAFE DATA MIGRATION (Idempotent)
+
+-- 6a. Ensure Default Warehouse exists for each Tenant in Products
 INSERT INTO warehouses (uuid, tenant_id, name, is_store_front, created_at, updated_at)
 SELECT 
-    'default-warehouse-' || tenant_id, -- Generate a predictable UUID or use generic GUID function
+    'default-warehouse-' || tenant_id, 
     tenant_id, 
     'Main Store', 
     TRUE,
     NOW(),
     NOW()
-FROM (SELECT DISTINCT tenant_id FROM products WHERE tenant_id IS NOT NULL) AS tenants;
+FROM (SELECT DISTINCT tenant_id FROM products WHERE tenant_id IS NOT NULL) AS tenants
+WHERE NOT EXISTS (
+    SELECT 1 FROM warehouses w WHERE w.uuid = 'default-warehouse-' || tenants.tenant_id
+);
 
--- Migrate existing stock from products to inventory_stocks
--- We link it to the 'Main Store' created above
+-- 6b. COPY Data from Products.stock to InventoryStocks (Only if not already migrated)
+-- This preserves the existing stock levels by moving them to the new structure.
 INSERT INTO inventory_stocks (product_uuid, warehouse_uuid, tenant_id, quantity, created_at, updated_at)
 SELECT 
     p.uuid,
     'default-warehouse-' || p.tenant_id,
     p.tenant_id,
-    p.stock,
+    COALESCE(p.stock, 0), -- Handle nulls safely if any
     NOW(),
     NOW()
 FROM products p
-WHERE p.stock != 0;
+WHERE 
+    -- Only migrate if the product has stock (or even if 0 to initialize record)
+    -- And if it hasn't been migrated yet (check existence in inventory_stocks)
+    NOT EXISTS (
+        SELECT 1 FROM inventory_stocks s 
+        WHERE s.product_uuid = p.uuid 
+          AND s.warehouse_uuid = 'default-warehouse-' || p.tenant_id
+    );
 
--- 7. CLEANUP
--- Remove stock column from products
-ALTER TABLE products DROP COLUMN stock;
+-- 7. CLEANUP (Destructive but Safe due to Copy above)
+-- We check if the column exists before dropping to avoid errors on re-runs
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'products' AND column_name = 'stock') THEN
+        ALTER TABLE products DROP COLUMN stock;
+    END IF;
+END $$;
 
 COMMIT;

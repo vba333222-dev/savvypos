@@ -103,11 +103,11 @@ class _AccountMappingWidgetState extends State<AccountMappingWidget> with Ticker
                           .key;
                       
                       return DragTarget<String>(
-                        onAcceptWithDetails: (data) {
+                        onAcceptWithDetails: (details) {
                           setState(() {
-                            mappings[data] = acc['code'];
+                            mappings[details.data] = acc['code'];
                           });
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Mapped $data to ${acc['name']}')));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Mapped ${details.data} to ${acc['name']}')));
                         },
                         builder: (context, candidates, rejects) {
                           return Container(

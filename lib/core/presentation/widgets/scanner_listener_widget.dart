@@ -29,8 +29,8 @@ class _ScannerListenerWidgetState extends State<ScannerListenerWidget> {
     super.dispose();
   }
 
-  void _handleKey(RawKeyEvent event) {
-    if (event is RawKeyDownEvent) {
+  void _handleKey(KeyEvent event) {
+    if (event is KeyDownEvent) {
       final key = event.logicalKey;
       
       // Check for Enter key (End of barcode)
@@ -66,9 +66,9 @@ class _ScannerListenerWidgetState extends State<ScannerListenerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return RawKeyboardListener(
+    return KeyboardListener(
       focusNode: _focusNode,
-      onKey: _handleKey,
+      onKeyEvent: _handleKey,
       autofocus: true,
       child: widget.child,
     );

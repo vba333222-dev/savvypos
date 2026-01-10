@@ -70,7 +70,7 @@ class _SupervisorAuthDialogState extends State<SupervisorAuthDialog> {
 
       if (employee != null) {
         final role = UserRole.fromString(employee.role);
-        if (RolePermissions.canPerformManagerOverride(role)) {
+        if (RoleGuard.canPerformManagerOverride(role)) {
           // Success
           if (mounted) Navigator.pop(context, true);
         } else {

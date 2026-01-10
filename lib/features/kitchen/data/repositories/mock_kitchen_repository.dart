@@ -57,28 +57,33 @@ class MockKitchenRepository implements IKitchenRepository {
     final isDineIn = _rnd.nextBool();
 
     final order = OrderTableData(
+      id: 0,
       uuid: id,
       orderNumber: 'ORD-${_rnd.nextInt(9999)}',
-      total: 0, subtotal: 0, tax: 0, discount: 0, 
+      grandTotal: 0.0, subtotal: 0.0, taxTotal: 0.0, discountTotal: 0.0,
       status: 'CONFIRMED',
+      paymentStatus: 'PAID',
+      paymentMethod: 'CASH',
       isFulfilled: false,
+      isSynced: false,
+      syncAttempts: 0,
       transactionDate: now,
-      createdAt: now,
-      updatedAt: now,
+      version: 1,
     );
 
     final itemNames = ['Burger', 'Fries', 'Cola', 'Pizza', 'Salad', 'Coffee', 'Cake'];
     final items = List.generate(_rnd.nextInt(4) + 1, (i) {
       return KitchenOrderItem(
         item: OrderItemTableData(
+          id: 0,
           uuid: _uuid.v4(),
           orderUuid: id,
           productUuid: 'prod-mock',
+          productName: itemNames[_rnd.nextInt(itemNames.length)],
           quantity: _rnd.nextInt(2) + 1,
-          price: 10, total: 10,
+          unitPrice: 10.0,
+          total: 10.0,
           note: _rnd.nextBool() ? 'No onions' : null,
-          createdAt: now,
-          updatedAt: now,
         ),
         productName: itemNames[_rnd.nextInt(itemNames.length)],
         modifiers: _rnd.nextBool() ? ['Extra cheese', 'Spicy'] : [],

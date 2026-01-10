@@ -41,6 +41,31 @@ class ReportRepositoryImpl implements IReportRepository {
     // 3. Aggregate in Background Isolate (Warp Core)
     return IsolateHelper.run(_aggregateSales, rawItems);
   }
+
+  @override
+  Future<List<StockLedgerItem>> getStockLedger(String productUuid) async {
+    final rows = await (db.select(db.inventoryLedgerTable)
+      ..where((t) => t.productUuid.equals(productUuid))
+      ..orderBy([(t) => OrderingTerm(expression: t.timestamp, mode: OrderingMode.asc)]))
+      .get();
+      
+    double runningStock = 0;
+    final List<StockLedgerItem> result = [];
+
+    for (var row in rows) {
+      runningStock += row.quantityChange;
+      result.add(StockLedgerItem(
+        date: row.timestamp,
+        type: row.type,
+        quantityChange: row.quantityChange,
+        referenceId: row.referenceId,
+        newStockLevel: runningStock,
+      ));
+    }
+    
+    // Reverse to show newest first?
+    return result.reversed.toList();
+  }
 }
 
 // Transferrable DTO
@@ -95,28 +120,5 @@ List<SalesReportItem> _aggregateSales(List<_RawSaleItem> items) {
   return aggregation.values.toList();
 
 
-  @override
-  Future<List<StockLedgerItem>> getStockLedger(String productUuid) async {
-    final rows = await (db.select(db.inventoryLedgerTable)
-      ..where((t) => t.productUuid.equals(productUuid))
-      ..orderBy([(t) => OrderingTerm(expression: t.timestamp, mode: OrderingMode.asc)]))
-      .get();
-      
-    double runningStock = 0;
-    final List<StockLedgerItem> result = [];
 
-    for (var row in rows) {
-      runningStock += row.quantityChange;
-      result.add(StockLedgerItem(
-        date: row.timestamp,
-        type: row.type,
-        quantityChange: row.quantityChange,
-        referenceId: row.referenceId,
-        newStockLevel: runningStock,
-      ));
-    }
-    
-    // Reverse to show newest first?
-    return result.reversed.toList();
-  }
 }

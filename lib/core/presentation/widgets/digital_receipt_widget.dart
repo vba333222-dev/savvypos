@@ -119,8 +119,8 @@ class DigitalReceiptWidget extends StatelessWidget {
              Row(
                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                children: [
-                  Text('TOTAL', style: SavvyTextStyle.h2),
-                  Text(currency.format(total), style: SavvyTextStyle.h1),
+                  SavvyText('TOTAL', style: SavvyTextStyle.h2),
+                  SavvyText(currency.format(total), style: SavvyTextStyle.h1),
                ],
              ).animate(delay: baseDelay + 450.ms).scale(curve: Curves.elasticOut, duration: 500.ms),
 
@@ -167,7 +167,7 @@ class DigitalReceiptWidget extends StatelessWidget {
                .animate(delay: baseDelay + 600.ms).fadeIn(),
              
              SizedBox(height: 24),
-             Text('Thank you for shopping!', style: SavvyTextStyle.labelMedium.copyWith(color: theme.colors.textSecondary, fontStyle: FontStyle.italic))
+             SavvyText('Thank you for shopping!', style: SavvyTextStyle.labelMedium, textStyle: TextStyle(color: theme.colors.textSecondary, fontStyle: FontStyle.italic))
                .animate(delay: baseDelay + 650.ms).fadeIn(),
           ],
         ),

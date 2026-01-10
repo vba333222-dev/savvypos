@@ -20,7 +20,7 @@ class KitchenOrder {
   // Getters for easy access
   String get uuid => order.uuid;
   String get displayId => order.orderNumber.split('-').last; // e.g. ORD-1234 -> 1234
-  DateTime get orderTime => order.createdAt;
+  DateTime get orderTime => order.transactionDate;
 
   KitchenOrderType get type {
     // Simple logic: If tableNumber is present -> DineIn. Else Takeaway.

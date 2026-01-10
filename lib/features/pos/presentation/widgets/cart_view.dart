@@ -64,10 +64,10 @@ class _CartViewState extends State<CartView> {
           // CART LIST
           Expanded(
             child: DragTarget<Product>(
-              onWillAcceptWithDetails: (data) => data != null,
-              onAcceptWithDetails: (product) {
+              onWillAcceptWithDetails: (details) => details.data != null,
+              onAcceptWithDetails: (details) {
                 HapticFeedback.mediumImpact();
-                context.read<CartBloc>().add(CartEvent.addProduct(product));
+                context.read<CartBloc>().add(CartEvent.addProduct(details.data));
                 setState(() => _bumpTrigger++);
               },
               builder: (context, candidateData, rejectedData) {

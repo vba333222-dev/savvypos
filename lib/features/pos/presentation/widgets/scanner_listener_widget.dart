@@ -35,8 +35,8 @@ class _ScannerListenerWidgetState extends State<ScannerListenerWidget> {
     super.dispose();
   }
 
-  void _handleKey(RawKeyEvent event) {
-    if (event is RawKeyDownEvent) {
+  void _handleKey(KeyEvent event) {
+    if (event is KeyDownEvent) {
       final now = DateTime.now();
       // If keys are too slow (e.g. manual typing), clear buffer to avoid junk
       if (now.difference(_lastKeyTime).inMilliseconds > 200) {
@@ -104,9 +104,9 @@ class _ScannerListenerWidgetState extends State<ScannerListenerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return RawKeyboardListener(
+    return KeyboardListener(
       focusNode: _focusNode,
-      onKey: _handleKey,
+      onKeyEvent: _handleKey,
       child: widget.child,
     );
   }

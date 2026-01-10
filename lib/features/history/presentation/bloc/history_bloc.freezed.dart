@@ -78,9 +78,6 @@ class _$HistoryEventCopyWithImpl<$Res, $Val extends HistoryEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of HistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -97,9 +94,6 @@ class __$$LoadHistoryImplCopyWithImpl<$Res>
   __$$LoadHistoryImplCopyWithImpl(
       _$LoadHistoryImpl _value, $Res Function(_$LoadHistoryImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of HistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -211,8 +205,6 @@ class __$$LoadOrderItemsImplCopyWithImpl<$Res>
       _$LoadOrderItemsImpl _value, $Res Function(_$LoadOrderItemsImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -252,9 +244,7 @@ class _$LoadOrderItemsImpl implements _LoadOrderItems {
   @override
   int get hashCode => Object.hash(runtimeType, orderUuid);
 
-  /// Create a copy of HistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LoadOrderItemsImplCopyWith<_$LoadOrderItemsImpl> get copyWith =>
@@ -334,10 +324,7 @@ abstract class _LoadOrderItems implements HistoryEvent {
   const factory _LoadOrderItems(final String orderUuid) = _$LoadOrderItemsImpl;
 
   String get orderUuid;
-
-  /// Create a copy of HistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LoadOrderItemsImplCopyWith<_$LoadOrderItemsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -359,8 +346,6 @@ class __$$ExportHistoryToCsvImplCopyWithImpl<$Res>
       $Res Function(_$ExportHistoryToCsvImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -407,9 +392,7 @@ class _$ExportHistoryToCsvImpl implements _ExportHistoryToCsv {
   @override
   int get hashCode => Object.hash(runtimeType, start, end);
 
-  /// Create a copy of HistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ExportHistoryToCsvImplCopyWith<_$ExportHistoryToCsvImpl> get copyWith =>
@@ -491,10 +474,7 @@ abstract class _ExportHistoryToCsv implements HistoryEvent {
 
   DateTime get start;
   DateTime get end;
-
-  /// Create a copy of HistoryEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ExportHistoryToCsvImplCopyWith<_$ExportHistoryToCsvImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -507,9 +487,7 @@ mixin _$HistoryState {
   bool get isLoading => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
-  /// Create a copy of HistoryState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $HistoryStateCopyWith<HistoryState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -537,8 +515,6 @@ class _$HistoryStateCopyWithImpl<$Res, $Val extends HistoryState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of HistoryState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -591,8 +567,6 @@ class __$$HistoryStateImplCopyWithImpl<$Res>
       _$HistoryStateImpl _value, $Res Function(_$HistoryStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HistoryState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -684,9 +658,7 @@ class _$HistoryStateImpl implements _HistoryState {
       isLoading,
       error);
 
-  /// Create a copy of HistoryState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$HistoryStateImplCopyWith<_$HistoryStateImpl> get copyWith =>
@@ -703,17 +675,13 @@ abstract class _HistoryState implements HistoryState {
   @override
   List<OrderTableData> get orders;
   @override
-  Map<String, List<OrderItemTableData>>
-      get orderItems; // Cache items by Order UUID
-  @override
+  Map<String, List<OrderItemTableData>> get orderItems;
+  @override // Cache items by Order UUID
   bool get isLoading;
   @override
   String? get error;
-
-  /// Create a copy of HistoryState
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$HistoryStateImplCopyWith<_$HistoryStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

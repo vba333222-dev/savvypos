@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:savvy_pos/features/customers/domain/entities/customer.dart';
 import 'package:savvy_pos/features/customers/presentation/pages/customer_list_page.dart';
 
 class CustomerSelectionDialog extends StatelessWidget {

@@ -96,9 +96,6 @@ class _$TableEventCopyWithImpl<$Res, $Val extends TableEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of TableEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -115,9 +112,6 @@ class __$$LoadTablesImplCopyWithImpl<$Res>
   __$$LoadTablesImplCopyWithImpl(
       _$LoadTablesImpl _value, $Res Function(_$LoadTablesImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of TableEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -247,8 +241,6 @@ class __$$TablesUpdatedImplCopyWithImpl<$Res>
       _$TablesUpdatedImpl _value, $Res Function(_$TablesUpdatedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of TableEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -294,9 +286,7 @@ class _$TablesUpdatedImpl implements _TablesUpdated {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_tables));
 
-  /// Create a copy of TableEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$TablesUpdatedImplCopyWith<_$TablesUpdatedImpl> get copyWith =>
@@ -394,10 +384,7 @@ abstract class _TablesUpdated implements TableEvent {
       _$TablesUpdatedImpl;
 
   List<TableWithStatus> get tables;
-
-  /// Create a copy of TableEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$TablesUpdatedImplCopyWith<_$TablesUpdatedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -419,8 +406,6 @@ class __$$AddTableImplCopyWithImpl<$Res>
       _$AddTableImpl _value, $Res Function(_$AddTableImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of TableEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -475,9 +460,7 @@ class _$AddTableImpl implements _AddTable {
   @override
   int get hashCode => Object.hash(runtimeType, name, x, y);
 
-  /// Create a copy of TableEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$AddTableImplCopyWith<_$AddTableImpl> get copyWith =>
@@ -577,10 +560,7 @@ abstract class _AddTable implements TableEvent {
   String get name;
   double get x;
   double get y;
-
-  /// Create a copy of TableEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$AddTableImplCopyWith<_$AddTableImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -602,8 +582,6 @@ class __$$MoveTableImplCopyWithImpl<$Res>
       _$MoveTableImpl _value, $Res Function(_$MoveTableImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of TableEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -658,9 +636,7 @@ class _$MoveTableImpl implements _MoveTable {
   @override
   int get hashCode => Object.hash(runtimeType, uuid, x, y);
 
-  /// Create a copy of TableEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$MoveTableImplCopyWith<_$MoveTableImpl> get copyWith =>
@@ -760,10 +736,7 @@ abstract class _MoveTable implements TableEvent {
   String get uuid;
   double get x;
   double get y;
-
-  /// Create a copy of TableEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$MoveTableImplCopyWith<_$MoveTableImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -785,8 +758,6 @@ class __$$DeleteTableImplCopyWithImpl<$Res>
       _$DeleteTableImpl _value, $Res Function(_$DeleteTableImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of TableEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -825,9 +796,7 @@ class _$DeleteTableImpl implements _DeleteTable {
   @override
   int get hashCode => Object.hash(runtimeType, uuid);
 
-  /// Create a copy of TableEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$DeleteTableImplCopyWith<_$DeleteTableImpl> get copyWith =>
@@ -924,10 +893,7 @@ abstract class _DeleteTable implements TableEvent {
   const factory _DeleteTable(final String uuid) = _$DeleteTableImpl;
 
   String get uuid;
-
-  /// Create a copy of TableEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$DeleteTableImplCopyWith<_$DeleteTableImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -949,8 +915,6 @@ class __$$ToggleOccupiedImplCopyWithImpl<$Res>
       _$ToggleOccupiedImpl _value, $Res Function(_$ToggleOccupiedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of TableEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -998,9 +962,7 @@ class _$ToggleOccupiedImpl implements _ToggleOccupied {
   @override
   int get hashCode => Object.hash(runtimeType, uuid, isOccupied);
 
-  /// Create a copy of TableEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ToggleOccupiedImplCopyWith<_$ToggleOccupiedImpl> get copyWith =>
@@ -1100,10 +1062,7 @@ abstract class _ToggleOccupied implements TableEvent {
 
   String get uuid;
   bool get isOccupied;
-
-  /// Create a copy of TableEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ToggleOccupiedImplCopyWith<_$ToggleOccupiedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1114,9 +1073,7 @@ mixin _$TableState {
   bool get isLoading => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
-  /// Create a copy of TableState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $TableStateCopyWith<TableState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1140,8 +1097,6 @@ class _$TableStateCopyWithImpl<$Res, $Val extends TableState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of TableState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1185,8 +1140,6 @@ class __$$TableStateImplCopyWithImpl<$Res>
       _$TableStateImpl _value, $Res Function(_$TableStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of TableState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1255,9 +1208,7 @@ class _$TableStateImpl implements _TableState {
   int get hashCode => Object.hash(runtimeType,
       const DeepCollectionEquality().hash(_tables), isLoading, error);
 
-  /// Create a copy of TableState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$TableStateImplCopyWith<_$TableStateImpl> get copyWith =>
@@ -1276,11 +1227,8 @@ abstract class _TableState implements TableState {
   bool get isLoading;
   @override
   String? get error;
-
-  /// Create a copy of TableState
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$TableStateImplCopyWith<_$TableStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

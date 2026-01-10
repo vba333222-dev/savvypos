@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/features/tables/domain/entities/table_with_status.dart';
 import 'package:savvy_pos/features/tables/domain/repositories/i_table_repository.dart';
 

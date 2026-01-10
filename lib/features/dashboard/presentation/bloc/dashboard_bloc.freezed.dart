@@ -72,9 +72,6 @@ class _$DashboardEventCopyWithImpl<$Res, $Val extends DashboardEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of DashboardEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -94,8 +91,6 @@ class __$$LoadDataImplCopyWithImpl<$Res>
       _$LoadDataImpl _value, $Res Function(_$LoadDataImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DashboardEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -134,9 +129,7 @@ class _$LoadDataImpl implements _LoadData {
   @override
   int get hashCode => Object.hash(runtimeType, date);
 
-  /// Create a copy of DashboardEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LoadDataImplCopyWith<_$LoadDataImpl> get copyWith =>
@@ -209,10 +202,7 @@ abstract class _LoadData implements DashboardEvent {
   const factory _LoadData([final DateTime? date]) = _$LoadDataImpl;
 
   DateTime? get date;
-
-  /// Create a copy of DashboardEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LoadDataImplCopyWith<_$LoadDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -231,9 +221,6 @@ class __$$RefreshImplCopyWithImpl<$Res>
   __$$RefreshImplCopyWithImpl(
       _$RefreshImpl _value, $Res Function(_$RefreshImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of DashboardEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -401,9 +388,6 @@ class _$DashboardStateCopyWithImpl<$Res, $Val extends DashboardState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of DashboardState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -420,9 +404,6 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of DashboardState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -546,9 +527,6 @@ class __$$LoadingImplCopyWithImpl<$Res>
   __$$LoadingImplCopyWithImpl(
       _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of DashboardState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -679,8 +657,6 @@ class __$$LoadedImplCopyWithImpl<$Res>
       _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DashboardState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -769,9 +745,7 @@ class _$LoadedImpl implements _Loaded {
       const DeepCollectionEquality().hash(_topProducts),
       selectedDate);
 
-  /// Create a copy of DashboardState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
@@ -872,10 +846,7 @@ abstract class _Loaded implements DashboardState {
   List<HourlySalesData> get hourlySales;
   List<TopProductData> get topProducts;
   DateTime get selectedDate;
-
-  /// Create a copy of DashboardState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -897,8 +868,6 @@ class __$$ErrorImplCopyWithImpl<$Res>
       _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DashboardState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -937,9 +906,7 @@ class _$ErrorImpl implements _Error {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of DashboardState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
@@ -1033,10 +1000,7 @@ abstract class _Error implements DashboardState {
   const factory _Error(final String message) = _$ErrorImpl;
 
   String get message;
-
-  /// Create a copy of DashboardState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:savvy_pos/bootstrap.dart';
+import 'package:savvy_pos/core/config/app_config.dart'; // Added
 import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/features/admin/presentation/pages/web_admin_shell.dart';
 import 'package:savvy_pos/features/employees/presentation/pages/employee_login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  bootstrap(() => const WebApp(), environment: 'web');
+  bootstrap(AppConfig(
+    appName: 'Savvy POS Admin',
+    flavor: Flavor.prod, // Assume Web is Prod for now or generic
+    apiBaseUrl: 'https://api.savvypos.com',
+    enableLogs: true,
+    userApp: () => const WebApp(),
+  ));
 }
 
 class WebApp extends StatelessWidget {

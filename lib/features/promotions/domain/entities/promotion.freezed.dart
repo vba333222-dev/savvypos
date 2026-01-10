@@ -154,9 +154,7 @@ mixin _$Promotion {
   }) =>
       throw _privateConstructorUsedError;
 
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $PromotionCopyWith<Promotion> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -185,8 +183,6 @@ class _$PromotionCopyWithImpl<$Res, $Val extends Promotion>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -253,8 +249,6 @@ class __$$PercentageDiscountImplCopyWithImpl<$Res>
       $Res Function(_$PercentageDiscountImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -380,9 +374,7 @@ class _$PercentageDiscountImpl extends PercentageDiscount {
       minPurchaseAmount,
       const DeepCollectionEquality().hash(_applicableProductIds));
 
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$PercentageDiscountImplCopyWith<_$PercentageDiscountImpl> get copyWith =>
@@ -574,11 +566,8 @@ abstract class PercentageDiscount extends Promotion {
   @override
   double? get minPurchaseAmount;
   List<String>? get applicableProductIds;
-
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$PercentageDiscountImplCopyWith<_$PercentageDiscountImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -610,8 +599,6 @@ class __$$FixedAmountDiscountImplCopyWithImpl<$Res>
       $Res Function(_$FixedAmountDiscountImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -736,9 +723,7 @@ class _$FixedAmountDiscountImpl extends FixedAmountDiscount {
       minPurchaseAmount,
       const DeepCollectionEquality().hash(_applicableProductIds));
 
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$FixedAmountDiscountImplCopyWith<_$FixedAmountDiscountImpl> get copyWith =>
@@ -930,11 +915,8 @@ abstract class FixedAmountDiscount extends Promotion {
   @override
   double? get minPurchaseAmount;
   List<String>? get applicableProductIds;
-
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$FixedAmountDiscountImplCopyWith<_$FixedAmountDiscountImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -968,8 +950,6 @@ class __$$BuyXGetYPromotionImplCopyWithImpl<$Res>
       $Res Function(_$BuyXGetYPromotionImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1096,9 +1076,7 @@ class _$BuyXGetYPromotionImpl extends BuyXGetYPromotion {
   int get hashCode => Object.hash(runtimeType, id, code, name, buyQty, getQty,
       buyProductId, getProductId, startDate, endDate, minPurchaseAmount);
 
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$BuyXGetYPromotionImplCopyWith<_$BuyXGetYPromotionImpl> get copyWith =>
@@ -1294,11 +1272,8 @@ abstract class BuyXGetYPromotion extends Promotion {
   DateTime? get endDate;
   @override
   double? get minPurchaseAmount;
-
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$BuyXGetYPromotionImplCopyWith<_$BuyXGetYPromotionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

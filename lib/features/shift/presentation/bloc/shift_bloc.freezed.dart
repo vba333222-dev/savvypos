@@ -93,9 +93,6 @@ class _$ShiftEventCopyWithImpl<$Res, $Val extends ShiftEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of ShiftEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -112,9 +109,6 @@ class __$$CheckStatusImplCopyWithImpl<$Res>
   __$$CheckStatusImplCopyWithImpl(
       _$CheckStatusImpl _value, $Res Function(_$CheckStatusImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of ShiftEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -241,8 +235,6 @@ class __$$OpenShiftImplCopyWithImpl<$Res>
       _$OpenShiftImpl _value, $Res Function(_$OpenShiftImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ShiftEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -299,9 +291,7 @@ class _$OpenShiftImpl implements _OpenShift {
   @override
   int get hashCode => Object.hash(runtimeType, startCash, userId, userName);
 
-  /// Create a copy of ShiftEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$OpenShiftImplCopyWith<_$OpenShiftImpl> get copyWith =>
@@ -399,10 +389,7 @@ abstract class _OpenShift implements ShiftEvent {
   double get startCash;
   String get userId;
   String get userName;
-
-  /// Create a copy of ShiftEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$OpenShiftImplCopyWith<_$OpenShiftImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -424,8 +411,6 @@ class __$$CloseShiftImplCopyWithImpl<$Res>
       _$CloseShiftImpl _value, $Res Function(_$CloseShiftImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ShiftEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -465,9 +450,7 @@ class _$CloseShiftImpl implements _CloseShift {
   @override
   int get hashCode => Object.hash(runtimeType, actualCash);
 
-  /// Create a copy of ShiftEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$CloseShiftImplCopyWith<_$CloseShiftImpl> get copyWith =>
@@ -561,10 +544,7 @@ abstract class _CloseShift implements ShiftEvent {
   const factory _CloseShift(final double actualCash) = _$CloseShiftImpl;
 
   double get actualCash;
-
-  /// Create a copy of ShiftEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$CloseShiftImplCopyWith<_$CloseShiftImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -586,8 +566,6 @@ class __$$PayInImplCopyWithImpl<$Res>
       _$PayInImpl _value, $Res Function(_$PayInImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ShiftEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -634,9 +612,7 @@ class _$PayInImpl implements _PayIn {
   @override
   int get hashCode => Object.hash(runtimeType, amount, reason);
 
-  /// Create a copy of ShiftEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$PayInImplCopyWith<_$PayInImpl> get copyWith =>
@@ -731,10 +707,7 @@ abstract class _PayIn implements ShiftEvent {
 
   double get amount;
   String get reason;
-
-  /// Create a copy of ShiftEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$PayInImplCopyWith<_$PayInImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -756,8 +729,6 @@ class __$$PayOutImplCopyWithImpl<$Res>
       _$PayOutImpl _value, $Res Function(_$PayOutImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ShiftEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -804,9 +775,7 @@ class _$PayOutImpl implements _PayOut {
   @override
   int get hashCode => Object.hash(runtimeType, amount, reason);
 
-  /// Create a copy of ShiftEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$PayOutImplCopyWith<_$PayOutImpl> get copyWith =>
@@ -902,10 +871,7 @@ abstract class _PayOut implements ShiftEvent {
 
   double get amount;
   String get reason;
-
-  /// Create a copy of ShiftEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$PayOutImplCopyWith<_$PayOutImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -992,9 +958,6 @@ class _$ShiftStateCopyWithImpl<$Res, $Val extends ShiftState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of ShiftState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1011,9 +974,6 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of ShiftState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1140,9 +1100,6 @@ class __$$LoadingImplCopyWithImpl<$Res>
   __$$LoadingImplCopyWithImpl(
       _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of ShiftState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1272,8 +1229,6 @@ class __$$OpenImplCopyWithImpl<$Res>
   __$$OpenImplCopyWithImpl(_$OpenImpl _value, $Res Function(_$OpenImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ShiftState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1333,9 +1288,7 @@ class _$OpenImpl implements _Open {
   int get hashCode => Object.hash(runtimeType,
       const DeepCollectionEquality().hash(shift), totalPayIn, totalPayOut);
 
-  /// Create a copy of ShiftState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$OpenImplCopyWith<_$OpenImpl> get copyWith =>
@@ -1435,10 +1388,7 @@ abstract class _Open implements ShiftState {
   ShiftSessionTableData get shift;
   double get totalPayIn;
   double get totalPayOut;
-
-  /// Create a copy of ShiftState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$OpenImplCopyWith<_$OpenImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1457,9 +1407,6 @@ class __$$ClosedImplCopyWithImpl<$Res>
   __$$ClosedImplCopyWithImpl(
       _$ClosedImpl _value, $Res Function(_$ClosedImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of ShiftState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1589,8 +1536,6 @@ class __$$ErrorImplCopyWithImpl<$Res>
       _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ShiftState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1629,9 +1574,7 @@ class _$ErrorImpl implements _Error {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of ShiftState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
@@ -1728,10 +1671,7 @@ abstract class _Error implements ShiftState {
   const factory _Error(final String message) = _$ErrorImpl;
 
   String get message;
-
-  /// Create a copy of ShiftState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

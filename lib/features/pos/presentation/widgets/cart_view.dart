@@ -64,8 +64,8 @@ class _CartViewState extends State<CartView> {
           // CART LIST
           Expanded(
             child: DragTarget<Product>(
-              onWillAccept: (data) => data != null,
-              onAccept: (product) {
+              onWillAcceptWithDetails: (data) => data != null,
+              onAcceptWithDetails: (product) {
                 HapticFeedback.mediumImpact();
                 context.read<CartBloc>().add(CartEvent.addProduct(product));
                 setState(() => _bumpTrigger++);

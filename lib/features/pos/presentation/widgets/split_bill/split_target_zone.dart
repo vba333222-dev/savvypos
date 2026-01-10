@@ -4,8 +4,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
-import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
-import 'package:savvy_pos/features/pos/presentation/widgets/split_bill/draggable_bill_item.dart';
 
 class SplitTargetZone extends StatefulWidget {
   final int index;
@@ -37,8 +35,8 @@ class _SplitTargetZoneState extends State<SplitTargetZone> {
     final currency = NumberFormat.currency(symbol: '\$');
 
     return DragTarget<CartItem>(
-      onWillAccept: (data) {
-        if (data != null && !widget.items.contains(data)) { 
+      onWillAcceptWithDetails: (data) {
+        if (!widget.items.contains(data)) { 
            HapticFeedback.selectionClick();
            setState(() => _isHovering = true);
            return true;

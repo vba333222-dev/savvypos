@@ -62,7 +62,7 @@ class _TableNodeState extends State<TableNode> {
     // For this implementation, let's pretend 'updatedAt' is the start time.
     final start = widget.tableStatus.table.updatedAt; 
     final now = DateTime.now();
-    final diff = start != null ? now.difference(start) : Duration.zero;
+    final diff = now.difference(start);
     
     setState(() => _elapsed = diff);
   }
@@ -127,7 +127,7 @@ class _TableNodeState extends State<TableNode> {
           if (!isOccupied)
              Padding(
                padding: const EdgeInsets.only(top: 2.0),
-               child: SavvyText('${table.capacity}p', style: SavvyTextStyle.labelSmall, color: theme.colors.textSecondary),
+               child: SavvyText('${table.capacity}p', style: SavvyTextStyle.label, color: theme.colors.textSecondary),
              ),
         ],
       ),

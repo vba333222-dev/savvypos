@@ -85,7 +85,7 @@ class _PaymentMethodsSheetState extends State<PaymentMethodsSheet> {
                         // Let's keep it vertical stack for "Mobile-First" liquid feel, works on tablet too.
 
                         // 1. PAYMENT METHODS
-                        SavvyText('Select Method', style: SavvyTextStyle.labelMedium, color: theme.colors.textSecondary),
+                        SavvyText('Select Method', style: SavvyTextStyle.label, color: theme.colors.textSecondary),
                         SizedBox(height: theme.shapes.spacingSm),
                         SizedBox(
                           height: 80,
@@ -145,7 +145,7 @@ class _PaymentMethodsSheetState extends State<PaymentMethodsSheet> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                SavvyText('Tendered Amount', style: SavvyTextStyle.labelSmall, color: theme.colors.textSecondary),
+                                SavvyText('Tendered Amount', style: SavvyTextStyle.label, color: theme.colors.textSecondary),
                                 SavvyText(
                                   '\$${_input == '0' ? '0.00' : double.parse(_input).toStringAsFixed(2)}', 
                                   style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: theme.colors.textPrimary),
@@ -320,7 +320,7 @@ class _MethodCard extends StatelessWidget {
           children: [
             Icon(icon, color: isSelected ? theme.colors.textInverse : theme.colors.textSecondary),
             SizedBox(height: 4),
-            SavvyText(label, style: SavvyTextStyle.labelSmall, color: isSelected ? theme.colors.textInverse : theme.colors.textSecondary),
+            SavvyText(label, style: SavvyTextStyle.label, color: isSelected ? theme.colors.textInverse : theme.colors.textSecondary),
           ],
         ),
       ),

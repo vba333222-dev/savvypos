@@ -78,9 +78,6 @@ class _$KitchenEventCopyWithImpl<$Res, $Val extends KitchenEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of KitchenEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -97,9 +94,6 @@ class __$$StartListeningImplCopyWithImpl<$Res>
   __$$StartListeningImplCopyWithImpl(
       _$StartListeningImpl _value, $Res Function(_$StartListeningImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of KitchenEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -211,8 +205,6 @@ class __$$OrdersUpdatedImplCopyWithImpl<$Res>
       _$OrdersUpdatedImpl _value, $Res Function(_$OrdersUpdatedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of KitchenEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -257,9 +249,7 @@ class _$OrdersUpdatedImpl implements _OrdersUpdated {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_orders));
 
-  /// Create a copy of KitchenEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$OrdersUpdatedImplCopyWith<_$OrdersUpdatedImpl> get copyWith =>
@@ -339,10 +329,7 @@ abstract class _OrdersUpdated implements KitchenEvent {
       _$OrdersUpdatedImpl;
 
   List<KitchenOrder> get orders;
-
-  /// Create a copy of KitchenEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$OrdersUpdatedImplCopyWith<_$OrdersUpdatedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -364,8 +351,6 @@ class __$$MarkAsDoneImplCopyWithImpl<$Res>
       _$MarkAsDoneImpl _value, $Res Function(_$MarkAsDoneImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of KitchenEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -405,9 +390,7 @@ class _$MarkAsDoneImpl implements _MarkAsDone {
   @override
   int get hashCode => Object.hash(runtimeType, orderUuid);
 
-  /// Create a copy of KitchenEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$MarkAsDoneImplCopyWith<_$MarkAsDoneImpl> get copyWith =>
@@ -486,10 +469,7 @@ abstract class _MarkAsDone implements KitchenEvent {
   const factory _MarkAsDone(final String orderUuid) = _$MarkAsDoneImpl;
 
   String get orderUuid;
-
-  /// Create a copy of KitchenEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$MarkAsDoneImplCopyWith<_$MarkAsDoneImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -564,9 +544,6 @@ class _$KitchenStateCopyWithImpl<$Res, $Val extends KitchenState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of KitchenState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -583,9 +560,6 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of KitchenState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -700,9 +674,6 @@ class __$$LoadingImplCopyWithImpl<$Res>
   __$$LoadingImplCopyWithImpl(
       _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of KitchenState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -820,8 +791,6 @@ class __$$LoadedImplCopyWithImpl<$Res>
       _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of KitchenState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -866,9 +835,7 @@ class _$LoadedImpl implements _Loaded {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_orders));
 
-  /// Create a copy of KitchenState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
@@ -953,10 +920,7 @@ abstract class _Loaded implements KitchenState {
   const factory _Loaded(final List<KitchenOrder> orders) = _$LoadedImpl;
 
   List<KitchenOrder> get orders;
-
-  /// Create a copy of KitchenState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -978,8 +942,6 @@ class __$$ErrorImplCopyWithImpl<$Res>
       _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of KitchenState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1018,9 +980,7 @@ class _$ErrorImpl implements _Error {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of KitchenState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
@@ -1105,10 +1065,7 @@ abstract class _Error implements KitchenState {
   const factory _Error(final String message) = _$ErrorImpl;
 
   String get message;
-
-  /// Create a copy of KitchenState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

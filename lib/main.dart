@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart'; // Added
 import 'package:savvy_pos/bootstrap.dart';
 import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/core/sync/sync_worker.dart';
 import 'package:savvy_pos/features/auth/domain/repositories/i_tenant_repository.dart';
 import 'package:savvy_pos/features/auth/presentation/pages/onboarding_page.dart';
-import 'package:savvy_pos/features/home/presentation/pages/main_shell_page.dart';
 import 'package:savvy_pos/features/employees/presentation/pages/employee_login_page.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
@@ -18,6 +18,7 @@ import 'package:flutter/foundation.dart'; // for kIsWeb
 import 'package:savvy_pos/features/admin/presentation/pages/web_admin_layout.dart';
 import 'package:savvy_pos/core/presentation/widgets/global_error_shield.dart';
 import 'package:savvy_pos/core/security/lifecycle_manager.dart';
+import 'package:savvy_pos/core/config/app_config.dart'; // Added
 import 'core/database/database.dart';
 
 void main() async {
@@ -44,7 +45,13 @@ void main() async {
   // Initialize Antigravity Design System
   await GetIt.I.registerSingleton<TokenService>(TokenService()).loadTokens();
 
-  bootstrap(() => const App(), environment: 'mobile');
+  bootstrap(AppConfig(
+    appName: 'Savvy POS',
+    flavor: Flavor.dev,
+    apiBaseUrl: 'https://api.savvypos.com/dev', // Default dev URL
+    enableLogs: true,
+    userApp: () => const App(),
+  ));
 }
 
 class App extends StatelessWidget {
@@ -133,7 +140,7 @@ class _AppContent extends StatelessWidget {
           return const Scaffold(body: Center(child: CircularProgressIndicator()));
         }
         
-        final config = snapshot.data?[0] as TenantConfig?;
+        final config = snapshot.data?[0] as TenantConfigTableData?;
         if (config == null) {
           return const OnboardingPage();
         } else {

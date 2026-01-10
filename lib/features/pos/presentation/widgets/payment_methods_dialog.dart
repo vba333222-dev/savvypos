@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
@@ -7,8 +6,9 @@ import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 
 class PaymentMethodsDialog extends StatefulWidget {
   final double totalAmount;
+  final CartBloc cartBloc;
 
-  const PaymentMethodsDialog({super.key, required this.totalAmount});
+  const PaymentMethodsDialog({super.key, required this.totalAmount, required this.cartBloc});
 
   @override
   State<PaymentMethodsDialog> createState() => _PaymentMethodsDialogState();
@@ -120,7 +120,7 @@ class _PaymentMethodsDialogState extends State<PaymentMethodsDialog> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        SavvyText('Enter Cash Amount', style: SavvyTextStyle.labelMedium, color: theme.colors.textSecondary),
+                        SavvyText('Enter Cash Amount', style: SavvyTextStyle.label, color: theme.colors.textSecondary),
                         FittedBox(
                           child: SavvyText(
                             '\$${_input == '0' ? '0.00' : double.parse(_input).toStringAsFixed(2)}', 
@@ -188,7 +188,7 @@ class _PaymentMethodsDialogState extends State<PaymentMethodsDialog> {
                         ),
                         onPressed: tenderAmount >= widget.totalAmount 
                           ? () {
-                              context.read<CartBloc>().add(CartEvent.processCheckout());
+						  widget.cartBloc.add(CartEvent.processCheckout());
                               Navigator.pop(context); // Close Payment Dialog
                               // Success Dialog triggered by Bloc Listener in PosPage or CartView
                             }
@@ -223,7 +223,7 @@ class _PaymentMethodsDialogState extends State<PaymentMethodsDialog> {
                      ElevatedButton(
                        onPressed: () {
                          // Mock Success
-                         context.read<CartBloc>().add(CartEvent.processCheckout());
+                         widget.cartBloc.add(CartEvent.processCheckout());
                          Navigator.pop(context);
                        },
                        style: ElevatedButton.styleFrom(backgroundColor: theme.colors.brandPrimary),
@@ -290,7 +290,7 @@ class _MethodCard extends StatelessWidget {
           children: [
             Icon(icon, color: isSelected ? theme.colors.textInverse : theme.colors.textSecondary),
             SizedBox(height: 8),
-            SavvyText(label, style: SavvyTextStyle.labelMedium, color: isSelected ? theme.colors.textInverse : theme.colors.textSecondary),
+            SavvyText(label, style: SavvyTextStyle.label, color: isSelected ? theme.colors.textInverse : theme.colors.textSecondary),
           ],
         ),
       ),

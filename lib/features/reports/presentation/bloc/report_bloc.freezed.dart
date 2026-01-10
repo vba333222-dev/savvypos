@@ -72,9 +72,6 @@ class _$ReportEventCopyWithImpl<$Res, $Val extends ReportEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of ReportEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -94,8 +91,6 @@ class __$$LoadSalesReportImplCopyWithImpl<$Res>
       _$LoadSalesReportImpl _value, $Res Function(_$LoadSalesReportImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ReportEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -142,9 +137,7 @@ class _$LoadSalesReportImpl implements _LoadSalesReport {
   @override
   int get hashCode => Object.hash(runtimeType, start, end);
 
-  /// Create a copy of ReportEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LoadSalesReportImplCopyWith<_$LoadSalesReportImpl> get copyWith =>
@@ -220,10 +213,7 @@ abstract class _LoadSalesReport implements ReportEvent {
 
   DateTime get start;
   DateTime get end;
-
-  /// Create a copy of ReportEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LoadSalesReportImplCopyWith<_$LoadSalesReportImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -245,8 +235,6 @@ class __$$LoadStockLedgerImplCopyWithImpl<$Res>
       _$LoadStockLedgerImpl _value, $Res Function(_$LoadStockLedgerImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ReportEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -286,9 +274,7 @@ class _$LoadStockLedgerImpl implements _LoadStockLedger {
   @override
   int get hashCode => Object.hash(runtimeType, productUuid);
 
-  /// Create a copy of ReportEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LoadStockLedgerImplCopyWith<_$LoadStockLedgerImpl> get copyWith =>
@@ -363,10 +349,7 @@ abstract class _LoadStockLedger implements ReportEvent {
       _$LoadStockLedgerImpl;
 
   String get productUuid;
-
-  /// Create a copy of ReportEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LoadStockLedgerImplCopyWith<_$LoadStockLedgerImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -447,9 +430,6 @@ class _$ReportStateCopyWithImpl<$Res, $Val extends ReportState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of ReportState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -466,9 +446,6 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of ReportState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -589,9 +566,6 @@ class __$$LoadingImplCopyWithImpl<$Res>
   __$$LoadingImplCopyWithImpl(
       _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of ReportState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -715,8 +689,6 @@ class __$$SalesLoadedImplCopyWithImpl<$Res>
       _$SalesLoadedImpl _value, $Res Function(_$SalesLoadedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ReportState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -762,9 +734,7 @@ class _$SalesLoadedImpl implements _SalesLoaded {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_report));
 
-  /// Create a copy of ReportState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SalesLoadedImplCopyWith<_$SalesLoadedImpl> get copyWith =>
@@ -856,10 +826,7 @@ abstract class _SalesLoaded implements ReportState {
       _$SalesLoadedImpl;
 
   List<SalesReportItem> get report;
-
-  /// Create a copy of ReportState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SalesLoadedImplCopyWith<_$SalesLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -881,8 +848,6 @@ class __$$StockLoadedImplCopyWithImpl<$Res>
       _$StockLoadedImpl _value, $Res Function(_$StockLoadedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ReportState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -928,9 +893,7 @@ class _$StockLoadedImpl implements _StockLoaded {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_ledger));
 
-  /// Create a copy of ReportState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$StockLoadedImplCopyWith<_$StockLoadedImpl> get copyWith =>
@@ -1022,10 +985,7 @@ abstract class _StockLoaded implements ReportState {
       _$StockLoadedImpl;
 
   List<StockLedgerItem> get ledger;
-
-  /// Create a copy of ReportState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$StockLoadedImplCopyWith<_$StockLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1047,8 +1007,6 @@ class __$$ErrorImplCopyWithImpl<$Res>
       _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ReportState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1087,9 +1045,7 @@ class _$ErrorImpl implements _Error {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of ReportState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
@@ -1180,10 +1136,7 @@ abstract class _Error implements ReportState {
   const factory _Error(final String message) = _$ErrorImpl;
 
   String get message;
-
-  /// Create a copy of ReportState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

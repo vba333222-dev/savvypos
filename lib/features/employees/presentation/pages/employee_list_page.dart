@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:savvy_pos/core/config/theme_config.dart';
 
 class EmployeeListPage extends StatelessWidget {
   const EmployeeListPage({Key? key}) : super(key: key);

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
 import 'package:savvy_pos/core/database/database.dart';

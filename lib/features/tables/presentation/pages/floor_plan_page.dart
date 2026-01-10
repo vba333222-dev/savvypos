@@ -104,7 +104,7 @@ class _FloorPlanCanvasState extends State<_FloorPlanCanvas> {
           onInteractionStart: (_) => setState(() => _isInteracting = true),
           onInteractionEnd: (_) => setState(() => _isInteracting = false),
           child: DragTarget<String>(
-            onWillAccept: (data) => widget.mode == FloorMode.layout && data != null,
+            onWillAcceptWithDetails: (data) => widget.mode == FloorMode.layout,
             onAcceptWithDetails: (details) {
               final tableUuid = details.data;
               final RenderBox box = _canvasKey.currentContext!.findRenderObject() as RenderBox;

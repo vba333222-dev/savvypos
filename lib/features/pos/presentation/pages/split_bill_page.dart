@@ -127,7 +127,7 @@ class _SplitBillPageState extends State<SplitBillPage> {
             child: Container(
               color: theme.colors.bgPrimary,
               child: DragTarget<CartItem>(
-                onWillAccept: (data) => !_masterItems.contains(data),
+                onWillAcceptWithDetails: (data) => !_masterItems.contains(data),
                 onAcceptWithDetails: (details) => _onItemDrop(details.data, -1), // -1 = Master
                 builder: (context, candidates, rejected) {
                   return Column(

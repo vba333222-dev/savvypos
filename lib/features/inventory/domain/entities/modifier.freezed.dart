@@ -14,6 +14,10 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+ModifierGroup _$ModifierGroupFromJson(Map<String, dynamic> json) {
+  return _ModifierGroup.fromJson(json);
+}
+
 /// @nodoc
 mixin _$ModifierGroup {
   String get uuid => throw _privateConstructorUsedError;
@@ -23,9 +27,8 @@ mixin _$ModifierGroup {
   int? get maxSelection => throw _privateConstructorUsedError;
   List<ModifierItem> get items => throw _privateConstructorUsedError;
 
-  /// Create a copy of ModifierGroup
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
   $ModifierGroupCopyWith<ModifierGroup> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -55,8 +58,6 @@ class _$ModifierGroupCopyWithImpl<$Res, $Val extends ModifierGroup>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ModifierGroup
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -121,8 +122,6 @@ class __$$ModifierGroupImplCopyWithImpl<$Res>
       _$ModifierGroupImpl _value, $Res Function(_$ModifierGroupImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ModifierGroup
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -163,7 +162,7 @@ class __$$ModifierGroupImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$ModifierGroupImpl implements _ModifierGroup {
   const _$ModifierGroupImpl(
       {required this.uuid,
@@ -173,6 +172,9 @@ class _$ModifierGroupImpl implements _ModifierGroup {
       this.maxSelection,
       final List<ModifierItem> items = const []})
       : _items = items;
+
+  factory _$ModifierGroupImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ModifierGroupImplFromJson(json);
 
   @override
   final String uuid;
@@ -214,17 +216,23 @@ class _$ModifierGroupImpl implements _ModifierGroup {
             const DeepCollectionEquality().equals(other._items, _items));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, uuid, name, allowMultiSelect,
       minSelection, maxSelection, const DeepCollectionEquality().hash(_items));
 
-  /// Create a copy of ModifierGroup
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ModifierGroupImplCopyWith<_$ModifierGroupImpl> get copyWith =>
       __$$ModifierGroupImplCopyWithImpl<_$ModifierGroupImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ModifierGroupImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _ModifierGroup implements ModifierGroup {
@@ -235,6 +243,9 @@ abstract class _ModifierGroup implements ModifierGroup {
       required final int minSelection,
       final int? maxSelection,
       final List<ModifierItem> items}) = _$ModifierGroupImpl;
+
+  factory _ModifierGroup.fromJson(Map<String, dynamic> json) =
+      _$ModifierGroupImpl.fromJson;
 
   @override
   String get uuid;
@@ -248,13 +259,14 @@ abstract class _ModifierGroup implements ModifierGroup {
   int? get maxSelection;
   @override
   List<ModifierItem> get items;
-
-  /// Create a copy of ModifierGroup
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ModifierGroupImplCopyWith<_$ModifierGroupImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+ModifierItem _$ModifierItemFromJson(Map<String, dynamic> json) {
+  return _ModifierItem.fromJson(json);
 }
 
 /// @nodoc
@@ -263,9 +275,8 @@ mixin _$ModifierItem {
   String get name => throw _privateConstructorUsedError;
   double get priceDelta => throw _privateConstructorUsedError;
 
-  /// Create a copy of ModifierItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
   $ModifierItemCopyWith<ModifierItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -289,8 +300,6 @@ class _$ModifierItemCopyWithImpl<$Res, $Val extends ModifierItem>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of ModifierItem
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -334,8 +343,6 @@ class __$$ModifierItemImplCopyWithImpl<$Res>
       _$ModifierItemImpl _value, $Res Function(_$ModifierItemImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of ModifierItem
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -361,10 +368,13 @@ class __$$ModifierItemImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$ModifierItemImpl implements _ModifierItem {
   const _$ModifierItemImpl(
       {required this.uuid, required this.name, required this.priceDelta});
+
+  factory _$ModifierItemImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ModifierItemImplFromJson(json);
 
   @override
   final String uuid;
@@ -389,16 +399,22 @@ class _$ModifierItemImpl implements _ModifierItem {
                 other.priceDelta == priceDelta));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, uuid, name, priceDelta);
 
-  /// Create a copy of ModifierItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ModifierItemImplCopyWith<_$ModifierItemImpl> get copyWith =>
       __$$ModifierItemImplCopyWithImpl<_$ModifierItemImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ModifierItemImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _ModifierItem implements ModifierItem {
@@ -407,17 +423,17 @@ abstract class _ModifierItem implements ModifierItem {
       required final String name,
       required final double priceDelta}) = _$ModifierItemImpl;
 
+  factory _ModifierItem.fromJson(Map<String, dynamic> json) =
+      _$ModifierItemImpl.fromJson;
+
   @override
   String get uuid;
   @override
   String get name;
   @override
   double get priceDelta;
-
-  /// Create a copy of ModifierItem
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ModifierItemImplCopyWith<_$ModifierItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -3,15 +3,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:flutter/services.dart';
 import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
+import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/product/product_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/pages/product_grid_page.dart';
-import 'package:savvy_pos/features/history/presentation/pages/transaction_history_page.dart';
-import 'package:savvy_pos/features/pos/presentation/widgets/current_order_view.dart';
 import 'package:savvy_pos/core/presentation/widgets/fly_animation_layer.dart';
-import 'package:savvy_pos/features/settings/presentation/pages/settings_page.dart';
 import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
 import 'package:savvy_pos/features/shift/presentation/pages/open_shift_page.dart';
 import 'package:savvy_pos/features/shift/presentation/widgets/close_shift_dialog.dart';
@@ -20,8 +19,11 @@ import 'package:savvy_pos/features/kitchen/presentation/pages/kitchen_monitor_pa
 import 'package:savvy_pos/core/utils/global_search_delegate.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/cart_view.dart';
-import 'package:savvy_pos/features/pos/presentation/widgets/checkout_success_dialog.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/liquid_receipt_overlay.dart';
+import 'package:savvy_pos/features/pos/presentation/notifications/add_to_cart_notification.dart';
+import 'package:savvy_pos/features/pos/data/repositories/mock_product_repository.dart';
+import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
+import 'package:savvy_pos/features/pos/presentation/widgets/product_modifier_dialog.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class PosPage extends StatelessWidget {
@@ -61,31 +63,29 @@ class _PosPageContentState extends State<_PosPageContent> with TickerProviderSta
 
   void _handleAddToCart(BuildContext context, AddToCartNotification notification) async {
     // 1. Trigger Antigravity Flight
-    if (notification.sourceKey != null) {
-      FlyAnimationLayer.of(context)?.trigger(
-        sourceKey: notification.sourceKey!,
-        child: Material(
-          elevation: 8,
-          borderRadius: BorderRadius.circular(context.savvy.shapes.radiusMd),
-          clipBehavior: Clip.antiAlias,
-          child: notification.product.imageUrl != null
-              ? CachedNetworkImage(
-                  imageUrl: notification.product.imageUrl!,
-                  fit: BoxFit.cover,
-                )
-              : Container(
-                  color: context.savvy.colors.brandPrimary,
-                  alignment: Alignment.center,
-                  child: SavvyText(
-                    notification.product.name.characters.first.toUpperCase(),
-                    style: SavvyTextStyle.h3,
-                    color: context.savvy.colors.textInverse,
-                  ),
+    FlyAnimationLayer.of(context)?.trigger(
+      sourceKey: notification.sourceKey,
+      child: Material(
+        elevation: 8,
+        borderRadius: BorderRadius.circular(context.savvy.shapes.radiusMd),
+        clipBehavior: Clip.antiAlias,
+        child: notification.product.imageUrl != null
+            ? CachedNetworkImage(
+                imageUrl: notification.product.imageUrl!,
+                fit: BoxFit.cover,
+              )
+            : Container(
+                color: context.savvy.colors.brandPrimary,
+                alignment: Alignment.center,
+                child: SavvyText(
+                  notification.product.name.characters.first.toUpperCase(),
+                  style: SavvyTextStyle.h3,
+                  color: context.savvy.colors.textInverse,
                 ),
-        ),
-      );
-    }
-
+              ),
+      ),
+    );
+  
     // 2. Process Cart Logic
     final product = notification.product;
     final modifiers = await MockProductRepository().getModifiersForProduct(product.uuid); 
@@ -190,7 +190,7 @@ class _PosPageContentState extends State<_PosPageContent> with TickerProviderSta
               },
               child: BlocListener<CartBloc, CartState>(
                 listener: (context, state) {
-                  if (state.status == CartStatus.success) {
+                  if (state.isSuccess) {
                     Navigator.of(context).popUntil((route) => route.isFirst);
                     
                     showGeneralDialog(
@@ -215,10 +215,10 @@ class _PosPageContentState extends State<_PosPageContent> with TickerProviderSta
                       ),
                       transitionDuration: const Duration(milliseconds: 0), // Immediate, widget handles animation
                     );
-                  } else if (state.status == CartStatus.failure) {
+                  } else if (state.error != null) {
                      ScaffoldMessenger.of(context).showSnackBar(
                        SnackBar(
-                         content: Text(state.errorMessage ?? 'Checkout Failed'),
+                         content: Text(state.error ?? 'Checkout Failed'),
                          backgroundColor: context.savvy.colors.stateError,
                        )
                      );
@@ -226,7 +226,14 @@ class _PosPageContentState extends State<_PosPageContent> with TickerProviderSta
                 },
                 child: BlocConsumer<ShiftBloc, ShiftState>(
                   listener: (context, state) {
-                     if (state is! _Open && state is! _Loading && state is! _Initial) {
+                     final isClosed = state.maybeMap(
+                       open: (_) => false,
+                       loading: (_) => false,
+                       initial: (_) => false,
+                       orElse: () => true,
+                     );
+                     
+                     if (isClosed) {
                         // Redirect logic if needed
                      }
                   },
@@ -322,7 +329,7 @@ class _MobileCartFabState extends State<_MobileCartFab> {
                   context: context,
                   minPageHeight: 0.5,
                   maxPageHeight: 0.9,
-                  modalType: WoltModalType.bottomSheet,
+                  // modalType: WoltModalType.bottomSheet, // Removed undefined param
                   transitionDuration: theme.motion.durationMedium,
                   pageListBuilder: (context) {
                     return [

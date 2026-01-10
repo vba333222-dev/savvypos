@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/features/customers/domain/entities/customer.dart';
 import 'package:savvy_pos/features/customers/domain/repositories/i_customer_repository.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';

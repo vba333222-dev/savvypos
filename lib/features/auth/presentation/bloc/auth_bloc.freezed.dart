@@ -84,9 +84,6 @@ class _$AuthEventCopyWithImpl<$Res, $Val extends AuthEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -106,8 +103,6 @@ class __$$LoginWithPinImplCopyWithImpl<$Res>
       _$LoginWithPinImpl _value, $Res Function(_$LoginWithPinImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -146,9 +141,7 @@ class _$LoginWithPinImpl implements _LoginWithPin {
   @override
   int get hashCode => Object.hash(runtimeType, pin);
 
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LoginWithPinImplCopyWith<_$LoginWithPinImpl> get copyWith =>
@@ -234,10 +227,7 @@ abstract class _LoginWithPin implements AuthEvent {
   const factory _LoginWithPin(final String pin) = _$LoginWithPinImpl;
 
   String get pin;
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LoginWithPinImplCopyWith<_$LoginWithPinImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -256,9 +246,6 @@ class __$$LogoutImplCopyWithImpl<$Res>
   __$$LogoutImplCopyWithImpl(
       _$LogoutImpl _value, $Res Function(_$LogoutImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -374,9 +361,6 @@ class __$$CheckSessionImplCopyWithImpl<$Res>
   __$$CheckSessionImplCopyWithImpl(
       _$CheckSessionImpl _value, $Res Function(_$CheckSessionImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -495,8 +479,6 @@ class __$$ChangeActiveOutletImplCopyWithImpl<$Res>
       $Res Function(_$ChangeActiveOutletImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -545,9 +527,7 @@ class _$ChangeActiveOutletImpl implements _ChangeActiveOutlet {
   @override
   int get hashCode => Object.hash(runtimeType, outletId, warehouseId);
 
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ChangeActiveOutletImplCopyWith<_$ChangeActiveOutletImpl> get copyWith =>
@@ -637,10 +617,7 @@ abstract class _ChangeActiveOutlet implements AuthEvent {
 
   String get outletId;
   String get warehouseId;
-
-  /// Create a copy of AuthEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ChangeActiveOutletImplCopyWith<_$ChangeActiveOutletImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -653,9 +630,7 @@ mixin _$AuthState {
   bool get isLoading => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $AuthStateCopyWith<AuthState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -683,8 +658,6 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -743,8 +716,6 @@ class __$$AuthStateImplCopyWithImpl<$Res>
       _$AuthStateImpl _value, $Res Function(_$AuthStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -830,9 +801,7 @@ class _$AuthStateImpl implements _AuthState {
       isLoading,
       error);
 
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$AuthStateImplCopyWith<_$AuthStateImpl> get copyWith =>
@@ -857,11 +826,8 @@ abstract class _AuthState implements AuthState {
   bool get isLoading;
   @override
   String? get error;
-
-  /// Create a copy of AuthState
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$AuthStateImplCopyWith<_$AuthStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

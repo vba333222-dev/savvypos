@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get_it/get_it.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
-import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
 import 'package:savvy_pos/features/inventory/presentation/bloc/inventory_management_bloc.dart';
 import 'package:savvy_pos/features/inventory/presentation/pages/product_form_page.dart';

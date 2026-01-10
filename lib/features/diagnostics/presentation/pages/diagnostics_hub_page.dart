@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/features/diagnostics/presentation/widgets/log_terminal_widget.dart';
 import 'package:savvy_pos/features/diagnostics/presentation/widgets/network_traffic_widget.dart';
 

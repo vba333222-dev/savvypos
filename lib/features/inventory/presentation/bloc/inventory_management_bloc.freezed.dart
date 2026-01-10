@@ -28,6 +28,15 @@ mixin _$InventoryManagementEvent {
     required TResult Function(String uuid, int delta) updateStock,
     required TResult Function(String warehouseId) watchInventory,
     required TResult Function(List<ProductStock> inventory) inventoryUpdated,
+    required TResult Function(
+            String sourceWarehouseId,
+            String targetWarehouseId,
+            List<StockTransferItem> items,
+            String referenceNote)
+        stockTransferRequested,
+    required TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)
+        receiveGoods,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -42,6 +51,12 @@ mixin _$InventoryManagementEvent {
     TResult? Function(String uuid, int delta)? updateStock,
     TResult? Function(String warehouseId)? watchInventory,
     TResult? Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult? Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult? Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -56,6 +71,12 @@ mixin _$InventoryManagementEvent {
     TResult Function(String uuid, int delta)? updateStock,
     TResult Function(String warehouseId)? watchInventory,
     TResult Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -67,6 +88,9 @@ mixin _$InventoryManagementEvent {
     required TResult Function(_UpdateStock value) updateStock,
     required TResult Function(_WatchInventory value) watchInventory,
     required TResult Function(_InventoryUpdated value) inventoryUpdated,
+    required TResult Function(_StockTransferRequested value)
+        stockTransferRequested,
+    required TResult Function(_ReceiveGoods value) receiveGoods,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -77,6 +101,8 @@ mixin _$InventoryManagementEvent {
     TResult? Function(_UpdateStock value)? updateStock,
     TResult? Function(_WatchInventory value)? watchInventory,
     TResult? Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult? Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult? Function(_ReceiveGoods value)? receiveGoods,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -87,6 +113,8 @@ mixin _$InventoryManagementEvent {
     TResult Function(_UpdateStock value)? updateStock,
     TResult Function(_WatchInventory value)? watchInventory,
     TResult Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult Function(_ReceiveGoods value)? receiveGoods,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -109,9 +137,6 @@ class _$InventoryManagementEventCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -132,8 +157,6 @@ class __$$AddProductImplCopyWithImpl<$Res>
       _$AddProductImpl _value, $Res Function(_$AddProductImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -201,9 +224,7 @@ class _$AddProductImpl implements _AddProduct {
   int get hashCode => Object.hash(runtimeType, product, imageFile,
       const DeepCollectionEquality().hash(_modifierGroupUuids));
 
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$AddProductImplCopyWith<_$AddProductImpl> get copyWith =>
@@ -222,6 +243,15 @@ class _$AddProductImpl implements _AddProduct {
     required TResult Function(String uuid, int delta) updateStock,
     required TResult Function(String warehouseId) watchInventory,
     required TResult Function(List<ProductStock> inventory) inventoryUpdated,
+    required TResult Function(
+            String sourceWarehouseId,
+            String targetWarehouseId,
+            List<StockTransferItem> items,
+            String referenceNote)
+        stockTransferRequested,
+    required TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)
+        receiveGoods,
   }) {
     return addProduct(product, imageFile, modifierGroupUuids);
   }
@@ -239,6 +269,12 @@ class _$AddProductImpl implements _AddProduct {
     TResult? Function(String uuid, int delta)? updateStock,
     TResult? Function(String warehouseId)? watchInventory,
     TResult? Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult? Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult? Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
   }) {
     return addProduct?.call(product, imageFile, modifierGroupUuids);
   }
@@ -256,6 +292,12 @@ class _$AddProductImpl implements _AddProduct {
     TResult Function(String uuid, int delta)? updateStock,
     TResult Function(String warehouseId)? watchInventory,
     TResult Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
     required TResult orElse(),
   }) {
     if (addProduct != null) {
@@ -273,6 +315,9 @@ class _$AddProductImpl implements _AddProduct {
     required TResult Function(_UpdateStock value) updateStock,
     required TResult Function(_WatchInventory value) watchInventory,
     required TResult Function(_InventoryUpdated value) inventoryUpdated,
+    required TResult Function(_StockTransferRequested value)
+        stockTransferRequested,
+    required TResult Function(_ReceiveGoods value) receiveGoods,
   }) {
     return addProduct(this);
   }
@@ -286,6 +331,8 @@ class _$AddProductImpl implements _AddProduct {
     TResult? Function(_UpdateStock value)? updateStock,
     TResult? Function(_WatchInventory value)? watchInventory,
     TResult? Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult? Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult? Function(_ReceiveGoods value)? receiveGoods,
   }) {
     return addProduct?.call(this);
   }
@@ -299,6 +346,8 @@ class _$AddProductImpl implements _AddProduct {
     TResult Function(_UpdateStock value)? updateStock,
     TResult Function(_WatchInventory value)? watchInventory,
     TResult Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult Function(_ReceiveGoods value)? receiveGoods,
     required TResult orElse(),
   }) {
     if (addProduct != null) {
@@ -315,10 +364,7 @@ abstract class _AddProduct implements InventoryManagementEvent {
   Product get product;
   File? get imageFile;
   List<String>? get modifierGroupUuids;
-
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$AddProductImplCopyWith<_$AddProductImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -341,8 +387,6 @@ class __$$UpdateProductImplCopyWithImpl<$Res>
       _$UpdateProductImpl _value, $Res Function(_$UpdateProductImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -410,9 +454,7 @@ class _$UpdateProductImpl implements _UpdateProduct {
   int get hashCode => Object.hash(runtimeType, product, imageFile,
       const DeepCollectionEquality().hash(_modifierGroupUuids));
 
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$UpdateProductImplCopyWith<_$UpdateProductImpl> get copyWith =>
@@ -431,6 +473,15 @@ class _$UpdateProductImpl implements _UpdateProduct {
     required TResult Function(String uuid, int delta) updateStock,
     required TResult Function(String warehouseId) watchInventory,
     required TResult Function(List<ProductStock> inventory) inventoryUpdated,
+    required TResult Function(
+            String sourceWarehouseId,
+            String targetWarehouseId,
+            List<StockTransferItem> items,
+            String referenceNote)
+        stockTransferRequested,
+    required TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)
+        receiveGoods,
   }) {
     return updateProduct(product, imageFile, modifierGroupUuids);
   }
@@ -448,6 +499,12 @@ class _$UpdateProductImpl implements _UpdateProduct {
     TResult? Function(String uuid, int delta)? updateStock,
     TResult? Function(String warehouseId)? watchInventory,
     TResult? Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult? Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult? Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
   }) {
     return updateProduct?.call(product, imageFile, modifierGroupUuids);
   }
@@ -465,6 +522,12 @@ class _$UpdateProductImpl implements _UpdateProduct {
     TResult Function(String uuid, int delta)? updateStock,
     TResult Function(String warehouseId)? watchInventory,
     TResult Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
     required TResult orElse(),
   }) {
     if (updateProduct != null) {
@@ -482,6 +545,9 @@ class _$UpdateProductImpl implements _UpdateProduct {
     required TResult Function(_UpdateStock value) updateStock,
     required TResult Function(_WatchInventory value) watchInventory,
     required TResult Function(_InventoryUpdated value) inventoryUpdated,
+    required TResult Function(_StockTransferRequested value)
+        stockTransferRequested,
+    required TResult Function(_ReceiveGoods value) receiveGoods,
   }) {
     return updateProduct(this);
   }
@@ -495,6 +561,8 @@ class _$UpdateProductImpl implements _UpdateProduct {
     TResult? Function(_UpdateStock value)? updateStock,
     TResult? Function(_WatchInventory value)? watchInventory,
     TResult? Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult? Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult? Function(_ReceiveGoods value)? receiveGoods,
   }) {
     return updateProduct?.call(this);
   }
@@ -508,6 +576,8 @@ class _$UpdateProductImpl implements _UpdateProduct {
     TResult Function(_UpdateStock value)? updateStock,
     TResult Function(_WatchInventory value)? watchInventory,
     TResult Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult Function(_ReceiveGoods value)? receiveGoods,
     required TResult orElse(),
   }) {
     if (updateProduct != null) {
@@ -524,10 +594,7 @@ abstract class _UpdateProduct implements InventoryManagementEvent {
   Product get product;
   File? get imageFile;
   List<String>? get modifierGroupUuids;
-
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$UpdateProductImplCopyWith<_$UpdateProductImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -549,8 +616,6 @@ class __$$DeleteProductImplCopyWithImpl<$Res>
       _$DeleteProductImpl _value, $Res Function(_$DeleteProductImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -589,9 +654,7 @@ class _$DeleteProductImpl implements _DeleteProduct {
   @override
   int get hashCode => Object.hash(runtimeType, uuid);
 
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$DeleteProductImplCopyWith<_$DeleteProductImpl> get copyWith =>
@@ -610,6 +673,15 @@ class _$DeleteProductImpl implements _DeleteProduct {
     required TResult Function(String uuid, int delta) updateStock,
     required TResult Function(String warehouseId) watchInventory,
     required TResult Function(List<ProductStock> inventory) inventoryUpdated,
+    required TResult Function(
+            String sourceWarehouseId,
+            String targetWarehouseId,
+            List<StockTransferItem> items,
+            String referenceNote)
+        stockTransferRequested,
+    required TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)
+        receiveGoods,
   }) {
     return deleteProduct(uuid);
   }
@@ -627,6 +699,12 @@ class _$DeleteProductImpl implements _DeleteProduct {
     TResult? Function(String uuid, int delta)? updateStock,
     TResult? Function(String warehouseId)? watchInventory,
     TResult? Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult? Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult? Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
   }) {
     return deleteProduct?.call(uuid);
   }
@@ -644,6 +722,12 @@ class _$DeleteProductImpl implements _DeleteProduct {
     TResult Function(String uuid, int delta)? updateStock,
     TResult Function(String warehouseId)? watchInventory,
     TResult Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
     required TResult orElse(),
   }) {
     if (deleteProduct != null) {
@@ -661,6 +745,9 @@ class _$DeleteProductImpl implements _DeleteProduct {
     required TResult Function(_UpdateStock value) updateStock,
     required TResult Function(_WatchInventory value) watchInventory,
     required TResult Function(_InventoryUpdated value) inventoryUpdated,
+    required TResult Function(_StockTransferRequested value)
+        stockTransferRequested,
+    required TResult Function(_ReceiveGoods value) receiveGoods,
   }) {
     return deleteProduct(this);
   }
@@ -674,6 +761,8 @@ class _$DeleteProductImpl implements _DeleteProduct {
     TResult? Function(_UpdateStock value)? updateStock,
     TResult? Function(_WatchInventory value)? watchInventory,
     TResult? Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult? Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult? Function(_ReceiveGoods value)? receiveGoods,
   }) {
     return deleteProduct?.call(this);
   }
@@ -687,6 +776,8 @@ class _$DeleteProductImpl implements _DeleteProduct {
     TResult Function(_UpdateStock value)? updateStock,
     TResult Function(_WatchInventory value)? watchInventory,
     TResult Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult Function(_ReceiveGoods value)? receiveGoods,
     required TResult orElse(),
   }) {
     if (deleteProduct != null) {
@@ -700,10 +791,7 @@ abstract class _DeleteProduct implements InventoryManagementEvent {
   const factory _DeleteProduct(final String uuid) = _$DeleteProductImpl;
 
   String get uuid;
-
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$DeleteProductImplCopyWith<_$DeleteProductImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -725,8 +813,6 @@ class __$$UpdateStockImplCopyWithImpl<$Res>
       _$UpdateStockImpl _value, $Res Function(_$UpdateStockImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -773,9 +859,7 @@ class _$UpdateStockImpl implements _UpdateStock {
   @override
   int get hashCode => Object.hash(runtimeType, uuid, delta);
 
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$UpdateStockImplCopyWith<_$UpdateStockImpl> get copyWith =>
@@ -794,6 +878,15 @@ class _$UpdateStockImpl implements _UpdateStock {
     required TResult Function(String uuid, int delta) updateStock,
     required TResult Function(String warehouseId) watchInventory,
     required TResult Function(List<ProductStock> inventory) inventoryUpdated,
+    required TResult Function(
+            String sourceWarehouseId,
+            String targetWarehouseId,
+            List<StockTransferItem> items,
+            String referenceNote)
+        stockTransferRequested,
+    required TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)
+        receiveGoods,
   }) {
     return updateStock(uuid, delta);
   }
@@ -811,6 +904,12 @@ class _$UpdateStockImpl implements _UpdateStock {
     TResult? Function(String uuid, int delta)? updateStock,
     TResult? Function(String warehouseId)? watchInventory,
     TResult? Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult? Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult? Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
   }) {
     return updateStock?.call(uuid, delta);
   }
@@ -828,6 +927,12 @@ class _$UpdateStockImpl implements _UpdateStock {
     TResult Function(String uuid, int delta)? updateStock,
     TResult Function(String warehouseId)? watchInventory,
     TResult Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
     required TResult orElse(),
   }) {
     if (updateStock != null) {
@@ -845,6 +950,9 @@ class _$UpdateStockImpl implements _UpdateStock {
     required TResult Function(_UpdateStock value) updateStock,
     required TResult Function(_WatchInventory value) watchInventory,
     required TResult Function(_InventoryUpdated value) inventoryUpdated,
+    required TResult Function(_StockTransferRequested value)
+        stockTransferRequested,
+    required TResult Function(_ReceiveGoods value) receiveGoods,
   }) {
     return updateStock(this);
   }
@@ -858,6 +966,8 @@ class _$UpdateStockImpl implements _UpdateStock {
     TResult? Function(_UpdateStock value)? updateStock,
     TResult? Function(_WatchInventory value)? watchInventory,
     TResult? Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult? Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult? Function(_ReceiveGoods value)? receiveGoods,
   }) {
     return updateStock?.call(this);
   }
@@ -871,6 +981,8 @@ class _$UpdateStockImpl implements _UpdateStock {
     TResult Function(_UpdateStock value)? updateStock,
     TResult Function(_WatchInventory value)? watchInventory,
     TResult Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult Function(_ReceiveGoods value)? receiveGoods,
     required TResult orElse(),
   }) {
     if (updateStock != null) {
@@ -886,10 +998,7 @@ abstract class _UpdateStock implements InventoryManagementEvent {
 
   String get uuid;
   int get delta;
-
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$UpdateStockImplCopyWith<_$UpdateStockImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -911,8 +1020,6 @@ class __$$WatchInventoryImplCopyWithImpl<$Res>
       _$WatchInventoryImpl _value, $Res Function(_$WatchInventoryImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -952,9 +1059,7 @@ class _$WatchInventoryImpl implements _WatchInventory {
   @override
   int get hashCode => Object.hash(runtimeType, warehouseId);
 
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$WatchInventoryImplCopyWith<_$WatchInventoryImpl> get copyWith =>
@@ -974,6 +1079,15 @@ class _$WatchInventoryImpl implements _WatchInventory {
     required TResult Function(String uuid, int delta) updateStock,
     required TResult Function(String warehouseId) watchInventory,
     required TResult Function(List<ProductStock> inventory) inventoryUpdated,
+    required TResult Function(
+            String sourceWarehouseId,
+            String targetWarehouseId,
+            List<StockTransferItem> items,
+            String referenceNote)
+        stockTransferRequested,
+    required TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)
+        receiveGoods,
   }) {
     return watchInventory(warehouseId);
   }
@@ -991,6 +1105,12 @@ class _$WatchInventoryImpl implements _WatchInventory {
     TResult? Function(String uuid, int delta)? updateStock,
     TResult? Function(String warehouseId)? watchInventory,
     TResult? Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult? Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult? Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
   }) {
     return watchInventory?.call(warehouseId);
   }
@@ -1008,6 +1128,12 @@ class _$WatchInventoryImpl implements _WatchInventory {
     TResult Function(String uuid, int delta)? updateStock,
     TResult Function(String warehouseId)? watchInventory,
     TResult Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
     required TResult orElse(),
   }) {
     if (watchInventory != null) {
@@ -1025,6 +1151,9 @@ class _$WatchInventoryImpl implements _WatchInventory {
     required TResult Function(_UpdateStock value) updateStock,
     required TResult Function(_WatchInventory value) watchInventory,
     required TResult Function(_InventoryUpdated value) inventoryUpdated,
+    required TResult Function(_StockTransferRequested value)
+        stockTransferRequested,
+    required TResult Function(_ReceiveGoods value) receiveGoods,
   }) {
     return watchInventory(this);
   }
@@ -1038,6 +1167,8 @@ class _$WatchInventoryImpl implements _WatchInventory {
     TResult? Function(_UpdateStock value)? updateStock,
     TResult? Function(_WatchInventory value)? watchInventory,
     TResult? Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult? Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult? Function(_ReceiveGoods value)? receiveGoods,
   }) {
     return watchInventory?.call(this);
   }
@@ -1051,6 +1182,8 @@ class _$WatchInventoryImpl implements _WatchInventory {
     TResult Function(_UpdateStock value)? updateStock,
     TResult Function(_WatchInventory value)? watchInventory,
     TResult Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult Function(_ReceiveGoods value)? receiveGoods,
     required TResult orElse(),
   }) {
     if (watchInventory != null) {
@@ -1065,10 +1198,7 @@ abstract class _WatchInventory implements InventoryManagementEvent {
       _$WatchInventoryImpl;
 
   String get warehouseId;
-
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$WatchInventoryImplCopyWith<_$WatchInventoryImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1090,8 +1220,6 @@ class __$$InventoryUpdatedImplCopyWithImpl<$Res>
       $Res Function(_$InventoryUpdatedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1138,9 +1266,7 @@ class _$InventoryUpdatedImpl implements _InventoryUpdated {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_inventory));
 
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$InventoryUpdatedImplCopyWith<_$InventoryUpdatedImpl> get copyWith =>
@@ -1160,6 +1286,15 @@ class _$InventoryUpdatedImpl implements _InventoryUpdated {
     required TResult Function(String uuid, int delta) updateStock,
     required TResult Function(String warehouseId) watchInventory,
     required TResult Function(List<ProductStock> inventory) inventoryUpdated,
+    required TResult Function(
+            String sourceWarehouseId,
+            String targetWarehouseId,
+            List<StockTransferItem> items,
+            String referenceNote)
+        stockTransferRequested,
+    required TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)
+        receiveGoods,
   }) {
     return inventoryUpdated(inventory);
   }
@@ -1177,6 +1312,12 @@ class _$InventoryUpdatedImpl implements _InventoryUpdated {
     TResult? Function(String uuid, int delta)? updateStock,
     TResult? Function(String warehouseId)? watchInventory,
     TResult? Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult? Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult? Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
   }) {
     return inventoryUpdated?.call(inventory);
   }
@@ -1194,6 +1335,12 @@ class _$InventoryUpdatedImpl implements _InventoryUpdated {
     TResult Function(String uuid, int delta)? updateStock,
     TResult Function(String warehouseId)? watchInventory,
     TResult Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
     required TResult orElse(),
   }) {
     if (inventoryUpdated != null) {
@@ -1211,6 +1358,9 @@ class _$InventoryUpdatedImpl implements _InventoryUpdated {
     required TResult Function(_UpdateStock value) updateStock,
     required TResult Function(_WatchInventory value) watchInventory,
     required TResult Function(_InventoryUpdated value) inventoryUpdated,
+    required TResult Function(_StockTransferRequested value)
+        stockTransferRequested,
+    required TResult Function(_ReceiveGoods value) receiveGoods,
   }) {
     return inventoryUpdated(this);
   }
@@ -1224,6 +1374,8 @@ class _$InventoryUpdatedImpl implements _InventoryUpdated {
     TResult? Function(_UpdateStock value)? updateStock,
     TResult? Function(_WatchInventory value)? watchInventory,
     TResult? Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult? Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult? Function(_ReceiveGoods value)? receiveGoods,
   }) {
     return inventoryUpdated?.call(this);
   }
@@ -1237,6 +1389,8 @@ class _$InventoryUpdatedImpl implements _InventoryUpdated {
     TResult Function(_UpdateStock value)? updateStock,
     TResult Function(_WatchInventory value)? watchInventory,
     TResult Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult Function(_ReceiveGoods value)? receiveGoods,
     required TResult orElse(),
   }) {
     if (inventoryUpdated != null) {
@@ -1251,11 +1405,499 @@ abstract class _InventoryUpdated implements InventoryManagementEvent {
       _$InventoryUpdatedImpl;
 
   List<ProductStock> get inventory;
-
-  /// Create a copy of InventoryManagementEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$InventoryUpdatedImplCopyWith<_$InventoryUpdatedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$StockTransferRequestedImplCopyWith<$Res> {
+  factory _$$StockTransferRequestedImplCopyWith(
+          _$StockTransferRequestedImpl value,
+          $Res Function(_$StockTransferRequestedImpl) then) =
+      __$$StockTransferRequestedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {String sourceWarehouseId,
+      String targetWarehouseId,
+      List<StockTransferItem> items,
+      String referenceNote});
+}
+
+/// @nodoc
+class __$$StockTransferRequestedImplCopyWithImpl<$Res>
+    extends _$InventoryManagementEventCopyWithImpl<$Res,
+        _$StockTransferRequestedImpl>
+    implements _$$StockTransferRequestedImplCopyWith<$Res> {
+  __$$StockTransferRequestedImplCopyWithImpl(
+      _$StockTransferRequestedImpl _value,
+      $Res Function(_$StockTransferRequestedImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? sourceWarehouseId = null,
+    Object? targetWarehouseId = null,
+    Object? items = null,
+    Object? referenceNote = null,
+  }) {
+    return _then(_$StockTransferRequestedImpl(
+      sourceWarehouseId: null == sourceWarehouseId
+          ? _value.sourceWarehouseId
+          : sourceWarehouseId // ignore: cast_nullable_to_non_nullable
+              as String,
+      targetWarehouseId: null == targetWarehouseId
+          ? _value.targetWarehouseId
+          : targetWarehouseId // ignore: cast_nullable_to_non_nullable
+              as String,
+      items: null == items
+          ? _value._items
+          : items // ignore: cast_nullable_to_non_nullable
+              as List<StockTransferItem>,
+      referenceNote: null == referenceNote
+          ? _value.referenceNote
+          : referenceNote // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$StockTransferRequestedImpl implements _StockTransferRequested {
+  const _$StockTransferRequestedImpl(
+      {required this.sourceWarehouseId,
+      required this.targetWarehouseId,
+      required final List<StockTransferItem> items,
+      required this.referenceNote})
+      : _items = items;
+
+  @override
+  final String sourceWarehouseId;
+  @override
+  final String targetWarehouseId;
+  final List<StockTransferItem> _items;
+  @override
+  List<StockTransferItem> get items {
+    if (_items is EqualUnmodifiableListView) return _items;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_items);
+  }
+
+  @override
+  final String referenceNote;
+
+  @override
+  String toString() {
+    return 'InventoryManagementEvent.stockTransferRequested(sourceWarehouseId: $sourceWarehouseId, targetWarehouseId: $targetWarehouseId, items: $items, referenceNote: $referenceNote)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$StockTransferRequestedImpl &&
+            (identical(other.sourceWarehouseId, sourceWarehouseId) ||
+                other.sourceWarehouseId == sourceWarehouseId) &&
+            (identical(other.targetWarehouseId, targetWarehouseId) ||
+                other.targetWarehouseId == targetWarehouseId) &&
+            const DeepCollectionEquality().equals(other._items, _items) &&
+            (identical(other.referenceNote, referenceNote) ||
+                other.referenceNote == referenceNote));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      sourceWarehouseId,
+      targetWarehouseId,
+      const DeepCollectionEquality().hash(_items),
+      referenceNote);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$StockTransferRequestedImplCopyWith<_$StockTransferRequestedImpl>
+      get copyWith => __$$StockTransferRequestedImplCopyWithImpl<
+          _$StockTransferRequestedImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        addProduct,
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        updateProduct,
+    required TResult Function(String uuid) deleteProduct,
+    required TResult Function(String uuid, int delta) updateStock,
+    required TResult Function(String warehouseId) watchInventory,
+    required TResult Function(List<ProductStock> inventory) inventoryUpdated,
+    required TResult Function(
+            String sourceWarehouseId,
+            String targetWarehouseId,
+            List<StockTransferItem> items,
+            String referenceNote)
+        stockTransferRequested,
+    required TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)
+        receiveGoods,
+  }) {
+    return stockTransferRequested(
+        sourceWarehouseId, targetWarehouseId, items, referenceNote);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
+    TResult? Function(String uuid)? deleteProduct,
+    TResult? Function(String uuid, int delta)? updateStock,
+    TResult? Function(String warehouseId)? watchInventory,
+    TResult? Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult? Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult? Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
+  }) {
+    return stockTransferRequested?.call(
+        sourceWarehouseId, targetWarehouseId, items, referenceNote);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
+    TResult Function(String uuid)? deleteProduct,
+    TResult Function(String uuid, int delta)? updateStock,
+    TResult Function(String warehouseId)? watchInventory,
+    TResult Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
+    required TResult orElse(),
+  }) {
+    if (stockTransferRequested != null) {
+      return stockTransferRequested(
+          sourceWarehouseId, targetWarehouseId, items, referenceNote);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_AddProduct value) addProduct,
+    required TResult Function(_UpdateProduct value) updateProduct,
+    required TResult Function(_DeleteProduct value) deleteProduct,
+    required TResult Function(_UpdateStock value) updateStock,
+    required TResult Function(_WatchInventory value) watchInventory,
+    required TResult Function(_InventoryUpdated value) inventoryUpdated,
+    required TResult Function(_StockTransferRequested value)
+        stockTransferRequested,
+    required TResult Function(_ReceiveGoods value) receiveGoods,
+  }) {
+    return stockTransferRequested(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_AddProduct value)? addProduct,
+    TResult? Function(_UpdateProduct value)? updateProduct,
+    TResult? Function(_DeleteProduct value)? deleteProduct,
+    TResult? Function(_UpdateStock value)? updateStock,
+    TResult? Function(_WatchInventory value)? watchInventory,
+    TResult? Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult? Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult? Function(_ReceiveGoods value)? receiveGoods,
+  }) {
+    return stockTransferRequested?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_AddProduct value)? addProduct,
+    TResult Function(_UpdateProduct value)? updateProduct,
+    TResult Function(_DeleteProduct value)? deleteProduct,
+    TResult Function(_UpdateStock value)? updateStock,
+    TResult Function(_WatchInventory value)? watchInventory,
+    TResult Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult Function(_ReceiveGoods value)? receiveGoods,
+    required TResult orElse(),
+  }) {
+    if (stockTransferRequested != null) {
+      return stockTransferRequested(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _StockTransferRequested implements InventoryManagementEvent {
+  const factory _StockTransferRequested(
+      {required final String sourceWarehouseId,
+      required final String targetWarehouseId,
+      required final List<StockTransferItem> items,
+      required final String referenceNote}) = _$StockTransferRequestedImpl;
+
+  String get sourceWarehouseId;
+  String get targetWarehouseId;
+  List<StockTransferItem> get items;
+  String get referenceNote;
+  @JsonKey(ignore: true)
+  _$$StockTransferRequestedImplCopyWith<_$StockTransferRequestedImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ReceiveGoodsImplCopyWith<$Res> {
+  factory _$$ReceiveGoodsImplCopyWith(
+          _$ReceiveGoodsImpl value, $Res Function(_$ReceiveGoodsImpl) then) =
+      __$$ReceiveGoodsImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call(
+      {String purchaseOrderUuid,
+      String warehouseUuid,
+      List<Map<String, dynamic>> items});
+}
+
+/// @nodoc
+class __$$ReceiveGoodsImplCopyWithImpl<$Res>
+    extends _$InventoryManagementEventCopyWithImpl<$Res, _$ReceiveGoodsImpl>
+    implements _$$ReceiveGoodsImplCopyWith<$Res> {
+  __$$ReceiveGoodsImplCopyWithImpl(
+      _$ReceiveGoodsImpl _value, $Res Function(_$ReceiveGoodsImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? purchaseOrderUuid = null,
+    Object? warehouseUuid = null,
+    Object? items = null,
+  }) {
+    return _then(_$ReceiveGoodsImpl(
+      purchaseOrderUuid: null == purchaseOrderUuid
+          ? _value.purchaseOrderUuid
+          : purchaseOrderUuid // ignore: cast_nullable_to_non_nullable
+              as String,
+      warehouseUuid: null == warehouseUuid
+          ? _value.warehouseUuid
+          : warehouseUuid // ignore: cast_nullable_to_non_nullable
+              as String,
+      items: null == items
+          ? _value._items
+          : items // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, dynamic>>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ReceiveGoodsImpl implements _ReceiveGoods {
+  const _$ReceiveGoodsImpl(
+      {required this.purchaseOrderUuid,
+      required this.warehouseUuid,
+      required final List<Map<String, dynamic>> items})
+      : _items = items;
+
+  @override
+  final String purchaseOrderUuid;
+  @override
+  final String warehouseUuid;
+  final List<Map<String, dynamic>> _items;
+  @override
+  List<Map<String, dynamic>> get items {
+    if (_items is EqualUnmodifiableListView) return _items;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_items);
+  }
+
+  @override
+  String toString() {
+    return 'InventoryManagementEvent.receiveGoods(purchaseOrderUuid: $purchaseOrderUuid, warehouseUuid: $warehouseUuid, items: $items)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ReceiveGoodsImpl &&
+            (identical(other.purchaseOrderUuid, purchaseOrderUuid) ||
+                other.purchaseOrderUuid == purchaseOrderUuid) &&
+            (identical(other.warehouseUuid, warehouseUuid) ||
+                other.warehouseUuid == warehouseUuid) &&
+            const DeepCollectionEquality().equals(other._items, _items));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, purchaseOrderUuid, warehouseUuid,
+      const DeepCollectionEquality().hash(_items));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ReceiveGoodsImplCopyWith<_$ReceiveGoodsImpl> get copyWith =>
+      __$$ReceiveGoodsImplCopyWithImpl<_$ReceiveGoodsImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        addProduct,
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        updateProduct,
+    required TResult Function(String uuid) deleteProduct,
+    required TResult Function(String uuid, int delta) updateStock,
+    required TResult Function(String warehouseId) watchInventory,
+    required TResult Function(List<ProductStock> inventory) inventoryUpdated,
+    required TResult Function(
+            String sourceWarehouseId,
+            String targetWarehouseId,
+            List<StockTransferItem> items,
+            String referenceNote)
+        stockTransferRequested,
+    required TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)
+        receiveGoods,
+  }) {
+    return receiveGoods(purchaseOrderUuid, warehouseUuid, items);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
+    TResult? Function(String uuid)? deleteProduct,
+    TResult? Function(String uuid, int delta)? updateStock,
+    TResult? Function(String warehouseId)? watchInventory,
+    TResult? Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult? Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult? Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
+  }) {
+    return receiveGoods?.call(purchaseOrderUuid, warehouseUuid, items);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
+    TResult Function(String uuid)? deleteProduct,
+    TResult Function(String uuid, int delta)? updateStock,
+    TResult Function(String warehouseId)? watchInventory,
+    TResult Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
+    required TResult orElse(),
+  }) {
+    if (receiveGoods != null) {
+      return receiveGoods(purchaseOrderUuid, warehouseUuid, items);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_AddProduct value) addProduct,
+    required TResult Function(_UpdateProduct value) updateProduct,
+    required TResult Function(_DeleteProduct value) deleteProduct,
+    required TResult Function(_UpdateStock value) updateStock,
+    required TResult Function(_WatchInventory value) watchInventory,
+    required TResult Function(_InventoryUpdated value) inventoryUpdated,
+    required TResult Function(_StockTransferRequested value)
+        stockTransferRequested,
+    required TResult Function(_ReceiveGoods value) receiveGoods,
+  }) {
+    return receiveGoods(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_AddProduct value)? addProduct,
+    TResult? Function(_UpdateProduct value)? updateProduct,
+    TResult? Function(_DeleteProduct value)? deleteProduct,
+    TResult? Function(_UpdateStock value)? updateStock,
+    TResult? Function(_WatchInventory value)? watchInventory,
+    TResult? Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult? Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult? Function(_ReceiveGoods value)? receiveGoods,
+  }) {
+    return receiveGoods?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_AddProduct value)? addProduct,
+    TResult Function(_UpdateProduct value)? updateProduct,
+    TResult Function(_DeleteProduct value)? deleteProduct,
+    TResult Function(_UpdateStock value)? updateStock,
+    TResult Function(_WatchInventory value)? watchInventory,
+    TResult Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult Function(_ReceiveGoods value)? receiveGoods,
+    required TResult orElse(),
+  }) {
+    if (receiveGoods != null) {
+      return receiveGoods(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ReceiveGoods implements InventoryManagementEvent {
+  const factory _ReceiveGoods(
+      {required final String purchaseOrderUuid,
+      required final String warehouseUuid,
+      required final List<Map<String, dynamic>> items}) = _$ReceiveGoodsImpl;
+
+  String get purchaseOrderUuid;
+  String get warehouseUuid;
+  List<Map<String, dynamic>> get items;
+  @JsonKey(ignore: true)
+  _$$ReceiveGoodsImplCopyWith<_$ReceiveGoodsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1336,9 +1978,6 @@ class _$InventoryManagementStateCopyWithImpl<$Res,
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of InventoryManagementState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1355,9 +1994,6 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of InventoryManagementState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1478,9 +2114,6 @@ class __$$LoadingImplCopyWithImpl<$Res>
   __$$LoadingImplCopyWithImpl(
       _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of InventoryManagementState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1601,9 +2234,6 @@ class __$$SuccessImplCopyWithImpl<$Res>
   __$$SuccessImplCopyWithImpl(
       _$SuccessImpl _value, $Res Function(_$SuccessImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of InventoryManagementState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1727,8 +2357,6 @@ class __$$LoadedImplCopyWithImpl<$Res>
       _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of InventoryManagementState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1775,9 +2403,7 @@ class _$LoadedImpl implements _Loaded {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_inventory));
 
-  /// Create a copy of InventoryManagementState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
@@ -1868,10 +2494,7 @@ abstract class _Loaded implements InventoryManagementState {
   const factory _Loaded(final List<ProductStock> inventory) = _$LoadedImpl;
 
   List<ProductStock> get inventory;
-
-  /// Create a copy of InventoryManagementState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1893,8 +2516,6 @@ class __$$ErrorImplCopyWithImpl<$Res>
       _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of InventoryManagementState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1933,9 +2554,7 @@ class _$ErrorImpl implements _Error {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of InventoryManagementState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
@@ -2026,10 +2645,7 @@ abstract class _Error implements InventoryManagementState {
   const factory _Error(final String message) = _$ErrorImpl;
 
   String get message;
-
-  /// Create a copy of InventoryManagementState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

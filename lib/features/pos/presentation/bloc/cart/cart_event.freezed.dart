@@ -84,56 +84,56 @@ mixin _$CartEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_AddProduct value) addProduct,
-    required TResult Function(_UpdateQuantity value) updateQuantity,
-    required TResult Function(_RemoveFromCart value) removeFromCart,
-    required TResult Function(_ClearCart value) clearCart,
-    required TResult Function(_ScanItem value) scanItem,
-    required TResult Function(_SelectCustomer value) selectCustomer,
-    required TResult Function(_ApplyDiscount value) applyDiscount,
-    required TResult Function(_AddPromoCode value) addPromoCode,
-    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
-    required TResult Function(_ParkOrder value) parkOrder,
-    required TResult Function(_SelectTable value) selectTable,
-    required TResult Function(_RetrieveOrder value) retrieveOrder,
-    required TResult Function(_CheckoutSplit value) checkoutSplit,
-    required TResult Function(_UpdateNote value) updateNote,
+    required TResult Function(AddProduct value) addProduct,
+    required TResult Function(UpdateQuantity value) updateQuantity,
+    required TResult Function(RemoveFromCart value) removeFromCart,
+    required TResult Function(ClearCart value) clearCart,
+    required TResult Function(ScanItem value) scanItem,
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(ApplyDiscount value) applyDiscount,
+    required TResult Function(AddPromoCode value) addPromoCode,
+    required TResult Function(CheckoutProcessed value) checkoutProcessed,
+    required TResult Function(ParkOrder value) parkOrder,
+    required TResult Function(SelectTable value) selectTable,
+    required TResult Function(RetrieveOrder value) retrieveOrder,
+    required TResult Function(CheckoutSplit value) checkoutSplit,
+    required TResult Function(UpdateNote value) updateNote,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_AddProduct value)? addProduct,
-    TResult? Function(_UpdateQuantity value)? updateQuantity,
-    TResult? Function(_RemoveFromCart value)? removeFromCart,
-    TResult? Function(_ClearCart value)? clearCart,
-    TResult? Function(_ScanItem value)? scanItem,
-    TResult? Function(_SelectCustomer value)? selectCustomer,
-    TResult? Function(_ApplyDiscount value)? applyDiscount,
-    TResult? Function(_AddPromoCode value)? addPromoCode,
-    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult? Function(_ParkOrder value)? parkOrder,
-    TResult? Function(_SelectTable value)? selectTable,
-    TResult? Function(_RetrieveOrder value)? retrieveOrder,
-    TResult? Function(_CheckoutSplit value)? checkoutSplit,
-    TResult? Function(_UpdateNote value)? updateNote,
+    TResult? Function(AddProduct value)? addProduct,
+    TResult? Function(UpdateQuantity value)? updateQuantity,
+    TResult? Function(RemoveFromCart value)? removeFromCart,
+    TResult? Function(ClearCart value)? clearCart,
+    TResult? Function(ScanItem value)? scanItem,
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(ApplyDiscount value)? applyDiscount,
+    TResult? Function(AddPromoCode value)? addPromoCode,
+    TResult? Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult? Function(ParkOrder value)? parkOrder,
+    TResult? Function(SelectTable value)? selectTable,
+    TResult? Function(RetrieveOrder value)? retrieveOrder,
+    TResult? Function(CheckoutSplit value)? checkoutSplit,
+    TResult? Function(UpdateNote value)? updateNote,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_AddProduct value)? addProduct,
-    TResult Function(_UpdateQuantity value)? updateQuantity,
-    TResult Function(_RemoveFromCart value)? removeFromCart,
-    TResult Function(_ClearCart value)? clearCart,
-    TResult Function(_ScanItem value)? scanItem,
-    TResult Function(_SelectCustomer value)? selectCustomer,
-    TResult Function(_ApplyDiscount value)? applyDiscount,
-    TResult Function(_AddPromoCode value)? addPromoCode,
-    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult Function(_ParkOrder value)? parkOrder,
-    TResult Function(_SelectTable value)? selectTable,
-    TResult Function(_RetrieveOrder value)? retrieveOrder,
-    TResult Function(_CheckoutSplit value)? checkoutSplit,
-    TResult Function(_UpdateNote value)? updateNote,
+    TResult Function(AddProduct value)? addProduct,
+    TResult Function(UpdateQuantity value)? updateQuantity,
+    TResult Function(RemoveFromCart value)? removeFromCart,
+    TResult Function(ClearCart value)? clearCart,
+    TResult Function(ScanItem value)? scanItem,
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(ApplyDiscount value)? applyDiscount,
+    TResult Function(AddPromoCode value)? addPromoCode,
+    TResult Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult Function(ParkOrder value)? parkOrder,
+    TResult Function(SelectTable value)? selectTable,
+    TResult Function(RetrieveOrder value)? retrieveOrder,
+    TResult Function(CheckoutSplit value)? checkoutSplit,
+    TResult Function(UpdateNote value)? updateNote,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -154,9 +154,6 @@ class _$CartEventCopyWithImpl<$Res, $Val extends CartEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -176,8 +173,6 @@ class __$$AddProductImplCopyWithImpl<$Res>
       _$AddProductImpl _value, $Res Function(_$AddProductImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -199,7 +194,7 @@ class __$$AddProductImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AddProductImpl implements _AddProduct {
+class _$AddProductImpl implements AddProduct {
   const _$AddProductImpl(this.product,
       {final List<ModifierItem> modifiers = const []})
       : _modifiers = modifiers;
@@ -234,9 +229,7 @@ class _$AddProductImpl implements _AddProduct {
   int get hashCode => Object.hash(
       runtimeType, product, const DeepCollectionEquality().hash(_modifiers));
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$AddProductImplCopyWith<_$AddProductImpl> get copyWith =>
@@ -323,20 +316,20 @@ class _$AddProductImpl implements _AddProduct {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_AddProduct value) addProduct,
-    required TResult Function(_UpdateQuantity value) updateQuantity,
-    required TResult Function(_RemoveFromCart value) removeFromCart,
-    required TResult Function(_ClearCart value) clearCart,
-    required TResult Function(_ScanItem value) scanItem,
-    required TResult Function(_SelectCustomer value) selectCustomer,
-    required TResult Function(_ApplyDiscount value) applyDiscount,
-    required TResult Function(_AddPromoCode value) addPromoCode,
-    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
-    required TResult Function(_ParkOrder value) parkOrder,
-    required TResult Function(_SelectTable value) selectTable,
-    required TResult Function(_RetrieveOrder value) retrieveOrder,
-    required TResult Function(_CheckoutSplit value) checkoutSplit,
-    required TResult Function(_UpdateNote value) updateNote,
+    required TResult Function(AddProduct value) addProduct,
+    required TResult Function(UpdateQuantity value) updateQuantity,
+    required TResult Function(RemoveFromCart value) removeFromCart,
+    required TResult Function(ClearCart value) clearCart,
+    required TResult Function(ScanItem value) scanItem,
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(ApplyDiscount value) applyDiscount,
+    required TResult Function(AddPromoCode value) addPromoCode,
+    required TResult Function(CheckoutProcessed value) checkoutProcessed,
+    required TResult Function(ParkOrder value) parkOrder,
+    required TResult Function(SelectTable value) selectTable,
+    required TResult Function(RetrieveOrder value) retrieveOrder,
+    required TResult Function(CheckoutSplit value) checkoutSplit,
+    required TResult Function(UpdateNote value) updateNote,
   }) {
     return addProduct(this);
   }
@@ -344,20 +337,20 @@ class _$AddProductImpl implements _AddProduct {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_AddProduct value)? addProduct,
-    TResult? Function(_UpdateQuantity value)? updateQuantity,
-    TResult? Function(_RemoveFromCart value)? removeFromCart,
-    TResult? Function(_ClearCart value)? clearCart,
-    TResult? Function(_ScanItem value)? scanItem,
-    TResult? Function(_SelectCustomer value)? selectCustomer,
-    TResult? Function(_ApplyDiscount value)? applyDiscount,
-    TResult? Function(_AddPromoCode value)? addPromoCode,
-    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult? Function(_ParkOrder value)? parkOrder,
-    TResult? Function(_SelectTable value)? selectTable,
-    TResult? Function(_RetrieveOrder value)? retrieveOrder,
-    TResult? Function(_CheckoutSplit value)? checkoutSplit,
-    TResult? Function(_UpdateNote value)? updateNote,
+    TResult? Function(AddProduct value)? addProduct,
+    TResult? Function(UpdateQuantity value)? updateQuantity,
+    TResult? Function(RemoveFromCart value)? removeFromCart,
+    TResult? Function(ClearCart value)? clearCart,
+    TResult? Function(ScanItem value)? scanItem,
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(ApplyDiscount value)? applyDiscount,
+    TResult? Function(AddPromoCode value)? addPromoCode,
+    TResult? Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult? Function(ParkOrder value)? parkOrder,
+    TResult? Function(SelectTable value)? selectTable,
+    TResult? Function(RetrieveOrder value)? retrieveOrder,
+    TResult? Function(CheckoutSplit value)? checkoutSplit,
+    TResult? Function(UpdateNote value)? updateNote,
   }) {
     return addProduct?.call(this);
   }
@@ -365,20 +358,20 @@ class _$AddProductImpl implements _AddProduct {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_AddProduct value)? addProduct,
-    TResult Function(_UpdateQuantity value)? updateQuantity,
-    TResult Function(_RemoveFromCart value)? removeFromCart,
-    TResult Function(_ClearCart value)? clearCart,
-    TResult Function(_ScanItem value)? scanItem,
-    TResult Function(_SelectCustomer value)? selectCustomer,
-    TResult Function(_ApplyDiscount value)? applyDiscount,
-    TResult Function(_AddPromoCode value)? addPromoCode,
-    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult Function(_ParkOrder value)? parkOrder,
-    TResult Function(_SelectTable value)? selectTable,
-    TResult Function(_RetrieveOrder value)? retrieveOrder,
-    TResult Function(_CheckoutSplit value)? checkoutSplit,
-    TResult Function(_UpdateNote value)? updateNote,
+    TResult Function(AddProduct value)? addProduct,
+    TResult Function(UpdateQuantity value)? updateQuantity,
+    TResult Function(RemoveFromCart value)? removeFromCart,
+    TResult Function(ClearCart value)? clearCart,
+    TResult Function(ScanItem value)? scanItem,
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(ApplyDiscount value)? applyDiscount,
+    TResult Function(AddPromoCode value)? addPromoCode,
+    TResult Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult Function(ParkOrder value)? parkOrder,
+    TResult Function(SelectTable value)? selectTable,
+    TResult Function(RetrieveOrder value)? retrieveOrder,
+    TResult Function(CheckoutSplit value)? checkoutSplit,
+    TResult Function(UpdateNote value)? updateNote,
     required TResult orElse(),
   }) {
     if (addProduct != null) {
@@ -388,16 +381,13 @@ class _$AddProductImpl implements _AddProduct {
   }
 }
 
-abstract class _AddProduct implements CartEvent {
-  const factory _AddProduct(final Product product,
+abstract class AddProduct implements CartEvent {
+  const factory AddProduct(final Product product,
       {final List<ModifierItem> modifiers}) = _$AddProductImpl;
 
   Product get product;
   List<ModifierItem> get modifiers;
-
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$AddProductImplCopyWith<_$AddProductImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -419,8 +409,6 @@ class __$$UpdateQuantityImplCopyWithImpl<$Res>
       _$UpdateQuantityImpl _value, $Res Function(_$UpdateQuantityImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -442,7 +430,7 @@ class __$$UpdateQuantityImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$UpdateQuantityImpl implements _UpdateQuantity {
+class _$UpdateQuantityImpl implements UpdateQuantity {
   const _$UpdateQuantityImpl(this.itemUuid, this.quantity);
 
   @override
@@ -469,9 +457,7 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
   @override
   int get hashCode => Object.hash(runtimeType, itemUuid, quantity);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$UpdateQuantityImplCopyWith<_$UpdateQuantityImpl> get copyWith =>
@@ -559,20 +545,20 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_AddProduct value) addProduct,
-    required TResult Function(_UpdateQuantity value) updateQuantity,
-    required TResult Function(_RemoveFromCart value) removeFromCart,
-    required TResult Function(_ClearCart value) clearCart,
-    required TResult Function(_ScanItem value) scanItem,
-    required TResult Function(_SelectCustomer value) selectCustomer,
-    required TResult Function(_ApplyDiscount value) applyDiscount,
-    required TResult Function(_AddPromoCode value) addPromoCode,
-    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
-    required TResult Function(_ParkOrder value) parkOrder,
-    required TResult Function(_SelectTable value) selectTable,
-    required TResult Function(_RetrieveOrder value) retrieveOrder,
-    required TResult Function(_CheckoutSplit value) checkoutSplit,
-    required TResult Function(_UpdateNote value) updateNote,
+    required TResult Function(AddProduct value) addProduct,
+    required TResult Function(UpdateQuantity value) updateQuantity,
+    required TResult Function(RemoveFromCart value) removeFromCart,
+    required TResult Function(ClearCart value) clearCart,
+    required TResult Function(ScanItem value) scanItem,
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(ApplyDiscount value) applyDiscount,
+    required TResult Function(AddPromoCode value) addPromoCode,
+    required TResult Function(CheckoutProcessed value) checkoutProcessed,
+    required TResult Function(ParkOrder value) parkOrder,
+    required TResult Function(SelectTable value) selectTable,
+    required TResult Function(RetrieveOrder value) retrieveOrder,
+    required TResult Function(CheckoutSplit value) checkoutSplit,
+    required TResult Function(UpdateNote value) updateNote,
   }) {
     return updateQuantity(this);
   }
@@ -580,20 +566,20 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_AddProduct value)? addProduct,
-    TResult? Function(_UpdateQuantity value)? updateQuantity,
-    TResult? Function(_RemoveFromCart value)? removeFromCart,
-    TResult? Function(_ClearCart value)? clearCart,
-    TResult? Function(_ScanItem value)? scanItem,
-    TResult? Function(_SelectCustomer value)? selectCustomer,
-    TResult? Function(_ApplyDiscount value)? applyDiscount,
-    TResult? Function(_AddPromoCode value)? addPromoCode,
-    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult? Function(_ParkOrder value)? parkOrder,
-    TResult? Function(_SelectTable value)? selectTable,
-    TResult? Function(_RetrieveOrder value)? retrieveOrder,
-    TResult? Function(_CheckoutSplit value)? checkoutSplit,
-    TResult? Function(_UpdateNote value)? updateNote,
+    TResult? Function(AddProduct value)? addProduct,
+    TResult? Function(UpdateQuantity value)? updateQuantity,
+    TResult? Function(RemoveFromCart value)? removeFromCart,
+    TResult? Function(ClearCart value)? clearCart,
+    TResult? Function(ScanItem value)? scanItem,
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(ApplyDiscount value)? applyDiscount,
+    TResult? Function(AddPromoCode value)? addPromoCode,
+    TResult? Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult? Function(ParkOrder value)? parkOrder,
+    TResult? Function(SelectTable value)? selectTable,
+    TResult? Function(RetrieveOrder value)? retrieveOrder,
+    TResult? Function(CheckoutSplit value)? checkoutSplit,
+    TResult? Function(UpdateNote value)? updateNote,
   }) {
     return updateQuantity?.call(this);
   }
@@ -601,20 +587,20 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_AddProduct value)? addProduct,
-    TResult Function(_UpdateQuantity value)? updateQuantity,
-    TResult Function(_RemoveFromCart value)? removeFromCart,
-    TResult Function(_ClearCart value)? clearCart,
-    TResult Function(_ScanItem value)? scanItem,
-    TResult Function(_SelectCustomer value)? selectCustomer,
-    TResult Function(_ApplyDiscount value)? applyDiscount,
-    TResult Function(_AddPromoCode value)? addPromoCode,
-    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult Function(_ParkOrder value)? parkOrder,
-    TResult Function(_SelectTable value)? selectTable,
-    TResult Function(_RetrieveOrder value)? retrieveOrder,
-    TResult Function(_CheckoutSplit value)? checkoutSplit,
-    TResult Function(_UpdateNote value)? updateNote,
+    TResult Function(AddProduct value)? addProduct,
+    TResult Function(UpdateQuantity value)? updateQuantity,
+    TResult Function(RemoveFromCart value)? removeFromCart,
+    TResult Function(ClearCart value)? clearCart,
+    TResult Function(ScanItem value)? scanItem,
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(ApplyDiscount value)? applyDiscount,
+    TResult Function(AddPromoCode value)? addPromoCode,
+    TResult Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult Function(ParkOrder value)? parkOrder,
+    TResult Function(SelectTable value)? selectTable,
+    TResult Function(RetrieveOrder value)? retrieveOrder,
+    TResult Function(CheckoutSplit value)? checkoutSplit,
+    TResult Function(UpdateNote value)? updateNote,
     required TResult orElse(),
   }) {
     if (updateQuantity != null) {
@@ -624,16 +610,13 @@ class _$UpdateQuantityImpl implements _UpdateQuantity {
   }
 }
 
-abstract class _UpdateQuantity implements CartEvent {
-  const factory _UpdateQuantity(final String itemUuid, final int quantity) =
+abstract class UpdateQuantity implements CartEvent {
+  const factory UpdateQuantity(final String itemUuid, final int quantity) =
       _$UpdateQuantityImpl;
 
   String get itemUuid;
   int get quantity;
-
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$UpdateQuantityImplCopyWith<_$UpdateQuantityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -655,8 +638,6 @@ class __$$RemoveFromCartImplCopyWithImpl<$Res>
       _$RemoveFromCartImpl _value, $Res Function(_$RemoveFromCartImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -673,7 +654,7 @@ class __$$RemoveFromCartImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$RemoveFromCartImpl implements _RemoveFromCart {
+class _$RemoveFromCartImpl implements RemoveFromCart {
   const _$RemoveFromCartImpl(this.itemUuid);
 
   @override
@@ -696,9 +677,7 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
   @override
   int get hashCode => Object.hash(runtimeType, itemUuid);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$RemoveFromCartImplCopyWith<_$RemoveFromCartImpl> get copyWith =>
@@ -786,20 +765,20 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_AddProduct value) addProduct,
-    required TResult Function(_UpdateQuantity value) updateQuantity,
-    required TResult Function(_RemoveFromCart value) removeFromCart,
-    required TResult Function(_ClearCart value) clearCart,
-    required TResult Function(_ScanItem value) scanItem,
-    required TResult Function(_SelectCustomer value) selectCustomer,
-    required TResult Function(_ApplyDiscount value) applyDiscount,
-    required TResult Function(_AddPromoCode value) addPromoCode,
-    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
-    required TResult Function(_ParkOrder value) parkOrder,
-    required TResult Function(_SelectTable value) selectTable,
-    required TResult Function(_RetrieveOrder value) retrieveOrder,
-    required TResult Function(_CheckoutSplit value) checkoutSplit,
-    required TResult Function(_UpdateNote value) updateNote,
+    required TResult Function(AddProduct value) addProduct,
+    required TResult Function(UpdateQuantity value) updateQuantity,
+    required TResult Function(RemoveFromCart value) removeFromCart,
+    required TResult Function(ClearCart value) clearCart,
+    required TResult Function(ScanItem value) scanItem,
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(ApplyDiscount value) applyDiscount,
+    required TResult Function(AddPromoCode value) addPromoCode,
+    required TResult Function(CheckoutProcessed value) checkoutProcessed,
+    required TResult Function(ParkOrder value) parkOrder,
+    required TResult Function(SelectTable value) selectTable,
+    required TResult Function(RetrieveOrder value) retrieveOrder,
+    required TResult Function(CheckoutSplit value) checkoutSplit,
+    required TResult Function(UpdateNote value) updateNote,
   }) {
     return removeFromCart(this);
   }
@@ -807,20 +786,20 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_AddProduct value)? addProduct,
-    TResult? Function(_UpdateQuantity value)? updateQuantity,
-    TResult? Function(_RemoveFromCart value)? removeFromCart,
-    TResult? Function(_ClearCart value)? clearCart,
-    TResult? Function(_ScanItem value)? scanItem,
-    TResult? Function(_SelectCustomer value)? selectCustomer,
-    TResult? Function(_ApplyDiscount value)? applyDiscount,
-    TResult? Function(_AddPromoCode value)? addPromoCode,
-    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult? Function(_ParkOrder value)? parkOrder,
-    TResult? Function(_SelectTable value)? selectTable,
-    TResult? Function(_RetrieveOrder value)? retrieveOrder,
-    TResult? Function(_CheckoutSplit value)? checkoutSplit,
-    TResult? Function(_UpdateNote value)? updateNote,
+    TResult? Function(AddProduct value)? addProduct,
+    TResult? Function(UpdateQuantity value)? updateQuantity,
+    TResult? Function(RemoveFromCart value)? removeFromCart,
+    TResult? Function(ClearCart value)? clearCart,
+    TResult? Function(ScanItem value)? scanItem,
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(ApplyDiscount value)? applyDiscount,
+    TResult? Function(AddPromoCode value)? addPromoCode,
+    TResult? Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult? Function(ParkOrder value)? parkOrder,
+    TResult? Function(SelectTable value)? selectTable,
+    TResult? Function(RetrieveOrder value)? retrieveOrder,
+    TResult? Function(CheckoutSplit value)? checkoutSplit,
+    TResult? Function(UpdateNote value)? updateNote,
   }) {
     return removeFromCart?.call(this);
   }
@@ -828,20 +807,20 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_AddProduct value)? addProduct,
-    TResult Function(_UpdateQuantity value)? updateQuantity,
-    TResult Function(_RemoveFromCart value)? removeFromCart,
-    TResult Function(_ClearCart value)? clearCart,
-    TResult Function(_ScanItem value)? scanItem,
-    TResult Function(_SelectCustomer value)? selectCustomer,
-    TResult Function(_ApplyDiscount value)? applyDiscount,
-    TResult Function(_AddPromoCode value)? addPromoCode,
-    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult Function(_ParkOrder value)? parkOrder,
-    TResult Function(_SelectTable value)? selectTable,
-    TResult Function(_RetrieveOrder value)? retrieveOrder,
-    TResult Function(_CheckoutSplit value)? checkoutSplit,
-    TResult Function(_UpdateNote value)? updateNote,
+    TResult Function(AddProduct value)? addProduct,
+    TResult Function(UpdateQuantity value)? updateQuantity,
+    TResult Function(RemoveFromCart value)? removeFromCart,
+    TResult Function(ClearCart value)? clearCart,
+    TResult Function(ScanItem value)? scanItem,
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(ApplyDiscount value)? applyDiscount,
+    TResult Function(AddPromoCode value)? addPromoCode,
+    TResult Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult Function(ParkOrder value)? parkOrder,
+    TResult Function(SelectTable value)? selectTable,
+    TResult Function(RetrieveOrder value)? retrieveOrder,
+    TResult Function(CheckoutSplit value)? checkoutSplit,
+    TResult Function(UpdateNote value)? updateNote,
     required TResult orElse(),
   }) {
     if (removeFromCart != null) {
@@ -851,14 +830,11 @@ class _$RemoveFromCartImpl implements _RemoveFromCart {
   }
 }
 
-abstract class _RemoveFromCart implements CartEvent {
-  const factory _RemoveFromCart(final String itemUuid) = _$RemoveFromCartImpl;
+abstract class RemoveFromCart implements CartEvent {
+  const factory RemoveFromCart(final String itemUuid) = _$RemoveFromCartImpl;
 
   String get itemUuid;
-
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$RemoveFromCartImplCopyWith<_$RemoveFromCartImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -877,14 +853,11 @@ class __$$ClearCartImplCopyWithImpl<$Res>
   __$$ClearCartImplCopyWithImpl(
       _$ClearCartImpl _value, $Res Function(_$ClearCartImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$ClearCartImpl implements _ClearCart {
+class _$ClearCartImpl implements ClearCart {
   const _$ClearCartImpl();
 
   @override
@@ -982,20 +955,20 @@ class _$ClearCartImpl implements _ClearCart {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_AddProduct value) addProduct,
-    required TResult Function(_UpdateQuantity value) updateQuantity,
-    required TResult Function(_RemoveFromCart value) removeFromCart,
-    required TResult Function(_ClearCart value) clearCart,
-    required TResult Function(_ScanItem value) scanItem,
-    required TResult Function(_SelectCustomer value) selectCustomer,
-    required TResult Function(_ApplyDiscount value) applyDiscount,
-    required TResult Function(_AddPromoCode value) addPromoCode,
-    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
-    required TResult Function(_ParkOrder value) parkOrder,
-    required TResult Function(_SelectTable value) selectTable,
-    required TResult Function(_RetrieveOrder value) retrieveOrder,
-    required TResult Function(_CheckoutSplit value) checkoutSplit,
-    required TResult Function(_UpdateNote value) updateNote,
+    required TResult Function(AddProduct value) addProduct,
+    required TResult Function(UpdateQuantity value) updateQuantity,
+    required TResult Function(RemoveFromCart value) removeFromCart,
+    required TResult Function(ClearCart value) clearCart,
+    required TResult Function(ScanItem value) scanItem,
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(ApplyDiscount value) applyDiscount,
+    required TResult Function(AddPromoCode value) addPromoCode,
+    required TResult Function(CheckoutProcessed value) checkoutProcessed,
+    required TResult Function(ParkOrder value) parkOrder,
+    required TResult Function(SelectTable value) selectTable,
+    required TResult Function(RetrieveOrder value) retrieveOrder,
+    required TResult Function(CheckoutSplit value) checkoutSplit,
+    required TResult Function(UpdateNote value) updateNote,
   }) {
     return clearCart(this);
   }
@@ -1003,20 +976,20 @@ class _$ClearCartImpl implements _ClearCart {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_AddProduct value)? addProduct,
-    TResult? Function(_UpdateQuantity value)? updateQuantity,
-    TResult? Function(_RemoveFromCart value)? removeFromCart,
-    TResult? Function(_ClearCart value)? clearCart,
-    TResult? Function(_ScanItem value)? scanItem,
-    TResult? Function(_SelectCustomer value)? selectCustomer,
-    TResult? Function(_ApplyDiscount value)? applyDiscount,
-    TResult? Function(_AddPromoCode value)? addPromoCode,
-    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult? Function(_ParkOrder value)? parkOrder,
-    TResult? Function(_SelectTable value)? selectTable,
-    TResult? Function(_RetrieveOrder value)? retrieveOrder,
-    TResult? Function(_CheckoutSplit value)? checkoutSplit,
-    TResult? Function(_UpdateNote value)? updateNote,
+    TResult? Function(AddProduct value)? addProduct,
+    TResult? Function(UpdateQuantity value)? updateQuantity,
+    TResult? Function(RemoveFromCart value)? removeFromCart,
+    TResult? Function(ClearCart value)? clearCart,
+    TResult? Function(ScanItem value)? scanItem,
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(ApplyDiscount value)? applyDiscount,
+    TResult? Function(AddPromoCode value)? addPromoCode,
+    TResult? Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult? Function(ParkOrder value)? parkOrder,
+    TResult? Function(SelectTable value)? selectTable,
+    TResult? Function(RetrieveOrder value)? retrieveOrder,
+    TResult? Function(CheckoutSplit value)? checkoutSplit,
+    TResult? Function(UpdateNote value)? updateNote,
   }) {
     return clearCart?.call(this);
   }
@@ -1024,20 +997,20 @@ class _$ClearCartImpl implements _ClearCart {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_AddProduct value)? addProduct,
-    TResult Function(_UpdateQuantity value)? updateQuantity,
-    TResult Function(_RemoveFromCart value)? removeFromCart,
-    TResult Function(_ClearCart value)? clearCart,
-    TResult Function(_ScanItem value)? scanItem,
-    TResult Function(_SelectCustomer value)? selectCustomer,
-    TResult Function(_ApplyDiscount value)? applyDiscount,
-    TResult Function(_AddPromoCode value)? addPromoCode,
-    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult Function(_ParkOrder value)? parkOrder,
-    TResult Function(_SelectTable value)? selectTable,
-    TResult Function(_RetrieveOrder value)? retrieveOrder,
-    TResult Function(_CheckoutSplit value)? checkoutSplit,
-    TResult Function(_UpdateNote value)? updateNote,
+    TResult Function(AddProduct value)? addProduct,
+    TResult Function(UpdateQuantity value)? updateQuantity,
+    TResult Function(RemoveFromCart value)? removeFromCart,
+    TResult Function(ClearCart value)? clearCart,
+    TResult Function(ScanItem value)? scanItem,
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(ApplyDiscount value)? applyDiscount,
+    TResult Function(AddPromoCode value)? addPromoCode,
+    TResult Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult Function(ParkOrder value)? parkOrder,
+    TResult Function(SelectTable value)? selectTable,
+    TResult Function(RetrieveOrder value)? retrieveOrder,
+    TResult Function(CheckoutSplit value)? checkoutSplit,
+    TResult Function(UpdateNote value)? updateNote,
     required TResult orElse(),
   }) {
     if (clearCart != null) {
@@ -1047,8 +1020,8 @@ class _$ClearCartImpl implements _ClearCart {
   }
 }
 
-abstract class _ClearCart implements CartEvent {
-  const factory _ClearCart() = _$ClearCartImpl;
+abstract class ClearCart implements CartEvent {
+  const factory ClearCart() = _$ClearCartImpl;
 }
 
 /// @nodoc
@@ -1068,8 +1041,6 @@ class __$$ScanItemImplCopyWithImpl<$Res>
       _$ScanItemImpl _value, $Res Function(_$ScanItemImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1086,7 +1057,7 @@ class __$$ScanItemImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ScanItemImpl implements _ScanItem {
+class _$ScanItemImpl implements ScanItem {
   const _$ScanItemImpl(this.barcode);
 
   @override
@@ -1108,9 +1079,7 @@ class _$ScanItemImpl implements _ScanItem {
   @override
   int get hashCode => Object.hash(runtimeType, barcode);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ScanItemImplCopyWith<_$ScanItemImpl> get copyWith =>
@@ -1197,20 +1166,20 @@ class _$ScanItemImpl implements _ScanItem {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_AddProduct value) addProduct,
-    required TResult Function(_UpdateQuantity value) updateQuantity,
-    required TResult Function(_RemoveFromCart value) removeFromCart,
-    required TResult Function(_ClearCart value) clearCart,
-    required TResult Function(_ScanItem value) scanItem,
-    required TResult Function(_SelectCustomer value) selectCustomer,
-    required TResult Function(_ApplyDiscount value) applyDiscount,
-    required TResult Function(_AddPromoCode value) addPromoCode,
-    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
-    required TResult Function(_ParkOrder value) parkOrder,
-    required TResult Function(_SelectTable value) selectTable,
-    required TResult Function(_RetrieveOrder value) retrieveOrder,
-    required TResult Function(_CheckoutSplit value) checkoutSplit,
-    required TResult Function(_UpdateNote value) updateNote,
+    required TResult Function(AddProduct value) addProduct,
+    required TResult Function(UpdateQuantity value) updateQuantity,
+    required TResult Function(RemoveFromCart value) removeFromCart,
+    required TResult Function(ClearCart value) clearCart,
+    required TResult Function(ScanItem value) scanItem,
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(ApplyDiscount value) applyDiscount,
+    required TResult Function(AddPromoCode value) addPromoCode,
+    required TResult Function(CheckoutProcessed value) checkoutProcessed,
+    required TResult Function(ParkOrder value) parkOrder,
+    required TResult Function(SelectTable value) selectTable,
+    required TResult Function(RetrieveOrder value) retrieveOrder,
+    required TResult Function(CheckoutSplit value) checkoutSplit,
+    required TResult Function(UpdateNote value) updateNote,
   }) {
     return scanItem(this);
   }
@@ -1218,20 +1187,20 @@ class _$ScanItemImpl implements _ScanItem {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_AddProduct value)? addProduct,
-    TResult? Function(_UpdateQuantity value)? updateQuantity,
-    TResult? Function(_RemoveFromCart value)? removeFromCart,
-    TResult? Function(_ClearCart value)? clearCart,
-    TResult? Function(_ScanItem value)? scanItem,
-    TResult? Function(_SelectCustomer value)? selectCustomer,
-    TResult? Function(_ApplyDiscount value)? applyDiscount,
-    TResult? Function(_AddPromoCode value)? addPromoCode,
-    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult? Function(_ParkOrder value)? parkOrder,
-    TResult? Function(_SelectTable value)? selectTable,
-    TResult? Function(_RetrieveOrder value)? retrieveOrder,
-    TResult? Function(_CheckoutSplit value)? checkoutSplit,
-    TResult? Function(_UpdateNote value)? updateNote,
+    TResult? Function(AddProduct value)? addProduct,
+    TResult? Function(UpdateQuantity value)? updateQuantity,
+    TResult? Function(RemoveFromCart value)? removeFromCart,
+    TResult? Function(ClearCart value)? clearCart,
+    TResult? Function(ScanItem value)? scanItem,
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(ApplyDiscount value)? applyDiscount,
+    TResult? Function(AddPromoCode value)? addPromoCode,
+    TResult? Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult? Function(ParkOrder value)? parkOrder,
+    TResult? Function(SelectTable value)? selectTable,
+    TResult? Function(RetrieveOrder value)? retrieveOrder,
+    TResult? Function(CheckoutSplit value)? checkoutSplit,
+    TResult? Function(UpdateNote value)? updateNote,
   }) {
     return scanItem?.call(this);
   }
@@ -1239,20 +1208,20 @@ class _$ScanItemImpl implements _ScanItem {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_AddProduct value)? addProduct,
-    TResult Function(_UpdateQuantity value)? updateQuantity,
-    TResult Function(_RemoveFromCart value)? removeFromCart,
-    TResult Function(_ClearCart value)? clearCart,
-    TResult Function(_ScanItem value)? scanItem,
-    TResult Function(_SelectCustomer value)? selectCustomer,
-    TResult Function(_ApplyDiscount value)? applyDiscount,
-    TResult Function(_AddPromoCode value)? addPromoCode,
-    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult Function(_ParkOrder value)? parkOrder,
-    TResult Function(_SelectTable value)? selectTable,
-    TResult Function(_RetrieveOrder value)? retrieveOrder,
-    TResult Function(_CheckoutSplit value)? checkoutSplit,
-    TResult Function(_UpdateNote value)? updateNote,
+    TResult Function(AddProduct value)? addProduct,
+    TResult Function(UpdateQuantity value)? updateQuantity,
+    TResult Function(RemoveFromCart value)? removeFromCart,
+    TResult Function(ClearCart value)? clearCart,
+    TResult Function(ScanItem value)? scanItem,
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(ApplyDiscount value)? applyDiscount,
+    TResult Function(AddPromoCode value)? addPromoCode,
+    TResult Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult Function(ParkOrder value)? parkOrder,
+    TResult Function(SelectTable value)? selectTable,
+    TResult Function(RetrieveOrder value)? retrieveOrder,
+    TResult Function(CheckoutSplit value)? checkoutSplit,
+    TResult Function(UpdateNote value)? updateNote,
     required TResult orElse(),
   }) {
     if (scanItem != null) {
@@ -1262,14 +1231,11 @@ class _$ScanItemImpl implements _ScanItem {
   }
 }
 
-abstract class _ScanItem implements CartEvent {
-  const factory _ScanItem(final String barcode) = _$ScanItemImpl;
+abstract class ScanItem implements CartEvent {
+  const factory ScanItem(final String barcode) = _$ScanItemImpl;
 
   String get barcode;
-
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ScanItemImplCopyWith<_$ScanItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1293,8 +1259,6 @@ class __$$SelectCustomerImplCopyWithImpl<$Res>
       _$SelectCustomerImpl _value, $Res Function(_$SelectCustomerImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1308,8 +1272,6 @@ class __$$SelectCustomerImplCopyWithImpl<$Res>
     ));
   }
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $CustomerCopyWith<$Res>? get customer {
@@ -1325,7 +1287,7 @@ class __$$SelectCustomerImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SelectCustomerImpl implements _SelectCustomer {
+class _$SelectCustomerImpl implements SelectCustomer {
   const _$SelectCustomerImpl(this.customer);
 
   @override
@@ -1348,9 +1310,7 @@ class _$SelectCustomerImpl implements _SelectCustomer {
   @override
   int get hashCode => Object.hash(runtimeType, customer);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SelectCustomerImplCopyWith<_$SelectCustomerImpl> get copyWith =>
@@ -1438,20 +1398,20 @@ class _$SelectCustomerImpl implements _SelectCustomer {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_AddProduct value) addProduct,
-    required TResult Function(_UpdateQuantity value) updateQuantity,
-    required TResult Function(_RemoveFromCart value) removeFromCart,
-    required TResult Function(_ClearCart value) clearCart,
-    required TResult Function(_ScanItem value) scanItem,
-    required TResult Function(_SelectCustomer value) selectCustomer,
-    required TResult Function(_ApplyDiscount value) applyDiscount,
-    required TResult Function(_AddPromoCode value) addPromoCode,
-    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
-    required TResult Function(_ParkOrder value) parkOrder,
-    required TResult Function(_SelectTable value) selectTable,
-    required TResult Function(_RetrieveOrder value) retrieveOrder,
-    required TResult Function(_CheckoutSplit value) checkoutSplit,
-    required TResult Function(_UpdateNote value) updateNote,
+    required TResult Function(AddProduct value) addProduct,
+    required TResult Function(UpdateQuantity value) updateQuantity,
+    required TResult Function(RemoveFromCart value) removeFromCart,
+    required TResult Function(ClearCart value) clearCart,
+    required TResult Function(ScanItem value) scanItem,
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(ApplyDiscount value) applyDiscount,
+    required TResult Function(AddPromoCode value) addPromoCode,
+    required TResult Function(CheckoutProcessed value) checkoutProcessed,
+    required TResult Function(ParkOrder value) parkOrder,
+    required TResult Function(SelectTable value) selectTable,
+    required TResult Function(RetrieveOrder value) retrieveOrder,
+    required TResult Function(CheckoutSplit value) checkoutSplit,
+    required TResult Function(UpdateNote value) updateNote,
   }) {
     return selectCustomer(this);
   }
@@ -1459,20 +1419,20 @@ class _$SelectCustomerImpl implements _SelectCustomer {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_AddProduct value)? addProduct,
-    TResult? Function(_UpdateQuantity value)? updateQuantity,
-    TResult? Function(_RemoveFromCart value)? removeFromCart,
-    TResult? Function(_ClearCart value)? clearCart,
-    TResult? Function(_ScanItem value)? scanItem,
-    TResult? Function(_SelectCustomer value)? selectCustomer,
-    TResult? Function(_ApplyDiscount value)? applyDiscount,
-    TResult? Function(_AddPromoCode value)? addPromoCode,
-    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult? Function(_ParkOrder value)? parkOrder,
-    TResult? Function(_SelectTable value)? selectTable,
-    TResult? Function(_RetrieveOrder value)? retrieveOrder,
-    TResult? Function(_CheckoutSplit value)? checkoutSplit,
-    TResult? Function(_UpdateNote value)? updateNote,
+    TResult? Function(AddProduct value)? addProduct,
+    TResult? Function(UpdateQuantity value)? updateQuantity,
+    TResult? Function(RemoveFromCart value)? removeFromCart,
+    TResult? Function(ClearCart value)? clearCart,
+    TResult? Function(ScanItem value)? scanItem,
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(ApplyDiscount value)? applyDiscount,
+    TResult? Function(AddPromoCode value)? addPromoCode,
+    TResult? Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult? Function(ParkOrder value)? parkOrder,
+    TResult? Function(SelectTable value)? selectTable,
+    TResult? Function(RetrieveOrder value)? retrieveOrder,
+    TResult? Function(CheckoutSplit value)? checkoutSplit,
+    TResult? Function(UpdateNote value)? updateNote,
   }) {
     return selectCustomer?.call(this);
   }
@@ -1480,20 +1440,20 @@ class _$SelectCustomerImpl implements _SelectCustomer {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_AddProduct value)? addProduct,
-    TResult Function(_UpdateQuantity value)? updateQuantity,
-    TResult Function(_RemoveFromCart value)? removeFromCart,
-    TResult Function(_ClearCart value)? clearCart,
-    TResult Function(_ScanItem value)? scanItem,
-    TResult Function(_SelectCustomer value)? selectCustomer,
-    TResult Function(_ApplyDiscount value)? applyDiscount,
-    TResult Function(_AddPromoCode value)? addPromoCode,
-    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult Function(_ParkOrder value)? parkOrder,
-    TResult Function(_SelectTable value)? selectTable,
-    TResult Function(_RetrieveOrder value)? retrieveOrder,
-    TResult Function(_CheckoutSplit value)? checkoutSplit,
-    TResult Function(_UpdateNote value)? updateNote,
+    TResult Function(AddProduct value)? addProduct,
+    TResult Function(UpdateQuantity value)? updateQuantity,
+    TResult Function(RemoveFromCart value)? removeFromCart,
+    TResult Function(ClearCart value)? clearCart,
+    TResult Function(ScanItem value)? scanItem,
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(ApplyDiscount value)? applyDiscount,
+    TResult Function(AddPromoCode value)? addPromoCode,
+    TResult Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult Function(ParkOrder value)? parkOrder,
+    TResult Function(SelectTable value)? selectTable,
+    TResult Function(RetrieveOrder value)? retrieveOrder,
+    TResult Function(CheckoutSplit value)? checkoutSplit,
+    TResult Function(UpdateNote value)? updateNote,
     required TResult orElse(),
   }) {
     if (selectCustomer != null) {
@@ -1503,15 +1463,11 @@ class _$SelectCustomerImpl implements _SelectCustomer {
   }
 }
 
-abstract class _SelectCustomer implements CartEvent {
-  const factory _SelectCustomer(final Customer? customer) =
-      _$SelectCustomerImpl;
+abstract class SelectCustomer implements CartEvent {
+  const factory SelectCustomer(final Customer? customer) = _$SelectCustomerImpl;
 
   Customer? get customer;
-
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SelectCustomerImplCopyWith<_$SelectCustomerImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1533,8 +1489,6 @@ class __$$ApplyDiscountImplCopyWithImpl<$Res>
       _$ApplyDiscountImpl _value, $Res Function(_$ApplyDiscountImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1556,7 +1510,7 @@ class __$$ApplyDiscountImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ApplyDiscountImpl implements _ApplyDiscount {
+class _$ApplyDiscountImpl implements ApplyDiscount {
   const _$ApplyDiscountImpl({this.percent, this.fixed});
 
   @override
@@ -1581,9 +1535,7 @@ class _$ApplyDiscountImpl implements _ApplyDiscount {
   @override
   int get hashCode => Object.hash(runtimeType, percent, fixed);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ApplyDiscountImplCopyWith<_$ApplyDiscountImpl> get copyWith =>
@@ -1670,20 +1622,20 @@ class _$ApplyDiscountImpl implements _ApplyDiscount {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_AddProduct value) addProduct,
-    required TResult Function(_UpdateQuantity value) updateQuantity,
-    required TResult Function(_RemoveFromCart value) removeFromCart,
-    required TResult Function(_ClearCart value) clearCart,
-    required TResult Function(_ScanItem value) scanItem,
-    required TResult Function(_SelectCustomer value) selectCustomer,
-    required TResult Function(_ApplyDiscount value) applyDiscount,
-    required TResult Function(_AddPromoCode value) addPromoCode,
-    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
-    required TResult Function(_ParkOrder value) parkOrder,
-    required TResult Function(_SelectTable value) selectTable,
-    required TResult Function(_RetrieveOrder value) retrieveOrder,
-    required TResult Function(_CheckoutSplit value) checkoutSplit,
-    required TResult Function(_UpdateNote value) updateNote,
+    required TResult Function(AddProduct value) addProduct,
+    required TResult Function(UpdateQuantity value) updateQuantity,
+    required TResult Function(RemoveFromCart value) removeFromCart,
+    required TResult Function(ClearCart value) clearCart,
+    required TResult Function(ScanItem value) scanItem,
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(ApplyDiscount value) applyDiscount,
+    required TResult Function(AddPromoCode value) addPromoCode,
+    required TResult Function(CheckoutProcessed value) checkoutProcessed,
+    required TResult Function(ParkOrder value) parkOrder,
+    required TResult Function(SelectTable value) selectTable,
+    required TResult Function(RetrieveOrder value) retrieveOrder,
+    required TResult Function(CheckoutSplit value) checkoutSplit,
+    required TResult Function(UpdateNote value) updateNote,
   }) {
     return applyDiscount(this);
   }
@@ -1691,20 +1643,20 @@ class _$ApplyDiscountImpl implements _ApplyDiscount {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_AddProduct value)? addProduct,
-    TResult? Function(_UpdateQuantity value)? updateQuantity,
-    TResult? Function(_RemoveFromCart value)? removeFromCart,
-    TResult? Function(_ClearCart value)? clearCart,
-    TResult? Function(_ScanItem value)? scanItem,
-    TResult? Function(_SelectCustomer value)? selectCustomer,
-    TResult? Function(_ApplyDiscount value)? applyDiscount,
-    TResult? Function(_AddPromoCode value)? addPromoCode,
-    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult? Function(_ParkOrder value)? parkOrder,
-    TResult? Function(_SelectTable value)? selectTable,
-    TResult? Function(_RetrieveOrder value)? retrieveOrder,
-    TResult? Function(_CheckoutSplit value)? checkoutSplit,
-    TResult? Function(_UpdateNote value)? updateNote,
+    TResult? Function(AddProduct value)? addProduct,
+    TResult? Function(UpdateQuantity value)? updateQuantity,
+    TResult? Function(RemoveFromCart value)? removeFromCart,
+    TResult? Function(ClearCart value)? clearCart,
+    TResult? Function(ScanItem value)? scanItem,
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(ApplyDiscount value)? applyDiscount,
+    TResult? Function(AddPromoCode value)? addPromoCode,
+    TResult? Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult? Function(ParkOrder value)? parkOrder,
+    TResult? Function(SelectTable value)? selectTable,
+    TResult? Function(RetrieveOrder value)? retrieveOrder,
+    TResult? Function(CheckoutSplit value)? checkoutSplit,
+    TResult? Function(UpdateNote value)? updateNote,
   }) {
     return applyDiscount?.call(this);
   }
@@ -1712,20 +1664,20 @@ class _$ApplyDiscountImpl implements _ApplyDiscount {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_AddProduct value)? addProduct,
-    TResult Function(_UpdateQuantity value)? updateQuantity,
-    TResult Function(_RemoveFromCart value)? removeFromCart,
-    TResult Function(_ClearCart value)? clearCart,
-    TResult Function(_ScanItem value)? scanItem,
-    TResult Function(_SelectCustomer value)? selectCustomer,
-    TResult Function(_ApplyDiscount value)? applyDiscount,
-    TResult Function(_AddPromoCode value)? addPromoCode,
-    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult Function(_ParkOrder value)? parkOrder,
-    TResult Function(_SelectTable value)? selectTable,
-    TResult Function(_RetrieveOrder value)? retrieveOrder,
-    TResult Function(_CheckoutSplit value)? checkoutSplit,
-    TResult Function(_UpdateNote value)? updateNote,
+    TResult Function(AddProduct value)? addProduct,
+    TResult Function(UpdateQuantity value)? updateQuantity,
+    TResult Function(RemoveFromCart value)? removeFromCart,
+    TResult Function(ClearCart value)? clearCart,
+    TResult Function(ScanItem value)? scanItem,
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(ApplyDiscount value)? applyDiscount,
+    TResult Function(AddPromoCode value)? addPromoCode,
+    TResult Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult Function(ParkOrder value)? parkOrder,
+    TResult Function(SelectTable value)? selectTable,
+    TResult Function(RetrieveOrder value)? retrieveOrder,
+    TResult Function(CheckoutSplit value)? checkoutSplit,
+    TResult Function(UpdateNote value)? updateNote,
     required TResult orElse(),
   }) {
     if (applyDiscount != null) {
@@ -1735,16 +1687,13 @@ class _$ApplyDiscountImpl implements _ApplyDiscount {
   }
 }
 
-abstract class _ApplyDiscount implements CartEvent {
-  const factory _ApplyDiscount({final double? percent, final double? fixed}) =
+abstract class ApplyDiscount implements CartEvent {
+  const factory ApplyDiscount({final double? percent, final double? fixed}) =
       _$ApplyDiscountImpl;
 
   double? get percent;
   double? get fixed;
-
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ApplyDiscountImplCopyWith<_$ApplyDiscountImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1766,8 +1715,6 @@ class __$$AddPromoCodeImplCopyWithImpl<$Res>
       _$AddPromoCodeImpl _value, $Res Function(_$AddPromoCodeImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1784,7 +1731,7 @@ class __$$AddPromoCodeImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AddPromoCodeImpl implements _AddPromoCode {
+class _$AddPromoCodeImpl implements AddPromoCode {
   const _$AddPromoCodeImpl(this.code);
 
   @override
@@ -1806,9 +1753,7 @@ class _$AddPromoCodeImpl implements _AddPromoCode {
   @override
   int get hashCode => Object.hash(runtimeType, code);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$AddPromoCodeImplCopyWith<_$AddPromoCodeImpl> get copyWith =>
@@ -1895,20 +1840,20 @@ class _$AddPromoCodeImpl implements _AddPromoCode {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_AddProduct value) addProduct,
-    required TResult Function(_UpdateQuantity value) updateQuantity,
-    required TResult Function(_RemoveFromCart value) removeFromCart,
-    required TResult Function(_ClearCart value) clearCart,
-    required TResult Function(_ScanItem value) scanItem,
-    required TResult Function(_SelectCustomer value) selectCustomer,
-    required TResult Function(_ApplyDiscount value) applyDiscount,
-    required TResult Function(_AddPromoCode value) addPromoCode,
-    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
-    required TResult Function(_ParkOrder value) parkOrder,
-    required TResult Function(_SelectTable value) selectTable,
-    required TResult Function(_RetrieveOrder value) retrieveOrder,
-    required TResult Function(_CheckoutSplit value) checkoutSplit,
-    required TResult Function(_UpdateNote value) updateNote,
+    required TResult Function(AddProduct value) addProduct,
+    required TResult Function(UpdateQuantity value) updateQuantity,
+    required TResult Function(RemoveFromCart value) removeFromCart,
+    required TResult Function(ClearCart value) clearCart,
+    required TResult Function(ScanItem value) scanItem,
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(ApplyDiscount value) applyDiscount,
+    required TResult Function(AddPromoCode value) addPromoCode,
+    required TResult Function(CheckoutProcessed value) checkoutProcessed,
+    required TResult Function(ParkOrder value) parkOrder,
+    required TResult Function(SelectTable value) selectTable,
+    required TResult Function(RetrieveOrder value) retrieveOrder,
+    required TResult Function(CheckoutSplit value) checkoutSplit,
+    required TResult Function(UpdateNote value) updateNote,
   }) {
     return addPromoCode(this);
   }
@@ -1916,20 +1861,20 @@ class _$AddPromoCodeImpl implements _AddPromoCode {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_AddProduct value)? addProduct,
-    TResult? Function(_UpdateQuantity value)? updateQuantity,
-    TResult? Function(_RemoveFromCart value)? removeFromCart,
-    TResult? Function(_ClearCart value)? clearCart,
-    TResult? Function(_ScanItem value)? scanItem,
-    TResult? Function(_SelectCustomer value)? selectCustomer,
-    TResult? Function(_ApplyDiscount value)? applyDiscount,
-    TResult? Function(_AddPromoCode value)? addPromoCode,
-    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult? Function(_ParkOrder value)? parkOrder,
-    TResult? Function(_SelectTable value)? selectTable,
-    TResult? Function(_RetrieveOrder value)? retrieveOrder,
-    TResult? Function(_CheckoutSplit value)? checkoutSplit,
-    TResult? Function(_UpdateNote value)? updateNote,
+    TResult? Function(AddProduct value)? addProduct,
+    TResult? Function(UpdateQuantity value)? updateQuantity,
+    TResult? Function(RemoveFromCart value)? removeFromCart,
+    TResult? Function(ClearCart value)? clearCart,
+    TResult? Function(ScanItem value)? scanItem,
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(ApplyDiscount value)? applyDiscount,
+    TResult? Function(AddPromoCode value)? addPromoCode,
+    TResult? Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult? Function(ParkOrder value)? parkOrder,
+    TResult? Function(SelectTable value)? selectTable,
+    TResult? Function(RetrieveOrder value)? retrieveOrder,
+    TResult? Function(CheckoutSplit value)? checkoutSplit,
+    TResult? Function(UpdateNote value)? updateNote,
   }) {
     return addPromoCode?.call(this);
   }
@@ -1937,20 +1882,20 @@ class _$AddPromoCodeImpl implements _AddPromoCode {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_AddProduct value)? addProduct,
-    TResult Function(_UpdateQuantity value)? updateQuantity,
-    TResult Function(_RemoveFromCart value)? removeFromCart,
-    TResult Function(_ClearCart value)? clearCart,
-    TResult Function(_ScanItem value)? scanItem,
-    TResult Function(_SelectCustomer value)? selectCustomer,
-    TResult Function(_ApplyDiscount value)? applyDiscount,
-    TResult Function(_AddPromoCode value)? addPromoCode,
-    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult Function(_ParkOrder value)? parkOrder,
-    TResult Function(_SelectTable value)? selectTable,
-    TResult Function(_RetrieveOrder value)? retrieveOrder,
-    TResult Function(_CheckoutSplit value)? checkoutSplit,
-    TResult Function(_UpdateNote value)? updateNote,
+    TResult Function(AddProduct value)? addProduct,
+    TResult Function(UpdateQuantity value)? updateQuantity,
+    TResult Function(RemoveFromCart value)? removeFromCart,
+    TResult Function(ClearCart value)? clearCart,
+    TResult Function(ScanItem value)? scanItem,
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(ApplyDiscount value)? applyDiscount,
+    TResult Function(AddPromoCode value)? addPromoCode,
+    TResult Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult Function(ParkOrder value)? parkOrder,
+    TResult Function(SelectTable value)? selectTable,
+    TResult Function(RetrieveOrder value)? retrieveOrder,
+    TResult Function(CheckoutSplit value)? checkoutSplit,
+    TResult Function(UpdateNote value)? updateNote,
     required TResult orElse(),
   }) {
     if (addPromoCode != null) {
@@ -1960,14 +1905,11 @@ class _$AddPromoCodeImpl implements _AddPromoCode {
   }
 }
 
-abstract class _AddPromoCode implements CartEvent {
-  const factory _AddPromoCode(final String code) = _$AddPromoCodeImpl;
+abstract class AddPromoCode implements CartEvent {
+  const factory AddPromoCode(final String code) = _$AddPromoCodeImpl;
 
   String get code;
-
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$AddPromoCodeImplCopyWith<_$AddPromoCodeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1990,8 +1932,6 @@ class __$$CheckoutProcessedImplCopyWithImpl<$Res>
       $Res Function(_$CheckoutProcessedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2018,7 +1958,7 @@ class __$$CheckoutProcessedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CheckoutProcessedImpl implements _CheckoutProcessed {
+class _$CheckoutProcessedImpl implements CheckoutProcessed {
   const _$CheckoutProcessedImpl(
       {required this.paymentMethod, this.tenderedAmount, this.changeAmount});
 
@@ -2051,9 +1991,7 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
   int get hashCode =>
       Object.hash(runtimeType, paymentMethod, tenderedAmount, changeAmount);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$CheckoutProcessedImplCopyWith<_$CheckoutProcessedImpl> get copyWith =>
@@ -2141,20 +2079,20 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_AddProduct value) addProduct,
-    required TResult Function(_UpdateQuantity value) updateQuantity,
-    required TResult Function(_RemoveFromCart value) removeFromCart,
-    required TResult Function(_ClearCart value) clearCart,
-    required TResult Function(_ScanItem value) scanItem,
-    required TResult Function(_SelectCustomer value) selectCustomer,
-    required TResult Function(_ApplyDiscount value) applyDiscount,
-    required TResult Function(_AddPromoCode value) addPromoCode,
-    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
-    required TResult Function(_ParkOrder value) parkOrder,
-    required TResult Function(_SelectTable value) selectTable,
-    required TResult Function(_RetrieveOrder value) retrieveOrder,
-    required TResult Function(_CheckoutSplit value) checkoutSplit,
-    required TResult Function(_UpdateNote value) updateNote,
+    required TResult Function(AddProduct value) addProduct,
+    required TResult Function(UpdateQuantity value) updateQuantity,
+    required TResult Function(RemoveFromCart value) removeFromCart,
+    required TResult Function(ClearCart value) clearCart,
+    required TResult Function(ScanItem value) scanItem,
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(ApplyDiscount value) applyDiscount,
+    required TResult Function(AddPromoCode value) addPromoCode,
+    required TResult Function(CheckoutProcessed value) checkoutProcessed,
+    required TResult Function(ParkOrder value) parkOrder,
+    required TResult Function(SelectTable value) selectTable,
+    required TResult Function(RetrieveOrder value) retrieveOrder,
+    required TResult Function(CheckoutSplit value) checkoutSplit,
+    required TResult Function(UpdateNote value) updateNote,
   }) {
     return checkoutProcessed(this);
   }
@@ -2162,20 +2100,20 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_AddProduct value)? addProduct,
-    TResult? Function(_UpdateQuantity value)? updateQuantity,
-    TResult? Function(_RemoveFromCart value)? removeFromCart,
-    TResult? Function(_ClearCart value)? clearCart,
-    TResult? Function(_ScanItem value)? scanItem,
-    TResult? Function(_SelectCustomer value)? selectCustomer,
-    TResult? Function(_ApplyDiscount value)? applyDiscount,
-    TResult? Function(_AddPromoCode value)? addPromoCode,
-    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult? Function(_ParkOrder value)? parkOrder,
-    TResult? Function(_SelectTable value)? selectTable,
-    TResult? Function(_RetrieveOrder value)? retrieveOrder,
-    TResult? Function(_CheckoutSplit value)? checkoutSplit,
-    TResult? Function(_UpdateNote value)? updateNote,
+    TResult? Function(AddProduct value)? addProduct,
+    TResult? Function(UpdateQuantity value)? updateQuantity,
+    TResult? Function(RemoveFromCart value)? removeFromCart,
+    TResult? Function(ClearCart value)? clearCart,
+    TResult? Function(ScanItem value)? scanItem,
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(ApplyDiscount value)? applyDiscount,
+    TResult? Function(AddPromoCode value)? addPromoCode,
+    TResult? Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult? Function(ParkOrder value)? parkOrder,
+    TResult? Function(SelectTable value)? selectTable,
+    TResult? Function(RetrieveOrder value)? retrieveOrder,
+    TResult? Function(CheckoutSplit value)? checkoutSplit,
+    TResult? Function(UpdateNote value)? updateNote,
   }) {
     return checkoutProcessed?.call(this);
   }
@@ -2183,20 +2121,20 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_AddProduct value)? addProduct,
-    TResult Function(_UpdateQuantity value)? updateQuantity,
-    TResult Function(_RemoveFromCart value)? removeFromCart,
-    TResult Function(_ClearCart value)? clearCart,
-    TResult Function(_ScanItem value)? scanItem,
-    TResult Function(_SelectCustomer value)? selectCustomer,
-    TResult Function(_ApplyDiscount value)? applyDiscount,
-    TResult Function(_AddPromoCode value)? addPromoCode,
-    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult Function(_ParkOrder value)? parkOrder,
-    TResult Function(_SelectTable value)? selectTable,
-    TResult Function(_RetrieveOrder value)? retrieveOrder,
-    TResult Function(_CheckoutSplit value)? checkoutSplit,
-    TResult Function(_UpdateNote value)? updateNote,
+    TResult Function(AddProduct value)? addProduct,
+    TResult Function(UpdateQuantity value)? updateQuantity,
+    TResult Function(RemoveFromCart value)? removeFromCart,
+    TResult Function(ClearCart value)? clearCart,
+    TResult Function(ScanItem value)? scanItem,
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(ApplyDiscount value)? applyDiscount,
+    TResult Function(AddPromoCode value)? addPromoCode,
+    TResult Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult Function(ParkOrder value)? parkOrder,
+    TResult Function(SelectTable value)? selectTable,
+    TResult Function(RetrieveOrder value)? retrieveOrder,
+    TResult Function(CheckoutSplit value)? checkoutSplit,
+    TResult Function(UpdateNote value)? updateNote,
     required TResult orElse(),
   }) {
     if (checkoutProcessed != null) {
@@ -2206,8 +2144,8 @@ class _$CheckoutProcessedImpl implements _CheckoutProcessed {
   }
 }
 
-abstract class _CheckoutProcessed implements CartEvent {
-  const factory _CheckoutProcessed(
+abstract class CheckoutProcessed implements CartEvent {
+  const factory CheckoutProcessed(
       {required final String paymentMethod,
       final double? tenderedAmount,
       final double? changeAmount}) = _$CheckoutProcessedImpl;
@@ -2215,10 +2153,7 @@ abstract class _CheckoutProcessed implements CartEvent {
   String get paymentMethod;
   double? get tenderedAmount;
   double? get changeAmount;
-
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$CheckoutProcessedImplCopyWith<_$CheckoutProcessedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2240,8 +2175,6 @@ class __$$ParkOrderImplCopyWithImpl<$Res>
       _$ParkOrderImpl _value, $Res Function(_$ParkOrderImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2258,7 +2191,7 @@ class __$$ParkOrderImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ParkOrderImpl implements _ParkOrder {
+class _$ParkOrderImpl implements ParkOrder {
   const _$ParkOrderImpl(this.tableUuid);
 
   @override
@@ -2281,9 +2214,7 @@ class _$ParkOrderImpl implements _ParkOrder {
   @override
   int get hashCode => Object.hash(runtimeType, tableUuid);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ParkOrderImplCopyWith<_$ParkOrderImpl> get copyWith =>
@@ -2370,20 +2301,20 @@ class _$ParkOrderImpl implements _ParkOrder {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_AddProduct value) addProduct,
-    required TResult Function(_UpdateQuantity value) updateQuantity,
-    required TResult Function(_RemoveFromCart value) removeFromCart,
-    required TResult Function(_ClearCart value) clearCart,
-    required TResult Function(_ScanItem value) scanItem,
-    required TResult Function(_SelectCustomer value) selectCustomer,
-    required TResult Function(_ApplyDiscount value) applyDiscount,
-    required TResult Function(_AddPromoCode value) addPromoCode,
-    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
-    required TResult Function(_ParkOrder value) parkOrder,
-    required TResult Function(_SelectTable value) selectTable,
-    required TResult Function(_RetrieveOrder value) retrieveOrder,
-    required TResult Function(_CheckoutSplit value) checkoutSplit,
-    required TResult Function(_UpdateNote value) updateNote,
+    required TResult Function(AddProduct value) addProduct,
+    required TResult Function(UpdateQuantity value) updateQuantity,
+    required TResult Function(RemoveFromCart value) removeFromCart,
+    required TResult Function(ClearCart value) clearCart,
+    required TResult Function(ScanItem value) scanItem,
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(ApplyDiscount value) applyDiscount,
+    required TResult Function(AddPromoCode value) addPromoCode,
+    required TResult Function(CheckoutProcessed value) checkoutProcessed,
+    required TResult Function(ParkOrder value) parkOrder,
+    required TResult Function(SelectTable value) selectTable,
+    required TResult Function(RetrieveOrder value) retrieveOrder,
+    required TResult Function(CheckoutSplit value) checkoutSplit,
+    required TResult Function(UpdateNote value) updateNote,
   }) {
     return parkOrder(this);
   }
@@ -2391,20 +2322,20 @@ class _$ParkOrderImpl implements _ParkOrder {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_AddProduct value)? addProduct,
-    TResult? Function(_UpdateQuantity value)? updateQuantity,
-    TResult? Function(_RemoveFromCart value)? removeFromCart,
-    TResult? Function(_ClearCart value)? clearCart,
-    TResult? Function(_ScanItem value)? scanItem,
-    TResult? Function(_SelectCustomer value)? selectCustomer,
-    TResult? Function(_ApplyDiscount value)? applyDiscount,
-    TResult? Function(_AddPromoCode value)? addPromoCode,
-    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult? Function(_ParkOrder value)? parkOrder,
-    TResult? Function(_SelectTable value)? selectTable,
-    TResult? Function(_RetrieveOrder value)? retrieveOrder,
-    TResult? Function(_CheckoutSplit value)? checkoutSplit,
-    TResult? Function(_UpdateNote value)? updateNote,
+    TResult? Function(AddProduct value)? addProduct,
+    TResult? Function(UpdateQuantity value)? updateQuantity,
+    TResult? Function(RemoveFromCart value)? removeFromCart,
+    TResult? Function(ClearCart value)? clearCart,
+    TResult? Function(ScanItem value)? scanItem,
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(ApplyDiscount value)? applyDiscount,
+    TResult? Function(AddPromoCode value)? addPromoCode,
+    TResult? Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult? Function(ParkOrder value)? parkOrder,
+    TResult? Function(SelectTable value)? selectTable,
+    TResult? Function(RetrieveOrder value)? retrieveOrder,
+    TResult? Function(CheckoutSplit value)? checkoutSplit,
+    TResult? Function(UpdateNote value)? updateNote,
   }) {
     return parkOrder?.call(this);
   }
@@ -2412,20 +2343,20 @@ class _$ParkOrderImpl implements _ParkOrder {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_AddProduct value)? addProduct,
-    TResult Function(_UpdateQuantity value)? updateQuantity,
-    TResult Function(_RemoveFromCart value)? removeFromCart,
-    TResult Function(_ClearCart value)? clearCart,
-    TResult Function(_ScanItem value)? scanItem,
-    TResult Function(_SelectCustomer value)? selectCustomer,
-    TResult Function(_ApplyDiscount value)? applyDiscount,
-    TResult Function(_AddPromoCode value)? addPromoCode,
-    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult Function(_ParkOrder value)? parkOrder,
-    TResult Function(_SelectTable value)? selectTable,
-    TResult Function(_RetrieveOrder value)? retrieveOrder,
-    TResult Function(_CheckoutSplit value)? checkoutSplit,
-    TResult Function(_UpdateNote value)? updateNote,
+    TResult Function(AddProduct value)? addProduct,
+    TResult Function(UpdateQuantity value)? updateQuantity,
+    TResult Function(RemoveFromCart value)? removeFromCart,
+    TResult Function(ClearCart value)? clearCart,
+    TResult Function(ScanItem value)? scanItem,
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(ApplyDiscount value)? applyDiscount,
+    TResult Function(AddPromoCode value)? addPromoCode,
+    TResult Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult Function(ParkOrder value)? parkOrder,
+    TResult Function(SelectTable value)? selectTable,
+    TResult Function(RetrieveOrder value)? retrieveOrder,
+    TResult Function(CheckoutSplit value)? checkoutSplit,
+    TResult Function(UpdateNote value)? updateNote,
     required TResult orElse(),
   }) {
     if (parkOrder != null) {
@@ -2435,14 +2366,11 @@ class _$ParkOrderImpl implements _ParkOrder {
   }
 }
 
-abstract class _ParkOrder implements CartEvent {
-  const factory _ParkOrder(final String tableUuid) = _$ParkOrderImpl;
+abstract class ParkOrder implements CartEvent {
+  const factory ParkOrder(final String tableUuid) = _$ParkOrderImpl;
 
   String get tableUuid;
-
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ParkOrderImplCopyWith<_$ParkOrderImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2464,8 +2392,6 @@ class __$$SelectTableImplCopyWithImpl<$Res>
       _$SelectTableImpl _value, $Res Function(_$SelectTableImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2482,7 +2408,7 @@ class __$$SelectTableImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SelectTableImpl implements _SelectTable {
+class _$SelectTableImpl implements SelectTable {
   const _$SelectTableImpl(this.tableUuid);
 
   @override
@@ -2505,9 +2431,7 @@ class _$SelectTableImpl implements _SelectTable {
   @override
   int get hashCode => Object.hash(runtimeType, tableUuid);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SelectTableImplCopyWith<_$SelectTableImpl> get copyWith =>
@@ -2594,20 +2518,20 @@ class _$SelectTableImpl implements _SelectTable {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_AddProduct value) addProduct,
-    required TResult Function(_UpdateQuantity value) updateQuantity,
-    required TResult Function(_RemoveFromCart value) removeFromCart,
-    required TResult Function(_ClearCart value) clearCart,
-    required TResult Function(_ScanItem value) scanItem,
-    required TResult Function(_SelectCustomer value) selectCustomer,
-    required TResult Function(_ApplyDiscount value) applyDiscount,
-    required TResult Function(_AddPromoCode value) addPromoCode,
-    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
-    required TResult Function(_ParkOrder value) parkOrder,
-    required TResult Function(_SelectTable value) selectTable,
-    required TResult Function(_RetrieveOrder value) retrieveOrder,
-    required TResult Function(_CheckoutSplit value) checkoutSplit,
-    required TResult Function(_UpdateNote value) updateNote,
+    required TResult Function(AddProduct value) addProduct,
+    required TResult Function(UpdateQuantity value) updateQuantity,
+    required TResult Function(RemoveFromCart value) removeFromCart,
+    required TResult Function(ClearCart value) clearCart,
+    required TResult Function(ScanItem value) scanItem,
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(ApplyDiscount value) applyDiscount,
+    required TResult Function(AddPromoCode value) addPromoCode,
+    required TResult Function(CheckoutProcessed value) checkoutProcessed,
+    required TResult Function(ParkOrder value) parkOrder,
+    required TResult Function(SelectTable value) selectTable,
+    required TResult Function(RetrieveOrder value) retrieveOrder,
+    required TResult Function(CheckoutSplit value) checkoutSplit,
+    required TResult Function(UpdateNote value) updateNote,
   }) {
     return selectTable(this);
   }
@@ -2615,20 +2539,20 @@ class _$SelectTableImpl implements _SelectTable {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_AddProduct value)? addProduct,
-    TResult? Function(_UpdateQuantity value)? updateQuantity,
-    TResult? Function(_RemoveFromCart value)? removeFromCart,
-    TResult? Function(_ClearCart value)? clearCart,
-    TResult? Function(_ScanItem value)? scanItem,
-    TResult? Function(_SelectCustomer value)? selectCustomer,
-    TResult? Function(_ApplyDiscount value)? applyDiscount,
-    TResult? Function(_AddPromoCode value)? addPromoCode,
-    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult? Function(_ParkOrder value)? parkOrder,
-    TResult? Function(_SelectTable value)? selectTable,
-    TResult? Function(_RetrieveOrder value)? retrieveOrder,
-    TResult? Function(_CheckoutSplit value)? checkoutSplit,
-    TResult? Function(_UpdateNote value)? updateNote,
+    TResult? Function(AddProduct value)? addProduct,
+    TResult? Function(UpdateQuantity value)? updateQuantity,
+    TResult? Function(RemoveFromCart value)? removeFromCart,
+    TResult? Function(ClearCart value)? clearCart,
+    TResult? Function(ScanItem value)? scanItem,
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(ApplyDiscount value)? applyDiscount,
+    TResult? Function(AddPromoCode value)? addPromoCode,
+    TResult? Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult? Function(ParkOrder value)? parkOrder,
+    TResult? Function(SelectTable value)? selectTable,
+    TResult? Function(RetrieveOrder value)? retrieveOrder,
+    TResult? Function(CheckoutSplit value)? checkoutSplit,
+    TResult? Function(UpdateNote value)? updateNote,
   }) {
     return selectTable?.call(this);
   }
@@ -2636,20 +2560,20 @@ class _$SelectTableImpl implements _SelectTable {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_AddProduct value)? addProduct,
-    TResult Function(_UpdateQuantity value)? updateQuantity,
-    TResult Function(_RemoveFromCart value)? removeFromCart,
-    TResult Function(_ClearCart value)? clearCart,
-    TResult Function(_ScanItem value)? scanItem,
-    TResult Function(_SelectCustomer value)? selectCustomer,
-    TResult Function(_ApplyDiscount value)? applyDiscount,
-    TResult Function(_AddPromoCode value)? addPromoCode,
-    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult Function(_ParkOrder value)? parkOrder,
-    TResult Function(_SelectTable value)? selectTable,
-    TResult Function(_RetrieveOrder value)? retrieveOrder,
-    TResult Function(_CheckoutSplit value)? checkoutSplit,
-    TResult Function(_UpdateNote value)? updateNote,
+    TResult Function(AddProduct value)? addProduct,
+    TResult Function(UpdateQuantity value)? updateQuantity,
+    TResult Function(RemoveFromCart value)? removeFromCart,
+    TResult Function(ClearCart value)? clearCart,
+    TResult Function(ScanItem value)? scanItem,
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(ApplyDiscount value)? applyDiscount,
+    TResult Function(AddPromoCode value)? addPromoCode,
+    TResult Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult Function(ParkOrder value)? parkOrder,
+    TResult Function(SelectTable value)? selectTable,
+    TResult Function(RetrieveOrder value)? retrieveOrder,
+    TResult Function(CheckoutSplit value)? checkoutSplit,
+    TResult Function(UpdateNote value)? updateNote,
     required TResult orElse(),
   }) {
     if (selectTable != null) {
@@ -2659,14 +2583,11 @@ class _$SelectTableImpl implements _SelectTable {
   }
 }
 
-abstract class _SelectTable implements CartEvent {
-  const factory _SelectTable(final String tableUuid) = _$SelectTableImpl;
+abstract class SelectTable implements CartEvent {
+  const factory SelectTable(final String tableUuid) = _$SelectTableImpl;
 
   String get tableUuid;
-
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SelectTableImplCopyWith<_$SelectTableImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2688,8 +2609,6 @@ class __$$RetrieveOrderImplCopyWithImpl<$Res>
       _$RetrieveOrderImpl _value, $Res Function(_$RetrieveOrderImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2711,7 +2630,7 @@ class __$$RetrieveOrderImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$RetrieveOrderImpl implements _RetrieveOrder {
+class _$RetrieveOrderImpl implements RetrieveOrder {
   const _$RetrieveOrderImpl(this.orderUuid, this.tableUuid);
 
   @override
@@ -2738,9 +2657,7 @@ class _$RetrieveOrderImpl implements _RetrieveOrder {
   @override
   int get hashCode => Object.hash(runtimeType, orderUuid, tableUuid);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$RetrieveOrderImplCopyWith<_$RetrieveOrderImpl> get copyWith =>
@@ -2827,20 +2744,20 @@ class _$RetrieveOrderImpl implements _RetrieveOrder {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_AddProduct value) addProduct,
-    required TResult Function(_UpdateQuantity value) updateQuantity,
-    required TResult Function(_RemoveFromCart value) removeFromCart,
-    required TResult Function(_ClearCart value) clearCart,
-    required TResult Function(_ScanItem value) scanItem,
-    required TResult Function(_SelectCustomer value) selectCustomer,
-    required TResult Function(_ApplyDiscount value) applyDiscount,
-    required TResult Function(_AddPromoCode value) addPromoCode,
-    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
-    required TResult Function(_ParkOrder value) parkOrder,
-    required TResult Function(_SelectTable value) selectTable,
-    required TResult Function(_RetrieveOrder value) retrieveOrder,
-    required TResult Function(_CheckoutSplit value) checkoutSplit,
-    required TResult Function(_UpdateNote value) updateNote,
+    required TResult Function(AddProduct value) addProduct,
+    required TResult Function(UpdateQuantity value) updateQuantity,
+    required TResult Function(RemoveFromCart value) removeFromCart,
+    required TResult Function(ClearCart value) clearCart,
+    required TResult Function(ScanItem value) scanItem,
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(ApplyDiscount value) applyDiscount,
+    required TResult Function(AddPromoCode value) addPromoCode,
+    required TResult Function(CheckoutProcessed value) checkoutProcessed,
+    required TResult Function(ParkOrder value) parkOrder,
+    required TResult Function(SelectTable value) selectTable,
+    required TResult Function(RetrieveOrder value) retrieveOrder,
+    required TResult Function(CheckoutSplit value) checkoutSplit,
+    required TResult Function(UpdateNote value) updateNote,
   }) {
     return retrieveOrder(this);
   }
@@ -2848,20 +2765,20 @@ class _$RetrieveOrderImpl implements _RetrieveOrder {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_AddProduct value)? addProduct,
-    TResult? Function(_UpdateQuantity value)? updateQuantity,
-    TResult? Function(_RemoveFromCart value)? removeFromCart,
-    TResult? Function(_ClearCart value)? clearCart,
-    TResult? Function(_ScanItem value)? scanItem,
-    TResult? Function(_SelectCustomer value)? selectCustomer,
-    TResult? Function(_ApplyDiscount value)? applyDiscount,
-    TResult? Function(_AddPromoCode value)? addPromoCode,
-    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult? Function(_ParkOrder value)? parkOrder,
-    TResult? Function(_SelectTable value)? selectTable,
-    TResult? Function(_RetrieveOrder value)? retrieveOrder,
-    TResult? Function(_CheckoutSplit value)? checkoutSplit,
-    TResult? Function(_UpdateNote value)? updateNote,
+    TResult? Function(AddProduct value)? addProduct,
+    TResult? Function(UpdateQuantity value)? updateQuantity,
+    TResult? Function(RemoveFromCart value)? removeFromCart,
+    TResult? Function(ClearCart value)? clearCart,
+    TResult? Function(ScanItem value)? scanItem,
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(ApplyDiscount value)? applyDiscount,
+    TResult? Function(AddPromoCode value)? addPromoCode,
+    TResult? Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult? Function(ParkOrder value)? parkOrder,
+    TResult? Function(SelectTable value)? selectTable,
+    TResult? Function(RetrieveOrder value)? retrieveOrder,
+    TResult? Function(CheckoutSplit value)? checkoutSplit,
+    TResult? Function(UpdateNote value)? updateNote,
   }) {
     return retrieveOrder?.call(this);
   }
@@ -2869,20 +2786,20 @@ class _$RetrieveOrderImpl implements _RetrieveOrder {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_AddProduct value)? addProduct,
-    TResult Function(_UpdateQuantity value)? updateQuantity,
-    TResult Function(_RemoveFromCart value)? removeFromCart,
-    TResult Function(_ClearCart value)? clearCart,
-    TResult Function(_ScanItem value)? scanItem,
-    TResult Function(_SelectCustomer value)? selectCustomer,
-    TResult Function(_ApplyDiscount value)? applyDiscount,
-    TResult Function(_AddPromoCode value)? addPromoCode,
-    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult Function(_ParkOrder value)? parkOrder,
-    TResult Function(_SelectTable value)? selectTable,
-    TResult Function(_RetrieveOrder value)? retrieveOrder,
-    TResult Function(_CheckoutSplit value)? checkoutSplit,
-    TResult Function(_UpdateNote value)? updateNote,
+    TResult Function(AddProduct value)? addProduct,
+    TResult Function(UpdateQuantity value)? updateQuantity,
+    TResult Function(RemoveFromCart value)? removeFromCart,
+    TResult Function(ClearCart value)? clearCart,
+    TResult Function(ScanItem value)? scanItem,
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(ApplyDiscount value)? applyDiscount,
+    TResult Function(AddPromoCode value)? addPromoCode,
+    TResult Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult Function(ParkOrder value)? parkOrder,
+    TResult Function(SelectTable value)? selectTable,
+    TResult Function(RetrieveOrder value)? retrieveOrder,
+    TResult Function(CheckoutSplit value)? checkoutSplit,
+    TResult Function(UpdateNote value)? updateNote,
     required TResult orElse(),
   }) {
     if (retrieveOrder != null) {
@@ -2892,16 +2809,13 @@ class _$RetrieveOrderImpl implements _RetrieveOrder {
   }
 }
 
-abstract class _RetrieveOrder implements CartEvent {
-  const factory _RetrieveOrder(final String orderUuid, final String tableUuid) =
+abstract class RetrieveOrder implements CartEvent {
+  const factory RetrieveOrder(final String orderUuid, final String tableUuid) =
       _$RetrieveOrderImpl;
 
   String get orderUuid;
   String get tableUuid;
-
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$RetrieveOrderImplCopyWith<_$RetrieveOrderImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -2923,8 +2837,6 @@ class __$$CheckoutSplitImplCopyWithImpl<$Res>
       _$CheckoutSplitImpl _value, $Res Function(_$CheckoutSplitImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -2946,7 +2858,7 @@ class __$$CheckoutSplitImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CheckoutSplitImpl implements _CheckoutSplit {
+class _$CheckoutSplitImpl implements CheckoutSplit {
   const _$CheckoutSplitImpl(final List<String> itemUuids, this.paymentMethod)
       : _itemUuids = itemUuids;
 
@@ -2981,9 +2893,7 @@ class _$CheckoutSplitImpl implements _CheckoutSplit {
   int get hashCode => Object.hash(runtimeType,
       const DeepCollectionEquality().hash(_itemUuids), paymentMethod);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$CheckoutSplitImplCopyWith<_$CheckoutSplitImpl> get copyWith =>
@@ -3070,20 +2980,20 @@ class _$CheckoutSplitImpl implements _CheckoutSplit {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_AddProduct value) addProduct,
-    required TResult Function(_UpdateQuantity value) updateQuantity,
-    required TResult Function(_RemoveFromCart value) removeFromCart,
-    required TResult Function(_ClearCart value) clearCart,
-    required TResult Function(_ScanItem value) scanItem,
-    required TResult Function(_SelectCustomer value) selectCustomer,
-    required TResult Function(_ApplyDiscount value) applyDiscount,
-    required TResult Function(_AddPromoCode value) addPromoCode,
-    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
-    required TResult Function(_ParkOrder value) parkOrder,
-    required TResult Function(_SelectTable value) selectTable,
-    required TResult Function(_RetrieveOrder value) retrieveOrder,
-    required TResult Function(_CheckoutSplit value) checkoutSplit,
-    required TResult Function(_UpdateNote value) updateNote,
+    required TResult Function(AddProduct value) addProduct,
+    required TResult Function(UpdateQuantity value) updateQuantity,
+    required TResult Function(RemoveFromCart value) removeFromCart,
+    required TResult Function(ClearCart value) clearCart,
+    required TResult Function(ScanItem value) scanItem,
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(ApplyDiscount value) applyDiscount,
+    required TResult Function(AddPromoCode value) addPromoCode,
+    required TResult Function(CheckoutProcessed value) checkoutProcessed,
+    required TResult Function(ParkOrder value) parkOrder,
+    required TResult Function(SelectTable value) selectTable,
+    required TResult Function(RetrieveOrder value) retrieveOrder,
+    required TResult Function(CheckoutSplit value) checkoutSplit,
+    required TResult Function(UpdateNote value) updateNote,
   }) {
     return checkoutSplit(this);
   }
@@ -3091,20 +3001,20 @@ class _$CheckoutSplitImpl implements _CheckoutSplit {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_AddProduct value)? addProduct,
-    TResult? Function(_UpdateQuantity value)? updateQuantity,
-    TResult? Function(_RemoveFromCart value)? removeFromCart,
-    TResult? Function(_ClearCart value)? clearCart,
-    TResult? Function(_ScanItem value)? scanItem,
-    TResult? Function(_SelectCustomer value)? selectCustomer,
-    TResult? Function(_ApplyDiscount value)? applyDiscount,
-    TResult? Function(_AddPromoCode value)? addPromoCode,
-    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult? Function(_ParkOrder value)? parkOrder,
-    TResult? Function(_SelectTable value)? selectTable,
-    TResult? Function(_RetrieveOrder value)? retrieveOrder,
-    TResult? Function(_CheckoutSplit value)? checkoutSplit,
-    TResult? Function(_UpdateNote value)? updateNote,
+    TResult? Function(AddProduct value)? addProduct,
+    TResult? Function(UpdateQuantity value)? updateQuantity,
+    TResult? Function(RemoveFromCart value)? removeFromCart,
+    TResult? Function(ClearCart value)? clearCart,
+    TResult? Function(ScanItem value)? scanItem,
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(ApplyDiscount value)? applyDiscount,
+    TResult? Function(AddPromoCode value)? addPromoCode,
+    TResult? Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult? Function(ParkOrder value)? parkOrder,
+    TResult? Function(SelectTable value)? selectTable,
+    TResult? Function(RetrieveOrder value)? retrieveOrder,
+    TResult? Function(CheckoutSplit value)? checkoutSplit,
+    TResult? Function(UpdateNote value)? updateNote,
   }) {
     return checkoutSplit?.call(this);
   }
@@ -3112,20 +3022,20 @@ class _$CheckoutSplitImpl implements _CheckoutSplit {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_AddProduct value)? addProduct,
-    TResult Function(_UpdateQuantity value)? updateQuantity,
-    TResult Function(_RemoveFromCart value)? removeFromCart,
-    TResult Function(_ClearCart value)? clearCart,
-    TResult Function(_ScanItem value)? scanItem,
-    TResult Function(_SelectCustomer value)? selectCustomer,
-    TResult Function(_ApplyDiscount value)? applyDiscount,
-    TResult Function(_AddPromoCode value)? addPromoCode,
-    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult Function(_ParkOrder value)? parkOrder,
-    TResult Function(_SelectTable value)? selectTable,
-    TResult Function(_RetrieveOrder value)? retrieveOrder,
-    TResult Function(_CheckoutSplit value)? checkoutSplit,
-    TResult Function(_UpdateNote value)? updateNote,
+    TResult Function(AddProduct value)? addProduct,
+    TResult Function(UpdateQuantity value)? updateQuantity,
+    TResult Function(RemoveFromCart value)? removeFromCart,
+    TResult Function(ClearCart value)? clearCart,
+    TResult Function(ScanItem value)? scanItem,
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(ApplyDiscount value)? applyDiscount,
+    TResult Function(AddPromoCode value)? addPromoCode,
+    TResult Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult Function(ParkOrder value)? parkOrder,
+    TResult Function(SelectTable value)? selectTable,
+    TResult Function(RetrieveOrder value)? retrieveOrder,
+    TResult Function(CheckoutSplit value)? checkoutSplit,
+    TResult Function(UpdateNote value)? updateNote,
     required TResult orElse(),
   }) {
     if (checkoutSplit != null) {
@@ -3135,17 +3045,14 @@ class _$CheckoutSplitImpl implements _CheckoutSplit {
   }
 }
 
-abstract class _CheckoutSplit implements CartEvent {
-  const factory _CheckoutSplit(
+abstract class CheckoutSplit implements CartEvent {
+  const factory CheckoutSplit(
           final List<String> itemUuids, final String paymentMethod) =
       _$CheckoutSplitImpl;
 
   List<String> get itemUuids;
   String get paymentMethod;
-
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$CheckoutSplitImplCopyWith<_$CheckoutSplitImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -3167,8 +3074,6 @@ class __$$UpdateNoteImplCopyWithImpl<$Res>
       _$UpdateNoteImpl _value, $Res Function(_$UpdateNoteImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -3190,7 +3095,7 @@ class __$$UpdateNoteImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$UpdateNoteImpl implements _UpdateNote {
+class _$UpdateNoteImpl implements UpdateNote {
   const _$UpdateNoteImpl(this.productUuid, this.note);
 
   @override
@@ -3216,9 +3121,7 @@ class _$UpdateNoteImpl implements _UpdateNote {
   @override
   int get hashCode => Object.hash(runtimeType, productUuid, note);
 
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$UpdateNoteImplCopyWith<_$UpdateNoteImpl> get copyWith =>
@@ -3305,20 +3208,20 @@ class _$UpdateNoteImpl implements _UpdateNote {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_AddProduct value) addProduct,
-    required TResult Function(_UpdateQuantity value) updateQuantity,
-    required TResult Function(_RemoveFromCart value) removeFromCart,
-    required TResult Function(_ClearCart value) clearCart,
-    required TResult Function(_ScanItem value) scanItem,
-    required TResult Function(_SelectCustomer value) selectCustomer,
-    required TResult Function(_ApplyDiscount value) applyDiscount,
-    required TResult Function(_AddPromoCode value) addPromoCode,
-    required TResult Function(_CheckoutProcessed value) checkoutProcessed,
-    required TResult Function(_ParkOrder value) parkOrder,
-    required TResult Function(_SelectTable value) selectTable,
-    required TResult Function(_RetrieveOrder value) retrieveOrder,
-    required TResult Function(_CheckoutSplit value) checkoutSplit,
-    required TResult Function(_UpdateNote value) updateNote,
+    required TResult Function(AddProduct value) addProduct,
+    required TResult Function(UpdateQuantity value) updateQuantity,
+    required TResult Function(RemoveFromCart value) removeFromCart,
+    required TResult Function(ClearCart value) clearCart,
+    required TResult Function(ScanItem value) scanItem,
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(ApplyDiscount value) applyDiscount,
+    required TResult Function(AddPromoCode value) addPromoCode,
+    required TResult Function(CheckoutProcessed value) checkoutProcessed,
+    required TResult Function(ParkOrder value) parkOrder,
+    required TResult Function(SelectTable value) selectTable,
+    required TResult Function(RetrieveOrder value) retrieveOrder,
+    required TResult Function(CheckoutSplit value) checkoutSplit,
+    required TResult Function(UpdateNote value) updateNote,
   }) {
     return updateNote(this);
   }
@@ -3326,20 +3229,20 @@ class _$UpdateNoteImpl implements _UpdateNote {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_AddProduct value)? addProduct,
-    TResult? Function(_UpdateQuantity value)? updateQuantity,
-    TResult? Function(_RemoveFromCart value)? removeFromCart,
-    TResult? Function(_ClearCart value)? clearCart,
-    TResult? Function(_ScanItem value)? scanItem,
-    TResult? Function(_SelectCustomer value)? selectCustomer,
-    TResult? Function(_ApplyDiscount value)? applyDiscount,
-    TResult? Function(_AddPromoCode value)? addPromoCode,
-    TResult? Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult? Function(_ParkOrder value)? parkOrder,
-    TResult? Function(_SelectTable value)? selectTable,
-    TResult? Function(_RetrieveOrder value)? retrieveOrder,
-    TResult? Function(_CheckoutSplit value)? checkoutSplit,
-    TResult? Function(_UpdateNote value)? updateNote,
+    TResult? Function(AddProduct value)? addProduct,
+    TResult? Function(UpdateQuantity value)? updateQuantity,
+    TResult? Function(RemoveFromCart value)? removeFromCart,
+    TResult? Function(ClearCart value)? clearCart,
+    TResult? Function(ScanItem value)? scanItem,
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(ApplyDiscount value)? applyDiscount,
+    TResult? Function(AddPromoCode value)? addPromoCode,
+    TResult? Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult? Function(ParkOrder value)? parkOrder,
+    TResult? Function(SelectTable value)? selectTable,
+    TResult? Function(RetrieveOrder value)? retrieveOrder,
+    TResult? Function(CheckoutSplit value)? checkoutSplit,
+    TResult? Function(UpdateNote value)? updateNote,
   }) {
     return updateNote?.call(this);
   }
@@ -3347,20 +3250,20 @@ class _$UpdateNoteImpl implements _UpdateNote {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_AddProduct value)? addProduct,
-    TResult Function(_UpdateQuantity value)? updateQuantity,
-    TResult Function(_RemoveFromCart value)? removeFromCart,
-    TResult Function(_ClearCart value)? clearCart,
-    TResult Function(_ScanItem value)? scanItem,
-    TResult Function(_SelectCustomer value)? selectCustomer,
-    TResult Function(_ApplyDiscount value)? applyDiscount,
-    TResult Function(_AddPromoCode value)? addPromoCode,
-    TResult Function(_CheckoutProcessed value)? checkoutProcessed,
-    TResult Function(_ParkOrder value)? parkOrder,
-    TResult Function(_SelectTable value)? selectTable,
-    TResult Function(_RetrieveOrder value)? retrieveOrder,
-    TResult Function(_CheckoutSplit value)? checkoutSplit,
-    TResult Function(_UpdateNote value)? updateNote,
+    TResult Function(AddProduct value)? addProduct,
+    TResult Function(UpdateQuantity value)? updateQuantity,
+    TResult Function(RemoveFromCart value)? removeFromCart,
+    TResult Function(ClearCart value)? clearCart,
+    TResult Function(ScanItem value)? scanItem,
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(ApplyDiscount value)? applyDiscount,
+    TResult Function(AddPromoCode value)? addPromoCode,
+    TResult Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult Function(ParkOrder value)? parkOrder,
+    TResult Function(SelectTable value)? selectTable,
+    TResult Function(RetrieveOrder value)? retrieveOrder,
+    TResult Function(CheckoutSplit value)? checkoutSplit,
+    TResult Function(UpdateNote value)? updateNote,
     required TResult orElse(),
   }) {
     if (updateNote != null) {
@@ -3370,16 +3273,13 @@ class _$UpdateNoteImpl implements _UpdateNote {
   }
 }
 
-abstract class _UpdateNote implements CartEvent {
-  const factory _UpdateNote(final String productUuid, final String? note) =
+abstract class UpdateNote implements CartEvent {
+  const factory UpdateNote(final String productUuid, final String? note) =
       _$UpdateNoteImpl;
 
   String get productUuid;
   String? get note;
-
-  /// Create a copy of CartEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$UpdateNoteImplCopyWith<_$UpdateNoteImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

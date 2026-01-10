@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:savvy_pos/core/config/theme_config.dart';
-import 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart';
 
 class NetworkStatusBanner extends StatefulWidget {
   const NetworkStatusBanner({super.key});

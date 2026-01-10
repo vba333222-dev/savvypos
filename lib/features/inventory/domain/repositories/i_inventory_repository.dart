@@ -1,4 +1,3 @@
-import 'package:savvy_pos/features/inventory/data/repositories/inventory_repository_impl.dart';
 
 abstract class IInventoryRepository {
   Future<void> transferStock({

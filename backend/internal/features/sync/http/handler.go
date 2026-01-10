@@ -29,8 +29,6 @@ func (h *SyncHandler) HandlePush(c *gin.Context) {
 		return
 	}
 
-	// Idempotency check could go here (using Redis or DB)
-
 	tenantID, exists := c.Get("tenantID")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Tenant ID not found"})
@@ -41,30 +39,66 @@ func (h *SyncHandler) HandlePush(c *gin.Context) {
 
 	switch req.Action {
 	case "CREATE_ORDER":
+		// Orders are append-only usually, but we ensure version is set
 		var order domain.Order
 		if err := json.Unmarshal(req.Payload, &order); err != nil {
 			tx.Rollback()
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Order Payload", "details": err.Error()})
 			return
 		}
-
-		// Enforce Tenant Identity
 		order.TenantID = tenantID.(string)
+		order.Version = 1 // New orders start at version 1
 
-		// Delegate to OrderService
 		if err := h.orderService.SyncOrder(tx, order); err != nil {
 			tx.Rollback()
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to sync order", "details": err.Error()})
 			return
 		}
 
-		// Detect other actions
-		// case "UPDATE_PRODUCT": ...
+	case "UPDATE_PRODUCT":
+		var incoming domain.Product
+		if err := json.Unmarshal(req.Payload, &incoming); err != nil {
+			tx.Rollback()
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Product Payload", "details": err.Error()})
+			return
+		}
+		incoming.TenantID = tenantID.(string)
+
+		// 1. Fetch Current Version
+		var current domain.Product
+		if err := tx.Where("uuid = ? AND tenant_id = ?", incoming.UUID, tenantID).First(&current).Error; err != nil {
+			// If not found, it might be a new product from offline device? Or error.
+			// Assuming it exists for update.
+			tx.Rollback()
+			c.JSON(http.StatusNotFound, gin.H{"error": "Product not found for update"})
+			return
+		}
+
+		// 2. Conflict Detection (Server-Wins)
+		if incoming.Version < current.Version {
+			tx.Rollback()
+			// Return 409 and the LATEST server data so client can update
+			c.JSON(http.StatusConflict, gin.H{
+				"error":          "Version Conflict. Server has newer data.",
+				"server_version": current.Version,
+				"server_data":    current,
+			})
+			return
+		}
+
+		// 3. Increment Version & Save
+		incoming.Version = current.Version + 1
+		// Copy internal IDs if needed, or rely on UUID
+		incoming.ID = current.ID
+
+		if err := tx.Save(&incoming).Error; err != nil {
+			tx.Rollback()
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update product"})
+			return
+		}
 
 	default:
-		// Identify if it is safe to ignore or error
-		// c.JSON(http.StatusBadRequest, gin.H{"error": "Unknown ActionType"})
-		// For now, acknowledgement is safer to avoid mobile queue blocking
+		// Unknown action, maybe log warning but acknowledge to unblock queue
 	}
 
 	if err := tx.Commit().Error; err != nil {

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
-import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
 import 'package:savvy_pos/features/pos/data/repositories/mock_product_repository.dart';
 
 class ProductModifierDialog extends StatefulWidget {
@@ -194,7 +192,7 @@ class _ProductModifierDialogState extends State<ProductModifierDialog> {
                       // Group Header
                       Row(
                         children: [
-                          SavvyText(group.name.toUpperCase(), style: SavvyTextStyle.labelMedium, color: theme.colors.textMuted),
+                          SavvyText(group.name.toUpperCase(), style: SavvyTextStyle.label, color: theme.colors.textMuted),
                           const Spacer(),
                           if (group.minSelection > 0)
                              Container(

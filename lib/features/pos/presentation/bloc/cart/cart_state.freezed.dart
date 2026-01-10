@@ -28,9 +28,7 @@ mixin _$CartItem {
   String? get note => throw _privateConstructorUsedError;
   String? get appliedPromoCode => throw _privateConstructorUsedError;
 
-  /// Create a copy of CartItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $CartItemCopyWith<CartItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -61,8 +59,6 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CartItem
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -139,8 +135,6 @@ class __$$CartItemImplCopyWithImpl<$Res>
       _$CartItemImpl _value, $Res Function(_$CartItemImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartItem
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -269,9 +263,7 @@ class _$CartItemImpl implements _CartItem {
       note,
       appliedPromoCode);
 
-  /// Create a copy of CartItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$CartItemImplCopyWith<_$CartItemImpl> get copyWith =>
@@ -290,26 +282,23 @@ abstract class _CartItem implements CartItem {
       final String? appliedPromoCode}) = _$CartItemImpl;
 
   @override
-  String get uuid; // Unique ID for this line item (to distinguish variants)
-  @override
+  String get uuid;
+  @override // Unique ID for this line item (to distinguish variants)
   Product get product;
   @override
   int get quantity;
   @override
-  double get total; // (price + modifiers) * quantity - discount
-  @override
-  double get discountedTotal; // New field for display Strikethrough
-  @override
+  double get total;
+  @override // (price + modifiers) * quantity - discount
+  double get discountedTotal;
+  @override // New field for display Strikethrough
   List<ModifierItem> get modifiers;
   @override
   String? get note;
   @override
   String? get appliedPromoCode;
-
-  /// Create a copy of CartItem
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$CartItemImplCopyWith<_$CartItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -335,9 +324,7 @@ mixin _$CartState {
   bool get isSuccess => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
-  /// Create a copy of CartState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $CartStateCopyWith<CartState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -378,8 +365,6 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CartState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -468,8 +453,6 @@ class _$CartStateCopyWithImpl<$Res, $Val extends CartState>
     ) as $Val);
   }
 
-  /// Create a copy of CartState
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $CustomerCopyWith<$Res>? get customer {
@@ -521,8 +504,6 @@ class __$$CartStateImplCopyWithImpl<$Res>
       _$CartStateImpl _value, $Res Function(_$CartStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CartState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -756,9 +737,7 @@ class _$CartStateImpl implements _CartState {
       isSuccess,
       error);
 
-  /// Create a copy of CartState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$CartStateImplCopyWith<_$CartStateImpl> get copyWith =>
@@ -793,20 +772,20 @@ abstract class _CartState implements CartState {
   @override
   double get discount;
   @override
-  double get total; // CRM & Advanced
-  @override
+  double get total;
+  @override // CRM & Advanced
   Customer? get customer;
   @override
   double get discountPercent;
   @override
-  double get discountFixed; // Promotions
-  @override
-  List<Promotion> get activePromotions; // Dine-In
-  @override
+  double get discountFixed;
+  @override // Promotions
+  List<Promotion> get activePromotions;
+  @override // Dine-In
   String? get activeTableUuid;
   @override
-  String? get activeOrderUuid; // Only if retrieving an OPEN order
-  @override
+  String? get activeOrderUuid;
+  @override // Only if retrieving an OPEN order
   String? get lastOrderNumber;
   @override
   OrderTableData? get lastCompletedOrder;
@@ -816,11 +795,8 @@ abstract class _CartState implements CartState {
   bool get isSuccess;
   @override
   String? get error;
-
-  /// Create a copy of CartState
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$CartStateImplCopyWith<_$CartStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

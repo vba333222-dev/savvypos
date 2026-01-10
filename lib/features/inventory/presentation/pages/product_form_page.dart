@@ -287,7 +287,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
                     SizedBox(height: shapes.spacingMd),
                     DropdownButtonFormField<String>(
-                      value: _category,
+                      initialValue: _category,
                       decoration: const InputDecoration(labelText: 'Category', border: OutlineInputBorder()),
                       items: const [
                         DropdownMenuItem(value: 'STARTER', child: Text('Starter')),
@@ -304,7 +304,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                     SizedBox(height: shapes.spacingMd),
 
                     DropdownButtonFormField<String>(
-                      value: _printerCategory,
+                      initialValue: _printerCategory,
                       decoration: const InputDecoration(labelText: 'Printer Category', border: OutlineInputBorder()),
                       items: const [
                         DropdownMenuItem(value: 'OTHER', child: Text('Other (Main)')),

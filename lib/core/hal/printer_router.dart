@@ -1,5 +1,4 @@
 import 'package:injectable/injectable.dart';
-import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/core/hal/printer_interface.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
 

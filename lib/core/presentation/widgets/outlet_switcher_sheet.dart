@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
-import 'package:savvy_pos/core/presentation/widgets/savvy_box.dart';
-import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart'; // SavvyButton
 import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';

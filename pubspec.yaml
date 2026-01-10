@@ -76,12 +76,14 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  build_runner: ^2.4.11          
+
+
+  build_runner: 2.4.9            # Pinned to stable
   drift_dev: ^2.19.0             
   injectable_generator: ^2.6.2   
   # retrofit_generator: DISABLED - Incompatible with current analyzer. Use manual API definition or wait for update.
-  freezed: ^2.5.7                
-  json_serializable: ^6.9.0      
+  freezed: ^2.4.7                
+  json_serializable: ^6.7.1      
   flutter_launcher_icons: ^0.13.1
 
 flutter:
@@ -91,6 +93,4 @@ flutter:
     - assets/config/token.json
 
 dependency_overrides:
-  analyzer: ^6.4.1
-  dart_style: ^2.3.6
-  build_resolvers: ^2.4.2
+  # analyzer: ^6.4.1 # Removed to allow solver to find consistent set

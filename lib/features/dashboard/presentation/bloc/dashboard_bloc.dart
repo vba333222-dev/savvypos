@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/features/dashboard/domain/entities/dashboard_data.dart';
-import 'package:savvy_pos/features/dashboard/domain/repositories/i_dashboard_repository.dart';
 import 'package:savvy_pos/core/database/database.dart';
 
 part 'dashboard_bloc.freezed.dart';

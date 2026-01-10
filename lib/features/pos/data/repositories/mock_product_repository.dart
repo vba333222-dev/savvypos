@@ -10,53 +10,48 @@ class MockProductRepository implements IProductRepository {
       name: 'Caramel Macchiato',
       price: 5.50,
       categoryId: 'coffee',
-      description: 'Rich espresso with vanilla and caramel drizzle.',
       imageUrl: 'https://images.unsplash.com/photo-1485808191679-5f8c7c413768?w=800&auto=format&fit=crop',
       colorHex: '#C68E17',
       trackStock: true,
-      stockQuantity: 100,
+      isService: false,
     ),
     const Product(
       uuid: 'p-002',
       name: 'Croissant',
       price: 3.00,
       categoryId: 'bakery',
-      description: 'Buttery, flaky, and freshly baked.',
       imageUrl: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=800&auto=format&fit=crop',
       colorHex: '#EBB05F',
       trackStock: true,
-      stockQuantity: 50,
+      isService: false,
     ),
     const Product(
       uuid: 'p-003',
       name: 'Iced Americano',
       price: 4.00,
       categoryId: 'coffee',
-      description: 'Double shot espresso over ice.',
       colorHex: '#4B3621',
       trackStock: true,
-      stockQuantity: 200,
+      isService: false,
     ),
     const Product(
       uuid: 'p-004',
       name: 'Avocado Toast',
       price: 8.50,
       categoryId: 'food',
-      description: 'Sourdough bread with smashed avocado and egg.',
       imageUrl: 'https://images.unsplash.com/photo-1603046891744-1f7636440a2d?w=800&auto=format&fit=crop',
       colorHex: '#568203',
       trackStock: true,
-      stockQuantity: 20,
+      isService: false,
     ),
     const Product(
       uuid: 'p-005',
       name: 'Matcha Latte',
       price: 5.00,
       categoryId: 'tea',
-      description: 'Premium matcha green tea with steamed milk.',
       colorHex: '#88B04B',
       trackStock: true,
-      stockQuantity: 75,
+      isService: false,
     ),
     const Product(
       uuid: 'p-tax',
@@ -64,6 +59,7 @@ class MockProductRepository implements IProductRepository {
       price: 0.00, // Dynamic
       categoryId: 'tax',
       trackStock: false,
+      isService: true,
     ),
   ];
 
@@ -119,5 +115,15 @@ class MockProductRepository implements IProductRepository {
        ];
      }
      return [];
+  }
+
+  @override
+  Stream<List<ProductStock>> watchInventory(String warehouseId) {
+    return Stream.value(_dummyProducts.map((p) => ProductStock(product: p, quantity: 100)).toList());
+  }
+
+  @override
+  Future<void> updateStock(String productUuid, int delta) async {
+     // Mock implementation
   }
 }

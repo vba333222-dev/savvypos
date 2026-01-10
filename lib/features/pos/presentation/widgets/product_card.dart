@@ -1,11 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Added for HapticFeedback
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_box.dart';
-import 'package:savvy_pos/core/design_system/savvy_motion.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
-import 'package:savvy_pos/core/presentation/widgets/savvy_slide_counter.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 
 import 'package:savvy_pos/core/utils/haptic_helper.dart';
@@ -194,30 +193,7 @@ class _ProductCardState extends State<ProductCard> {
                   ],
                 ),
                 
-                // 3. OUT OF STOCK OVERLAY
-                if (widget.product.trackStock && widget.product.stockQuantity == 0)
-                  Positioned.fill(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: theme.colors.bgPrimary.withOpacity(0.7),
-                        borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
-                      ),
-                      child: Center(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: theme.shapes.spacingSm, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: theme.colors.stateError,
-                            borderRadius: BorderRadius.circular(theme.shapes.radiusSm),
-                          ),
-                          child: SavvyText(
-                            'Out of Stock',
-                            style: SavvyTextStyle.labelSmall,
-                            color: theme.colors.textInverse,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                // 3. OUT OF STOCK OVERLAY - REMOVED (Pending Inventory Ledger Integration)
               ],
             ),
           ),

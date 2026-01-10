@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 
 class NetworkRequest {
   final String method;

@@ -3,16 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart'; // Added Logger import
 import 'package:savvy_pos/core/config/app_config.dart';
-import 'package:savvy_pos/core/config/theme_config.dart'; // Ensure correct import
+// Ensure correct import
 import 'package:savvy_pos/core/config/token_service.dart';
-import 'package:savvy_pos/core/database/database.dart'; // Fix db import if needed
+// Fix db import if needed
 import 'package:savvy_pos/core/presentation/widgets/global_error_shield.dart';
-import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
-import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
 import 'package:savvy_pos/main.dart'; // Import App widget
-import 'package:workmanager/workmanager.dart';
-// import 'package:savvy_pos/injection.dart'; // Assume DI setup is here or manually done
+import 'package:savvy_pos/core/di/injection.dart'; // Uncommented
 
 // Main Bootstrap Function
 Future<void> bootstrap(AppConfig config) async {
@@ -46,9 +42,9 @@ Future<void> bootstrap(AppConfig config) async {
     await GetIt.I.registerSingleton<TokenService>(TokenService()).loadTokens();
     
     // Configure DI (configureDependencies normally called here)
-    // await configureDependencies(config.flavor.name); 
+    await configureDependencies(config.flavor.name); 
 
-    runApp(const App());
+    runApp(config.userApp?.call() ?? const App());
     
   }, (error, stack) {
      if (config.enableLogs) Logger().e('Zoned Error', error: error, stackTrace: stack);

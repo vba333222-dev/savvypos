@@ -8,6 +8,7 @@ import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:savvy_pos/features/sales/domain/entities/promotion.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
+import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
 import 'package:savvy_pos/core/utils/sound_helper.dart';
 import 'package:uuid/uuid.dart';
 import 'package:savvy_pos/core/sync/sync_worker.dart';
@@ -21,23 +22,23 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final Uuid _uuid = const Uuid();
 
   CartBloc(this.db, this._sound, this._syncWorker, this._socketService) : super(CartState.initial()) {
-    on<_AddProduct>(_onAddProduct);
-    on<_UpdateQuantity>(_onUpdateQuantity);
-    on<_RemoveFromCart>(_onRemoveFromCart);
-    on<_ClearCart>(_onClearCart);
-    on<_SelectCustomer>(_onSelectCustomer);
-    on<_AddPromoCode>(_onAddPromoCode); // Handling Promo Code Input
-    on<_ApplyDiscount>(_onApplyDiscount);
-    on<_CheckoutProcessed>(_onCheckoutProcessed);
-    on<_ParkOrder>(_onParkOrder);
-    on<_RetrieveOrder>(_onRetrieveOrder);
-    on<_SelectTable>(_onSelectTable);
-    on<_CheckoutSplit>(_onCheckoutSplit);
-    on<_UpdateNote>(_onUpdateNote);
-    on<_ScanItem>(_onScanItem);
+    on<AddProduct>(_onAddProduct);
+    on<UpdateQuantity>(_onUpdateQuantity);
+    on<RemoveFromCart>(_onRemoveFromCart);
+    on<ClearCart>(_onClearCart);
+    on<SelectCustomer>(_onSelectCustomer);
+    on<AddPromoCode>(_onAddPromoCode); 
+    on<ApplyDiscount>(_onApplyDiscount);
+    on<CheckoutProcessed>(_onCheckoutProcessed);
+    on<ParkOrder>(_onParkOrder);
+    on<RetrieveOrder>(_onRetrieveOrder);
+    on<SelectTable>(_onSelectTable);
+    on<CheckoutSplit>(_onCheckoutSplit);
+    on<UpdateNote>(_onUpdateNote);
+    on<ScanItem>(_onScanItem);
   }
 
-  Future<void> _onScanItem(_ScanItem event, Emitter<CartState> emit) async {
+  Future<void> _onScanItem(ScanItem event, Emitter<CartState> emit) async {
     try {
       // 1. Find Product by SKU or Barcode
       final productRow = await (db.select(db.productTable)
@@ -50,10 +51,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           uuid: productRow.uuid,
           name: productRow.name,
           price: productRow.price,
-          costPrice: productRow.costPrice ?? 0,
           sku: productRow.sku ?? '',
-          barcode: productRow.barcode ?? '',
-          category: productRow.categoryId,
+          categoryId: productRow.categoryId,
           trackStock: productRow.trackStock,
           isService: productRow.isService,
           colorHex: productRow.colorHex,
@@ -75,7 +74,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
   }
 
-  void _onUpdateNote(_UpdateNote event, Emitter<CartState> emit) {
+  void _onUpdateNote(UpdateNote event, Emitter<CartState> emit) {
     if (state.items.isEmpty) return;
     
     // Find item and update note
@@ -89,22 +88,27 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     emit(state.copyWith(items: updatedItems));
   }
 
-  void _onSelectCustomer(_SelectCustomer event, Emitter<CartState> emit) {
+  void _onSelectCustomer(SelectCustomer event, Emitter<CartState> emit) {
     emit(state.copyWith(customer: event.customer));
   }
 
-  void _onApplyDiscount(_ApplyDiscount event, Emitter<CartState> emit) {
+  void _onApplyDiscount(ApplyDiscount event, Emitter<CartState> emit) {
     final newState = state.copyWith(
       discountPercent: event.percent ?? 0.0,
       discountFixed: event.fixed ?? 0.0,
     );
     // Recalculate totals with new discount
+    // Recalculate totals with new discount
     emit(_calculateTotals(newState.items, newState));
+  }
+
+  void _onClearCart(ClearCart event, Emitter<CartState> emit) {
+    emit(CartState.initial());
   }
 
   // ... (Other handlers unchanged)
   
-  void _onAddProduct(_AddProduct event, Emitter<CartState> emit) {
+  void _onAddProduct(AddProduct event, Emitter<CartState> emit) {
     _sound.playBeep();
     
     final existingIndex = state.items.indexWhere((item) => 
@@ -139,7 +143,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     emit(_calculateTotals(updatedItems));
   }
 
-  void _onUpdateQuantity(_UpdateQuantity event, Emitter<CartState> emit) {
+  void _onUpdateQuantity(UpdateQuantity event, Emitter<CartState> emit) {
     if (event.quantity <= 0) {
       add(CartEvent.removeFromCart(event.itemUuid));
       return;
@@ -160,7 +164,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     emit(_calculateTotals(updatedItems));
   }
 
-  void _onRemoveFromCart(_RemoveFromCart event, Emitter<CartState> emit) {
+  void _onRemoveFromCart(RemoveFromCart event, Emitter<CartState> emit) {
     final updatedItems = state.items.where((item) => item.uuid != event.itemUuid).toList();
     emit(_calculateTotals(updatedItems));
   }
@@ -173,16 +177,17 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     return aIds.containsAll(bIds) && bIds.containsAll(aIds);
   }
 
-  Future<void> _onCheckoutProcessed(_CheckoutProcessed event, Emitter<CartState> emit) async {
+  Future<void> _onCheckoutProcessed(CheckoutProcessed event, Emitter<CartState> emit) async {
     if (state.items.isEmpty) return;
     
     emit(state.copyWith(isLoading: true, error: null));
 
     try {
+      final orderUuid = _uuid.v4();
+      final now = DateTime.now();
+      final orderNumber = 'ORD-${now.millisecondsSinceEpoch}';
+
       await db.transaction(() async {
-        final orderUuid = _uuid.v4();
-        final now = DateTime.now();
-        final orderNumber = 'ORD-${now.millisecondsSinceEpoch}';
 
         // 1. Create Order
         await db.into(db.orderTable).insert(OrderTableCompanion.insert(
@@ -191,7 +196,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           tenantId: const Value('default-tenant'), 
           status: const Value('COMPLETED'),
           paymentStatus: const Value('PAID'),
-          subTotal: state.subtotal,
+          subtotal: state.subtotal,
           taxTotal: state.tax,
           discountTotal: state.discount,
           grandTotal: state.total,
@@ -201,23 +206,21 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           tenderedAmount: Value(event.tenderedAmount),
           changeAmount: Value(event.changeAmount),
           
-          createdAt: now,
-          updatedAt: now,
+          transactionDate: now,
           isSynced: const Value(false),
         ));
 
         // 2. Create Order Items & Update Inventory
         for (final item in state.items) {
            await db.into(db.orderItemTable).insert(OrderItemTableCompanion.insert(
-             uuid: _uuid.v4(),
+             // uuid: _uuid.v4(), // Auto-increment ID
              orderUuid: orderUuid,
              productUuid: item.product.uuid,
-             productName: item.product.name,
-             quantity: item.quantity,
-             unitPrice: item.product.price,
-             totalPrice: item.total,
+             name: item.product.name,
+             price: item.product.price,
+             quantity: item.quantity.toDouble(),
+             total: item.total,
              modifiersJson: Value(jsonEncode(item.modifiers.map((e) => e.toJson()).toList())),
-             createdAt: now,
            ));
 
            if (item.product.isComposite) {
@@ -238,13 +241,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
            } else {
              // Deduct Product Stock via Ledger
              await db.into(db.inventoryLedgerTable).insert(InventoryLedgerTableCompanion.insert(
-               uuid: _uuid.v4(),
+               // uuid: _uuid.v4(), // Auto-increment
                productUuid: item.product.uuid,
                referenceId: orderUuid,
                type: 'SALE',
                quantityChange: -item.quantity.toDouble(), 
-               snapshotCost: 0.0, 
-               createdAt: now,
+               timestamp: now,
              ));
            }
         }
@@ -273,12 +275,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
       // 4. Success & Cleanup
       final completedOrder = OrderTableData(
+        id: 0, // Placeholder
         uuid: orderUuid,
         orderNumber: orderNumber,
         tenantId: 'default-tenant', 
         status: 'COMPLETED',
         paymentStatus: 'PAID',
-        subTotal: state.subtotal,
+        subtotal: state.subtotal,
         taxTotal: state.tax,
         discountTotal: state.discount,
         grandTotal: state.total,
@@ -286,9 +289,11 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         paymentMethod: event.paymentMethod,
         tenderedAmount: event.tenderedAmount,
         changeAmount: event.changeAmount,
-        createdAt: now,
-        updatedAt: now,
+        transactionDate: now,
         isSynced: false,
+        syncAttempts: 0,
+        isFulfilled: false,
+        version: 1,
       );
 
       emit(state.copyWith(
@@ -308,7 +313,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
   }
 
-  void _onAddPromoCode(_AddPromoCode event, Emitter<CartState> emit) {
+  void _onAddPromoCode(AddPromoCode event, Emitter<CartState> emit) {
     // MVP: Mock Promo lookup - In real app, verify against repo or backend
     Promotion? foundPromo;
     
@@ -358,7 +363,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
   }
 
-  Future<void> _onParkOrder(_ParkOrder event, Emitter<CartState> emit) async {
+  Future<void> _onParkOrder(ParkOrder event, Emitter<CartState> emit) async {
     if (state.items.isEmpty) return;
     emit(state.copyWith(isLoading: true, error: null));
 
@@ -376,14 +381,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           tenantId: const Value('default-tenant'),
           status: const Value('OPEN'), // OPEN status
           paymentStatus: const Value('PENDING'),
-          subTotal: state.subtotal,
+          subtotal: state.subtotal,
           taxTotal: state.tax,
           discountTotal: state.discount,
           grandTotal: state.total,
           customerUuid: Value(state.customer?.uuid),
           paymentMethod: 'PENDING',
-          createdAt: now,
-          updatedAt: now,
+          transactionDate: now,
           isSynced: const Value(false),
         ));
 
@@ -392,18 +396,16 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
         // 3. Insert Items
         for (final item in state.items) {
-           await db.into(db.orderItemTable).insert(OrderItemTableCompanion.insert(
-             uuid: _uuid.v4(),
-             orderUuid: orderUuid,
-             productUuid: item.product.uuid,
-             name: item.product.name, // Fixed column name mismatch in previous code usage? Table has 'name'
-             price: item.product.price, // Fixed column name mismatch? Table has 'price'
-             quantity: item.quantity,
-             total: item.total, // Fixed column name mismatch? Table has 'total'
-             // Note: Check Table Definition for exact column names. 
-             // OrderItemTable: name, price, quantity, total.
-             modifiersJson: Value(jsonEncode(item.modifiers.map((e) => e.toJson()).toList())),
-           ));
+            await db.into(db.orderItemTable).insert(OrderItemTableCompanion.insert(
+              // uuid: _uuid.v4(), // Removed as per schema
+              orderUuid: orderUuid,
+              productUuid: item.product.uuid,
+              name: item.product.name,
+              price: item.product.price,
+              quantity: item.quantity.toDouble(), // Fixed int -> double
+              total: item.total,
+              modifiersJson: Value(jsonEncode(item.modifiers.map((e) => e.toJson()).toList())),
+            ));
         }
         
         // 4. Update Table Status
@@ -422,7 +424,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
   }
 
-  void _onSelectTable(_SelectTable event, Emitter<CartState> emit) {
+  void _onSelectTable(SelectTable event, Emitter<CartState> emit) {
     if (state.items.isNotEmpty && state.activeOrderUuid != null) {
       // If valid order is in progress, maybe prompt? 
       // User says: "Tapping a table should navigate to PosPage passing tableId"
@@ -442,7 +444,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     ));
   }
 
-  Future<void> _onRetrieveOrder(_RetrieveOrder event, Emitter<CartState> emit) async {
+  Future<void> _onRetrieveOrder(RetrieveOrder event, Emitter<CartState> emit) async {
     emit(state.copyWith(isLoading: true));
     try {
       // 1. Fetch Order
@@ -463,10 +465,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           uuid: productRow.uuid,
           name: productRow.name,
           price: productRow.price,
-          costPrice: productRow.costPrice ?? 0,
           sku: productRow.sku ?? '',
-          barcode: productRow.barcode ?? '',
-          category: productRow.categoryId,
+          categoryId: productRow.categoryId,
           trackStock: productRow.trackStock,
           isService: productRow.isService,
           colorHex: productRow.colorHex,
@@ -474,13 +474,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         );
 
         return CartItem(
+          uuid: _uuid.v4(), // Generate temporary UUID for cart item
           product: product,
           quantity: itemRow.quantity.toInt(),
+          total: itemRow.total,
         );
       }).toList();
 
       // 3. Fetch Customer if exists
-      Customer? customer;
       if (order.customerUuid != null) {
          // fetch customer logic if needed, skipped for brevity or assume simple load
       }
@@ -504,7 +505,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
   }
 
-  Future<void> _onCheckoutSplit(_CheckoutSplit event, Emitter<CartState> emit) async {
+  Future<void> _onCheckoutSplit(CheckoutSplit event, Emitter<CartState> emit) async {
     // Logic: Create child order, update parent order items (paidQty)
     // 1. Validate we have an active order
     if (state.activeOrderUuid == null) {
@@ -540,22 +541,22 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           tenantId: const Value('default-tenant'),
           status: const Value('COMPLETED'),
           paymentStatus: const Value('PAID'), // Immediate Pay
-          subTotal: subtotal,
+          subtotal: subtotal,
           taxTotal: tax,
-          discountTotal: const Value(0),
+          discountTotal: 0.0, // Fixed Value -> double
           grandTotal: total,
           customerUuid: Value(state.customer?.uuid),
           paymentMethod: event.paymentMethod,
           tenderedAmount: Value(total),
-          changeAmount: const Value(0),
-          createdAt: now,
-          updatedAt: now,
+          changeAmount: const Value(0.0), // Fixed int -> double
+          transactionDate: now,
+          isSynced: const Value(false),
         ));
         
         // 2. Create Order Items for Child Order
         for (var item in splitItems) {
            await db.into(db.orderItemTable).insert(OrderItemTableCompanion.insert(
-             uuid: _uuid.v4(),
+             // uuid: _uuid.v4(), // Removed
              orderUuid: childOrderUuid,
              productUuid: item.product.uuid,
              name: item.product.name,

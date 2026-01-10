@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get_it/get_it.dart';
-import 'package:savvy_pos/features/settings/presentation/pages/printer_settings_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savvy_pos/features/inventory/presentation/pages/inventory_list_page.dart';
 import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
@@ -10,7 +8,6 @@ import 'package:savvy_pos/features/settings/presentation/bloc/backup_bloc.dart';
 import 'package:savvy_pos/features/employees/presentation/pages/employee_list_page.dart';
 import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:savvy_pos/features/diagnostics/presentation/pages/diagnostics_hub_page.dart';
-import 'package:savvy_pos/core/config/business_mode.dart';
 import 'package:savvy_pos/core/sync/sync_worker.dart';
 import 'package:logger/logger.dart';
 import 'package:savvy_pos/core/database/database.dart';

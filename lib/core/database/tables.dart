@@ -101,6 +101,7 @@ class ProductTable extends Table {
   // Sync
   DateTimeColumn get updatedAt => dateTime()();
   BoolColumn get isSynced => boolean().withDefault(const Constant(false))();
+  IntColumn get version => integer().withDefault(const Constant(1))();
   BoolColumn get isDeleted => boolean().withDefault(const Constant(false))();
   
   // Back of House (BoH)
@@ -182,6 +183,7 @@ class CustomerTable extends Table {
   // Sync
   DateTimeColumn get updatedAt => dateTime()();
   BoolColumn get isSynced => boolean().withDefault(const Constant(false))();
+  IntColumn get version => integer().withDefault(const Constant(1))();
   BoolColumn get isDeleted => boolean().withDefault(const Constant(false))();
 }
 
@@ -212,6 +214,7 @@ class OrderTable extends Table {
   
   // Sync
   BoolColumn get isSynced => boolean().withDefault(const Constant(false))();
+  IntColumn get version => integer().withDefault(const Constant(1))();
   IntColumn get syncAttempts => integer().withDefault(const Constant(0))();
   
   // Kitchen
@@ -259,6 +262,7 @@ class LocalStocksTable extends Table {
   TextColumn get warehouseUuid => text()();
   RealColumn get quantity => real().withDefault(const Constant(0))();
   DateTimeColumn get updatedAt => dateTime()();
+  IntColumn get version => integer().withDefault(const Constant(1))();
   
   @override
   List<Set<Column>> get uniqueKeys => [{productUuid, warehouseUuid}];
@@ -340,7 +344,9 @@ class SyncQueue extends Table {
   TextColumn get payloadJson => text()();
   TextColumn get idempotencyKey => text().unique()(); // UUID
   DateTimeColumn get createdAt => dateTime()();
+  TextColumn get status => text().withDefault(const Constant('PENDING'))(); // PENDING, RETRY, FAILED
   IntColumn get retryCount => integer().withDefault(const Constant(0))();
+  DateTimeColumn get nextRetryAt => dateTime().nullable()(); // For exponential backoff
 }
 
 // ==============================================================================

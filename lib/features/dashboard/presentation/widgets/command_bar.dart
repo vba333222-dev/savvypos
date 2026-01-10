@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
-import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 
 class CommandBar extends StatelessWidget {
   const CommandBar({super.key});

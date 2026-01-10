@@ -83,9 +83,7 @@ mixin _$Promotion {
   }) =>
       throw _privateConstructorUsedError;
 
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $PromotionCopyWith<Promotion> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -111,8 +109,6 @@ class _$PromotionCopyWithImpl<$Res, $Val extends Promotion>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -141,8 +137,6 @@ class _$PromotionCopyWithImpl<$Res, $Val extends Promotion>
     ) as $Val);
   }
 
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $PromotionConstraintsCopyWith<$Res> get constraints {
@@ -179,8 +173,6 @@ class __$$PercentageDiscountImplCopyWithImpl<$Res>
       $Res Function(_$PercentageDiscountImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -261,9 +253,7 @@ class _$PercentageDiscountImpl extends PercentageDiscount {
   int get hashCode =>
       Object.hash(runtimeType, id, name, code, percentage, constraints);
 
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$PercentageDiscountImplCopyWith<_$PercentageDiscountImpl> get copyWith =>
@@ -375,11 +365,8 @@ abstract class PercentageDiscount extends Promotion {
   double get percentage;
   @override
   PromotionConstraints get constraints;
-
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$PercentageDiscountImplCopyWith<_$PercentageDiscountImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -411,8 +398,6 @@ class __$$FixedAmountDiscountImplCopyWithImpl<$Res>
       $Res Function(_$FixedAmountDiscountImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -492,9 +477,7 @@ class _$FixedAmountDiscountImpl extends FixedAmountDiscount {
   int get hashCode =>
       Object.hash(runtimeType, id, name, code, amount, constraints);
 
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$FixedAmountDiscountImplCopyWith<_$FixedAmountDiscountImpl> get copyWith =>
@@ -606,11 +589,8 @@ abstract class FixedAmountDiscount extends Promotion {
   double get amount;
   @override
   PromotionConstraints get constraints;
-
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$FixedAmountDiscountImplCopyWith<_$FixedAmountDiscountImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -644,8 +624,6 @@ class __$$BuyXGetYPromotionImplCopyWithImpl<$Res>
       $Res Function(_$BuyXGetYPromotionImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -745,9 +723,7 @@ class _$BuyXGetYPromotionImpl extends BuyXGetYPromotion {
   int get hashCode => Object.hash(
       runtimeType, id, name, code, buyQty, getQty, buyProductId, constraints);
 
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$BuyXGetYPromotionImplCopyWith<_$BuyXGetYPromotionImpl> get copyWith =>
@@ -862,14 +838,11 @@ abstract class BuyXGetYPromotion extends Promotion {
   String get code;
   int get buyQty;
   int get getQty;
-  String get buyProductId; // 'ANY' or specific UUID
-  @override
+  String get buyProductId;
+  @override // 'ANY' or specific UUID
   PromotionConstraints get constraints;
-
-  /// Create a copy of Promotion
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$BuyXGetYPromotionImplCopyWith<_$BuyXGetYPromotionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -883,9 +856,7 @@ mixin _$PromotionConstraints {
   HappyHourTimeRange? get happyHourTimeRange =>
       throw _privateConstructorUsedError;
 
-  /// Create a copy of PromotionConstraints
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $PromotionConstraintsCopyWith<PromotionConstraints> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -917,8 +888,6 @@ class _$PromotionConstraintsCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of PromotionConstraints
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -952,8 +921,6 @@ class _$PromotionConstraintsCopyWithImpl<$Res,
     ) as $Val);
   }
 
-  /// Create a copy of PromotionConstraints
-  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $HappyHourTimeRangeCopyWith<$Res>? get happyHourTimeRange {
@@ -995,8 +962,6 @@ class __$$PromotionConstraintsImplCopyWithImpl<$Res>
       $Res Function(_$PromotionConstraintsImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of PromotionConstraints
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1093,9 +1058,7 @@ class _$PromotionConstraintsImpl extends _PromotionConstraints {
       const DeepCollectionEquality().hash(_applicableProductIds),
       happyHourTimeRange);
 
-  /// Create a copy of PromotionConstraints
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$PromotionConstraintsImplCopyWith<_$PromotionConstraintsImpl>
@@ -1124,11 +1087,8 @@ abstract class _PromotionConstraints extends PromotionConstraints {
   List<String>? get applicableProductIds;
   @override
   HappyHourTimeRange? get happyHourTimeRange;
-
-  /// Create a copy of PromotionConstraints
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$PromotionConstraintsImplCopyWith<_$PromotionConstraintsImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -1140,9 +1100,7 @@ mixin _$HappyHourTimeRange {
   int get endHour => throw _privateConstructorUsedError;
   int get endMinute => throw _privateConstructorUsedError;
 
-  /// Create a copy of HappyHourTimeRange
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $HappyHourTimeRangeCopyWith<HappyHourTimeRange> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1166,8 +1124,6 @@ class _$HappyHourTimeRangeCopyWithImpl<$Res, $Val extends HappyHourTimeRange>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of HappyHourTimeRange
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1216,8 +1172,6 @@ class __$$HappyHourTimeRangeImplCopyWithImpl<$Res>
       $Res Function(_$HappyHourTimeRangeImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HappyHourTimeRange
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1289,9 +1243,7 @@ class _$HappyHourTimeRangeImpl extends _HappyHourTimeRange {
   int get hashCode =>
       Object.hash(runtimeType, startHour, startMinute, endHour, endMinute);
 
-  /// Create a copy of HappyHourTimeRange
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$HappyHourTimeRangeImplCopyWith<_$HappyHourTimeRangeImpl> get copyWith =>
@@ -1315,11 +1267,8 @@ abstract class _HappyHourTimeRange extends HappyHourTimeRange {
   int get endHour;
   @override
   int get endMinute;
-
-  /// Create a copy of HappyHourTimeRange
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$HappyHourTimeRangeImplCopyWith<_$HappyHourTimeRangeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

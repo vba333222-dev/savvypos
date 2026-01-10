@@ -117,9 +117,9 @@ class _WebInventoryAppState extends State<WebInventoryPage> {
                   data: Theme.of(context).copyWith(
                     dividerColor: Colors.transparent, // Remove default dividers
                     dataTableTheme: DataTableThemeData(
-                      headingRowColor: MaterialStateProperty.all(theme.colors.bgInverse.withOpacity(0.05)),
-                      dataRowColor: MaterialStateProperty.resolveWith((states) {
-                         if (states.contains(MaterialState.hovered)) return theme.colors.brandPrimary.withOpacity(0.05);
+                      headingRowColor: WidgetStateProperty.all(theme.colors.bgInverse.withOpacity(0.05)),
+                      dataRowColor: WidgetStateProperty.resolveWith((states) {
+                         if (states.contains(WidgetState.hovered)) return theme.colors.brandPrimary.withOpacity(0.05);
                          return Colors.transparent;
                       }),
                     ),

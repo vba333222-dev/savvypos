@@ -23,9 +23,7 @@ mixin _$SalesReportItem {
   double get costOfGoodsSold => throw _privateConstructorUsedError;
   double get grossProfit => throw _privateConstructorUsedError;
 
-  /// Create a copy of SalesReportItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $SalesReportItemCopyWith<SalesReportItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -55,8 +53,6 @@ class _$SalesReportItemCopyWithImpl<$Res, $Val extends SalesReportItem>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of SalesReportItem
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -121,8 +117,6 @@ class __$$SalesReportItemImplCopyWithImpl<$Res>
       _$SalesReportItemImpl _value, $Res Function(_$SalesReportItemImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of SalesReportItem
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -214,9 +208,7 @@ class _$SalesReportItemImpl implements _SalesReportItem {
   int get hashCode => Object.hash(runtimeType, categoryName, productName,
       quantitySold, grossSales, costOfGoodsSold, grossProfit);
 
-  /// Create a copy of SalesReportItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SalesReportItemImplCopyWith<_$SalesReportItemImpl> get copyWith =>
@@ -245,11 +237,8 @@ abstract class _SalesReportItem implements SalesReportItem {
   double get costOfGoodsSold;
   @override
   double get grossProfit;
-
-  /// Create a copy of SalesReportItem
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SalesReportItemImplCopyWith<_$SalesReportItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

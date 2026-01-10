@@ -71,8 +71,7 @@ class _GenesisPageState extends State<GenesisPage> {
     );
   }
 
-    );
-  }
+
 
   Widget _buildRegionStep() {
     return Padding(

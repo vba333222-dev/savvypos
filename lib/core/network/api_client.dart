@@ -54,26 +54,37 @@ class ApiClient {
     ));
   }
 
-  Future<bool> pushItem(Map<String, dynamic> payload) async {
+  Future<Response?> pushItem(Map<String, dynamic> payload) async {
     try {
       final response = await _dio.post(
         '/sync/push',
         data: {
-          'actionType': payload['action'],
-          'payloadJson': payload['payload'], 
-          'idempotencyKey': payload['idempotency_key']
+          'action': payload['action'], // Fixed key name to match backend 'action' vs 'actionType' mismatch? 
+          // Backend expects: Action, Payload, IdempotencyKey
+          // Flutter SyncWorker previously sent: 'action', 'payload', 'idempotency_key'.
+          // Wait, looks like I need to align keys.
+          // Backend: Action, Payload, IdempotencyKey (json tags: "action", "payload", "idempotency_key")
+          // SyncWorker constructed: 'action': item.actionType, 'payload': ..., 'idempotency_key'
+          // BUT ApiClient was mapping to: 'actionType', 'payloadJson'.
+          // I should fix the mapping here to match Backend DTO.
+          'action': payload['action'],
+          'payload': payload['payload'], 
+          'idempotency_key': payload['idempotency_key']
         },
         options: Options(
           sendTimeout: const Duration(seconds: 15),
           receiveTimeout: const Duration(seconds: 15),
+          // We want to handle 409 manually, so let's allow it.
           validateStatus: (status) => status != null && status < 500,
         ),
       );
 
-      return response.statusCode == 200 || response.statusCode == 201;
+      return response;
     } catch (e) {
       _logger.e('Push Failed', error: e);
-      return false;
+      // Rethrow so Worker knows it's a network/system failure? 
+      // Or return null? SyncWorker needs to differentiate Network Error vs Server Error.
+      rethrow;
     }
   }
   

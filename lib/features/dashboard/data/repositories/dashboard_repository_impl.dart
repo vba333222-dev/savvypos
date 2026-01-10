@@ -4,7 +4,7 @@ import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/features/dashboard/domain/entities/dashboard_data.dart';
 import 'package:savvy_pos/features/dashboard/domain/repositories/i_dashboard_repository.dart';
 
-@LazySingleton(as: IDashboardRepository)
+@LazySingleton(as: IDashboardRepository, env: ['mobile'])
 class DashboardRepositoryImpl implements IDashboardRepository {
   final AppDatabase db;
 

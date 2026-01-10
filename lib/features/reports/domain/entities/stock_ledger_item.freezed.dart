@@ -24,9 +24,7 @@ mixin _$StockLedgerItem {
       throw _privateConstructorUsedError; // Order # or PO #
   double get newStockLevel => throw _privateConstructorUsedError;
 
-  /// Create a copy of StockLedgerItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $StockLedgerItemCopyWith<StockLedgerItem> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -55,8 +53,6 @@ class _$StockLedgerItemCopyWithImpl<$Res, $Val extends StockLedgerItem>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of StockLedgerItem
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -115,8 +111,6 @@ class __$$StockLedgerItemImplCopyWithImpl<$Res>
       _$StockLedgerItemImpl _value, $Res Function(_$StockLedgerItemImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of StockLedgerItem
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -198,9 +192,7 @@ class _$StockLedgerItemImpl implements _StockLedgerItem {
   int get hashCode => Object.hash(
       runtimeType, date, type, quantityChange, referenceId, newStockLevel);
 
-  /// Create a copy of StockLedgerItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$StockLedgerItemImplCopyWith<_$StockLedgerItemImpl> get copyWith =>
@@ -219,18 +211,15 @@ abstract class _StockLedgerItem implements StockLedgerItem {
   @override
   DateTime get date;
   @override
-  String get type; // 'SALE', 'RESTOCK', 'ADJUSTMENT'
-  @override
+  String get type;
+  @override // 'SALE', 'RESTOCK', 'ADJUSTMENT'
   double get quantityChange;
   @override
-  String get referenceId; // Order # or PO #
-  @override
+  String get referenceId;
+  @override // Order # or PO #
   double get newStockLevel;
-
-  /// Create a copy of StockLedgerItem
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$StockLedgerItemImplCopyWith<_$StockLedgerItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

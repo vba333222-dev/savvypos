@@ -9,29 +9,29 @@ part 'cart_event.freezed.dart';
 class CartEvent with _$CartEvent {
   const factory CartEvent.addProduct(Product product, {
     @Default([]) List<ModifierItem> modifiers,
-  }) = _AddProduct;
-  const factory CartEvent.updateQuantity(String itemUuid, int quantity) = _UpdateQuantity;
-  const factory CartEvent.removeFromCart(String itemUuid) = _RemoveFromCart;
-  const factory CartEvent.clearCart() = _ClearCart;
-  const factory CartEvent.scanItem(String barcode) = _ScanItem;
+  }) = AddProduct;
+  const factory CartEvent.updateQuantity(String itemUuid, int quantity) = UpdateQuantity;
+  const factory CartEvent.removeFromCart(String itemUuid) = RemoveFromCart;
+  const factory CartEvent.clearCart() = ClearCart;
+  const factory CartEvent.scanItem(String barcode) = ScanItem;
   
   // Advanced Cart
-  const factory CartEvent.selectCustomer(Customer? customer) = _SelectCustomer;
-  const factory CartEvent.applyDiscount({double? percent, double? fixed}) = _ApplyDiscount;
-  const factory CartEvent.addPromoCode(String code) = _AddPromoCode;
+  const factory CartEvent.selectCustomer(Customer? customer) = SelectCustomer;
+  const factory CartEvent.applyDiscount({double? percent, double? fixed}) = ApplyDiscount;
+  const factory CartEvent.addPromoCode(String code) = AddPromoCode;
   
   const factory CartEvent.checkoutProcessed({
     required String paymentMethod,
     double? tenderedAmount,
     double? changeAmount,
-  }) = _CheckoutProcessed;
+  }) = CheckoutProcessed;
 
   // Dine-In
-  const factory CartEvent.parkOrder(String tableUuid) = _ParkOrder;
-  const factory CartEvent.selectTable(String tableUuid) = _SelectTable; // Added
-  const factory CartEvent.retrieveOrder(String orderUuid, String tableUuid) = _RetrieveOrder;
-  const factory CartEvent.checkoutSplit(List<String> itemUuids, String paymentMethod) = _CheckoutSplit;
+  const factory CartEvent.parkOrder(String tableUuid) = ParkOrder;
+  const factory CartEvent.selectTable(String tableUuid) = SelectTable;
+  const factory CartEvent.retrieveOrder(String orderUuid, String tableUuid) = RetrieveOrder;
+  const factory CartEvent.checkoutSplit(List<String> itemUuids, String paymentMethod) = CheckoutSplit;
   
   // Kitchen Flow
-  const factory CartEvent.updateNote(String productUuid, String? note) = _UpdateNote;
+  const factory CartEvent.updateNote(String productUuid, String? note) = UpdateNote;
 }

@@ -79,7 +79,7 @@ class _GenesisPageState extends State<GenesisPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SavvyText.h1('Select Region', size: 40).animate().fadeIn().slideY(),
+          const SavvyText.h1('Select Region').animate().fadeIn().slideY(),
           const SavvyText.h3('Where is your business located?', color: Colors.grey),
           
           const SizedBox(height: 32),
@@ -134,7 +134,7 @@ class _GenesisPageState extends State<GenesisPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SavvyText.h1('genesis.step1_title'.tr(), size: 40).animate().fadeIn().slideY(),
+          SavvyText.h1('genesis.step1_title'.tr()).animate().fadeIn().slideY(),
           SavvyText.h3('genesis.step1_subtitle'.tr(), color: Colors.grey).animate().fadeIn(delay: 200.ms),
           
           const SizedBox(height: 48),
@@ -207,7 +207,7 @@ class _GenesisPageState extends State<GenesisPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SavvyText.h1('genesis.step2_title'.tr(), size: 40).animate().fadeIn().slideY(),
+          SavvyText.h1('genesis.step2_title'.tr()).animate().fadeIn().slideY(),
           SavvyText.h3('genesis.step2_subtitle'.tr(), color: Colors.grey).animate().fadeIn(delay: 200.ms),
           
           const SizedBox(height: 48),

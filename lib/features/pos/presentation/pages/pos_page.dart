@@ -21,14 +21,10 @@ import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/cart_view.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/liquid_receipt_overlay.dart';
 import 'package:savvy_pos/features/pos/presentation/notifications/add_to_cart_notification.dart';
-import 'package:savvy_pos/features/pos/data/repositories/mock_product_repository.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/product_modifier_dialog.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
-// import 'package:get_it/get_it.dart'; // Already imported
-import 'package:savvy_pos/core/error/failures.dart';
-import 'package:dartz/dartz.dart' hide State;
 
 class PosPage extends StatelessWidget {
   final String? heroTag;

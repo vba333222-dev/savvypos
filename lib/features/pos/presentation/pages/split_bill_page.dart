@@ -186,7 +186,7 @@ class _SplitBillPageState extends State<SplitBillPage> {
                          index: index,
                          items: _splitGroups[index],
                          onRemove: (item) => _onItemDrop(item, -1), // Return to master logic inside widget? Handled by drag out actually.
-                         onAcceptWithDetails: (details) => _onItemDrop(details.data, index),
+                         onAccept: (item) => _onItemDrop(item, index),
                          onPay: () {
                            // Trigger Payment Logic for this Sub-Bill
                            final items = _splitGroups[index];

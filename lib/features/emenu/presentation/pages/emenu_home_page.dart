@@ -97,7 +97,7 @@ class _EMenuHomePageState extends State<EMenuHomePage> {
                                     ),
                                   ),
                                   const SizedBox(height: 4),
-                                  SavvyText.label(stories[index], size: 12),
+                                  SavvyText.small(stories[index]),
                                 ],
                               ),
                             );

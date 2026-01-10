@@ -44,9 +44,6 @@ class GlobalSearchDelegate extends SearchDelegate {
   }
 
   Widget _buildSearchResults(BuildContext context) {
-    final colors = context.read<ThemeConfig>().colors; // Assuming accessible or passed. 
-    // Actually SearchDelegate context handles theme usually but we use custom colors.
-    // context.savvy might key off the passed context.
     
     return FutureBuilder(
       future: Future.wait([

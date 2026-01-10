@@ -31,7 +31,6 @@ class MockProductRepository extends Mock implements IProductRepository {
     return const Stream.empty();
   }
 
-  @override
   Future<List<Product>> getProducts() async {
     return [
       const Product(

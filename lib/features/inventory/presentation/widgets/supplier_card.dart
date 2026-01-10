@@ -105,7 +105,7 @@ class _Badge extends StatelessWidget {
         color: color,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: SavvyText.label(text, color: Colors.white, size: 10),
+      child: SavvyText.label(text, color: Colors.white),
     );
   }
 }

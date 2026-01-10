@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/database/database.dart';
-import 'package:savvy_pos/core/presentation/widgets/savvy_box.dart';
-import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart';
 import 'package:savvy_pos/features/auth/domain/enums/user_role.dart';
-import 'package:drift/drift.dart' as drift;
 
 class SupervisorAuthDialog extends StatefulWidget {
   final String title;

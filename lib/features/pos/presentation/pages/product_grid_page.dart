@@ -29,7 +29,7 @@ class ProductGridPage extends StatelessWidget {
     final useCase = GetProductsUseCase(repo);
 
     return BlocProvider(
-      create: (context) => ProductBloc(useCase)..add(LoadProducts()),
+      create: (context) => ProductBloc(useCase)..add(const ProductEvent.loadProducts()),
       child: const ProductGridView(),
     );
   }

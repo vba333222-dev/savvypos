@@ -147,8 +147,8 @@ class _PaymentMethodsSheetState extends State<PaymentMethodsSheet> {
                               children: [
                                 SavvyText('Tendered Amount', style: SavvyTextStyle.label, color: theme.colors.textSecondary),
                                 SavvyText(
-                                  '\$${_input == '0' ? '0.00' : double.parse(_input).toStringAsFixed(2)}', 
-                                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: theme.colors.textPrimary),
+                                  '\${_input == '0' ? '0.00' : double.parse(_input).toStringAsFixed(2)}', 
+                                  textStyle: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: theme.colors.textPrimary),
                                 ),
                                 Divider(),
                                 Row(

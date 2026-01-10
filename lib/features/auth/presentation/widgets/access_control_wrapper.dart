@@ -57,7 +57,7 @@ class _AccessControlWrapperState extends State<AccessControlWrapper> {
                  const SizedBox(height: 16),
                  const SavvyText.h3('Restricted Access'),
                  const SizedBox(height: 8),
-                 SavvyText.body(widget.restrictedMessage, textAlign: TextAlign.center),
+                 SavvyText.body(widget.restrictedMessage),
                  const SizedBox(height: 32),
                  SavvyButton(
                    text: 'MANAGER OVERRIDE',

@@ -27,14 +27,21 @@ class AccessControlWidget extends StatelessWidget {
         
         bool hasAccess = false;
         
-        if (role == 'OWNER') hasAccess = true;
-        else if (role == 'MANAGER') hasAccess = true;
-        else {
+        if (role == 'OWNER') {
+          hasAccess = true;
+        } else if (role == 'MANAGER') {
+          hasAccess = true;
+        } else {
           // CASHIER Restrictions
-          if (permission == 'VIEW_REPORTS') hasAccess = false;
-          else if (permission == 'MANAGE_INVENTORY') hasAccess = false;
-          else if (permission == 'MANAGE_SETTINGS') hasAccess = false;
-          else hasAccess = true;
+          if (permission == 'VIEW_REPORTS') {
+            hasAccess = false;
+          } else if (permission == 'MANAGE_INVENTORY') {
+            hasAccess = false;
+          } else if (permission == 'MANAGE_SETTINGS') {
+            hasAccess = false;
+          } else {
+            hasAccess = true;
+          }
         }
 
         if (hasAccess) return child;

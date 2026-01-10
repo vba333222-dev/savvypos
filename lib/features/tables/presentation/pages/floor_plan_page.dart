@@ -193,7 +193,7 @@ class _FloorPlanCanvasState extends State<_FloorPlanCanvas> {
                                 ),
                               ),
                             );
-                          }).toList(),
+                          }),
                         ],
                       );
                     },

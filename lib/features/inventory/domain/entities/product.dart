@@ -29,5 +29,33 @@ class Product extends Equatable {
   final String printerCategory; // 'FOOD', 'BEVERAGE', 'OTHER'
 
   @override
-  List<Object?> get props => [uuid, name, sku, price, imageUrl, colorHex, categoryId, trackStock, isService, printerCategory];
+  List<Object?> get props => [uuid, name, sku, price, imageUrl, colorHex, categoryId, trackStock, isService, isComposite, printerCategory];
+
+  Product copyWith({
+    String? uuid,
+    String? name,
+    String? sku,
+    double? price,
+    String? imageUrl,
+    String? colorHex,
+    String? categoryId,
+    bool? trackStock,
+    bool? isService,
+    bool? isComposite,
+    String? printerCategory,
+  }) {
+    return Product(
+      uuid: uuid ?? this.uuid,
+      name: name ?? this.name,
+      sku: sku ?? this.sku,
+      price: price ?? this.price,
+      imageUrl: imageUrl ?? this.imageUrl,
+      colorHex: colorHex ?? this.colorHex,
+      categoryId: categoryId ?? this.categoryId,
+      trackStock: trackStock ?? this.trackStock,
+      isService: isService ?? this.isService,
+      isComposite: isComposite ?? this.isComposite,
+      printerCategory: printerCategory ?? this.printerCategory,
+    );
+  }
 }

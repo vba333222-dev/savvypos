@@ -1,10 +1,7 @@
-import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/database/database.dart';
-import 'package:savvy_pos/core/presentation/widgets/savvy_box.dart';
-import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart';
 import 'package:savvy_pos/core/security/roles.dart';
 
@@ -104,7 +101,7 @@ class _SupervisorPinDialogState extends State<SupervisorPinDialog> {
             const SizedBox(height: 16),
             SavvyText.h3(widget.title),
             const SizedBox(height: 8),
-            SavvyText.body(widget.reason, textAlign: TextAlign.center, color: context.savvy.colors.textSecondary),
+            SavvyText.body(widget.reason, color: context.savvy.colors.textSecondary),
             const SizedBox(height: 24),
             
             SavvyTextField(

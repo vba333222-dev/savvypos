@@ -3,7 +3,6 @@ import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
-import 'package:savvy_pos/features/pos/data/repositories/mock_product_repository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
 

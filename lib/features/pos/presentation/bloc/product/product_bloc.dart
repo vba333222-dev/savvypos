@@ -8,15 +8,15 @@ part 'product_bloc.freezed.dart';
 
 @freezed
 class ProductEvent with _$ProductEvent {
-  const factory ProductEvent.loadProducts() = _LoadProducts;
+  const factory ProductEvent.loadProducts() = LoadProducts;
 }
 
 @freezed
 class ProductState with _$ProductState {
-  const factory ProductState.initial() = _Initial;
-  const factory ProductState.loading() = _Loading;
-  const factory ProductState.loaded(List<Product> products) = _Loaded;
-  const factory ProductState.error(String message) = _Error;
+  const factory ProductState.initial() = ProductInitial;
+  const factory ProductState.loading() = ProductLoading;
+  const factory ProductState.loaded(List<Product> products) = ProductLoaded;
+  const factory ProductState.error(String message) = ProductError;
 }
 
 @injectable
@@ -24,10 +24,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final GetProductsUseCase getProducts;
 
   ProductBloc(this.getProducts) : super(const ProductState.initial()) {
-    on<_LoadProducts>(_onLoadProducts);
+    on<LoadProducts>(_onLoadProducts);
   }
 
-  Future<void> _onLoadProducts(_LoadProducts event, Emitter<ProductState> emit) async {
+  Future<void> _onLoadProducts(LoadProducts event, Emitter<ProductState> emit) async {
     emit(const ProductState.loading());
     try {
       await emit.forEach(

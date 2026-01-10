@@ -23,7 +23,8 @@ class _ModifierGroupPageState extends State<ModifierGroupPage> {
   }
 
   Future<void> _loadGroups() async {
-    final groups = await _repo.getModifierGroups();
+    final result = await _repo.getAllModifierGroups();
+    final groups = result.fold((l) => <ModifierGroup>[], (r) => r);
     if (mounted) {
       setState(() {
         _groups = groups;

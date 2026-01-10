@@ -85,7 +85,7 @@ class _DeviceMeshPageState extends State<DeviceMeshPage> with TickerProviderStat
           ),
           
           // 2. Data Particles
-          ..._particles.map((p) => _buildParticle(p, theme)).toList(),
+          ..._particles.map((p) => _buildParticle(p, theme)),
 
           // 3. Center Node (Hub)
           Center(
@@ -104,7 +104,7 @@ class _DeviceMeshPageState extends State<DeviceMeshPage> with TickerProviderStat
           ),
 
           // 4. Printer Nodes
-          ..._printers.map((node) => _buildPrinterNode(node, theme)).toList(),
+          ..._printers.map((node) => _buildPrinterNode(node, theme)),
           
           // 5. Scan Button
           Positioned(

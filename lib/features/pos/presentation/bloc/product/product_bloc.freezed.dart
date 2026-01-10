@@ -34,17 +34,17 @@ mixin _$ProductEvent {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_LoadProducts value) loadProducts,
+    required TResult Function(LoadProducts value) loadProducts,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadProducts value)? loadProducts,
+    TResult? Function(LoadProducts value)? loadProducts,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadProducts value)? loadProducts,
+    TResult Function(LoadProducts value)? loadProducts,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -86,7 +86,7 @@ class __$$LoadProductsImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoadProductsImpl implements _LoadProducts {
+class _$LoadProductsImpl implements LoadProducts {
   const _$LoadProductsImpl();
 
   @override
@@ -134,7 +134,7 @@ class _$LoadProductsImpl implements _LoadProducts {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_LoadProducts value) loadProducts,
+    required TResult Function(LoadProducts value) loadProducts,
   }) {
     return loadProducts(this);
   }
@@ -142,7 +142,7 @@ class _$LoadProductsImpl implements _LoadProducts {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_LoadProducts value)? loadProducts,
+    TResult? Function(LoadProducts value)? loadProducts,
   }) {
     return loadProducts?.call(this);
   }
@@ -150,7 +150,7 @@ class _$LoadProductsImpl implements _LoadProducts {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_LoadProducts value)? loadProducts,
+    TResult Function(LoadProducts value)? loadProducts,
     required TResult orElse(),
   }) {
     if (loadProducts != null) {
@@ -160,8 +160,8 @@ class _$LoadProductsImpl implements _LoadProducts {
   }
 }
 
-abstract class _LoadProducts implements ProductEvent {
-  const factory _LoadProducts() = _$LoadProductsImpl;
+abstract class LoadProducts implements ProductEvent {
+  const factory LoadProducts() = _$LoadProductsImpl;
 }
 
 /// @nodoc
@@ -193,26 +193,26 @@ mixin _$ProductState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
+    required TResult Function(ProductInitial value) initial,
+    required TResult Function(ProductLoading value) loading,
+    required TResult Function(ProductLoaded value) loaded,
+    required TResult Function(ProductError value) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Error value)? error,
+    TResult? Function(ProductInitial value)? initial,
+    TResult? Function(ProductLoading value)? loading,
+    TResult? Function(ProductLoaded value)? loaded,
+    TResult? Function(ProductError value)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
+    TResult Function(ProductInitial value)? initial,
+    TResult Function(ProductLoading value)? loading,
+    TResult Function(ProductLoaded value)? loaded,
+    TResult Function(ProductError value)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -237,25 +237,25 @@ class _$ProductStateCopyWithImpl<$Res, $Val extends ProductState>
 }
 
 /// @nodoc
-abstract class _$$InitialImplCopyWith<$Res> {
-  factory _$$InitialImplCopyWith(
-          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
-      __$$InitialImplCopyWithImpl<$Res>;
+abstract class _$$ProductInitialImplCopyWith<$Res> {
+  factory _$$ProductInitialImplCopyWith(_$ProductInitialImpl value,
+          $Res Function(_$ProductInitialImpl) then) =
+      __$$ProductInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$InitialImplCopyWithImpl<$Res>
-    extends _$ProductStateCopyWithImpl<$Res, _$InitialImpl>
-    implements _$$InitialImplCopyWith<$Res> {
-  __$$InitialImplCopyWithImpl(
-      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
+class __$$ProductInitialImplCopyWithImpl<$Res>
+    extends _$ProductStateCopyWithImpl<$Res, _$ProductInitialImpl>
+    implements _$$ProductInitialImplCopyWith<$Res> {
+  __$$ProductInitialImplCopyWithImpl(
+      _$ProductInitialImpl _value, $Res Function(_$ProductInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$InitialImpl implements _Initial {
-  const _$InitialImpl();
+class _$ProductInitialImpl implements ProductInitial {
+  const _$ProductInitialImpl();
 
   @override
   String toString() {
@@ -265,7 +265,7 @@ class _$InitialImpl implements _Initial {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$InitialImpl);
+        (other.runtimeType == runtimeType && other is _$ProductInitialImpl);
   }
 
   @override
@@ -311,10 +311,10 @@ class _$InitialImpl implements _Initial {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
+    required TResult Function(ProductInitial value) initial,
+    required TResult Function(ProductLoading value) loading,
+    required TResult Function(ProductLoaded value) loaded,
+    required TResult Function(ProductError value) error,
   }) {
     return initial(this);
   }
@@ -322,10 +322,10 @@ class _$InitialImpl implements _Initial {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Error value)? error,
+    TResult? Function(ProductInitial value)? initial,
+    TResult? Function(ProductLoading value)? loading,
+    TResult? Function(ProductLoaded value)? loaded,
+    TResult? Function(ProductError value)? error,
   }) {
     return initial?.call(this);
   }
@@ -333,10 +333,10 @@ class _$InitialImpl implements _Initial {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
+    TResult Function(ProductInitial value)? initial,
+    TResult Function(ProductLoading value)? loading,
+    TResult Function(ProductLoaded value)? loaded,
+    TResult Function(ProductError value)? error,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -346,30 +346,30 @@ class _$InitialImpl implements _Initial {
   }
 }
 
-abstract class _Initial implements ProductState {
-  const factory _Initial() = _$InitialImpl;
+abstract class ProductInitial implements ProductState {
+  const factory ProductInitial() = _$ProductInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$LoadingImplCopyWith<$Res> {
-  factory _$$LoadingImplCopyWith(
-          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
-      __$$LoadingImplCopyWithImpl<$Res>;
+abstract class _$$ProductLoadingImplCopyWith<$Res> {
+  factory _$$ProductLoadingImplCopyWith(_$ProductLoadingImpl value,
+          $Res Function(_$ProductLoadingImpl) then) =
+      __$$ProductLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$LoadingImplCopyWithImpl<$Res>
-    extends _$ProductStateCopyWithImpl<$Res, _$LoadingImpl>
-    implements _$$LoadingImplCopyWith<$Res> {
-  __$$LoadingImplCopyWithImpl(
-      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
+class __$$ProductLoadingImplCopyWithImpl<$Res>
+    extends _$ProductStateCopyWithImpl<$Res, _$ProductLoadingImpl>
+    implements _$$ProductLoadingImplCopyWith<$Res> {
+  __$$ProductLoadingImplCopyWithImpl(
+      _$ProductLoadingImpl _value, $Res Function(_$ProductLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$LoadingImpl implements _Loading {
-  const _$LoadingImpl();
+class _$ProductLoadingImpl implements ProductLoading {
+  const _$ProductLoadingImpl();
 
   @override
   String toString() {
@@ -379,7 +379,7 @@ class _$LoadingImpl implements _Loading {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadingImpl);
+        (other.runtimeType == runtimeType && other is _$ProductLoadingImpl);
   }
 
   @override
@@ -425,10 +425,10 @@ class _$LoadingImpl implements _Loading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
+    required TResult Function(ProductInitial value) initial,
+    required TResult Function(ProductLoading value) loading,
+    required TResult Function(ProductLoaded value) loaded,
+    required TResult Function(ProductError value) error,
   }) {
     return loading(this);
   }
@@ -436,10 +436,10 @@ class _$LoadingImpl implements _Loading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Error value)? error,
+    TResult? Function(ProductInitial value)? initial,
+    TResult? Function(ProductLoading value)? loading,
+    TResult? Function(ProductLoaded value)? loaded,
+    TResult? Function(ProductError value)? error,
   }) {
     return loading?.call(this);
   }
@@ -447,10 +447,10 @@ class _$LoadingImpl implements _Loading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
+    TResult Function(ProductInitial value)? initial,
+    TResult Function(ProductLoading value)? loading,
+    TResult Function(ProductLoaded value)? loaded,
+    TResult Function(ProductError value)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -460,25 +460,25 @@ class _$LoadingImpl implements _Loading {
   }
 }
 
-abstract class _Loading implements ProductState {
-  const factory _Loading() = _$LoadingImpl;
+abstract class ProductLoading implements ProductState {
+  const factory ProductLoading() = _$ProductLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$LoadedImplCopyWith<$Res> {
-  factory _$$LoadedImplCopyWith(
-          _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
-      __$$LoadedImplCopyWithImpl<$Res>;
+abstract class _$$ProductLoadedImplCopyWith<$Res> {
+  factory _$$ProductLoadedImplCopyWith(
+          _$ProductLoadedImpl value, $Res Function(_$ProductLoadedImpl) then) =
+      __$$ProductLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call({List<Product> products});
 }
 
 /// @nodoc
-class __$$LoadedImplCopyWithImpl<$Res>
-    extends _$ProductStateCopyWithImpl<$Res, _$LoadedImpl>
-    implements _$$LoadedImplCopyWith<$Res> {
-  __$$LoadedImplCopyWithImpl(
-      _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
+class __$$ProductLoadedImplCopyWithImpl<$Res>
+    extends _$ProductStateCopyWithImpl<$Res, _$ProductLoadedImpl>
+    implements _$$ProductLoadedImplCopyWith<$Res> {
+  __$$ProductLoadedImplCopyWithImpl(
+      _$ProductLoadedImpl _value, $Res Function(_$ProductLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -486,7 +486,7 @@ class __$$LoadedImplCopyWithImpl<$Res>
   $Res call({
     Object? products = null,
   }) {
-    return _then(_$LoadedImpl(
+    return _then(_$ProductLoadedImpl(
       null == products
           ? _value._products
           : products // ignore: cast_nullable_to_non_nullable
@@ -497,8 +497,9 @@ class __$$LoadedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoadedImpl implements _Loaded {
-  const _$LoadedImpl(final List<Product> products) : _products = products;
+class _$ProductLoadedImpl implements ProductLoaded {
+  const _$ProductLoadedImpl(final List<Product> products)
+      : _products = products;
 
   final List<Product> _products;
   @override
@@ -517,7 +518,7 @@ class _$LoadedImpl implements _Loaded {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LoadedImpl &&
+            other is _$ProductLoadedImpl &&
             const DeepCollectionEquality().equals(other._products, _products));
   }
 
@@ -528,8 +529,8 @@ class _$LoadedImpl implements _Loaded {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
-      __$$LoadedImplCopyWithImpl<_$LoadedImpl>(this, _$identity);
+  _$$ProductLoadedImplCopyWith<_$ProductLoadedImpl> get copyWith =>
+      __$$ProductLoadedImplCopyWithImpl<_$ProductLoadedImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -571,10 +572,10 @@ class _$LoadedImpl implements _Loaded {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
+    required TResult Function(ProductInitial value) initial,
+    required TResult Function(ProductLoading value) loading,
+    required TResult Function(ProductLoaded value) loaded,
+    required TResult Function(ProductError value) error,
   }) {
     return loaded(this);
   }
@@ -582,10 +583,10 @@ class _$LoadedImpl implements _Loaded {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Error value)? error,
+    TResult? Function(ProductInitial value)? initial,
+    TResult? Function(ProductLoading value)? loading,
+    TResult? Function(ProductLoaded value)? loaded,
+    TResult? Function(ProductError value)? error,
   }) {
     return loaded?.call(this);
   }
@@ -593,10 +594,10 @@ class _$LoadedImpl implements _Loaded {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
+    TResult Function(ProductInitial value)? initial,
+    TResult Function(ProductLoading value)? loading,
+    TResult Function(ProductLoaded value)? loaded,
+    TResult Function(ProductError value)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -606,30 +607,31 @@ class _$LoadedImpl implements _Loaded {
   }
 }
 
-abstract class _Loaded implements ProductState {
-  const factory _Loaded(final List<Product> products) = _$LoadedImpl;
+abstract class ProductLoaded implements ProductState {
+  const factory ProductLoaded(final List<Product> products) =
+      _$ProductLoadedImpl;
 
   List<Product> get products;
   @JsonKey(ignore: true)
-  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
+  _$$ProductLoadedImplCopyWith<_$ProductLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ErrorImplCopyWith<$Res> {
-  factory _$$ErrorImplCopyWith(
-          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
-      __$$ErrorImplCopyWithImpl<$Res>;
+abstract class _$$ProductErrorImplCopyWith<$Res> {
+  factory _$$ProductErrorImplCopyWith(
+          _$ProductErrorImpl value, $Res Function(_$ProductErrorImpl) then) =
+      __$$ProductErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$ErrorImplCopyWithImpl<$Res>
-    extends _$ProductStateCopyWithImpl<$Res, _$ErrorImpl>
-    implements _$$ErrorImplCopyWith<$Res> {
-  __$$ErrorImplCopyWithImpl(
-      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
+class __$$ProductErrorImplCopyWithImpl<$Res>
+    extends _$ProductStateCopyWithImpl<$Res, _$ProductErrorImpl>
+    implements _$$ProductErrorImplCopyWith<$Res> {
+  __$$ProductErrorImplCopyWithImpl(
+      _$ProductErrorImpl _value, $Res Function(_$ProductErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -637,7 +639,7 @@ class __$$ErrorImplCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$ErrorImpl(
+    return _then(_$ProductErrorImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -648,8 +650,8 @@ class __$$ErrorImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ErrorImpl implements _Error {
-  const _$ErrorImpl(this.message);
+class _$ProductErrorImpl implements ProductError {
+  const _$ProductErrorImpl(this.message);
 
   @override
   final String message;
@@ -663,7 +665,7 @@ class _$ErrorImpl implements _Error {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ErrorImpl &&
+            other is _$ProductErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -673,8 +675,8 @@ class _$ErrorImpl implements _Error {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
-      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
+  _$$ProductErrorImplCopyWith<_$ProductErrorImpl> get copyWith =>
+      __$$ProductErrorImplCopyWithImpl<_$ProductErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -716,10 +718,10 @@ class _$ErrorImpl implements _Error {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
+    required TResult Function(ProductInitial value) initial,
+    required TResult Function(ProductLoading value) loading,
+    required TResult Function(ProductLoaded value) loaded,
+    required TResult Function(ProductError value) error,
   }) {
     return error(this);
   }
@@ -727,10 +729,10 @@ class _$ErrorImpl implements _Error {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Error value)? error,
+    TResult? Function(ProductInitial value)? initial,
+    TResult? Function(ProductLoading value)? loading,
+    TResult? Function(ProductLoaded value)? loaded,
+    TResult? Function(ProductError value)? error,
   }) {
     return error?.call(this);
   }
@@ -738,10 +740,10 @@ class _$ErrorImpl implements _Error {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
+    TResult Function(ProductInitial value)? initial,
+    TResult Function(ProductLoading value)? loading,
+    TResult Function(ProductLoaded value)? loaded,
+    TResult Function(ProductError value)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -751,11 +753,11 @@ class _$ErrorImpl implements _Error {
   }
 }
 
-abstract class _Error implements ProductState {
-  const factory _Error(final String message) = _$ErrorImpl;
+abstract class ProductError implements ProductState {
+  const factory ProductError(final String message) = _$ProductErrorImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+  _$$ProductErrorImplCopyWith<_$ProductErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/ingredient.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
+import 'package:savvy_pos/features/inventory/domain/entities/recipe.dart';
 import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
 
 class RecipeSetupPage extends StatefulWidget {
@@ -27,13 +28,18 @@ class _RecipeSetupPageState extends State<RecipeSetupPage> {
   }
 
   Future<void> _loadData() async {
-    final ingredients = await _repo.getIngredients();
-    final recipeMap = await _repo.getRecipeForProduct(widget.product.uuid);
+    final ingredientsResult = await _repo.getAllIngredients();
+    final ingredients = ingredientsResult.fold((l) => <Ingredient>[], (r) => r);
+
+    final recipeResult = await _repo.getRecipeForProduct(widget.product.uuid);
+    final recipe = recipeResult.fold((l) => null, (r) => r);
     
-    // Map<Ingredient, double> -> Map<String, double>
+    // Map<String, double>
     final currentRecipe = <String, double>{};
-    for (var entry in recipeMap.entries) {
-      currentRecipe[entry.key.uuid] = entry.value;
+    if (recipe != null) {
+      for (var item in recipe.items) {
+        currentRecipe[item.ingredient.uuid] = item.quantity;
+      }
     }
 
     if (mounted) {
@@ -91,7 +97,18 @@ class _RecipeSetupPageState extends State<RecipeSetupPage> {
 
   Future<void> _saveRecipe() async {
     setState(() => _isLoading = true);
-    await _repo.updateRecipe(widget.product.uuid, _recipe);
+    
+    final items = _recipe.entries.map((entry) {
+       final ingredient = _allIngredients.firstWhere((i) => i.uuid == entry.key);
+       return RecipeItem(ingredient: ingredient, quantity: entry.value);
+    }).toList();
+
+    final recipe = Recipe(
+      productUuid: widget.product.uuid, 
+      items: items
+    );
+
+    await _repo.updateRecipe(recipe);
     if (mounted) {
       Navigator.pop(context);
     }

@@ -215,7 +215,7 @@ class _CartViewState extends State<CartView> {
 }
 
 class _DismissBackground extends StatelessWidget {
-  final SavvyThemeData theme;
+  final SavvyTheme theme;
   const _DismissBackground({required this.theme});
 
   @override
@@ -341,7 +341,7 @@ class _SummaryRow extends StatelessWidget {
           // Living Number
           SavvyTicker(
              value: value,
-             style: isLarge ? SavvyTextStyle.h3.copyWith(fontSize: 24, fontWeight: FontWeight.bold) : SavvyTextStyle.bodyMedium,
+             style: isLarge ? SavvyTextStyle.h3.style.copyWith(fontSize: 24, fontWeight: FontWeight.bold) : SavvyTextStyle.bodyMedium.style,
              format: NumberFormat.currency(symbol: '\$'),
           ),
         ],

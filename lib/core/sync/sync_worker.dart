@@ -182,7 +182,7 @@ Future<void> _performDeltaSync(AppDatabase db, ApiClient apiClient, Logger logge
                    name: Value(p['name']),
                    price: Value((p['price'] as num).toDouble()),
                    sku: Value(p['sku']),
-                   category: Value(p['category']),
+                   categoryId: Value(p['category']),
                    version: Value((p['version'] as num).toInt()), // Update Version
                    isSynced: const Value(true),
                ), mode: InsertMode.insertOrReplace);

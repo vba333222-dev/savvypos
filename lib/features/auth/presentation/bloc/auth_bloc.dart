@@ -55,7 +55,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
            final scope = await _tenantRepo.getActiveScope();
            
            try {
-             await processSyncQueue(db, Logger(), activeWarehouseId: scope['warehouseId']);
+             await processSyncQueue(db, Logger());
            } catch (e) {
              Logger().w('Initial Sync failed: $e');
            }
@@ -106,7 +106,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     
     // Trigger Sync for new scope
     try {
-      await processSyncQueue(db, Logger(), activeWarehouseId: event.warehouseId);
+      await processSyncQueue(db, Logger());
     } catch (e) {
        Logger().w('Scope Switch Sync failed: $e');
     }

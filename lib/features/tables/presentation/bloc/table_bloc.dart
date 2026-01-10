@@ -13,7 +13,8 @@ class TableEvent with _$TableEvent {
   const factory TableEvent.addTable(String name, double x, double y) = _AddTable;
   const factory TableEvent.moveTable(String uuid, double x, double y) = _MoveTable;
   const factory TableEvent.deleteTable(String uuid) = _DeleteTable;
-  const factory TableEvent.toggleOccupied(String uuid, bool isOccupied) = _ToggleOccupied; // Added
+  const factory TableEvent.toggleOccupied(String uuid, bool isOccupied) = _ToggleOccupied; 
+  const factory TableEvent.mergeTables(String sourceUuid, String targetUuid) = _MergeTables;
 }
 
 @freezed
@@ -35,7 +36,8 @@ class TableBloc extends Bloc<TableEvent, TableState> {
     on<_AddTable>(_onAddTable);
     on<_MoveTable>(_onMoveTable);
     on<_DeleteTable>(_onDeleteTable);
-    on<_ToggleOccupied>(_onToggleOccupied); // Register
+    on<_ToggleOccupied>(_onToggleOccupied);
+    on<_MergeTables>(_onMergeTables);
   }
 
   Future<void> _onLoadTables(_LoadTables event, Emitter<TableState> emit) async {
@@ -77,5 +79,13 @@ class TableBloc extends Bloc<TableEvent, TableState> {
 
   Future<void> _onDeleteTable(_DeleteTable event, Emitter<TableState> emit) async {
     await _repository.deleteTable(event.uuid);
+  }
+
+  Future<void> _onMergeTables(_MergeTables event, Emitter<TableState> emit) async {
+    try {
+      await _repository.mergeTables(event.sourceUuid, event.targetUuid);
+    } catch (e) {
+      emit(state.copyWith(error: 'Failed to merge tables: $e'));
+    }
   }
 }

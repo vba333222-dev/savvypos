@@ -165,7 +165,7 @@ class _GoodsReceiptPageState extends State<GoodsReceiptPage> {
                         )
                       ],
                     ),
-                  ).animate(target: isJustScanned ? 1 : 0).shake(amount: 5);
+                  ).animate(target: isJustScanned ? 1 : 0).shake();
                 },
               ),
             ),

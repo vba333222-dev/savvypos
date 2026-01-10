@@ -9,7 +9,6 @@ class RemoteDashboardRepositoryImpl implements IDashboardRepository {
 
   RemoteDashboardRepositoryImpl(this.apiClient);
 
-  @override
   Future<int> getPendingSyncCount() async {
     // Web reads directly from server, so "pending sync" from local device standpoint doesn't exist.
     // However, we could fetch "Offline Devices" count from server if API existed.
@@ -17,7 +16,6 @@ class RemoteDashboardRepositoryImpl implements IDashboardRepository {
     return 0;
   }
 
-  @override
   Future<List<DailySalesData>> getSalesLast7Days() async {
     final data = await apiClient.getSalesChart();
     return data.map((e) {
@@ -28,7 +26,6 @@ class RemoteDashboardRepositoryImpl implements IDashboardRepository {
     }).toList();
   }
 
-  @override
   Future<double> getTodaySales() async {
     final data = await apiClient.getAnalyticsSummary();
     if (data == null) return 0.0;
@@ -42,6 +39,7 @@ class RemoteDashboardRepositoryImpl implements IDashboardRepository {
       return TopProductData(
         e['name'] as String,
         (e['quantity'] as num).toDouble(),
+        totalSales: (e['total_sales'] as num?)?.toDouble() ?? 0.0,
       );
     }).toList();
   }

@@ -187,7 +187,8 @@ class _FloorPlanCanvasState extends State<_FloorPlanCanvas> {
                                     )); 
                                   },
                                   onOrderMerge: (src, dst) {
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Merging Order $src into $dst')));
+                                    context.read<TableBloc>().add(TableEvent.mergeTables(src, dst));
+                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Merging Tables...')));
                                   },
                                   onDragUpdate: (details) => _handleDragUpdate(details, Size(width, height)),
                                 ),
@@ -245,12 +246,62 @@ class _FloorPlanCanvasState extends State<_FloorPlanCanvas> {
         Positioned(
           right: theme.shapes.spacingLg,
           bottom: theme.shapes.spacingLg,
-          child: FloorModeToggle(
-            mode: widget.mode,
-            onToggle: widget.onModeToggle,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              if (widget.mode == FloorMode.layout)
+                Padding(
+                  padding: EdgeInsets.only(bottom: theme.shapes.spacingMd),
+                  child: FloatingActionButton(
+                    heroTag: 'add_table_btn',
+                    backgroundColor: theme.colors.brandPrimary,
+                    child: const Icon(Icons.add, color: Colors.white),
+                    onPressed: () => _showAddTableDialog(context),
+                  ).animate().scale(duration: 200.ms, curve: Curves.easeOutBack),
+                ),
+              FloorModeToggle(
+                mode: widget.mode,
+                onToggle: widget.onModeToggle,
+              ),
+            ],
           ),
         ),
       ],
+    );
+  }
+
+  void _showAddTableDialog(BuildContext context) {
+    final controller = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Add Table'),
+        content: TextField(
+          controller: controller, // Use local controller
+          decoration: const InputDecoration(
+            labelText: 'Table Name / Number',
+            hintText: 'e.g. T-10, A1',
+          ),
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () {
+              if (controller.text.isNotEmpty) {
+                // Default position center of screen sort of
+                context.read<TableBloc>().add(TableEvent.addTable(controller.text, 500, 500));
+                Navigator.pop(context);
+              }
+            },
+            child: const Text('Add'),
+          ),
+        ],
+      ),
     );
   }
 }

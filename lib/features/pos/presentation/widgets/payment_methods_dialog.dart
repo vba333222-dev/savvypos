@@ -123,7 +123,7 @@ class _PaymentMethodsDialogState extends State<PaymentMethodsDialog> {
                         SavvyText('Enter Cash Amount', style: SavvyTextStyle.label, color: theme.colors.textSecondary),
                         FittedBox(
                           child: SavvyText(
-                            '\${_input == '0' ? '0.00' : double.parse(_input).toStringAsFixed(2)}', 
+                            '\$${_input == '0' ? '0.00' : double.parse(_input).toStringAsFixed(2)}', 
                             textStyle: TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: theme.colors.brandPrimary),
                           ),
                         ),

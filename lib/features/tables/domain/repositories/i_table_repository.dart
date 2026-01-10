@@ -7,4 +7,5 @@ abstract class ITableRepository {
   Future<void> updateTable(RestaurantTableData table);
   Future<void> deleteTable(String uuid);
   Future<void> setTableOccupied(String tableUuid, bool isOccupied, {String? orderUuid});
+  Future<void> mergeTables(String sourceTableUuid, String targetTableUuid);
 }

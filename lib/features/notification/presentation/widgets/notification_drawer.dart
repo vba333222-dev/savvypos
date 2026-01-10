@@ -85,7 +85,7 @@ class _NotificationTile extends StatelessWidget {
           size: 20,
         ),
       ),
-      title: SavvyText.body(item.title, style: TextStyle(fontWeight: item.isRead ? FontWeight.normal : FontWeight.bold)),
+      title: SavvyText.body(item.title, textStyle: TextStyle(fontWeight: item.isRead ? FontWeight.normal : FontWeight.bold)),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

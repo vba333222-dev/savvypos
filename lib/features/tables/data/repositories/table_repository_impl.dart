@@ -80,4 +80,57 @@ class TableRepositoryImpl implements ITableRepository {
       ),
     );
   }
+
+  @override
+  Future<void> mergeTables(String sourceTableUuid, String targetTableUuid) async {
+    await _db.transaction(() async {
+      // 1. Get Source and Target Tables
+      final sourceTable = await (_db.select(_db.restaurantTable)..where((t) => t.uuid.equals(sourceTableUuid))).getSingle();
+      final targetTable = await (_db.select(_db.restaurantTable)..where((t) => t.uuid.equals(targetTableUuid))).getSingle();
+
+      final sourceOrderUuid = sourceTable.currentOrderUuid;
+      if (sourceOrderUuid == null) return; // Nothing to merge
+
+      if (!targetTable.isOccupied || targetTable.currentOrderUuid == null) {
+        // CASE A: Target is Empty -> Move Order
+        
+        // 1. Update Order's table reference (if your OrderTable has a tableUuid column, update it here. 
+        // Based on schema, Order might not have tableUuid directly if Table points to Order. 
+        // But usually Order has table_id. Let's assume Order has table_uuid or we just link Table->Order)
+        // Checking schema via context... Assuming we just move the link.
+        
+        // Update Target Table to point to Source's Order
+        await (_db.update(_db.restaurantTable)..where((t) => t.uuid.equals(targetTableUuid))).write(
+          RestaurantTableCompanion(
+            isOccupied: const Value(true),
+            currentOrderUuid: Value(sourceOrderUuid),
+            updatedAt: Value(DateTime.now()),
+          ),
+        );
+      } else {
+        // CASE B: Target is Occupied -> Merge Items
+        final targetOrderUuid = targetTable.currentOrderUuid!;
+
+        // 1. Move all OrderItems from Source Order to Target Order
+        // update order_items set order_uuid = targetOrderUuid where order_uuid = sourceOrderUuid
+        await (_db.update(_db.orderItemTable)..where((t) => t.orderUuid.equals(sourceOrderUuid))).write(
+          OrderItemTableCompanion(
+            orderUuid: Value(targetOrderUuid),
+          ),
+        );
+
+        // 2. Delete Source Order (it's now empty)
+        await (_db.delete(_db.orderTable)..where((t) => t.uuid.equals(sourceOrderUuid))).go();
+      }
+
+      // 3. Clear Source Table
+      await (_db.update(_db.restaurantTable)..where((t) => t.uuid.equals(sourceTableUuid))).write(
+        RestaurantTableCompanion(
+          isOccupied: const Value(false),
+          currentOrderUuid: const Value(null),
+          updatedAt: Value(DateTime.now()),
+        ),
+      );
+    });
+  }
 }

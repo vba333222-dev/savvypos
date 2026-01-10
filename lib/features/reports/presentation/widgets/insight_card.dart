@@ -29,7 +29,7 @@ class InsightCard extends StatelessWidget {
         color: theme.colors.bgElevated,
         borderRadius: BorderRadius.circular(theme.shapes.radiusLg),
         border: Border.all(color: theme.colors.borderDefault),
-        boxShadow: [theme.elevations.sm], // Use List<BoxShadow> 
+        boxShadow: theme.elevations.sm,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

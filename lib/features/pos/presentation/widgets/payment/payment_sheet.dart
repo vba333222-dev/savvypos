@@ -149,7 +149,7 @@ class _PaymentSheetState extends State<PaymentSheet> {
                    ],
                  ),
                  if (change > 0) ...[
-                    Divider(height: 24, dashed: true, color: theme.colors.borderDefault),
+                    Divider(height: 24, color: theme.colors.borderDefault),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

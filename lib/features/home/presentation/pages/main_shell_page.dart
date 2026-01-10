@@ -16,6 +16,7 @@ import 'package:savvy_pos/features/tables/presentation/bloc/table_bloc.dart';
 import 'package:savvy_pos/features/tables/presentation/pages/floor_plan_page.dart';
 import 'package:savvy_pos/features/reservations/presentation/bloc/reservation_bloc.dart';
 import 'package:savvy_pos/core/presentation/widgets/network_status_banner.dart';
+import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 
 class MainShellPage extends StatefulWidget {
   const MainShellPage({Key? key}) : super(key: key);
@@ -106,49 +107,37 @@ class _MainShellContentState extends State<_MainShellContent> {
   @override
   Widget build(BuildContext context) {
     final colors = context.savvy.colors;
+    // For now, use a simple boolean to determine F&B mode
+    // You can replace this with actual business logic
+    final isFoodBev = false; // TODO: Implement business mode logic
+    
+    final pages = [
+      const DashboardPage(),
+      isFoodBev 
+        ? const FloorPlanPage()
+        : const PosPage(),
+      const InventoryListPage(),
+      const TransactionHistoryPage(),
+      const SettingsPage(),
+    ];
 
-    return ValueListenableBuilder<bool>(
-      valueListenable: businessModeNotifier,
-      builder: (context, isFoodBev, child) {
-         final pages = [
-            const DashboardPage(),
-            isFoodBev 
-              ? FloorPlanPage(onNavigateToPos: (index) {
-                  // Hacky navigation to POS (which is not in tab list directly? Wait.
-                  // If F&B, Tab 1 is FloorPlan. POS is hidden or accessible via FloorPlan?
-                  // Requirement: "Middle tab changes from POS to Tables. Clicking a table navigates to POS".
-                  // So POS must be accessible.
-                  // Let's make POS valid route pushed on top or swap tab?
-                  // If swap tab, we need POS in the list?
-                  // Maybe Tab 1 is Tables, but where is POS? 
-                  // "Clicking a table then navigates to POS".
-                  // Keep POS as a hidden tab or push standard route?
-                  // Pushing standard route is cleaner for "Check In".
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => const PosPage()));
-                })
-              : const PosPage(),
-            const InventoryListPage(),
-            const TransactionHistoryPage(),
-            const SettingsPage(),
-         ];
+    final destinations = [
+      const NavigationRailDestination(icon: Icon(Icons.dashboard), label: Text('Dashboard')),
+      NavigationRailDestination(icon: Icon(isFoodBev ? Icons.table_restaurant : Icons.point_of_sale), label: Text(isFoodBev ? 'Tables' : 'POS')),
+      const NavigationRailDestination(icon: Icon(Icons.inventory_2), label: Text('Products')),
+      const NavigationRailDestination(icon: Icon(Icons.history), label: Text('History')),
+      const NavigationRailDestination(icon: Icon(Icons.settings), label: Text('Settings')),
+    ];
+    
+    final bottomItems = [
+      const BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Dashboard'),
+      BottomNavigationBarItem(icon: Icon(isFoodBev ? Icons.table_restaurant : Icons.point_of_sale), label: isFoodBev ? 'Tables' : 'POS'),
+      const BottomNavigationBarItem(icon: Icon(Icons.inventory_2), label: 'Products'),
+      const BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
+      const BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+    ];
 
-         final destinations = [
-             const NavigationRailDestination(icon: Icon(Icons.dashboard), label: Text('Dashboard')),
-             NavigationRailDestination(icon: Icon(isFoodBev ? Icons.table_restaurant : Icons.point_of_sale), label: Text(isFoodBev ? 'Tables' : 'POS')),
-             const NavigationRailDestination(icon: Icon(Icons.inventory_2), label: Text('Products')),
-             const NavigationRailDestination(icon: Icon(Icons.history), label: Text('History')),
-             const NavigationRailDestination(icon: Icon(Icons.settings), label: Text('Settings')),
-         ];
-         
-         final bottomItems = [
-             const BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Dashboard'),
-             BottomNavigationBarItem(icon: Icon(isFoodBev ? Icons.table_restaurant : Icons.point_of_sale), label: isFoodBev ? 'Tables' : 'POS'),
-             const BottomNavigationBarItem(icon: Icon(Icons.inventory_2), label: 'Products'),
-             const BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
-             const BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
-         ];
-
-         return LayoutBuilder(
+    return LayoutBuilder(
           builder: (context, constraints) {
             if (constraints.maxWidth > 900) {
               // Desktop / Tablet

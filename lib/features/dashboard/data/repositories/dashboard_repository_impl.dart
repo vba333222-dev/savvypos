@@ -68,7 +68,7 @@ class DashboardRepositoryImpl implements IDashboardRepository {
     final results = await query.get();
 
     return results.map((row) {
-      final hourStr = row.read(hourExp); // Returns String '09', '10'
+      final hourStr = row.read(hourExp) as String?; // Cast to String
       final total = row.read(totalExp);
       return HourlySalesData(int.tryParse(hourStr ?? '0') ?? 0, total ?? 0.0);
     }).toList();

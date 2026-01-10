@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_box.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
-import 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart'; // Assuming button/others are here or we import directly
 import 'package:savvy_pos/features/inventory/domain/usecases/recommend_supplier.dart';
 
 class SupplierComparisonTable extends StatelessWidget {
@@ -58,7 +57,7 @@ class SupplierComparisonTable extends StatelessWidget {
                      child: Column(
                        crossAxisAlignment: CrossAxisAlignment.start,
                        children: [
-                         SavvyText.body(s.supplierName, weight: FontWeight.w600),
+                         SavvyText.body(s.supplierName, textStyle: const TextStyle(fontWeight: FontWeight.w600)),
                          if (isBest) 
                            Padding(
                              padding: const EdgeInsets.only(top: 4),
@@ -80,12 +79,11 @@ class SupplierComparisonTable extends StatelessWidget {
                    
                    const SizedBox(width: 16),
                    
-                   SavvyButton(
-                     text: isSelected ? 'SELECTED' : 'SELECT',
-                     style: isSelected ? SavvyButtonStyle.primary : SavvyButtonStyle.ghost,
-                     onPressed: () => onSelect(s.supplierUuid),
-                     height: 32, // Compact
-                   ),
+                     SavvyButton(
+                       text: isSelected ? 'SELECTED' : 'SELECT',
+                       style: isSelected ? SavvyButtonStyle.primary : SavvyButtonStyle.ghost,
+                       onPressed: () => onSelect(s.supplierUuid),
+                     ),
                 ],
               ),
             ),

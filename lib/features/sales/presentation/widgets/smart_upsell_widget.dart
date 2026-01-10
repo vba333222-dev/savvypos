@@ -77,7 +77,7 @@ class _SmartUpsellWidgetState extends State<SmartUpsellWidget> {
           children: [
             const Icon(Icons.auto_awesome, color: Colors.purple, size: 20).animate(onPlay: (c) => c.repeat()).rotate(duration: 2.seconds),
             const SizedBox(width: 8),
-            SavvyText.body(_suggestion!, color: Colors.purple.shade800, style: const TextStyle(fontWeight: FontWeight.bold)),
+            SavvyText.body(_suggestion!, color: Colors.purple.shade800, textStyle: const TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(width: 8),
             Container(
                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),

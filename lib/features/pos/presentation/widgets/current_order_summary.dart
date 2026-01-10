@@ -7,6 +7,7 @@ import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/payment_methods_dialog.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
+import 'package:savvy_pos/features/pos/presentation/pages/split_bill_page.dart';
 
 class CurrentOrderSummary extends StatelessWidget {
   const CurrentOrderSummary({Key? key}) : super(key: key);

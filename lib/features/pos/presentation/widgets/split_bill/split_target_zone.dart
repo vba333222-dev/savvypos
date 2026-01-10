@@ -35,8 +35,8 @@ class _SplitTargetZoneState extends State<SplitTargetZone> {
     final currency = NumberFormat.currency(symbol: '\$');
 
     return DragTarget<CartItem>(
-      onWillAcceptWithDetails: (data) {
-        if (!widget.items.contains(data)) { 
+      onWillAcceptWithDetails: (details) {
+        if (!widget.items.contains(details.data)) { 
            HapticFeedback.selectionClick();
            setState(() => _isHovering = true);
            return true;
@@ -56,14 +56,14 @@ class _SplitTargetZoneState extends State<SplitTargetZone> {
           width: 280,
           margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           decoration: BoxDecoration(
-            color: _isHovering ? theme.colors.brandPrimary.withAlpha(13) : theme.colors.bgElevated,
+            color: _isHovering ? theme.colors.brandPrimary.withValues(alpha: 0.05) : theme.colors.bgElevated,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
               color: _isHovering ? theme.colors.brandPrimary : theme.colors.borderDefault,
               width: _isHovering ? 2 : 1,
             ),
             boxShadow: _isHovering 
-               ? [BoxShadow(color: theme.colors.brandPrimary.withAlpha(51), blurRadius: 12, spreadRadius: 2)]
+               ? [BoxShadow(color: theme.colors.brandPrimary.withValues(alpha: 0.2), blurRadius: 12, spreadRadius: 2)]
                : [BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))],
           ),
           child: Column(

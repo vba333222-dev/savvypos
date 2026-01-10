@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
+import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/split_bill/draggable_bill_item.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/split_bill/split_target_zone.dart';
@@ -127,14 +128,14 @@ class _SplitBillPageState extends State<SplitBillPage> {
             child: Container(
               color: theme.colors.bgPrimary,
               child: DragTarget<CartItem>(
-                onWillAcceptWithDetails: (data) => !_masterItems.contains(data),
+                onWillAcceptWithDetails: (details) => !_masterItems.contains(details.data),
                 onAcceptWithDetails: (details) => _onItemDrop(details.data, -1), // -1 = Master
                 builder: (context, candidates, rejected) {
                   return Column(
                     children: [
                       Container(
                         padding: EdgeInsets.all(16),
-                        color: candidates.isNotEmpty ? theme.colors.brandPrimary.withAlpha(25) : null,
+                        color: candidates.isNotEmpty ? theme.colors.brandPrimary.withValues(alpha: 0.1) : null,
                         child: Row(
                           children: [
                             Icon(Icons.receipt_long, color: theme.colors.textSecondary),

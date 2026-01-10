@@ -102,9 +102,9 @@ class CartItemTile extends StatelessWidget {
                      child: Container(
                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                        decoration: BoxDecoration(
-                         color: theme.colors.stateSuccess.withOpacity(0.1),
+                         color: theme.colors.stateSuccess.withValues(alpha: 0.1),
                          borderRadius: BorderRadius.circular(4),
-                         border: Border.all(color: theme.colors.stateSuccess.withOpacity(0.3)),
+                         border: Border.all(color: theme.colors.stateSuccess.withValues(alpha: 0.3)),
                        ),
                        child: Row(
                          mainAxisSize: MainAxisSize.min,

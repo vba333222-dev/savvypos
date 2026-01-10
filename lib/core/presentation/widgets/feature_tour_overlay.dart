@@ -31,7 +31,7 @@ class FeatureTourOverlay extends StatelessWidget {
 
     showDialog(
       context: context,
-      barrierColor: Colors.black.withOpacity(0.8),
+      barrierColor: Colors.black.withValues(alpha: 0.8),
       barrierDismissible: true,
       useSafeArea: false, 
       builder: (_) => FeatureTourOverlay(
@@ -111,7 +111,7 @@ class _SpotlightPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     // 1. Draw full screen dark overlay
-    final paint = Paint()..color = Colors.black.withOpacity(0.8);
+    final paint = Paint()..color = Colors.black.withValues(alpha: 0.78);
     final path = Path()
       ..addRect(Rect.fromLTWH(0, 0, size.width, size.height))
       ..addRRect(RRect.fromRectAndRadius(target, const Radius.circular(8)))

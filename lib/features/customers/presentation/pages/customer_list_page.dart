@@ -99,7 +99,7 @@ class _CustomerRolodexView extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: theme.colors.brandPrimary.withAlpha(200),
+        backgroundColor: theme.colors.brandPrimary.withValues(alpha: 0.78),
         elevation: 10,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         onPressed: () {

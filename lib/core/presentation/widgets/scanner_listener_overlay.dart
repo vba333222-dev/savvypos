@@ -91,7 +91,7 @@ class _ScannerListenerOverlayState extends State<ScannerListenerOverlay> {
                   Text(
                     "SCANNER ACTIVE",
                     style: TextStyle(
-                      color: theme.colors.textInverse.withOpacity(0.7), 
+                      color: theme.colors.textInverse.withValues(alpha: 0.7), 
                       fontSize: 10, 
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1.0,

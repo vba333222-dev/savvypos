@@ -28,7 +28,7 @@ class StockLevelIndicator extends StatelessWidget {
       height: 24,
       width: 80,
       decoration: BoxDecoration(
-        color: theme.colors.bgInverse.withOpacity(0.1),
+        color: theme.colors.bgInverse.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Stack(
@@ -37,9 +37,9 @@ class StockLevelIndicator extends StatelessWidget {
             widthFactor: widthFactor,
             child: Container(
               decoration: BoxDecoration(
-                color: color.withOpacity(0.3),
+                color: color.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(4),
-                border: Border.all(color: color.withOpacity(0.5)),
+                border: Border.all(color: color.withValues(alpha: 0.5)),
               ),
             ),
           ),

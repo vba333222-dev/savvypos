@@ -18,7 +18,7 @@ class NotificationDrawer extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
-            color: context.savvy.colors.bgSurface.withOpacity(0.8),
+            color: context.savvy.colors.bgSurface.withValues(alpha: 0.8),
             child: Column(
               children: [
                 _buildHeader(context),
@@ -76,7 +76,7 @@ class _NotificationTile extends StatelessWidget {
     final isAlert = item.type == 'ALERT';
     
     return ListTile(
-      tileColor: item.isRead ? null : context.savvy.colors.primary.withOpacity(0.05),
+      tileColor: item.isRead ? null : context.savvy.colors.primary.withValues(alpha: 0.05),
       leading: CircleAvatar(
         backgroundColor: isAlert ? Colors.red.shade100 : Colors.blue.shade100,
         child: Icon(

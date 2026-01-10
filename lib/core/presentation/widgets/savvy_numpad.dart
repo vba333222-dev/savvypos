@@ -37,7 +37,7 @@ class SavvyNumpad extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(List<String> keys, SavvyThemeData theme) {
+  Widget _buildRow(List<String> keys, SavvyTheme theme) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: keys.map((key) {
@@ -67,7 +67,7 @@ class _NumpadButton extends StatefulWidget {
   final String value;
   final VoidCallback onTap;
   final VoidCallback? onLongPress;
-  final SavvyThemeData theme;
+  final SavvyTheme theme;
 
   const _NumpadButton({
     required this.value,
@@ -133,7 +133,7 @@ class _NumpadButtonState extends State<_NumpadButton> {
             ),
             boxShadow: _isPressed ? [] : [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 4,
                 offset: const Offset(0, 2),
               )

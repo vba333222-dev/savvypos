@@ -188,7 +188,11 @@ class _PaymentMethodsDialogState extends State<PaymentMethodsDialog> {
                         ),
                         onPressed: tenderAmount >= widget.totalAmount 
                           ? () {
-						  widget.cartBloc.add(CartEvent.processCheckout());
+						  widget.cartBloc.add(CartEvent.checkoutProcessed(
+                              paymentMethod: 'CASH',
+                              tenderedAmount: tenderAmount,
+                              changeAmount: change,
+                          ));
                               Navigator.pop(context); // Close Payment Dialog
                               // Success Dialog triggered by Bloc Listener in PosPage or CartView
                             }
@@ -222,9 +226,10 @@ class _PaymentMethodsDialogState extends State<PaymentMethodsDialog> {
                      SizedBox(height: 32),
                      ElevatedButton(
                        onPressed: () {
-                         // Mock Success
-                         widget.cartBloc.add(CartEvent.processCheckout());
-                         Navigator.pop(context);
+                         widget.cartBloc.add(CartEvent.checkoutProcessed(
+                              paymentMethod: _selectedMethod,
+                              tenderedAmount: widget.totalAmount,
+                          ));
                        },
                        style: ElevatedButton.styleFrom(backgroundColor: theme.colors.brandPrimary),
                        child: Text('Simulate Success', style: TextStyle(color: Colors.white)),
@@ -315,7 +320,7 @@ class _NumpadBtn extends StatelessWidget {
         borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
         child: Container(
           decoration: BoxDecoration(
-            color: isDestructive ? theme.colors.stateError.withOpacity(0.1) : theme.colors.bgElevated,
+            color: isDestructive ? theme.colors.stateError.withValues(alpha: 0.1) : theme.colors.bgElevated,
             borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
             border: Border.all(color: theme.colors.borderDefault),
           ),

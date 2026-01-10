@@ -96,7 +96,7 @@ class _TableNodeState extends State<TableNode> {
 
     // Bill Printed Override
     if (isBillPrinted) {
-      bgColor = theme.colors.stateWarning.withOpacity(0.9); // Distinct from timer warning
+      bgColor = theme.colors.stateWarning.withValues(alpha: 0.9); // Distinct from timer warning
       borderColor = Colors.white;
       textColor = Colors.black87;
     }
@@ -122,7 +122,7 @@ class _TableNodeState extends State<TableNode> {
           if (isOccupied)
              Padding(
                padding: const EdgeInsets.only(top: 4.0),
-               child: _DurationTimer(textColor: textColor.withOpacity(0.9), elapsed: _elapsed),
+               child: _DurationTimer(textColor: textColor.withValues(alpha: 0.9), elapsed: _elapsed),
              ),
           if (!isOccupied)
              Padding(

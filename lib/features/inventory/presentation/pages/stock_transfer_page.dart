@@ -144,7 +144,7 @@ class _StockTransferPageState extends State<StockTransferPage> {
                              decoration: BoxDecoration(
                                color: context.savvy.colors.bgCanvas,
                                borderRadius: BorderRadius.circular(16),
-                               boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 20)]
+                               boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 20)]
                              ),
                              child: Column(
                                 mainAxisSize: MainAxisSize.min,

@@ -36,7 +36,7 @@ class SavvyEmptyState extends StatelessWidget {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: theme.colors.bgInverse.withOpacity(0.05),
+                    color: theme.colors.bgInverse.withValues(alpha: 0.05),
                     blurRadius: 20,
                     spreadRadius: 5,
                     offset: const Offset(0, 10),

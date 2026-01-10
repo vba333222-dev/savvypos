@@ -39,9 +39,9 @@ class FloorStatBadge extends StatelessWidget {
               vertical: theme.shapes.spacingSm
             ),
             decoration: BoxDecoration(
-              color: theme.colors.bgElevated.withOpacity(0.7),
+              color: theme.colors.bgElevated.withValues(alpha: 0.7),
               borderRadius: BorderRadius.circular(theme.shapes.radiusPill),
-              border: Border.all(color: theme.colors.borderDefault.withOpacity(0.5)),
+              border: Border.all(color: theme.colors.borderDefault.withValues(alpha: 0.5)),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,

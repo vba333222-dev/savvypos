@@ -53,7 +53,7 @@ class _LanguageSelectorState extends State<LanguageSelector> {
             decoration: BoxDecoration(
               color: context.savvy.colors.bgSurface,
               borderRadius: BorderRadius.circular(16),
-              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10)],
+              boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 10)],
             ),
             child: Column(
               children: [

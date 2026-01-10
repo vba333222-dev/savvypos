@@ -19,8 +19,6 @@ class TenantConfigTable extends Table {
   TextColumn get managerPinHash => text().nullable()();
   
   DateTimeColumn get updatedAt => dateTime()();
-  DateTimeColumn get updatedAt => dateTime()();
-  DateTimeColumn get updatedAt => dateTime()();
 }
 
 // ==============================================================================
@@ -79,6 +77,17 @@ class EmployeeTable extends Table {
 // ==============================================================================
 // 2. PRODUCT CATALOG
 // ==============================================================================
+class CategoryTable extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get uuid => text().unique()();
+  TextColumn get name => text()();
+  TextColumn get colorHex => text().nullable()();
+  
+  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get updatedAt => dateTime()();
+  BoolColumn get isDeleted => boolean().withDefault(const Constant(false))();
+}
+
 class ProductTable extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get uuid => text().unique()();

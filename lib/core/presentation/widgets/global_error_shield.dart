@@ -46,7 +46,7 @@ class GlobalErrorShield extends StatelessWidget {
             Text(
               "A rendering module has encountered an unexpected anomaly.",
               style: TextStyle(
-                color: textColor.withOpacity(0.7),
+                color: textColor.withValues(alpha: 0.7),
                 fontSize: 14,
                 decoration: TextDecoration.none,
                 fontWeight: FontWeight.normal,

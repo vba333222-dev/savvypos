@@ -42,8 +42,8 @@ class _SalesVelocityChartState extends State<SalesVelocityChart> {
         show: true,
         gradient: LinearGradient(
           colors: [
-            primaryColor.withOpacity(0.3),
-            primaryColor.withOpacity(0.0),
+            primaryColor.withValues(alpha: 0.3),
+            primaryColor.withValues(alpha: 0.0),
           ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,

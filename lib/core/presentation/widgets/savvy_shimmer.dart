@@ -30,7 +30,7 @@ class SavvyShimmer extends StatelessWidget {
     final theme = context.savvy;
     // Base color slightly lighter than background surface for visibility
     final baseColor = theme.colors.bgElevated;
-    final highlightColor = theme.colors.bgInverse.withOpacity(0.05);
+    final highlightColor = theme.colors.bgInverse.withValues(alpha: 0.05);
 
     return Container(
       width: width,

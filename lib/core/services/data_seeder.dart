@@ -1,7 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
-import 'package:savvy_pos/features/inventory/data/datasources/local/product_dao.dart';
 import 'package:uuid/uuid.dart';
 
 @lazySingleton
@@ -84,21 +83,21 @@ class DataSeeder {
       trackStock: Value(trackStock),
       isService: Value(isService),
       colorHex: const Value('#FFFFFF'),
-      createdAt: DateTime.now(),
+      // createdAt: DateTime.now(), // Removed
       updatedAt: DateTime.now(),
-      tenantId: const Value('default-tenant'), 
+      // tenantId: const Value('default-tenant'), // Removed
     ));
     
     // Initial Stock if tracking
     if (trackStock) {
        await db.into(db.inventoryLedgerTable).insert(InventoryLedgerTableCompanion.insert(
-         uuid: _uuid.v4(),
+         // uuid: _uuid.v4(), // No UUID in InventoryLedgerTable
          productUuid: id,
          referenceId: 'GENESIS',
          type: 'INITIAL',
          quantityChange: 100, // Start with 100
-         snapshotCost: price * 0.4,
-         createdAt: DateTime.now(),
+         // snapshotCost: price * 0.4, // Removed
+         timestamp: DateTime.now(), // Was createdAt
        ));
     }
   }

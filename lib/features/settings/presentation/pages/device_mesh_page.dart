@@ -96,7 +96,7 @@ class _DeviceMeshPageState extends State<DeviceMeshPage> with TickerProviderStat
                  shape: BoxShape.circle,
                  color: theme.colors.brandPrimary,
                  boxShadow: [
-                   BoxShadow(color: theme.colors.brandPrimary.withOpacity(0.5), blurRadius: 20, spreadRadius: 5)
+                   BoxShadow(color: theme.colors.brandPrimary.withValues(alpha: 0.5), blurRadius: 20, spreadRadius: 5)
                  ],
                ),
                child: const Icon(Icons.phone_iphone, color: Colors.white, size: 40),
@@ -189,7 +189,7 @@ class _DeviceMeshPageState extends State<DeviceMeshPage> with TickerProviderStat
                       width: 2
                     ),
                     boxShadow: node.isOnline ? [
-                       BoxShadow(color: theme.colors.stateSuccess.withOpacity(0.3), blurRadius: 15)
+                       BoxShadow(color: theme.colors.stateSuccess.withValues(alpha: 0.3), blurRadius: 15)
                     ] : [],
                   ),
                   child: Icon(Icons.print, color: node.isOnline ? theme.colors.textPrimary : Colors.grey),
@@ -251,7 +251,7 @@ class _RadarPainter extends CustomPainter {
     final maxRadius = math.sqrt(size.width * size.width + size.height * size.height) / 2;
     
     final paint = Paint()
-      ..color = color.withOpacity(0.2)
+      ..color = color.withValues(alpha: 0.2)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
 
@@ -263,7 +263,7 @@ class _RadarPainter extends CustomPainter {
     // Ripple
     final rippleRadius = maxRadius * animation.value;
     final ripplePaint = Paint()
-      ..color = color.withOpacity(1.0 - animation.value)
+      ..color = color.withValues(alpha: 1.0 - animation.value)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
       

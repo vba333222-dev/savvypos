@@ -44,7 +44,7 @@ class _IdleView extends StatelessWidget {
          .scale(begin: const Offset(1,1), end: const Offset(1.1, 1.1), duration: 10.seconds)
          .moveX(begin: -20, end: 20, duration: 10.seconds),
          
-        Container(color: Colors.black.withOpacity(0.3)),
+        Container(color: Colors.black.withValues(alpha: 0.3)),
         
         Center(
           child: Column(
@@ -91,7 +91,7 @@ class _ActiveCartView extends StatelessWidget {
                         margin: const EdgeInsets.symmetric(vertical: 8),
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.05),
+                          color: Colors.white.withValues(alpha: 0.05),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
@@ -193,7 +193,7 @@ class _SuccessView extends StatelessWidget {
               const SizedBox(height: 16),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                decoration: BoxDecoration(color: Colors.orange.withOpacity(0.2), borderRadius: BorderRadius.circular(50), border: Border.all(color: Colors.orange)),
+                decoration: BoxDecoration(color: Colors.orange.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(50), border: Border.all(color: Colors.orange)),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [

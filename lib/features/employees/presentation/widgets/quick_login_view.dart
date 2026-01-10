@@ -94,11 +94,11 @@ class _AvatarItem extends StatelessWidget {
             width: 100,
             height: 100,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
+              color: color.withValues(alpha: 0.2),
               shape: BoxShape.circle,
-              border: Border.all(color: color.withOpacity(0.5), width: 2),
+              border: Border.all(color: color.withValues(alpha: 0.5), width: 2),
               boxShadow: [
-                BoxShadow(color: color.withOpacity(0.3), blurRadius: 15, spreadRadius: 2)
+                BoxShadow(color: color.withValues(alpha: 0.3), blurRadius: 15, spreadRadius: 2)
               ],
             ),
             alignment: Alignment.center,

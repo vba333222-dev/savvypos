@@ -42,7 +42,7 @@ class DataHealthTile extends StatelessWidget {
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: isHealthy ? theme.colors.stateSuccess.withOpacity(0.1) : theme.colors.stateWarning.withOpacity(0.1),
+                      color: isHealthy ? theme.colors.stateSuccess.withValues(alpha: 0.1) : theme.colors.stateWarning.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
                       border: Border.all(color: isHealthy ? theme.colors.stateSuccess : theme.colors.stateWarning),
                     ),

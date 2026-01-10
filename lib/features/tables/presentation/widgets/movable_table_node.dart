@@ -63,7 +63,8 @@ class _MovableTableNodeState extends State<MovableTableNode> {
     // --- SERVICE MODE: Move Orders ---
     // Using simple String for "Order UUID" (simulated by Table UUID for now as 'Order from Table X')
     return DragTarget<String>(
-      onWillAcceptWithDetails: (sourceUuid) {
+      onWillAcceptWithDetails: (details) {
+        final sourceUuid = details.data;
         if (sourceUuid != t.uuid) {
           setState(() => _isHovering = true);
           HapticFeedback.lightImpact();
@@ -84,7 +85,7 @@ class _MovableTableNodeState extends State<MovableTableNode> {
         if (_isHovering) {
           child = child.animate(onPlay: (c) => c.repeat(reverse: true))
               .scale(begin: const Offset(1, 1), end: const Offset(1.1, 1.1), duration: 200.ms)
-              .tint(color: Colors.greenAccent.withAlpha(100));
+              .tint(color: Colors.greenAccent.withValues(alpha: 0.4));
         }
 
         // If Occupied, allow dragging OUT the order

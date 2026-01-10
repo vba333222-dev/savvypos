@@ -208,6 +208,22 @@ class SavvyColors {
       stateWarning: Color.lerp(stateWarning, other.stateWarning, t)!,
     );
   }
+  // Compatibility Aliases
+  Color get bgSurface => bgSecondary;
+  Color get bgCanvas => bgPrimary;
+  Color get bgInverse => textPrimary;
+  Color get border => borderDefault;
+  Color get primary => brandPrimary;
+  Color get accent => brandAccent;
+  Color get success => stateSuccess;
+  Color get textDisabled => textMuted;
+  
+  // More Compat Aliases
+  Color get bgBase => bgPrimary;
+  Color get surface => bgElevated;
+  Color get borderDivider => borderDefault;
+  Color get bgDisabled => stateWarning.withValues(alpha: 0.1); // Fallback
+  Color get shadowSubtle => Colors.black.withValues(alpha: 0.05); // Shadow Color
 }
 
 // ==============================================================================
@@ -427,6 +443,8 @@ class SavvyElevations {
       floating: e('floating', fallback.floating),
     );
   }
+  
+  List<BoxShadow> get xs => sm; // Alias
 }
 
 // ==============================================================================

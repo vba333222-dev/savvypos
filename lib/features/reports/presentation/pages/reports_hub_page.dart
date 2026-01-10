@@ -95,7 +95,7 @@ class _ReportsHubPageState extends State<ReportsHubPage> {
                       ),
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
-                         BoxShadow(color: (isGoodDay ? Colors.orange : Colors.blueGrey).withOpacity(0.4), blurRadius: 10, offset: Offset(0, 4))
+                         BoxShadow(color: (isGoodDay ? Colors.orange : Colors.blueGrey).withValues(alpha: 0.4), blurRadius: 10, offset: Offset(0, 4))
                       ]
                     ),
                     child: Text(

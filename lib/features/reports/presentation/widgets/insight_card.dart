@@ -39,7 +39,7 @@ class InsightCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: activeColor.withOpacity(0.1),
+                  color: activeColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
                 ),
                 child: Icon(icon, size: 18, color: activeColor),

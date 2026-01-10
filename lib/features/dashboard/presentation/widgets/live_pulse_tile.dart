@@ -26,7 +26,7 @@ class LivePulseTile extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               gradient: RadialGradient(
-                colors: [theme.colors.stateSuccess.withOpacity(0.1), Colors.transparent],
+                colors: [theme.colors.stateSuccess.withValues(alpha: 0.1), Colors.transparent],
                 stops: const [0.5, 1.0],
                 center: Alignment.center,
                 radius: 1.2,

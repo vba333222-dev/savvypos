@@ -56,7 +56,7 @@ class _TactileInventoryCardState extends State<TactileInventoryCard> {
         color: theme.colors.bgElevated,
         borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
         border: Border.all(
-          color: isLowStock ? theme.colors.stateError.withAlpha(150) : theme.colors.borderDefault,
+          color: isLowStock ? theme.colors.stateError.withValues(alpha: 0.59) : theme.colors.borderDefault,
           width: 1,
         ),
       ),
@@ -102,9 +102,9 @@ class _TactileInventoryCardState extends State<TactileInventoryCard> {
              Container(
                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                decoration: BoxDecoration(
-                 color: isLowStock ? theme.colors.stateError.withAlpha(25) : theme.colors.stateSuccess.withAlpha(25),
+                 color: isLowStock ? theme.colors.stateError.withValues(alpha: 0.1) : theme.colors.stateSuccess.withValues(alpha: 0.1),
                  borderRadius: BorderRadius.circular(20),
-                 border: Border.all(color: isLowStock ? theme.colors.stateError : theme.colors.stateSuccess.withAlpha(100)),
+                 border: Border.all(color: isLowStock ? theme.colors.stateError : theme.colors.stateSuccess.withValues(alpha: 0.39)),
                ),
                child: AnimatedSwitcher(
                  duration: 200.ms,
@@ -142,7 +142,7 @@ class _TactileInventoryCardState extends State<TactileInventoryCard> {
     // Pulse Animation for Low Stock
     if (isLowStock) {
       content = content.animate(onPlay: (c) => c.repeat(reverse: true))
-         .tint(color: theme.colors.stateError.withAlpha(30), duration: 1.seconds);
+         .tint(color: theme.colors.stateError.withValues(alpha: 0.12), duration: 1.seconds);
     }
 
     return Dismissible(
@@ -167,7 +167,7 @@ class _TactileInventoryCardState extends State<TactileInventoryCard> {
         padding: const EdgeInsets.only(left: 24),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
-          gradient: LinearGradient(colors: [theme.colors.stateSuccess, theme.colors.stateSuccess.withAlpha(200)]),
+          gradient: LinearGradient(colors: [theme.colors.stateSuccess, theme.colors.stateSuccess.withValues(alpha: 0.78)]),
         ),
         child: Row(
           children: [

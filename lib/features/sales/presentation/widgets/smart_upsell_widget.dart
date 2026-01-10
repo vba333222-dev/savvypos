@@ -69,7 +69,7 @@ class _SmartUpsellWidgetState extends State<SmartUpsellWidget> {
           borderRadius: BorderRadius.circular(30),
           border: Border.all(color: Colors.purple.shade100),
           boxShadow: [
-            BoxShadow(color: Colors.purple.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, 4))
+            BoxShadow(color: Colors.purple.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, 4))
           ]
         ),
         child: Row(

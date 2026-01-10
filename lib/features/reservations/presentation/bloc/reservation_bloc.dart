@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:drift/drift.dart';
+import 'package:drift/drift.dart' hide JsonKey;
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';

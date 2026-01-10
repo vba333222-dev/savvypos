@@ -44,7 +44,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       final end = start.add(const Duration(days: 1)).subtract(const Duration(milliseconds: 1));
       
       // Query SQLite for Today's Stats
-      final query = _db.select(_db.orderTable)..where((t) => t.createdAt.isBetweenValues(start, end));
+      final query = _db.select(_db.orderTable)..where((t) => t.transactionDate.isBetweenValues(start, end));
       // Optional: Filter by status if fields exist, e.g. status == 'COMPLETED'
       // ..where((t) => t.status.equals('COMPLETED'));
       
@@ -54,7 +54,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       int totalTransactions = orders.length;
       
       for (final o in orders) {
-        totalSales += o.totalPrice ?? 0.0;
+        totalSales += o.grandTotal;
       }
 
       // Construct Stats Object
@@ -80,9 +80,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       
       final stats = DashboardStats(
         totalSales: totalSales,
-        totalTransactions: totalTransactions,
-        averageTransactionValue: totalTransactions > 0 ? totalSales / totalTransactions : 0,
-        unpaidOrders: 0, // placeholder
+        transactionCount: totalTransactions,
+        avgBasketSize: totalTransactions > 0 ? totalSales / totalTransactions : 0,
       );
 
       emit(DashboardState.loaded(

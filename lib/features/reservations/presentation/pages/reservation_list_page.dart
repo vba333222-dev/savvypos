@@ -91,7 +91,7 @@ class _ReservationListView extends StatelessWidget {
               BlocBuilder<TableBloc, TableState>(
                 builder: (context, state) {
                   if (state.isLoading) return const CircularProgressIndicator();
-                  final availableTables = state.tables.where((t) => !t.isOccupied).toList();
+                  final availableTables = state.tables.where((t) => !t.table.isOccupied).toList();
                   
                   if (availableTables.isEmpty) return const Text('No available tables!', style: TextStyle(color: Colors.red));
                   
@@ -102,13 +102,13 @@ class _ReservationListView extends StatelessWidget {
                       itemBuilder: (ctx, idx) {
                         final t = availableTables[idx];
                         return ListTile(
-                          title: Text(t.name),
-                          subtitle: Text('Capacity: ${t.capacity}'),
+                          title: Text(t.table.name),
+                          subtitle: Text('Capacity: ${t.table.capacity}'),
                           onTap: () {
                             // Assign
                             context.read<ReservationBloc>().add(ReservationEvent.updateStatus(r.uuid, 'SEATED'));
                             // Mark Table Occupied
-                            context.read<TableBloc>().add(TableEvent.toggleOccupied(t.uuid, true));
+                            context.read<TableBloc>().add(TableEvent.toggleOccupied(t.table.uuid, true));
                             Navigator.pop(ctx);
                           },
 

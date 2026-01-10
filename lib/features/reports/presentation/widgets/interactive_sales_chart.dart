@@ -107,7 +107,7 @@ class _InteractiveSalesChartState extends State<InteractiveSalesChart> {
                 gradient: LinearGradient(
                   colors: isTouched 
                      ? [theme.colors.brandAccent, theme.colors.brandAccent] // Highlight
-                     : [theme.colors.brandPrimary, theme.colors.brandPrimary.withAlpha(150)],
+                     : [theme.colors.brandPrimary, theme.colors.brandPrimary.withValues(alpha: 0.6)],
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
                 ),
@@ -116,7 +116,7 @@ class _InteractiveSalesChartState extends State<InteractiveSalesChart> {
                 backDrawRodData: BackgroundBarChartRodData(
                   show: true,
                   toY: widget.maxY * 1.2,
-                  color: theme.colors.bgElevated.withAlpha(50),
+                  color: theme.colors.bgElevated.withValues(alpha: 0.2),
                 ),
               ),
             ],

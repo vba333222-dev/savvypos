@@ -104,7 +104,7 @@ class _FloorPlanCanvasState extends State<_FloorPlanCanvas> {
           onInteractionStart: (_) => setState(() => _isInteracting = true),
           onInteractionEnd: (_) => setState(() => _isInteracting = false),
           child: DragTarget<String>(
-            onWillAcceptWithDetails: (data) => widget.mode == FloorMode.layout,
+            onWillAcceptWithDetails: (details) => widget.mode == FloorMode.layout,
             onAcceptWithDetails: (details) {
               final tableUuid = details.data;
               final RenderBox box = _canvasKey.currentContext!.findRenderObject() as RenderBox;
@@ -136,7 +136,7 @@ class _FloorPlanCanvasState extends State<_FloorPlanCanvas> {
                 color: theme.colors.bgPrimary,
                 child: CustomPaint(
                   painter: _DotGridPainter(
-                    color: theme.colors.borderDefault.withAlpha(widget.mode == FloorMode.layout ? 100 : 30)
+                    color: theme.colors.borderDefault.withValues(alpha: widget.mode == FloorMode.layout ? 0.4 : 0.12)
                   ),
                   child: BlocBuilder<TableBloc, TableState>(
                     builder: (context, state) {
@@ -153,12 +153,12 @@ class _FloorPlanCanvasState extends State<_FloorPlanCanvas> {
                               height: _ghostRect!.height,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: theme.colors.brandPrimary.withOpacity(0.2),
+                                  color: theme.colors.brandPrimary.withValues(alpha: 0.2),
                                   border: Border.all(color: theme.colors.brandPrimary, width: 2, style: BorderStyle.solid),
                                   borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
                                 ),
                                 child: Center(
-                                  child: Icon(Icons.add, color: theme.colors.brandPrimary.withOpacity(0.5)),
+                                  child: Icon(Icons.add, color: theme.colors.brandPrimary.withValues(alpha: 0.5)),
                                 ),
                               ).animate(onPlay: (c) => c.repeat(reverse: true)).fade(begin: 0.5, end: 0.8),
                             ),

@@ -57,12 +57,12 @@ class _HolographicMemberCardState extends State<HolographicMemberCard> with Sing
             gradient: _getGradient(widget.tier),
             boxShadow: [
               BoxShadow(
-                color: _getShadowColor(widget.tier).withOpacity(0.4),
+                color: _getShadowColor(widget.tier).withValues(alpha: 0.4),
                 blurRadius: 20,
                 offset: const Offset(0, 10),
               )
             ],
-            border: Border.all(color: Colors.white.withOpacity(0.3), width: 1),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 1),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,8 +70,8 @@ class _HolographicMemberCardState extends State<HolographicMemberCard> with Sing
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                   SavvyText.h3('SAVVY MEMBER', color: Colors.white.withOpacity(0.9)),
-                   Icon(Icons.nfc, color: Colors.white.withOpacity(0.6)),
+                   SavvyText.h3('SAVVY MEMBER', color: Colors.white.withValues(alpha: 0.9)),
+                   Icon(Icons.nfc, color: Colors.white.withValues(alpha: 0.6)),
                 ],
               ),
               const Spacer(),
@@ -85,7 +85,7 @@ class _HolographicMemberCardState extends State<HolographicMemberCard> with Sing
                       borderRadius: BorderRadius.circular(4),
                       child: LinearProgressIndicator(
                         value: widget.points / widget.nextTierThreshold,
-                        backgroundColor: Colors.black.withOpacity(0.2),
+                        backgroundColor: Colors.black.withValues(alpha: 0.2),
                         valueColor: const AlwaysStoppedAnimation(Colors.white),
                         minHeight: 6,
                       ),
@@ -96,10 +96,10 @@ class _HolographicMemberCardState extends State<HolographicMemberCard> with Sing
                 ],
               ),
               const SizedBox(height: 4),
-              SavvyText.label(widget.tier.name.toUpperCase(), color: Colors.white.withOpacity(0.8)),
+              SavvyText.label(widget.tier.name.toUpperCase(), color: Colors.white.withValues(alpha: 0.8)),
             ],
           ),
-        ).animate(onPlay: (c) => c.repeat(reverse: true)).shimmer(duration: 3.seconds, color: Colors.white.withOpacity(0.1)),
+        ).animate(onPlay: (c) => c.repeat(reverse: true)).shimmer(duration: 3.seconds, color: Colors.white.withValues(alpha: 0.1)),
       ),
     );
   }

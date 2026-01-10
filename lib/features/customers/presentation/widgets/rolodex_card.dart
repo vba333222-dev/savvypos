@@ -114,12 +114,12 @@ class _FrontFace extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: LinearGradient(
-                colors: [tierColor.withAlpha(50), tierColor.withAlpha(200)], // alpha 0-255 roughly
+                colors: [tierColor.withValues(alpha: 0.20), tierColor.withValues(alpha: 0.78)], // alpha 0-255 roughly
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               boxShadow: [
-                BoxShadow(color: tierColor.withAlpha(100), blurRadius: 10, spreadRadius: 2),
+                BoxShadow(color: tierColor.withValues(alpha: 0.39), blurRadius: 10, spreadRadius: 2),
               ],
             ),
             alignment: Alignment.center,
@@ -155,7 +155,7 @@ class _FrontFace extends StatelessWidget {
             ),
           ),
           
-          Icon(Icons.touch_app, color: theme.colors.textMuted.withAlpha(50)),
+          Icon(Icons.touch_app, color: theme.colors.textMuted.withValues(alpha: 0.20)),
         ],
       ),
     );
@@ -210,7 +210,7 @@ class _ActionButton extends StatelessWidget {
           },
           child: Container(
             padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(color: color.withAlpha(50), shape: BoxShape.circle),
+            decoration: BoxDecoration(color: color.withValues(alpha: 0.20), shape: BoxShape.circle),
             child: Icon(icon, color: color, size: 24),
           ),
         ),

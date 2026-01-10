@@ -76,7 +76,7 @@ class _CartViewState extends State<CartView> {
                 return Container(
                   decoration: isHovering 
                     ? BoxDecoration(
-                        color: theme.colors.brandPrimary.withOpacity(0.05),
+                        color: theme.colors.brandPrimary.withValues(alpha: 0.05),
                         border: Border.all(color: theme.colors.brandPrimary, width: 2),
                         borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
                       )
@@ -380,7 +380,7 @@ class _EmptyCartState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.shopping_bag_outlined, size: 64, color: theme.colors.textMuted.withOpacity(0.5))
+          Icon(Icons.shopping_bag_outlined, size: 64, color: theme.colors.textMuted.withValues(alpha: 0.5))
             .animate().scale(duration: 600.ms, curve: Curves.elasticOut),
           SizedBox(height: theme.shapes.spacingMd),
           SavvyText('Cart is empty', style: SavvyTextStyle.bodyLarge, color: theme.colors.textMuted),

@@ -200,7 +200,7 @@ class _ProductModifierDialogState extends State<ProductModifierDialog> {
                                decoration: BoxDecoration(
                                  color: theme.colors.bgPrimary,
                                  borderRadius: BorderRadius.circular(4),
-                                 border: Border.all(color: theme.colors.stateWarning.withOpacity(0.5)),
+                                 border: Border.all(color: theme.colors.stateWarning.withValues(alpha: 0.5)),
                                ),
                                child: Text(
                                  'Required', 
@@ -240,7 +240,7 @@ class _ProductModifierDialogState extends State<ProductModifierDialog> {
                             child: Container(
                               padding: EdgeInsets.all(theme.shapes.spacingSm),
                               decoration: BoxDecoration(
-                                color: isSelected ? theme.colors.brandPrimary.withOpacity(0.1) : theme.colors.bgPrimary,
+                                color: isSelected ? theme.colors.brandPrimary.withValues(alpha: 0.1) : theme.colors.bgPrimary,
                                 border: Border.all(
                                   color: isSelected ? theme.colors.brandPrimary : theme.colors.borderDefault,
                                 ),

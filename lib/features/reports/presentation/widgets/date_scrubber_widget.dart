@@ -109,7 +109,7 @@ class _DateScrubberWidgetState extends State<DateScrubberWidget> {
                             shape: BoxShape.circle,
                             color: isSelected ? theme.colors.brandPrimary : Colors.transparent,
                             boxShadow: isSelected 
-                              ? [BoxShadow(color: theme.colors.brandPrimary.withOpacity(0.4), blurRadius: 8, spreadRadius: 2)] 
+                              ? [BoxShadow(color: theme.colors.brandPrimary.withValues(alpha: 0.4), blurRadius: 8, spreadRadius: 2)] 
                               : null,
                           ),
                           child: Text(

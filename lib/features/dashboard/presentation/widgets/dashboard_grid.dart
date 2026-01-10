@@ -58,7 +58,7 @@ class BentoTile extends StatelessWidget {
           boxShadow: [
              BoxShadow(color: theme.colors.shadowSubtle, blurRadius: 10, offset: const Offset(0, 4)),
           ],
-          border: Border.all(color: theme.colors.borderDefault.withOpacity(0.5)),
+          border: Border.all(color: theme.colors.borderDefault.withValues(alpha: 0.5)),
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(theme.shapes.radiusLg),

@@ -69,7 +69,7 @@ class _PromoCodeInputState extends State<PromoCodeInput> {
               backgroundColor: theme.colors.brandSecondary, // Make it pop a bit more or keep neutral?
               foregroundColor: theme.colors.brandPrimary,
               elevation: 0,
-              side: BorderSide(color: theme.colors.brandPrimary.withOpacity(0.5)),
+              side: BorderSide(color: theme.colors.brandPrimary.withValues(alpha: 0.5)),
               padding: const EdgeInsets.symmetric(horizontal: 20),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(theme.shapes.radiusMd)),
             ),

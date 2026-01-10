@@ -180,15 +180,15 @@ class PrinterService implements IPrinterService {
       final receiptBytes = await ReceiptGenerator.generateReceipt(
         storeName: 'Savvy POS', // TODO: Get from config
         orderNumber: '#${order.orderNumber}',
-        date: order.createdAt,
+        date: order.transactionDate,
         items: items ?? [], // Expecting list of maps {name, qty, total}
-        subtotal: order.subTotal,
+        subtotal: order.subtotal,
         discount: order.discountTotal,
         tax: order.taxTotal,
         total: order.grandTotal,
         paymentMethod: order.paymentMethod,
         change: order.changeAmount,
-        tendered: order.tenderAmount,
+        tendered: order.tenderedAmount,
       );
 
       await PrintBluetoothThermal.writeBytes(receiptBytes);

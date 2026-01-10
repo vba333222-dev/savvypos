@@ -219,7 +219,10 @@ class _PaymentMethodsSheetState extends State<PaymentMethodsSheet> {
                      ),
                      onPressed: (tenderAmount >= widget.totalAmount || _selectedMethod != 'CASH')
                        ? () {
-                           context.read<CartBloc>().add(CartEvent.processCheckout());
+                           context.read<CartBloc>().add(CartEvent.checkoutProcessed(
+                             paymentMethod: _selectedMethod,
+                             tenderedAmount: tenderAmount,
+                           ));
                            Navigator.pop(context); // Close Sheet
                          }
                        : null,
@@ -275,7 +278,10 @@ class _PaymentMethodsSheetState extends State<PaymentMethodsSheet> {
        // Trigger Checkout
        if (mounted) {
            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-           context.read<CartBloc>().add(CartEvent.processCheckout());
+           context.read<CartBloc>().add(CartEvent.checkoutProcessed(
+             paymentMethod: 'CASH',
+             tenderedAmount: amount, // or _input
+           ));
            Navigator.pop(context); // Close Sheet
        }
     });
@@ -402,7 +408,7 @@ class _SimpleNumpad extends StatelessWidget {
       return TextButton(
         onPressed: isClear ? onClear : () => onTap(k),
         style: TextButton.styleFrom(
-           backgroundColor: isClear ? theme.colors.stateError.withOpacity(0.1) : theme.colors.bgPrimary,
+           backgroundColor: isClear ? theme.colors.stateError.withValues(alpha: 0.1) : theme.colors.bgPrimary,
            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
         child: Text(k, style: TextStyle(fontSize: 20, color: isClear ? theme.colors.stateError : theme.colors.textPrimary)),

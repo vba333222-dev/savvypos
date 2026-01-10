@@ -41,7 +41,7 @@ class NetworkTrafficWidget extends StatelessWidget {
               decoration: BoxDecoration(
                 color: color, 
                 shape: BoxShape.circle,
-                boxShadow: [BoxShadow(color: color.withOpacity(0.4), blurRadius: 6)]
+                boxShadow: [BoxShadow(color: color.withValues(alpha: 0.4), blurRadius: 6)]
               )
             ),
             title: Text(req.endpoint, style: const TextStyle(color: Colors.white, fontFamily: 'monospace', fontSize: 12)),

@@ -106,7 +106,7 @@ class _OutletCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: SavvyBox(
-        color: isActive ? theme.colors.primary.withOpacity(0.05) : theme.colors.bgSurface,
+        color: isActive ? theme.colors.primary.withValues(alpha: 0.05) : theme.colors.bgSurface,
         border: Border.all(
           color: isActive ? theme.colors.primary : theme.colors.border,
           width: isActive ? 2 : 1,
@@ -140,7 +140,7 @@ class _OutletCard extends StatelessWidget {
                       if (!outlet.isOnline) 
                          Container(
                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                           decoration: BoxDecoration(color: Colors.red.withOpacity(0.1), borderRadius: BorderRadius.circular(4)),
+                           decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
                            child: const SavvyText.label('OFFLINE', color: Colors.red),
                          )
                     ],

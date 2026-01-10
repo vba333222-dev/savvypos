@@ -99,7 +99,7 @@ class _DangerButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 24),
         decoration: BoxDecoration(
-          color: Colors.red.withOpacity(0.1),
+          color: Colors.red.withValues(alpha: 0.1),
           border: Border.all(color: Colors.red, width: 2),
           borderRadius: BorderRadius.circular(8),
         ),

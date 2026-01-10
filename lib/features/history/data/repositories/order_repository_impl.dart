@@ -12,7 +12,7 @@ class OrderRepositoryImpl implements IOrderRepository {
   @override
   Stream<List<OrderTableData>> getOrders() {
     return (db.select(db.orderTable)
-          ..orderBy([(t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.desc)]))
+          ..orderBy([(t) => OrderingTerm(expression: t.transactionDate, mode: OrderingMode.desc)]))
         .watch();
   }
 
@@ -33,7 +33,7 @@ class OrderRepositoryImpl implements IOrderRepository {
   Stream<List<OrderTableData>> watchKitchenOrders() {
     return (db.select(db.orderTable)
       ..where((t) => t.isFulfilled.equals(false))
-      ..orderBy([(t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.asc)]))
+      ..orderBy([(t) => OrderingTerm(expression: t.transactionDate, mode: OrderingMode.asc)]))
       .watch();
   }
 

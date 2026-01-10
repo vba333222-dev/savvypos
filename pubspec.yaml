@@ -40,6 +40,7 @@ dependencies:
 
   # UI
   flutter_animate: ^4.5.2
+  badges: ^3.1.2
   wolt_modal_sheet: ^0.5.0
   gap: ^3.0.1
   sliver_tools: ^0.2.12

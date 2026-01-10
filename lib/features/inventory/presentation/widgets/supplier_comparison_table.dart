@@ -65,7 +65,7 @@ class SupplierComparisonTable extends StatelessWidget {
                              child: Container(
                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                decoration: BoxDecoration(
-                                 color: context.savvy.colors.success.withOpacity(0.2),
+                                 color: context.savvy.colors.success.withValues(alpha: 0.2),
                                  borderRadius: BorderRadius.circular(4),
                                ),
                                child: SavvyText.small('BEST CHOICE', color: context.savvy.colors.success),

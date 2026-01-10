@@ -120,7 +120,7 @@ class _GoodsReceiptPageState extends State<GoodsReceiptPage> {
                     margin: const EdgeInsets.only(bottom: 12),
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: isJustScanned ? Colors.green.withOpacity(0.2) : context.savvy.colors.bgSurface,
+                      color: isJustScanned ? Colors.green.withValues(alpha: 0.2) : context.savvy.colors.bgSurface,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: isDone ? Colors.green : (isJustScanned ? Colors.green : Colors.transparent),

@@ -1,22 +1,23 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:savvy_pos/core/config/app_tokens.dart'; // Fallback
-import 'package:savvy_pos/core/utils/logger.dart';
+import 'package:logger/logger.dart';
 
 class TokenService {
   static final TokenService _instance = TokenService._internal();
   factory TokenService() => _instance;
   TokenService._internal();
 
+  final Logger _logger = Logger();
   Map<String, dynamic>? _tokens;
 
   Future<void> loadTokens() async {
     try {
       final jsonString = await rootBundle.loadString('assets/config/token.json');
       _tokens = json.decode(jsonString);
-      Logger.info('TokenService: loaded token.json');
+      _logger.i('TokenService: loaded token.json');
     } catch (e) {
-      Logger.error('TokenService: Failed to load token.json. Using fallbacks.', e);
+      _logger.e('TokenService: Failed to load token.json. Using fallbacks.', error: e);
       _tokens = null;
     }
   }

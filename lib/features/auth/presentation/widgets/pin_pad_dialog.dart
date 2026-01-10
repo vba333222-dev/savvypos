@@ -78,7 +78,7 @@ class _PinPadDialogState extends State<PinPadDialog> {
                     height: 16,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: index < _pin.length ? colors.brandPrimary : colors.bgInverse.withOpacity(0.1),
+                      color: index < _pin.length ? colors.brandPrimary : colors.bgInverse.withValues(alpha: 0.1),
                     ),
                   );
                 }),

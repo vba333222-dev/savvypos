@@ -84,12 +84,12 @@ class _KitchenOrderCardState extends State<KitchenOrderCard> with TickerProvider
               borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
               border: Border.all(
                 color: isCritical 
-                    ? urgencyColor.withOpacity(0.5 + (_urgencyController.value * 0.5)) 
+                    ? urgencyColor.withValues(alpha: 0.5 + (_urgencyController.value * 0.5)) 
                     : theme.colors.borderDefault,
                 width: isCritical ? 2 : 1,
               ),
               boxShadow: isCritical 
-                 ? [BoxShadow(color: urgencyColor.withOpacity(0.3), blurRadius: 10 + pulse, spreadRadius: pulse)]
+                 ? [BoxShadow(color: urgencyColor.withValues(alpha: 0.3), blurRadius: 10 + pulse, spreadRadius: pulse)]
                  : [BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2))],
             ),
             child: child,
@@ -105,7 +105,7 @@ class _KitchenOrderCardState extends State<KitchenOrderCard> with TickerProvider
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
-                  color: urgencyColor.withOpacity(isCritical ? 0.3 : 0.15),
+                  color: urgencyColor.withValues(alpha: isCritical ? 0.3 : 0.15),
                   borderRadius: BorderRadius.vertical(top: Radius.circular(theme.shapes.radiusMd)),
                 ),
                 child: Row(
@@ -220,7 +220,7 @@ class _KitchenItemRowState extends State<_KitchenItemRow> {
                 padding: const EdgeInsets.only(left: 28),
                 child: Text(
                   widget.item.modifiers.join(', '), 
-                  style: TextStyle(color: widget.theme.colors.textSecondary.withOpacity(_isDone ? 0.5 : 1.0), fontSize: 12, fontStyle: FontStyle.italic),
+                  style: TextStyle(color: widget.theme.colors.textSecondary.withValues(alpha: _isDone ? 0.5 : 1.0), fontSize: 12, fontStyle: FontStyle.italic),
                 ),
               ),
             if (widget.item.note != null && widget.item.note!.isNotEmpty)
@@ -228,7 +228,7 @@ class _KitchenItemRowState extends State<_KitchenItemRow> {
                 padding: const EdgeInsets.only(left: 28),
                 child: Text(
                   'NOTE: ${widget.item.note}',
-                  style: TextStyle(color: widget.theme.colors.stateError.withOpacity(_isDone ? 0.5 : 1.0), fontWeight: FontWeight.bold, fontSize: 12),
+                  style: TextStyle(color: widget.theme.colors.stateError.withValues(alpha: _isDone ? 0.5 : 1.0), fontWeight: FontWeight.bold, fontSize: 12),
                 ),
               ),
           ],

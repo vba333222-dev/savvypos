@@ -75,9 +75,9 @@ class _PaymentSheetState extends State<PaymentSheet> {
     if (_cashAmount >= widget.totalAmount) {
        HapticFeedback.heavyImpact();
        // Trigger Checkout
-       context.read<CartBloc>().add(CartEvent.checkout(
-         paidAmount: _cashAmount,
-         paymentMethod: 'CASH', // Hardcoded for this simplified sheet
+       context.read<CartBloc>().add(CartEvent.checkoutProcessed(
+         tenderedAmount: _cashAmount,
+         paymentMethod: 'CASH', 
        ));
        Navigator.pop(context);
     } else {

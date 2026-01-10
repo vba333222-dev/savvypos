@@ -126,7 +126,7 @@ class _SalesReportPageState extends State<SalesReportPage> {
                                physics: const NeverScrollableScrollPhysics(),
                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                itemCount: sorted.length,
-                               separatorBuilder: (_,__) => Divider(height: 1, color: theme.colors.borderDivider.withAlpha(20)),
+                               separatorBuilder: (_,__) => Divider(height: 1, color: theme.colors.borderDivider.withValues(alpha: 0.08)),
                                itemBuilder: (context, index) {
                                  final item = sorted[index];
                                  return ListTile(

@@ -14,8 +14,8 @@ class ShiftRepositoryImpl implements IShiftRepository {
 
   @override
   Future<ShiftSessionTableData?> getCurrentShift() async {
-    return await (db.select(db.shiftTable)
-      ..where((t) => t.endTime.isNull())
+    return await (db.select(db.shiftSessionTable)
+      ..where((t) => t.isClosed.equals(false))
       ..limit(1))
       .getSingleOrNull();
   }
@@ -23,29 +23,29 @@ class ShiftRepositoryImpl implements IShiftRepository {
   @override
   Future<void> openShift(double startCash, String staffId, String staffName) async {
     final now = DateTime.now();
-    await db.into(db.shiftTable).insert(ShiftTableCompanion.insert(
+    await db.into(db.shiftSessionTable).insert(ShiftSessionTableCompanion.insert(
       uuid: _uuid.v4(),
-      startTime: now,
+      startShift: now,
       startCash: startCash,
-      status: const Value('OPEN'), 
-      userId: staffId,
-      staffName: Value(staffName), // Assuming column exists or ignoring
-      tenantId: const Value('default-tenant'),
-      createdAt: now,
-      updatedAt: now,
+      isClosed: const Value(false), 
+      staffId: staffId,
+      staffName: staffName,
+      expectedCash: const Value(0.0),
+      actualCash: const Value(0.0),
+      difference: const Value(0.0),
     ));
   }
 
   @override
   Future<void> closeShift(String shiftUuid, double calculatedEndCash, double actualCash) async {
     final now = DateTime.now();
-    await (db.update(db.shiftTable)..where((t) => t.uuid.equals(shiftUuid))).write(
-      ShiftTableCompanion(
-        endTime: Value(now),
-        endCash: Value(calculatedEndCash),
+    await (db.update(db.shiftSessionTable)..where((t) => t.uuid.equals(shiftUuid))).write(
+      ShiftSessionTableCompanion(
+        endShift: Value(now),
+        expectedCash: Value(calculatedEndCash),
         actualCash: Value(actualCash),
-        status: const Value('CLOSED'),
-        updatedAt: Value(now),
+        difference: Value(actualCash - calculatedEndCash),
+        isClosed: const Value(true),
       ),
     );
   }
@@ -58,12 +58,12 @@ class ShiftRepositoryImpl implements IShiftRepository {
 
   @override
   Future<double> getShiftSalesTotal(String shiftUuid) async {
-    final shift = await (db.select(db.shiftTable)..where((t) => t.uuid.equals(shiftUuid))).getSingleOrNull();
+    final shift = await (db.select(db.shiftSessionTable)..where((t) => t.uuid.equals(shiftUuid))).getSingleOrNull();
     if (shift == null) return 0.0;
     
     // Sum all COMPLETED orders created after shift start
     final orders = await (db.select(db.orderTable)
-      ..where((t) => t.createdAt.isBiggerOrEqualValue(shift.startTime))
+      ..where((t) => t.transactionDate.isBiggerOrEqualValue(shift.startShift))
       ..where((t) => t.status.equals('COMPLETED')))
       .get();
       

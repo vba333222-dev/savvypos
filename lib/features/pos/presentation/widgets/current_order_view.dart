@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savvy_pos/core/config/theme_config.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
+import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/cart_item_tile.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/checkout_success_dialog.dart';
@@ -171,7 +172,7 @@ class _EmptyState extends StatelessWidget {
         children: [
           Icon(Icons.shopping_bag_outlined, 
             size: 64, 
-            color: colors.textMuted.withOpacity(0.5)
+            color: colors.textMuted.withValues(alpha: 0.5)
           ).animate().scale(duration: 600.ms, curve: Curves.elasticOut),
           const SizedBox(height: 16),
           Text(

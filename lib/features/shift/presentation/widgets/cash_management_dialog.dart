@@ -50,10 +50,10 @@ class _CashManagementDialogState extends State<CashManagementDialog> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _reasonCtrl,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Reason',
                 hintText: isPayIn ? 'e.g., Petty Cash Top-up' : 'e.g., Buy Ice, Vendor Payment',
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
               ),
               validator: (v) => v?.isEmpty == true ? 'Required' : null,
             ),

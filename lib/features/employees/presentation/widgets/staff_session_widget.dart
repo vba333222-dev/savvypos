@@ -57,7 +57,7 @@ class _StaffSessionWidgetState extends State<StaffSessionWidget> {
       child: Row(
         children: [
           CircleAvatar(
-            backgroundColor: theme.colors.brandPrimary.withOpacity(0.1),
+            backgroundColor: theme.colors.brandPrimary.withValues(alpha: 0.1),
             foregroundColor: theme.colors.brandPrimary,
             child: Text(widget.employeeInitials),
           ),

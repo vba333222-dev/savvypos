@@ -32,7 +32,7 @@ class _GenesisPageState extends State<GenesisPage> {
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [context.savvy.colors.primary.withOpacity(0.1), Colors.white],
+                colors: [context.savvy.colors.primary.withValues(alpha: 0.1), Colors.white],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -53,7 +53,7 @@ class _GenesisPageState extends State<GenesisPage> {
           
           if (_isSeeding)
             Container(
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withValues(alpha: 0.9),
               child: Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -108,7 +108,7 @@ class _GenesisPageState extends State<GenesisPage> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(color: Colors.grey.shade200),
-                      boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
+                      boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)],
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -163,7 +163,7 @@ class _GenesisPageState extends State<GenesisPage> {
                   decoration: BoxDecoration(
                     color: isSelected ? context.savvy.colors.primary : Colors.white,
                     shape: BoxShape.circle,
-                    boxShadow: [if(isSelected) BoxShadow(color: context.savvy.colors.primary.withOpacity(0.4), blurRadius: 10)],
+                    boxShadow: [if(isSelected) BoxShadow(color: context.savvy.colors.primary.withValues(alpha: 0.4), blurRadius: 10)],
                     border: Border.all(color: Colors.grey.shade300),
                   ),
                   child: Text(
@@ -236,8 +236,8 @@ class _GenesisPageState extends State<GenesisPage> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: color.withOpacity(0.3), width: 2),
-          boxShadow: [BoxShadow(color: color.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, 4))],
+          border: Border.all(color: color.withValues(alpha: 0.3), width: 2),
+          boxShadow: [BoxShadow(color: color.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, 4))],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

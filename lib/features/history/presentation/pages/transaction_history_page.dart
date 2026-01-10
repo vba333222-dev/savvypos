@@ -69,7 +69,7 @@ class _HistoryView extends StatelessWidget {
                   child: Icon(Icons.receipt_long, color: colors.brandPrimary),
                 ),
                 title: Text('Order #${order.orderNumber}', style: typography.titleMedium),
-                subtitle: Text(DateFormat('MMM dd, HH:mm').format(order.createdAt)),
+                subtitle: Text(DateFormat('MMM dd, HH:mm').format(order.transactionDate)),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [

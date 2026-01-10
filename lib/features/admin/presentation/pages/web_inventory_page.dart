@@ -82,7 +82,7 @@ class _WebInventoryAppState extends State<WebInventoryPage> {
                     border: Border.all(color: _searchFocus.hasFocus ? theme.colors.brandPrimary : theme.colors.borderDefault),
                     boxShadow: [
                       if (_searchFocus.hasFocus) 
-                        BoxShadow(color: theme.colors.brandPrimary.withOpacity(0.2), blurRadius: 8)
+                        BoxShadow(color: theme.colors.brandPrimary.withValues(alpha: 0.2), blurRadius: 8)
                     ],
                   ),
                   child: Row(
@@ -117,9 +117,9 @@ class _WebInventoryAppState extends State<WebInventoryPage> {
                   data: Theme.of(context).copyWith(
                     dividerColor: Colors.transparent, // Remove default dividers
                     dataTableTheme: DataTableThemeData(
-                      headingRowColor: WidgetStateProperty.all(theme.colors.bgInverse.withOpacity(0.05)),
+                      headingRowColor: WidgetStateProperty.all(theme.colors.bgInverse.withValues(alpha: 0.05)),
                       dataRowColor: WidgetStateProperty.resolveWith((states) {
-                         if (states.contains(WidgetState.hovered)) return theme.colors.brandPrimary.withOpacity(0.05);
+                         if (states.contains(WidgetState.hovered)) return theme.colors.brandPrimary.withValues(alpha: 0.05);
                          return Colors.transparent;
                       }),
                     ),
@@ -148,7 +148,7 @@ class _WebInventoryAppState extends State<WebInventoryPage> {
                               DataCell(Text(product.name, style: TextStyle(fontWeight: FontWeight.w500))),
                               DataCell(Container(
                                 padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                decoration: BoxDecoration(color: Colors.blue.withOpacity(0.1), borderRadius: BorderRadius.circular(4)),
+                                decoration: BoxDecoration(color: Colors.blue.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
                                 child: Text(product.category, style: TextStyle(color: Colors.blue, fontSize: 11)),
                               )),
                               DataCell(Text('\$${product.price.toStringAsFixed(2)}')),

@@ -29,7 +29,7 @@ class SupplierCard extends StatelessWidget {
     final scale = isSelected ? 1.05 : 1.0;
     final borderColor = isSelected 
         ? context.savvy.colors.primary 
-        : (isBestPrice ? context.savvy.colors.success.withOpacity(0.5) : context.savvy.colors.border);
+        : (isBestPrice ? context.savvy.colors.success.withValues(alpha: 0.5) : context.savvy.colors.border);
 
     return GestureDetector(
       onTap: onTap,

@@ -69,7 +69,7 @@ class _SavvySliderButtonState extends State<SavvySliderButton> {
                 width: sliderWidth + _dragValue,
                 height: widget.height,
                 decoration: BoxDecoration(
-                  color: primaryColor.withOpacity(0.2),
+                  color: primaryColor.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(theme.shapes.radiusPill),
                 ),
               ),

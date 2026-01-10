@@ -1,0 +1,295 @@
+﻿Analyzing mpos...                                               
+
+warning - The include file 'package:flutter_lints/flutter.yaml' in 'C:\Users\USER\Documents\mpos\analysis_options.yaml' can't be found when analyzing 'C:\Users\USER\Documents\mpos' - analysis_options.yaml:10:10 - include_file_not_found
+  error - A value of type 'Cubic' can't be returned from the method 'transformInternal' because it has a return type of 'double' - lib\core\config\theme\savvy_theme.dart:368:12 - return_of_invalid_type
+  error - Target of URI doesn't exist: 'package:savvy_pos/core/utils/logger.dart' - lib\core\config\token_service.dart:4:8 - uri_does_not_exist
+  error - Undefined name 'Logger' - lib\core\config\token_service.dart:17:7 - undefined_identifier
+  error - Undefined name 'Logger' - lib\core\config\token_service.dart:19:7 - undefined_identifier
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:13015:26 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:13018:51 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:13315:28 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:13317:49 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:13330:34 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:13333:59 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:13953:28 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:13955:49 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:13967:31 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:13970:56 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:15039:26 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:15041:47 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:15743:28 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:15745:49 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:16396:28 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:16398:49 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:16410:29 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:16412:50 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:16772:29 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:16774:50 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:17211:23 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:17214:48 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:17226:28 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:17228:49 - unnecessary_non_null_assertion
+  error - The name 'updatedAt' is already defined - lib\core\database\tables.dart:22:22 - duplicate_definition
+  error - The name 'updatedAt' is already defined - lib\core\database\tables.dart:23:22 - duplicate_definition
+warning - Two keys in a map literal shouldn't be equal - lib\core\network\api_client.dart:70:11 - equal_keys_in_map
+  error - The mixin 'FlightAnimationController' can't implement both 'State<T>' and 'State<StatefulWidget>' because the type arguments are different - lib\core\presentation\animations\flight_animation_controller.dart:7:7 - conflicting_generic_interfaces
+  error - The argument type 'SavvyTextStyle' can't be assigned to the parameter type 'TextStyle?'.  - lib\core\presentation\widgets\digital_receipt_widget.dart:122:40 - argument_type_not_assignable
+  error - The argument type 'SavvyTextStyle' can't be assigned to the parameter type 'TextStyle?'.  - lib\core\presentation\widgets\digital_receipt_widget.dart:123:55 - argument_type_not_assignable
+  error - The method 'copyWith' isn't defined for the type 'SavvyTextStyle' - lib\core\presentation\widgets\digital_receipt_widget.dart:170:80 - undefined_method
+warning - The value of the local variable 'theme' isn't used - lib\core\presentation\widgets\feature_tour_overlay.dart:48:11 - unused_local_variable
+warning - The value of the local variable 'textColor' isn't used - lib\core\presentation\widgets\feature_tour_overlay.dart:51:11 - unused_local_variable
+  error - The class 'FlyAnimationLayerState' can't implement both 'State<FlyAnimationLayer>' and 'State<StatefulWidget>' because the type arguments are different - lib\core\presentation\widgets\fly_animation_layer.dart:18:7 - conflicting_generic_interfaces
+  error - The class 'FlyAnimationLayerState' can't implement both 'TickerProviderStateMixin<FlyAnimationLayer>' and 'TickerProviderStateMixin<StatefulWidget>' because the type arguments are different - lib\core\presentation\widgets\fly_animation_layer.dart:18:7 - conflicting_generic_interfaces
+warning - Dead code - lib\core\presentation\widgets\outlet_switcher_pill.dart:51:70 - dead_code
+  error - The named parameter 'size' isn't defined - lib\core\presentation\widgets\outlet_switcher_pill.dart:61:49 - undefined_named_parameter
+  error - The named parameter 'size' isn't defined - lib\core\presentation\widgets\outlet_switcher_pill.dart:62:51 - undefined_named_parameter
+  error - The named parameter 'weight' isn't defined - lib\core\presentation\widgets\outlet_switcher_pill.dart:62:61 - undefined_named_parameter
+  error - 2 positional arguments expected by 'changeActiveOutlet', but 0 found - lib\core\presentation\widgets\outlet_switcher_sheet.dart:65:23 - not_enough_positional_arguments
+  error - The named parameter 'outletId' isn't defined - lib\core\presentation\widgets\outlet_switcher_sheet.dart:65:23 - undefined_named_parameter
+  error - The named parameter 'warehouseId' isn't defined - lib\core\presentation\widgets\outlet_switcher_sheet.dart:66:23 - undefined_named_parameter
+  error - Undefined name 'SavvyTextStyle' - lib\core\presentation\widgets\savvy_slide_counter.dart:32:44 - undefined_identifier
+  error - Undefined name 'SavvyTextStyle' - lib\core\presentation\widgets\savvy_ticker.dart:27:34 - undefined_identifier
+  error - The element type 'List<BoxShadow>' can't be assigned to the list type 'BoxShadow' - lib\core\presentation\widgets\scanner_listener_overlay.dart:84:29 - list_element_type_not_assignable
+   info - 'RawKeyEvent' is deprecated and shouldn't be used. Use KeyEvent instead. This feature was deprecated after v3.18.0-2.0.pre - lib\core\presentation\widgets\scanner_listener_widget.dart:32:19 - deprecated_member_use
+   info - 'RawKeyDownEvent' is deprecated and shouldn't be used. Use KeyDownEvent instead. This feature was deprecated after v3.18.0-2.0.pre - lib\core\presentation\widgets\scanner_listener_widget.dart:33:18 - deprecated_member_use
+   info - 'RawKeyboardListener' is deprecated and shouldn't be used. Use KeyboardListener instead. This feature was deprecated after v3.18.0-2.0.pre - lib\core\presentation\widgets\scanner_listener_widget.dart:69:12 - deprecated_member_use
+  error - Target of URI doesn't exist: 'package:savvy_pos/features/inventory/data/datasources/local/product_dao.dart' - lib\core\services\data_seeder.dart:4:8 - uri_does_not_exist
+  error - The getter 'categoryTable' isn't defined for the type 'AppDatabase' - lib\core\services\data_seeder.dart:65:22 - undefined_getter
+  error - Undefined name 'CategoryTableCompanion' - lib\core\services\data_seeder.dart:65:44 - undefined_identifier
+  error - The argument type 'Value<String>' can't be assigned to the parameter type 'String'.  - lib\core\services\data_seeder.dart:82:19 - argument_type_not_assignable
+  error - The argument type 'Value<bool>' can't be assigned to the parameter type 'bool'.  - lib\core\services\data_seeder.dart:84:19 - argument_type_not_assignable
+  error - The argument type 'Value<bool>' can't be assigned to the parameter type 'bool'.  - lib\core\services\data_seeder.dart:85:18 - argument_type_not_assignable
+  error - The named parameter 'createdAt' isn't defined - lib\core\services\data_seeder.dart:87:7 - undefined_named_parameter
+  error - The named parameter 'tenantId' isn't defined - lib\core\services\data_seeder.dart:89:7 - undefined_named_parameter
+  error - The named parameter 'timestamp' is required, but there's no corresponding argument - lib\core\services\data_seeder.dart:94:54 - missing_required_argument
+  error - The named parameter 'uuid' isn't defined - lib\core\services\data_seeder.dart:95:10 - undefined_named_parameter
+  error - The named parameter 'snapshotCost' isn't defined - lib\core\services\data_seeder.dart:100:10 - undefined_named_parameter
+  error - The named parameter 'createdAt' isn't defined - lib\core\services\data_seeder.dart:101:10 - undefined_named_parameter
+  error - 1 positional argument expected by 'configureDependencies', but 0 found - lib\core\sync\sync_worker.dart:31:33 - not_enough_positional_arguments
+warning - The value of the local variable 'warehouseId' isn't used - lib\core\sync\sync_worker.dart:167:11 - unused_local_variable
+  error - The named parameter 'category' isn't defined - lib\core\sync\sync_worker.dart:185:20 - undefined_named_parameter
+   info - 'Share' is deprecated and shouldn't be used. Use SharePlus instead - lib\core\utils\backup_service.dart:41:30 - deprecated_member_use
+   info - 'shareXFiles' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead - lib\core\utils\backup_service.dart:41:36 - deprecated_member_use
+warning - The value of the local variable 'colors' isn't used - lib\core\utils\global_search_delegate.dart:47:11 - unused_local_variable
+  error - The name 'ThemeConfig' isn't a type, so it can't be used as a type argument - lib\core\utils\global_search_delegate.dart:47:33 - non_type_as_type_argument
+warning - The value of the field '_player' isn't used - lib\core\utils\sound_helper.dart:7:21 - unused_field
+  error - Target of URI doesn't exist: 'package:savvy_pos/features/dashboard/domain/bloc/dashboard_bloc.dart' - lib\features\admin\presentation\pages\web_dashboard_page.dart:11:8 - uri_does_not_exist
+  error - The name 'LoadDashboardData' isn't a class - lib\features\admin\presentation\pages\web_dashboard_page.dart:21:64 - creation_with_non_type
+  error - The name 'DashboardLoading' isn't defined, so it can't be used in an 'is' expression - lib\features\admin\presentation\pages\web_dashboard_page.dart:38:25 - type_test_with_undefined_name
+  error - The name 'DashboardError' isn't defined, so it can't be used in an 'is' expression - lib\features\admin\presentation\pages\web_dashboard_page.dart:41:25 - type_test_with_undefined_name
+  error - The name 'DashboardLoaded' isn't defined, so it can't be used in an 'is' expression - lib\features\admin\presentation\pages\web_dashboard_page.dart:46:40 - type_test_with_undefined_name
+  error - The name 'DashboardLoaded' isn't defined, so it can't be used in an 'is' expression - lib\features\admin\presentation\pages\web_dashboard_page.dart:51:44 - type_test_with_undefined_name
+  error - The name 'DashboardLoaded' isn't defined, so it can't be used in an 'is' expression - lib\features\admin\presentation\pages\web_dashboard_page.dart:118:55 - type_test_with_undefined_name
+  error - The name 'DashboardLoaded' isn't defined, so it can't be used in an 'is' expression - lib\features\admin\presentation\pages\web_dashboard_page.dart:153:49 - type_test_with_undefined_name
+  error - The named parameter 'activeWarehouseId' isn't defined - lib\features\auth\presentation\bloc\auth_bloc.dart:58:51 - undefined_named_parameter
+  error - The named parameter 'activeWarehouseId' isn't defined - lib\features\auth\presentation\bloc\auth_bloc.dart:109:44 - undefined_named_parameter
+  error - The named parameter 'textAlign' isn't defined - lib\features\auth\presentation\widgets\access_control_wrapper.dart:60:59 - undefined_named_parameter
+  error - The method 'SavvyButton' isn't defined for the type '_AccessControlWrapperState' - lib\features\auth\presentation\widgets\access_control_wrapper.dart:62:18 - undefined_method
+  error - Undefined name 'SavvyButtonStyle' - lib\features\auth\presentation\widgets\access_control_wrapper.dart:64:27 - undefined_identifier
+  error - The named parameter 'textAlign' isn't defined - lib\features\auth\presentation\widgets\supervisor_auth_dialog.dart:111:43 - undefined_named_parameter
+  error - The method 'SavvyTextField' isn't defined for the type '_SupervisorAuthDialogState' - lib\features\auth\presentation\widgets\supervisor_auth_dialog.dart:114:13 - undefined_method
+  error - The method 'SavvyButton' isn't defined for the type '_SupervisorAuthDialogState' - lib\features\auth\presentation\widgets\supervisor_auth_dialog.dart:133:17 - undefined_method
+  error - Undefined name 'SavvyButtonStyle' - lib\features\auth\presentation\widgets\supervisor_auth_dialog.dart:135:26 - undefined_identifier
+  error - The method 'SavvyButton' isn't defined for the type '_SupervisorAuthDialogState' - lib\features\auth\presentation\widgets\supervisor_auth_dialog.dart:139:17 - undefined_method
+  error - Undefined name 'SavvyButtonStyle' - lib\features\auth\presentation\widgets\supervisor_auth_dialog.dart:141:26 - undefined_identifier
+  error - The named parameter 'textAlign' isn't defined - lib\features\auth\presentation\widgets\supervisor_pin_dialog.dart:107:43 - undefined_named_parameter
+  error - The method 'SavvyTextField' isn't defined for the type '_SupervisorPinDialogState' - lib\features\auth\presentation\widgets\supervisor_pin_dialog.dart:110:13 - undefined_method
+  error - The method 'SavvyButton' isn't defined for the type '_SupervisorPinDialogState' - lib\features\auth\presentation\widgets\supervisor_pin_dialog.dart:129:17 - undefined_method
+  error - Undefined name 'SavvyButtonStyle' - lib\features\auth\presentation\widgets\supervisor_pin_dialog.dart:131:26 - undefined_identifier
+  error - The method 'SavvyButton' isn't defined for the type '_SupervisorPinDialogState' - lib\features\auth\presentation\widgets\supervisor_pin_dialog.dart:135:17 - undefined_method
+  error - Undefined name 'SavvyButtonStyle' - lib\features\auth\presentation\widgets\supervisor_pin_dialog.dart:137:26 - undefined_identifier
+  error - The named parameter 'size' isn't defined - lib\features\cds\presentation\pages\customer_display_page.dart:53:82 - undefined_named_parameter
+  error - The named parameter 'size' isn't defined - lib\features\cds\presentation\pages\customer_display_page.dart:137:96 - undefined_named_parameter
+  error - The argument type 'Object' can't be assigned to the parameter type 'String'.  - lib\features\dashboard\data\repositories\dashboard_repository_impl.dart:73:43 - argument_type_not_assignable
+  error - Missing concrete implementations of 'abstract class IDashboardRepository.getHourlySales', 'abstract class IDashboardRepository.getStatsForPeriod', and 'abstract class IDashboardRepository.getTopProducts' - lib\features\dashboard\data\repositories\remote_dashboard_repository_impl.dart:6:7 - non_abstract_class_inherits_abstract_member
+warning - The method doesn't override an inherited method - lib\features\dashboard\data\repositories\remote_dashboard_repository_impl.dart:12:15 - override_on_non_overriding_member
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\data\repositories\remote_dashboard_repository_impl.dart:20:15 - non_type_as_type_argument
+warning - The method doesn't override an inherited method - lib\features\dashboard\data\repositories\remote_dashboard_repository_impl.dart:20:32 - override_on_non_overriding_member
+  error - The method 'DailySalesData' isn't defined for the type 'RemoteDashboardRepositoryImpl' - lib\features\dashboard\data\repositories\remote_dashboard_repository_impl.dart:26:14 - undefined_method
+warning - The method doesn't override an inherited method - lib\features\dashboard\data\repositories\remote_dashboard_repository_impl.dart:31:18 - override_on_non_overriding_member
+  error - The name 'TopSellingItem' isn't a type, so it can't be used as a type argument - lib\features\dashboard\data\repositories\remote_dashboard_repository_impl.dart:38:15 - non_type_as_type_argument
+warning - The method doesn't override an inherited method - lib\features\dashboard\data\repositories\remote_dashboard_repository_impl.dart:38:32 - override_on_non_overriding_member
+  error - The method 'TopSellingItem' isn't defined for the type 'RemoteDashboardRepositoryImpl' - lib\features\dashboard\data\repositories\remote_dashboard_repository_impl.dart:41:14 - undefined_method
+  error - The method 'isBetweenValues' isn't defined for the type 'GeneratedColumn' - lib\features\dashboard\presentation\bloc\dashboard_bloc.dart:47:80 - undefined_method
+  error - There's no constant named 'bodyLg' in 'SavvyTextStyle' - lib\features\dashboard\presentation\pages\dashboard_page.dart:64:45 - undefined_enum_constant
+  error - There's no constant named 'bodySm' in 'SavvyTextStyle' - lib\features\dashboard\presentation\pages\dashboard_page.dart:176:54 - undefined_enum_constant
+warning - The value of the local variable 'interval' isn't used - lib\features\dashboard\presentation\pages\dashboard_page.dart:205:11 - unused_local_variable
+warning - The value of the local variable 'theme' isn't used - lib\features\diagnostics\presentation\widgets\log_terminal_widget.dart:91:11 - unused_local_variable
+  error - The named parameter 'size' isn't defined - lib\features\emenu\presentation\pages\emenu_home_page.dart:100:67 - undefined_named_parameter
+  error - The getter 'createdAt' isn't defined for the type '$OrderTableTable' - lib\features\history\data\repositories\order_repository_impl.dart:15:56 - undefined_getter
+  error - The argument type 'DateTime' can't be assigned to the parameter type 'Expression<DateTime>'.  - lib\features\history\data\repositories\order_repository_impl.dart:27:54 - argument_type_not_assignable
+  error - The argument type 'DateTime' can't be assigned to the parameter type 'Expression<DateTime>'.  - lib\features\history\data\repositories\order_repository_impl.dart:27:61 - argument_type_not_assignable
+  error - The getter 'createdAt' isn't defined for the type '$OrderTableTable' - lib\features\history\data\repositories\order_repository_impl.dart:36:52 - undefined_getter
+warning - The declaration '_onExportHistory' isn't referenced - lib\features\history\presentation\bloc\history_bloc.dart:61:16 - unused_element
+   info - 'Share' is deprecated and shouldn't be used. Use SharePlus instead - lib\features\history\presentation\bloc\history_bloc.dart:85:13 - deprecated_member_use
+   info - 'shareXFiles' is deprecated and shouldn't be used. Use SharePlus.instance.share() instead - lib\features\history\presentation\bloc\history_bloc.dart:85:19 - deprecated_member_use
+warning - The value of the local variable 'colors' isn't used - lib\features\history\presentation\widgets\transaction_detail_dialog.dart:17:11 - unused_local_variable
+  error - The getter 'createdAt' isn't defined for the type 'OrderTableData' - lib\features\history\presentation\widgets\transaction_detail_dialog.dart:26:40 - undefined_getter
+  error - The getter 'productName' isn't defined for the type 'OrderItemTableData' - lib\features\history\presentation\widgets\transaction_detail_dialog.dart:45:36 - undefined_getter
+  error - The getter 'unitPrice' isn't defined for the type 'OrderItemTableData' - lib\features\history\presentation\widgets\transaction_detail_dialog.dart:46:63 - undefined_getter
+  error - The getter 'totalPrice' isn't defined for the type 'OrderItemTableData' - lib\features\history\presentation\widgets\transaction_detail_dialog.dart:47:51 - undefined_getter
+  error - The name 'CartBloc' isn't a type, so it can't be used as a type argument - lib\features\home\presentation\pages\main_shell_page.dart:36:45 - non_type_as_type_argument
+warning - The value of the field '_tenantName' isn't used - lib\features\home\presentation\pages\main_shell_page.dart:72:10 - unused_field
+warning - The value of the field '_pages' isn't used - lib\features\home\presentation\pages\main_shell_page.dart:98:22 - unused_field
+  error - Undefined name 'businessModeNotifier' - lib\features\home\presentation\pages\main_shell_page.dart:111:24 - undefined_identifier
+  error - The named parameter 'onNavigateToPos' isn't defined - lib\features\home\presentation\pages\main_shell_page.dart:116:31 - undefined_named_parameter
+  error - The argument type 'DragTargetDetails<String>' can't be assigned to the parameter type 'String'.  - lib\features\integration\presentation\widgets\account_mapping_widget.dart:108:38 - argument_type_not_assignable
+  error - Missing concrete implementation of 'abstract class IInventoryRepository.receiveGoods' - lib\features\inventory\data\repositories\inventory_repository_impl.dart:12:7 - non_abstract_class_inherits_abstract_member
+warning - Dead code - lib\features\inventory\data\repositories\inventory_repository_impl.dart:99:5 - dead_code
+warning - The declaration 'receiveGoods' isn't referenced - lib\features\inventory\data\repositories\inventory_repository_impl.dart:100:16 - unused_element
+warning - The method doesn't override an inherited method - lib\features\inventory\data\repositories\product_repository_impl.dart:87:31 - override_on_non_overriding_member
+warning - The method doesn't override an inherited method - lib\features\inventory\data\repositories\product_repository_impl.dart:105:16 - override_on_non_overriding_member
+warning - The method doesn't override an inherited method - lib\features\inventory\data\repositories\product_repository_impl.dart:132:16 - override_on_non_overriding_member
+  error - The operator '+' isn't defined for the type 'FutureOr<double>' - lib\features\inventory\data\repositories\product_repository_impl.dart:190:45 - undefined_operator
+warning - The method doesn't override an inherited method - lib\features\inventory\data\repositories\product_repository_impl.dart:194:16 - override_on_non_overriding_member
+warning - The method doesn't override an inherited method - lib\features\inventory\data\repositories\product_repository_impl.dart:206:28 - override_on_non_overriding_member
+warning - The method doesn't override an inherited method - lib\features\inventory\data\repositories\product_repository_impl.dart:218:16 - override_on_non_overriding_member
+warning - The method doesn't override an inherited method - lib\features\inventory\data\repositories\product_repository_impl.dart:230:16 - override_on_non_overriding_member
+warning - The method doesn't override an inherited method - lib\features\inventory\data\repositories\product_repository_impl.dart:235:35 - override_on_non_overriding_member
+warning - The method doesn't override an inherited method - lib\features\inventory\data\repositories\product_repository_impl.dart:259:16 - override_on_non_overriding_member
+  error - Target of URI doesn't exist: 'package:savvy_pos/features/inventory/data/model/product_supplier_link.dart' - lib\features\inventory\domain\usecases\recommend_supplier.dart:1:8 - uri_does_not_exist
+warning - The value of the field '_receiveGoods' isn't used - lib\features\inventory\presentation\bloc\inventory_management_bloc.dart:55:22 - unused_field
+  error - Undefined name '_onReceiveGoods' - lib\features\inventory\presentation\bloc\inventory_management_bloc.dart:69:23 - undefined_identifier
+  error - The method 'copyWith' isn't defined for the type 'Product' - lib\features\inventory\presentation\bloc\inventory_management_bloc.dart:145:37 - undefined_method
+  error - The method 'updateProductModifiers' isn't defined for the type 'IProductRepository' - lib\features\inventory\presentation\bloc\inventory_management_bloc.dart:153:27 - undefined_method
+  error - The method 'copyWith' isn't defined for the type 'Product' - lib\features\inventory\presentation\bloc\inventory_management_bloc.dart:172:37 - undefined_method
+  error - The method 'updateProductModifiers' isn't defined for the type 'IProductRepository' - lib\features\inventory\presentation\bloc\inventory_management_bloc.dart:176:28 - undefined_method
+  error - The named parameter 'amount' isn't defined - lib\features\inventory\presentation\pages\goods_receipt_page.dart:168:66 - undefined_named_parameter
+  error - The method 'getIngredients' isn't defined for the type 'IProductRepository' - lib\features\inventory\presentation\pages\ingredient_list_page.dart:26:30 - undefined_method
+  error - The method 'deleteIngredient' isn't defined for the type 'IProductRepository' - lib\features\inventory\presentation\pages\ingredient_list_page.dart:57:39 - undefined_method
+  error - The method 'saveIngredient' isn't defined for the type 'IProductRepository' - lib\features\inventory\presentation\pages\ingredient_list_page.dart:101:29 - undefined_method
+warning - The value of the field '_repo' isn't used - lib\features\inventory\presentation\pages\inventory_list_page.dart:20:28 - unused_field
+  error - The method 'getModifierGroups' isn't defined for the type 'IProductRepository' - lib\features\inventory\presentation\pages\modifier_group_page.dart:26:32 - undefined_method
+  error - The method 'deleteModifierGroup' isn't defined for the type 'IProductRepository' - lib\features\inventory\presentation\pages\modifier_group_page.dart:66:17 - undefined_method
+  error - The method 'saveModifierGroup' isn't defined for the type 'IProductRepository' - lib\features\inventory\presentation\pages\modifier_group_page.dart:76:24 - undefined_method
+  error - The method 'getModifierGroups' isn't defined for the type 'IProductRepository' - lib\features\inventory\presentation\pages\product_form_page.dart:71:36 - undefined_method
+  error - The method 'SavvyButton' isn't defined for the type '_PurchaseOrderPageState' - lib\features\inventory\presentation\pages\purchase_order_page.dart:172:23 - undefined_method
+  error - Undefined name 'SavvyButtonStyle' - lib\features\inventory\presentation\pages\purchase_order_page.dart:174:25 - undefined_identifier
+  error - The method 'getIngredients' isn't defined for the type 'IProductRepository' - lib\features\inventory\presentation\pages\recipe_setup_page.dart:30:37 - undefined_method
+  error - The method 'getRecipeForProduct' isn't defined for the type 'IProductRepository' - lib\features\inventory\presentation\pages\recipe_setup_page.dart:31:35 - undefined_method
+  error - The method 'updateRecipe' isn't defined for the type 'IProductRepository' - lib\features\inventory\presentation\pages\recipe_setup_page.dart:94:17 - undefined_method
+  error - The method 'SavvyButton' isn't defined for the type '_GoodsReceiptDialogState' - lib\features\inventory\presentation\widgets\goods_receipt_dialog.dart:201:17 - undefined_method
+  error - Undefined name 'SavvyButtonStyle' - lib\features\inventory\presentation\widgets\goods_receipt_dialog.dart:203:26 - undefined_identifier
+  error - The method 'SavvyButton' isn't defined for the type '_GoodsReceiptDialogState' - lib\features\inventory\presentation\widgets\goods_receipt_dialog.dart:207:17 - undefined_method
+  error - Undefined name 'SavvyButtonStyle' - lib\features\inventory\presentation\widgets\goods_receipt_dialog.dart:209:26 - undefined_identifier
+  error - The named parameter 'size' isn't defined - lib\features\inventory\presentation\widgets\supplier_card.dart:108:57 - undefined_named_parameter
+  error - The named parameter 'weight' isn't defined - lib\features\inventory\presentation\widgets\supplier_comparison_table.dart:61:57 - undefined_named_parameter
+  error - The method 'SavvyButton' isn't defined for the type 'SupplierComparisonTable' - lib\features\inventory\presentation\widgets\supplier_comparison_table.dart:83:20 - undefined_method
+  error - Undefined name 'SavvyButtonStyle' - lib\features\inventory\presentation\widgets\supplier_comparison_table.dart:85:42 - undefined_identifier
+  error - Undefined name 'SavvyButtonStyle' - lib\features\inventory\presentation\widgets\supplier_comparison_table.dart:85:69 - undefined_identifier
+warning - The value of the local variable 'offset' isn't used - lib\features\inventory\presentation\widgets\tactile_inventory_card.dart:112:26 - unused_local_variable
+  error - The argument type 'OrderItemTableData' can't be assigned to the parameter type 'KitchenOrderItem'.  - lib\features\kitchen\data\repositories\kitchen_repository_impl.dart:47:44 - argument_type_not_assignable
+warning - The value of the field '_simulationTimer' isn't used - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:13:10 - unused_field
+  error - The named parameter 'discountTotal' is required, but there's no corresponding argument - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:59:19 - missing_required_argument
+  error - The named parameter 'grandTotal' is required, but there's no corresponding argument - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:59:19 - missing_required_argument
+  error - The named parameter 'id' is required, but there's no corresponding argument - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:59:19 - missing_required_argument
+  error - The named parameter 'isSynced' is required, but there's no corresponding argument - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:59:19 - missing_required_argument
+  error - The named parameter 'paymentMethod' is required, but there's no corresponding argument - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:59:19 - missing_required_argument
+  error - The named parameter 'paymentStatus' is required, but there's no corresponding argument - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:59:19 - missing_required_argument
+  error - The named parameter 'syncAttempts' is required, but there's no corresponding argument - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:59:19 - missing_required_argument
+  error - The named parameter 'taxTotal' is required, but there's no corresponding argument - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:59:19 - missing_required_argument
+  error - The named parameter 'version' is required, but there's no corresponding argument - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:59:19 - missing_required_argument
+  error - The named parameter 'total' isn't defined - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:62:7 - undefined_named_parameter
+  error - The named parameter 'tax' isn't defined - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:62:30 - undefined_named_parameter
+  error - The named parameter 'discount' isn't defined - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:62:38 - undefined_named_parameter
+  error - The named parameter 'createdAt' isn't defined - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:66:7 - undefined_named_parameter
+  error - The named parameter 'updatedAt' isn't defined - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:67:7 - undefined_named_parameter
+  error - The named parameter 'id' is required, but there's no corresponding argument - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:73:15 - missing_required_argument
+  error - The named parameter 'name' is required, but there's no corresponding argument - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:73:15 - missing_required_argument
+  error - The named parameter 'paidQty' is required, but there's no corresponding argument - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:73:15 - missing_required_argument
+  error - The named parameter 'uuid' isn't defined - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:74:11 - undefined_named_parameter
+  error - The named parameter 'createdAt' isn't defined - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:80:11 - undefined_named_parameter
+  error - The named parameter 'updatedAt' isn't defined - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:81:11 - undefined_named_parameter
+  error - The getter 'createdAt' isn't defined for the type 'OrderTableData' - lib\features\kitchen\domain\entities\kitchen_order.dart:23:35 - undefined_getter
+  error - A value of type 'double' can't be returned from the function 'quantity' because it has a return type of 'int' - lib\features\kitchen\domain\entities\kitchen_order.dart:45:23 - return_of_invalid_type
+  error - The method 'style' isn't defined for the type 'SavvyTextStyle' - lib\features\kitchen\presentation\pages\kitchen_monitor_page.dart:38:64 - undefined_method
+warning - This default clause is covered by the previous cases - lib\features\loyalty\presentation\widgets\holographic_member_card.dart:122:7 - unreachable_switch_default
+  error - The named parameter 'style' isn't defined - lib\features\notification\presentation\widgets\notification_drawer.dart:88:41 - undefined_named_parameter
+  error - The named parameter 'size' isn't defined - lib\features\onboarding\presentation\pages\genesis_page.dart:82:41 - undefined_named_parameter
+  error - The named parameter 'size' isn't defined - lib\features\onboarding\presentation\pages\genesis_page.dart:137:52 - undefined_named_parameter
+  error - The named parameter 'size' isn't defined - lib\features\onboarding\presentation\pages\genesis_page.dart:210:52 - undefined_named_parameter
+  error - Target of URI doesn't exist: 'package:badges/badges.dart' - lib\features\pos\presentation\pages\product_grid_page.dart:20:8 - uri_does_not_exist
+  error - The method 'LoadProducts' isn't defined for the type 'ProductGridPage' - lib\features\pos\presentation\pages\product_grid_page.dart:31:54 - undefined_method
+  error - The name 'AddToCartNotification' isn't a type, so it can't be used as a type argument - lib\features\pos\presentation\pages\product_grid_page.dart:70:39 - non_type_as_type_argument
+  error - The property 'product' can't be unconditionally accessed because the receiver can be 'null' - lib\features\pos\presentation\pages\product_grid_page.dart:72:79 - unchecked_use_of_nullable_value
+  error - The name 'ProductLoading' isn't defined, so it can't be used in an 'is' expression - lib\features\pos\presentation\pages\product_grid_page.dart:171:44 - type_test_with_undefined_name
+  error - The name 'ProductError' isn't defined, so it can't be used in an 'is' expression - lib\features\pos\presentation\pages\product_grid_page.dart:184:51 - type_test_with_undefined_name
+  error - The name 'ProductLoaded' isn't defined, so it can't be used in an 'is' expression - lib\features\pos\presentation\pages\product_grid_page.dart:186:51 - type_test_with_undefined_name
+  error - The named parameter 'onAccept' is required, but there's no corresponding argument - lib\features\pos\presentation\pages\split_bill_page.dart:185:31 - missing_required_argument
+  error - The named parameter 'onAcceptWithDetails' isn't defined - lib\features\pos\presentation\pages\split_bill_page.dart:189:26 - undefined_named_parameter
+  error - The method 'copyWith' isn't defined for the type 'SavvyTextStyle' - lib\features\pos\presentation\widgets\cart_item_tile.dart:52:56 - undefined_method
+warning - The operand can't be 'null', so the condition is always 'true' - lib\features\pos\presentation\widgets\cart_view.dart:67:55 - unnecessary_null_comparison
+  error - The argument type 'DragTargetDetails<Product>' can't be assigned to the parameter type 'Product'.  - lib\features\pos\presentation\widgets\cart_view.dart:70:67 - argument_type_not_assignable
+  error - Undefined class 'SavvyThemeData' - lib\features\pos\presentation\widgets\cart_view.dart:218:9 - undefined_class
+  error - The method 'copyWith' isn't defined for the type 'SavvyTextStyle' - lib\features\pos\presentation\widgets\cart_view.dart:344:49 - undefined_method
+warning - The value of the field '_isDragging' isn't used - lib\features\pos\presentation\widgets\checkout_success_dialog.dart:28:8 - unused_field
+warning - The value of the local variable 'theme' isn't used - lib\features\pos\presentation\widgets\checkout_success_dialog.dart:111:11 - unused_local_variable
+  error - The name 'SplitBillPage' isn't a class - lib\features\pos\presentation\widgets\current_order_summary.dart:149:94 - creation_with_non_type
+warning - The value of the field '_isDragging' isn't used - lib\features\pos\presentation\widgets\liquid_receipt_overlay.dart:34:8 - unused_field
+warning - The value of the local variable 'theme' isn't used - lib\features\pos\presentation\widgets\liquid_receipt_overlay.dart:107:11 - unused_local_variable
+  error - The getter 'createdAt' isn't defined for the type 'OrderTableData' - lib\features\pos\presentation\widgets\parked_orders_dialog.dart:55:80 - undefined_getter
+  error - The named parameter 'dashed' isn't defined - lib\features\pos\presentation\widgets\payment\payment_sheet.dart:152:41 - undefined_named_parameter
+  error - There's no constant named 'label' in 'SavvyTextStyle' - lib\features\pos\presentation\widgets\payment_methods_dialog.dart:123:78 - undefined_enum_constant
+  error - The argument type 'TextStyle' can't be assigned to the parameter type 'SavvyTextStyle'.  - lib\features\pos\presentation\widgets\payment_methods_dialog.dart:127:36 - argument_type_not_assignable
+  error - There's no constant named 'label' in 'SavvyTextStyle' - lib\features\pos\presentation\widgets\payment_methods_dialog.dart:298:52 - undefined_enum_constant
+  error - There's no constant named 'label' in 'SavvyTextStyle' - lib\features\pos\presentation\widgets\payment_methods_sheet.dart:88:74 - undefined_enum_constant
+  error - There's no constant named 'label' in 'SavvyTextStyle' - lib\features\pos\presentation\widgets\payment_methods_sheet.dart:148:84 - undefined_enum_constant
+  error - The argument type 'TextStyle' can't be assigned to the parameter type 'SavvyTextStyle'.  - lib\features\pos\presentation\widgets\payment_methods_sheet.dart:151:42 - argument_type_not_assignable
+  error - There's no constant named 'label' in 'SavvyTextStyle' - lib\features\pos\presentation\widgets\payment_methods_sheet.dart:329:52 - undefined_enum_constant
+  error - There's no constant named 'label' in 'SavvyTextStyle' - lib\features\pos\presentation\widgets\product_modifier_dialog.dart:195:85 - undefined_enum_constant
+   info - 'RawKeyEvent' is deprecated and shouldn't be used. Use KeyEvent instead. This feature was deprecated after v3.18.0-2.0.pre - lib\features\pos\presentation\widgets\scanner_listener_widget.dart:38:19 - deprecated_member_use
+   info - 'RawKeyDownEvent' is deprecated and shouldn't be used. Use KeyDownEvent instead. This feature was deprecated after v3.18.0-2.0.pre - lib\features\pos\presentation\widgets\scanner_listener_widget.dart:39:18 - deprecated_member_use
+   info - 'RawKeyboardListener' is deprecated and shouldn't be used. Use KeyboardListener instead. This feature was deprecated after v3.18.0-2.0.pre - lib\features\pos\presentation\widgets\scanner_listener_widget.dart:107:12 - deprecated_member_use
+  error - Missing concrete implementation of 'abstract class IReportRepository.getStockLedger' - lib\features\reports\data\repositories\report_repository_impl.dart:10:7 - non_abstract_class_inherits_abstract_member
+  error - The argument type 'double' can't be assigned to the parameter type 'int'.  - lib\features\reports\data\repositories\report_repository_impl.dart:35:19 - argument_type_not_assignable
+  error - The argument type 'int' can't be assigned to the parameter type 'double'.  - lib\features\reports\data\repositories\report_repository_impl.dart:80:23 - argument_type_not_assignable
+warning - Dead code - lib\features\reports\data\repositories\report_repository_impl.dart:98:3 - dead_code
+warning - The declaration 'getStockLedger' isn't referenced - lib\features\reports\data\repositories\report_repository_impl.dart:99:33 - unused_element
+  error - Undefined name 'db' - lib\features\reports\data\repositories\report_repository_impl.dart:100:25 - undefined_identifier
+  error - Undefined name 'db' - lib\features\reports\data\repositories\report_repository_impl.dart:100:35 - undefined_identifier
+warning - The value of the field '_rnd' isn't used - lib\features\reports\presentation\pages\reports_hub_page.dart:21:16 - unused_field
+  error - The method 'style' isn't defined for the type 'SavvyTextStyle' - lib\features\reports\presentation\pages\sales_report_page.dart:31:61 - undefined_method
+  error - There's no constant named 'labelLg' in 'SavvyTextStyle' - lib\features\reports\presentation\pages\sales_report_page.dart:119:84 - undefined_enum_constant
+warning - The value of the field '_initialPage' isn't used - lib\features\reports\presentation\widgets\date_scrubber_widget.dart:22:13 - unused_field
+  error - The element type 'List<BoxShadow>' can't be assigned to the list type 'BoxShadow' - lib\features\reports\presentation\widgets\insight_card.dart:32:21 - list_element_type_not_assignable
+   info - 'swapAnimationDuration' is deprecated and shouldn't be used. Please use [duration] instead - lib\features\reports\presentation\widgets\interactive_sales_chart.dart:126:7 - deprecated_member_use
+   info - 'swapAnimationCurve' is deprecated and shouldn't be used. Please use [curve] instead - lib\features\reports\presentation\widgets\interactive_sales_chart.dart:127:7 - deprecated_member_use
+  error - Annotation must be either a const variable reference or const constructor invocation - lib\features\reservations\presentation\bloc\reservation_bloc.freezed.dart:282:3 - invalid_annotation
+  error - The name 'JsonKey' is defined in the libraries 'package:drift/src/dsl/dsl.dart (via package:drift/drift.dart)' and 'package:json_annotation/src/json_key.dart (via package:freezed_annotation/freezed_annotation.dart)' - lib\features\reservations\presentation\bloc\reservation_bloc.freezed.dart:282:4 - ambiguous_import
+  error - Annotation must be either a const variable reference or const constructor invocation - lib\features\reservations\presentation\bloc\reservation_bloc.freezed.dart:372:3 - invalid_annotation
+  error - The name 'JsonKey' is defined in the libraries 'package:drift/src/dsl/dsl.dart (via package:drift/drift.dart)' and 'package:json_annotation/src/json_key.dart (via package:freezed_annotation/freezed_annotation.dart)' - lib\features\reservations\presentation\bloc\reservation_bloc.freezed.dart:372:4 - ambiguous_import
+  error - Annotation must be either a const variable reference or const constructor invocation - lib\features\reservations\presentation\bloc\reservation_bloc.freezed.dart:449:3 - invalid_annotation
+  error - The name 'JsonKey' is defined in the libraries 'package:drift/src/dsl/dsl.dart (via package:drift/drift.dart)' and 'package:json_annotation/src/json_key.dart (via package:freezed_annotation/freezed_annotation.dart)' - lib\features\reservations\presentation\bloc\reservation_bloc.freezed.dart:449:4 - ambiguous_import
+  error - Annotation must be either a const variable reference or const constructor invocation - lib\features\reservations\presentation\bloc\reservation_bloc.freezed.dart:537:3 - invalid_annotation
+  error - The name 'JsonKey' is defined in the libraries 'package:drift/src/dsl/dsl.dart (via package:drift/drift.dart)' and 'package:json_annotation/src/json_key.dart (via package:freezed_annotation/freezed_annotation.dart)' - lib\features\reservations\presentation\bloc\reservation_bloc.freezed.dart:537:4 - ambiguous_import
+  error - Annotation must be either a const variable reference or const constructor invocation - lib\features\reservations\presentation\bloc\reservation_bloc.freezed.dart:905:3 - invalid_annotation
+  error - The name 'JsonKey' is defined in the libraries 'package:drift/src/dsl/dsl.dart (via package:drift/drift.dart)' and 'package:json_annotation/src/json_key.dart (via package:freezed_annotation/freezed_annotation.dart)' - lib\features\reservations\presentation\bloc\reservation_bloc.freezed.dart:905:4 - ambiguous_import
+  error - Annotation must be either a const variable reference or const constructor invocation - lib\features\reservations\presentation\bloc\reservation_bloc.freezed.dart:991:3 - invalid_annotation
+  error - The name 'JsonKey' is defined in the libraries 'package:drift/src/dsl/dsl.dart (via package:drift/drift.dart)' and 'package:json_annotation/src/json_key.dart (via package:freezed_annotation/freezed_annotation.dart)' - lib\features\reservations\presentation\bloc\reservation_bloc.freezed.dart:991:4 - ambiguous_import
+  error - Annotation must be either a const variable reference or const constructor invocation - lib\features\reservations\presentation\bloc\reservation_bloc.freezed.dart:1051:3 - invalid_annotation
+  error - The name 'JsonKey' is defined in the libraries 'package:drift/src/dsl/dsl.dart (via package:drift/drift.dart)' and 'package:json_annotation/src/json_key.dart (via package:freezed_annotation/freezed_annotation.dart)' - lib\features\reservations\presentation\bloc\reservation_bloc.freezed.dart:1051:4 - ambiguous_import
+  error - Annotation must be either a const variable reference or const constructor invocation - lib\features\reservations\presentation\bloc\reservation_bloc.freezed.dart:1136:3 - invalid_annotation
+  error - The name 'JsonKey' is defined in the libraries 'package:drift/src/dsl/dsl.dart (via package:drift/drift.dart)' and 'package:json_annotation/src/json_key.dart (via package:freezed_annotation/freezed_annotation.dart)' - lib\features\reservations\presentation\bloc\reservation_bloc.freezed.dart:1136:4 - ambiguous_import
+  error - The named parameter 'style' isn't defined - lib\features\sales\presentation\widgets\smart_upsell_widget.dart:80:73 - undefined_named_parameter
+  error - There's no constant named 'label' in 'SavvyTextStyle' - lib\features\settings\presentation\pages\printer_settings_page.dart:91:73 - undefined_enum_constant
+  error - The getter 'savvy' isn't defined for the type 'BuildContext' - lib\features\settings\presentation\pages\settings_page.dart:27:28 - undefined_getter
+  error - The getter 'savvy' isn't defined for the type 'BuildContext' - lib\features\settings\presentation\pages\settings_page.dart:29:28 - undefined_getter
+  error - The argument type 'SizedBox Function(ShiftSessionTableData)' can't be assigned to the parameter type 'Widget Function(ShiftSessionTableData, double, double)?'.  - lib\features\settings\presentation\pages\settings_page.dart:186:23 - argument_type_not_assignable
+  error - The getter 'shiftTable' isn't defined for the type 'AppDatabase' - lib\features\shift\data\repositories\shift_repository_impl.dart:17:32 - undefined_getter
+  error - The getter 'endTime' isn't defined for the type 'HasResultSet' - lib\features\shift\data\repositories\shift_repository_impl.dart:18:24 - undefined_getter
+  error - The getter 'shiftTable' isn't defined for the type 'AppDatabase' - lib\features\shift\data\repositories\shift_repository_impl.dart:26:22 - undefined_getter
+  error - Undefined name 'ShiftTableCompanion' - lib\features\shift\data\repositories\shift_repository_impl.dart:26:41 - undefined_identifier
+  error - The getter 'shiftTable' isn't defined for the type 'AppDatabase' - lib\features\shift\data\repositories\shift_repository_impl.dart:42:25 - undefined_getter
+  error - The getter 'uuid' isn't defined for the type 'Table' - lib\features\shift\data\repositories\shift_repository_impl.dart:42:53 - undefined_getter
+  error - The method 'ShiftTableCompanion' isn't defined for the type 'ShiftRepositoryImpl' - lib\features\shift\data\repositories\shift_repository_impl.dart:43:7 - undefined_method
+  error - The getter 'shiftTable' isn't defined for the type 'AppDatabase' - lib\features\shift\data\repositories\shift_repository_impl.dart:61:39 - undefined_getter
+  error - The getter 'uuid' isn't defined for the type 'HasResultSet' - lib\features\shift\data\repositories\shift_repository_impl.dart:61:67 - undefined_getter
+  error - The getter 'createdAt' isn't defined for the type '$OrderTableTable' - lib\features\shift\data\repositories\shift_repository_impl.dart:66:24 - undefined_getter
+  error - The argument type 'String' can't be assigned to the parameter type 'Value<String?>'.  - lib\features\shift\data\repositories\shift_repository_impl.dart:89:19 - argument_type_not_assignable
+  error - The getter 'fullName' isn't defined for the type 'EmployeeTableData' - lib\features\shift\presentation\pages\open_shift_page.dart:26:42 - undefined_getter
+  error - Invalid constant value - lib\features\shift\presentation\widgets\cash_management_dialog.dart:55:27 - invalid_constant
+warning - The value of the local variable 'pax' isn't used - lib\features\tables\data\repositories\table_repository_impl.dart:27:13 - unused_local_variable
+warning - The value of the local variable 'status' isn't used - lib\features\tables\presentation\bloc\table_bloc.dart:70:13 - unused_local_variable
+  error - There's no constant named 'label' in 'SavvyTextStyle' - lib\features\tables\presentation\widgets\table_node.dart:130:77 - undefined_enum_constant
+warning - The asset directory 'assets/images/' doesn't exist - pubspec.yaml:92:7 - asset_directory_does_not_exist
+

@@ -68,12 +68,16 @@ class _ProductFormPageState extends State<ProductFormPage> {
   Future<void> _loadBoHData() async {
     try {
       final repo = GetIt.I<IProductRepository>();
-      final allGroups = await repo.getModifierGroups();
+      final allGroupsResult = await repo.getAllModifierGroups();
       
+      List<ModifierGroup> allGroups = [];
+      allGroupsResult.fold((l) {}, (r) => allGroups = r);
+
       // If editing, get linked groups
       List<ModifierGroup> linkedGroups = [];
       if (widget.product != null) {
-         linkedGroups = await repo.getModifiersForProduct(widget.product!.uuid);
+         final linkedResult = await repo.getModifierGroups(widget.product!.uuid);
+         linkedResult.fold((l) {}, (r) => linkedGroups = r);
       }
       
       if (mounted) {

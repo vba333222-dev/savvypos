@@ -4,6 +4,8 @@ import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:savvy_pos/features/pos/data/repositories/mock_product_repository.dart';
+import 'package:get_it/get_it.dart';
+import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
 
 class ProductModifierDialog extends StatefulWidget {
   final Product product;
@@ -33,20 +35,33 @@ class _ProductModifierDialogState extends State<ProductModifierDialog> {
   Future<void> _loadModifiers() async {
     try {
       // Use Mock Repository if needed or GetIt
-      // final groups = await GetIt.I<IProductRepository>().getModifiersForProduct(widget.product.uuid);
-      // Forcing MockRepo usage as per previous step consistency
-      final groups = await MockProductRepository().getModifiersForProduct(widget.product.uuid);
+      // Use GetIt dependency
+      final result = await GetIt.I<IProductRepository>().getModifierGroups(widget.product.uuid);
       
-      if (!mounted) return;
-
-      setState(() {
-        _linkGroups = groups;
-        _isLoading = false;
-        
-        for (var g in groups) {
-          _selections[g.uuid] = {};
+      result.fold(
+        (failure) {
+           // Handle failure
+           if (mounted) setState(() => _isLoading = false);
+        },
+        (groups) {
+          if (!mounted) return;
+          setState(() {
+            _linkGroups = groups;
+            _isLoading = false;
+            for (var g in groups) {
+              _selections[g.uuid] = {};
+            }
+          });
         }
-      });
+      );
+      return; // Handled
+      
+      /* 
+      // Old
+      final groups = await MockProductRepository().getModifiersForProduct(widget.product.uuid);
+      */
+      
+      /* Handled in fold */
     } catch (e) {
       if (mounted) setState(() => _isLoading = false);
     }

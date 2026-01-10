@@ -23,7 +23,7 @@ class TransactionDetailDialog extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Order #${order.orderNumber}', style: typography.titleMedium),
-          Text(dateFormat.format(order.createdAt), style: typography.bodySmall),
+          Text(dateFormat.format(order.transactionDate), style: typography.bodySmall),
         ],
       ),
       content: SizedBox(
@@ -42,9 +42,9 @@ class TransactionDetailDialog extends StatelessWidget {
               itemBuilder: (context, index) {
                 final item = items[index];
                 return ListTile(
-                  title: Text(item.productName),
-                  trailing: Text('${item.quantity} x \$${item.unitPrice.toStringAsFixed(2)}'),
-                  subtitle: Text('Total: \$${item.totalPrice.toStringAsFixed(2)}'),
+                  title: Text(item.name ?? 'Item'), // item.name might exist if denormalized, else 'Item'
+                  trailing: Text('${item.quantity} x \$${item.price.toStringAsFixed(2)}'),
+                  subtitle: Text('Total: \$${item.total.toStringAsFixed(2)}'),
                 );
               },
             );

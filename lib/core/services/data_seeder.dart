@@ -65,8 +65,8 @@ class DataSeeder {
       uuid: id,
       name: name,
       colorHex: Value(color),
-      createdAt: Value(DateTime.now()),
-      updatedAt: Value(DateTime.now()),
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
     ));
     return id;
   }
@@ -78,13 +78,13 @@ class DataSeeder {
       name: name,
       price: price,
       costPrice: Value(price * 0.4), // 40% cost assumption
-      categoryId: Value(catId),
+      categoryId: catId,
       sku: Value(sku ?? ''),
-      trackStock: Value(trackStock),
-      isService: Value(isService),
+      trackStock: trackStock,
+      isService: isService,
       colorHex: const Value('#FFFFFF'),
       // createdAt: DateTime.now(), // Removed
-      updatedAt: Value(DateTime.now()),
+      updatedAt: DateTime.now(),
       // tenantId: const Value('default-tenant'), // Removed
     ));
     
@@ -97,7 +97,7 @@ class DataSeeder {
          type: 'INITIAL',
          quantityChange: 100, // Start with 100
          // snapshotCost: price * 0.4, // Removed
-         timestamp: Value(DateTime.now()), // Was createdAt
+         timestamp: DateTime.now(), // Was createdAt
        ));
     }
   }

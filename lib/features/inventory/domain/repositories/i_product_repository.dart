@@ -1,8 +1,9 @@
-import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:dartz/dartz.dart';
 import 'package:savvy_pos/core/error/failures.dart';
+import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/recipe.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
+import 'package:savvy_pos/features/inventory/domain/entities/ingredient.dart';
 
 abstract class IProductRepository {
   /// Get all products (paginated or stream)
@@ -20,9 +21,6 @@ abstract class IProductRepository {
   /// Soft delete product
   Future<void> deleteProduct(String uuid);
   
-  /// Get modifier groups for a product
-  Future<List<ModifierGroup>> getModifiersForProduct(String productUuid);
-
   /// Quick update stock (for tactile inventory)
   Future<void> updateStock(String productUuid, int delta);
   
@@ -32,11 +30,13 @@ abstract class IProductRepository {
   // Add other methods if stricly required, but this is the critical one for now.
   // Ingredients
   Future<Either<Failure, List<Ingredient>>> getIngredients(String productId);
+  Future<Either<Failure, List<Ingredient>>> getAllIngredients();
   Future<Either<Failure, void>> saveIngredient(Ingredient ingredient);
   Future<Either<Failure, void>> deleteIngredient(String ingredientId);
 
   // Modifiers
   Future<Either<Failure, List<ModifierGroup>>> getModifierGroups(String productId);
+  Future<Either<Failure, List<ModifierGroup>>> getAllModifierGroups();
   Future<Either<Failure, void>> saveModifierGroup(ModifierGroup group);
   Future<Either<Failure, void>> deleteModifierGroup(String groupId);
   Future<Either<Failure, void>> updateProductModifiers(String productId, List<String> modifierIds);

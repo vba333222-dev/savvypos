@@ -99,8 +99,8 @@ class DashboardRepositoryImpl implements IDashboardRepository {
 
     return results.map((row) {
       return TopProductData(
-        productName: row.read(db.productTable.name) ?? 'Unknown',
-        quantity: row.read(qtySum)?.toInt() ?? 0,
+        row.read(db.productTable.name) ?? 'Unknown',
+        row.read(qtySum)?.toDouble() ?? 0.0,
         totalSales: row.read(salesSum) ?? 0.0,
       );
     }).toList();

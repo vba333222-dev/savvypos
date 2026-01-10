@@ -23,13 +23,18 @@ class _IngredientListPageState extends State<IngredientListPage> {
   }
 
   Future<void> _loadIngredients() async {
-    final list = await _repo.getIngredients();
-    if (mounted) {
-      setState(() {
-        _ingredients = list;
-        _isLoading = false;
-      });
-    }
+    final result = await _repo.getAllIngredients();
+    result.fold(
+      (l) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.message))),
+      (list) {
+        if (mounted) {
+          setState(() {
+            _ingredients = list;
+            _isLoading = false;
+          });
+        }
+      }
+    );
   }
 
   @override

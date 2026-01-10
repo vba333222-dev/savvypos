@@ -105,6 +105,12 @@ warning - The value of the field '_tenantName' isn't used - lib\features\home\pr
 warning - The value of the field '_pages' isn't used - lib\features\home\presentation\pages\main_shell_page.dart:98:22 - unused_field
   error - Undefined name 'businessModeNotifier' - lib\features\home\presentation\pages\main_shell_page.dart:111:24 - undefined_identifier
   error - The named parameter 'onNavigateToPos' isn't defined - lib\features\home\presentation\pages\main_shell_page.dart:116:31 - undefined_named_parameter
+  error - The method 'getModifiersForProduct' isn't defined for the type 'ProductRepositoryImpl' - lib\features\inventory\data\repositories\product_repository_impl.dart:98:29 - undefined_method
+  error - Target of URI hasn't been generated: 'package:savvy_pos/features/inventory/domain/entities/recipe.g.dart' - lib\features\inventory\domain\entities\recipe.dart:6:6 - uri_has_not_been_generated
+  error - The method '_$$RecipeImplFromJson' isn't defined for the type '_$RecipeImpl' - lib\features\inventory\domain\entities\recipe.freezed.dart:113:7 - undefined_method
+  error - The method '_$$RecipeImplToJson' isn't defined for the type '_$RecipeImpl' - lib\features\inventory\domain\entities\recipe.freezed.dart:153:12 - undefined_method
+  error - The method '_$$RecipeItemImplFromJson' isn't defined for the type '_$RecipeItemImpl' - lib\features\inventory\domain\entities\recipe.freezed.dart:286:7 - undefined_method
+  error - The method '_$$RecipeItemImplToJson' isn't defined for the type '_$RecipeItemImpl' - lib\features\inventory\domain\entities\recipe.freezed.dart:321:12 - undefined_method
   error - Target of URI doesn't exist: 'package:savvy_pos/features/inventory/data/model/product_supplier_link.dart' - lib\features\inventory\domain\usecases\recommend_supplier.dart:1:8 - uri_does_not_exist
    info - The constant name 'LOWEST_COST' isn't a lowerCamelCase identifier - lib\features\inventory\domain\usecases\recommend_supplier.dart:4:3 - constant_identifier_names
    info - The constant name 'FASTEST_DELIVERY' isn't a lowerCamelCase identifier - lib\features\inventory\domain\usecases\recommend_supplier.dart:5:3 - constant_identifier_names
@@ -125,7 +131,10 @@ warning - The value of the field '_repo' isn't used - lib\features\inventory\pre
   error - A value of type 'Either<Failure, List<ModifierGroup>>' can't be assigned to a variable of type 'List<ModifierGroup>' - lib\features\inventory\presentation\pages\modifier_group_page.dart:29:19 - invalid_assignment
    info - Parameter 'key' could be a super parameter - lib\features\inventory\presentation\pages\modifier_group_page.dart:88:9 - use_super_parameters
    info - Parameter 'key' could be a super parameter - lib\features\inventory\presentation\pages\product_form_page.dart:19:9 - use_super_parameters
-   info - Unnecessary use of 'toList' in a spread - lib\features\inventory\presentation\pages\product_form_page.dart:290:24 - unnecessary_to_list_in_spreads
+  error - 1 positional argument expected by 'getModifierGroups', but 0 found - lib\features\inventory\presentation\pages\product_form_page.dart:71:54 - not_enough_positional_arguments
+  error - The method 'getModifiersForProduct' isn't defined for the type 'IProductRepository' - lib\features\inventory\presentation\pages\product_form_page.dart:76:36 - undefined_method
+  error - A value of type 'Either<Failure, List<ModifierGroup>>' can't be assigned to a variable of type 'List<ModifierGroup>' - lib\features\inventory\presentation\pages\product_form_page.dart:81:32 - invalid_assignment
+   info - Unnecessary use of 'toList' in a spread - lib\features\inventory\presentation\pages\product_form_page.dart:286:24 - unnecessary_to_list_in_spreads
 warning - Unused import: 'package:flutter_bloc/flutter_bloc.dart' - lib\features\inventory\presentation\pages\purchase_order_page.dart:2:8 - unused_import
    info - The import of 'package:savvy_pos/core/presentation/widgets/savvy_box.dart' is unnecessary because all of the used elements are also provided by the import of 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart' - lib\features\inventory\presentation\pages\purchase_order_page.dart:4:8 - unnecessary_import
    info - The import of 'package:savvy_pos/core/presentation/widgets/savvy_text.dart' is unnecessary because all of the used elements are also provided by the import of 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart' - lib\features\inventory\presentation\pages\purchase_order_page.dart:5:8 - unnecessary_import
@@ -162,14 +171,23 @@ warning - This default clause is covered by the previous cases - lib\features\lo
   error - Missing concrete implementations of 'abstract class IProductRepository.deleteProduct', 'abstract class IProductRepository.getProductByUuid', 'abstract class IProductRepository.saveProduct', 'abstract class IProductRepository.searchProducts', and 2 more - lib\features\pos\data\repositories\mock_product_repository.dart:11:7 - non_abstract_class_inherits_abstract_member
   error - Classes can only extend other classes - lib\features\pos\data\repositories\mock_product_repository.dart:11:37 - extends_non_class
 warning - The method doesn't override an inherited method - lib\features\pos\data\repositories\mock_product_repository.dart:13:25 - override_on_non_overriding_member
+  error - The named parameter 'isService' is required, but there's no corresponding argument - lib\features\pos\data\repositories\mock_product_repository.dart:15:13 - missing_required_argument
+  error - The named parameter 'trackStock' is required, but there's no corresponding argument - lib\features\pos\data\repositories\mock_product_repository.dart:15:13 - missing_required_argument
+  error - The named parameter 'uuid' is required, but there's no corresponding argument - lib\features\pos\data\repositories\mock_product_repository.dart:15:13 - missing_required_argument
+  error - The named parameter 'id' isn't defined - lib\features\pos\data\repositories\mock_product_repository.dart:15:21 - undefined_named_parameter
+  error - The named parameter 'isService' is required, but there's no corresponding argument - lib\features\pos\data\repositories\mock_product_repository.dart:16:13 - missing_required_argument
+  error - The named parameter 'trackStock' is required, but there's no corresponding argument - lib\features\pos\data\repositories\mock_product_repository.dart:16:13 - missing_required_argument
+  error - The named parameter 'uuid' is required, but there's no corresponding argument - lib\features\pos\data\repositories\mock_product_repository.dart:16:13 - missing_required_argument
+  error - The named parameter 'id' isn't defined - lib\features\pos\data\repositories\mock_product_repository.dart:16:21 - undefined_named_parameter
    info - The imported package 'bloc' isn't a dependency of the importing package - lib\features\pos\presentation\bloc\cart\cart_bloc.dart:2:8 - depend_on_referenced_packages
    info - Statements in a for should be enclosed in a block - lib\features\pos\presentation\bloc\cart\cart_bloc.dart:533:38 - curly_braces_in_flow_control_structures
    info - Statements in an if should be enclosed in a block - lib\features\pos\presentation\bloc\cart\cart_bloc.dart:760:40 - curly_braces_in_flow_control_structures
    info - Statements in an if should be enclosed in a block - lib\features\pos\presentation\bloc\cart\cart_bloc.dart:761:57 - curly_braces_in_flow_control_structures
    info - The imported package 'bloc' isn't a dependency of the importing package - lib\features\pos\presentation\bloc\product\product_bloc.dart:1:8 - depend_on_referenced_packages
-warning - Unused import: 'package:savvy_pos/features/pos/data/repositories/mock_product_repository.dart' - lib\features\pos\presentation\pages\pos_page.dart:24:8 - unused_import
-  error - The name 'IProductRepository' isn't a type, so it can't be used as a type argument - lib\features\pos\presentation\pages\pos_page.dart:92:26 - non_type_as_type_argument
-   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\features\pos\presentation\pages\pos_page.dart:114:15 - use_build_context_synchronously
+  error - The method 'getModifiersForProduct' isn't defined for the type 'MockProductRepository' - lib\features\pos\presentation\pages\pos_page.dart:91:53 - undefined_method
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\features\pos\presentation\pages\pos_page.dart:96:9 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\features\pos\presentation\pages\pos_page.dart:101:11 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\features\pos\presentation\pages\pos_page.dart:104:8 - use_build_context_synchronously
   error - The method 'LoadProducts' isn't defined for the type 'ProductGridPage' - lib\features\pos\presentation\pages\product_grid_page.dart:32:54 - undefined_method
   error - The name 'ProductLoading' isn't defined, so it can't be used in an 'is' expression - lib\features\pos\presentation\pages\product_grid_page.dart:172:44 - type_test_with_undefined_name
   error - The name 'ProductError' isn't defined, so it can't be used in an 'is' expression - lib\features\pos\presentation\pages\product_grid_page.dart:185:51 - type_test_with_undefined_name
@@ -201,9 +219,8 @@ warning - The value of the local variable 'theme' isn't used - lib\features\pos\
    info - Statements in an if should be enclosed in a block - lib\features\pos\presentation\widgets\payment_methods_sheet.dart:296:28 - curly_braces_in_flow_control_structures
    info - Statements in an if should be enclosed in a block - lib\features\pos\presentation\widgets\payment_methods_sheet.dart:297:14 - curly_braces_in_flow_control_structures
    info - Parameter 'key' could be a super parameter - lib\features\pos\presentation\widgets\product_modifier_dialog.dart:11:9 - use_super_parameters
-  error - Undefined name 'GetIt' - lib\features\pos\presentation\widgets\product_modifier_dialog.dart:37:28 - undefined_identifier
-  error - The name 'IProductRepository' isn't a type, so it can't be used as a type argument - lib\features\pos\presentation\widgets\product_modifier_dialog.dart:37:36 - non_type_as_type_argument
-   info - Unnecessary use of 'toList' in a spread - lib\features\pos\presentation\widgets\product_modifier_dialog.dart:294:26 - unnecessary_to_list_in_spreads
+  error - The method 'getModifiersForProduct' isn't defined for the type 'MockProductRepository' - lib\features\pos\presentation\widgets\product_modifier_dialog.dart:38:52 - undefined_method
+   info - Unnecessary use of 'toList' in a spread - lib\features\pos\presentation\widgets\product_modifier_dialog.dart:281:26 - unnecessary_to_list_in_spreads
    info - Parameter 'key' could be a super parameter - lib\features\pos\presentation\widgets\scanner_listener_widget.dart:8:9 - use_super_parameters
    info - The imported package 'bloc' isn't a dependency of the importing package - lib\features\reports\presentation\bloc\report_bloc.dart:1:8 - depend_on_referenced_packages
 warning - The value of the field '_rnd' isn't used - lib\features\reports\presentation\pages\reports_hub_page.dart:21:16 - unused_field

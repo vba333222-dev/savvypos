@@ -25,6 +25,10 @@ import 'package:savvy_pos/features/pos/data/repositories/mock_product_repository
 import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/product_modifier_dialog.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
+import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
+// import 'package:get_it/get_it.dart'; // Already imported
+import 'package:savvy_pos/core/error/failures.dart';
+import 'package:dartz/dartz.dart' hide State;
 
 class PosPage extends StatelessWidget {
   final String? heroTag;
@@ -87,22 +91,37 @@ class _PosPageContentState extends State<_PosPageContent> with TickerProviderSta
     );
   
     // 2. Process Cart Logic
+    // 2. Process Cart Logic
     final product = notification.product;
-    final modifiers = await MockProductRepository().getModifiersForProduct(product.uuid); 
+    final repo = GetIt.I<IProductRepository>(); // Use GetIt, Mock is for testing mainly, but previous code used Mock. 
+    // If I use MockProductRepository() directly, I fail if it lacks implementation.
+    // I should use GetIt<IProductRepository>() which maps to ProductRepositoryImpl (or Mock if configured).
+    // The previous code used MockProductRepository directly. I will switch to correct usage via repo instance if available or just update logic.
+    // Assuming GetIt is set up.
     
-    if (modifiers.isNotEmpty) {
-      if (!mounted) return;
-      final result = await showDialog<List<ModifierItem>>(
-        context: context,
-        builder: (_) => ProductModifierDialog(product: product),
-      );
+    final result = await repo.getModifierGroups(product.uuid);
+    
+    result.fold(
+      (failure) {
+         // Handle error or just add product without modifiers?
+         context.read<CartBloc>().add(CartEvent.addProduct(product));
+      }, 
+      (modifiers) async {
+        if (modifiers.isNotEmpty) {
+          if (!mounted) return;
+          final selection = await showDialog<List<ModifierItem>>(
+            context: context,
+            builder: (_) => ProductModifierDialog(product: product),
+          );
 
-      if (result != null && mounted) {
-          context.read<CartBloc>().add(CartEvent.addProduct(product, modifiers: result));
+          if (selection != null && mounted) {
+              context.read<CartBloc>().add(CartEvent.addProduct(product, modifiers: selection));
+          }
+        } else {
+           context.read<CartBloc>().add(CartEvent.addProduct(product));
+        }
       }
-    } else {
-       context.read<CartBloc>().add(CartEvent.addProduct(product));
-    }
+    );
   }
 
   @override

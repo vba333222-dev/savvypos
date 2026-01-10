@@ -14,6 +14,10 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+Ingredient _$IngredientFromJson(Map<String, dynamic> json) {
+  return _Ingredient.fromJson(json);
+}
+
 /// @nodoc
 mixin _$Ingredient {
   String get uuid => throw _privateConstructorUsedError;
@@ -22,6 +26,7 @@ mixin _$Ingredient {
   double get currentStock => throw _privateConstructorUsedError;
   double get costPerUnit => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $IngredientCopyWith<Ingredient> get copyWith =>
       throw _privateConstructorUsedError;
@@ -144,7 +149,7 @@ class __$$IngredientImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$IngredientImpl implements _Ingredient {
   const _$IngredientImpl(
       {required this.uuid,
@@ -152,6 +157,9 @@ class _$IngredientImpl implements _Ingredient {
       required this.unit,
       required this.currentStock,
       required this.costPerUnit});
+
+  factory _$IngredientImpl.fromJson(Map<String, dynamic> json) =>
+      _$$IngredientImplFromJson(json);
 
   @override
   final String uuid;
@@ -183,6 +191,7 @@ class _$IngredientImpl implements _Ingredient {
                 other.costPerUnit == costPerUnit));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, uuid, name, unit, currentStock, costPerUnit);
@@ -192,6 +201,13 @@ class _$IngredientImpl implements _Ingredient {
   @pragma('vm:prefer-inline')
   _$$IngredientImplCopyWith<_$IngredientImpl> get copyWith =>
       __$$IngredientImplCopyWithImpl<_$IngredientImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$IngredientImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _Ingredient implements Ingredient {
@@ -201,6 +217,9 @@ abstract class _Ingredient implements Ingredient {
       required final String unit,
       required final double currentStock,
       required final double costPerUnit}) = _$IngredientImpl;
+
+  factory _Ingredient.fromJson(Map<String, dynamic> json) =
+      _$IngredientImpl.fromJson;
 
   @override
   String get uuid;

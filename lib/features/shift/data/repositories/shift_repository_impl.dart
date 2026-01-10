@@ -30,9 +30,9 @@ class ShiftRepositoryImpl implements IShiftRepository {
       isClosed: const Value(false), 
       staffId: staffId,
       staffName: staffName,
-      expectedCash: const Value(0.0),
-      actualCash: const Value(0.0),
-      difference: const Value(0.0),
+      expectedCash: 0.0,
+      actualCash: 0.0,
+      difference: 0.0,
     ));
   }
 
@@ -86,11 +86,11 @@ class ShiftRepositoryImpl implements IShiftRepository {
     final now = DateTime.now();
     await db.into(db.cashTransactionTable).insert(CashTransactionTableCompanion.insert(
        uuid: _uuid.v4(),
-       shiftUuid: shiftUuid,
+       shiftUuid: Value(shiftUuid),
        type: type, // 'PAY_IN', 'PAY_OUT'
        amount: amount,
        reason: Value(reason),
-       createdAt: Value(now),
+       createdAt: now,
     ));
   }
 

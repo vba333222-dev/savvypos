@@ -203,4 +203,20 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
        // Silent fail or snackbar?
     }
   }
+  Future<void> _onReceiveGoods(_ReceiveGoods event, Emitter<InventoryManagementState> emit) async {
+    emit(const InventoryManagementState.loading());
+    try {
+      await _receiveGoods(
+        purchaseOrderUuid: event.purchaseOrderUuid,
+        warehouseUuid: event.warehouseUuid,
+        items: event.items, // Map<String,dynamic> from UI
+        // UseCase expects properly typed items or adapts them? 
+        // ReceiveGoods usecase signature from Step 1679: required List<Map<String, dynamic>> items
+        // So passing direct is fine.
+      );
+      emit(const InventoryManagementState.success());
+    } catch (e) {
+      emit(InventoryManagementState.error(e.toString()));
+    }
+  }
 }

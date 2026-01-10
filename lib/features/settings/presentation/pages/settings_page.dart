@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/features/inventory/presentation/pages/inventory_list_page.dart';
 import 'package:savvy_pos/features/shift/presentation/bloc/shift_bloc.dart';
 import 'package:savvy_pos/features/shift/presentation/widgets/close_shift_dialog.dart';

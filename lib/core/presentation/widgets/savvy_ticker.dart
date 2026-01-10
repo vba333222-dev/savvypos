@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 
 /// A widget that handles the "Odometer" style rolling animation for numbers.
 class SavvyTicker extends StatelessWidget {

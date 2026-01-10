@@ -50,7 +50,7 @@ class _IdleView extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SavvyText.h1('Welcome to Savvy Bistro', color: Colors.white, size: 64),
+              const SavvyText.h1('Welcome to Savvy Bistro', color: Colors.white, textStyle: TextStyle(fontSize: 64)),
               const SizedBox(height: 24),
               const SavvyText.h3('A Culinary Experience', color: Colors.white70),
             ],
@@ -134,7 +134,7 @@ class _ActiveCartView extends StatelessWidget {
               children: [
                 const SavvyText.h3('Total to Pay', color: Colors.grey),
                 const SizedBox(height: 16),
-                SavvyText.h1('\$${state.total.toStringAsFixed(2)}', color: Colors.greenAccent, size: 72),
+                SavvyText.h1('\$${state.total.toStringAsFixed(2)}', color: Colors.greenAccent, textStyle: const TextStyle(fontSize: 72)),
                 const SizedBox(height: 8),
                 Text('Tax included: \$${state.tax.toStringAsFixed(2)}', style: const TextStyle(color: Colors.grey)),
               ],

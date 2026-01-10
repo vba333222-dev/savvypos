@@ -90,7 +90,7 @@ class ShiftRepositoryImpl implements IShiftRepository {
        type: type, // 'PAY_IN', 'PAY_OUT'
        amount: amount,
        reason: Value(reason),
-       createdAt: now,
+       createdAt: Value(now),
     ));
   }
 

@@ -58,8 +58,8 @@ class OutletSwitcherPill extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SavvyText.label(outletName, size: 10, color: context.savvy.colors.textSecondary),
-                    SavvyText.body(warehouseName, size: 12, weight: FontWeight.w600),
+                    SavvyText.label(outletName, textStyle: const TextStyle(fontSize: 10), color: context.savvy.colors.textSecondary),
+                    SavvyText.body(warehouseName, textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
                   ],
                 ),
                 

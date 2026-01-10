@@ -10,8 +10,6 @@ import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/product/product_bloc.dart';
-import 'package:savvy_pos/features/pos/presentation/bloc/product/product_event.dart';
-import 'package:savvy_pos/features/pos/presentation/bloc/product/product_state.dart';
 import 'package:savvy_pos/features/pos/presentation/notifications/add_to_cart_notification.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/cart_view.dart';
 import 'package:savvy_pos/features/pos/presentation/widgets/product_card.dart';

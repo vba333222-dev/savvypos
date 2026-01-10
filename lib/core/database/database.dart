@@ -11,6 +11,7 @@ part 'database.g.dart';
 @lazySingleton
 @DriftDatabase(tables: [
   TenantConfigTable,
+  CategoryTable,
   ProductTable,
   RestaurantTable,
   ReservationTable,

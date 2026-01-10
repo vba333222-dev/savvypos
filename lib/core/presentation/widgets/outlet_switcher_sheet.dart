@@ -62,8 +62,8 @@ class OutletSwitcherSheet extends StatelessWidget {
                   onTap: () {
                     // Dispatch Change
                     context.read<AuthBloc>().add(AuthEvent.changeActiveOutlet(
-                      outletId: outlet.id, 
-                      warehouseId: outlet.warehouseId, // In real app, map outlet->warehouse
+                      outlet.id, 
+                      outlet.warehouseId, // In real app, map outlet->warehouse
                     ));
                     Navigator.pop(context);
                     

@@ -70,7 +70,7 @@ class _SupervisorAuthDialogState extends State<SupervisorAuthDialog> {
 
       if (employee != null) {
         final role = UserRole.fromString(employee.role);
-        if (RoleGuard.canPerformManagerOverride(role)) {
+        if (RolePermissions.canPerformManagerOverride(role)) {
           // Success
           if (mounted) Navigator.pop(context, true);
         } else {
@@ -108,7 +108,7 @@ class _SupervisorAuthDialogState extends State<SupervisorAuthDialog> {
             const SizedBox(height: 16),
             SavvyText.h3(widget.title),
             const SizedBox(height: 8),
-            SavvyText.body(widget.reason, textAlign: TextAlign.center, color: context.savvy.colors.textSecondary),
+            SavvyText.body(widget.reason, align: TextAlign.center, color: context.savvy.colors.textSecondary),
             const SizedBox(height: 24),
             
             SavvyTextField(

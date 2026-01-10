@@ -96,7 +96,9 @@ class InventoryRepositoryImpl implements IInventoryRepository {
       
       Logger().i('Stock Transfer of ${items.length} items completed successfully.');
     });
-    @override
+  }
+
+  @override
   Future<void> receiveGoods({
     required String purchaseOrderUuid,
     required String warehouseUuid,
@@ -204,4 +206,4 @@ class InventoryRepositoryImpl implements IInventoryRepository {
     });
   }
 }
-}
+

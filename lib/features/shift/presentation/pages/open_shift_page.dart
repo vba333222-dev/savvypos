@@ -23,7 +23,7 @@ class _OpenShiftPageState extends State<OpenShiftPage> {
     
     final authState = context.read<AuthBloc>().state;
     final userId = authState.employee?.uuid ?? 'UNKNOWN';
-    final userName = authState.employee?.fullName ?? 'Unknown';
+    final userName = authState.employee?.name ?? 'Unknown';
 
     context.read<ShiftBloc>().add(ShiftEvent.openShift(startCash, userId, userName));
   }

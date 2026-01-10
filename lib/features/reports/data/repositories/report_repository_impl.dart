@@ -39,7 +39,7 @@ class ReportRepositoryImpl implements IReportRepository {
     }).toList();
 
     // 3. Aggregate in Background Isolate (Warp Core)
-    return IsolateHelper.run(_aggregateSales, rawItems);
+    return IsolateHelper.run(_aggregateSales, rawItems.cast<_RawSaleItem>());
   }
 
   @override
@@ -73,7 +73,7 @@ class _RawSaleItem {
   final String productUuid;
   final String categoryName;
   final String productName;
-  final int quantity;
+  final double quantity;
   final double revenue;
   final double costPrice;
 

@@ -67,7 +67,7 @@ class TableBloc extends Bloc<TableEvent, TableState> {
   
   Future<void> _onToggleOccupied(_ToggleOccupied event, Emitter<TableState> emit) async {
     try {
-      final status = state.tables.firstWhere((t) => t.table.uuid == event.uuid);
+      // The variable 'status' was unused.
       // We use setTableOccupied to handle logic if needed
       await _repository.setTableOccupied(event.uuid, event.isOccupied); 
     } catch (e) {

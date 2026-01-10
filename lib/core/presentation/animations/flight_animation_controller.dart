@@ -4,7 +4,7 @@ import 'package:savvy_pos/core/utils/haptic_helper.dart';
 
 /// Mixin to manage flying widget animations using Overlays.
 /// Designed to be used on a StatefulWidget that provides a TickerProvider.
-mixin FlightAnimationController<T extends StatefulWidget> on State<T>, TickerProviderStateMixin {
+mixin FlightAnimationController<T extends StatefulWidget> on State<T>, TickerProviderStateMixin<T> {
   final List<_ActiveFlight> _activeFlights = [];
 
   @override

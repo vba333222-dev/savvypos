@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/network/api_client.dart';
 import 'package:savvy_pos/features/dashboard/domain/repositories/i_dashboard_repository.dart';
+import 'package:savvy_pos/features/dashboard/domain/entities/dashboard_data.dart';
 
 @LazySingleton(as: IDashboardRepository, env: ['web'])
 class RemoteDashboardRepositoryImpl implements IDashboardRepository {

@@ -52,7 +52,7 @@ class _DashboardView extends StatelessWidget {
             initial: () => const Center(child: CircularProgressIndicator()),
             loading: () => const Center(child: CircularProgressIndicator()),
             error: (msg) => Center(child: Text('Error: $msg', style: TextStyle(color: theme.colors.stateError))),
-            loaded: (stats, hourly, topProducts, date) {
+            loaded: (stats, hourly, topProducts, date, last7DaysSales, pendingSyncCount) {
               return SingleChildScrollView(
                 padding: EdgeInsets.all(theme.shapes.spacingLg),
                 child: Column(

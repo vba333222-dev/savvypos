@@ -173,6 +173,28 @@ class SavvyColors {
   final Color stateError;
   final Color stateWarning;
 
+  // Compatibility Aliases
+  Color get bgSurface => bgElevated;
+  Color get bgCanvas => bgPrimary;
+  Color get bgInverse => textPrimary;
+  Color get border => borderDefault;
+  
+  Color get primary => brandPrimary;
+  Color get secondary => brandSecondary;
+  Color get accent => brandAccent;
+  
+  Color get success => stateSuccess;
+  Color get textDisabled => textMuted;
+  
+  // More Compat Aliases
+  Color get bgBase => bgPrimary;
+
+  Color get surface => bgElevated;
+  Color get textBase => textPrimary; // Added this one as requested
+  Color get borderDivider => borderDefault;
+  Color get bgDisabled => stateWarning.withValues(alpha: 0.1); 
+  Color get shadowSubtle => Colors.black.withValues(alpha: 0.05);
+
   const SavvyColors({
     required this.brandPrimary,
     required this.brandSecondary,
@@ -188,9 +210,17 @@ class SavvyColors {
     required this.stateSuccess,
     required this.stateError,
     required this.stateWarning,
+    // Ignored Legacy Params for Compatibility
+    Color? primary,
+    Color? secondary,
+    Color? accent,
+    Color? bgSurface,
+    Color? bgBase,
+    Color? textBase,
+    Color? surface,
   });
-
-  SavvyColors lerp(SavvyColors other, double t) {
+  SavvyColors lerp(SavvyColors? other, double t) {
+    if (other == null) return this;
     return SavvyColors(
       brandPrimary: Color.lerp(brandPrimary, other.brandPrimary, t)!,
       brandSecondary: Color.lerp(brandSecondary, other.brandSecondary, t)!,
@@ -208,22 +238,6 @@ class SavvyColors {
       stateWarning: Color.lerp(stateWarning, other.stateWarning, t)!,
     );
   }
-  // Compatibility Aliases
-  Color get bgSurface => bgSecondary;
-  Color get bgCanvas => bgPrimary;
-  Color get bgInverse => textPrimary;
-  Color get border => borderDefault;
-  Color get primary => brandPrimary;
-  Color get accent => brandAccent;
-  Color get success => stateSuccess;
-  Color get textDisabled => textMuted;
-  
-  // More Compat Aliases
-  Color get bgBase => bgPrimary;
-  Color get surface => bgElevated;
-  Color get borderDivider => borderDefault;
-  Color get bgDisabled => stateWarning.withValues(alpha: 0.1); // Fallback
-  Color get shadowSubtle => Colors.black.withValues(alpha: 0.05); // Shadow Color
 }
 
 // ==============================================================================
@@ -365,7 +379,7 @@ class SpringCurve extends Curve {
     // For now, let's map this to a well-known flutter curve to ensure stability, 
     // or we can implement real physics simulation but Curve expects a mapping 0..1
     // Actually, let's use a standard confident curve for "Spring" to avoid complexity overhead
-    return Curves.easeOutBack; 
+    return Curves.easeOutBack.transform(t); 
   }
 }
 

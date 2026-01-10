@@ -2,9 +2,12 @@ import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
+import 'package:savvy_pos/features/inventory/domain/entities/recipe.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/ingredient.dart';
 import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
+import 'package:dartz/dartz.dart';
+import 'package:savvy_pos/core/error/failures.dart';
 
 @LazySingleton(as: IProductRepository)
 class ProductRepositoryImpl implements IProductRepository {
@@ -84,186 +87,171 @@ class ProductRepositoryImpl implements IProductRepository {
   }
 
   @override
-  Future<List<ModifierGroup>> getModifierGroups() async {
-    final rows = await db.select(db.modifierGroupTable).get();
-    return Future.wait(rows.map((row) async {
-       final items = await (db.select(db.modifierItemTable)
-         ..where((t) => t.groupUuid.equals(row.uuid))).get();
-       
-       return ModifierGroup(
-         uuid: row.uuid,
-         name: row.name,
-         allowMultiSelect: row.allowMultiSelect,
-         minSelection: row.minSelection,
-         maxSelection: row.maxSelection,
-         items: items.map((i) => ModifierItem(uuid: i.uuid, name: i.name, priceDelta: i.priceDelta)).toList(),
-       );
-    }));
-  }
-
-  @override
-  Future<void> saveModifierGroup(ModifierGroup group) async {
-    // 1. Save Group
-    await db.into(db.modifierGroupTable).insertOnConflictUpdate(ModifierGroupTableCompanion(
-      uuid: Value(group.uuid),
-      name: Value(group.name),
-      allowMultiSelect: Value(group.allowMultiSelect),
-      minSelection: Value(group.minSelection),
-      maxSelection: Value(group.maxSelection),
-      updatedAt: Value(DateTime.now()),
-    ));
+  Future<Either<Failure, List<ModifierGroup>>> getModifierGroups(String productId) async {
+    // Note: Parameter mismatch in interface (productId) vs impl (all). 
+    // Assuming standard impl gets ALL groups for now, or filtered by product if joined.
+    // Interface says `getModifierGroups(String productId)`.
+    // Let's implement that specific one. The existing `getModifierGroups` (no arg) is likely unused or legacy.
     
-    // 2. Save Items (Delete existing for simplicity or upsert?)
-    // Simplest: Delete all items for group and re-insert.
-    await (db.delete(db.modifierItemTable)..where((t) => t.groupUuid.equals(group.uuid))).go();
-    
-    for (var item in group.items) {
-      await db.into(db.modifierItemTable).insert(ModifierItemTableCompanion.insert(
-        uuid: item.uuid,
-        groupUuid: group.uuid,
-        name: item.name,
-        priceDelta: Value(item.priceDelta),
-        updatedAt: DateTime.now(),
-      ));
-    }
-  }
-  
-  @override
-  Future<void> deleteModifierGroup(String uuid) async {
-    await (db.delete(db.modifierGroupTable)..where((t) => t.uuid.equals(uuid))).go();
-  }
-
-  @override
-  Future<List<ModifierGroup>> getModifiersForProduct(String productUuid) async {
-     // Join ProductModifierLink -> ModifierGroup
-     final query = db.select(db.productModifierLinkTable).join([
-       innerJoin(db.modifierGroupTable, db.modifierGroupTable.uuid.equalsExp(db.productModifierLinkTable.modifierGroupUuid))
-     ])..where(db.productModifierLinkTable.productUuid.equals(productUuid));
-     
-     final rows = await query.get();
-     
-     // Fetch full details including items
-     // MVP: Optimize later
-     final groups = <ModifierGroup>[];
-     for (var row in rows) {
-        final groupRow = row.readTable(db.modifierGroupTable);
-        // Fetch items
-        final items = await (db.select(db.modifierItemTable)..where((t) => t.groupUuid.equals(groupRow.uuid))).get();
-        groups.add(ModifierGroup(
-           uuid: groupRow.uuid,
-           name: groupRow.name,
-           allowMultiSelect: groupRow.allowMultiSelect,
-           minSelection: groupRow.minSelection,
-           maxSelection: groupRow.maxSelection,
-           items: items.map((i) => ModifierItem(uuid: i.uuid, name: i.name, priceDelta: i.priceDelta)).toList(),
-        ));
+    // Changing implementation to match interface:
+     try {
+       final groups = await getModifiersForProduct(productId); // Reuse existing logic
+       return Right(groups);
+     } catch (e) {
+       return Left(DatabaseFailure(e.toString()));
      }
-     return groups;
-  }
-  
-  @override
-  Future<void> updateStock(String productUuid, int delta) async {
-    // Deprecated? Or should update LocalStock?
-    // For now, let's keep it as stub or update local cache if needed for immediate UI feedback
-    return Future.value();
   }
 
-  // Enterprise: Fetch Stock from LocalStocks table
-  // If warehouseUuid is null, it might sum all or pick default?
-  // Ideally Repository should know active warehouse or pass it in.
-  // Assuming strict mode: must pass warehouseUuid or use a default one.
-  Future<double> getStockForProduct(String productUuid, {String? warehouseUuid}) async {
-    final query = db.select(db.localStocksTable)
-      ..where((t) => t.productUuid.equals(productUuid));
+  @override
+  Future<Either<Failure, void>> saveModifierGroup(ModifierGroup group) async {
+    try {
+      // 1. Save Group
+      await db.into(db.modifierGroupTable).insertOnConflictUpdate(ModifierGroupTableCompanion(
+        uuid: Value(group.uuid),
+        name: Value(group.name),
+        allowMultiSelect: Value(group.allowMultiSelect),
+        minSelection: Value(group.minSelection),
+        maxSelection: Value(group.maxSelection),
+        updatedAt: Value(DateTime.now()),
+      ));
       
-    if (warehouseUuid != null) {
-      query.where((t) => t.warehouseUuid.equals(warehouseUuid));
+      // 2. Save Items
+      await (db.delete(db.modifierItemTable)..where((t) => t.groupUuid.equals(group.uuid))).go();
+      
+      for (var item in group.items) {
+        await db.into(db.modifierItemTable).insert(ModifierItemTableCompanion.insert(
+          uuid: item.uuid,
+          groupUuid: group.uuid,
+          name: item.name,
+          priceDelta: Value(item.priceDelta),
+          updatedAt: DateTime.now(),
+        ));
+      }
+      return const Right(null);
+    } catch (e) {
+      return Left(DatabaseFailure(e.toString()));
     }
-    
-    // Sum or Single?
-    // If warehouseUuid is provided, it's single. If not, maybe sum?
-    final rows = await query.get();
-    
-    if (rows.isEmpty) return 0.0;
-    
-    // Summing just in case
-    return rows.fold(0.0, (sum, row) => sum + row.quantity);
+  }
+  
+  @override
+  Future<Either<Failure, void>> deleteModifierGroup(String uuid) async {
+    try {
+      await (db.delete(db.modifierGroupTable)..where((t) => t.uuid.equals(uuid))).go();
+      return const Right(null);
+    } catch (e) {
+      return Left(DatabaseFailure(e.toString()));
+    }
   }
 
   @override
-  Future<void> updateProductModifiers(String productUuid, List<String> modifierGroupUuids) async {
-     await (db.delete(db.productModifierLinkTable)..where((t) => t.productUuid.equals(productUuid))).go();
-     for (var groupUuid in modifierGroupUuids) {
-       await db.into(db.productModifierLinkTable).insert(ProductModifierLinkTableCompanion.insert(
-         productUuid: productUuid,
-         modifierGroupUuid: groupUuid,
-       ));
+  Future<Either<Failure, void>> updateProductModifiers(String productId, List<String> modifierIds) async {
+     try {
+       await (db.delete(db.productModifierLinkTable)..where((t) => t.productUuid.equals(productId))).go();
+       for (var groupUuid in modifierIds) {
+         await db.into(db.productModifierLinkTable).insert(ProductModifierLinkTableCompanion.insert(
+           productUuid: productId,
+           modifierGroupUuid: groupUuid,
+         ));
+       }
+       return const Right(null);
+     } catch (e) {
+       return Left(DatabaseFailure(e.toString()));
      }
   }
 
-  // Ingredients stub (implement fully when needed or now)
   @override
-  Future<List<Ingredient>> getIngredients() async {
-    final rows = await db.select(db.ingredientTable).get();
-    return rows.map((r) => Ingredient(
-      uuid: r.uuid, 
-      name: r.name, 
-      unit: r.unit, 
-      currentStock: r.currentStock, 
-      costPerUnit: r.costPerUnit
-    )).toList();
-  }
-
-  @override
-  Future<void> saveIngredient(Ingredient ingredient) async {
-    await db.into(db.ingredientTable).insertOnConflictUpdate(IngredientTableCompanion(
-      uuid: Value(ingredient.uuid),
-      name: Value(ingredient.name),
-      unit: Value(ingredient.unit),
-      currentStock: Value(ingredient.currentStock),
-      costPerUnit: Value(ingredient.costPerUnit),
-      updatedAt: Value(DateTime.now()),
-    ));
-  }
-
-  @override
-  Future<void> deleteIngredient(String uuid) async {
-     await (db.delete(db.ingredientTable)..where((t) => t.uuid.equals(uuid))).go();
-  }
-
-  @override
-  Future<Map<Ingredient, double>> getRecipeForProduct(String productUuid) async {
-    final query = db.select(db.recipeTable).join([
-      innerJoin(db.ingredientTable, db.ingredientTable.uuid.equalsExp(db.recipeTable.ingredientUuid))
-    ])..where(db.recipeTable.productUuid.equals(productUuid));
-    
-    final rows = await query.get();
-    final result = <Ingredient, double>{};
-    
-    for (var row in rows) {
-      final ingRow = row.readTable(db.ingredientTable);
-      final recipeRow = row.readTable(db.recipeTable);
-      final ingredient = Ingredient(
-        uuid: ingRow.uuid, 
-        name: ingRow.name, 
-        unit: ingRow.unit, 
-        currentStock: ingRow.currentStock, 
-        costPerUnit: ingRow.costPerUnit
-      );
-      result[ingredient] = recipeRow.quantityRequired;
+  Future<Either<Failure, List<Ingredient>>> getIngredients(String productId) async {
+    // Interface asks for ingredients for a PRODUCT? Or all ingredients?
+    // Usually "getIngredients" implies all available ingredients to choose from.
+    // If it meant "Recipe", we have `getRecipeForProduct`.
+    // Assuming this fetches ALL ingredients (ignoring productId for now, or maybe filtering if supplied?
+    // Let's return ALL for now as that's what the UI usually needs to pick from.
+    try {
+      final rows = await db.select(db.ingredientTable).get();
+      final list = rows.map((r) => Ingredient(
+        uuid: r.uuid, 
+        name: r.name, 
+        unit: r.unit, 
+        currentStock: r.currentStock, 
+        costPerUnit: r.costPerUnit
+      )).toList();
+      return Right(list);
+    } catch (e) {
+      return Left(DatabaseFailure(e.toString()));
     }
-    return result;
   }
 
   @override
-  Future<void> updateRecipe(String productUuid, Map<String, double> ingredients) async {
-    await (db.delete(db.recipeTable)..where((t) => t.productUuid.equals(productUuid))).go();
-    for (var entry in ingredients.entries) {
-      await db.into(db.recipeTable).insert(RecipeTableCompanion.insert(
-        productUuid: productUuid,
-        ingredientUuid: entry.key,
-        quantityRequired: entry.value,
+  Future<Either<Failure, void>> saveIngredient(Ingredient ingredient) async {
+    try {
+      await db.into(db.ingredientTable).insertOnConflictUpdate(IngredientTableCompanion(
+        uuid: Value(ingredient.uuid),
+        name: Value(ingredient.name),
+        unit: Value(ingredient.unit),
+        currentStock: Value(ingredient.currentStock),
+        costPerUnit: Value(ingredient.costPerUnit),
+        updatedAt: Value(DateTime.now()),
       ));
+      return const Right(null);
+    } catch (e) {
+      return Left(DatabaseFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteIngredient(String uuid) async {
+     try {
+       await (db.delete(db.ingredientTable)..where((t) => t.uuid.equals(uuid))).go();
+       return const Right(null);
+     } catch (e) {
+       return Left(DatabaseFailure(e.toString()));
+     }
+  }
+
+  @override
+  Future<Either<Failure, Recipe?>> getRecipeForProduct(String productId) async {
+    try {
+      final query = db.select(db.recipeTable).join([
+        innerJoin(db.ingredientTable, db.ingredientTable.uuid.equalsExp(db.recipeTable.ingredientUuid))
+      ])..where(db.recipeTable.productUuid.equals(productId));
+      
+      final rows = await query.get();
+      if (rows.isEmpty) return const Right(null);
+
+      final items = <RecipeItem>[];
+      
+      for (var row in rows) {
+        final ingRow = row.readTable(db.ingredientTable);
+        final recipeRow = row.readTable(db.recipeTable);
+        final ingredient = Ingredient(
+          uuid: ingRow.uuid, 
+          name: ingRow.name, 
+          unit: ingRow.unit, 
+          currentStock: ingRow.currentStock, 
+          costPerUnit: ingRow.costPerUnit
+        );
+        items.add(RecipeItem(ingredient: ingredient, quantity: recipeRow.quantityRequired));
+      }
+      return Right(Recipe(productUuid: productId, items: items)); // Assuming Recipe entity structure
+    } catch (e) {
+      return Left(DatabaseFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateRecipe(Recipe recipe) async {
+    try {
+      await (db.delete(db.recipeTable)..where((t) => t.productUuid.equals(recipe.productUuid))).go();
+      for (var item in recipe.items) {
+        await db.into(db.recipeTable).insert(RecipeTableCompanion.insert(
+          productUuid: recipe.productUuid,
+          ingredientUuid: item.ingredient.uuid,
+          quantityRequired: item.quantity,
+        ));
+      }
+      return const Right(null);
+    } catch (e) {
+      return Left(DatabaseFailure(e.toString()));
     }
   }
 

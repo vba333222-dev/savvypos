@@ -10,7 +10,7 @@ import 'package:savvy_pos/features/kitchen/domain/repositories/i_kitchen_reposit
 class MockKitchenRepository implements IKitchenRepository {
   final _controller = StreamController<List<KitchenOrder>>.broadcast();
   final List<KitchenOrder> _currentOrders = [];
-  Timer? _simulationTimer;
+
   final Uuid _uuid = const Uuid();
   final Random _rnd = Random();
 
@@ -26,7 +26,7 @@ class MockKitchenRepository implements IKitchenRepository {
     _emit();
 
     // Stream inputs every 30s
-    _simulationTimer = Timer.periodic(const Duration(seconds: 30), (timer) {
+    Timer.periodic(const Duration(seconds: 30), (timer) {
       if (_currentOrders.length < 15) { // Cap at 15 to avoid chaos
         _addMockOrder();
         _emit();
@@ -79,9 +79,10 @@ class MockKitchenRepository implements IKitchenRepository {
           uuid: _uuid.v4(),
           orderUuid: id,
           productUuid: 'prod-mock',
-          productName: itemNames[_rnd.nextInt(itemNames.length)],
-          quantity: _rnd.nextInt(2) + 1,
-          unitPrice: 10.0,
+          name: itemNames[_rnd.nextInt(itemNames.length)],
+          quantity: (_rnd.nextInt(2) + 1).toDouble(),
+          price: 10.0,
+          paidQty: 0.0,
           total: 10.0,
           note: _rnd.nextBool() ? 'No onions' : null,
         ),

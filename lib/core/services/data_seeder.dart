@@ -65,8 +65,8 @@ class DataSeeder {
       uuid: id,
       name: name,
       colorHex: Value(color),
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
+      createdAt: Value(DateTime.now()),
+      updatedAt: Value(DateTime.now()),
     ));
     return id;
   }
@@ -84,7 +84,7 @@ class DataSeeder {
       isService: Value(isService),
       colorHex: const Value('#FFFFFF'),
       // createdAt: DateTime.now(), // Removed
-      updatedAt: DateTime.now(),
+      updatedAt: Value(DateTime.now()),
       // tenantId: const Value('default-tenant'), // Removed
     ));
     
@@ -97,7 +97,7 @@ class DataSeeder {
          type: 'INITIAL',
          quantityChange: 100, // Start with 100
          // snapshotCost: price * 0.4, // Removed
-         timestamp: DateTime.now(), // Was createdAt
+         timestamp: Value(DateTime.now()), // Was createdAt
        ));
     }
   }

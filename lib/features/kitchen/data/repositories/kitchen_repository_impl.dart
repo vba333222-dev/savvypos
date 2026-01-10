@@ -44,7 +44,11 @@ class KitchenRepositoryImpl implements IKitchenRepository {
             if (!grouped.containsKey(order.uuid)) {
               grouped[order.uuid] = KitchenOrder(order: order, items: []);
             }
-            grouped[order.uuid]!.items.add(item);
+            grouped[order.uuid]!.items.add(KitchenOrderItem(
+              item: item,
+              productName: product.name,
+              // modifiers: [], // Would need ModifierItemTable join
+            ));
         }
       }
       

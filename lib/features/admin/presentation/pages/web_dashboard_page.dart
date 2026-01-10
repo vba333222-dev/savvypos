@@ -8,8 +8,6 @@ import 'package:savvy_pos/features/dashboard/presentation/widgets/dashboard_grid
 import 'package:savvy_pos/features/dashboard/presentation/widgets/sales_velocity_chart.dart';
 import 'package:savvy_pos/features/dashboard/presentation/widgets/live_pulse_tile.dart';
 import 'package:savvy_pos/features/dashboard/presentation/widgets/command_bar.dart';
-import 'package:savvy_pos/features/dashboard/domain/bloc/dashboard_bloc.dart';
-// Note: DashboardBloc might be in presentation/bloc based on previous path, double checking import:
 import 'package:savvy_pos/features/dashboard/presentation/bloc/dashboard_bloc.dart'; 
 
 class WebDashboardPage extends StatelessWidget {
@@ -18,7 +16,7 @@ class WebDashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => GetIt.I<DashboardBloc>()..add(const LoadDashboardData()),
+      create: (context) => GetIt.I<DashboardBloc>()..add(const DashboardEvent.loadData()),
       child: const _DashboardView(),
     );
   }
@@ -120,8 +118,8 @@ class _DashboardView extends StatelessWidget {
                                            itemCount: state.topProducts.length,
                                            itemBuilder: (ctx, idx) => _TopItem(
                                              rank: idx + 1, 
-                                             name: state.topProducts[idx].name, 
-                                             count: state.topProducts[idx].quantity
+                                             name: state.topProducts[idx].productName, 
+                                             count: state.topProducts[idx].quantity.toInt()
                                            ),
                                          )
                                        : const Center(child: Text('No Data')),

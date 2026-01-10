@@ -81,7 +81,7 @@ class _ScannerListenerOverlayState extends State<ScannerListenerOverlay> {
               decoration: BoxDecoration(
                 color: theme.colors.bgInverse,
                 borderRadius: BorderRadius.circular(30),
-                boxShadow: [theme.elevations.lg],
+                boxShadow: theme.elevations.lg,
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,

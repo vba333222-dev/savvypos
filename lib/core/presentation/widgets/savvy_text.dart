@@ -22,8 +22,90 @@ enum SavvyTextStyle {
 }
 
 extension SavvyTextStyleX on SavvyTextStyle {
-  // Compute style without context? Need GoogleFonts.
-  // Actually simplest is to expose a helper or let SavvyText handle it.
+  TextStyle get style {
+    switch (this) {
+      case SavvyTextStyle.h1:
+        return GoogleFonts.outfit(fontSize: 32, fontWeight: FontWeight.bold, height: 1.2);
+      case SavvyTextStyle.h2:
+        return GoogleFonts.outfit(fontSize: 24, fontWeight: FontWeight.w600, height: 1.3);
+      case SavvyTextStyle.h3:
+        return GoogleFonts.outfit(fontSize: 20, fontWeight: FontWeight.w600, height: 1.4);
+      case SavvyTextStyle.h4:
+        return GoogleFonts.outfit(fontSize: 18, fontWeight: FontWeight.w600, height: 1.4);
+      case SavvyTextStyle.h5:
+        return GoogleFonts.outfit(fontSize: 16, fontWeight: FontWeight.w600, height: 1.5);
+      case SavvyTextStyle.bodyLarge:
+      case SavvyTextStyle.bodyLg:
+        return GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.normal, height: 1.5);
+      case SavvyTextStyle.bodyMedium:
+        return GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.normal, height: 1.5);
+      case SavvyTextStyle.bodySmall:
+      case SavvyTextStyle.bodySm:
+        return GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.normal, height: 1.5);
+      case SavvyTextStyle.labelLarge:
+      case SavvyTextStyle.label: // Alias check
+      case SavvyTextStyle.labelLg:
+        return GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.1, height: 1.2);
+      case SavvyTextStyle.labelMedium:
+        return GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w600, letterSpacing: 0.5, height: 1.2);
+      case SavvyTextStyle.labelSmall:
+        return GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 0.5, height: 1.2);
+    }
+  }
+
+  TextStyle copyWith({
+    bool? inherit,
+    Color? color,
+    Color? backgroundColor,
+    double? fontSize,
+    FontWeight? fontWeight,
+    FontStyle? fontStyle,
+    double? letterSpacing,
+    double? wordSpacing,
+    TextBaseline? textBaseline,
+    double? height,
+    Locale? locale,
+    Paint? foreground,
+    Paint? background,
+    List<Shadow>? shadows,
+    List<FontFeature>? fontFeatures,
+    TextDecoration? decoration,
+    Color? decorationColor,
+    TextDecorationStyle? decorationStyle,
+    double? decorationThickness,
+    String? debugLabel,
+    String? fontFamily,
+    List<String>? fontFamilyFallback,
+    String? package,
+    TextOverflow? overflow,
+  }) {
+    return style.copyWith(
+      inherit: inherit,
+      color: color,
+      backgroundColor: backgroundColor,
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      fontStyle: fontStyle,
+      letterSpacing: letterSpacing,
+      wordSpacing: wordSpacing,
+      textBaseline: textBaseline,
+      height: height,
+      locale: locale,
+      foreground: foreground,
+      background: background,
+      shadows: shadows,
+      fontFeatures: fontFeatures,
+      decoration: decoration,
+      decorationColor: decorationColor,
+      decorationStyle: decorationStyle,
+      decorationThickness: decorationThickness,
+      debugLabel: debugLabel,
+      fontFamily: fontFamily,
+      fontFamilyFallback: fontFamilyFallback,
+      package: package,
+      overflow: overflow,
+    );
+  }
 }
 
 class SavvyText extends StatelessWidget {

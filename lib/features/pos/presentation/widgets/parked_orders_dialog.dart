@@ -52,7 +52,7 @@ class ParkedOrdersDialog extends StatelessWidget {
                            child: const Icon(Icons.pause, color: Colors.white),
                          ),
                          title: SavvyText("${order.orderNumber}", style: SavvyTextStyle.bodyLarge),
-                         subtitle: SavvyText(DateFormat('h:mm a').format(order.createdAt)),
+                         subtitle: SavvyText(DateFormat('h:mm a').format(order.transactionDate)),
                          trailing: Row(
                            mainAxisSize: MainAxisSize.min,
                            children: [

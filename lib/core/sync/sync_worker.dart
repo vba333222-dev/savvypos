@@ -28,7 +28,7 @@ void callbackDispatcher() {
     final logger = Logger();
     
     // We need to initialize DI and DB because this runs in a separate Isolate
-    await configureDependencies();
+    await configureDependencies(Environment.dev);
     final db = GetIt.I<AppDatabase>();
     
     logger.i('Starting Sync Worker: $task');

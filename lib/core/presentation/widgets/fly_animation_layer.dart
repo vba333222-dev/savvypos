@@ -15,7 +15,7 @@ class FlyAnimationLayer extends StatefulWidget {
   State<FlyAnimationLayer> createState() => FlyAnimationLayerState();
 }
 
-class FlyAnimationLayerState extends State<FlyAnimationLayer> with TickerProviderStateMixin, FlightAnimationController {
+class FlyAnimationLayerState extends State<FlyAnimationLayer> with TickerProviderStateMixin<FlyAnimationLayer>, FlightAnimationController<FlyAnimationLayer> {
   GlobalKey? _targetKey;
   final StreamController<void> _hitController = StreamController<void>.broadcast();
 

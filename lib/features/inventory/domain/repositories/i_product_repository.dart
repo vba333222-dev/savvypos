@@ -1,4 +1,7 @@
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
+import 'package:dartz/dartz.dart';
+import 'package:savvy_pos/core/error/failures.dart';
+import 'package:savvy_pos/features/inventory/domain/entities/recipe.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/modifier.dart';
 
 abstract class IProductRepository {
@@ -27,6 +30,20 @@ abstract class IProductRepository {
   Stream<List<ProductStock>> watchInventory(String warehouseId);
 
   // Add other methods if stricly required, but this is the critical one for now.
+  // Ingredients
+  Future<Either<Failure, List<Ingredient>>> getIngredients(String productId);
+  Future<Either<Failure, void>> saveIngredient(Ingredient ingredient);
+  Future<Either<Failure, void>> deleteIngredient(String ingredientId);
+
+  // Modifiers
+  Future<Either<Failure, List<ModifierGroup>>> getModifierGroups(String productId);
+  Future<Either<Failure, void>> saveModifierGroup(ModifierGroup group);
+  Future<Either<Failure, void>> deleteModifierGroup(String groupId);
+  Future<Either<Failure, void>> updateProductModifiers(String productId, List<String> modifierIds);
+
+  // Recipes
+  Future<Either<Failure, Recipe?>> getRecipeForProduct(String productId);
+  Future<Either<Failure, void>> updateRecipe(Recipe recipe);
 }
 
 class ProductStock {

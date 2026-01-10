@@ -42,6 +42,6 @@ class KitchenOrderItem {
     this.modifiers = const [],
   });
 
-  int get quantity => item.quantity;
+  double get quantity => item.quantity;
   String? get note => item.note;
 }

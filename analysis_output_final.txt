@@ -1,39 +1,34 @@
 Analyzing mpos...                                               
 
 warning - The include file 'package:flutter_lints/flutter.yaml' in 'C:\Users\USER\Documents\mpos\analysis_options.yaml' can't be found when analyzing 'C:\Users\USER\Documents\mpos' - analysis_options.yaml:10:10 - include_file_not_found
-  error - The method 'lerp' isn't defined for the type 'SavvyColors' - lib\core\config\theme\savvy_theme.dart:148:22 - undefined_method
-  error - A value of type 'Cubic' can't be returned from the method 'transformInternal' because it has a return type of 'double' - lib\core\config\theme\savvy_theme.dart:363:12 - return_of_invalid_type
 warning - Unused import: 'package:savvy_pos/core/config/app_tokens.dart' - lib\core\config\token_service.dart:3:8 - unused_import
-warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:13015:26 - unnecessary_null_comparison
-warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:13018:51 - unnecessary_non_null_assertion
-warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:13315:28 - unnecessary_null_comparison
-warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:13317:49 - unnecessary_non_null_assertion
-warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:13330:34 - unnecessary_null_comparison
-warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:13333:59 - unnecessary_non_null_assertion
-warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:13953:28 - unnecessary_null_comparison
-warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:13955:49 - unnecessary_non_null_assertion
-warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:13967:31 - unnecessary_null_comparison
-warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:13970:56 - unnecessary_non_null_assertion
-warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:15039:26 - unnecessary_null_comparison
-warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:15041:47 - unnecessary_non_null_assertion
-warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:15743:28 - unnecessary_null_comparison
-warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:15745:49 - unnecessary_non_null_assertion
-warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:16396:28 - unnecessary_null_comparison
-warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:16398:49 - unnecessary_non_null_assertion
-warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:16410:29 - unnecessary_null_comparison
-warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:16412:50 - unnecessary_non_null_assertion
-warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:16772:29 - unnecessary_null_comparison
-warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:16774:50 - unnecessary_non_null_assertion
-warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:17211:23 - unnecessary_null_comparison
-warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:17214:48 - unnecessary_non_null_assertion
-warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:17226:28 - unnecessary_null_comparison
-warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:17228:49 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:13591:26 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:13594:51 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:13891:28 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:13893:49 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:13906:34 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:13909:59 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:14529:28 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:14531:49 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:14543:31 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:14546:56 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:15615:26 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:15617:47 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:16319:28 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:16321:49 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:16972:28 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:16974:49 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:16986:29 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:16988:50 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:17348:29 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:17350:50 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:17787:23 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:17790:48 - unnecessary_non_null_assertion
+warning - The operand can't be 'null', so the condition is always 'false' - lib\core\database\database.g.dart:17802:28 - unnecessary_null_comparison
+warning - The '!' will have no effect because the receiver can't be null - lib\core\database\database.g.dart:17804:49 - unnecessary_non_null_assertion
 warning - Two keys in a map literal shouldn't be equal - lib\core\network\api_client.dart:70:11 - equal_keys_in_map
-  error - The mixin 'FlightAnimationController' can't implement both 'State<T>' and 'State<StatefulWidget>' because the type arguments are different - lib\core\presentation\animations\flight_animation_controller.dart:7:7 - conflicting_generic_interfaces
 warning - The value of the local variable 'theme' isn't used - lib\core\presentation\widgets\feature_tour_overlay.dart:48:11 - unused_local_variable
 warning - The value of the local variable 'textColor' isn't used - lib\core\presentation\widgets\feature_tour_overlay.dart:51:11 - unused_local_variable
-  error - The class 'FlyAnimationLayerState' can't implement both 'State<FlyAnimationLayer>' and 'State<StatefulWidget>' because the type arguments are different - lib\core\presentation\widgets\fly_animation_layer.dart:18:7 - conflicting_generic_interfaces
-  error - The class 'FlyAnimationLayerState' can't implement both 'TickerProviderStateMixin<FlyAnimationLayer>' and 'TickerProviderStateMixin<StatefulWidget>' because the type arguments are different - lib\core\presentation\widgets\fly_animation_layer.dart:18:7 - conflicting_generic_interfaces
 warning - Dead code - lib\core\presentation\widgets\outlet_switcher_pill.dart:51:70 - dead_code
   error - The named parameter 'size' isn't defined - lib\core\presentation\widgets\outlet_switcher_pill.dart:61:49 - undefined_named_parameter
   error - The named parameter 'size' isn't defined - lib\core\presentation\widgets\outlet_switcher_pill.dart:62:51 - undefined_named_parameter
@@ -41,11 +36,9 @@ warning - Dead code - lib\core\presentation\widgets\outlet_switcher_pill.dart:51
   error - 2 positional arguments expected by 'changeActiveOutlet', but 0 found - lib\core\presentation\widgets\outlet_switcher_sheet.dart:65:23 - not_enough_positional_arguments
   error - The named parameter 'outletId' isn't defined - lib\core\presentation\widgets\outlet_switcher_sheet.dart:65:23 - undefined_named_parameter
   error - The named parameter 'warehouseId' isn't defined - lib\core\presentation\widgets\outlet_switcher_sheet.dart:66:23 - undefined_named_parameter
-  error - Undefined name 'SavvyTextStyle' - lib\core\presentation\widgets\savvy_slide_counter.dart:32:44 - undefined_identifier
+  error - The method 'copyWith' isn't defined for the type 'SavvyTextStyle' - lib\core\presentation\widgets\savvy_slide_counter.dart:33:70 - undefined_method
   error - Undefined name 'SavvyTextStyle' - lib\core\presentation\widgets\savvy_ticker.dart:27:34 - undefined_identifier
   error - The element type 'List<BoxShadow>' can't be assigned to the list type 'BoxShadow' - lib\core\presentation\widgets\scanner_listener_overlay.dart:84:29 - list_element_type_not_assignable
-  error - The getter 'categoryTable' isn't defined for the type 'AppDatabase' - lib\core\services\data_seeder.dart:64:22 - undefined_getter
-  error - Undefined name 'CategoryTableCompanion' - lib\core\services\data_seeder.dart:64:44 - undefined_identifier
   error - The argument type 'Value<String>' can't be assigned to the parameter type 'String'.  - lib\core\services\data_seeder.dart:81:19 - argument_type_not_assignable
   error - The argument type 'Value<bool>' can't be assigned to the parameter type 'bool'.  - lib\core\services\data_seeder.dart:83:19 - argument_type_not_assignable
   error - The argument type 'Value<bool>' can't be assigned to the parameter type 'bool'.  - lib\core\services\data_seeder.dart:84:18 - argument_type_not_assignable
@@ -57,11 +50,8 @@ warning - The value of the local variable 'warehouseId' isn't used - lib\core\sy
 warning - The value of the local variable 'colors' isn't used - lib\core\utils\global_search_delegate.dart:47:11 - unused_local_variable
   error - The name 'ThemeConfig' isn't a type, so it can't be used as a type argument - lib\core\utils\global_search_delegate.dart:47:33 - non_type_as_type_argument
 warning - The value of the field '_player' isn't used - lib\core\utils\sound_helper.dart:7:21 - unused_field
-  error - The getter 'last7DaysSales' isn't defined for the type 'DashboardLoaded' - lib\features\admin\presentation\pages\web_dashboard_page.dart:44:65 - undefined_getter
-  error - The getter 'pendingSyncCount' isn't defined for the type 'DashboardLoaded' - lib\features\admin\presentation\pages\web_dashboard_page.dart:49:69 - undefined_getter
+  error - The property 'total' can't be unconditionally accessed because the receiver can be 'null' - lib\features\admin\presentation\pages\web_dashboard_page.dart:44:93 - unchecked_use_of_nullable_value
   error - The getter 'name' isn't defined for the type 'TopProductData' - lib\features\admin\presentation\pages\web_dashboard_page.dart:121:75 - undefined_getter
-  error - The getter 'pendingSyncCount' isn't defined for the type 'DashboardLoaded' - lib\features\admin\presentation\pages\web_dashboard_page.dart:151:74 - undefined_getter
-  error - The getter 'pendingSyncCount' isn't defined for the type 'DashboardLoaded' - lib\features\admin\presentation\pages\web_dashboard_page.dart:152:60 - undefined_getter
   error - The named parameter 'activeWarehouseId' isn't defined - lib\features\auth\presentation\bloc\auth_bloc.dart:58:51 - undefined_named_parameter
   error - The named parameter 'activeWarehouseId' isn't defined - lib\features\auth\presentation\bloc\auth_bloc.dart:109:44 - undefined_named_parameter
    info - The import of 'package:savvy_pos/core/presentation/widgets/savvy_text.dart' is unnecessary because all of the used elements are also provided by the import of 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart' - lib\features\auth\presentation\widgets\access_control_wrapper.dart:4:8 - unnecessary_import
@@ -85,18 +75,42 @@ warning - The method doesn't override an inherited method - lib\features\dashboa
   error - The name 'DashboardStats' isn't a type, so it can't be used as a type argument - lib\features\dashboard\data\repositories\remote_dashboard_repository_impl.dart:49:10 - non_type_as_type_argument
   error - The method 'DashboardStats' isn't defined for the type 'RemoteDashboardRepositoryImpl' - lib\features\dashboard\data\repositories\remote_dashboard_repository_impl.dart:51:13 - undefined_method
   error - The name 'HourlySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\data\repositories\remote_dashboard_repository_impl.dart:60:15 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.dart:25:19 - non_type_as_type_argument
   error - Annotation must be either a const variable reference or const constructor invocation - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:132:3 - invalid_annotation
   error - The name 'JsonKey' is defined in the libraries 'package:drift/src/dsl/dsl.dart (via package:drift/drift.dart)' and 'package:json_annotation/src/json_key.dart (via package:freezed_annotation/freezed_annotation.dart)' - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:132:4 - ambiguous_import
   error - Annotation must be either a const variable reference or const constructor invocation - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:205:3 - invalid_annotation
   error - The name 'JsonKey' is defined in the libraries 'package:drift/src/dsl/dsl.dart (via package:drift/drift.dart)' and 'package:json_annotation/src/json_key.dart (via package:freezed_annotation/freezed_annotation.dart)' - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:205:4 - ambiguous_import
-  error - Annotation must be either a const variable reference or const constructor invocation - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:748:3 - invalid_annotation
-  error - The name 'JsonKey' is defined in the libraries 'package:drift/src/dsl/dsl.dart (via package:drift/drift.dart)' and 'package:json_annotation/src/json_key.dart (via package:freezed_annotation/freezed_annotation.dart)' - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:748:4 - ambiguous_import
-  error - Annotation must be either a const variable reference or const constructor invocation - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:850:3 - invalid_annotation
-  error - The name 'JsonKey' is defined in the libraries 'package:drift/src/dsl/dsl.dart (via package:drift/drift.dart)' and 'package:json_annotation/src/json_key.dart (via package:freezed_annotation/freezed_annotation.dart)' - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:850:4 - ambiguous_import
-  error - Annotation must be either a const variable reference or const constructor invocation - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:910:3 - invalid_annotation
-  error - The name 'JsonKey' is defined in the libraries 'package:drift/src/dsl/dsl.dart (via package:drift/drift.dart)' and 'package:json_annotation/src/json_key.dart (via package:freezed_annotation/freezed_annotation.dart)' - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:910:4 - ambiguous_import
-  error - Annotation must be either a const variable reference or const constructor invocation - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:1005:3 - invalid_annotation
-  error - The name 'JsonKey' is defined in the libraries 'package:drift/src/dsl/dsl.dart (via package:drift/drift.dart)' and 'package:json_annotation/src/json_key.dart (via package:freezed_annotation/freezed_annotation.dart)' - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:1005:4 - ambiguous_import
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:323:18 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:338:18 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:353:18 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:450:18 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:468:18 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:486:18 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:585:18 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:603:18 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:621:18 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:686:12 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:728:23 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:745:27 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:771:14 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:773:8 - non_type_as_type_argument
+  error - Annotation must be either a const variable reference or const constructor invocation - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:815:3 - invalid_annotation
+  error - The name 'JsonKey' is defined in the libraries 'package:drift/src/dsl/dsl.dart (via package:drift/drift.dart)' and 'package:json_annotation/src/json_key.dart (via package:freezed_annotation/freezed_annotation.dart)' - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:815:4 - ambiguous_import
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:832:18 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:851:18 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:870:18 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:927:27 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:934:8 - non_type_as_type_argument
+  error - Annotation must be either a const variable reference or const constructor invocation - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:936:3 - invalid_annotation
+  error - The name 'JsonKey' is defined in the libraries 'package:drift/src/dsl/dsl.dart (via package:drift/drift.dart)' and 'package:json_annotation/src/json_key.dart (via package:freezed_annotation/freezed_annotation.dart)' - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:936:4 - ambiguous_import
+  error - Annotation must be either a const variable reference or const constructor invocation - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:996:3 - invalid_annotation
+  error - The name 'JsonKey' is defined in the libraries 'package:drift/src/dsl/dsl.dart (via package:drift/drift.dart)' and 'package:json_annotation/src/json_key.dart (via package:freezed_annotation/freezed_annotation.dart)' - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:996:4 - ambiguous_import
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:1013:18 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:1031:18 - non_type_as_type_argument
+  error - The name 'DailySalesData' isn't a type, so it can't be used as a type argument - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:1049:18 - non_type_as_type_argument
+  error - Annotation must be either a const variable reference or const constructor invocation - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:1103:3 - invalid_annotation
+  error - The name 'JsonKey' is defined in the libraries 'package:drift/src/dsl/dsl.dart (via package:drift/drift.dart)' and 'package:json_annotation/src/json_key.dart (via package:freezed_annotation/freezed_annotation.dart)' - lib\features\dashboard\presentation\bloc\dashboard_bloc.freezed.dart:1103:4 - ambiguous_import
+  error - The argument type 'SingleChildScrollView Function(DashboardStats, List<HourlySalesData>, List<TopProductData>, DateTime)' can't be assigned to the parameter type 'Widget Function(DashboardStats, List<HourlySalesData>, List<TopProductData>, DateTime, List<InvalidType>, int)'.  - lib\features\dashboard\presentation\pages\dashboard_page.dart:55:21 - argument_type_not_assignable
 warning - The value of the local variable 'interval' isn't used - lib\features\dashboard\presentation\pages\dashboard_page.dart:205:11 - unused_local_variable
 warning - The value of the local variable 'theme' isn't used - lib\features\diagnostics\presentation\widgets\log_terminal_widget.dart:91:11 - unused_local_variable
   error - The named parameter 'size' isn't defined - lib\features\emenu\presentation\pages\emenu_home_page.dart:100:67 - undefined_named_parameter
@@ -113,9 +127,6 @@ warning - The value of the field '_tenantName' isn't used - lib\features\home\pr
 warning - The value of the field '_pages' isn't used - lib\features\home\presentation\pages\main_shell_page.dart:98:22 - unused_field
   error - Undefined name 'businessModeNotifier' - lib\features\home\presentation\pages\main_shell_page.dart:111:24 - undefined_identifier
   error - The named parameter 'onNavigateToPos' isn't defined - lib\features\home\presentation\pages\main_shell_page.dart:116:31 - undefined_named_parameter
-  error - Missing concrete implementation of 'abstract class IInventoryRepository.receiveGoods' - lib\features\inventory\data\repositories\inventory_repository_impl.dart:12:7 - non_abstract_class_inherits_abstract_member
-warning - Dead code - lib\features\inventory\data\repositories\inventory_repository_impl.dart:99:5 - dead_code
-warning - The declaration 'receiveGoods' isn't referenced - lib\features\inventory\data\repositories\inventory_repository_impl.dart:100:16 - unused_element
 warning - The method doesn't override an inherited method - lib\features\inventory\data\repositories\product_repository_impl.dart:87:31 - override_on_non_overriding_member
 warning - The method doesn't override an inherited method - lib\features\inventory\data\repositories\product_repository_impl.dart:105:16 - override_on_non_overriding_member
 warning - The method doesn't override an inherited method - lib\features\inventory\data\repositories\product_repository_impl.dart:132:16 - override_on_non_overriding_member
@@ -159,12 +170,7 @@ warning - Unused import: 'package:savvy_pos/core/presentation/widgets/savvy_box.
 warning - The value of the local variable 'offset' isn't used - lib\features\inventory\presentation\widgets\tactile_inventory_card.dart:112:26 - unused_local_variable
   error - The argument type 'OrderItemTableData' can't be assigned to the parameter type 'KitchenOrderItem'.  - lib\features\kitchen\data\repositories\kitchen_repository_impl.dart:47:44 - argument_type_not_assignable
 warning - The value of the field '_simulationTimer' isn't used - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:13:10 - unused_field
-  error - The named parameter 'name' is required, but there's no corresponding argument - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:77:15 - missing_required_argument
-  error - The named parameter 'paidQty' is required, but there's no corresponding argument - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:77:15 - missing_required_argument
-  error - The named parameter 'price' is required, but there's no corresponding argument - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:77:15 - missing_required_argument
   error - The named parameter 'uuid' isn't defined - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:79:11 - undefined_named_parameter
-  error - The named parameter 'productName' isn't defined - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:82:11 - undefined_named_parameter
-  error - The named parameter 'unitPrice' isn't defined - lib\features\kitchen\data\repositories\mock_kitchen_repository.dart:84:11 - undefined_named_parameter
   error - A value of type 'double' can't be returned from the function 'quantity' because it has a return type of 'int' - lib\features\kitchen\domain\entities\kitchen_order.dart:45:23 - return_of_invalid_type
   error - The expression doesn't evaluate to a function, so it can't be invoked - lib\features\kitchen\presentation\pages\kitchen_monitor_page.dart:38:46 - invocation_of_non_function_expression
 warning - This default clause is covered by the previous cases - lib\features\loyalty\presentation\widgets\holographic_member_card.dart:122:7 - unreachable_switch_default
@@ -192,7 +198,6 @@ warning - The value of the local variable 'theme' isn't used - lib\features\pos\
   error - The named parameter 'dashed' isn't defined - lib\features\pos\presentation\widgets\payment\payment_sheet.dart:152:41 - undefined_named_parameter
   error - The argument type 'TextStyle' can't be assigned to the parameter type 'SavvyTextStyle'.  - lib\features\pos\presentation\widgets\payment_methods_dialog.dart:127:36 - argument_type_not_assignable
   error - The argument type 'TextStyle' can't be assigned to the parameter type 'SavvyTextStyle'.  - lib\features\pos\presentation\widgets\payment_methods_sheet.dart:151:42 - argument_type_not_assignable
-  error - The argument type 'double' can't be assigned to the parameter type 'int'.  - lib\features\reports\data\repositories\report_repository_impl.dart:35:19 - argument_type_not_assignable
 warning - The value of the field '_rnd' isn't used - lib\features\reports\presentation\pages\reports_hub_page.dart:21:16 - unused_field
   error - The expression doesn't evaluate to a function, so it can't be invoked - lib\features\reports\presentation\pages\sales_report_page.dart:31:43 - invocation_of_non_function_expression
   error - The expression doesn't evaluate to a function, so it can't be invoked - lib\features\reports\presentation\pages\sales_report_page.dart:119:69 - invocation_of_non_function_expression
@@ -204,9 +209,6 @@ warning - The value of the field '_initialPage' isn't used - lib\features\report
   error - The getter 'savvy' isn't defined for the type 'BuildContext' - lib\features\settings\presentation\pages\settings_page.dart:27:28 - undefined_getter
   error - The getter 'savvy' isn't defined for the type 'BuildContext' - lib\features\settings\presentation\pages\settings_page.dart:29:28 - undefined_getter
   error - The argument type 'SizedBox Function(ShiftSessionTableData)' can't be assigned to the parameter type 'Widget Function(ShiftSessionTableData, double, double)?'.  - lib\features\settings\presentation\pages\settings_page.dart:186:23 - argument_type_not_assignable
-  error - The argument type 'Value<double>' can't be assigned to the parameter type 'double'.  - lib\features\shift\data\repositories\shift_repository_impl.dart:33:21 - argument_type_not_assignable
-  error - The argument type 'Value<double>' can't be assigned to the parameter type 'double'.  - lib\features\shift\data\repositories\shift_repository_impl.dart:34:19 - argument_type_not_assignable
-  error - The argument type 'Value<double>' can't be assigned to the parameter type 'double'.  - lib\features\shift\data\repositories\shift_repository_impl.dart:35:19 - argument_type_not_assignable
   error - The argument type 'String' can't be assigned to the parameter type 'Value<String?>'.  - lib\features\shift\data\repositories\shift_repository_impl.dart:89:19 - argument_type_not_assignable
 warning - The value of the local variable 'pax' isn't used - lib\features\tables\data\repositories\table_repository_impl.dart:27:13 - unused_local_variable
 warning - The asset directory 'assets/images/' doesn't exist - pubspec.yaml:93:7 - asset_directory_does_not_exist

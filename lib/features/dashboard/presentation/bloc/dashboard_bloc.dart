@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/features/dashboard/domain/entities/dashboard_data.dart';
 import 'package:savvy_pos/core/database/database.dart';
+import 'package:drift/drift.dart' hide JsonKey;
 
 part 'dashboard_bloc.freezed.dart';
 
@@ -14,15 +15,17 @@ class DashboardEvent with _$DashboardEvent {
 
 @freezed
 class DashboardState with _$DashboardState {
-  const factory DashboardState.initial() = _Initial;
-  const factory DashboardState.loading() = _Loading;
+  const factory DashboardState.initial() = DashboardInitial;
+  const factory DashboardState.loading() = DashboardLoading;
   const factory DashboardState.loaded({
     required DashboardStats stats,
     required List<HourlySalesData> hourlySales,
     required List<TopProductData> topProducts,
     required DateTime selectedDate,
-  }) = _Loaded;
-  const factory DashboardState.error(String message) = _Error;
+    required List<DailySalesData> last7DaysSales,
+    required int pendingSyncCount,
+  }) = DashboardLoaded;
+  const factory DashboardState.error(String message) = DashboardError;
 }
 
 @injectable
@@ -87,8 +90,10 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       emit(DashboardState.loaded(
         stats: stats,
         hourlySales: [], // Placeholder
+        last7DaysSales: [], // Placeholder
         topProducts: [], // Placeholder
         selectedDate: date,
+        pendingSyncCount: 0, // Placeholder
       ));
     } catch (e) {
       emit(DashboardState.error(e.toString()));
@@ -97,7 +102,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
   Future<void> _onRefresh(_Refresh event, Emitter<DashboardState> emit) async {
     final currentState = state;
-    if (currentState is _Loaded) {
+    if (currentState is DashboardLoaded) {
       add(DashboardEvent.loadData(currentState.selectedDate));
     } else {
       add(const DashboardEvent.loadData());

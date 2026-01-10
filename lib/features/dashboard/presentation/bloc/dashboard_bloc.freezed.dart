@@ -319,7 +319,9 @@ mixin _$DashboardState {
             DashboardStats stats,
             List<HourlySalesData> hourlySales,
             List<TopProductData> topProducts,
-            DateTime selectedDate)
+            DateTime selectedDate,
+            List<DailySalesData> last7DaysSales,
+            int pendingSyncCount)
         loaded,
     required TResult Function(String message) error,
   }) =>
@@ -328,8 +330,13 @@ mixin _$DashboardState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(DashboardStats stats, List<HourlySalesData> hourlySales,
-            List<TopProductData> topProducts, DateTime selectedDate)?
+    TResult? Function(
+            DashboardStats stats,
+            List<HourlySalesData> hourlySales,
+            List<TopProductData> topProducts,
+            DateTime selectedDate,
+            List<DailySalesData> last7DaysSales,
+            int pendingSyncCount)?
         loaded,
     TResult? Function(String message)? error,
   }) =>
@@ -338,8 +345,13 @@ mixin _$DashboardState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(DashboardStats stats, List<HourlySalesData> hourlySales,
-            List<TopProductData> topProducts, DateTime selectedDate)?
+    TResult Function(
+            DashboardStats stats,
+            List<HourlySalesData> hourlySales,
+            List<TopProductData> topProducts,
+            DateTime selectedDate,
+            List<DailySalesData> last7DaysSales,
+            int pendingSyncCount)?
         loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -347,26 +359,26 @@ mixin _$DashboardState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
+    required TResult Function(DashboardInitial value) initial,
+    required TResult Function(DashboardLoading value) loading,
+    required TResult Function(DashboardLoaded value) loaded,
+    required TResult Function(DashboardError value) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Error value)? error,
+    TResult? Function(DashboardInitial value)? initial,
+    TResult? Function(DashboardLoading value)? loading,
+    TResult? Function(DashboardLoaded value)? loaded,
+    TResult? Function(DashboardError value)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
+    TResult Function(DashboardInitial value)? initial,
+    TResult Function(DashboardLoading value)? loading,
+    TResult Function(DashboardLoaded value)? loaded,
+    TResult Function(DashboardError value)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -391,25 +403,25 @@ class _$DashboardStateCopyWithImpl<$Res, $Val extends DashboardState>
 }
 
 /// @nodoc
-abstract class _$$InitialImplCopyWith<$Res> {
-  factory _$$InitialImplCopyWith(
-          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
-      __$$InitialImplCopyWithImpl<$Res>;
+abstract class _$$DashboardInitialImplCopyWith<$Res> {
+  factory _$$DashboardInitialImplCopyWith(_$DashboardInitialImpl value,
+          $Res Function(_$DashboardInitialImpl) then) =
+      __$$DashboardInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$InitialImplCopyWithImpl<$Res>
-    extends _$DashboardStateCopyWithImpl<$Res, _$InitialImpl>
-    implements _$$InitialImplCopyWith<$Res> {
-  __$$InitialImplCopyWithImpl(
-      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
+class __$$DashboardInitialImplCopyWithImpl<$Res>
+    extends _$DashboardStateCopyWithImpl<$Res, _$DashboardInitialImpl>
+    implements _$$DashboardInitialImplCopyWith<$Res> {
+  __$$DashboardInitialImplCopyWithImpl(_$DashboardInitialImpl _value,
+      $Res Function(_$DashboardInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$InitialImpl implements _Initial {
-  const _$InitialImpl();
+class _$DashboardInitialImpl implements DashboardInitial {
+  const _$DashboardInitialImpl();
 
   @override
   String toString() {
@@ -419,7 +431,7 @@ class _$InitialImpl implements _Initial {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$InitialImpl);
+        (other.runtimeType == runtimeType && other is _$DashboardInitialImpl);
   }
 
   @override
@@ -434,7 +446,9 @@ class _$InitialImpl implements _Initial {
             DashboardStats stats,
             List<HourlySalesData> hourlySales,
             List<TopProductData> topProducts,
-            DateTime selectedDate)
+            DateTime selectedDate,
+            List<DailySalesData> last7DaysSales,
+            int pendingSyncCount)
         loaded,
     required TResult Function(String message) error,
   }) {
@@ -446,8 +460,13 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(DashboardStats stats, List<HourlySalesData> hourlySales,
-            List<TopProductData> topProducts, DateTime selectedDate)?
+    TResult? Function(
+            DashboardStats stats,
+            List<HourlySalesData> hourlySales,
+            List<TopProductData> topProducts,
+            DateTime selectedDate,
+            List<DailySalesData> last7DaysSales,
+            int pendingSyncCount)?
         loaded,
     TResult? Function(String message)? error,
   }) {
@@ -459,8 +478,13 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(DashboardStats stats, List<HourlySalesData> hourlySales,
-            List<TopProductData> topProducts, DateTime selectedDate)?
+    TResult Function(
+            DashboardStats stats,
+            List<HourlySalesData> hourlySales,
+            List<TopProductData> topProducts,
+            DateTime selectedDate,
+            List<DailySalesData> last7DaysSales,
+            int pendingSyncCount)?
         loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -474,10 +498,10 @@ class _$InitialImpl implements _Initial {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
+    required TResult Function(DashboardInitial value) initial,
+    required TResult Function(DashboardLoading value) loading,
+    required TResult Function(DashboardLoaded value) loaded,
+    required TResult Function(DashboardError value) error,
   }) {
     return initial(this);
   }
@@ -485,10 +509,10 @@ class _$InitialImpl implements _Initial {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Error value)? error,
+    TResult? Function(DashboardInitial value)? initial,
+    TResult? Function(DashboardLoading value)? loading,
+    TResult? Function(DashboardLoaded value)? loaded,
+    TResult? Function(DashboardError value)? error,
   }) {
     return initial?.call(this);
   }
@@ -496,10 +520,10 @@ class _$InitialImpl implements _Initial {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
+    TResult Function(DashboardInitial value)? initial,
+    TResult Function(DashboardLoading value)? loading,
+    TResult Function(DashboardLoaded value)? loaded,
+    TResult Function(DashboardError value)? error,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -509,30 +533,30 @@ class _$InitialImpl implements _Initial {
   }
 }
 
-abstract class _Initial implements DashboardState {
-  const factory _Initial() = _$InitialImpl;
+abstract class DashboardInitial implements DashboardState {
+  const factory DashboardInitial() = _$DashboardInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$LoadingImplCopyWith<$Res> {
-  factory _$$LoadingImplCopyWith(
-          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
-      __$$LoadingImplCopyWithImpl<$Res>;
+abstract class _$$DashboardLoadingImplCopyWith<$Res> {
+  factory _$$DashboardLoadingImplCopyWith(_$DashboardLoadingImpl value,
+          $Res Function(_$DashboardLoadingImpl) then) =
+      __$$DashboardLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$LoadingImplCopyWithImpl<$Res>
-    extends _$DashboardStateCopyWithImpl<$Res, _$LoadingImpl>
-    implements _$$LoadingImplCopyWith<$Res> {
-  __$$LoadingImplCopyWithImpl(
-      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
+class __$$DashboardLoadingImplCopyWithImpl<$Res>
+    extends _$DashboardStateCopyWithImpl<$Res, _$DashboardLoadingImpl>
+    implements _$$DashboardLoadingImplCopyWith<$Res> {
+  __$$DashboardLoadingImplCopyWithImpl(_$DashboardLoadingImpl _value,
+      $Res Function(_$DashboardLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$LoadingImpl implements _Loading {
-  const _$LoadingImpl();
+class _$DashboardLoadingImpl implements DashboardLoading {
+  const _$DashboardLoadingImpl();
 
   @override
   String toString() {
@@ -542,7 +566,7 @@ class _$LoadingImpl implements _Loading {
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadingImpl);
+        (other.runtimeType == runtimeType && other is _$DashboardLoadingImpl);
   }
 
   @override
@@ -557,7 +581,9 @@ class _$LoadingImpl implements _Loading {
             DashboardStats stats,
             List<HourlySalesData> hourlySales,
             List<TopProductData> topProducts,
-            DateTime selectedDate)
+            DateTime selectedDate,
+            List<DailySalesData> last7DaysSales,
+            int pendingSyncCount)
         loaded,
     required TResult Function(String message) error,
   }) {
@@ -569,8 +595,13 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(DashboardStats stats, List<HourlySalesData> hourlySales,
-            List<TopProductData> topProducts, DateTime selectedDate)?
+    TResult? Function(
+            DashboardStats stats,
+            List<HourlySalesData> hourlySales,
+            List<TopProductData> topProducts,
+            DateTime selectedDate,
+            List<DailySalesData> last7DaysSales,
+            int pendingSyncCount)?
         loaded,
     TResult? Function(String message)? error,
   }) {
@@ -582,8 +613,13 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(DashboardStats stats, List<HourlySalesData> hourlySales,
-            List<TopProductData> topProducts, DateTime selectedDate)?
+    TResult Function(
+            DashboardStats stats,
+            List<HourlySalesData> hourlySales,
+            List<TopProductData> topProducts,
+            DateTime selectedDate,
+            List<DailySalesData> last7DaysSales,
+            int pendingSyncCount)?
         loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -597,10 +633,10 @@ class _$LoadingImpl implements _Loading {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
+    required TResult Function(DashboardInitial value) initial,
+    required TResult Function(DashboardLoading value) loading,
+    required TResult Function(DashboardLoaded value) loaded,
+    required TResult Function(DashboardError value) error,
   }) {
     return loading(this);
   }
@@ -608,10 +644,10 @@ class _$LoadingImpl implements _Loading {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Error value)? error,
+    TResult? Function(DashboardInitial value)? initial,
+    TResult? Function(DashboardLoading value)? loading,
+    TResult? Function(DashboardLoaded value)? loaded,
+    TResult? Function(DashboardError value)? error,
   }) {
     return loading?.call(this);
   }
@@ -619,10 +655,10 @@ class _$LoadingImpl implements _Loading {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
+    TResult Function(DashboardInitial value)? initial,
+    TResult Function(DashboardLoading value)? loading,
+    TResult Function(DashboardLoaded value)? loaded,
+    TResult Function(DashboardError value)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -632,29 +668,31 @@ class _$LoadingImpl implements _Loading {
   }
 }
 
-abstract class _Loading implements DashboardState {
-  const factory _Loading() = _$LoadingImpl;
+abstract class DashboardLoading implements DashboardState {
+  const factory DashboardLoading() = _$DashboardLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$LoadedImplCopyWith<$Res> {
-  factory _$$LoadedImplCopyWith(
-          _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
-      __$$LoadedImplCopyWithImpl<$Res>;
+abstract class _$$DashboardLoadedImplCopyWith<$Res> {
+  factory _$$DashboardLoadedImplCopyWith(_$DashboardLoadedImpl value,
+          $Res Function(_$DashboardLoadedImpl) then) =
+      __$$DashboardLoadedImplCopyWithImpl<$Res>;
   @useResult
   $Res call(
       {DashboardStats stats,
       List<HourlySalesData> hourlySales,
       List<TopProductData> topProducts,
-      DateTime selectedDate});
+      DateTime selectedDate,
+      List<DailySalesData> last7DaysSales,
+      int pendingSyncCount});
 }
 
 /// @nodoc
-class __$$LoadedImplCopyWithImpl<$Res>
-    extends _$DashboardStateCopyWithImpl<$Res, _$LoadedImpl>
-    implements _$$LoadedImplCopyWith<$Res> {
-  __$$LoadedImplCopyWithImpl(
-      _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
+class __$$DashboardLoadedImplCopyWithImpl<$Res>
+    extends _$DashboardStateCopyWithImpl<$Res, _$DashboardLoadedImpl>
+    implements _$$DashboardLoadedImplCopyWith<$Res> {
+  __$$DashboardLoadedImplCopyWithImpl(
+      _$DashboardLoadedImpl _value, $Res Function(_$DashboardLoadedImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -664,8 +702,10 @@ class __$$LoadedImplCopyWithImpl<$Res>
     Object? hourlySales = null,
     Object? topProducts = null,
     Object? selectedDate = null,
+    Object? last7DaysSales = null,
+    Object? pendingSyncCount = null,
   }) {
-    return _then(_$LoadedImpl(
+    return _then(_$DashboardLoadedImpl(
       stats: null == stats
           ? _value.stats
           : stats // ignore: cast_nullable_to_non_nullable
@@ -682,20 +722,31 @@ class __$$LoadedImplCopyWithImpl<$Res>
           ? _value.selectedDate
           : selectedDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      last7DaysSales: null == last7DaysSales
+          ? _value._last7DaysSales
+          : last7DaysSales // ignore: cast_nullable_to_non_nullable
+              as List<DailySalesData>,
+      pendingSyncCount: null == pendingSyncCount
+          ? _value.pendingSyncCount
+          : pendingSyncCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
 
 /// @nodoc
 
-class _$LoadedImpl implements _Loaded {
-  const _$LoadedImpl(
+class _$DashboardLoadedImpl implements DashboardLoaded {
+  const _$DashboardLoadedImpl(
       {required this.stats,
       required final List<HourlySalesData> hourlySales,
       required final List<TopProductData> topProducts,
-      required this.selectedDate})
+      required this.selectedDate,
+      required final List<DailySalesData> last7DaysSales,
+      required this.pendingSyncCount})
       : _hourlySales = hourlySales,
-        _topProducts = topProducts;
+        _topProducts = topProducts,
+        _last7DaysSales = last7DaysSales;
 
   @override
   final DashboardStats stats;
@@ -717,24 +768,38 @@ class _$LoadedImpl implements _Loaded {
 
   @override
   final DateTime selectedDate;
+  final List<DailySalesData> _last7DaysSales;
+  @override
+  List<DailySalesData> get last7DaysSales {
+    if (_last7DaysSales is EqualUnmodifiableListView) return _last7DaysSales;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_last7DaysSales);
+  }
+
+  @override
+  final int pendingSyncCount;
 
   @override
   String toString() {
-    return 'DashboardState.loaded(stats: $stats, hourlySales: $hourlySales, topProducts: $topProducts, selectedDate: $selectedDate)';
+    return 'DashboardState.loaded(stats: $stats, hourlySales: $hourlySales, topProducts: $topProducts, selectedDate: $selectedDate, last7DaysSales: $last7DaysSales, pendingSyncCount: $pendingSyncCount)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$LoadedImpl &&
+            other is _$DashboardLoadedImpl &&
             (identical(other.stats, stats) || other.stats == stats) &&
             const DeepCollectionEquality()
                 .equals(other._hourlySales, _hourlySales) &&
             const DeepCollectionEquality()
                 .equals(other._topProducts, _topProducts) &&
             (identical(other.selectedDate, selectedDate) ||
-                other.selectedDate == selectedDate));
+                other.selectedDate == selectedDate) &&
+            const DeepCollectionEquality()
+                .equals(other._last7DaysSales, _last7DaysSales) &&
+            (identical(other.pendingSyncCount, pendingSyncCount) ||
+                other.pendingSyncCount == pendingSyncCount));
   }
 
   @override
@@ -743,13 +808,16 @@ class _$LoadedImpl implements _Loaded {
       stats,
       const DeepCollectionEquality().hash(_hourlySales),
       const DeepCollectionEquality().hash(_topProducts),
-      selectedDate);
+      selectedDate,
+      const DeepCollectionEquality().hash(_last7DaysSales),
+      pendingSyncCount);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
-      __$$LoadedImplCopyWithImpl<_$LoadedImpl>(this, _$identity);
+  _$$DashboardLoadedImplCopyWith<_$DashboardLoadedImpl> get copyWith =>
+      __$$DashboardLoadedImplCopyWithImpl<_$DashboardLoadedImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -760,11 +828,14 @@ class _$LoadedImpl implements _Loaded {
             DashboardStats stats,
             List<HourlySalesData> hourlySales,
             List<TopProductData> topProducts,
-            DateTime selectedDate)
+            DateTime selectedDate,
+            List<DailySalesData> last7DaysSales,
+            int pendingSyncCount)
         loaded,
     required TResult Function(String message) error,
   }) {
-    return loaded(stats, hourlySales, topProducts, selectedDate);
+    return loaded(stats, hourlySales, topProducts, selectedDate, last7DaysSales,
+        pendingSyncCount);
   }
 
   @override
@@ -772,12 +843,18 @@ class _$LoadedImpl implements _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(DashboardStats stats, List<HourlySalesData> hourlySales,
-            List<TopProductData> topProducts, DateTime selectedDate)?
+    TResult? Function(
+            DashboardStats stats,
+            List<HourlySalesData> hourlySales,
+            List<TopProductData> topProducts,
+            DateTime selectedDate,
+            List<DailySalesData> last7DaysSales,
+            int pendingSyncCount)?
         loaded,
     TResult? Function(String message)? error,
   }) {
-    return loaded?.call(stats, hourlySales, topProducts, selectedDate);
+    return loaded?.call(stats, hourlySales, topProducts, selectedDate,
+        last7DaysSales, pendingSyncCount);
   }
 
   @override
@@ -785,14 +862,20 @@ class _$LoadedImpl implements _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(DashboardStats stats, List<HourlySalesData> hourlySales,
-            List<TopProductData> topProducts, DateTime selectedDate)?
+    TResult Function(
+            DashboardStats stats,
+            List<HourlySalesData> hourlySales,
+            List<TopProductData> topProducts,
+            DateTime selectedDate,
+            List<DailySalesData> last7DaysSales,
+            int pendingSyncCount)?
         loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(stats, hourlySales, topProducts, selectedDate);
+      return loaded(stats, hourlySales, topProducts, selectedDate,
+          last7DaysSales, pendingSyncCount);
     }
     return orElse();
   }
@@ -800,10 +883,10 @@ class _$LoadedImpl implements _Loaded {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
+    required TResult Function(DashboardInitial value) initial,
+    required TResult Function(DashboardLoading value) loading,
+    required TResult Function(DashboardLoaded value) loaded,
+    required TResult Function(DashboardError value) error,
   }) {
     return loaded(this);
   }
@@ -811,10 +894,10 @@ class _$LoadedImpl implements _Loaded {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Error value)? error,
+    TResult? Function(DashboardInitial value)? initial,
+    TResult? Function(DashboardLoading value)? loading,
+    TResult? Function(DashboardLoaded value)? loaded,
+    TResult? Function(DashboardError value)? error,
   }) {
     return loaded?.call(this);
   }
@@ -822,10 +905,10 @@ class _$LoadedImpl implements _Loaded {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
+    TResult Function(DashboardInitial value)? initial,
+    TResult Function(DashboardLoading value)? loading,
+    TResult Function(DashboardLoaded value)? loaded,
+    TResult Function(DashboardError value)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -835,37 +918,41 @@ class _$LoadedImpl implements _Loaded {
   }
 }
 
-abstract class _Loaded implements DashboardState {
-  const factory _Loaded(
+abstract class DashboardLoaded implements DashboardState {
+  const factory DashboardLoaded(
       {required final DashboardStats stats,
       required final List<HourlySalesData> hourlySales,
       required final List<TopProductData> topProducts,
-      required final DateTime selectedDate}) = _$LoadedImpl;
+      required final DateTime selectedDate,
+      required final List<DailySalesData> last7DaysSales,
+      required final int pendingSyncCount}) = _$DashboardLoadedImpl;
 
   DashboardStats get stats;
   List<HourlySalesData> get hourlySales;
   List<TopProductData> get topProducts;
   DateTime get selectedDate;
+  List<DailySalesData> get last7DaysSales;
+  int get pendingSyncCount;
   @JsonKey(ignore: true)
-  _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
+  _$$DashboardLoadedImplCopyWith<_$DashboardLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$ErrorImplCopyWith<$Res> {
-  factory _$$ErrorImplCopyWith(
-          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
-      __$$ErrorImplCopyWithImpl<$Res>;
+abstract class _$$DashboardErrorImplCopyWith<$Res> {
+  factory _$$DashboardErrorImplCopyWith(_$DashboardErrorImpl value,
+          $Res Function(_$DashboardErrorImpl) then) =
+      __$$DashboardErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$ErrorImplCopyWithImpl<$Res>
-    extends _$DashboardStateCopyWithImpl<$Res, _$ErrorImpl>
-    implements _$$ErrorImplCopyWith<$Res> {
-  __$$ErrorImplCopyWithImpl(
-      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
+class __$$DashboardErrorImplCopyWithImpl<$Res>
+    extends _$DashboardStateCopyWithImpl<$Res, _$DashboardErrorImpl>
+    implements _$$DashboardErrorImplCopyWith<$Res> {
+  __$$DashboardErrorImplCopyWithImpl(
+      _$DashboardErrorImpl _value, $Res Function(_$DashboardErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -873,7 +960,7 @@ class __$$ErrorImplCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$ErrorImpl(
+    return _then(_$DashboardErrorImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -884,8 +971,8 @@ class __$$ErrorImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ErrorImpl implements _Error {
-  const _$ErrorImpl(this.message);
+class _$DashboardErrorImpl implements DashboardError {
+  const _$DashboardErrorImpl(this.message);
 
   @override
   final String message;
@@ -899,7 +986,7 @@ class _$ErrorImpl implements _Error {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ErrorImpl &&
+            other is _$DashboardErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -909,8 +996,9 @@ class _$ErrorImpl implements _Error {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
-      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
+  _$$DashboardErrorImplCopyWith<_$DashboardErrorImpl> get copyWith =>
+      __$$DashboardErrorImplCopyWithImpl<_$DashboardErrorImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -921,7 +1009,9 @@ class _$ErrorImpl implements _Error {
             DashboardStats stats,
             List<HourlySalesData> hourlySales,
             List<TopProductData> topProducts,
-            DateTime selectedDate)
+            DateTime selectedDate,
+            List<DailySalesData> last7DaysSales,
+            int pendingSyncCount)
         loaded,
     required TResult Function(String message) error,
   }) {
@@ -933,8 +1023,13 @@ class _$ErrorImpl implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(DashboardStats stats, List<HourlySalesData> hourlySales,
-            List<TopProductData> topProducts, DateTime selectedDate)?
+    TResult? Function(
+            DashboardStats stats,
+            List<HourlySalesData> hourlySales,
+            List<TopProductData> topProducts,
+            DateTime selectedDate,
+            List<DailySalesData> last7DaysSales,
+            int pendingSyncCount)?
         loaded,
     TResult? Function(String message)? error,
   }) {
@@ -946,8 +1041,13 @@ class _$ErrorImpl implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(DashboardStats stats, List<HourlySalesData> hourlySales,
-            List<TopProductData> topProducts, DateTime selectedDate)?
+    TResult Function(
+            DashboardStats stats,
+            List<HourlySalesData> hourlySales,
+            List<TopProductData> topProducts,
+            DateTime selectedDate,
+            List<DailySalesData> last7DaysSales,
+            int pendingSyncCount)?
         loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -961,10 +1061,10 @@ class _$ErrorImpl implements _Error {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_Initial value) initial,
-    required TResult Function(_Loading value) loading,
-    required TResult Function(_Loaded value) loaded,
-    required TResult Function(_Error value) error,
+    required TResult Function(DashboardInitial value) initial,
+    required TResult Function(DashboardLoading value) loading,
+    required TResult Function(DashboardLoaded value) loaded,
+    required TResult Function(DashboardError value) error,
   }) {
     return error(this);
   }
@@ -972,10 +1072,10 @@ class _$ErrorImpl implements _Error {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_Initial value)? initial,
-    TResult? Function(_Loading value)? loading,
-    TResult? Function(_Loaded value)? loaded,
-    TResult? Function(_Error value)? error,
+    TResult? Function(DashboardInitial value)? initial,
+    TResult? Function(DashboardLoading value)? loading,
+    TResult? Function(DashboardLoaded value)? loaded,
+    TResult? Function(DashboardError value)? error,
   }) {
     return error?.call(this);
   }
@@ -983,10 +1083,10 @@ class _$ErrorImpl implements _Error {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_Initial value)? initial,
-    TResult Function(_Loading value)? loading,
-    TResult Function(_Loaded value)? loaded,
-    TResult Function(_Error value)? error,
+    TResult Function(DashboardInitial value)? initial,
+    TResult Function(DashboardLoading value)? loading,
+    TResult Function(DashboardLoaded value)? loaded,
+    TResult Function(DashboardError value)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -996,11 +1096,11 @@ class _$ErrorImpl implements _Error {
   }
 }
 
-abstract class _Error implements DashboardState {
-  const factory _Error(final String message) = _$ErrorImpl;
+abstract class DashboardError implements DashboardState {
+  const factory DashboardError(final String message) = _$DashboardErrorImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+  _$$DashboardErrorImplCopyWith<_$DashboardErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

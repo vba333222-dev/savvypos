@@ -24,7 +24,7 @@ class OrderRepositoryImpl implements IOrderRepository {
   @override
   Future<List<OrderTableData>> getOrdersByDateRange(DateTime start, DateTime end) {
     return (db.select(db.orderTable)
-      ..where((tbl) => tbl.transactionDate.isBetween(start, end))
+      ..where((tbl) => tbl.transactionDate.isBetweenValues(start, end))
       ..orderBy([(tbl) => OrderingTerm.desc(tbl.transactionDate)]))
       .get();
   }

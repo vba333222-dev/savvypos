@@ -1,0 +1,15 @@
+targets:
+  $default:
+    builders:
+      drift_dev:
+        enabled: true
+        options:
+          generate_connect_constructor: false
+          data_class_to_companions: true
+          mutable_classes: false
+          raw_result_set_data: true
+          apply_converters_on_variables: true
+          generate_values_in_copy_with: true
+          named_parameters: true
+          named_parameters_always_required: true
+          scoped_dart_components: true

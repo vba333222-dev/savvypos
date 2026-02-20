@@ -1,0 +1,36 @@
+{
+    "app_name": "Savvy POS",
+    "login": {
+        "welcome": "欢迎回来",
+        "subtitle": "登录以继续",
+        "username": "用户名",
+        "password": "密码",
+        "login_btn": "登录",
+        "error": "凭证无效"
+    },
+    "pos": {
+        "search_hint": "搜索产品...",
+        "cart_title": "当前订单",
+        "checkout": "结账",
+        "total": "总计",
+        "empty_cart": "购物车为空"
+    },
+    "settings": {
+        "title": "设置",
+        "language": "语言",
+        "theme": "主题",
+        "dark_mode": "深色模式"
+    },
+    "genesis": {
+        "step1_title": "让我们开始吧",
+        "step1_subtitle": "告诉我们要做的生意",
+        "store_name": "店铺名称",
+        "currency": "货币",
+        "step2_title": "您的风格是什么？",
+        "step2_subtitle": "我们将立即为您准备菜单",
+        "type_cafe": "咖啡馆",
+        "type_retail": "零售",
+        "type_service": "服务",
+        "building_hq": "正在建立总部..."
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "app_name": "Savvy POS",
+    "login": {
+        "welcome": "Welcome Back",
+        "subtitle": "Sign in to continue",
+        "username": "Username",
+        "password": "Password",
+        "login_btn": "Login",
+        "error": "Invalid credentials"
+    },
+    "pos": {
+        "search_hint": "Search products...",
+        "cart_title": "Current Order",
+        "checkout": "Checkout",
+        "total": "Total",
+        "empty_cart": "Cart is empty"
+    },
+    "settings": {
+        "title": "Settings",
+        "language": "Language",
+        "theme": "Theme",
+        "dark_mode": "Dark Mode"
+    },
+    "genesis": {
+        "step1_title": "Let's Get Started",
+        "step1_subtitle": "Tell us about your business",
+        "store_name": "Store Name",
+        "currency": "Currency",
+        "step2_title": "What's your style?",
+        "step2_subtitle": "We'll set up your menu instantly",
+        "type_cafe": "Cafe",
+        "type_retail": "Retail",
+        "type_service": "Service",
+        "building_hq": "Building your HQ..."
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "app_name": "Savvy POS",
+    "login": {
+        "welcome": "お帰りなさい",
+        "subtitle": "続行するにはログインしてください",
+        "username": "ユーザー名",
+        "password": "パスワード",
+        "login_btn": "ログイン",
+        "error": "資格情報が無効です"
+    },
+    "pos": {
+        "search_hint": "商品を検索...",
+        "cart_title": "現在の注文",
+        "checkout": "会計",
+        "total": "合計",
+        "empty_cart": "カートは空です"
+    },
+    "settings": {
+        "title": "設定",
+        "language": "言語",
+        "theme": "テーマ",
+        "dark_mode": "ダークモード"
+    },
+    "genesis": {
+        "step1_title": "始めましょう",
+        "step1_subtitle": "あなたのビジネスについて教えてください",
+        "store_name": "店名",
+        "currency": "通貨",
+        "step2_title": "スタイルは？",
+        "step2_subtitle": "すぐにメニューを準備します",
+        "type_cafe": "カフェ",
+        "type_retail": "小売",
+        "type_service": "サービス",
+        "building_hq": "本部を構築中..."
+    }
+}

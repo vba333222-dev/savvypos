@@ -1,0 +1,108 @@
+info:
+  contact: {}
+paths:
+  /v1/analytics/sales_chart:
+    get:
+      consumes:
+      - application/json
+      description: Get sales data for a specific range (weekly, monthly)
+      parameters:
+      - description: Range (weekly, monthly)
+        in: query
+        name: range
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties: true
+              type: object
+            type: array
+      summary: Get Sales Chart
+      tags:
+      - analytics
+  /v1/analytics/sales_summary:
+    get:
+      consumes:
+      - application/json
+      description: Get total revenue, order count, and gross profit for a date range
+      parameters:
+      - description: Start Date (ISO8601)
+        in: query
+        name: date_start
+        required: true
+        type: string
+      - description: End Date (ISO8601)
+        in: query
+        name: date_end
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get Sales Summary
+      tags:
+      - analytics
+  /v1/analytics/summary:
+    get:
+      consumes:
+      - application/json
+      description: Get total revenue, order count, and gross profit for a date range
+        (default today)
+      parameters:
+      - description: Start Date (YYYY-MM-DD)
+        in: query
+        name: date_start
+        type: string
+      - description: End Date (YYYY-MM-DD)
+        in: query
+        name: date_end
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get Dashboard Summary
+      tags:
+      - analytics
+  /v1/analytics/top_products:
+    get:
+      consumes:
+      - application/json
+      - application/json
+      description: |-
+        Get list of products sorted by quantity sold
+        Get list of products sorted by quantity sold
+      parameters:
+      - description: Limit (default 5)
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              additionalProperties: true
+              type: object
+            type: array
+      summary: Get Top Selling Products
+      tags:
+      - analytics
+      - analytics
+swagger: "2.0"

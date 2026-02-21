@@ -171,38 +171,71 @@ class TableRepositoryImpl implements ITableRepository {
   }
 
   @override
-  Future<void> mergeTables(String sourceUuid, String targetUuid) async {
-    // Logic: Move order items from source to target, release source.
-    // This requires OrderRepository logic ideally, but we can do simple DB updates here.
-    // 1. Get Source Table Order
-    final sourceTable = await (_db.select(_db.restaurantTable)..where((t) => t.uuid.equals(sourceUuid))).getSingleOrNull();
-    final targetTable = await (_db.select(_db.restaurantTable)..where((t) => t.uuid.equals(targetUuid))).getSingleOrNull();
+  Future<void> transferTable(String sourceUuid, String targetUuid) async {
+    return _db.transaction(() async {
+      final sourceTable = await (_db.select(_db.restaurantTable)..where((t) => t.uuid.equals(sourceUuid))).getSingleOrNull();
+      final targetTable = await (_db.select(_db.restaurantTable)..where((t) => t.uuid.equals(targetUuid))).getSingleOrNull();
 
-    if (sourceTable?.currentOrderUuid == null || targetTable == null) return;
+      // Ensure source has order, target is empty
+      if (sourceTable?.currentOrderUuid == null || targetTable == null || targetTable.isOccupied) return;
 
-    final sourceOrderUuid = sourceTable!.currentOrderUuid!;
-    final targetOrderUuid = targetTable.currentOrderUuid;
+      final sourceOrderUuid = sourceTable!.currentOrderUuid!;
 
-    if (targetOrderUuid != null) {
-      // MERGE ORDER ITEMS
-      await (_db.update(_db.orderItemTable)..where((t) => t.orderUuid.equals(sourceOrderUuid))).write(
-        OrderItemTableCompanion(orderUuid: Value(targetOrderUuid))
-      );
-      // Close Source Order
-       await (_db.update(_db.orderTable)..where((t) => t.uuid.equals(sourceOrderUuid))).write(
-        const OrderTableCompanion(status: Value('MERGED')) // Or CANCELLED
-      );
-    } else {
-      // MOVE ORDER (Target is empty)
+      // Transfer Order to Target Table
       await (_db.update(_db.restaurantTable)..where((t) => t.uuid.equals(targetUuid))).write(
         RestaurantTableCompanion(
           currentOrderUuid: Value(sourceOrderUuid),
           isOccupied: const Value(true)
         )
       );
-    }
 
-    // Release Source Table
-    await setTableOccupied(sourceUuid, false);
+      // Release Source Table
+      await (_db.update(_db.restaurantTable)..where((t) => t.uuid.equals(sourceUuid))).write(
+        const RestaurantTableCompanion(
+          currentOrderUuid: Value(null),
+          isOccupied: Value(false)
+        )
+      );
+    });
+  }
+
+  @override
+  Future<void> mergeTables(String sourceUuid, String targetUuid) async {
+    return _db.transaction(() async {
+      final sourceTable = await (_db.select(_db.restaurantTable)..where((t) => t.uuid.equals(sourceUuid))).getSingleOrNull();
+      final targetTable = await (_db.select(_db.restaurantTable)..where((t) => t.uuid.equals(targetUuid))).getSingleOrNull();
+
+      if (sourceTable?.currentOrderUuid == null || targetTable == null) return;
+
+      final sourceOrderUuid = sourceTable!.currentOrderUuid!;
+      final targetOrderUuid = targetTable.currentOrderUuid;
+
+      if (targetOrderUuid != null) {
+        // MERGE ORDER ITEMS
+        await (_db.update(_db.orderItemTable)..where((t) => t.orderUuid.equals(sourceOrderUuid))).write(
+          OrderItemTableCompanion(orderUuid: Value(targetOrderUuid))
+        );
+        // Close Source Order
+        await (_db.update(_db.orderTable)..where((t) => t.uuid.equals(sourceOrderUuid))).write(
+          const OrderTableCompanion(status: Value('MERGED')) // Or CANCELLED
+        );
+      } else {
+        // If target is empty, we just fall back to transfer logic internally
+        await (_db.update(_db.restaurantTable)..where((t) => t.uuid.equals(targetUuid))).write(
+          RestaurantTableCompanion(
+            currentOrderUuid: Value(sourceOrderUuid),
+            isOccupied: const Value(true)
+          )
+        );
+      }
+
+      // Release Source Table
+      await (_db.update(_db.restaurantTable)..where((t) => t.uuid.equals(sourceUuid))).write(
+        const RestaurantTableCompanion(
+          currentOrderUuid: Value(null),
+          isOccupied: Value(false)
+        )
+      );
+    });
   }
 }

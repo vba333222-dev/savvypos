@@ -187,8 +187,36 @@ class _FloorPlanCanvasState extends State<_FloorPlanCanvas> {
                                     )); 
                                   },
                                   onOrderMerge: (src, dst) {
-                                    context.read<TableBloc>().add(TableEvent.mergeTables(src, dst));
-                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Merging Tables...')));
+                                    final targetTable = state.tables.firstWhere((tbl) => tbl.id == dst);
+                                    if (targetTable.isOccupied) {
+                                      showDialog(
+                                        context: context,
+                                        builder: (dialogCtx) => AlertDialog(
+                                          title: Text('Gabungkan Tagihan?', style: TextStyle(color: theme.colors.textPrimary)),
+                                          content: Text('Apakah Anda yakin ingin memindahkan tagihan dari Meja $src ke Meja ${targetTable.name}?', style: TextStyle(color: theme.colors.textSecondary)),
+                                          backgroundColor: theme.colors.bgElevated,
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(dialogCtx),
+                                              child: Text('Batal', style: TextStyle(color: theme.colors.textSecondary)),
+                                            ),
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(backgroundColor: theme.colors.stateWarning, foregroundColor: theme.colors.textInverse),
+                                              onPressed: () {
+                                                Navigator.pop(dialogCtx);
+                                                context.read<TableBloc>().add(TableEvent.mergeTables(src, dst));
+                                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Menggabungkan Tagihan...')));
+                                              },
+                                              child: const Text('Gabungkan'),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    } else {
+                                      // Transfer
+                                      context.read<TableBloc>().add(TableEvent.transferTable(src, dst));
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Memindah pesanan ke Meja ${targetTable.name}...')));
+                                    }
                                   },
                                   onDragUpdate: (details) => _handleDragUpdate(details, Size(width, height)),
                                 ),

@@ -24,6 +24,8 @@ mixin _$TableEvent {
     required TResult Function(String uuid, double x, double y) moveTable,
     required TResult Function(String uuid) deleteTable,
     required TResult Function(String uuid, bool isOccupied) toggleOccupied,
+    required TResult Function(String sourceUuid, String targetUuid)
+        transferTable,
     required TResult Function(String sourceUuid, String targetUuid) mergeTables,
   }) =>
       throw _privateConstructorUsedError;
@@ -35,6 +37,7 @@ mixin _$TableEvent {
     TResult? Function(String uuid, double x, double y)? moveTable,
     TResult? Function(String uuid)? deleteTable,
     TResult? Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult? Function(String sourceUuid, String targetUuid)? transferTable,
     TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
   }) =>
       throw _privateConstructorUsedError;
@@ -46,6 +49,7 @@ mixin _$TableEvent {
     TResult Function(String uuid, double x, double y)? moveTable,
     TResult Function(String uuid)? deleteTable,
     TResult Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult Function(String sourceUuid, String targetUuid)? transferTable,
     TResult Function(String sourceUuid, String targetUuid)? mergeTables,
     required TResult orElse(),
   }) =>
@@ -58,6 +62,7 @@ mixin _$TableEvent {
     required TResult Function(_MoveTable value) moveTable,
     required TResult Function(_DeleteTable value) deleteTable,
     required TResult Function(_ToggleOccupied value) toggleOccupied,
+    required TResult Function(_TransferTable value) transferTable,
     required TResult Function(_MergeTables value) mergeTables,
   }) =>
       throw _privateConstructorUsedError;
@@ -69,6 +74,7 @@ mixin _$TableEvent {
     TResult? Function(_MoveTable value)? moveTable,
     TResult? Function(_DeleteTable value)? deleteTable,
     TResult? Function(_ToggleOccupied value)? toggleOccupied,
+    TResult? Function(_TransferTable value)? transferTable,
     TResult? Function(_MergeTables value)? mergeTables,
   }) =>
       throw _privateConstructorUsedError;
@@ -80,6 +86,7 @@ mixin _$TableEvent {
     TResult Function(_MoveTable value)? moveTable,
     TResult Function(_DeleteTable value)? deleteTable,
     TResult Function(_ToggleOccupied value)? toggleOccupied,
+    TResult Function(_TransferTable value)? transferTable,
     TResult Function(_MergeTables value)? mergeTables,
     required TResult orElse(),
   }) =>
@@ -154,6 +161,8 @@ class _$LoadTablesImpl implements _LoadTables {
     required TResult Function(String uuid, double x, double y) moveTable,
     required TResult Function(String uuid) deleteTable,
     required TResult Function(String uuid, bool isOccupied) toggleOccupied,
+    required TResult Function(String sourceUuid, String targetUuid)
+        transferTable,
     required TResult Function(String sourceUuid, String targetUuid) mergeTables,
   }) {
     return loadTables();
@@ -168,6 +177,7 @@ class _$LoadTablesImpl implements _LoadTables {
     TResult? Function(String uuid, double x, double y)? moveTable,
     TResult? Function(String uuid)? deleteTable,
     TResult? Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult? Function(String sourceUuid, String targetUuid)? transferTable,
     TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
   }) {
     return loadTables?.call();
@@ -182,6 +192,7 @@ class _$LoadTablesImpl implements _LoadTables {
     TResult Function(String uuid, double x, double y)? moveTable,
     TResult Function(String uuid)? deleteTable,
     TResult Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult Function(String sourceUuid, String targetUuid)? transferTable,
     TResult Function(String sourceUuid, String targetUuid)? mergeTables,
     required TResult orElse(),
   }) {
@@ -200,6 +211,7 @@ class _$LoadTablesImpl implements _LoadTables {
     required TResult Function(_MoveTable value) moveTable,
     required TResult Function(_DeleteTable value) deleteTable,
     required TResult Function(_ToggleOccupied value) toggleOccupied,
+    required TResult Function(_TransferTable value) transferTable,
     required TResult Function(_MergeTables value) mergeTables,
   }) {
     return loadTables(this);
@@ -214,6 +226,7 @@ class _$LoadTablesImpl implements _LoadTables {
     TResult? Function(_MoveTable value)? moveTable,
     TResult? Function(_DeleteTable value)? deleteTable,
     TResult? Function(_ToggleOccupied value)? toggleOccupied,
+    TResult? Function(_TransferTable value)? transferTable,
     TResult? Function(_MergeTables value)? mergeTables,
   }) {
     return loadTables?.call(this);
@@ -228,6 +241,7 @@ class _$LoadTablesImpl implements _LoadTables {
     TResult Function(_MoveTable value)? moveTable,
     TResult Function(_DeleteTable value)? deleteTable,
     TResult Function(_ToggleOccupied value)? toggleOccupied,
+    TResult Function(_TransferTable value)? transferTable,
     TResult Function(_MergeTables value)? mergeTables,
     required TResult orElse(),
   }) {
@@ -322,6 +336,8 @@ class _$TablesUpdatedImpl implements _TablesUpdated {
     required TResult Function(String uuid, double x, double y) moveTable,
     required TResult Function(String uuid) deleteTable,
     required TResult Function(String uuid, bool isOccupied) toggleOccupied,
+    required TResult Function(String sourceUuid, String targetUuid)
+        transferTable,
     required TResult Function(String sourceUuid, String targetUuid) mergeTables,
   }) {
     return tablesUpdated(tables);
@@ -336,6 +352,7 @@ class _$TablesUpdatedImpl implements _TablesUpdated {
     TResult? Function(String uuid, double x, double y)? moveTable,
     TResult? Function(String uuid)? deleteTable,
     TResult? Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult? Function(String sourceUuid, String targetUuid)? transferTable,
     TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
   }) {
     return tablesUpdated?.call(tables);
@@ -350,6 +367,7 @@ class _$TablesUpdatedImpl implements _TablesUpdated {
     TResult Function(String uuid, double x, double y)? moveTable,
     TResult Function(String uuid)? deleteTable,
     TResult Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult Function(String sourceUuid, String targetUuid)? transferTable,
     TResult Function(String sourceUuid, String targetUuid)? mergeTables,
     required TResult orElse(),
   }) {
@@ -368,6 +386,7 @@ class _$TablesUpdatedImpl implements _TablesUpdated {
     required TResult Function(_MoveTable value) moveTable,
     required TResult Function(_DeleteTable value) deleteTable,
     required TResult Function(_ToggleOccupied value) toggleOccupied,
+    required TResult Function(_TransferTable value) transferTable,
     required TResult Function(_MergeTables value) mergeTables,
   }) {
     return tablesUpdated(this);
@@ -382,6 +401,7 @@ class _$TablesUpdatedImpl implements _TablesUpdated {
     TResult? Function(_MoveTable value)? moveTable,
     TResult? Function(_DeleteTable value)? deleteTable,
     TResult? Function(_ToggleOccupied value)? toggleOccupied,
+    TResult? Function(_TransferTable value)? transferTable,
     TResult? Function(_MergeTables value)? mergeTables,
   }) {
     return tablesUpdated?.call(this);
@@ -396,6 +416,7 @@ class _$TablesUpdatedImpl implements _TablesUpdated {
     TResult Function(_MoveTable value)? moveTable,
     TResult Function(_DeleteTable value)? deleteTable,
     TResult Function(_ToggleOccupied value)? toggleOccupied,
+    TResult Function(_TransferTable value)? transferTable,
     TResult Function(_MergeTables value)? mergeTables,
     required TResult orElse(),
   }) {
@@ -509,6 +530,8 @@ class _$AddTableImpl implements _AddTable {
     required TResult Function(String uuid, double x, double y) moveTable,
     required TResult Function(String uuid) deleteTable,
     required TResult Function(String uuid, bool isOccupied) toggleOccupied,
+    required TResult Function(String sourceUuid, String targetUuid)
+        transferTable,
     required TResult Function(String sourceUuid, String targetUuid) mergeTables,
   }) {
     return addTable(name, x, y);
@@ -523,6 +546,7 @@ class _$AddTableImpl implements _AddTable {
     TResult? Function(String uuid, double x, double y)? moveTable,
     TResult? Function(String uuid)? deleteTable,
     TResult? Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult? Function(String sourceUuid, String targetUuid)? transferTable,
     TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
   }) {
     return addTable?.call(name, x, y);
@@ -537,6 +561,7 @@ class _$AddTableImpl implements _AddTable {
     TResult Function(String uuid, double x, double y)? moveTable,
     TResult Function(String uuid)? deleteTable,
     TResult Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult Function(String sourceUuid, String targetUuid)? transferTable,
     TResult Function(String sourceUuid, String targetUuid)? mergeTables,
     required TResult orElse(),
   }) {
@@ -555,6 +580,7 @@ class _$AddTableImpl implements _AddTable {
     required TResult Function(_MoveTable value) moveTable,
     required TResult Function(_DeleteTable value) deleteTable,
     required TResult Function(_ToggleOccupied value) toggleOccupied,
+    required TResult Function(_TransferTable value) transferTable,
     required TResult Function(_MergeTables value) mergeTables,
   }) {
     return addTable(this);
@@ -569,6 +595,7 @@ class _$AddTableImpl implements _AddTable {
     TResult? Function(_MoveTable value)? moveTable,
     TResult? Function(_DeleteTable value)? deleteTable,
     TResult? Function(_ToggleOccupied value)? toggleOccupied,
+    TResult? Function(_TransferTable value)? transferTable,
     TResult? Function(_MergeTables value)? mergeTables,
   }) {
     return addTable?.call(this);
@@ -583,6 +610,7 @@ class _$AddTableImpl implements _AddTable {
     TResult Function(_MoveTable value)? moveTable,
     TResult Function(_DeleteTable value)? deleteTable,
     TResult Function(_ToggleOccupied value)? toggleOccupied,
+    TResult Function(_TransferTable value)? transferTable,
     TResult Function(_MergeTables value)? mergeTables,
     required TResult orElse(),
   }) {
@@ -698,6 +726,8 @@ class _$MoveTableImpl implements _MoveTable {
     required TResult Function(String uuid, double x, double y) moveTable,
     required TResult Function(String uuid) deleteTable,
     required TResult Function(String uuid, bool isOccupied) toggleOccupied,
+    required TResult Function(String sourceUuid, String targetUuid)
+        transferTable,
     required TResult Function(String sourceUuid, String targetUuid) mergeTables,
   }) {
     return moveTable(uuid, x, y);
@@ -712,6 +742,7 @@ class _$MoveTableImpl implements _MoveTable {
     TResult? Function(String uuid, double x, double y)? moveTable,
     TResult? Function(String uuid)? deleteTable,
     TResult? Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult? Function(String sourceUuid, String targetUuid)? transferTable,
     TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
   }) {
     return moveTable?.call(uuid, x, y);
@@ -726,6 +757,7 @@ class _$MoveTableImpl implements _MoveTable {
     TResult Function(String uuid, double x, double y)? moveTable,
     TResult Function(String uuid)? deleteTable,
     TResult Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult Function(String sourceUuid, String targetUuid)? transferTable,
     TResult Function(String sourceUuid, String targetUuid)? mergeTables,
     required TResult orElse(),
   }) {
@@ -744,6 +776,7 @@ class _$MoveTableImpl implements _MoveTable {
     required TResult Function(_MoveTable value) moveTable,
     required TResult Function(_DeleteTable value) deleteTable,
     required TResult Function(_ToggleOccupied value) toggleOccupied,
+    required TResult Function(_TransferTable value) transferTable,
     required TResult Function(_MergeTables value) mergeTables,
   }) {
     return moveTable(this);
@@ -758,6 +791,7 @@ class _$MoveTableImpl implements _MoveTable {
     TResult? Function(_MoveTable value)? moveTable,
     TResult? Function(_DeleteTable value)? deleteTable,
     TResult? Function(_ToggleOccupied value)? toggleOccupied,
+    TResult? Function(_TransferTable value)? transferTable,
     TResult? Function(_MergeTables value)? mergeTables,
   }) {
     return moveTable?.call(this);
@@ -772,6 +806,7 @@ class _$MoveTableImpl implements _MoveTable {
     TResult Function(_MoveTable value)? moveTable,
     TResult Function(_DeleteTable value)? deleteTable,
     TResult Function(_ToggleOccupied value)? toggleOccupied,
+    TResult Function(_TransferTable value)? transferTable,
     TResult Function(_MergeTables value)? mergeTables,
     required TResult orElse(),
   }) {
@@ -871,6 +906,8 @@ class _$DeleteTableImpl implements _DeleteTable {
     required TResult Function(String uuid, double x, double y) moveTable,
     required TResult Function(String uuid) deleteTable,
     required TResult Function(String uuid, bool isOccupied) toggleOccupied,
+    required TResult Function(String sourceUuid, String targetUuid)
+        transferTable,
     required TResult Function(String sourceUuid, String targetUuid) mergeTables,
   }) {
     return deleteTable(uuid);
@@ -885,6 +922,7 @@ class _$DeleteTableImpl implements _DeleteTable {
     TResult? Function(String uuid, double x, double y)? moveTable,
     TResult? Function(String uuid)? deleteTable,
     TResult? Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult? Function(String sourceUuid, String targetUuid)? transferTable,
     TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
   }) {
     return deleteTable?.call(uuid);
@@ -899,6 +937,7 @@ class _$DeleteTableImpl implements _DeleteTable {
     TResult Function(String uuid, double x, double y)? moveTable,
     TResult Function(String uuid)? deleteTable,
     TResult Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult Function(String sourceUuid, String targetUuid)? transferTable,
     TResult Function(String sourceUuid, String targetUuid)? mergeTables,
     required TResult orElse(),
   }) {
@@ -917,6 +956,7 @@ class _$DeleteTableImpl implements _DeleteTable {
     required TResult Function(_MoveTable value) moveTable,
     required TResult Function(_DeleteTable value) deleteTable,
     required TResult Function(_ToggleOccupied value) toggleOccupied,
+    required TResult Function(_TransferTable value) transferTable,
     required TResult Function(_MergeTables value) mergeTables,
   }) {
     return deleteTable(this);
@@ -931,6 +971,7 @@ class _$DeleteTableImpl implements _DeleteTable {
     TResult? Function(_MoveTable value)? moveTable,
     TResult? Function(_DeleteTable value)? deleteTable,
     TResult? Function(_ToggleOccupied value)? toggleOccupied,
+    TResult? Function(_TransferTable value)? transferTable,
     TResult? Function(_MergeTables value)? mergeTables,
   }) {
     return deleteTable?.call(this);
@@ -945,6 +986,7 @@ class _$DeleteTableImpl implements _DeleteTable {
     TResult Function(_MoveTable value)? moveTable,
     TResult Function(_DeleteTable value)? deleteTable,
     TResult Function(_ToggleOccupied value)? toggleOccupied,
+    TResult Function(_TransferTable value)? transferTable,
     TResult Function(_MergeTables value)? mergeTables,
     required TResult orElse(),
   }) {
@@ -1051,6 +1093,8 @@ class _$ToggleOccupiedImpl implements _ToggleOccupied {
     required TResult Function(String uuid, double x, double y) moveTable,
     required TResult Function(String uuid) deleteTable,
     required TResult Function(String uuid, bool isOccupied) toggleOccupied,
+    required TResult Function(String sourceUuid, String targetUuid)
+        transferTable,
     required TResult Function(String sourceUuid, String targetUuid) mergeTables,
   }) {
     return toggleOccupied(uuid, isOccupied);
@@ -1065,6 +1109,7 @@ class _$ToggleOccupiedImpl implements _ToggleOccupied {
     TResult? Function(String uuid, double x, double y)? moveTable,
     TResult? Function(String uuid)? deleteTable,
     TResult? Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult? Function(String sourceUuid, String targetUuid)? transferTable,
     TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
   }) {
     return toggleOccupied?.call(uuid, isOccupied);
@@ -1079,6 +1124,7 @@ class _$ToggleOccupiedImpl implements _ToggleOccupied {
     TResult Function(String uuid, double x, double y)? moveTable,
     TResult Function(String uuid)? deleteTable,
     TResult Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult Function(String sourceUuid, String targetUuid)? transferTable,
     TResult Function(String sourceUuid, String targetUuid)? mergeTables,
     required TResult orElse(),
   }) {
@@ -1097,6 +1143,7 @@ class _$ToggleOccupiedImpl implements _ToggleOccupied {
     required TResult Function(_MoveTable value) moveTable,
     required TResult Function(_DeleteTable value) deleteTable,
     required TResult Function(_ToggleOccupied value) toggleOccupied,
+    required TResult Function(_TransferTable value) transferTable,
     required TResult Function(_MergeTables value) mergeTables,
   }) {
     return toggleOccupied(this);
@@ -1111,6 +1158,7 @@ class _$ToggleOccupiedImpl implements _ToggleOccupied {
     TResult? Function(_MoveTable value)? moveTable,
     TResult? Function(_DeleteTable value)? deleteTable,
     TResult? Function(_ToggleOccupied value)? toggleOccupied,
+    TResult? Function(_TransferTable value)? transferTable,
     TResult? Function(_MergeTables value)? mergeTables,
   }) {
     return toggleOccupied?.call(this);
@@ -1125,6 +1173,7 @@ class _$ToggleOccupiedImpl implements _ToggleOccupied {
     TResult Function(_MoveTable value)? moveTable,
     TResult Function(_DeleteTable value)? deleteTable,
     TResult Function(_ToggleOccupied value)? toggleOccupied,
+    TResult Function(_TransferTable value)? transferTable,
     TResult Function(_MergeTables value)? mergeTables,
     required TResult orElse(),
   }) {
@@ -1146,6 +1195,195 @@ abstract class _ToggleOccupied implements TableEvent {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ToggleOccupiedImplCopyWith<_$ToggleOccupiedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$TransferTableImplCopyWith<$Res> {
+  factory _$$TransferTableImplCopyWith(
+          _$TransferTableImpl value, $Res Function(_$TransferTableImpl) then) =
+      __$$TransferTableImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String sourceUuid, String targetUuid});
+}
+
+/// @nodoc
+class __$$TransferTableImplCopyWithImpl<$Res>
+    extends _$TableEventCopyWithImpl<$Res, _$TransferTableImpl>
+    implements _$$TransferTableImplCopyWith<$Res> {
+  __$$TransferTableImplCopyWithImpl(
+      _$TransferTableImpl _value, $Res Function(_$TransferTableImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of TableEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? sourceUuid = null,
+    Object? targetUuid = null,
+  }) {
+    return _then(_$TransferTableImpl(
+      null == sourceUuid
+          ? _value.sourceUuid
+          : sourceUuid // ignore: cast_nullable_to_non_nullable
+              as String,
+      null == targetUuid
+          ? _value.targetUuid
+          : targetUuid // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$TransferTableImpl implements _TransferTable {
+  const _$TransferTableImpl(this.sourceUuid, this.targetUuid);
+
+  @override
+  final String sourceUuid;
+  @override
+  final String targetUuid;
+
+  @override
+  String toString() {
+    return 'TableEvent.transferTable(sourceUuid: $sourceUuid, targetUuid: $targetUuid)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$TransferTableImpl &&
+            (identical(other.sourceUuid, sourceUuid) ||
+                other.sourceUuid == sourceUuid) &&
+            (identical(other.targetUuid, targetUuid) ||
+                other.targetUuid == targetUuid));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, sourceUuid, targetUuid);
+
+  /// Create a copy of TableEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$TransferTableImplCopyWith<_$TransferTableImpl> get copyWith =>
+      __$$TransferTableImplCopyWithImpl<_$TransferTableImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loadTables,
+    required TResult Function(List<SavvyTable> tables) tablesUpdated,
+    required TResult Function(String name, double x, double y) addTable,
+    required TResult Function(String uuid, double x, double y) moveTable,
+    required TResult Function(String uuid) deleteTable,
+    required TResult Function(String uuid, bool isOccupied) toggleOccupied,
+    required TResult Function(String sourceUuid, String targetUuid)
+        transferTable,
+    required TResult Function(String sourceUuid, String targetUuid) mergeTables,
+  }) {
+    return transferTable(sourceUuid, targetUuid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loadTables,
+    TResult? Function(List<SavvyTable> tables)? tablesUpdated,
+    TResult? Function(String name, double x, double y)? addTable,
+    TResult? Function(String uuid, double x, double y)? moveTable,
+    TResult? Function(String uuid)? deleteTable,
+    TResult? Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult? Function(String sourceUuid, String targetUuid)? transferTable,
+    TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
+  }) {
+    return transferTable?.call(sourceUuid, targetUuid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadTables,
+    TResult Function(List<SavvyTable> tables)? tablesUpdated,
+    TResult Function(String name, double x, double y)? addTable,
+    TResult Function(String uuid, double x, double y)? moveTable,
+    TResult Function(String uuid)? deleteTable,
+    TResult Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult Function(String sourceUuid, String targetUuid)? transferTable,
+    TResult Function(String sourceUuid, String targetUuid)? mergeTables,
+    required TResult orElse(),
+  }) {
+    if (transferTable != null) {
+      return transferTable(sourceUuid, targetUuid);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoadTables value) loadTables,
+    required TResult Function(_TablesUpdated value) tablesUpdated,
+    required TResult Function(_AddTable value) addTable,
+    required TResult Function(_MoveTable value) moveTable,
+    required TResult Function(_DeleteTable value) deleteTable,
+    required TResult Function(_ToggleOccupied value) toggleOccupied,
+    required TResult Function(_TransferTable value) transferTable,
+    required TResult Function(_MergeTables value) mergeTables,
+  }) {
+    return transferTable(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadTables value)? loadTables,
+    TResult? Function(_TablesUpdated value)? tablesUpdated,
+    TResult? Function(_AddTable value)? addTable,
+    TResult? Function(_MoveTable value)? moveTable,
+    TResult? Function(_DeleteTable value)? deleteTable,
+    TResult? Function(_ToggleOccupied value)? toggleOccupied,
+    TResult? Function(_TransferTable value)? transferTable,
+    TResult? Function(_MergeTables value)? mergeTables,
+  }) {
+    return transferTable?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadTables value)? loadTables,
+    TResult Function(_TablesUpdated value)? tablesUpdated,
+    TResult Function(_AddTable value)? addTable,
+    TResult Function(_MoveTable value)? moveTable,
+    TResult Function(_DeleteTable value)? deleteTable,
+    TResult Function(_ToggleOccupied value)? toggleOccupied,
+    TResult Function(_TransferTable value)? transferTable,
+    TResult Function(_MergeTables value)? mergeTables,
+    required TResult orElse(),
+  }) {
+    if (transferTable != null) {
+      return transferTable(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _TransferTable implements TableEvent {
+  const factory _TransferTable(
+      final String sourceUuid, final String targetUuid) = _$TransferTableImpl;
+
+  String get sourceUuid;
+  String get targetUuid;
+
+  /// Create a copy of TableEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$TransferTableImplCopyWith<_$TransferTableImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1233,6 +1471,8 @@ class _$MergeTablesImpl implements _MergeTables {
     required TResult Function(String uuid, double x, double y) moveTable,
     required TResult Function(String uuid) deleteTable,
     required TResult Function(String uuid, bool isOccupied) toggleOccupied,
+    required TResult Function(String sourceUuid, String targetUuid)
+        transferTable,
     required TResult Function(String sourceUuid, String targetUuid) mergeTables,
   }) {
     return mergeTables(sourceUuid, targetUuid);
@@ -1247,6 +1487,7 @@ class _$MergeTablesImpl implements _MergeTables {
     TResult? Function(String uuid, double x, double y)? moveTable,
     TResult? Function(String uuid)? deleteTable,
     TResult? Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult? Function(String sourceUuid, String targetUuid)? transferTable,
     TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
   }) {
     return mergeTables?.call(sourceUuid, targetUuid);
@@ -1261,6 +1502,7 @@ class _$MergeTablesImpl implements _MergeTables {
     TResult Function(String uuid, double x, double y)? moveTable,
     TResult Function(String uuid)? deleteTable,
     TResult Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult Function(String sourceUuid, String targetUuid)? transferTable,
     TResult Function(String sourceUuid, String targetUuid)? mergeTables,
     required TResult orElse(),
   }) {
@@ -1279,6 +1521,7 @@ class _$MergeTablesImpl implements _MergeTables {
     required TResult Function(_MoveTable value) moveTable,
     required TResult Function(_DeleteTable value) deleteTable,
     required TResult Function(_ToggleOccupied value) toggleOccupied,
+    required TResult Function(_TransferTable value) transferTable,
     required TResult Function(_MergeTables value) mergeTables,
   }) {
     return mergeTables(this);
@@ -1293,6 +1536,7 @@ class _$MergeTablesImpl implements _MergeTables {
     TResult? Function(_MoveTable value)? moveTable,
     TResult? Function(_DeleteTable value)? deleteTable,
     TResult? Function(_ToggleOccupied value)? toggleOccupied,
+    TResult? Function(_TransferTable value)? transferTable,
     TResult? Function(_MergeTables value)? mergeTables,
   }) {
     return mergeTables?.call(this);
@@ -1307,6 +1551,7 @@ class _$MergeTablesImpl implements _MergeTables {
     TResult Function(_MoveTable value)? moveTable,
     TResult Function(_DeleteTable value)? deleteTable,
     TResult Function(_ToggleOccupied value)? toggleOccupied,
+    TResult Function(_TransferTable value)? transferTable,
     TResult Function(_MergeTables value)? mergeTables,
     required TResult orElse(),
   }) {

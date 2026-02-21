@@ -357,8 +357,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i426.SaveTableUseCase(gh<_i22.ITableRepository>()));
     gh.factory<_i426.DeleteTableUseCase>(
         () => _i426.DeleteTableUseCase(gh<_i22.ITableRepository>()));
-    gh.factory<_i424.TableBloc>(
-        () => _i424.TableBloc(gh<_i22.ITableRepository>()));
     gh.lazySingleton<_i797.AuthBloc>(() => _i797.AuthBloc(
           gh<_i660.AppDatabase>(),
           gh<_i302.ITenantRepository>(),
@@ -429,6 +427,10 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i820.ProductBloc>(
         () => _i820.ProductBloc(gh<_i695.IProductRepository>()));
+    gh.factory<_i424.TableBloc>(() => _i424.TableBloc(
+          gh<_i22.ITableRepository>(),
+          gh<_i411.SocketService>(),
+        ));
     gh.factory<_i705.LoyaltyBloc>(
         () => _i705.LoyaltyBloc(gh<_i63.ILoyaltyRepository>()));
     gh.factory<_i1053.GetProductsUseCase>(

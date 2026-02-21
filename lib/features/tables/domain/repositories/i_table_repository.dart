@@ -14,5 +14,6 @@ abstract class ITableRepository {
   Future<void> setTableOccupied(String tableUuid, bool isOccupied, {String? orderUuid});
   Future<void> addTable(String name, double x, double y);
   Future<void> updateTable(SavvyTable table);
+  Future<void> transferTable(String sourceUuid, String targetUuid);
   Future<void> mergeTables(String sourceUuid, String targetUuid);
 }

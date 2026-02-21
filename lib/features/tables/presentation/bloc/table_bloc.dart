@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:savvy_pos/core/services/socket_service.dart';
 import 'package:savvy_pos/features/tables/domain/entities/table.dart';
 import 'package:savvy_pos/features/tables/domain/repositories/i_table_repository.dart';
 
@@ -14,6 +15,7 @@ class TableEvent with _$TableEvent {
   const factory TableEvent.moveTable(String uuid, double x, double y) = _MoveTable;
   const factory TableEvent.deleteTable(String uuid) = _DeleteTable;
   const factory TableEvent.toggleOccupied(String uuid, bool isOccupied) = _ToggleOccupied; 
+  const factory TableEvent.transferTable(String sourceUuid, String targetUuid) = _TransferTable;
   const factory TableEvent.mergeTables(String sourceUuid, String targetUuid) = _MergeTables;
 }
 
@@ -29,14 +31,16 @@ class TableState with _$TableState {
 @injectable
 class TableBloc extends Bloc<TableEvent, TableState> {
   final ITableRepository _repository;
+  final SocketService _socketService;
 
-  TableBloc(this._repository) : super(const TableState()) {
+  TableBloc(this._repository, this._socketService) : super(const TableState()) {
     on<_LoadTables>(_onLoadTables);
     on<_TablesUpdated>(_onTablesUpdated);
     on<_AddTable>(_onAddTable);
     on<_MoveTable>(_onMoveTable);
     on<_DeleteTable>(_onDeleteTable);
     on<_ToggleOccupied>(_onToggleOccupied);
+    on<_TransferTable>(_onTransferTable);
     on<_MergeTables>(_onMergeTables);
   }
 
@@ -81,9 +85,19 @@ class TableBloc extends Bloc<TableEvent, TableState> {
     await _repository.deleteTable(event.uuid);
   }
 
+  Future<void> _onTransferTable(_TransferTable event, Emitter<TableState> emit) async {
+    try {
+      await _repository.transferTable(event.sourceUuid, event.targetUuid);
+      _socketService.emit('table_transferred', {'source': event.sourceUuid, 'target': event.targetUuid});
+    } catch (e) {
+      emit(state.copyWith(error: 'Failed to transfer table: $e'));
+    }
+  }
+
   Future<void> _onMergeTables(_MergeTables event, Emitter<TableState> emit) async {
     try {
       await _repository.mergeTables(event.sourceUuid, event.targetUuid);
+      _socketService.emit('table_merged', {'source': event.sourceUuid, 'target': event.targetUuid});
     } catch (e) {
       emit(state.copyWith(error: 'Failed to merge tables: $e'));
     }

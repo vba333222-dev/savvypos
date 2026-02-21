@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
-import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 import 'dart:async';
 import 'package:savvy_pos/features/pos/presentation/widgets/payment/smart_cash_helper.dart';
-import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
+import 'package:savvy_pos/features/sales/presentation/bloc/checkout_bloc.dart';
+import 'package:savvy_pos/features/sales/domain/entities/payment_transaction.dart';
 
 class PaymentMethodsSheet extends StatefulWidget {
   final double totalAmount;
@@ -26,11 +26,21 @@ class _PaymentMethodsSheetState extends State<PaymentMethodsSheet> {
     // Parse input
     double tenderAmount = double.tryParse(_input) ?? 0.0;
     if (_input.isEmpty) tenderAmount = 0.0;
-    
-    double change = tenderAmount - widget.totalAmount;
-    if (change < 0) change = 0;
 
-    return DraggableScrollableSheet(
+    return BlocBuilder<CheckoutBloc, CheckoutState>(
+      builder: (context, checkoutState) {
+        
+        // Calculate dynamic amounts based on current CheckoutState
+        double requiredAmount = checkoutState.remainingBalance;
+        double change = tenderAmount - requiredAmount;
+        if (change < 0) change = 0;
+        
+        double progress = 0;
+        if (checkoutState.totalAmount > 0) {
+          progress = checkoutState.amountPaid / checkoutState.totalAmount;
+        }
+
+        return DraggableScrollableSheet(
       initialChildSize: 0.85,
       minChildSize: 0.5,
       maxChildSize: 0.95,
@@ -117,22 +127,101 @@ class _PaymentMethodsSheetState extends State<PaymentMethodsSheet> {
                         ),
                         SizedBox(height: theme.shapes.spacingLg),
 
-                        // 2. SUMMARY (Compact)
+                        // 2. SUMMARY & SPLIT TENDER STATUS
                         Container(
                           padding: EdgeInsets.all(theme.shapes.spacingMd),
                           decoration: BoxDecoration(
                             color: theme.colors.bgPrimary,
                             borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          child: Column(
                             children: [
-                              SavvyText('Total Due', style: SavvyTextStyle.bodyLarge, color: theme.colors.textSecondary),
-                              SavvyText('\$${widget.totalAmount.toStringAsFixed(2)}', style: SavvyTextStyle.h2, color: theme.colors.brandPrimary),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SavvyText('Total Due', style: SavvyTextStyle.bodyLarge, color: theme.colors.textSecondary),
+                                  SavvyText('\$${checkoutState.totalAmount.toStringAsFixed(2)}', style: SavvyTextStyle.h3, color: theme.colors.textPrimary),
+                                ],
+                              ),
+                              SizedBox(height: theme.shapes.spacingXs),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SavvyText('Amount Paid', style: SavvyTextStyle.bodyLarge, color: theme.colors.textSecondary),
+                                  SavvyText('\$${checkoutState.amountPaid.toStringAsFixed(2)}', style: SavvyTextStyle.h3, color: theme.colors.textPrimary),
+                                ],
+                              ),
+                              SizedBox(height: theme.shapes.spacingSm),
+                              LinearProgressIndicator(
+                                value: progress,
+                                backgroundColor: theme.colors.borderDefault,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  progress >= 1.0 ? theme.colors.stateSuccess : theme.colors.brandPrimary
+                                ),
+                              ),
+                              SizedBox(height: theme.shapes.spacingSm),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SavvyText('Remaining', style: SavvyTextStyle.bodyLarge, color: theme.colors.textSecondary),
+                                  SavvyText('\$${checkoutState.remainingBalance.toStringAsFixed(2)}', style: SavvyTextStyle.h2, color: theme.colors.brandPrimary),
+                                ],
+                              ),
                             ],
                           ),
                         ),
                         SizedBox(height: theme.shapes.spacingLg),
+                        
+                        // Added Payment Parts List
+                        if (checkoutState.paymentParts.isNotEmpty) ...[
+                          SavvyText('Partial Payments', style: SavvyTextStyle.label, color: theme.colors.textSecondary),
+                          SizedBox(height: theme.shapes.spacingSm),
+                          ...checkoutState.paymentParts.asMap().entries.map((entry) {
+                            int idx = entry.key;
+                            PaymentPart part = entry.value;
+                            return Container(
+                              margin: EdgeInsets.only(bottom: theme.shapes.spacingSm),
+                              padding: EdgeInsets.symmetric(horizontal: theme.shapes.spacingMd, vertical: theme.shapes.spacingSm),
+                              decoration: BoxDecoration(
+                                color: theme.colors.bgSurface,
+                                border: Border.all(color: theme.colors.borderDefault),
+                                borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        part.method == PaymentMethod.cash ? Icons.money : 
+                                        part.method == PaymentMethod.card ? Icons.credit_card : Icons.qr_code,
+                                        size: 20,
+                                        color: theme.colors.textSecondary,
+                                      ),
+                                      SizedBox(width: theme.shapes.spacingSm),
+                                      SavvyText(part.method.toString().split('.').last.toUpperCase(), style: SavvyTextStyle.bodyLarge),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SavvyText('\$${part.amount.toStringAsFixed(2)}', style: SavvyTextStyle.bodyLarge, color: theme.colors.textPrimary),
+                                      SizedBox(width: theme.shapes.spacingSm),
+                                      IconButton(
+                                        icon: Icon(Icons.remove_circle, color: theme.colors.stateError),
+                                        padding: EdgeInsets.zero,
+                                        constraints: const BoxConstraints(),
+                                        onPressed: () {
+                                          context.read<CheckoutBloc>().add(CheckoutEvent.removePaymentPart(idx));
+                                        },
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            );
+                          }),
+                          SizedBox(height: theme.shapes.spacingLg),
+                        ],
 
                         // 3. INPUT AREA (If Cash)
                         if (_selectedMethod == 'CASH') ...[
@@ -164,15 +253,15 @@ class _PaymentMethodsSheetState extends State<PaymentMethodsSheet> {
                           SizedBox(height: theme.shapes.spacingMd),
                           
                           // Smart Cash Suggestions
-                          Builder(builder: (context) {
-                            final suggestions = SmartCashHelper.generateSuggestions(widget.totalAmount);
+                          Builder(builder: (builderContext) {
+                            final suggestions = SmartCashHelper.generateSuggestions(checkoutState.remainingBalance);
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: suggestions.map((amount) {
-                                final isExact = amount == widget.totalAmount;
+                                final isExact = amount == checkoutState.remainingBalance;
                                 final label = isExact ? 'Exact' : '\$${amount.toStringAsFixed(0)}'; // Or 2 decimals if needed
                                 
-                                return _QuickCashBtn(label, () => _handleSmartCash(amount));
+                                return _QuickCashBtn(label, () => _handleSmartCash(amount, builderContext));
                               }).toList(),
                             );
                           }),
@@ -205,33 +294,77 @@ class _PaymentMethodsSheetState extends State<PaymentMethodsSheet> {
                 ),
               ),
               
-              // STICKY BOTTOM BUTTON
+              // STICKY BOTTOM BUTTONS
               Padding(
                 padding: EdgeInsets.all(theme.shapes.spacingMd),
-                child: SizedBox(
-                   width: double.infinity,
-                   height: 56,
-                   child: ElevatedButton(
-                     style: ElevatedButton.styleFrom(
-                       backgroundColor: theme.colors.stateSuccess,
-                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(theme.shapes.radiusMd)),
-                       elevation: 4,
-                     ),
-                     onPressed: (tenderAmount >= widget.totalAmount || _selectedMethod != 'CASH')
-                       ? () {
-                           context.read<CartBloc>().add(CartEvent.checkoutProcessed(
-                             paymentMethod: _selectedMethod,
-                             tenderedAmount: tenderAmount,
-                           ));
-                           Navigator.pop(context); // Close Sheet
-                         }
-                       : null,
-                     child: SavvyText(
-                        (tenderAmount >= widget.totalAmount || _selectedMethod != 'CASH') ? 'CONFIRM PAYMENT' : 'INSUFFICIENT FUNDS',
-                        style: SavvyTextStyle.h3, 
-                        color: theme.colors.textInverse
-                     ),
-                   ),
+                child: Column(
+                  children: [
+                    // Add Payment Part Button
+                    if (checkoutState.remainingBalance > 0)
+                      SizedBox(
+                        width: double.infinity,
+                        height: 56,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: theme.colors.brandPrimary,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(theme.shapes.radiusMd)),
+                            elevation: 4,
+                          ),
+                          onPressed: (tenderAmount > 0 || _selectedMethod != 'CASH')
+                              ? () {
+                                  // Default amount for non-cash is the remaining balance
+                                  double amountToAdd = _selectedMethod == 'CASH' ? tenderAmount : checkoutState.remainingBalance;
+                                  if (amountToAdd > checkoutState.remainingBalance) {
+                                    amountToAdd = checkoutState.remainingBalance;
+                                  }
+
+                                  context.read<CheckoutBloc>().add(CheckoutEvent.addPaymentPart(
+                                    PaymentPart(
+                                      method: _selectedMethod == 'CASH' ? PaymentMethod.cash : 
+                                              _selectedMethod == 'CARD' ? PaymentMethod.card : PaymentMethod.qris,
+                                      amount: amountToAdd,
+                                      tendered: _selectedMethod == 'CASH' ? tenderAmount : null,
+                                      change: _selectedMethod == 'CASH' ? change : null,
+                                      note: 'Partial payment',
+                                    )
+                                  ));
+                                  setState(() => _input = '0');
+                                }
+                              : null,
+                          child: SavvyText(
+                              'ADD PAYMENT',
+                              style: SavvyTextStyle.h3,
+                              color: theme.colors.textInverse
+                          ),
+                        ),
+                      ),
+                    
+                    if (checkoutState.remainingBalance > 0) SizedBox(height: theme.shapes.spacingSm),
+
+                    // Finish Payment Button
+                    SizedBox(
+                       width: double.infinity,
+                       height: 56,
+                       child: ElevatedButton(
+                         style: ElevatedButton.styleFrom(
+                           backgroundColor: checkoutState.remainingBalance <= 0.01 ? theme.colors.stateSuccess : theme.colors.borderDefault,
+                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(theme.shapes.radiusMd)),
+                           elevation: 4,
+                         ),
+                         onPressed: checkoutState.remainingBalance <= 0.01
+                           ? () {
+                               context.read<CheckoutBloc>().add(const CheckoutEvent.confirmSplitTenderCheckout());
+                               Navigator.pop(context); // Close Sheet
+                             }
+                           : null,
+                         child: SavvyText(
+                            checkoutState.remainingBalance <= 0.01 ? 'FINISH PAYMENT' : 'REMAINING \$${checkoutState.remainingBalance.toStringAsFixed(2)}',
+                            style: SavvyTextStyle.h3, 
+                            color: checkoutState.remainingBalance <= 0.01 ? theme.colors.textInverse : theme.colors.textSecondary
+                         ),
+                       ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -239,11 +372,13 @@ class _PaymentMethodsSheetState extends State<PaymentMethodsSheet> {
         );
       },
     );
-  }
+     },
+   );
+ }
 
   Timer? _smartPayTimer;
 
-  void _handleSmartCash(double amount) {
+  void _handleSmartCash(double amount, BuildContext builderContext) {
     // 1. Set Input
     setState(() {
        _input = amount.toStringAsFixed(2);
@@ -253,13 +388,13 @@ class _PaymentMethodsSheetState extends State<PaymentMethodsSheet> {
     _smartPayTimer?.cancel();
 
     // 3. Show Local Feedback (e.g. Toast or Snackbar)
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(builderContext).hideCurrentSnackBar();
     final snackBar = SnackBar(
       content: Row(
         children: [
            SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)),
            SizedBox(width: 16),
-           Text('Paying \$${amount.toStringAsFixed(2)}...'),
+           Text('Adding \$${amount.toStringAsFixed(2)}...'),
         ],
       ),
       duration: const Duration(milliseconds: 1000), // Give slightly more visual time, but trigger fast
@@ -271,18 +406,31 @@ class _PaymentMethodsSheetState extends State<PaymentMethodsSheet> {
         },
       ),
     );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(builderContext).showSnackBar(snackBar);
 
     // 4. Buffer Timer
     _smartPayTimer = Timer(const Duration(milliseconds: 800), () { 
-       // Trigger Checkout
+       // Trigger Add Payment
        if (mounted) {
-           ScaffoldMessenger.of(context).hideCurrentSnackBar();
-           context.read<CartBloc>().add(CartEvent.checkoutProcessed(
-             paymentMethod: 'CASH',
-             tenderedAmount: amount, // or _input
+           ScaffoldMessenger.of(builderContext).hideCurrentSnackBar();
+           
+           final checkoutState = builderContext.read<CheckoutBloc>().state;
+           double amountToAdd = amount;
+           if (amountToAdd > checkoutState.remainingBalance) {
+             amountToAdd = checkoutState.remainingBalance;
+           }
+
+           builderContext.read<CheckoutBloc>().add(CheckoutEvent.addPaymentPart(
+              PaymentPart(
+                method: PaymentMethod.cash,
+                amount: amountToAdd,
+                tendered: amount,
+                change: amount - amountToAdd,
+                note: 'Quick Cash',
+              )
            ));
-           Navigator.pop(context); // Close Sheet
+           
+           setState(() => _input = '0');
        }
     });
   }

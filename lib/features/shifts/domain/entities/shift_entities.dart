@@ -22,7 +22,8 @@ class ShiftSession with _$ShiftSession {
     @Default(0.0) double startCash,
     @Default(0.0) double expectedCash,
     @Default(0.0) double actualCash,
-    @Default(0.0) double difference, // Over/Short
+    @Default(0.0) double variance, // Over/Short
+    String? varianceReason, // Audit log for miscounts
     @Default(ShiftStatus.active) ShiftStatus status,
   }) = _ShiftSession;
 

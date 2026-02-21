@@ -28,7 +28,7 @@ abstract class IShiftRepository {
 
   // Cash Management Methods (Merged from features/shift)
   Future<void> openCashShift(double startCash, String staffId, String staffName);
-  Future<void> closeShift(String shiftUuid, double calculatedEndCash, double actualCash);
+  Future<void> closeShift(String shiftUuid, double calculatedEndCash, double actualCash, {String? varianceReason});
   Future<void> addCashTransaction(String shiftUuid, String type, double amount, String reason);
   Future<Map<String, double>> getCashTransactionSummary(String shiftUuid);
   Future<int> getOpenOrderCount();

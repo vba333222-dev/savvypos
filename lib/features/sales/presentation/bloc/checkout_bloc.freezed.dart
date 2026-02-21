@@ -22,6 +22,9 @@ mixin _$CheckoutEvent {
     required TResult Function(
             PaymentMethod method, double amount, double? tendered, String? note)
         processPayment,
+    required TResult Function(PaymentPart part) addPaymentPart,
+    required TResult Function(int index) removePaymentPart,
+    required TResult Function() confirmSplitTenderCheckout,
     required TResult Function(double balance) refreshWithBalance,
     required TResult Function(LoyaltyMember member) attachLoyaltyMember,
     required TResult Function(double amount) initiateEdcPayment,
@@ -38,6 +41,9 @@ mixin _$CheckoutEvent {
     TResult? Function(PaymentMethod method, double amount, double? tendered,
             String? note)?
         processPayment,
+    TResult? Function(PaymentPart part)? addPaymentPart,
+    TResult? Function(int index)? removePaymentPart,
+    TResult? Function()? confirmSplitTenderCheckout,
     TResult? Function(double balance)? refreshWithBalance,
     TResult? Function(LoyaltyMember member)? attachLoyaltyMember,
     TResult? Function(double amount)? initiateEdcPayment,
@@ -53,6 +59,9 @@ mixin _$CheckoutEvent {
     TResult Function(PaymentMethod method, double amount, double? tendered,
             String? note)?
         processPayment,
+    TResult Function(PaymentPart part)? addPaymentPart,
+    TResult Function(int index)? removePaymentPart,
+    TResult Function()? confirmSplitTenderCheckout,
     TResult Function(double balance)? refreshWithBalance,
     TResult Function(LoyaltyMember member)? attachLoyaltyMember,
     TResult Function(double amount)? initiateEdcPayment,
@@ -67,6 +76,10 @@ mixin _$CheckoutEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_ProcessPayment value) processPayment,
+    required TResult Function(_AddPaymentPart value) addPaymentPart,
+    required TResult Function(_RemovePaymentPart value) removePaymentPart,
+    required TResult Function(_ConfirmSplitTenderCheckout value)
+        confirmSplitTenderCheckout,
     required TResult Function(_RefreshWithBalance value) refreshWithBalance,
     required TResult Function(_AttachLoyaltyMember value) attachLoyaltyMember,
     required TResult Function(_InitiateEdcPayment value) initiateEdcPayment,
@@ -79,6 +92,10 @@ mixin _$CheckoutEvent {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Started value)? started,
     TResult? Function(_ProcessPayment value)? processPayment,
+    TResult? Function(_AddPaymentPart value)? addPaymentPart,
+    TResult? Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult? Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
     TResult? Function(_RefreshWithBalance value)? refreshWithBalance,
     TResult? Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
     TResult? Function(_InitiateEdcPayment value)? initiateEdcPayment,
@@ -91,6 +108,10 @@ mixin _$CheckoutEvent {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_ProcessPayment value)? processPayment,
+    TResult Function(_AddPaymentPart value)? addPaymentPart,
+    TResult Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
     TResult Function(_RefreshWithBalance value)? refreshWithBalance,
     TResult Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
     TResult Function(_InitiateEdcPayment value)? initiateEdcPayment,
@@ -205,6 +226,9 @@ class _$StartedImpl implements _Started {
     required TResult Function(
             PaymentMethod method, double amount, double? tendered, String? note)
         processPayment,
+    required TResult Function(PaymentPart part) addPaymentPart,
+    required TResult Function(int index) removePaymentPart,
+    required TResult Function() confirmSplitTenderCheckout,
     required TResult Function(double balance) refreshWithBalance,
     required TResult Function(LoyaltyMember member) attachLoyaltyMember,
     required TResult Function(double amount) initiateEdcPayment,
@@ -224,6 +248,9 @@ class _$StartedImpl implements _Started {
     TResult? Function(PaymentMethod method, double amount, double? tendered,
             String? note)?
         processPayment,
+    TResult? Function(PaymentPart part)? addPaymentPart,
+    TResult? Function(int index)? removePaymentPart,
+    TResult? Function()? confirmSplitTenderCheckout,
     TResult? Function(double balance)? refreshWithBalance,
     TResult? Function(LoyaltyMember member)? attachLoyaltyMember,
     TResult? Function(double amount)? initiateEdcPayment,
@@ -242,6 +269,9 @@ class _$StartedImpl implements _Started {
     TResult Function(PaymentMethod method, double amount, double? tendered,
             String? note)?
         processPayment,
+    TResult Function(PaymentPart part)? addPaymentPart,
+    TResult Function(int index)? removePaymentPart,
+    TResult Function()? confirmSplitTenderCheckout,
     TResult Function(double balance)? refreshWithBalance,
     TResult Function(LoyaltyMember member)? attachLoyaltyMember,
     TResult Function(double amount)? initiateEdcPayment,
@@ -262,6 +292,10 @@ class _$StartedImpl implements _Started {
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_ProcessPayment value) processPayment,
+    required TResult Function(_AddPaymentPart value) addPaymentPart,
+    required TResult Function(_RemovePaymentPart value) removePaymentPart,
+    required TResult Function(_ConfirmSplitTenderCheckout value)
+        confirmSplitTenderCheckout,
     required TResult Function(_RefreshWithBalance value) refreshWithBalance,
     required TResult Function(_AttachLoyaltyMember value) attachLoyaltyMember,
     required TResult Function(_InitiateEdcPayment value) initiateEdcPayment,
@@ -277,6 +311,10 @@ class _$StartedImpl implements _Started {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Started value)? started,
     TResult? Function(_ProcessPayment value)? processPayment,
+    TResult? Function(_AddPaymentPart value)? addPaymentPart,
+    TResult? Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult? Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
     TResult? Function(_RefreshWithBalance value)? refreshWithBalance,
     TResult? Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
     TResult? Function(_InitiateEdcPayment value)? initiateEdcPayment,
@@ -292,6 +330,10 @@ class _$StartedImpl implements _Started {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_ProcessPayment value)? processPayment,
+    TResult Function(_AddPaymentPart value)? addPaymentPart,
+    TResult Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
     TResult Function(_RefreshWithBalance value)? refreshWithBalance,
     TResult Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
     TResult Function(_InitiateEdcPayment value)? initiateEdcPayment,
@@ -421,6 +463,9 @@ class _$ProcessPaymentImpl implements _ProcessPayment {
     required TResult Function(
             PaymentMethod method, double amount, double? tendered, String? note)
         processPayment,
+    required TResult Function(PaymentPart part) addPaymentPart,
+    required TResult Function(int index) removePaymentPart,
+    required TResult Function() confirmSplitTenderCheckout,
     required TResult Function(double balance) refreshWithBalance,
     required TResult Function(LoyaltyMember member) attachLoyaltyMember,
     required TResult Function(double amount) initiateEdcPayment,
@@ -440,6 +485,9 @@ class _$ProcessPaymentImpl implements _ProcessPayment {
     TResult? Function(PaymentMethod method, double amount, double? tendered,
             String? note)?
         processPayment,
+    TResult? Function(PaymentPart part)? addPaymentPart,
+    TResult? Function(int index)? removePaymentPart,
+    TResult? Function()? confirmSplitTenderCheckout,
     TResult? Function(double balance)? refreshWithBalance,
     TResult? Function(LoyaltyMember member)? attachLoyaltyMember,
     TResult? Function(double amount)? initiateEdcPayment,
@@ -458,6 +506,9 @@ class _$ProcessPaymentImpl implements _ProcessPayment {
     TResult Function(PaymentMethod method, double amount, double? tendered,
             String? note)?
         processPayment,
+    TResult Function(PaymentPart part)? addPaymentPart,
+    TResult Function(int index)? removePaymentPart,
+    TResult Function()? confirmSplitTenderCheckout,
     TResult Function(double balance)? refreshWithBalance,
     TResult Function(LoyaltyMember member)? attachLoyaltyMember,
     TResult Function(double amount)? initiateEdcPayment,
@@ -478,6 +529,10 @@ class _$ProcessPaymentImpl implements _ProcessPayment {
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_ProcessPayment value) processPayment,
+    required TResult Function(_AddPaymentPart value) addPaymentPart,
+    required TResult Function(_RemovePaymentPart value) removePaymentPart,
+    required TResult Function(_ConfirmSplitTenderCheckout value)
+        confirmSplitTenderCheckout,
     required TResult Function(_RefreshWithBalance value) refreshWithBalance,
     required TResult Function(_AttachLoyaltyMember value) attachLoyaltyMember,
     required TResult Function(_InitiateEdcPayment value) initiateEdcPayment,
@@ -493,6 +548,10 @@ class _$ProcessPaymentImpl implements _ProcessPayment {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Started value)? started,
     TResult? Function(_ProcessPayment value)? processPayment,
+    TResult? Function(_AddPaymentPart value)? addPaymentPart,
+    TResult? Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult? Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
     TResult? Function(_RefreshWithBalance value)? refreshWithBalance,
     TResult? Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
     TResult? Function(_InitiateEdcPayment value)? initiateEdcPayment,
@@ -508,6 +567,10 @@ class _$ProcessPaymentImpl implements _ProcessPayment {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_ProcessPayment value)? processPayment,
+    TResult Function(_AddPaymentPart value)? addPaymentPart,
+    TResult Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
     TResult Function(_RefreshWithBalance value)? refreshWithBalance,
     TResult Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
     TResult Function(_InitiateEdcPayment value)? initiateEdcPayment,
@@ -540,6 +603,598 @@ abstract class _ProcessPayment implements CheckoutEvent {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ProcessPaymentImplCopyWith<_$ProcessPaymentImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$AddPaymentPartImplCopyWith<$Res> {
+  factory _$$AddPaymentPartImplCopyWith(_$AddPaymentPartImpl value,
+          $Res Function(_$AddPaymentPartImpl) then) =
+      __$$AddPaymentPartImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({PaymentPart part});
+}
+
+/// @nodoc
+class __$$AddPaymentPartImplCopyWithImpl<$Res>
+    extends _$CheckoutEventCopyWithImpl<$Res, _$AddPaymentPartImpl>
+    implements _$$AddPaymentPartImplCopyWith<$Res> {
+  __$$AddPaymentPartImplCopyWithImpl(
+      _$AddPaymentPartImpl _value, $Res Function(_$AddPaymentPartImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CheckoutEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? part = null,
+  }) {
+    return _then(_$AddPaymentPartImpl(
+      null == part
+          ? _value.part
+          : part // ignore: cast_nullable_to_non_nullable
+              as PaymentPart,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$AddPaymentPartImpl implements _AddPaymentPart {
+  const _$AddPaymentPartImpl(this.part);
+
+  @override
+  final PaymentPart part;
+
+  @override
+  String toString() {
+    return 'CheckoutEvent.addPaymentPart(part: $part)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AddPaymentPartImpl &&
+            (identical(other.part, part) || other.part == part));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, part);
+
+  /// Create a copy of CheckoutEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AddPaymentPartImplCopyWith<_$AddPaymentPartImpl> get copyWith =>
+      __$$AddPaymentPartImplCopyWithImpl<_$AddPaymentPartImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String orderUuid, double totalAmount) started,
+    required TResult Function(
+            PaymentMethod method, double amount, double? tendered, String? note)
+        processPayment,
+    required TResult Function(PaymentPart part) addPaymentPart,
+    required TResult Function(int index) removePaymentPart,
+    required TResult Function() confirmSplitTenderCheckout,
+    required TResult Function(double balance) refreshWithBalance,
+    required TResult Function(LoyaltyMember member) attachLoyaltyMember,
+    required TResult Function(double amount) initiateEdcPayment,
+    required TResult Function(
+            double amount, String referenceId, String? approvalCode)
+        edcPaymentConfirmed,
+    required TResult Function(String reason) edcPaymentFailed,
+    required TResult Function() cancelEdcPayment,
+  }) {
+    return addPaymentPart(part);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String orderUuid, double totalAmount)? started,
+    TResult? Function(PaymentMethod method, double amount, double? tendered,
+            String? note)?
+        processPayment,
+    TResult? Function(PaymentPart part)? addPaymentPart,
+    TResult? Function(int index)? removePaymentPart,
+    TResult? Function()? confirmSplitTenderCheckout,
+    TResult? Function(double balance)? refreshWithBalance,
+    TResult? Function(LoyaltyMember member)? attachLoyaltyMember,
+    TResult? Function(double amount)? initiateEdcPayment,
+    TResult? Function(double amount, String referenceId, String? approvalCode)?
+        edcPaymentConfirmed,
+    TResult? Function(String reason)? edcPaymentFailed,
+    TResult? Function()? cancelEdcPayment,
+  }) {
+    return addPaymentPart?.call(part);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String orderUuid, double totalAmount)? started,
+    TResult Function(PaymentMethod method, double amount, double? tendered,
+            String? note)?
+        processPayment,
+    TResult Function(PaymentPart part)? addPaymentPart,
+    TResult Function(int index)? removePaymentPart,
+    TResult Function()? confirmSplitTenderCheckout,
+    TResult Function(double balance)? refreshWithBalance,
+    TResult Function(LoyaltyMember member)? attachLoyaltyMember,
+    TResult Function(double amount)? initiateEdcPayment,
+    TResult Function(double amount, String referenceId, String? approvalCode)?
+        edcPaymentConfirmed,
+    TResult Function(String reason)? edcPaymentFailed,
+    TResult Function()? cancelEdcPayment,
+    required TResult orElse(),
+  }) {
+    if (addPaymentPart != null) {
+      return addPaymentPart(part);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) started,
+    required TResult Function(_ProcessPayment value) processPayment,
+    required TResult Function(_AddPaymentPart value) addPaymentPart,
+    required TResult Function(_RemovePaymentPart value) removePaymentPart,
+    required TResult Function(_ConfirmSplitTenderCheckout value)
+        confirmSplitTenderCheckout,
+    required TResult Function(_RefreshWithBalance value) refreshWithBalance,
+    required TResult Function(_AttachLoyaltyMember value) attachLoyaltyMember,
+    required TResult Function(_InitiateEdcPayment value) initiateEdcPayment,
+    required TResult Function(_EdcPaymentConfirmed value) edcPaymentConfirmed,
+    required TResult Function(_EdcPaymentFailed value) edcPaymentFailed,
+    required TResult Function(_CancelEdcPayment value) cancelEdcPayment,
+  }) {
+    return addPaymentPart(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Started value)? started,
+    TResult? Function(_ProcessPayment value)? processPayment,
+    TResult? Function(_AddPaymentPart value)? addPaymentPart,
+    TResult? Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult? Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
+    TResult? Function(_RefreshWithBalance value)? refreshWithBalance,
+    TResult? Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
+    TResult? Function(_InitiateEdcPayment value)? initiateEdcPayment,
+    TResult? Function(_EdcPaymentConfirmed value)? edcPaymentConfirmed,
+    TResult? Function(_EdcPaymentFailed value)? edcPaymentFailed,
+    TResult? Function(_CancelEdcPayment value)? cancelEdcPayment,
+  }) {
+    return addPaymentPart?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Started value)? started,
+    TResult Function(_ProcessPayment value)? processPayment,
+    TResult Function(_AddPaymentPart value)? addPaymentPart,
+    TResult Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
+    TResult Function(_RefreshWithBalance value)? refreshWithBalance,
+    TResult Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
+    TResult Function(_InitiateEdcPayment value)? initiateEdcPayment,
+    TResult Function(_EdcPaymentConfirmed value)? edcPaymentConfirmed,
+    TResult Function(_EdcPaymentFailed value)? edcPaymentFailed,
+    TResult Function(_CancelEdcPayment value)? cancelEdcPayment,
+    required TResult orElse(),
+  }) {
+    if (addPaymentPart != null) {
+      return addPaymentPart(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _AddPaymentPart implements CheckoutEvent {
+  const factory _AddPaymentPart(final PaymentPart part) = _$AddPaymentPartImpl;
+
+  PaymentPart get part;
+
+  /// Create a copy of CheckoutEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$AddPaymentPartImplCopyWith<_$AddPaymentPartImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$RemovePaymentPartImplCopyWith<$Res> {
+  factory _$$RemovePaymentPartImplCopyWith(_$RemovePaymentPartImpl value,
+          $Res Function(_$RemovePaymentPartImpl) then) =
+      __$$RemovePaymentPartImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({int index});
+}
+
+/// @nodoc
+class __$$RemovePaymentPartImplCopyWithImpl<$Res>
+    extends _$CheckoutEventCopyWithImpl<$Res, _$RemovePaymentPartImpl>
+    implements _$$RemovePaymentPartImplCopyWith<$Res> {
+  __$$RemovePaymentPartImplCopyWithImpl(_$RemovePaymentPartImpl _value,
+      $Res Function(_$RemovePaymentPartImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CheckoutEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? index = null,
+  }) {
+    return _then(_$RemovePaymentPartImpl(
+      null == index
+          ? _value.index
+          : index // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$RemovePaymentPartImpl implements _RemovePaymentPart {
+  const _$RemovePaymentPartImpl(this.index);
+
+  @override
+  final int index;
+
+  @override
+  String toString() {
+    return 'CheckoutEvent.removePaymentPart(index: $index)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$RemovePaymentPartImpl &&
+            (identical(other.index, index) || other.index == index));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, index);
+
+  /// Create a copy of CheckoutEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$RemovePaymentPartImplCopyWith<_$RemovePaymentPartImpl> get copyWith =>
+      __$$RemovePaymentPartImplCopyWithImpl<_$RemovePaymentPartImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String orderUuid, double totalAmount) started,
+    required TResult Function(
+            PaymentMethod method, double amount, double? tendered, String? note)
+        processPayment,
+    required TResult Function(PaymentPart part) addPaymentPart,
+    required TResult Function(int index) removePaymentPart,
+    required TResult Function() confirmSplitTenderCheckout,
+    required TResult Function(double balance) refreshWithBalance,
+    required TResult Function(LoyaltyMember member) attachLoyaltyMember,
+    required TResult Function(double amount) initiateEdcPayment,
+    required TResult Function(
+            double amount, String referenceId, String? approvalCode)
+        edcPaymentConfirmed,
+    required TResult Function(String reason) edcPaymentFailed,
+    required TResult Function() cancelEdcPayment,
+  }) {
+    return removePaymentPart(index);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String orderUuid, double totalAmount)? started,
+    TResult? Function(PaymentMethod method, double amount, double? tendered,
+            String? note)?
+        processPayment,
+    TResult? Function(PaymentPart part)? addPaymentPart,
+    TResult? Function(int index)? removePaymentPart,
+    TResult? Function()? confirmSplitTenderCheckout,
+    TResult? Function(double balance)? refreshWithBalance,
+    TResult? Function(LoyaltyMember member)? attachLoyaltyMember,
+    TResult? Function(double amount)? initiateEdcPayment,
+    TResult? Function(double amount, String referenceId, String? approvalCode)?
+        edcPaymentConfirmed,
+    TResult? Function(String reason)? edcPaymentFailed,
+    TResult? Function()? cancelEdcPayment,
+  }) {
+    return removePaymentPart?.call(index);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String orderUuid, double totalAmount)? started,
+    TResult Function(PaymentMethod method, double amount, double? tendered,
+            String? note)?
+        processPayment,
+    TResult Function(PaymentPart part)? addPaymentPart,
+    TResult Function(int index)? removePaymentPart,
+    TResult Function()? confirmSplitTenderCheckout,
+    TResult Function(double balance)? refreshWithBalance,
+    TResult Function(LoyaltyMember member)? attachLoyaltyMember,
+    TResult Function(double amount)? initiateEdcPayment,
+    TResult Function(double amount, String referenceId, String? approvalCode)?
+        edcPaymentConfirmed,
+    TResult Function(String reason)? edcPaymentFailed,
+    TResult Function()? cancelEdcPayment,
+    required TResult orElse(),
+  }) {
+    if (removePaymentPart != null) {
+      return removePaymentPart(index);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) started,
+    required TResult Function(_ProcessPayment value) processPayment,
+    required TResult Function(_AddPaymentPart value) addPaymentPart,
+    required TResult Function(_RemovePaymentPart value) removePaymentPart,
+    required TResult Function(_ConfirmSplitTenderCheckout value)
+        confirmSplitTenderCheckout,
+    required TResult Function(_RefreshWithBalance value) refreshWithBalance,
+    required TResult Function(_AttachLoyaltyMember value) attachLoyaltyMember,
+    required TResult Function(_InitiateEdcPayment value) initiateEdcPayment,
+    required TResult Function(_EdcPaymentConfirmed value) edcPaymentConfirmed,
+    required TResult Function(_EdcPaymentFailed value) edcPaymentFailed,
+    required TResult Function(_CancelEdcPayment value) cancelEdcPayment,
+  }) {
+    return removePaymentPart(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Started value)? started,
+    TResult? Function(_ProcessPayment value)? processPayment,
+    TResult? Function(_AddPaymentPart value)? addPaymentPart,
+    TResult? Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult? Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
+    TResult? Function(_RefreshWithBalance value)? refreshWithBalance,
+    TResult? Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
+    TResult? Function(_InitiateEdcPayment value)? initiateEdcPayment,
+    TResult? Function(_EdcPaymentConfirmed value)? edcPaymentConfirmed,
+    TResult? Function(_EdcPaymentFailed value)? edcPaymentFailed,
+    TResult? Function(_CancelEdcPayment value)? cancelEdcPayment,
+  }) {
+    return removePaymentPart?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Started value)? started,
+    TResult Function(_ProcessPayment value)? processPayment,
+    TResult Function(_AddPaymentPart value)? addPaymentPart,
+    TResult Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
+    TResult Function(_RefreshWithBalance value)? refreshWithBalance,
+    TResult Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
+    TResult Function(_InitiateEdcPayment value)? initiateEdcPayment,
+    TResult Function(_EdcPaymentConfirmed value)? edcPaymentConfirmed,
+    TResult Function(_EdcPaymentFailed value)? edcPaymentFailed,
+    TResult Function(_CancelEdcPayment value)? cancelEdcPayment,
+    required TResult orElse(),
+  }) {
+    if (removePaymentPart != null) {
+      return removePaymentPart(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _RemovePaymentPart implements CheckoutEvent {
+  const factory _RemovePaymentPart(final int index) = _$RemovePaymentPartImpl;
+
+  int get index;
+
+  /// Create a copy of CheckoutEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$RemovePaymentPartImplCopyWith<_$RemovePaymentPartImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ConfirmSplitTenderCheckoutImplCopyWith<$Res> {
+  factory _$$ConfirmSplitTenderCheckoutImplCopyWith(
+          _$ConfirmSplitTenderCheckoutImpl value,
+          $Res Function(_$ConfirmSplitTenderCheckoutImpl) then) =
+      __$$ConfirmSplitTenderCheckoutImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$ConfirmSplitTenderCheckoutImplCopyWithImpl<$Res>
+    extends _$CheckoutEventCopyWithImpl<$Res, _$ConfirmSplitTenderCheckoutImpl>
+    implements _$$ConfirmSplitTenderCheckoutImplCopyWith<$Res> {
+  __$$ConfirmSplitTenderCheckoutImplCopyWithImpl(
+      _$ConfirmSplitTenderCheckoutImpl _value,
+      $Res Function(_$ConfirmSplitTenderCheckoutImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CheckoutEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$ConfirmSplitTenderCheckoutImpl implements _ConfirmSplitTenderCheckout {
+  const _$ConfirmSplitTenderCheckoutImpl();
+
+  @override
+  String toString() {
+    return 'CheckoutEvent.confirmSplitTenderCheckout()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ConfirmSplitTenderCheckoutImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String orderUuid, double totalAmount) started,
+    required TResult Function(
+            PaymentMethod method, double amount, double? tendered, String? note)
+        processPayment,
+    required TResult Function(PaymentPart part) addPaymentPart,
+    required TResult Function(int index) removePaymentPart,
+    required TResult Function() confirmSplitTenderCheckout,
+    required TResult Function(double balance) refreshWithBalance,
+    required TResult Function(LoyaltyMember member) attachLoyaltyMember,
+    required TResult Function(double amount) initiateEdcPayment,
+    required TResult Function(
+            double amount, String referenceId, String? approvalCode)
+        edcPaymentConfirmed,
+    required TResult Function(String reason) edcPaymentFailed,
+    required TResult Function() cancelEdcPayment,
+  }) {
+    return confirmSplitTenderCheckout();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String orderUuid, double totalAmount)? started,
+    TResult? Function(PaymentMethod method, double amount, double? tendered,
+            String? note)?
+        processPayment,
+    TResult? Function(PaymentPart part)? addPaymentPart,
+    TResult? Function(int index)? removePaymentPart,
+    TResult? Function()? confirmSplitTenderCheckout,
+    TResult? Function(double balance)? refreshWithBalance,
+    TResult? Function(LoyaltyMember member)? attachLoyaltyMember,
+    TResult? Function(double amount)? initiateEdcPayment,
+    TResult? Function(double amount, String referenceId, String? approvalCode)?
+        edcPaymentConfirmed,
+    TResult? Function(String reason)? edcPaymentFailed,
+    TResult? Function()? cancelEdcPayment,
+  }) {
+    return confirmSplitTenderCheckout?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String orderUuid, double totalAmount)? started,
+    TResult Function(PaymentMethod method, double amount, double? tendered,
+            String? note)?
+        processPayment,
+    TResult Function(PaymentPart part)? addPaymentPart,
+    TResult Function(int index)? removePaymentPart,
+    TResult Function()? confirmSplitTenderCheckout,
+    TResult Function(double balance)? refreshWithBalance,
+    TResult Function(LoyaltyMember member)? attachLoyaltyMember,
+    TResult Function(double amount)? initiateEdcPayment,
+    TResult Function(double amount, String referenceId, String? approvalCode)?
+        edcPaymentConfirmed,
+    TResult Function(String reason)? edcPaymentFailed,
+    TResult Function()? cancelEdcPayment,
+    required TResult orElse(),
+  }) {
+    if (confirmSplitTenderCheckout != null) {
+      return confirmSplitTenderCheckout();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) started,
+    required TResult Function(_ProcessPayment value) processPayment,
+    required TResult Function(_AddPaymentPart value) addPaymentPart,
+    required TResult Function(_RemovePaymentPart value) removePaymentPart,
+    required TResult Function(_ConfirmSplitTenderCheckout value)
+        confirmSplitTenderCheckout,
+    required TResult Function(_RefreshWithBalance value) refreshWithBalance,
+    required TResult Function(_AttachLoyaltyMember value) attachLoyaltyMember,
+    required TResult Function(_InitiateEdcPayment value) initiateEdcPayment,
+    required TResult Function(_EdcPaymentConfirmed value) edcPaymentConfirmed,
+    required TResult Function(_EdcPaymentFailed value) edcPaymentFailed,
+    required TResult Function(_CancelEdcPayment value) cancelEdcPayment,
+  }) {
+    return confirmSplitTenderCheckout(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Started value)? started,
+    TResult? Function(_ProcessPayment value)? processPayment,
+    TResult? Function(_AddPaymentPart value)? addPaymentPart,
+    TResult? Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult? Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
+    TResult? Function(_RefreshWithBalance value)? refreshWithBalance,
+    TResult? Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
+    TResult? Function(_InitiateEdcPayment value)? initiateEdcPayment,
+    TResult? Function(_EdcPaymentConfirmed value)? edcPaymentConfirmed,
+    TResult? Function(_EdcPaymentFailed value)? edcPaymentFailed,
+    TResult? Function(_CancelEdcPayment value)? cancelEdcPayment,
+  }) {
+    return confirmSplitTenderCheckout?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Started value)? started,
+    TResult Function(_ProcessPayment value)? processPayment,
+    TResult Function(_AddPaymentPart value)? addPaymentPart,
+    TResult Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
+    TResult Function(_RefreshWithBalance value)? refreshWithBalance,
+    TResult Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
+    TResult Function(_InitiateEdcPayment value)? initiateEdcPayment,
+    TResult Function(_EdcPaymentConfirmed value)? edcPaymentConfirmed,
+    TResult Function(_EdcPaymentFailed value)? edcPaymentFailed,
+    TResult Function(_CancelEdcPayment value)? cancelEdcPayment,
+    required TResult orElse(),
+  }) {
+    if (confirmSplitTenderCheckout != null) {
+      return confirmSplitTenderCheckout(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ConfirmSplitTenderCheckout implements CheckoutEvent {
+  const factory _ConfirmSplitTenderCheckout() =
+      _$ConfirmSplitTenderCheckoutImpl;
 }
 
 /// @nodoc
@@ -615,6 +1270,9 @@ class _$RefreshWithBalanceImpl implements _RefreshWithBalance {
     required TResult Function(
             PaymentMethod method, double amount, double? tendered, String? note)
         processPayment,
+    required TResult Function(PaymentPart part) addPaymentPart,
+    required TResult Function(int index) removePaymentPart,
+    required TResult Function() confirmSplitTenderCheckout,
     required TResult Function(double balance) refreshWithBalance,
     required TResult Function(LoyaltyMember member) attachLoyaltyMember,
     required TResult Function(double amount) initiateEdcPayment,
@@ -634,6 +1292,9 @@ class _$RefreshWithBalanceImpl implements _RefreshWithBalance {
     TResult? Function(PaymentMethod method, double amount, double? tendered,
             String? note)?
         processPayment,
+    TResult? Function(PaymentPart part)? addPaymentPart,
+    TResult? Function(int index)? removePaymentPart,
+    TResult? Function()? confirmSplitTenderCheckout,
     TResult? Function(double balance)? refreshWithBalance,
     TResult? Function(LoyaltyMember member)? attachLoyaltyMember,
     TResult? Function(double amount)? initiateEdcPayment,
@@ -652,6 +1313,9 @@ class _$RefreshWithBalanceImpl implements _RefreshWithBalance {
     TResult Function(PaymentMethod method, double amount, double? tendered,
             String? note)?
         processPayment,
+    TResult Function(PaymentPart part)? addPaymentPart,
+    TResult Function(int index)? removePaymentPart,
+    TResult Function()? confirmSplitTenderCheckout,
     TResult Function(double balance)? refreshWithBalance,
     TResult Function(LoyaltyMember member)? attachLoyaltyMember,
     TResult Function(double amount)? initiateEdcPayment,
@@ -672,6 +1336,10 @@ class _$RefreshWithBalanceImpl implements _RefreshWithBalance {
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_ProcessPayment value) processPayment,
+    required TResult Function(_AddPaymentPart value) addPaymentPart,
+    required TResult Function(_RemovePaymentPart value) removePaymentPart,
+    required TResult Function(_ConfirmSplitTenderCheckout value)
+        confirmSplitTenderCheckout,
     required TResult Function(_RefreshWithBalance value) refreshWithBalance,
     required TResult Function(_AttachLoyaltyMember value) attachLoyaltyMember,
     required TResult Function(_InitiateEdcPayment value) initiateEdcPayment,
@@ -687,6 +1355,10 @@ class _$RefreshWithBalanceImpl implements _RefreshWithBalance {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Started value)? started,
     TResult? Function(_ProcessPayment value)? processPayment,
+    TResult? Function(_AddPaymentPart value)? addPaymentPart,
+    TResult? Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult? Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
     TResult? Function(_RefreshWithBalance value)? refreshWithBalance,
     TResult? Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
     TResult? Function(_InitiateEdcPayment value)? initiateEdcPayment,
@@ -702,6 +1374,10 @@ class _$RefreshWithBalanceImpl implements _RefreshWithBalance {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_ProcessPayment value)? processPayment,
+    TResult Function(_AddPaymentPart value)? addPaymentPart,
+    TResult Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
     TResult Function(_RefreshWithBalance value)? refreshWithBalance,
     TResult Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
     TResult Function(_InitiateEdcPayment value)? initiateEdcPayment,
@@ -815,6 +1491,9 @@ class _$AttachLoyaltyMemberImpl implements _AttachLoyaltyMember {
     required TResult Function(
             PaymentMethod method, double amount, double? tendered, String? note)
         processPayment,
+    required TResult Function(PaymentPart part) addPaymentPart,
+    required TResult Function(int index) removePaymentPart,
+    required TResult Function() confirmSplitTenderCheckout,
     required TResult Function(double balance) refreshWithBalance,
     required TResult Function(LoyaltyMember member) attachLoyaltyMember,
     required TResult Function(double amount) initiateEdcPayment,
@@ -834,6 +1513,9 @@ class _$AttachLoyaltyMemberImpl implements _AttachLoyaltyMember {
     TResult? Function(PaymentMethod method, double amount, double? tendered,
             String? note)?
         processPayment,
+    TResult? Function(PaymentPart part)? addPaymentPart,
+    TResult? Function(int index)? removePaymentPart,
+    TResult? Function()? confirmSplitTenderCheckout,
     TResult? Function(double balance)? refreshWithBalance,
     TResult? Function(LoyaltyMember member)? attachLoyaltyMember,
     TResult? Function(double amount)? initiateEdcPayment,
@@ -852,6 +1534,9 @@ class _$AttachLoyaltyMemberImpl implements _AttachLoyaltyMember {
     TResult Function(PaymentMethod method, double amount, double? tendered,
             String? note)?
         processPayment,
+    TResult Function(PaymentPart part)? addPaymentPart,
+    TResult Function(int index)? removePaymentPart,
+    TResult Function()? confirmSplitTenderCheckout,
     TResult Function(double balance)? refreshWithBalance,
     TResult Function(LoyaltyMember member)? attachLoyaltyMember,
     TResult Function(double amount)? initiateEdcPayment,
@@ -872,6 +1557,10 @@ class _$AttachLoyaltyMemberImpl implements _AttachLoyaltyMember {
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_ProcessPayment value) processPayment,
+    required TResult Function(_AddPaymentPart value) addPaymentPart,
+    required TResult Function(_RemovePaymentPart value) removePaymentPart,
+    required TResult Function(_ConfirmSplitTenderCheckout value)
+        confirmSplitTenderCheckout,
     required TResult Function(_RefreshWithBalance value) refreshWithBalance,
     required TResult Function(_AttachLoyaltyMember value) attachLoyaltyMember,
     required TResult Function(_InitiateEdcPayment value) initiateEdcPayment,
@@ -887,6 +1576,10 @@ class _$AttachLoyaltyMemberImpl implements _AttachLoyaltyMember {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Started value)? started,
     TResult? Function(_ProcessPayment value)? processPayment,
+    TResult? Function(_AddPaymentPart value)? addPaymentPart,
+    TResult? Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult? Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
     TResult? Function(_RefreshWithBalance value)? refreshWithBalance,
     TResult? Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
     TResult? Function(_InitiateEdcPayment value)? initiateEdcPayment,
@@ -902,6 +1595,10 @@ class _$AttachLoyaltyMemberImpl implements _AttachLoyaltyMember {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_ProcessPayment value)? processPayment,
+    TResult Function(_AddPaymentPart value)? addPaymentPart,
+    TResult Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
     TResult Function(_RefreshWithBalance value)? refreshWithBalance,
     TResult Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
     TResult Function(_InitiateEdcPayment value)? initiateEdcPayment,
@@ -1003,6 +1700,9 @@ class _$InitiateEdcPaymentImpl implements _InitiateEdcPayment {
     required TResult Function(
             PaymentMethod method, double amount, double? tendered, String? note)
         processPayment,
+    required TResult Function(PaymentPart part) addPaymentPart,
+    required TResult Function(int index) removePaymentPart,
+    required TResult Function() confirmSplitTenderCheckout,
     required TResult Function(double balance) refreshWithBalance,
     required TResult Function(LoyaltyMember member) attachLoyaltyMember,
     required TResult Function(double amount) initiateEdcPayment,
@@ -1022,6 +1722,9 @@ class _$InitiateEdcPaymentImpl implements _InitiateEdcPayment {
     TResult? Function(PaymentMethod method, double amount, double? tendered,
             String? note)?
         processPayment,
+    TResult? Function(PaymentPart part)? addPaymentPart,
+    TResult? Function(int index)? removePaymentPart,
+    TResult? Function()? confirmSplitTenderCheckout,
     TResult? Function(double balance)? refreshWithBalance,
     TResult? Function(LoyaltyMember member)? attachLoyaltyMember,
     TResult? Function(double amount)? initiateEdcPayment,
@@ -1040,6 +1743,9 @@ class _$InitiateEdcPaymentImpl implements _InitiateEdcPayment {
     TResult Function(PaymentMethod method, double amount, double? tendered,
             String? note)?
         processPayment,
+    TResult Function(PaymentPart part)? addPaymentPart,
+    TResult Function(int index)? removePaymentPart,
+    TResult Function()? confirmSplitTenderCheckout,
     TResult Function(double balance)? refreshWithBalance,
     TResult Function(LoyaltyMember member)? attachLoyaltyMember,
     TResult Function(double amount)? initiateEdcPayment,
@@ -1060,6 +1766,10 @@ class _$InitiateEdcPaymentImpl implements _InitiateEdcPayment {
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_ProcessPayment value) processPayment,
+    required TResult Function(_AddPaymentPart value) addPaymentPart,
+    required TResult Function(_RemovePaymentPart value) removePaymentPart,
+    required TResult Function(_ConfirmSplitTenderCheckout value)
+        confirmSplitTenderCheckout,
     required TResult Function(_RefreshWithBalance value) refreshWithBalance,
     required TResult Function(_AttachLoyaltyMember value) attachLoyaltyMember,
     required TResult Function(_InitiateEdcPayment value) initiateEdcPayment,
@@ -1075,6 +1785,10 @@ class _$InitiateEdcPaymentImpl implements _InitiateEdcPayment {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Started value)? started,
     TResult? Function(_ProcessPayment value)? processPayment,
+    TResult? Function(_AddPaymentPart value)? addPaymentPart,
+    TResult? Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult? Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
     TResult? Function(_RefreshWithBalance value)? refreshWithBalance,
     TResult? Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
     TResult? Function(_InitiateEdcPayment value)? initiateEdcPayment,
@@ -1090,6 +1804,10 @@ class _$InitiateEdcPaymentImpl implements _InitiateEdcPayment {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_ProcessPayment value)? processPayment,
+    TResult Function(_AddPaymentPart value)? addPaymentPart,
+    TResult Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
     TResult Function(_RefreshWithBalance value)? refreshWithBalance,
     TResult Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
     TResult Function(_InitiateEdcPayment value)? initiateEdcPayment,
@@ -1211,6 +1929,9 @@ class _$EdcPaymentConfirmedImpl implements _EdcPaymentConfirmed {
     required TResult Function(
             PaymentMethod method, double amount, double? tendered, String? note)
         processPayment,
+    required TResult Function(PaymentPart part) addPaymentPart,
+    required TResult Function(int index) removePaymentPart,
+    required TResult Function() confirmSplitTenderCheckout,
     required TResult Function(double balance) refreshWithBalance,
     required TResult Function(LoyaltyMember member) attachLoyaltyMember,
     required TResult Function(double amount) initiateEdcPayment,
@@ -1230,6 +1951,9 @@ class _$EdcPaymentConfirmedImpl implements _EdcPaymentConfirmed {
     TResult? Function(PaymentMethod method, double amount, double? tendered,
             String? note)?
         processPayment,
+    TResult? Function(PaymentPart part)? addPaymentPart,
+    TResult? Function(int index)? removePaymentPart,
+    TResult? Function()? confirmSplitTenderCheckout,
     TResult? Function(double balance)? refreshWithBalance,
     TResult? Function(LoyaltyMember member)? attachLoyaltyMember,
     TResult? Function(double amount)? initiateEdcPayment,
@@ -1248,6 +1972,9 @@ class _$EdcPaymentConfirmedImpl implements _EdcPaymentConfirmed {
     TResult Function(PaymentMethod method, double amount, double? tendered,
             String? note)?
         processPayment,
+    TResult Function(PaymentPart part)? addPaymentPart,
+    TResult Function(int index)? removePaymentPart,
+    TResult Function()? confirmSplitTenderCheckout,
     TResult Function(double balance)? refreshWithBalance,
     TResult Function(LoyaltyMember member)? attachLoyaltyMember,
     TResult Function(double amount)? initiateEdcPayment,
@@ -1268,6 +1995,10 @@ class _$EdcPaymentConfirmedImpl implements _EdcPaymentConfirmed {
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_ProcessPayment value) processPayment,
+    required TResult Function(_AddPaymentPart value) addPaymentPart,
+    required TResult Function(_RemovePaymentPart value) removePaymentPart,
+    required TResult Function(_ConfirmSplitTenderCheckout value)
+        confirmSplitTenderCheckout,
     required TResult Function(_RefreshWithBalance value) refreshWithBalance,
     required TResult Function(_AttachLoyaltyMember value) attachLoyaltyMember,
     required TResult Function(_InitiateEdcPayment value) initiateEdcPayment,
@@ -1283,6 +2014,10 @@ class _$EdcPaymentConfirmedImpl implements _EdcPaymentConfirmed {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Started value)? started,
     TResult? Function(_ProcessPayment value)? processPayment,
+    TResult? Function(_AddPaymentPart value)? addPaymentPart,
+    TResult? Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult? Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
     TResult? Function(_RefreshWithBalance value)? refreshWithBalance,
     TResult? Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
     TResult? Function(_InitiateEdcPayment value)? initiateEdcPayment,
@@ -1298,6 +2033,10 @@ class _$EdcPaymentConfirmedImpl implements _EdcPaymentConfirmed {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_ProcessPayment value)? processPayment,
+    TResult Function(_AddPaymentPart value)? addPaymentPart,
+    TResult Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
     TResult Function(_RefreshWithBalance value)? refreshWithBalance,
     TResult Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
     TResult Function(_InitiateEdcPayment value)? initiateEdcPayment,
@@ -1403,6 +2142,9 @@ class _$EdcPaymentFailedImpl implements _EdcPaymentFailed {
     required TResult Function(
             PaymentMethod method, double amount, double? tendered, String? note)
         processPayment,
+    required TResult Function(PaymentPart part) addPaymentPart,
+    required TResult Function(int index) removePaymentPart,
+    required TResult Function() confirmSplitTenderCheckout,
     required TResult Function(double balance) refreshWithBalance,
     required TResult Function(LoyaltyMember member) attachLoyaltyMember,
     required TResult Function(double amount) initiateEdcPayment,
@@ -1422,6 +2164,9 @@ class _$EdcPaymentFailedImpl implements _EdcPaymentFailed {
     TResult? Function(PaymentMethod method, double amount, double? tendered,
             String? note)?
         processPayment,
+    TResult? Function(PaymentPart part)? addPaymentPart,
+    TResult? Function(int index)? removePaymentPart,
+    TResult? Function()? confirmSplitTenderCheckout,
     TResult? Function(double balance)? refreshWithBalance,
     TResult? Function(LoyaltyMember member)? attachLoyaltyMember,
     TResult? Function(double amount)? initiateEdcPayment,
@@ -1440,6 +2185,9 @@ class _$EdcPaymentFailedImpl implements _EdcPaymentFailed {
     TResult Function(PaymentMethod method, double amount, double? tendered,
             String? note)?
         processPayment,
+    TResult Function(PaymentPart part)? addPaymentPart,
+    TResult Function(int index)? removePaymentPart,
+    TResult Function()? confirmSplitTenderCheckout,
     TResult Function(double balance)? refreshWithBalance,
     TResult Function(LoyaltyMember member)? attachLoyaltyMember,
     TResult Function(double amount)? initiateEdcPayment,
@@ -1460,6 +2208,10 @@ class _$EdcPaymentFailedImpl implements _EdcPaymentFailed {
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_ProcessPayment value) processPayment,
+    required TResult Function(_AddPaymentPart value) addPaymentPart,
+    required TResult Function(_RemovePaymentPart value) removePaymentPart,
+    required TResult Function(_ConfirmSplitTenderCheckout value)
+        confirmSplitTenderCheckout,
     required TResult Function(_RefreshWithBalance value) refreshWithBalance,
     required TResult Function(_AttachLoyaltyMember value) attachLoyaltyMember,
     required TResult Function(_InitiateEdcPayment value) initiateEdcPayment,
@@ -1475,6 +2227,10 @@ class _$EdcPaymentFailedImpl implements _EdcPaymentFailed {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Started value)? started,
     TResult? Function(_ProcessPayment value)? processPayment,
+    TResult? Function(_AddPaymentPart value)? addPaymentPart,
+    TResult? Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult? Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
     TResult? Function(_RefreshWithBalance value)? refreshWithBalance,
     TResult? Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
     TResult? Function(_InitiateEdcPayment value)? initiateEdcPayment,
@@ -1490,6 +2246,10 @@ class _$EdcPaymentFailedImpl implements _EdcPaymentFailed {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_ProcessPayment value)? processPayment,
+    TResult Function(_AddPaymentPart value)? addPaymentPart,
+    TResult Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
     TResult Function(_RefreshWithBalance value)? refreshWithBalance,
     TResult Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
     TResult Function(_InitiateEdcPayment value)? initiateEdcPayment,
@@ -1562,6 +2322,9 @@ class _$CancelEdcPaymentImpl implements _CancelEdcPayment {
     required TResult Function(
             PaymentMethod method, double amount, double? tendered, String? note)
         processPayment,
+    required TResult Function(PaymentPart part) addPaymentPart,
+    required TResult Function(int index) removePaymentPart,
+    required TResult Function() confirmSplitTenderCheckout,
     required TResult Function(double balance) refreshWithBalance,
     required TResult Function(LoyaltyMember member) attachLoyaltyMember,
     required TResult Function(double amount) initiateEdcPayment,
@@ -1581,6 +2344,9 @@ class _$CancelEdcPaymentImpl implements _CancelEdcPayment {
     TResult? Function(PaymentMethod method, double amount, double? tendered,
             String? note)?
         processPayment,
+    TResult? Function(PaymentPart part)? addPaymentPart,
+    TResult? Function(int index)? removePaymentPart,
+    TResult? Function()? confirmSplitTenderCheckout,
     TResult? Function(double balance)? refreshWithBalance,
     TResult? Function(LoyaltyMember member)? attachLoyaltyMember,
     TResult? Function(double amount)? initiateEdcPayment,
@@ -1599,6 +2365,9 @@ class _$CancelEdcPaymentImpl implements _CancelEdcPayment {
     TResult Function(PaymentMethod method, double amount, double? tendered,
             String? note)?
         processPayment,
+    TResult Function(PaymentPart part)? addPaymentPart,
+    TResult Function(int index)? removePaymentPart,
+    TResult Function()? confirmSplitTenderCheckout,
     TResult Function(double balance)? refreshWithBalance,
     TResult Function(LoyaltyMember member)? attachLoyaltyMember,
     TResult Function(double amount)? initiateEdcPayment,
@@ -1619,6 +2388,10 @@ class _$CancelEdcPaymentImpl implements _CancelEdcPayment {
   TResult map<TResult extends Object?>({
     required TResult Function(_Started value) started,
     required TResult Function(_ProcessPayment value) processPayment,
+    required TResult Function(_AddPaymentPart value) addPaymentPart,
+    required TResult Function(_RemovePaymentPart value) removePaymentPart,
+    required TResult Function(_ConfirmSplitTenderCheckout value)
+        confirmSplitTenderCheckout,
     required TResult Function(_RefreshWithBalance value) refreshWithBalance,
     required TResult Function(_AttachLoyaltyMember value) attachLoyaltyMember,
     required TResult Function(_InitiateEdcPayment value) initiateEdcPayment,
@@ -1634,6 +2407,10 @@ class _$CancelEdcPaymentImpl implements _CancelEdcPayment {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Started value)? started,
     TResult? Function(_ProcessPayment value)? processPayment,
+    TResult? Function(_AddPaymentPart value)? addPaymentPart,
+    TResult? Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult? Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
     TResult? Function(_RefreshWithBalance value)? refreshWithBalance,
     TResult? Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
     TResult? Function(_InitiateEdcPayment value)? initiateEdcPayment,
@@ -1649,6 +2426,10 @@ class _$CancelEdcPaymentImpl implements _CancelEdcPayment {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(_ProcessPayment value)? processPayment,
+    TResult Function(_AddPaymentPart value)? addPaymentPart,
+    TResult Function(_RemovePaymentPart value)? removePaymentPart,
+    TResult Function(_ConfirmSplitTenderCheckout value)?
+        confirmSplitTenderCheckout,
     TResult Function(_RefreshWithBalance value)? refreshWithBalance,
     TResult Function(_AttachLoyaltyMember value)? attachLoyaltyMember,
     TResult Function(_InitiateEdcPayment value)? initiateEdcPayment,
@@ -1673,6 +2454,8 @@ mixin _$CheckoutState {
   String get orderUuid => throw _privateConstructorUsedError;
   double get totalAmount => throw _privateConstructorUsedError;
   double get remainingBalance => throw _privateConstructorUsedError;
+  double get amountPaid => throw _privateConstructorUsedError;
+  List<PaymentPart> get paymentParts => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isComplete => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
@@ -1700,6 +2483,8 @@ abstract class $CheckoutStateCopyWith<$Res> {
       {String orderUuid,
       double totalAmount,
       double remainingBalance,
+      double amountPaid,
+      List<PaymentPart> paymentParts,
       bool isLoading,
       bool isComplete,
       String? errorMessage,
@@ -1730,6 +2515,8 @@ class _$CheckoutStateCopyWithImpl<$Res, $Val extends CheckoutState>
     Object? orderUuid = null,
     Object? totalAmount = null,
     Object? remainingBalance = null,
+    Object? amountPaid = null,
+    Object? paymentParts = null,
     Object? isLoading = null,
     Object? isComplete = null,
     Object? errorMessage = freezed,
@@ -1752,6 +2539,14 @@ class _$CheckoutStateCopyWithImpl<$Res, $Val extends CheckoutState>
           ? _value.remainingBalance
           : remainingBalance // ignore: cast_nullable_to_non_nullable
               as double,
+      amountPaid: null == amountPaid
+          ? _value.amountPaid
+          : amountPaid // ignore: cast_nullable_to_non_nullable
+              as double,
+      paymentParts: null == paymentParts
+          ? _value.paymentParts
+          : paymentParts // ignore: cast_nullable_to_non_nullable
+              as List<PaymentPart>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -1814,6 +2609,8 @@ abstract class _$$CheckoutStateImplCopyWith<$Res>
       {String orderUuid,
       double totalAmount,
       double remainingBalance,
+      double amountPaid,
+      List<PaymentPart> paymentParts,
       bool isLoading,
       bool isComplete,
       String? errorMessage,
@@ -1843,6 +2640,8 @@ class __$$CheckoutStateImplCopyWithImpl<$Res>
     Object? orderUuid = null,
     Object? totalAmount = null,
     Object? remainingBalance = null,
+    Object? amountPaid = null,
+    Object? paymentParts = null,
     Object? isLoading = null,
     Object? isComplete = null,
     Object? errorMessage = freezed,
@@ -1865,6 +2664,14 @@ class __$$CheckoutStateImplCopyWithImpl<$Res>
           ? _value.remainingBalance
           : remainingBalance // ignore: cast_nullable_to_non_nullable
               as double,
+      amountPaid: null == amountPaid
+          ? _value.amountPaid
+          : amountPaid // ignore: cast_nullable_to_non_nullable
+              as double,
+      paymentParts: null == paymentParts
+          ? _value._paymentParts
+          : paymentParts // ignore: cast_nullable_to_non_nullable
+              as List<PaymentPart>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -1908,6 +2715,8 @@ class _$CheckoutStateImpl implements _CheckoutState {
       {required this.orderUuid,
       required this.totalAmount,
       required this.remainingBalance,
+      this.amountPaid = 0.0,
+      final List<PaymentPart> paymentParts = const [],
       this.isLoading = false,
       this.isComplete = false,
       this.errorMessage,
@@ -1916,7 +2725,8 @@ class _$CheckoutStateImpl implements _CheckoutState {
       this.isAwaitingEdc = false,
       this.edcTerminalStatus = EdcTerminalStatus.idle,
       this.lastApprovalCode})
-      : _items = items;
+      : _paymentParts = paymentParts,
+        _items = items;
 
   @override
   final String orderUuid;
@@ -1924,6 +2734,18 @@ class _$CheckoutStateImpl implements _CheckoutState {
   final double totalAmount;
   @override
   final double remainingBalance;
+  @override
+  @JsonKey()
+  final double amountPaid;
+  final List<PaymentPart> _paymentParts;
+  @override
+  @JsonKey()
+  List<PaymentPart> get paymentParts {
+    if (_paymentParts is EqualUnmodifiableListView) return _paymentParts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_paymentParts);
+  }
+
   @override
   @JsonKey()
   final bool isLoading;
@@ -1955,7 +2777,7 @@ class _$CheckoutStateImpl implements _CheckoutState {
 
   @override
   String toString() {
-    return 'CheckoutState(orderUuid: $orderUuid, totalAmount: $totalAmount, remainingBalance: $remainingBalance, isLoading: $isLoading, isComplete: $isComplete, errorMessage: $errorMessage, attachedMember: $attachedMember, items: $items, isAwaitingEdc: $isAwaitingEdc, edcTerminalStatus: $edcTerminalStatus, lastApprovalCode: $lastApprovalCode)';
+    return 'CheckoutState(orderUuid: $orderUuid, totalAmount: $totalAmount, remainingBalance: $remainingBalance, amountPaid: $amountPaid, paymentParts: $paymentParts, isLoading: $isLoading, isComplete: $isComplete, errorMessage: $errorMessage, attachedMember: $attachedMember, items: $items, isAwaitingEdc: $isAwaitingEdc, edcTerminalStatus: $edcTerminalStatus, lastApprovalCode: $lastApprovalCode)';
   }
 
   @override
@@ -1969,6 +2791,10 @@ class _$CheckoutStateImpl implements _CheckoutState {
                 other.totalAmount == totalAmount) &&
             (identical(other.remainingBalance, remainingBalance) ||
                 other.remainingBalance == remainingBalance) &&
+            (identical(other.amountPaid, amountPaid) ||
+                other.amountPaid == amountPaid) &&
+            const DeepCollectionEquality()
+                .equals(other._paymentParts, _paymentParts) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.isComplete, isComplete) ||
@@ -1992,6 +2818,8 @@ class _$CheckoutStateImpl implements _CheckoutState {
       orderUuid,
       totalAmount,
       remainingBalance,
+      amountPaid,
+      const DeepCollectionEquality().hash(_paymentParts),
       isLoading,
       isComplete,
       errorMessage,
@@ -2015,6 +2843,8 @@ abstract class _CheckoutState implements CheckoutState {
       {required final String orderUuid,
       required final double totalAmount,
       required final double remainingBalance,
+      final double amountPaid,
+      final List<PaymentPart> paymentParts,
       final bool isLoading,
       final bool isComplete,
       final String? errorMessage,
@@ -2030,6 +2860,10 @@ abstract class _CheckoutState implements CheckoutState {
   double get totalAmount;
   @override
   double get remainingBalance;
+  @override
+  double get amountPaid;
+  @override
+  List<PaymentPart> get paymentParts;
   @override
   bool get isLoading;
   @override

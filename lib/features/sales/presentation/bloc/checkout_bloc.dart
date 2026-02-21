@@ -22,6 +22,9 @@ class CheckoutEvent with _$CheckoutEvent {
     double? tendered,
     String? note,
   }) = _ProcessPayment;
+  const factory CheckoutEvent.addPaymentPart(PaymentPart part) = _AddPaymentPart;
+  const factory CheckoutEvent.removePaymentPart(int index) = _RemovePaymentPart;
+  const factory CheckoutEvent.confirmSplitTenderCheckout() = _ConfirmSplitTenderCheckout;
   const factory CheckoutEvent.refreshWithBalance(double balance) =
       _RefreshWithBalance;
   const factory CheckoutEvent.attachLoyaltyMember(LoyaltyMember member) =
@@ -46,6 +49,8 @@ class CheckoutState with _$CheckoutState {
     required String orderUuid,
     required double totalAmount,
     required double remainingBalance,
+    @Default(0.0) double amountPaid,
+    @Default([]) List<PaymentPart> paymentParts,
     @Default(false) bool isLoading,
     @Default(false) bool isComplete,
     String? errorMessage,
@@ -80,6 +85,9 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
             orderUuid: '', totalAmount: 0, remainingBalance: 0)) {
     on<_Started>(_onStarted);
     on<_ProcessPayment>(_onProcessPayment);
+    on<_AddPaymentPart>(_onAddPaymentPart);
+    on<_RemovePaymentPart>(_onRemovePaymentPart);
+    on<_ConfirmSplitTenderCheckout>(_onConfirmSplitTenderCheckout);
     on<_RefreshWithBalance>(
         (event, emit) => emit(state.copyWith(remainingBalance: event.balance)));
     on<_AttachLoyaltyMember>(
@@ -248,6 +256,77 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
         emit(state.copyWith(isLoading: false));
         await _repository.updateOrderStatus(state.orderUuid, 'PARTIAL');
       }
+    } catch (e) {
+      emit(state.copyWith(isLoading: false, errorMessage: e.toString()));
+    }
+  }
+
+  void _onAddPaymentPart(_AddPaymentPart event, Emitter<CheckoutState> emit) {
+    if (state.remainingBalance <= 0) return;
+
+    final newParts = List<PaymentPart>.from(state.paymentParts)..add(event.part);
+    
+    // Calculate new totals
+    double newAmountPaid = state.amountPaid + event.part.amount;
+    double newRemaining = state.totalAmount - newAmountPaid;
+    
+    if (newRemaining < 0) newRemaining = 0;
+
+    emit(state.copyWith(
+      paymentParts: newParts,
+      amountPaid: newAmountPaid,
+      remainingBalance: newRemaining,
+    ));
+  }
+
+  void _onRemovePaymentPart(_RemovePaymentPart event, Emitter<CheckoutState> emit) {
+    if (event.index < 0 || event.index >= state.paymentParts.length) return;
+
+    final newParts = List<PaymentPart>.from(state.paymentParts);
+    final removed = newParts.removeAt(event.index);
+    
+    double newAmountPaid = state.amountPaid - removed.amount;
+    if (newAmountPaid < 0) newAmountPaid = 0;
+    
+    double newRemaining = state.totalAmount - newAmountPaid;
+
+    emit(state.copyWith(
+      paymentParts: newParts,
+      amountPaid: newAmountPaid,
+      remainingBalance: newRemaining,
+    ));
+  }
+
+  Future<void> _onConfirmSplitTenderCheckout(_ConfirmSplitTenderCheckout event, Emitter<CheckoutState> emit) async {
+    if (state.paymentParts.isEmpty) return;
+    
+    emit(state.copyWith(isLoading: true, errorMessage: null));
+
+    try {
+      // Process each part
+      for (final part in state.paymentParts) {
+         await _processPayment(
+            orderUuid: state.orderUuid,
+            method: part.method,
+            amount: part.amount,
+            tendered: part.tendered,
+            note: part.note,
+         );
+      }
+
+      // Mark order complete since remaining balance must be <= 0 to trigger this
+      emit(state.copyWith(isLoading: false, isComplete: true, remainingBalance: 0));
+      await _repository.updateOrderStatus(state.orderUuid, 'COMPLETED');
+
+      if (state.attachedMember != null) {
+        try {
+          await _earnPoints(
+              customerUuid: state.attachedMember!.customerUuid,
+              orderTotal: state.totalAmount,
+              orderUuid: state.orderUuid);
+        } catch (e) {}
+      }
+      
     } catch (e) {
       emit(state.copyWith(isLoading: false, errorMessage: e.toString()));
     }

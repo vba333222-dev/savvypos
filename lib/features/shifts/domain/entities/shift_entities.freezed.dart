@@ -30,7 +30,9 @@ mixin _$ShiftSession {
   double get startCash => throw _privateConstructorUsedError;
   double get expectedCash => throw _privateConstructorUsedError;
   double get actualCash => throw _privateConstructorUsedError;
-  double get difference => throw _privateConstructorUsedError; // Over/Short
+  double get variance => throw _privateConstructorUsedError; // Over/Short
+  String? get varianceReason =>
+      throw _privateConstructorUsedError; // Audit log for miscounts
   ShiftStatus get status => throw _privateConstructorUsedError;
 
   /// Serializes this ShiftSession to a JSON map.
@@ -60,7 +62,8 @@ abstract class $ShiftSessionCopyWith<$Res> {
       double startCash,
       double expectedCash,
       double actualCash,
-      double difference,
+      double variance,
+      String? varianceReason,
       ShiftStatus status});
 }
 
@@ -89,7 +92,8 @@ class _$ShiftSessionCopyWithImpl<$Res, $Val extends ShiftSession>
     Object? startCash = null,
     Object? expectedCash = null,
     Object? actualCash = null,
-    Object? difference = null,
+    Object? variance = null,
+    Object? varianceReason = freezed,
     Object? status = null,
   }) {
     return _then(_value.copyWith(
@@ -133,10 +137,14 @@ class _$ShiftSessionCopyWithImpl<$Res, $Val extends ShiftSession>
           ? _value.actualCash
           : actualCash // ignore: cast_nullable_to_non_nullable
               as double,
-      difference: null == difference
-          ? _value.difference
-          : difference // ignore: cast_nullable_to_non_nullable
+      variance: null == variance
+          ? _value.variance
+          : variance // ignore: cast_nullable_to_non_nullable
               as double,
+      varianceReason: freezed == varianceReason
+          ? _value.varianceReason
+          : varianceReason // ignore: cast_nullable_to_non_nullable
+              as String?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -164,7 +172,8 @@ abstract class _$$ShiftSessionImplCopyWith<$Res>
       double startCash,
       double expectedCash,
       double actualCash,
-      double difference,
+      double variance,
+      String? varianceReason,
       ShiftStatus status});
 }
 
@@ -191,7 +200,8 @@ class __$$ShiftSessionImplCopyWithImpl<$Res>
     Object? startCash = null,
     Object? expectedCash = null,
     Object? actualCash = null,
-    Object? difference = null,
+    Object? variance = null,
+    Object? varianceReason = freezed,
     Object? status = null,
   }) {
     return _then(_$ShiftSessionImpl(
@@ -235,10 +245,14 @@ class __$$ShiftSessionImplCopyWithImpl<$Res>
           ? _value.actualCash
           : actualCash // ignore: cast_nullable_to_non_nullable
               as double,
-      difference: null == difference
-          ? _value.difference
-          : difference // ignore: cast_nullable_to_non_nullable
+      variance: null == variance
+          ? _value.variance
+          : variance // ignore: cast_nullable_to_non_nullable
               as double,
+      varianceReason: freezed == varianceReason
+          ? _value.varianceReason
+          : varianceReason // ignore: cast_nullable_to_non_nullable
+              as String?,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -261,7 +275,8 @@ class _$ShiftSessionImpl implements _ShiftSession {
       this.startCash = 0.0,
       this.expectedCash = 0.0,
       this.actualCash = 0.0,
-      this.difference = 0.0,
+      this.variance = 0.0,
+      this.varianceReason,
       this.status = ShiftStatus.active});
 
   factory _$ShiftSessionImpl.fromJson(Map<String, dynamic> json) =>
@@ -294,15 +309,18 @@ class _$ShiftSessionImpl implements _ShiftSession {
   final double actualCash;
   @override
   @JsonKey()
-  final double difference;
+  final double variance;
 // Over/Short
+  @override
+  final String? varianceReason;
+// Audit log for miscounts
   @override
   @JsonKey()
   final ShiftStatus status;
 
   @override
   String toString() {
-    return 'ShiftSession(id: $id, employeeUuid: $employeeUuid, employeeName: $employeeName, startTime: $startTime, endTime: $endTime, breakMinutes: $breakMinutes, tipsDeclared: $tipsDeclared, startCash: $startCash, expectedCash: $expectedCash, actualCash: $actualCash, difference: $difference, status: $status)';
+    return 'ShiftSession(id: $id, employeeUuid: $employeeUuid, employeeName: $employeeName, startTime: $startTime, endTime: $endTime, breakMinutes: $breakMinutes, tipsDeclared: $tipsDeclared, startCash: $startCash, expectedCash: $expectedCash, actualCash: $actualCash, variance: $variance, varianceReason: $varianceReason, status: $status)';
   }
 
   @override
@@ -328,8 +346,10 @@ class _$ShiftSessionImpl implements _ShiftSession {
                 other.expectedCash == expectedCash) &&
             (identical(other.actualCash, actualCash) ||
                 other.actualCash == actualCash) &&
-            (identical(other.difference, difference) ||
-                other.difference == difference) &&
+            (identical(other.variance, variance) ||
+                other.variance == variance) &&
+            (identical(other.varianceReason, varianceReason) ||
+                other.varianceReason == varianceReason) &&
             (identical(other.status, status) || other.status == status));
   }
 
@@ -347,7 +367,8 @@ class _$ShiftSessionImpl implements _ShiftSession {
       startCash,
       expectedCash,
       actualCash,
-      difference,
+      variance,
+      varianceReason,
       status);
 
   /// Create a copy of ShiftSession
@@ -378,7 +399,8 @@ abstract class _ShiftSession implements ShiftSession {
       final double startCash,
       final double expectedCash,
       final double actualCash,
-      final double difference,
+      final double variance,
+      final String? varianceReason,
       final ShiftStatus status}) = _$ShiftSessionImpl;
 
   factory _ShiftSession.fromJson(Map<String, dynamic> json) =
@@ -405,7 +427,9 @@ abstract class _ShiftSession implements ShiftSession {
   @override
   double get actualCash;
   @override
-  double get difference; // Over/Short
+  double get variance; // Over/Short
+  @override
+  String? get varianceReason; // Audit log for miscounts
   @override
   ShiftStatus get status;
 

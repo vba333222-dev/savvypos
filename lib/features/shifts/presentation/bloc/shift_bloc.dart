@@ -10,7 +10,8 @@ part 'shift_bloc.freezed.dart';
 class ShiftEvent with _$ShiftEvent {
   const factory ShiftEvent.checkStatus() = _CheckStatus;
   const factory ShiftEvent.openShift(double startCash, String userId, String userName) = _OpenShift;
-  const factory ShiftEvent.closeShift(double actualCash) = _CloseShift;
+  const factory ShiftEvent.closeShift(double actualCash, {String? varianceReason}) = _CloseShift;
+  const factory ShiftEvent.verifyCashCount(double actualCash) = _VerifyCashCount;
   const factory ShiftEvent.payIn(double amount, String reason) = _PayIn;
   const factory ShiftEvent.payOut(double amount, String reason) = _PayOut;
   const factory ShiftEvent.safeDrop(double amount, String reason) = _SafeDrop;
@@ -26,6 +27,7 @@ class ShiftState with _$ShiftState {
     @Default(0.0) double totalSafeDrops,
     @Default(0.0) double totalSales,
   }) = _Open;
+  const factory ShiftState.varianceWarning(double variance, double actualCash) = _VarianceWarning;
   const factory ShiftState.closed() = _Closed;
   const factory ShiftState.error(String message) = _Error;
 }
@@ -38,6 +40,7 @@ class ShiftBloc extends Bloc<ShiftEvent, ShiftState> {
     on<_CheckStatus>(_onCheckStatus);
     on<_OpenShift>(_onOpenShift);
     on<_CloseShift>(_onCloseShift);
+    on<_VerifyCashCount>(_onVerifyCashCount);
     on<_PayIn>(_onPayIn);
     on<_PayOut>(_onPayOut);
     on<_SafeDrop>(_onSafeDrop);
@@ -80,7 +83,7 @@ class ShiftBloc extends Bloc<ShiftEvent, ShiftState> {
     }
   }
 
-  Future<void> _onCloseShift(_CloseShift event, Emitter<ShiftState> emit) async {
+  Future<void> _onVerifyCashCount(_VerifyCashCount event, Emitter<ShiftState> emit) async {
     final currentState = state;
     if (currentState is! _Open) return;
 
@@ -104,9 +107,54 @@ class ShiftBloc extends Bloc<ShiftEvent, ShiftState> {
       final safeDrop = summary['safeDrop'] ?? 0.0;
       
       // Formula: Start + PayIn - PayOut - SafeDrop + Sales
+      final expectedCash = startCash + payIn - payOut - safeDrop + sales;
+      final variance = event.actualCash - expectedCash;
+
+      if (variance.abs() > 0.01) {
+        // Variance detected, ask for reason
+        emit(ShiftState.varianceWarning(variance, event.actualCash));
+        // We also need to emit Open again so the UI can stay in the "Open" state behind the dialog,
+        // or the UI handles varianceWarning without losing the dialog context.
+        // It's better to just emit varianceWarning and let the UI handle it.
+      } else {
+        // Perfect match
+        add(ShiftEvent.closeShift(event.actualCash));
+      }
+    } catch (e) {
+      emit(ShiftState.error(e.toString()));
+    }
+  }
+
+  Future<void> _onCloseShift(_CloseShift event, Emitter<ShiftState> emit) async {
+    // Re-calculating system totals just to be safe, but we know the actualCash
+    // if this is called directly from verifyCashCount (0 variance) or after reason (has variance)
+    
+    // Check if we have an active shift ID (since state might be VarianceWarning)
+    // Actually, state is no longer _Open if we came from VarianceWarning.
+    // Let's modify approach: We should fetch active shift.
+    
+    try {
+      emit(const ShiftState.loading());
+      final activeShifts = await _repository.getActiveShifts();
+      if (activeShifts.isEmpty) {
+        emit(const ShiftState.error('No active shift found to close.'));
+        return;
+      }
+      final shift = activeShifts.first;
+
+      final summary = await _repository.getCashTransactionSummary(shift.id);
+      final sales = await _repository.getShiftSalesTotal(shift.id);
+      
+      final startCash = shift.startCash;
+      final payIn = summary['payIn'] ?? 0.0;
+      final payOut = summary['payOut'] ?? 0.0;
+      final safeDrop = summary['safeDrop'] ?? 0.0;
+      
       final systemEndCash = startCash + payIn - payOut - safeDrop + sales;
 
-      await _repository.closeShift(currentState.shift.id, systemEndCash, event.actualCash);
+      await _repository.closeShift(
+          shift.id, systemEndCash, event.actualCash,
+          varianceReason: event.varianceReason);
       emit(const ShiftState.closed());
     } catch (e) {
       emit(ShiftState.error(e.toString()));

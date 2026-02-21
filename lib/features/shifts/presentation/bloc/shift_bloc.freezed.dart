@@ -21,7 +21,9 @@ mixin _$ShiftEvent {
     required TResult Function() checkStatus,
     required TResult Function(double startCash, String userId, String userName)
         openShift,
-    required TResult Function(double actualCash) closeShift,
+    required TResult Function(double actualCash, String? varianceReason)
+        closeShift,
+    required TResult Function(double actualCash) verifyCashCount,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
     required TResult Function(double amount, String reason) safeDrop,
@@ -32,7 +34,8 @@ mixin _$ShiftEvent {
     TResult? Function()? checkStatus,
     TResult? Function(double startCash, String userId, String userName)?
         openShift,
-    TResult? Function(double actualCash)? closeShift,
+    TResult? Function(double actualCash, String? varianceReason)? closeShift,
+    TResult? Function(double actualCash)? verifyCashCount,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
     TResult? Function(double amount, String reason)? safeDrop,
@@ -43,7 +46,8 @@ mixin _$ShiftEvent {
     TResult Function()? checkStatus,
     TResult Function(double startCash, String userId, String userName)?
         openShift,
-    TResult Function(double actualCash)? closeShift,
+    TResult Function(double actualCash, String? varianceReason)? closeShift,
+    TResult Function(double actualCash)? verifyCashCount,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
     TResult Function(double amount, String reason)? safeDrop,
@@ -55,6 +59,7 @@ mixin _$ShiftEvent {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_VerifyCashCount value) verifyCashCount,
     required TResult Function(_PayIn value) payIn,
     required TResult Function(_PayOut value) payOut,
     required TResult Function(_SafeDrop value) safeDrop,
@@ -65,6 +70,7 @@ mixin _$ShiftEvent {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_VerifyCashCount value)? verifyCashCount,
     TResult? Function(_PayIn value)? payIn,
     TResult? Function(_PayOut value)? payOut,
     TResult? Function(_SafeDrop value)? safeDrop,
@@ -75,6 +81,7 @@ mixin _$ShiftEvent {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_VerifyCashCount value)? verifyCashCount,
     TResult Function(_PayIn value)? payIn,
     TResult Function(_PayOut value)? payOut,
     TResult Function(_SafeDrop value)? safeDrop,
@@ -148,7 +155,9 @@ class _$CheckStatusImpl implements _CheckStatus {
     required TResult Function() checkStatus,
     required TResult Function(double startCash, String userId, String userName)
         openShift,
-    required TResult Function(double actualCash) closeShift,
+    required TResult Function(double actualCash, String? varianceReason)
+        closeShift,
+    required TResult Function(double actualCash) verifyCashCount,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
     required TResult Function(double amount, String reason) safeDrop,
@@ -162,7 +171,8 @@ class _$CheckStatusImpl implements _CheckStatus {
     TResult? Function()? checkStatus,
     TResult? Function(double startCash, String userId, String userName)?
         openShift,
-    TResult? Function(double actualCash)? closeShift,
+    TResult? Function(double actualCash, String? varianceReason)? closeShift,
+    TResult? Function(double actualCash)? verifyCashCount,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
     TResult? Function(double amount, String reason)? safeDrop,
@@ -176,7 +186,8 @@ class _$CheckStatusImpl implements _CheckStatus {
     TResult Function()? checkStatus,
     TResult Function(double startCash, String userId, String userName)?
         openShift,
-    TResult Function(double actualCash)? closeShift,
+    TResult Function(double actualCash, String? varianceReason)? closeShift,
+    TResult Function(double actualCash)? verifyCashCount,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
     TResult Function(double amount, String reason)? safeDrop,
@@ -194,6 +205,7 @@ class _$CheckStatusImpl implements _CheckStatus {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_VerifyCashCount value) verifyCashCount,
     required TResult Function(_PayIn value) payIn,
     required TResult Function(_PayOut value) payOut,
     required TResult Function(_SafeDrop value) safeDrop,
@@ -207,6 +219,7 @@ class _$CheckStatusImpl implements _CheckStatus {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_VerifyCashCount value)? verifyCashCount,
     TResult? Function(_PayIn value)? payIn,
     TResult? Function(_PayOut value)? payOut,
     TResult? Function(_SafeDrop value)? safeDrop,
@@ -220,6 +233,7 @@ class _$CheckStatusImpl implements _CheckStatus {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_VerifyCashCount value)? verifyCashCount,
     TResult Function(_PayIn value)? payIn,
     TResult Function(_PayOut value)? payOut,
     TResult Function(_SafeDrop value)? safeDrop,
@@ -325,7 +339,9 @@ class _$OpenShiftImpl implements _OpenShift {
     required TResult Function() checkStatus,
     required TResult Function(double startCash, String userId, String userName)
         openShift,
-    required TResult Function(double actualCash) closeShift,
+    required TResult Function(double actualCash, String? varianceReason)
+        closeShift,
+    required TResult Function(double actualCash) verifyCashCount,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
     required TResult Function(double amount, String reason) safeDrop,
@@ -339,7 +355,8 @@ class _$OpenShiftImpl implements _OpenShift {
     TResult? Function()? checkStatus,
     TResult? Function(double startCash, String userId, String userName)?
         openShift,
-    TResult? Function(double actualCash)? closeShift,
+    TResult? Function(double actualCash, String? varianceReason)? closeShift,
+    TResult? Function(double actualCash)? verifyCashCount,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
     TResult? Function(double amount, String reason)? safeDrop,
@@ -353,7 +370,8 @@ class _$OpenShiftImpl implements _OpenShift {
     TResult Function()? checkStatus,
     TResult Function(double startCash, String userId, String userName)?
         openShift,
-    TResult Function(double actualCash)? closeShift,
+    TResult Function(double actualCash, String? varianceReason)? closeShift,
+    TResult Function(double actualCash)? verifyCashCount,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
     TResult Function(double amount, String reason)? safeDrop,
@@ -371,6 +389,7 @@ class _$OpenShiftImpl implements _OpenShift {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_VerifyCashCount value) verifyCashCount,
     required TResult Function(_PayIn value) payIn,
     required TResult Function(_PayOut value) payOut,
     required TResult Function(_SafeDrop value) safeDrop,
@@ -384,6 +403,7 @@ class _$OpenShiftImpl implements _OpenShift {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_VerifyCashCount value)? verifyCashCount,
     TResult? Function(_PayIn value)? payIn,
     TResult? Function(_PayOut value)? payOut,
     TResult? Function(_SafeDrop value)? safeDrop,
@@ -397,6 +417,7 @@ class _$OpenShiftImpl implements _OpenShift {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_VerifyCashCount value)? verifyCashCount,
     TResult Function(_PayIn value)? payIn,
     TResult Function(_PayOut value)? payOut,
     TResult Function(_SafeDrop value)? safeDrop,
@@ -431,7 +452,7 @@ abstract class _$$CloseShiftImplCopyWith<$Res> {
           _$CloseShiftImpl value, $Res Function(_$CloseShiftImpl) then) =
       __$$CloseShiftImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({double actualCash});
+  $Res call({double actualCash, String? varianceReason});
 }
 
 /// @nodoc
@@ -448,12 +469,17 @@ class __$$CloseShiftImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? actualCash = null,
+    Object? varianceReason = freezed,
   }) {
     return _then(_$CloseShiftImpl(
       null == actualCash
           ? _value.actualCash
           : actualCash // ignore: cast_nullable_to_non_nullable
               as double,
+      varianceReason: freezed == varianceReason
+          ? _value.varianceReason
+          : varianceReason // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -461,14 +487,16 @@ class __$$CloseShiftImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$CloseShiftImpl implements _CloseShift {
-  const _$CloseShiftImpl(this.actualCash);
+  const _$CloseShiftImpl(this.actualCash, {this.varianceReason});
 
   @override
   final double actualCash;
+  @override
+  final String? varianceReason;
 
   @override
   String toString() {
-    return 'ShiftEvent.closeShift(actualCash: $actualCash)';
+    return 'ShiftEvent.closeShift(actualCash: $actualCash, varianceReason: $varianceReason)';
   }
 
   @override
@@ -477,11 +505,13 @@ class _$CloseShiftImpl implements _CloseShift {
         (other.runtimeType == runtimeType &&
             other is _$CloseShiftImpl &&
             (identical(other.actualCash, actualCash) ||
-                other.actualCash == actualCash));
+                other.actualCash == actualCash) &&
+            (identical(other.varianceReason, varianceReason) ||
+                other.varianceReason == varianceReason));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, actualCash);
+  int get hashCode => Object.hash(runtimeType, actualCash, varianceReason);
 
   /// Create a copy of ShiftEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -497,12 +527,14 @@ class _$CloseShiftImpl implements _CloseShift {
     required TResult Function() checkStatus,
     required TResult Function(double startCash, String userId, String userName)
         openShift,
-    required TResult Function(double actualCash) closeShift,
+    required TResult Function(double actualCash, String? varianceReason)
+        closeShift,
+    required TResult Function(double actualCash) verifyCashCount,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
     required TResult Function(double amount, String reason) safeDrop,
   }) {
-    return closeShift(actualCash);
+    return closeShift(actualCash, varianceReason);
   }
 
   @override
@@ -511,12 +543,13 @@ class _$CloseShiftImpl implements _CloseShift {
     TResult? Function()? checkStatus,
     TResult? Function(double startCash, String userId, String userName)?
         openShift,
-    TResult? Function(double actualCash)? closeShift,
+    TResult? Function(double actualCash, String? varianceReason)? closeShift,
+    TResult? Function(double actualCash)? verifyCashCount,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
     TResult? Function(double amount, String reason)? safeDrop,
   }) {
-    return closeShift?.call(actualCash);
+    return closeShift?.call(actualCash, varianceReason);
   }
 
   @override
@@ -525,14 +558,15 @@ class _$CloseShiftImpl implements _CloseShift {
     TResult Function()? checkStatus,
     TResult Function(double startCash, String userId, String userName)?
         openShift,
-    TResult Function(double actualCash)? closeShift,
+    TResult Function(double actualCash, String? varianceReason)? closeShift,
+    TResult Function(double actualCash)? verifyCashCount,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
     TResult Function(double amount, String reason)? safeDrop,
     required TResult orElse(),
   }) {
     if (closeShift != null) {
-      return closeShift(actualCash);
+      return closeShift(actualCash, varianceReason);
     }
     return orElse();
   }
@@ -543,6 +577,7 @@ class _$CloseShiftImpl implements _CloseShift {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_VerifyCashCount value) verifyCashCount,
     required TResult Function(_PayIn value) payIn,
     required TResult Function(_PayOut value) payOut,
     required TResult Function(_SafeDrop value) safeDrop,
@@ -556,6 +591,7 @@ class _$CloseShiftImpl implements _CloseShift {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_VerifyCashCount value)? verifyCashCount,
     TResult? Function(_PayIn value)? payIn,
     TResult? Function(_PayOut value)? payOut,
     TResult? Function(_SafeDrop value)? safeDrop,
@@ -569,6 +605,7 @@ class _$CloseShiftImpl implements _CloseShift {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_VerifyCashCount value)? verifyCashCount,
     TResult Function(_PayIn value)? payIn,
     TResult Function(_PayOut value)? payOut,
     TResult Function(_SafeDrop value)? safeDrop,
@@ -582,14 +619,193 @@ class _$CloseShiftImpl implements _CloseShift {
 }
 
 abstract class _CloseShift implements ShiftEvent {
-  const factory _CloseShift(final double actualCash) = _$CloseShiftImpl;
+  const factory _CloseShift(final double actualCash,
+      {final String? varianceReason}) = _$CloseShiftImpl;
+
+  double get actualCash;
+  String? get varianceReason;
+
+  /// Create a copy of ShiftEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CloseShiftImplCopyWith<_$CloseShiftImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$VerifyCashCountImplCopyWith<$Res> {
+  factory _$$VerifyCashCountImplCopyWith(_$VerifyCashCountImpl value,
+          $Res Function(_$VerifyCashCountImpl) then) =
+      __$$VerifyCashCountImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({double actualCash});
+}
+
+/// @nodoc
+class __$$VerifyCashCountImplCopyWithImpl<$Res>
+    extends _$ShiftEventCopyWithImpl<$Res, _$VerifyCashCountImpl>
+    implements _$$VerifyCashCountImplCopyWith<$Res> {
+  __$$VerifyCashCountImplCopyWithImpl(
+      _$VerifyCashCountImpl _value, $Res Function(_$VerifyCashCountImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ShiftEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? actualCash = null,
+  }) {
+    return _then(_$VerifyCashCountImpl(
+      null == actualCash
+          ? _value.actualCash
+          : actualCash // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$VerifyCashCountImpl implements _VerifyCashCount {
+  const _$VerifyCashCountImpl(this.actualCash);
+
+  @override
+  final double actualCash;
+
+  @override
+  String toString() {
+    return 'ShiftEvent.verifyCashCount(actualCash: $actualCash)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$VerifyCashCountImpl &&
+            (identical(other.actualCash, actualCash) ||
+                other.actualCash == actualCash));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, actualCash);
+
+  /// Create a copy of ShiftEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$VerifyCashCountImplCopyWith<_$VerifyCashCountImpl> get copyWith =>
+      __$$VerifyCashCountImplCopyWithImpl<_$VerifyCashCountImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() checkStatus,
+    required TResult Function(double startCash, String userId, String userName)
+        openShift,
+    required TResult Function(double actualCash, String? varianceReason)
+        closeShift,
+    required TResult Function(double actualCash) verifyCashCount,
+    required TResult Function(double amount, String reason) payIn,
+    required TResult Function(double amount, String reason) payOut,
+    required TResult Function(double amount, String reason) safeDrop,
+  }) {
+    return verifyCashCount(actualCash);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? checkStatus,
+    TResult? Function(double startCash, String userId, String userName)?
+        openShift,
+    TResult? Function(double actualCash, String? varianceReason)? closeShift,
+    TResult? Function(double actualCash)? verifyCashCount,
+    TResult? Function(double amount, String reason)? payIn,
+    TResult? Function(double amount, String reason)? payOut,
+    TResult? Function(double amount, String reason)? safeDrop,
+  }) {
+    return verifyCashCount?.call(actualCash);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? checkStatus,
+    TResult Function(double startCash, String userId, String userName)?
+        openShift,
+    TResult Function(double actualCash, String? varianceReason)? closeShift,
+    TResult Function(double actualCash)? verifyCashCount,
+    TResult Function(double amount, String reason)? payIn,
+    TResult Function(double amount, String reason)? payOut,
+    TResult Function(double amount, String reason)? safeDrop,
+    required TResult orElse(),
+  }) {
+    if (verifyCashCount != null) {
+      return verifyCashCount(actualCash);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_CheckStatus value) checkStatus,
+    required TResult Function(_OpenShift value) openShift,
+    required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_VerifyCashCount value) verifyCashCount,
+    required TResult Function(_PayIn value) payIn,
+    required TResult Function(_PayOut value) payOut,
+    required TResult Function(_SafeDrop value) safeDrop,
+  }) {
+    return verifyCashCount(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_CheckStatus value)? checkStatus,
+    TResult? Function(_OpenShift value)? openShift,
+    TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_VerifyCashCount value)? verifyCashCount,
+    TResult? Function(_PayIn value)? payIn,
+    TResult? Function(_PayOut value)? payOut,
+    TResult? Function(_SafeDrop value)? safeDrop,
+  }) {
+    return verifyCashCount?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_CheckStatus value)? checkStatus,
+    TResult Function(_OpenShift value)? openShift,
+    TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_VerifyCashCount value)? verifyCashCount,
+    TResult Function(_PayIn value)? payIn,
+    TResult Function(_PayOut value)? payOut,
+    TResult Function(_SafeDrop value)? safeDrop,
+    required TResult orElse(),
+  }) {
+    if (verifyCashCount != null) {
+      return verifyCashCount(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _VerifyCashCount implements ShiftEvent {
+  const factory _VerifyCashCount(final double actualCash) =
+      _$VerifyCashCountImpl;
 
   double get actualCash;
 
   /// Create a copy of ShiftEvent
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$CloseShiftImplCopyWith<_$CloseShiftImpl> get copyWith =>
+  _$$VerifyCashCountImplCopyWith<_$VerifyCashCountImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -672,7 +888,9 @@ class _$PayInImpl implements _PayIn {
     required TResult Function() checkStatus,
     required TResult Function(double startCash, String userId, String userName)
         openShift,
-    required TResult Function(double actualCash) closeShift,
+    required TResult Function(double actualCash, String? varianceReason)
+        closeShift,
+    required TResult Function(double actualCash) verifyCashCount,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
     required TResult Function(double amount, String reason) safeDrop,
@@ -686,7 +904,8 @@ class _$PayInImpl implements _PayIn {
     TResult? Function()? checkStatus,
     TResult? Function(double startCash, String userId, String userName)?
         openShift,
-    TResult? Function(double actualCash)? closeShift,
+    TResult? Function(double actualCash, String? varianceReason)? closeShift,
+    TResult? Function(double actualCash)? verifyCashCount,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
     TResult? Function(double amount, String reason)? safeDrop,
@@ -700,7 +919,8 @@ class _$PayInImpl implements _PayIn {
     TResult Function()? checkStatus,
     TResult Function(double startCash, String userId, String userName)?
         openShift,
-    TResult Function(double actualCash)? closeShift,
+    TResult Function(double actualCash, String? varianceReason)? closeShift,
+    TResult Function(double actualCash)? verifyCashCount,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
     TResult Function(double amount, String reason)? safeDrop,
@@ -718,6 +938,7 @@ class _$PayInImpl implements _PayIn {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_VerifyCashCount value) verifyCashCount,
     required TResult Function(_PayIn value) payIn,
     required TResult Function(_PayOut value) payOut,
     required TResult Function(_SafeDrop value) safeDrop,
@@ -731,6 +952,7 @@ class _$PayInImpl implements _PayIn {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_VerifyCashCount value)? verifyCashCount,
     TResult? Function(_PayIn value)? payIn,
     TResult? Function(_PayOut value)? payOut,
     TResult? Function(_SafeDrop value)? safeDrop,
@@ -744,6 +966,7 @@ class _$PayInImpl implements _PayIn {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_VerifyCashCount value)? verifyCashCount,
     TResult Function(_PayIn value)? payIn,
     TResult Function(_PayOut value)? payOut,
     TResult Function(_SafeDrop value)? safeDrop,
@@ -848,7 +1071,9 @@ class _$PayOutImpl implements _PayOut {
     required TResult Function() checkStatus,
     required TResult Function(double startCash, String userId, String userName)
         openShift,
-    required TResult Function(double actualCash) closeShift,
+    required TResult Function(double actualCash, String? varianceReason)
+        closeShift,
+    required TResult Function(double actualCash) verifyCashCount,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
     required TResult Function(double amount, String reason) safeDrop,
@@ -862,7 +1087,8 @@ class _$PayOutImpl implements _PayOut {
     TResult? Function()? checkStatus,
     TResult? Function(double startCash, String userId, String userName)?
         openShift,
-    TResult? Function(double actualCash)? closeShift,
+    TResult? Function(double actualCash, String? varianceReason)? closeShift,
+    TResult? Function(double actualCash)? verifyCashCount,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
     TResult? Function(double amount, String reason)? safeDrop,
@@ -876,7 +1102,8 @@ class _$PayOutImpl implements _PayOut {
     TResult Function()? checkStatus,
     TResult Function(double startCash, String userId, String userName)?
         openShift,
-    TResult Function(double actualCash)? closeShift,
+    TResult Function(double actualCash, String? varianceReason)? closeShift,
+    TResult Function(double actualCash)? verifyCashCount,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
     TResult Function(double amount, String reason)? safeDrop,
@@ -894,6 +1121,7 @@ class _$PayOutImpl implements _PayOut {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_VerifyCashCount value) verifyCashCount,
     required TResult Function(_PayIn value) payIn,
     required TResult Function(_PayOut value) payOut,
     required TResult Function(_SafeDrop value) safeDrop,
@@ -907,6 +1135,7 @@ class _$PayOutImpl implements _PayOut {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_VerifyCashCount value)? verifyCashCount,
     TResult? Function(_PayIn value)? payIn,
     TResult? Function(_PayOut value)? payOut,
     TResult? Function(_SafeDrop value)? safeDrop,
@@ -920,6 +1149,7 @@ class _$PayOutImpl implements _PayOut {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_VerifyCashCount value)? verifyCashCount,
     TResult Function(_PayIn value)? payIn,
     TResult Function(_PayOut value)? payOut,
     TResult Function(_SafeDrop value)? safeDrop,
@@ -1025,7 +1255,9 @@ class _$SafeDropImpl implements _SafeDrop {
     required TResult Function() checkStatus,
     required TResult Function(double startCash, String userId, String userName)
         openShift,
-    required TResult Function(double actualCash) closeShift,
+    required TResult Function(double actualCash, String? varianceReason)
+        closeShift,
+    required TResult Function(double actualCash) verifyCashCount,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
     required TResult Function(double amount, String reason) safeDrop,
@@ -1039,7 +1271,8 @@ class _$SafeDropImpl implements _SafeDrop {
     TResult? Function()? checkStatus,
     TResult? Function(double startCash, String userId, String userName)?
         openShift,
-    TResult? Function(double actualCash)? closeShift,
+    TResult? Function(double actualCash, String? varianceReason)? closeShift,
+    TResult? Function(double actualCash)? verifyCashCount,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
     TResult? Function(double amount, String reason)? safeDrop,
@@ -1053,7 +1286,8 @@ class _$SafeDropImpl implements _SafeDrop {
     TResult Function()? checkStatus,
     TResult Function(double startCash, String userId, String userName)?
         openShift,
-    TResult Function(double actualCash)? closeShift,
+    TResult Function(double actualCash, String? varianceReason)? closeShift,
+    TResult Function(double actualCash)? verifyCashCount,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
     TResult Function(double amount, String reason)? safeDrop,
@@ -1071,6 +1305,7 @@ class _$SafeDropImpl implements _SafeDrop {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_VerifyCashCount value) verifyCashCount,
     required TResult Function(_PayIn value) payIn,
     required TResult Function(_PayOut value) payOut,
     required TResult Function(_SafeDrop value) safeDrop,
@@ -1084,6 +1319,7 @@ class _$SafeDropImpl implements _SafeDrop {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_VerifyCashCount value)? verifyCashCount,
     TResult? Function(_PayIn value)? payIn,
     TResult? Function(_PayOut value)? payOut,
     TResult? Function(_SafeDrop value)? safeDrop,
@@ -1097,6 +1333,7 @@ class _$SafeDropImpl implements _SafeDrop {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_VerifyCashCount value)? verifyCashCount,
     TResult Function(_PayIn value)? payIn,
     TResult Function(_PayOut value)? payOut,
     TResult Function(_SafeDrop value)? safeDrop,
@@ -1132,6 +1369,8 @@ mixin _$ShiftState {
     required TResult Function(ShiftSession shift, double totalPayIn,
             double totalPayOut, double totalSafeDrops, double totalSales)
         open,
+    required TResult Function(double variance, double actualCash)
+        varianceWarning,
     required TResult Function() closed,
     required TResult Function(String message) error,
   }) =>
@@ -1143,6 +1382,7 @@ mixin _$ShiftState {
     TResult? Function(ShiftSession shift, double totalPayIn, double totalPayOut,
             double totalSafeDrops, double totalSales)?
         open,
+    TResult? Function(double variance, double actualCash)? varianceWarning,
     TResult? Function()? closed,
     TResult? Function(String message)? error,
   }) =>
@@ -1154,6 +1394,7 @@ mixin _$ShiftState {
     TResult Function(ShiftSession shift, double totalPayIn, double totalPayOut,
             double totalSafeDrops, double totalSales)?
         open,
+    TResult Function(double variance, double actualCash)? varianceWarning,
     TResult Function()? closed,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -1164,6 +1405,7 @@ mixin _$ShiftState {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Open value) open,
+    required TResult Function(_VarianceWarning value) varianceWarning,
     required TResult Function(_Closed value) closed,
     required TResult Function(_Error value) error,
   }) =>
@@ -1173,6 +1415,7 @@ mixin _$ShiftState {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Open value)? open,
+    TResult? Function(_VarianceWarning value)? varianceWarning,
     TResult? Function(_Closed value)? closed,
     TResult? Function(_Error value)? error,
   }) =>
@@ -1182,6 +1425,7 @@ mixin _$ShiftState {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Open value)? open,
+    TResult Function(_VarianceWarning value)? varianceWarning,
     TResult Function(_Closed value)? closed,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -1256,6 +1500,8 @@ class _$InitialImpl implements _Initial {
     required TResult Function(ShiftSession shift, double totalPayIn,
             double totalPayOut, double totalSafeDrops, double totalSales)
         open,
+    required TResult Function(double variance, double actualCash)
+        varianceWarning,
     required TResult Function() closed,
     required TResult Function(String message) error,
   }) {
@@ -1270,6 +1516,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function(ShiftSession shift, double totalPayIn, double totalPayOut,
             double totalSafeDrops, double totalSales)?
         open,
+    TResult? Function(double variance, double actualCash)? varianceWarning,
     TResult? Function()? closed,
     TResult? Function(String message)? error,
   }) {
@@ -1284,6 +1531,7 @@ class _$InitialImpl implements _Initial {
     TResult Function(ShiftSession shift, double totalPayIn, double totalPayOut,
             double totalSafeDrops, double totalSales)?
         open,
+    TResult Function(double variance, double actualCash)? varianceWarning,
     TResult Function()? closed,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -1300,6 +1548,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Open value) open,
+    required TResult Function(_VarianceWarning value) varianceWarning,
     required TResult Function(_Closed value) closed,
     required TResult Function(_Error value) error,
   }) {
@@ -1312,6 +1561,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Open value)? open,
+    TResult? Function(_VarianceWarning value)? varianceWarning,
     TResult? Function(_Closed value)? closed,
     TResult? Function(_Error value)? error,
   }) {
@@ -1324,6 +1574,7 @@ class _$InitialImpl implements _Initial {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Open value)? open,
+    TResult Function(_VarianceWarning value)? varianceWarning,
     TResult Function(_Closed value)? closed,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -1385,6 +1636,8 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(ShiftSession shift, double totalPayIn,
             double totalPayOut, double totalSafeDrops, double totalSales)
         open,
+    required TResult Function(double variance, double actualCash)
+        varianceWarning,
     required TResult Function() closed,
     required TResult Function(String message) error,
   }) {
@@ -1399,6 +1652,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(ShiftSession shift, double totalPayIn, double totalPayOut,
             double totalSafeDrops, double totalSales)?
         open,
+    TResult? Function(double variance, double actualCash)? varianceWarning,
     TResult? Function()? closed,
     TResult? Function(String message)? error,
   }) {
@@ -1413,6 +1667,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function(ShiftSession shift, double totalPayIn, double totalPayOut,
             double totalSafeDrops, double totalSales)?
         open,
+    TResult Function(double variance, double actualCash)? varianceWarning,
     TResult Function()? closed,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -1429,6 +1684,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Open value) open,
+    required TResult Function(_VarianceWarning value) varianceWarning,
     required TResult Function(_Closed value) closed,
     required TResult Function(_Error value) error,
   }) {
@@ -1441,6 +1697,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Open value)? open,
+    TResult? Function(_VarianceWarning value)? varianceWarning,
     TResult? Function(_Closed value)? closed,
     TResult? Function(_Error value)? error,
   }) {
@@ -1453,6 +1710,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Open value)? open,
+    TResult Function(_VarianceWarning value)? varianceWarning,
     TResult Function(_Closed value)? closed,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -1602,6 +1860,8 @@ class _$OpenImpl implements _Open {
     required TResult Function(ShiftSession shift, double totalPayIn,
             double totalPayOut, double totalSafeDrops, double totalSales)
         open,
+    required TResult Function(double variance, double actualCash)
+        varianceWarning,
     required TResult Function() closed,
     required TResult Function(String message) error,
   }) {
@@ -1616,6 +1876,7 @@ class _$OpenImpl implements _Open {
     TResult? Function(ShiftSession shift, double totalPayIn, double totalPayOut,
             double totalSafeDrops, double totalSales)?
         open,
+    TResult? Function(double variance, double actualCash)? varianceWarning,
     TResult? Function()? closed,
     TResult? Function(String message)? error,
   }) {
@@ -1631,6 +1892,7 @@ class _$OpenImpl implements _Open {
     TResult Function(ShiftSession shift, double totalPayIn, double totalPayOut,
             double totalSafeDrops, double totalSales)?
         open,
+    TResult Function(double variance, double actualCash)? varianceWarning,
     TResult Function()? closed,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -1647,6 +1909,7 @@ class _$OpenImpl implements _Open {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Open value) open,
+    required TResult Function(_VarianceWarning value) varianceWarning,
     required TResult Function(_Closed value) closed,
     required TResult Function(_Error value) error,
   }) {
@@ -1659,6 +1922,7 @@ class _$OpenImpl implements _Open {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Open value)? open,
+    TResult? Function(_VarianceWarning value)? varianceWarning,
     TResult? Function(_Closed value)? closed,
     TResult? Function(_Error value)? error,
   }) {
@@ -1671,6 +1935,7 @@ class _$OpenImpl implements _Open {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Open value)? open,
+    TResult Function(_VarianceWarning value)? varianceWarning,
     TResult Function(_Closed value)? closed,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -1699,6 +1964,190 @@ abstract class _Open implements ShiftState {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OpenImplCopyWith<_$OpenImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$VarianceWarningImplCopyWith<$Res> {
+  factory _$$VarianceWarningImplCopyWith(_$VarianceWarningImpl value,
+          $Res Function(_$VarianceWarningImpl) then) =
+      __$$VarianceWarningImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({double variance, double actualCash});
+}
+
+/// @nodoc
+class __$$VarianceWarningImplCopyWithImpl<$Res>
+    extends _$ShiftStateCopyWithImpl<$Res, _$VarianceWarningImpl>
+    implements _$$VarianceWarningImplCopyWith<$Res> {
+  __$$VarianceWarningImplCopyWithImpl(
+      _$VarianceWarningImpl _value, $Res Function(_$VarianceWarningImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ShiftState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? variance = null,
+    Object? actualCash = null,
+  }) {
+    return _then(_$VarianceWarningImpl(
+      null == variance
+          ? _value.variance
+          : variance // ignore: cast_nullable_to_non_nullable
+              as double,
+      null == actualCash
+          ? _value.actualCash
+          : actualCash // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$VarianceWarningImpl implements _VarianceWarning {
+  const _$VarianceWarningImpl(this.variance, this.actualCash);
+
+  @override
+  final double variance;
+  @override
+  final double actualCash;
+
+  @override
+  String toString() {
+    return 'ShiftState.varianceWarning(variance: $variance, actualCash: $actualCash)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$VarianceWarningImpl &&
+            (identical(other.variance, variance) ||
+                other.variance == variance) &&
+            (identical(other.actualCash, actualCash) ||
+                other.actualCash == actualCash));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, variance, actualCash);
+
+  /// Create a copy of ShiftState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$VarianceWarningImplCopyWith<_$VarianceWarningImpl> get copyWith =>
+      __$$VarianceWarningImplCopyWithImpl<_$VarianceWarningImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(ShiftSession shift, double totalPayIn,
+            double totalPayOut, double totalSafeDrops, double totalSales)
+        open,
+    required TResult Function(double variance, double actualCash)
+        varianceWarning,
+    required TResult Function() closed,
+    required TResult Function(String message) error,
+  }) {
+    return varianceWarning(variance, actualCash);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(ShiftSession shift, double totalPayIn, double totalPayOut,
+            double totalSafeDrops, double totalSales)?
+        open,
+    TResult? Function(double variance, double actualCash)? varianceWarning,
+    TResult? Function()? closed,
+    TResult? Function(String message)? error,
+  }) {
+    return varianceWarning?.call(variance, actualCash);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(ShiftSession shift, double totalPayIn, double totalPayOut,
+            double totalSafeDrops, double totalSales)?
+        open,
+    TResult Function(double variance, double actualCash)? varianceWarning,
+    TResult Function()? closed,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (varianceWarning != null) {
+      return varianceWarning(variance, actualCash);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Open value) open,
+    required TResult Function(_VarianceWarning value) varianceWarning,
+    required TResult Function(_Closed value) closed,
+    required TResult Function(_Error value) error,
+  }) {
+    return varianceWarning(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Open value)? open,
+    TResult? Function(_VarianceWarning value)? varianceWarning,
+    TResult? Function(_Closed value)? closed,
+    TResult? Function(_Error value)? error,
+  }) {
+    return varianceWarning?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Open value)? open,
+    TResult Function(_VarianceWarning value)? varianceWarning,
+    TResult Function(_Closed value)? closed,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (varianceWarning != null) {
+      return varianceWarning(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _VarianceWarning implements ShiftState {
+  const factory _VarianceWarning(
+      final double variance, final double actualCash) = _$VarianceWarningImpl;
+
+  double get variance;
+  double get actualCash;
+
+  /// Create a copy of ShiftState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$VarianceWarningImplCopyWith<_$VarianceWarningImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1748,6 +2197,8 @@ class _$ClosedImpl implements _Closed {
     required TResult Function(ShiftSession shift, double totalPayIn,
             double totalPayOut, double totalSafeDrops, double totalSales)
         open,
+    required TResult Function(double variance, double actualCash)
+        varianceWarning,
     required TResult Function() closed,
     required TResult Function(String message) error,
   }) {
@@ -1762,6 +2213,7 @@ class _$ClosedImpl implements _Closed {
     TResult? Function(ShiftSession shift, double totalPayIn, double totalPayOut,
             double totalSafeDrops, double totalSales)?
         open,
+    TResult? Function(double variance, double actualCash)? varianceWarning,
     TResult? Function()? closed,
     TResult? Function(String message)? error,
   }) {
@@ -1776,6 +2228,7 @@ class _$ClosedImpl implements _Closed {
     TResult Function(ShiftSession shift, double totalPayIn, double totalPayOut,
             double totalSafeDrops, double totalSales)?
         open,
+    TResult Function(double variance, double actualCash)? varianceWarning,
     TResult Function()? closed,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -1792,6 +2245,7 @@ class _$ClosedImpl implements _Closed {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Open value) open,
+    required TResult Function(_VarianceWarning value) varianceWarning,
     required TResult Function(_Closed value) closed,
     required TResult Function(_Error value) error,
   }) {
@@ -1804,6 +2258,7 @@ class _$ClosedImpl implements _Closed {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Open value)? open,
+    TResult? Function(_VarianceWarning value)? varianceWarning,
     TResult? Function(_Closed value)? closed,
     TResult? Function(_Error value)? error,
   }) {
@@ -1816,6 +2271,7 @@ class _$ClosedImpl implements _Closed {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Open value)? open,
+    TResult Function(_VarianceWarning value)? varianceWarning,
     TResult Function(_Closed value)? closed,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -1904,6 +2360,8 @@ class _$ErrorImpl implements _Error {
     required TResult Function(ShiftSession shift, double totalPayIn,
             double totalPayOut, double totalSafeDrops, double totalSales)
         open,
+    required TResult Function(double variance, double actualCash)
+        varianceWarning,
     required TResult Function() closed,
     required TResult Function(String message) error,
   }) {
@@ -1918,6 +2376,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function(ShiftSession shift, double totalPayIn, double totalPayOut,
             double totalSafeDrops, double totalSales)?
         open,
+    TResult? Function(double variance, double actualCash)? varianceWarning,
     TResult? Function()? closed,
     TResult? Function(String message)? error,
   }) {
@@ -1932,6 +2391,7 @@ class _$ErrorImpl implements _Error {
     TResult Function(ShiftSession shift, double totalPayIn, double totalPayOut,
             double totalSafeDrops, double totalSales)?
         open,
+    TResult Function(double variance, double actualCash)? varianceWarning,
     TResult Function()? closed,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -1948,6 +2408,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Open value) open,
+    required TResult Function(_VarianceWarning value) varianceWarning,
     required TResult Function(_Closed value) closed,
     required TResult Function(_Error value) error,
   }) {
@@ -1960,6 +2421,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Open value)? open,
+    TResult? Function(_VarianceWarning value)? varianceWarning,
     TResult? Function(_Closed value)? closed,
     TResult? Function(_Error value)? error,
   }) {
@@ -1972,6 +2434,7 @@ class _$ErrorImpl implements _Error {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Open value)? open,
+    TResult Function(_VarianceWarning value)? varianceWarning,
     TResult Function(_Closed value)? closed,
     TResult Function(_Error value)? error,
     required TResult orElse(),

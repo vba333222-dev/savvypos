@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_numpad.dart';
 import 'package:savvy_pos/features/shifts/domain/entities/shift_entities.dart';
 import 'package:savvy_pos/features/shifts/presentation/bloc/shift_bloc.dart';
 
@@ -9,7 +10,7 @@ class CloseShiftDialog extends StatefulWidget {
   final double totalPayIn;
   final double totalPayOut;
   final double totalSafeDrops;
-  final double totalSales; // Cash sales only ideally, but using total for now
+  final double totalSales; 
 
   const CloseShiftDialog({
     super.key, 
@@ -25,171 +26,355 @@ class CloseShiftDialog extends StatefulWidget {
 }
 
 class _CloseShiftDialogState extends State<CloseShiftDialog> {
-  final TextEditingController _actualCashController = TextEditingController();
-  double _variance = 0.0;
-  bool _isMatched = false;
-  double _expectedCash = 0.0;
+  // Hardcoded IDR denominations for demo. In prod, load from Tenants/Config
+  final List<int> _denominations = [
+    100000, 50000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100
+  ];
+  
+  final Map<int, TextEditingController> _controllers = {};
+  int? _activeDenomination;
+  double _actualCash = 0.0;
 
   @override
   void initState() {
     super.initState();
-    _calculateExpected();
-    _actualCashController.addListener(_updateVariance);
-  }
-
-  void _calculateExpected() {
-    _expectedCash = widget.currentShift.startCash 
-        + widget.totalPayIn 
-        - widget.totalPayOut 
-        - widget.totalSafeDrops
-        + widget.totalSales;
-  }
-
-  void _updateVariance() {
-    final actual = double.tryParse(_actualCashController.text) ?? 0.0;
-    final diff = actual - _expectedCash;
-    
-    setState(() {
-      _variance = diff;
-      _isMatched = diff.abs() < 0.01; // Within cent
-    });
+    _activeDenomination = _denominations.first;
+    for (var d in _denominations) {
+      _controllers[d] = TextEditingController();
+      _controllers[d]!.addListener(_updateActualCash);
+    }
   }
 
   @override
-  Widget build(BuildContext context) {
-    final theme = context.savvy;
-    // Determine status color
-    final statusColor = _actualCashController.text.isEmpty 
-        ? theme.colors.borderDefault 
-        : (_isMatched ? theme.colors.stateSuccess : theme.colors.stateError);
+  void dispose() {
+    for (var c in _controllers.values) {
+      c.dispose();
+    }
+    super.dispose();
+  }
 
-    return AlertDialog(
-      backgroundColor: theme.colors.bgElevated,
-      title: Text('Reconcile & Close Shift', style: TextStyle(color: theme.colors.textPrimary)),
-      content: SingleChildScrollView(
-        child: Column(
+  void _onNumpadInput(String value) {
+    if (_activeDenomination == null) return;
+    final controller = _controllers[_activeDenomination]!;
+    if (controller.text == '0') {
+      controller.text = value;
+    } else {
+      controller.text += value;
+    }
+  }
+
+  void _onNumpadBackspace() {
+    if (_activeDenomination == null) return;
+    final controller = _controllers[_activeDenomination]!;
+    if (controller.text.isNotEmpty) {
+      controller.text = controller.text.substring(0, controller.text.length - 1);
+    }
+  }
+
+  void _onNumpadClear() {
+    if (_activeDenomination == null) return;
+    final controller = _controllers[_activeDenomination]!;
+    controller.clear();
+  }
+
+  void _updateActualCash() {
+    double total = 0.0;
+    for (var entry in _controllers.entries) {
+      final qty = int.tryParse(entry.value.text) ?? 0;
+      total += (entry.key * qty);
+    }
+    setState(() {
+      _actualCash = total;
+    });
+  }
+
+  void _handleCloseShift() {
+    context.read<ShiftBloc>().add(ShiftEvent.verifyCashCount(_actualCash));
+  }
+
+  void _showVarianceReasonDialog(double variance) {
+    final reasonController = TextEditingController();
+    final theme = context.savvy;
+    final isShort = variance < 0;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: theme.colors.bgElevated,
+        title: Row(
+          children: [
+            Icon(Icons.warning_amber_rounded, color: theme.colors.stateWarning, size: 28),
+            const SizedBox(width: 8),
+            Text('Cash Variance Detected', style: TextStyle(color: theme.colors.textPrimary)),
+          ],
+        ),
+        content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _sectionHeader('Breakdown', theme),
-            _breakdownRow('Start Cash', widget.currentShift.startCash, theme),
-            _breakdownRow('Cash Sales', widget.totalSales, theme, color: theme.colors.stateSuccess),
-            _breakdownRow('Pay Ins', widget.totalPayIn, theme, color: theme.colors.stateSuccess),
-            _breakdownRow('Pay Outs', widget.totalPayOut, theme, color: theme.colors.stateError),
-            _breakdownRow('Safe Drops', widget.totalSafeDrops, theme, color: Colors.orange),
-            Divider(color: theme.colors.borderDefault),
-            _breakdownRow('Expected in Drawer', _expectedCash, theme, isBold: true, size: 18),
-            
-            const SizedBox(height: 24),
-            
-            // INPUT with Glow
-            TextField(
-              controller: _actualCashController,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              style: TextStyle(
-                fontSize: 28, 
-                fontWeight: FontWeight.bold, 
-                color: statusColor
-              ),
-              decoration: InputDecoration(
-                labelText: 'Actual Drawer Count',
-                labelStyle: TextStyle(color: theme.colors.textSecondary),
-                prefixText: '\$ ',
-                prefixStyle: TextStyle(color: statusColor, fontSize: 28),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: statusColor, width: 2),
-                  borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: statusColor, width: 2), // Glow effect
-                  borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
-                ),
-                suffixIcon: _isMatched 
-                    ? Icon(Icons.check_circle, color: theme.colors.stateSuccess)
-                    : (_actualCashController.text.isNotEmpty ? Icon(Icons.warning_amber, color: theme.colors.stateError) : null),
-              ),
+            Text(
+              'Your physical count does not match the system.',
+              style: TextStyle(color: theme.colors.textSecondary),
             ),
-            
             const SizedBox(height: 16),
-            
-            if (_actualCashController.text.isNotEmpty)
-              Row(
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: isShort ? theme.colors.stateError.withValues(alpha: 0.1) : theme.colors.stateSuccess.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
+                border: Border.all(color: isShort ? theme.colors.stateError : theme.colors.stateSuccess),
+              ),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Variance (Over/Short):', style: TextStyle(color: theme.colors.textSecondary)),
+                  Text('Variance Amount:', style: TextStyle(color: theme.colors.textPrimary, fontWeight: FontWeight.bold)),
                   Text(
-                    '${_variance > 0 ? '+' : ''}\$${_variance.toStringAsFixed(2)}',
+                    '${isShort ? '' : '+'}\$${variance.toStringAsFixed(2)}',
                     style: TextStyle(
-                      color: statusColor,
+                      color: isShort ? theme.colors.stateError : theme.colors.stateSuccess,
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
                   ),
                 ],
               ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: reasonController,
+              maxLines: 3,
+              style: TextStyle(color: theme.colors.textPrimary),
+              decoration: InputDecoration(
+                labelText: 'Mandatory Reason',
+                hintText: 'Explain the discrepancy...',
+                labelStyle: TextStyle(color: theme.colors.textSecondary),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: theme.colors.borderDefault),
+                  borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: theme.colors.brandPrimary),
+                  borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
+                ),
+              ),
+            ),
           ],
         ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: Text('Cancel', style: TextStyle(color: theme.colors.textSecondary)),
-        ),
-        ElevatedButton.icon(
-          onPressed: () {
-            final actual = double.tryParse(_actualCashController.text);
-            if (actual != null) {
-              // ── Fire shift-close event ──────────────────────────────
-              context.read<ShiftBloc>().add(ShiftEvent.closeShift(actual));
-
-              // ── Auto-clean image cache on shift end ─────────────────
-              // Frees decoded image RAM (~50-200MB on heavy product menus)
-              // before the next cashier's login/PIN screen renders.
-              // This runs synchronously on the UI thread — it's a HashMap
-              // clear, takes <1ms and does NOT stall the UI.
-              PaintingBinding.instance.imageCache.clear();
-              PaintingBinding.instance.imageCache.clearLiveImages();
-              debugPrint('[Cache] Image cache flushed on shift close. RAM freed.');
-
-              Navigator.pop(context);
-            }
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: _isMatched ? theme.colors.brandPrimary : theme.colors.bgSurface,
-            foregroundColor: _isMatched ? theme.colors.textInverse : theme.colors.stateError,
-            side: _isMatched ? null : BorderSide(color: theme.colors.stateError),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text('Cancel', style: TextStyle(color: theme.colors.textSecondary)),
           ),
-          icon: const Icon(Icons.lock_clock),
-          label: const Text('Close Session'),
-        ),
-      ],
-    );
-  }
-
-  Widget _sectionHeader(String title, SavvyTheme theme) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Text(title, style: TextStyle(color: theme.colors.textSecondary, fontWeight: FontWeight.bold, fontSize: 12)),
-    );
-  }
-
-  Widget _breakdownRow(String label, double amount, SavvyTheme theme, {bool isBold = false, Color? color, double size = 14}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(label, style: TextStyle(color: theme.colors.textSecondary, fontWeight: isBold ? FontWeight.bold : FontWeight.normal, fontSize: size)),
-          Text(
-            '\$${amount.toStringAsFixed(2)}', 
-            style: TextStyle(
-              color: color ?? theme.colors.textPrimary, 
-              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-              fontSize: size
-            )
+          ElevatedButton(
+            onPressed: () {
+              if (reasonController.text.trim().isEmpty) {
+                ScaffoldMessenger.of(ctx).showSnackBar(
+                  SnackBar(content: Text('Variance reason is mandatory', style: TextStyle(color: theme.colors.textInverse)), backgroundColor: theme.colors.stateError),
+                );
+                return;
+              }
+              Navigator.pop(ctx);
+              _submitCloseShift(reasonController.text.trim());
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: theme.colors.stateWarning,
+              foregroundColor: theme.colors.textPrimary, // Better contrast on yellow/warning
+            ),
+            child: const Text('Confirm Discrepancy & Close'),
           ),
         ],
       ),
+    );
+  }
+
+  void _submitCloseShift(String? varianceReason) {
+    // ── Fire shift-close event ──────────────────────────────
+    context.read<ShiftBloc>().add(ShiftEvent.closeShift(_actualCash, varianceReason: varianceReason));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = context.savvy;
+
+    return BlocConsumer<ShiftBloc, ShiftState>(
+      listener: (context, state) {
+        state.maybeWhen(
+          varianceWarning: (variance, actualCash) {
+            _showVarianceReasonDialog(variance);
+          },
+          closed: () {
+            // ── Auto-clean image cache on shift end ─────────────────
+            PaintingBinding.instance.imageCache.clear();
+            PaintingBinding.instance.imageCache.clearLiveImages();
+            debugPrint('[Cache] Image cache flushed on shift close. RAM freed.');
+            Navigator.pop(context);
+          },
+          error: (message) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(message, style: TextStyle(color: theme.colors.textInverse)), backgroundColor: theme.colors.stateError),
+            );
+          },
+          orElse: () {},
+        );
+      },
+      builder: (context, state) {
+        final isLoading = state.maybeWhen(loading: () => true, orElse: () => false);
+
+        return AlertDialog(
+          backgroundColor: theme.colors.bgElevated,
+          title: Text('Blind Cash Count', style: TextStyle(color: theme.colors.textPrimary)),
+          content: SizedBox(
+            width: 700, // Make it wider to fit two columns comfortably
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: theme.colors.bgSurface,
+                borderRadius: BorderRadius.circular(theme.shapes.radiusSm),
+                border: Border.all(color: theme.colors.borderDefault),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.security, color: theme.colors.brandPrimary),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'For security reasons, system expected totals are hidden. Please perform a physical count of the drawer.',
+                      style: TextStyle(color: theme.colors.textSecondary, fontSize: 13),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+            Text('Denomination Input (Qty)', style: TextStyle(color: theme.colors.textPrimary, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 12),
+            Flexible(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.45,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Left Column: Denominations List
+                    Expanded(
+                      flex: 3,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: _denominations.map((d) {
+                            final isActive = _activeDenomination == d;
+                            return InkWell(
+                              onTap: () => setState(() => _activeDenomination = d),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                                decoration: BoxDecoration(
+                                  color: isActive ? theme.colors.brandPrimary.withValues(alpha: 0.1) : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
+                                  border: Border.all(
+                                    color: isActive ? theme.colors.brandPrimary : Colors.transparent,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 90,
+                                      child: Text(
+                                        d >= 1000 ? '\$${(d/1000).toStringAsFixed(0)}k' : '\$$d',
+                                        style: TextStyle(color: theme.colors.textSecondary, fontSize: 16),
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Expanded(
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: isActive ? theme.colors.brandPrimary : theme.colors.borderDefault),
+                                          borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
+                                          color: theme.colors.bgSurface,
+                                        ),
+                                        child: Text(
+                                          _controllers[d]!.text.isEmpty ? '0' : _controllers[d]!.text,
+                                          style: TextStyle(color: theme.colors.textPrimary, fontWeight: FontWeight.bold),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    SizedBox(
+                                      width: 80,
+                                      child: Text(
+                                        '= \$${(_controllers[d]?.text.isNotEmpty == true) ? (d * (int.tryParse(_controllers[d]!.text) ?? 0)) : 0}',
+                                        style: TextStyle(color: theme.colors.textMuted, fontSize: 12),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 24),
+                    // Right Column: Numpad
+                    Expanded(
+                      flex: 2,
+                      child: SavvyNumpad(
+                        onInput: _onNumpadInput,
+                        onBackspace: _onNumpadBackspace,
+                        onClear: _onNumpadClear,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Divider(color: theme.colors.borderDefault),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Total Physical Cash:', style: TextStyle(color: theme.colors.textSecondary, fontSize: 16)),
+                Text(
+                  '\$${_actualCash.toStringAsFixed(2)}',
+                  style: TextStyle(
+                    color: _actualCash > 0 ? theme.colors.stateSuccess : theme.colors.textPrimary,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 28,
+                  ),
+                ),
+              ],
+            ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel', style: TextStyle(color: theme.colors.textSecondary)),
+            ),
+            ElevatedButton.icon(
+              onPressed: isLoading ? null : (_actualCash > 0 || widget.currentShift.startCash == 0 ? _handleCloseShift : null),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: theme.colors.brandPrimary,
+                foregroundColor: theme.colors.textInverse,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              ),
+              icon: isLoading 
+                  ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(theme.colors.textInverse)))
+                  : const Icon(Icons.lock_clock),
+              label: Text(isLoading ? 'Processing...' : 'Submit Count & Close', style: const TextStyle(fontWeight: FontWeight.bold)),
+            ),
+          ],
+        );
+      },
     );
   }
 }

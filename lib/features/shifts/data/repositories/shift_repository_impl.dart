@@ -177,7 +177,7 @@ class ShiftRepositoryImpl implements IShiftRepository {
   }
 
   @override
-  Future<void> closeShift(String shiftUuid, double calculatedEndCash, double actualCash) async {
+  Future<void> closeShift(String shiftUuid, double calculatedEndCash, double actualCash, {String? varianceReason}) async {
     final now = DateTime.now();
     await (db.update(db.shiftSessionTable)..where((t) => t.uuid.equals(shiftUuid))).write(
       ShiftSessionTableCompanion(
@@ -185,6 +185,7 @@ class ShiftRepositoryImpl implements IShiftRepository {
         expectedCash: Value(calculatedEndCash),
         actualCash: Value(actualCash),
         difference: Value(actualCash - calculatedEndCash),
+        varianceReason: Value(varianceReason),
         isClosed: const Value(true),
       ),
     );

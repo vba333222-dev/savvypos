@@ -20,7 +20,8 @@ _$ShiftSessionImpl _$$ShiftSessionImplFromJson(Map<String, dynamic> json) =>
       startCash: (json['startCash'] as num?)?.toDouble() ?? 0.0,
       expectedCash: (json['expectedCash'] as num?)?.toDouble() ?? 0.0,
       actualCash: (json['actualCash'] as num?)?.toDouble() ?? 0.0,
-      difference: (json['difference'] as num?)?.toDouble() ?? 0.0,
+      variance: (json['variance'] as num?)?.toDouble() ?? 0.0,
+      varianceReason: json['varianceReason'] as String?,
       status: $enumDecodeNullable(_$ShiftStatusEnumMap, json['status']) ??
           ShiftStatus.active,
     );
@@ -37,7 +38,8 @@ Map<String, dynamic> _$$ShiftSessionImplToJson(_$ShiftSessionImpl instance) =>
       'startCash': instance.startCash,
       'expectedCash': instance.expectedCash,
       'actualCash': instance.actualCash,
-      'difference': instance.difference,
+      'variance': instance.variance,
+      'varianceReason': instance.varianceReason,
       'status': _$ShiftStatusEnumMap[instance.status]!,
     };
 

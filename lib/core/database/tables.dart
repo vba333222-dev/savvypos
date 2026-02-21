@@ -335,6 +335,7 @@ class ShiftSessionTable extends Table {
   RealColumn get expectedCash => real()();
   RealColumn get actualCash => real()();
   RealColumn get difference => real()();
+  TextColumn get varianceReason => text().nullable()();
 
   BoolColumn get isClosed => boolean().withDefault(const Constant(false))();
   BoolColumn get isSynced => boolean().withDefault(const Constant(false))();

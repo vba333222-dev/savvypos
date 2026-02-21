@@ -110,7 +110,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 16; // +PrintJobTable for persistent print queue
+  int get schemaVersion => 17; // +varianceReason in ShiftSessionTable
 
   @override
   MigrationStrategy get migration {

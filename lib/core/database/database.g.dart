@@ -10571,6 +10571,12 @@ class $ShiftSessionTableTable extends ShiftSessionTable
   late final GeneratedColumn<double> difference = GeneratedColumn<double>(
       'difference', aliasedName, false,
       type: DriftSqlType.double, requiredDuringInsert: true);
+  static const VerificationMeta _varianceReasonMeta =
+      const VerificationMeta('varianceReason');
+  @override
+  late final GeneratedColumn<String> varianceReason = GeneratedColumn<String>(
+      'variance_reason', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _isClosedMeta =
       const VerificationMeta('isClosed');
   @override
@@ -10603,6 +10609,7 @@ class $ShiftSessionTableTable extends ShiftSessionTable
         expectedCash,
         actualCash,
         difference,
+        varianceReason,
         isClosed,
         isSynced
       ];
@@ -10680,6 +10687,12 @@ class $ShiftSessionTableTable extends ShiftSessionTable
     } else if (isInserting) {
       context.missing(_differenceMeta);
     }
+    if (data.containsKey('variance_reason')) {
+      context.handle(
+          _varianceReasonMeta,
+          varianceReason.isAcceptableOrUnknown(
+              data['variance_reason']!, _varianceReasonMeta));
+    }
     if (data.containsKey('is_closed')) {
       context.handle(_isClosedMeta,
           isClosed.isAcceptableOrUnknown(data['is_closed']!, _isClosedMeta));
@@ -10717,6 +10730,8 @@ class $ShiftSessionTableTable extends ShiftSessionTable
           .read(DriftSqlType.double, data['${effectivePrefix}actual_cash'])!,
       difference: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}difference'])!,
+      varianceReason: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}variance_reason']),
       isClosed: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_closed'])!,
       isSynced: attachedDatabase.typeMapping
@@ -10742,6 +10757,7 @@ class ShiftSessionTableData extends DataClass
   final double expectedCash;
   final double actualCash;
   final double difference;
+  final String? varianceReason;
   final bool isClosed;
   final bool isSynced;
   const ShiftSessionTableData(
@@ -10755,6 +10771,7 @@ class ShiftSessionTableData extends DataClass
       required this.expectedCash,
       required this.actualCash,
       required this.difference,
+      this.varianceReason,
       required this.isClosed,
       required this.isSynced});
   @override
@@ -10772,6 +10789,9 @@ class ShiftSessionTableData extends DataClass
     map['expected_cash'] = Variable<double>(expectedCash);
     map['actual_cash'] = Variable<double>(actualCash);
     map['difference'] = Variable<double>(difference);
+    if (!nullToAbsent || varianceReason != null) {
+      map['variance_reason'] = Variable<String>(varianceReason);
+    }
     map['is_closed'] = Variable<bool>(isClosed);
     map['is_synced'] = Variable<bool>(isSynced);
     return map;
@@ -10791,6 +10811,9 @@ class ShiftSessionTableData extends DataClass
       expectedCash: Value(expectedCash),
       actualCash: Value(actualCash),
       difference: Value(difference),
+      varianceReason: varianceReason == null && nullToAbsent
+          ? const Value.absent()
+          : Value(varianceReason),
       isClosed: Value(isClosed),
       isSynced: Value(isSynced),
     );
@@ -10810,6 +10833,7 @@ class ShiftSessionTableData extends DataClass
       expectedCash: serializer.fromJson<double>(json['expectedCash']),
       actualCash: serializer.fromJson<double>(json['actualCash']),
       difference: serializer.fromJson<double>(json['difference']),
+      varianceReason: serializer.fromJson<String?>(json['varianceReason']),
       isClosed: serializer.fromJson<bool>(json['isClosed']),
       isSynced: serializer.fromJson<bool>(json['isSynced']),
     );
@@ -10828,6 +10852,7 @@ class ShiftSessionTableData extends DataClass
       'expectedCash': serializer.toJson<double>(expectedCash),
       'actualCash': serializer.toJson<double>(actualCash),
       'difference': serializer.toJson<double>(difference),
+      'varianceReason': serializer.toJson<String?>(varianceReason),
       'isClosed': serializer.toJson<bool>(isClosed),
       'isSynced': serializer.toJson<bool>(isSynced),
     };
@@ -10844,6 +10869,7 @@ class ShiftSessionTableData extends DataClass
           double? expectedCash,
           double? actualCash,
           double? difference,
+          Value<String?> varianceReason = const Value.absent(),
           bool? isClosed,
           bool? isSynced}) =>
       ShiftSessionTableData(
@@ -10857,6 +10883,8 @@ class ShiftSessionTableData extends DataClass
         expectedCash: expectedCash ?? this.expectedCash,
         actualCash: actualCash ?? this.actualCash,
         difference: difference ?? this.difference,
+        varianceReason:
+            varianceReason.present ? varianceReason.value : this.varianceReason,
         isClosed: isClosed ?? this.isClosed,
         isSynced: isSynced ?? this.isSynced,
       );
@@ -10877,6 +10905,9 @@ class ShiftSessionTableData extends DataClass
           data.actualCash.present ? data.actualCash.value : this.actualCash,
       difference:
           data.difference.present ? data.difference.value : this.difference,
+      varianceReason: data.varianceReason.present
+          ? data.varianceReason.value
+          : this.varianceReason,
       isClosed: data.isClosed.present ? data.isClosed.value : this.isClosed,
       isSynced: data.isSynced.present ? data.isSynced.value : this.isSynced,
     );
@@ -10895,6 +10926,7 @@ class ShiftSessionTableData extends DataClass
           ..write('expectedCash: $expectedCash, ')
           ..write('actualCash: $actualCash, ')
           ..write('difference: $difference, ')
+          ..write('varianceReason: $varianceReason, ')
           ..write('isClosed: $isClosed, ')
           ..write('isSynced: $isSynced')
           ..write(')'))
@@ -10913,6 +10945,7 @@ class ShiftSessionTableData extends DataClass
       expectedCash,
       actualCash,
       difference,
+      varianceReason,
       isClosed,
       isSynced);
   @override
@@ -10929,6 +10962,7 @@ class ShiftSessionTableData extends DataClass
           other.expectedCash == this.expectedCash &&
           other.actualCash == this.actualCash &&
           other.difference == this.difference &&
+          other.varianceReason == this.varianceReason &&
           other.isClosed == this.isClosed &&
           other.isSynced == this.isSynced);
 }
@@ -10945,6 +10979,7 @@ class ShiftSessionTableCompanion
   final Value<double> expectedCash;
   final Value<double> actualCash;
   final Value<double> difference;
+  final Value<String?> varianceReason;
   final Value<bool> isClosed;
   final Value<bool> isSynced;
   const ShiftSessionTableCompanion({
@@ -10958,6 +10993,7 @@ class ShiftSessionTableCompanion
     this.expectedCash = const Value.absent(),
     this.actualCash = const Value.absent(),
     this.difference = const Value.absent(),
+    this.varianceReason = const Value.absent(),
     this.isClosed = const Value.absent(),
     this.isSynced = const Value.absent(),
   });
@@ -10972,6 +11008,7 @@ class ShiftSessionTableCompanion
     required double expectedCash,
     required double actualCash,
     required double difference,
+    this.varianceReason = const Value.absent(),
     this.isClosed = const Value.absent(),
     this.isSynced = const Value.absent(),
   })  : uuid = Value(uuid),
@@ -10993,6 +11030,7 @@ class ShiftSessionTableCompanion
     Expression<double>? expectedCash,
     Expression<double>? actualCash,
     Expression<double>? difference,
+    Expression<String>? varianceReason,
     Expression<bool>? isClosed,
     Expression<bool>? isSynced,
   }) {
@@ -11007,6 +11045,7 @@ class ShiftSessionTableCompanion
       if (expectedCash != null) 'expected_cash': expectedCash,
       if (actualCash != null) 'actual_cash': actualCash,
       if (difference != null) 'difference': difference,
+      if (varianceReason != null) 'variance_reason': varianceReason,
       if (isClosed != null) 'is_closed': isClosed,
       if (isSynced != null) 'is_synced': isSynced,
     });
@@ -11023,6 +11062,7 @@ class ShiftSessionTableCompanion
       Value<double>? expectedCash,
       Value<double>? actualCash,
       Value<double>? difference,
+      Value<String?>? varianceReason,
       Value<bool>? isClosed,
       Value<bool>? isSynced}) {
     return ShiftSessionTableCompanion(
@@ -11036,6 +11076,7 @@ class ShiftSessionTableCompanion
       expectedCash: expectedCash ?? this.expectedCash,
       actualCash: actualCash ?? this.actualCash,
       difference: difference ?? this.difference,
+      varianceReason: varianceReason ?? this.varianceReason,
       isClosed: isClosed ?? this.isClosed,
       isSynced: isSynced ?? this.isSynced,
     );
@@ -11074,6 +11115,9 @@ class ShiftSessionTableCompanion
     if (difference.present) {
       map['difference'] = Variable<double>(difference.value);
     }
+    if (varianceReason.present) {
+      map['variance_reason'] = Variable<String>(varianceReason.value);
+    }
     if (isClosed.present) {
       map['is_closed'] = Variable<bool>(isClosed.value);
     }
@@ -11096,6 +11140,7 @@ class ShiftSessionTableCompanion
           ..write('expectedCash: $expectedCash, ')
           ..write('actualCash: $actualCash, ')
           ..write('difference: $difference, ')
+          ..write('varianceReason: $varianceReason, ')
           ..write('isClosed: $isClosed, ')
           ..write('isSynced: $isSynced')
           ..write(')'))
@@ -47709,6 +47754,7 @@ typedef $$ShiftSessionTableTableCreateCompanionBuilder
   required double expectedCash,
   required double actualCash,
   required double difference,
+  Value<String?> varianceReason,
   Value<bool> isClosed,
   Value<bool> isSynced,
 });
@@ -47724,6 +47770,7 @@ typedef $$ShiftSessionTableTableUpdateCompanionBuilder
   Value<double> expectedCash,
   Value<double> actualCash,
   Value<double> difference,
+  Value<String?> varianceReason,
   Value<bool> isClosed,
   Value<bool> isSynced,
 });
@@ -47766,6 +47813,10 @@ class $$ShiftSessionTableTableFilterComposer
 
   ColumnFilters<double> get difference => $composableBuilder(
       column: $table.difference, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get varianceReason => $composableBuilder(
+      column: $table.varianceReason,
+      builder: (column) => ColumnFilters(column));
 
   ColumnFilters<bool> get isClosed => $composableBuilder(
       column: $table.isClosed, builder: (column) => ColumnFilters(column));
@@ -47814,6 +47865,10 @@ class $$ShiftSessionTableTableOrderingComposer
   ColumnOrderings<double> get difference => $composableBuilder(
       column: $table.difference, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get varianceReason => $composableBuilder(
+      column: $table.varianceReason,
+      builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<bool> get isClosed => $composableBuilder(
       column: $table.isClosed, builder: (column) => ColumnOrderings(column));
 
@@ -47859,6 +47914,9 @@ class $$ShiftSessionTableTableAnnotationComposer
 
   GeneratedColumn<double> get difference => $composableBuilder(
       column: $table.difference, builder: (column) => column);
+
+  GeneratedColumn<String> get varianceReason => $composableBuilder(
+      column: $table.varianceReason, builder: (column) => column);
 
   GeneratedColumn<bool> get isClosed =>
       $composableBuilder(column: $table.isClosed, builder: (column) => column);
@@ -47906,6 +47964,7 @@ class $$ShiftSessionTableTableTableManager extends RootTableManager<
             Value<double> expectedCash = const Value.absent(),
             Value<double> actualCash = const Value.absent(),
             Value<double> difference = const Value.absent(),
+            Value<String?> varianceReason = const Value.absent(),
             Value<bool> isClosed = const Value.absent(),
             Value<bool> isSynced = const Value.absent(),
           }) =>
@@ -47920,6 +47979,7 @@ class $$ShiftSessionTableTableTableManager extends RootTableManager<
             expectedCash: expectedCash,
             actualCash: actualCash,
             difference: difference,
+            varianceReason: varianceReason,
             isClosed: isClosed,
             isSynced: isSynced,
           ),
@@ -47934,6 +47994,7 @@ class $$ShiftSessionTableTableTableManager extends RootTableManager<
             required double expectedCash,
             required double actualCash,
             required double difference,
+            Value<String?> varianceReason = const Value.absent(),
             Value<bool> isClosed = const Value.absent(),
             Value<bool> isSynced = const Value.absent(),
           }) =>
@@ -47948,6 +48009,7 @@ class $$ShiftSessionTableTableTableManager extends RootTableManager<
             expectedCash: expectedCash,
             actualCash: actualCash,
             difference: difference,
+            varianceReason: varianceReason,
             isClosed: isClosed,
             isSynced: isSynced,
           ),

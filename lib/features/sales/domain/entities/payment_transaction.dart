@@ -13,6 +13,27 @@ enum PaymentStatus {
   refunded,
 }
 
+class PaymentPart extends Equatable {
+  final PaymentMethod method;
+  final double amount;
+  final double? tendered;
+  final double? change;
+  final String? referenceId; // e.g card auth code, qris ref
+  final String? note;
+
+  const PaymentPart({
+    required this.method,
+    required this.amount,
+    this.tendered,
+    this.change,
+    this.referenceId,
+    this.note,
+  });
+
+  @override
+  List<Object?> get props => [method, amount, tendered, change, referenceId, note];
+}
+
 class PaymentTransaction extends Equatable {
   final String uuid;
   final String orderUuid;

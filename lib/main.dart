@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:savvy_pos/bootstrap.dart';
@@ -18,6 +19,15 @@ void main() async {
   // Ensure binding
   WidgetsFlutterBinding.ensureInitialized();
   
+  // 1. Lock Orientation (Landscape Only for POS Kiosk)
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+  ]);
+
+  // 2. Immersive Mode (Hide Status Bar & Bottom Navigation OS)
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
   // Anti-Fragile Shield
   ErrorWidget.builder = (FlutterErrorDetails details) {
     return GlobalErrorShield(details: details);

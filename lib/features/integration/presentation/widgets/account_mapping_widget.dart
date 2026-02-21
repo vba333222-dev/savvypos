@@ -11,12 +11,13 @@ class AccountMappingWidget extends StatefulWidget {
 
 class _AccountMappingWidgetState extends State<AccountMappingWidget> with TickerProviderStateMixin {
   // Mock Data
-  final List<String> savvyCategories = ['Beverage Sales', 'Food Sales', 'Service Charge', 'Tax Collected'];
+  final List<String> savvyCategories = ['Net Sales', 'Cost of Goods Sold (COGS)', 'Total Tax (PPN Keluaran)', 'Total Discounts', 'Cash Drawer Default'];
   final List<Map<String, String>> jurnalAccounts = [
+    {'code': '1-1001', 'name': 'Cash on Hand'},
+    {'code': '2-2000', 'name': 'Sales Tax Payable'},
     {'code': '4-4000', 'name': 'Sales Revenue'},
-    {'code': '4-4001', 'name': 'Service Revenue'},
-    {'code': '2-2000', 'name': 'Tax Payable'},
-    {'code': '1-1001', 'name': 'Unmapped Asset'},
+    {'code': '4-4100', 'name': 'Discounts Given'},
+    {'code': '5-5000', 'name': 'COGS Expense'},
   ];
 
   final Map<String, String?> mappings = {};

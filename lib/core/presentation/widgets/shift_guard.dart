@@ -35,6 +35,8 @@ class ShiftGuard extends StatelessWidget {
           closed: () => const OpenShiftPage(),
           open: (shift, payIn, payOut, safeDrops, sales) => child,
           varianceWarning: (variance, actual) => child,
+          syncingEod: () => child,
+          syncSuccess: () => child,
         );
       },
     );

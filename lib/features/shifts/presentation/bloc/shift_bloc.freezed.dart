@@ -23,6 +23,8 @@ mixin _$ShiftEvent {
         openShift,
     required TResult Function(double actualCash, String? varianceReason)
         closeShift,
+    required TResult Function(double actualCash, String? varianceReason)
+        closeShiftWithEod,
     required TResult Function(double actualCash) verifyCashCount,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
@@ -35,6 +37,8 @@ mixin _$ShiftEvent {
     TResult? Function(double startCash, String userId, String userName)?
         openShift,
     TResult? Function(double actualCash, String? varianceReason)? closeShift,
+    TResult? Function(double actualCash, String? varianceReason)?
+        closeShiftWithEod,
     TResult? Function(double actualCash)? verifyCashCount,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
@@ -47,6 +51,8 @@ mixin _$ShiftEvent {
     TResult Function(double startCash, String userId, String userName)?
         openShift,
     TResult Function(double actualCash, String? varianceReason)? closeShift,
+    TResult Function(double actualCash, String? varianceReason)?
+        closeShiftWithEod,
     TResult Function(double actualCash)? verifyCashCount,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
@@ -59,6 +65,7 @@ mixin _$ShiftEvent {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_CloseShiftWithEod value) closeShiftWithEod,
     required TResult Function(_VerifyCashCount value) verifyCashCount,
     required TResult Function(_PayIn value) payIn,
     required TResult Function(_PayOut value) payOut,
@@ -70,6 +77,7 @@ mixin _$ShiftEvent {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_CloseShiftWithEod value)? closeShiftWithEod,
     TResult? Function(_VerifyCashCount value)? verifyCashCount,
     TResult? Function(_PayIn value)? payIn,
     TResult? Function(_PayOut value)? payOut,
@@ -81,6 +89,7 @@ mixin _$ShiftEvent {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_CloseShiftWithEod value)? closeShiftWithEod,
     TResult Function(_VerifyCashCount value)? verifyCashCount,
     TResult Function(_PayIn value)? payIn,
     TResult Function(_PayOut value)? payOut,
@@ -157,6 +166,8 @@ class _$CheckStatusImpl implements _CheckStatus {
         openShift,
     required TResult Function(double actualCash, String? varianceReason)
         closeShift,
+    required TResult Function(double actualCash, String? varianceReason)
+        closeShiftWithEod,
     required TResult Function(double actualCash) verifyCashCount,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
@@ -172,6 +183,8 @@ class _$CheckStatusImpl implements _CheckStatus {
     TResult? Function(double startCash, String userId, String userName)?
         openShift,
     TResult? Function(double actualCash, String? varianceReason)? closeShift,
+    TResult? Function(double actualCash, String? varianceReason)?
+        closeShiftWithEod,
     TResult? Function(double actualCash)? verifyCashCount,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
@@ -187,6 +200,8 @@ class _$CheckStatusImpl implements _CheckStatus {
     TResult Function(double startCash, String userId, String userName)?
         openShift,
     TResult Function(double actualCash, String? varianceReason)? closeShift,
+    TResult Function(double actualCash, String? varianceReason)?
+        closeShiftWithEod,
     TResult Function(double actualCash)? verifyCashCount,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
@@ -205,6 +220,7 @@ class _$CheckStatusImpl implements _CheckStatus {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_CloseShiftWithEod value) closeShiftWithEod,
     required TResult Function(_VerifyCashCount value) verifyCashCount,
     required TResult Function(_PayIn value) payIn,
     required TResult Function(_PayOut value) payOut,
@@ -219,6 +235,7 @@ class _$CheckStatusImpl implements _CheckStatus {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_CloseShiftWithEod value)? closeShiftWithEod,
     TResult? Function(_VerifyCashCount value)? verifyCashCount,
     TResult? Function(_PayIn value)? payIn,
     TResult? Function(_PayOut value)? payOut,
@@ -233,6 +250,7 @@ class _$CheckStatusImpl implements _CheckStatus {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_CloseShiftWithEod value)? closeShiftWithEod,
     TResult Function(_VerifyCashCount value)? verifyCashCount,
     TResult Function(_PayIn value)? payIn,
     TResult Function(_PayOut value)? payOut,
@@ -341,6 +359,8 @@ class _$OpenShiftImpl implements _OpenShift {
         openShift,
     required TResult Function(double actualCash, String? varianceReason)
         closeShift,
+    required TResult Function(double actualCash, String? varianceReason)
+        closeShiftWithEod,
     required TResult Function(double actualCash) verifyCashCount,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
@@ -356,6 +376,8 @@ class _$OpenShiftImpl implements _OpenShift {
     TResult? Function(double startCash, String userId, String userName)?
         openShift,
     TResult? Function(double actualCash, String? varianceReason)? closeShift,
+    TResult? Function(double actualCash, String? varianceReason)?
+        closeShiftWithEod,
     TResult? Function(double actualCash)? verifyCashCount,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
@@ -371,6 +393,8 @@ class _$OpenShiftImpl implements _OpenShift {
     TResult Function(double startCash, String userId, String userName)?
         openShift,
     TResult Function(double actualCash, String? varianceReason)? closeShift,
+    TResult Function(double actualCash, String? varianceReason)?
+        closeShiftWithEod,
     TResult Function(double actualCash)? verifyCashCount,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
@@ -389,6 +413,7 @@ class _$OpenShiftImpl implements _OpenShift {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_CloseShiftWithEod value) closeShiftWithEod,
     required TResult Function(_VerifyCashCount value) verifyCashCount,
     required TResult Function(_PayIn value) payIn,
     required TResult Function(_PayOut value) payOut,
@@ -403,6 +428,7 @@ class _$OpenShiftImpl implements _OpenShift {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_CloseShiftWithEod value)? closeShiftWithEod,
     TResult? Function(_VerifyCashCount value)? verifyCashCount,
     TResult? Function(_PayIn value)? payIn,
     TResult? Function(_PayOut value)? payOut,
@@ -417,6 +443,7 @@ class _$OpenShiftImpl implements _OpenShift {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_CloseShiftWithEod value)? closeShiftWithEod,
     TResult Function(_VerifyCashCount value)? verifyCashCount,
     TResult Function(_PayIn value)? payIn,
     TResult Function(_PayOut value)? payOut,
@@ -529,6 +556,8 @@ class _$CloseShiftImpl implements _CloseShift {
         openShift,
     required TResult Function(double actualCash, String? varianceReason)
         closeShift,
+    required TResult Function(double actualCash, String? varianceReason)
+        closeShiftWithEod,
     required TResult Function(double actualCash) verifyCashCount,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
@@ -544,6 +573,8 @@ class _$CloseShiftImpl implements _CloseShift {
     TResult? Function(double startCash, String userId, String userName)?
         openShift,
     TResult? Function(double actualCash, String? varianceReason)? closeShift,
+    TResult? Function(double actualCash, String? varianceReason)?
+        closeShiftWithEod,
     TResult? Function(double actualCash)? verifyCashCount,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
@@ -559,6 +590,8 @@ class _$CloseShiftImpl implements _CloseShift {
     TResult Function(double startCash, String userId, String userName)?
         openShift,
     TResult Function(double actualCash, String? varianceReason)? closeShift,
+    TResult Function(double actualCash, String? varianceReason)?
+        closeShiftWithEod,
     TResult Function(double actualCash)? verifyCashCount,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
@@ -577,6 +610,7 @@ class _$CloseShiftImpl implements _CloseShift {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_CloseShiftWithEod value) closeShiftWithEod,
     required TResult Function(_VerifyCashCount value) verifyCashCount,
     required TResult Function(_PayIn value) payIn,
     required TResult Function(_PayOut value) payOut,
@@ -591,6 +625,7 @@ class _$CloseShiftImpl implements _CloseShift {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_CloseShiftWithEod value)? closeShiftWithEod,
     TResult? Function(_VerifyCashCount value)? verifyCashCount,
     TResult? Function(_PayIn value)? payIn,
     TResult? Function(_PayOut value)? payOut,
@@ -605,6 +640,7 @@ class _$CloseShiftImpl implements _CloseShift {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_CloseShiftWithEod value)? closeShiftWithEod,
     TResult Function(_VerifyCashCount value)? verifyCashCount,
     TResult Function(_PayIn value)? payIn,
     TResult Function(_PayOut value)? payOut,
@@ -629,6 +665,202 @@ abstract class _CloseShift implements ShiftEvent {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CloseShiftImplCopyWith<_$CloseShiftImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$CloseShiftWithEodImplCopyWith<$Res> {
+  factory _$$CloseShiftWithEodImplCopyWith(_$CloseShiftWithEodImpl value,
+          $Res Function(_$CloseShiftWithEodImpl) then) =
+      __$$CloseShiftWithEodImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({double actualCash, String? varianceReason});
+}
+
+/// @nodoc
+class __$$CloseShiftWithEodImplCopyWithImpl<$Res>
+    extends _$ShiftEventCopyWithImpl<$Res, _$CloseShiftWithEodImpl>
+    implements _$$CloseShiftWithEodImplCopyWith<$Res> {
+  __$$CloseShiftWithEodImplCopyWithImpl(_$CloseShiftWithEodImpl _value,
+      $Res Function(_$CloseShiftWithEodImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ShiftEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? actualCash = null,
+    Object? varianceReason = freezed,
+  }) {
+    return _then(_$CloseShiftWithEodImpl(
+      null == actualCash
+          ? _value.actualCash
+          : actualCash // ignore: cast_nullable_to_non_nullable
+              as double,
+      varianceReason: freezed == varianceReason
+          ? _value.varianceReason
+          : varianceReason // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$CloseShiftWithEodImpl implements _CloseShiftWithEod {
+  const _$CloseShiftWithEodImpl(this.actualCash, {this.varianceReason});
+
+  @override
+  final double actualCash;
+  @override
+  final String? varianceReason;
+
+  @override
+  String toString() {
+    return 'ShiftEvent.closeShiftWithEod(actualCash: $actualCash, varianceReason: $varianceReason)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CloseShiftWithEodImpl &&
+            (identical(other.actualCash, actualCash) ||
+                other.actualCash == actualCash) &&
+            (identical(other.varianceReason, varianceReason) ||
+                other.varianceReason == varianceReason));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, actualCash, varianceReason);
+
+  /// Create a copy of ShiftEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CloseShiftWithEodImplCopyWith<_$CloseShiftWithEodImpl> get copyWith =>
+      __$$CloseShiftWithEodImplCopyWithImpl<_$CloseShiftWithEodImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() checkStatus,
+    required TResult Function(double startCash, String userId, String userName)
+        openShift,
+    required TResult Function(double actualCash, String? varianceReason)
+        closeShift,
+    required TResult Function(double actualCash, String? varianceReason)
+        closeShiftWithEod,
+    required TResult Function(double actualCash) verifyCashCount,
+    required TResult Function(double amount, String reason) payIn,
+    required TResult Function(double amount, String reason) payOut,
+    required TResult Function(double amount, String reason) safeDrop,
+  }) {
+    return closeShiftWithEod(actualCash, varianceReason);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? checkStatus,
+    TResult? Function(double startCash, String userId, String userName)?
+        openShift,
+    TResult? Function(double actualCash, String? varianceReason)? closeShift,
+    TResult? Function(double actualCash, String? varianceReason)?
+        closeShiftWithEod,
+    TResult? Function(double actualCash)? verifyCashCount,
+    TResult? Function(double amount, String reason)? payIn,
+    TResult? Function(double amount, String reason)? payOut,
+    TResult? Function(double amount, String reason)? safeDrop,
+  }) {
+    return closeShiftWithEod?.call(actualCash, varianceReason);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? checkStatus,
+    TResult Function(double startCash, String userId, String userName)?
+        openShift,
+    TResult Function(double actualCash, String? varianceReason)? closeShift,
+    TResult Function(double actualCash, String? varianceReason)?
+        closeShiftWithEod,
+    TResult Function(double actualCash)? verifyCashCount,
+    TResult Function(double amount, String reason)? payIn,
+    TResult Function(double amount, String reason)? payOut,
+    TResult Function(double amount, String reason)? safeDrop,
+    required TResult orElse(),
+  }) {
+    if (closeShiftWithEod != null) {
+      return closeShiftWithEod(actualCash, varianceReason);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_CheckStatus value) checkStatus,
+    required TResult Function(_OpenShift value) openShift,
+    required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_CloseShiftWithEod value) closeShiftWithEod,
+    required TResult Function(_VerifyCashCount value) verifyCashCount,
+    required TResult Function(_PayIn value) payIn,
+    required TResult Function(_PayOut value) payOut,
+    required TResult Function(_SafeDrop value) safeDrop,
+  }) {
+    return closeShiftWithEod(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_CheckStatus value)? checkStatus,
+    TResult? Function(_OpenShift value)? openShift,
+    TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_CloseShiftWithEod value)? closeShiftWithEod,
+    TResult? Function(_VerifyCashCount value)? verifyCashCount,
+    TResult? Function(_PayIn value)? payIn,
+    TResult? Function(_PayOut value)? payOut,
+    TResult? Function(_SafeDrop value)? safeDrop,
+  }) {
+    return closeShiftWithEod?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_CheckStatus value)? checkStatus,
+    TResult Function(_OpenShift value)? openShift,
+    TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_CloseShiftWithEod value)? closeShiftWithEod,
+    TResult Function(_VerifyCashCount value)? verifyCashCount,
+    TResult Function(_PayIn value)? payIn,
+    TResult Function(_PayOut value)? payOut,
+    TResult Function(_SafeDrop value)? safeDrop,
+    required TResult orElse(),
+  }) {
+    if (closeShiftWithEod != null) {
+      return closeShiftWithEod(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _CloseShiftWithEod implements ShiftEvent {
+  const factory _CloseShiftWithEod(final double actualCash,
+      {final String? varianceReason}) = _$CloseShiftWithEodImpl;
+
+  double get actualCash;
+  String? get varianceReason;
+
+  /// Create a copy of ShiftEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CloseShiftWithEodImplCopyWith<_$CloseShiftWithEodImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -707,6 +939,8 @@ class _$VerifyCashCountImpl implements _VerifyCashCount {
         openShift,
     required TResult Function(double actualCash, String? varianceReason)
         closeShift,
+    required TResult Function(double actualCash, String? varianceReason)
+        closeShiftWithEod,
     required TResult Function(double actualCash) verifyCashCount,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
@@ -722,6 +956,8 @@ class _$VerifyCashCountImpl implements _VerifyCashCount {
     TResult? Function(double startCash, String userId, String userName)?
         openShift,
     TResult? Function(double actualCash, String? varianceReason)? closeShift,
+    TResult? Function(double actualCash, String? varianceReason)?
+        closeShiftWithEod,
     TResult? Function(double actualCash)? verifyCashCount,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
@@ -737,6 +973,8 @@ class _$VerifyCashCountImpl implements _VerifyCashCount {
     TResult Function(double startCash, String userId, String userName)?
         openShift,
     TResult Function(double actualCash, String? varianceReason)? closeShift,
+    TResult Function(double actualCash, String? varianceReason)?
+        closeShiftWithEod,
     TResult Function(double actualCash)? verifyCashCount,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
@@ -755,6 +993,7 @@ class _$VerifyCashCountImpl implements _VerifyCashCount {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_CloseShiftWithEod value) closeShiftWithEod,
     required TResult Function(_VerifyCashCount value) verifyCashCount,
     required TResult Function(_PayIn value) payIn,
     required TResult Function(_PayOut value) payOut,
@@ -769,6 +1008,7 @@ class _$VerifyCashCountImpl implements _VerifyCashCount {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_CloseShiftWithEod value)? closeShiftWithEod,
     TResult? Function(_VerifyCashCount value)? verifyCashCount,
     TResult? Function(_PayIn value)? payIn,
     TResult? Function(_PayOut value)? payOut,
@@ -783,6 +1023,7 @@ class _$VerifyCashCountImpl implements _VerifyCashCount {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_CloseShiftWithEod value)? closeShiftWithEod,
     TResult Function(_VerifyCashCount value)? verifyCashCount,
     TResult Function(_PayIn value)? payIn,
     TResult Function(_PayOut value)? payOut,
@@ -890,6 +1131,8 @@ class _$PayInImpl implements _PayIn {
         openShift,
     required TResult Function(double actualCash, String? varianceReason)
         closeShift,
+    required TResult Function(double actualCash, String? varianceReason)
+        closeShiftWithEod,
     required TResult Function(double actualCash) verifyCashCount,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
@@ -905,6 +1148,8 @@ class _$PayInImpl implements _PayIn {
     TResult? Function(double startCash, String userId, String userName)?
         openShift,
     TResult? Function(double actualCash, String? varianceReason)? closeShift,
+    TResult? Function(double actualCash, String? varianceReason)?
+        closeShiftWithEod,
     TResult? Function(double actualCash)? verifyCashCount,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
@@ -920,6 +1165,8 @@ class _$PayInImpl implements _PayIn {
     TResult Function(double startCash, String userId, String userName)?
         openShift,
     TResult Function(double actualCash, String? varianceReason)? closeShift,
+    TResult Function(double actualCash, String? varianceReason)?
+        closeShiftWithEod,
     TResult Function(double actualCash)? verifyCashCount,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
@@ -938,6 +1185,7 @@ class _$PayInImpl implements _PayIn {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_CloseShiftWithEod value) closeShiftWithEod,
     required TResult Function(_VerifyCashCount value) verifyCashCount,
     required TResult Function(_PayIn value) payIn,
     required TResult Function(_PayOut value) payOut,
@@ -952,6 +1200,7 @@ class _$PayInImpl implements _PayIn {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_CloseShiftWithEod value)? closeShiftWithEod,
     TResult? Function(_VerifyCashCount value)? verifyCashCount,
     TResult? Function(_PayIn value)? payIn,
     TResult? Function(_PayOut value)? payOut,
@@ -966,6 +1215,7 @@ class _$PayInImpl implements _PayIn {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_CloseShiftWithEod value)? closeShiftWithEod,
     TResult Function(_VerifyCashCount value)? verifyCashCount,
     TResult Function(_PayIn value)? payIn,
     TResult Function(_PayOut value)? payOut,
@@ -1073,6 +1323,8 @@ class _$PayOutImpl implements _PayOut {
         openShift,
     required TResult Function(double actualCash, String? varianceReason)
         closeShift,
+    required TResult Function(double actualCash, String? varianceReason)
+        closeShiftWithEod,
     required TResult Function(double actualCash) verifyCashCount,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
@@ -1088,6 +1340,8 @@ class _$PayOutImpl implements _PayOut {
     TResult? Function(double startCash, String userId, String userName)?
         openShift,
     TResult? Function(double actualCash, String? varianceReason)? closeShift,
+    TResult? Function(double actualCash, String? varianceReason)?
+        closeShiftWithEod,
     TResult? Function(double actualCash)? verifyCashCount,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
@@ -1103,6 +1357,8 @@ class _$PayOutImpl implements _PayOut {
     TResult Function(double startCash, String userId, String userName)?
         openShift,
     TResult Function(double actualCash, String? varianceReason)? closeShift,
+    TResult Function(double actualCash, String? varianceReason)?
+        closeShiftWithEod,
     TResult Function(double actualCash)? verifyCashCount,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
@@ -1121,6 +1377,7 @@ class _$PayOutImpl implements _PayOut {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_CloseShiftWithEod value) closeShiftWithEod,
     required TResult Function(_VerifyCashCount value) verifyCashCount,
     required TResult Function(_PayIn value) payIn,
     required TResult Function(_PayOut value) payOut,
@@ -1135,6 +1392,7 @@ class _$PayOutImpl implements _PayOut {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_CloseShiftWithEod value)? closeShiftWithEod,
     TResult? Function(_VerifyCashCount value)? verifyCashCount,
     TResult? Function(_PayIn value)? payIn,
     TResult? Function(_PayOut value)? payOut,
@@ -1149,6 +1407,7 @@ class _$PayOutImpl implements _PayOut {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_CloseShiftWithEod value)? closeShiftWithEod,
     TResult Function(_VerifyCashCount value)? verifyCashCount,
     TResult Function(_PayIn value)? payIn,
     TResult Function(_PayOut value)? payOut,
@@ -1257,6 +1516,8 @@ class _$SafeDropImpl implements _SafeDrop {
         openShift,
     required TResult Function(double actualCash, String? varianceReason)
         closeShift,
+    required TResult Function(double actualCash, String? varianceReason)
+        closeShiftWithEod,
     required TResult Function(double actualCash) verifyCashCount,
     required TResult Function(double amount, String reason) payIn,
     required TResult Function(double amount, String reason) payOut,
@@ -1272,6 +1533,8 @@ class _$SafeDropImpl implements _SafeDrop {
     TResult? Function(double startCash, String userId, String userName)?
         openShift,
     TResult? Function(double actualCash, String? varianceReason)? closeShift,
+    TResult? Function(double actualCash, String? varianceReason)?
+        closeShiftWithEod,
     TResult? Function(double actualCash)? verifyCashCount,
     TResult? Function(double amount, String reason)? payIn,
     TResult? Function(double amount, String reason)? payOut,
@@ -1287,6 +1550,8 @@ class _$SafeDropImpl implements _SafeDrop {
     TResult Function(double startCash, String userId, String userName)?
         openShift,
     TResult Function(double actualCash, String? varianceReason)? closeShift,
+    TResult Function(double actualCash, String? varianceReason)?
+        closeShiftWithEod,
     TResult Function(double actualCash)? verifyCashCount,
     TResult Function(double amount, String reason)? payIn,
     TResult Function(double amount, String reason)? payOut,
@@ -1305,6 +1570,7 @@ class _$SafeDropImpl implements _SafeDrop {
     required TResult Function(_CheckStatus value) checkStatus,
     required TResult Function(_OpenShift value) openShift,
     required TResult Function(_CloseShift value) closeShift,
+    required TResult Function(_CloseShiftWithEod value) closeShiftWithEod,
     required TResult Function(_VerifyCashCount value) verifyCashCount,
     required TResult Function(_PayIn value) payIn,
     required TResult Function(_PayOut value) payOut,
@@ -1319,6 +1585,7 @@ class _$SafeDropImpl implements _SafeDrop {
     TResult? Function(_CheckStatus value)? checkStatus,
     TResult? Function(_OpenShift value)? openShift,
     TResult? Function(_CloseShift value)? closeShift,
+    TResult? Function(_CloseShiftWithEod value)? closeShiftWithEod,
     TResult? Function(_VerifyCashCount value)? verifyCashCount,
     TResult? Function(_PayIn value)? payIn,
     TResult? Function(_PayOut value)? payOut,
@@ -1333,6 +1600,7 @@ class _$SafeDropImpl implements _SafeDrop {
     TResult Function(_CheckStatus value)? checkStatus,
     TResult Function(_OpenShift value)? openShift,
     TResult Function(_CloseShift value)? closeShift,
+    TResult Function(_CloseShiftWithEod value)? closeShiftWithEod,
     TResult Function(_VerifyCashCount value)? verifyCashCount,
     TResult Function(_PayIn value)? payIn,
     TResult Function(_PayOut value)? payOut,
@@ -1372,6 +1640,8 @@ mixin _$ShiftState {
     required TResult Function(double variance, double actualCash)
         varianceWarning,
     required TResult Function() closed,
+    required TResult Function() syncingEod,
+    required TResult Function() syncSuccess,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -1384,6 +1654,8 @@ mixin _$ShiftState {
         open,
     TResult? Function(double variance, double actualCash)? varianceWarning,
     TResult? Function()? closed,
+    TResult? Function()? syncingEod,
+    TResult? Function()? syncSuccess,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -1396,6 +1668,8 @@ mixin _$ShiftState {
         open,
     TResult Function(double variance, double actualCash)? varianceWarning,
     TResult Function()? closed,
+    TResult Function()? syncingEod,
+    TResult Function()? syncSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -1407,6 +1681,8 @@ mixin _$ShiftState {
     required TResult Function(_Open value) open,
     required TResult Function(_VarianceWarning value) varianceWarning,
     required TResult Function(_Closed value) closed,
+    required TResult Function(_SyncingEod value) syncingEod,
+    required TResult Function(_SyncSuccess value) syncSuccess,
     required TResult Function(_Error value) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -1417,6 +1693,8 @@ mixin _$ShiftState {
     TResult? Function(_Open value)? open,
     TResult? Function(_VarianceWarning value)? varianceWarning,
     TResult? Function(_Closed value)? closed,
+    TResult? Function(_SyncingEod value)? syncingEod,
+    TResult? Function(_SyncSuccess value)? syncSuccess,
     TResult? Function(_Error value)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -1427,6 +1705,8 @@ mixin _$ShiftState {
     TResult Function(_Open value)? open,
     TResult Function(_VarianceWarning value)? varianceWarning,
     TResult Function(_Closed value)? closed,
+    TResult Function(_SyncingEod value)? syncingEod,
+    TResult Function(_SyncSuccess value)? syncSuccess,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) =>
@@ -1503,6 +1783,8 @@ class _$InitialImpl implements _Initial {
     required TResult Function(double variance, double actualCash)
         varianceWarning,
     required TResult Function() closed,
+    required TResult Function() syncingEod,
+    required TResult Function() syncSuccess,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -1518,6 +1800,8 @@ class _$InitialImpl implements _Initial {
         open,
     TResult? Function(double variance, double actualCash)? varianceWarning,
     TResult? Function()? closed,
+    TResult? Function()? syncingEod,
+    TResult? Function()? syncSuccess,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -1533,6 +1817,8 @@ class _$InitialImpl implements _Initial {
         open,
     TResult Function(double variance, double actualCash)? varianceWarning,
     TResult Function()? closed,
+    TResult Function()? syncingEod,
+    TResult Function()? syncSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -1550,6 +1836,8 @@ class _$InitialImpl implements _Initial {
     required TResult Function(_Open value) open,
     required TResult Function(_VarianceWarning value) varianceWarning,
     required TResult Function(_Closed value) closed,
+    required TResult Function(_SyncingEod value) syncingEod,
+    required TResult Function(_SyncSuccess value) syncSuccess,
     required TResult Function(_Error value) error,
   }) {
     return initial(this);
@@ -1563,6 +1851,8 @@ class _$InitialImpl implements _Initial {
     TResult? Function(_Open value)? open,
     TResult? Function(_VarianceWarning value)? varianceWarning,
     TResult? Function(_Closed value)? closed,
+    TResult? Function(_SyncingEod value)? syncingEod,
+    TResult? Function(_SyncSuccess value)? syncSuccess,
     TResult? Function(_Error value)? error,
   }) {
     return initial?.call(this);
@@ -1576,6 +1866,8 @@ class _$InitialImpl implements _Initial {
     TResult Function(_Open value)? open,
     TResult Function(_VarianceWarning value)? varianceWarning,
     TResult Function(_Closed value)? closed,
+    TResult Function(_SyncingEod value)? syncingEod,
+    TResult Function(_SyncSuccess value)? syncSuccess,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -1639,6 +1931,8 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(double variance, double actualCash)
         varianceWarning,
     required TResult Function() closed,
+    required TResult Function() syncingEod,
+    required TResult Function() syncSuccess,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -1654,6 +1948,8 @@ class _$LoadingImpl implements _Loading {
         open,
     TResult? Function(double variance, double actualCash)? varianceWarning,
     TResult? Function()? closed,
+    TResult? Function()? syncingEod,
+    TResult? Function()? syncSuccess,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -1669,6 +1965,8 @@ class _$LoadingImpl implements _Loading {
         open,
     TResult Function(double variance, double actualCash)? varianceWarning,
     TResult Function()? closed,
+    TResult Function()? syncingEod,
+    TResult Function()? syncSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -1686,6 +1984,8 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(_Open value) open,
     required TResult Function(_VarianceWarning value) varianceWarning,
     required TResult Function(_Closed value) closed,
+    required TResult Function(_SyncingEod value) syncingEod,
+    required TResult Function(_SyncSuccess value) syncSuccess,
     required TResult Function(_Error value) error,
   }) {
     return loading(this);
@@ -1699,6 +1999,8 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(_Open value)? open,
     TResult? Function(_VarianceWarning value)? varianceWarning,
     TResult? Function(_Closed value)? closed,
+    TResult? Function(_SyncingEod value)? syncingEod,
+    TResult? Function(_SyncSuccess value)? syncSuccess,
     TResult? Function(_Error value)? error,
   }) {
     return loading?.call(this);
@@ -1712,6 +2014,8 @@ class _$LoadingImpl implements _Loading {
     TResult Function(_Open value)? open,
     TResult Function(_VarianceWarning value)? varianceWarning,
     TResult Function(_Closed value)? closed,
+    TResult Function(_SyncingEod value)? syncingEod,
+    TResult Function(_SyncSuccess value)? syncSuccess,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -1863,6 +2167,8 @@ class _$OpenImpl implements _Open {
     required TResult Function(double variance, double actualCash)
         varianceWarning,
     required TResult Function() closed,
+    required TResult Function() syncingEod,
+    required TResult Function() syncSuccess,
     required TResult Function(String message) error,
   }) {
     return open(shift, totalPayIn, totalPayOut, totalSafeDrops, totalSales);
@@ -1878,6 +2184,8 @@ class _$OpenImpl implements _Open {
         open,
     TResult? Function(double variance, double actualCash)? varianceWarning,
     TResult? Function()? closed,
+    TResult? Function()? syncingEod,
+    TResult? Function()? syncSuccess,
     TResult? Function(String message)? error,
   }) {
     return open?.call(
@@ -1894,6 +2202,8 @@ class _$OpenImpl implements _Open {
         open,
     TResult Function(double variance, double actualCash)? varianceWarning,
     TResult Function()? closed,
+    TResult Function()? syncingEod,
+    TResult Function()? syncSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -1911,6 +2221,8 @@ class _$OpenImpl implements _Open {
     required TResult Function(_Open value) open,
     required TResult Function(_VarianceWarning value) varianceWarning,
     required TResult Function(_Closed value) closed,
+    required TResult Function(_SyncingEod value) syncingEod,
+    required TResult Function(_SyncSuccess value) syncSuccess,
     required TResult Function(_Error value) error,
   }) {
     return open(this);
@@ -1924,6 +2236,8 @@ class _$OpenImpl implements _Open {
     TResult? Function(_Open value)? open,
     TResult? Function(_VarianceWarning value)? varianceWarning,
     TResult? Function(_Closed value)? closed,
+    TResult? Function(_SyncingEod value)? syncingEod,
+    TResult? Function(_SyncSuccess value)? syncSuccess,
     TResult? Function(_Error value)? error,
   }) {
     return open?.call(this);
@@ -1937,6 +2251,8 @@ class _$OpenImpl implements _Open {
     TResult Function(_Open value)? open,
     TResult Function(_VarianceWarning value)? varianceWarning,
     TResult Function(_Closed value)? closed,
+    TResult Function(_SyncingEod value)? syncingEod,
+    TResult Function(_SyncSuccess value)? syncSuccess,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -2054,6 +2370,8 @@ class _$VarianceWarningImpl implements _VarianceWarning {
     required TResult Function(double variance, double actualCash)
         varianceWarning,
     required TResult Function() closed,
+    required TResult Function() syncingEod,
+    required TResult Function() syncSuccess,
     required TResult Function(String message) error,
   }) {
     return varianceWarning(variance, actualCash);
@@ -2069,6 +2387,8 @@ class _$VarianceWarningImpl implements _VarianceWarning {
         open,
     TResult? Function(double variance, double actualCash)? varianceWarning,
     TResult? Function()? closed,
+    TResult? Function()? syncingEod,
+    TResult? Function()? syncSuccess,
     TResult? Function(String message)? error,
   }) {
     return varianceWarning?.call(variance, actualCash);
@@ -2084,6 +2404,8 @@ class _$VarianceWarningImpl implements _VarianceWarning {
         open,
     TResult Function(double variance, double actualCash)? varianceWarning,
     TResult Function()? closed,
+    TResult Function()? syncingEod,
+    TResult Function()? syncSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -2101,6 +2423,8 @@ class _$VarianceWarningImpl implements _VarianceWarning {
     required TResult Function(_Open value) open,
     required TResult Function(_VarianceWarning value) varianceWarning,
     required TResult Function(_Closed value) closed,
+    required TResult Function(_SyncingEod value) syncingEod,
+    required TResult Function(_SyncSuccess value) syncSuccess,
     required TResult Function(_Error value) error,
   }) {
     return varianceWarning(this);
@@ -2114,6 +2438,8 @@ class _$VarianceWarningImpl implements _VarianceWarning {
     TResult? Function(_Open value)? open,
     TResult? Function(_VarianceWarning value)? varianceWarning,
     TResult? Function(_Closed value)? closed,
+    TResult? Function(_SyncingEod value)? syncingEod,
+    TResult? Function(_SyncSuccess value)? syncSuccess,
     TResult? Function(_Error value)? error,
   }) {
     return varianceWarning?.call(this);
@@ -2127,6 +2453,8 @@ class _$VarianceWarningImpl implements _VarianceWarning {
     TResult Function(_Open value)? open,
     TResult Function(_VarianceWarning value)? varianceWarning,
     TResult Function(_Closed value)? closed,
+    TResult Function(_SyncingEod value)? syncingEod,
+    TResult Function(_SyncSuccess value)? syncSuccess,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -2200,6 +2528,8 @@ class _$ClosedImpl implements _Closed {
     required TResult Function(double variance, double actualCash)
         varianceWarning,
     required TResult Function() closed,
+    required TResult Function() syncingEod,
+    required TResult Function() syncSuccess,
     required TResult Function(String message) error,
   }) {
     return closed();
@@ -2215,6 +2545,8 @@ class _$ClosedImpl implements _Closed {
         open,
     TResult? Function(double variance, double actualCash)? varianceWarning,
     TResult? Function()? closed,
+    TResult? Function()? syncingEod,
+    TResult? Function()? syncSuccess,
     TResult? Function(String message)? error,
   }) {
     return closed?.call();
@@ -2230,6 +2562,8 @@ class _$ClosedImpl implements _Closed {
         open,
     TResult Function(double variance, double actualCash)? varianceWarning,
     TResult Function()? closed,
+    TResult Function()? syncingEod,
+    TResult Function()? syncSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -2247,6 +2581,8 @@ class _$ClosedImpl implements _Closed {
     required TResult Function(_Open value) open,
     required TResult Function(_VarianceWarning value) varianceWarning,
     required TResult Function(_Closed value) closed,
+    required TResult Function(_SyncingEod value) syncingEod,
+    required TResult Function(_SyncSuccess value) syncSuccess,
     required TResult Function(_Error value) error,
   }) {
     return closed(this);
@@ -2260,6 +2596,8 @@ class _$ClosedImpl implements _Closed {
     TResult? Function(_Open value)? open,
     TResult? Function(_VarianceWarning value)? varianceWarning,
     TResult? Function(_Closed value)? closed,
+    TResult? Function(_SyncingEod value)? syncingEod,
+    TResult? Function(_SyncSuccess value)? syncSuccess,
     TResult? Function(_Error value)? error,
   }) {
     return closed?.call(this);
@@ -2273,6 +2611,8 @@ class _$ClosedImpl implements _Closed {
     TResult Function(_Open value)? open,
     TResult Function(_VarianceWarning value)? varianceWarning,
     TResult Function(_Closed value)? closed,
+    TResult Function(_SyncingEod value)? syncingEod,
+    TResult Function(_SyncSuccess value)? syncSuccess,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -2285,6 +2625,302 @@ class _$ClosedImpl implements _Closed {
 
 abstract class _Closed implements ShiftState {
   const factory _Closed() = _$ClosedImpl;
+}
+
+/// @nodoc
+abstract class _$$SyncingEodImplCopyWith<$Res> {
+  factory _$$SyncingEodImplCopyWith(
+          _$SyncingEodImpl value, $Res Function(_$SyncingEodImpl) then) =
+      __$$SyncingEodImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$SyncingEodImplCopyWithImpl<$Res>
+    extends _$ShiftStateCopyWithImpl<$Res, _$SyncingEodImpl>
+    implements _$$SyncingEodImplCopyWith<$Res> {
+  __$$SyncingEodImplCopyWithImpl(
+      _$SyncingEodImpl _value, $Res Function(_$SyncingEodImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ShiftState
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$SyncingEodImpl implements _SyncingEod {
+  const _$SyncingEodImpl();
+
+  @override
+  String toString() {
+    return 'ShiftState.syncingEod()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$SyncingEodImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(ShiftSession shift, double totalPayIn,
+            double totalPayOut, double totalSafeDrops, double totalSales)
+        open,
+    required TResult Function(double variance, double actualCash)
+        varianceWarning,
+    required TResult Function() closed,
+    required TResult Function() syncingEod,
+    required TResult Function() syncSuccess,
+    required TResult Function(String message) error,
+  }) {
+    return syncingEod();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(ShiftSession shift, double totalPayIn, double totalPayOut,
+            double totalSafeDrops, double totalSales)?
+        open,
+    TResult? Function(double variance, double actualCash)? varianceWarning,
+    TResult? Function()? closed,
+    TResult? Function()? syncingEod,
+    TResult? Function()? syncSuccess,
+    TResult? Function(String message)? error,
+  }) {
+    return syncingEod?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(ShiftSession shift, double totalPayIn, double totalPayOut,
+            double totalSafeDrops, double totalSales)?
+        open,
+    TResult Function(double variance, double actualCash)? varianceWarning,
+    TResult Function()? closed,
+    TResult Function()? syncingEod,
+    TResult Function()? syncSuccess,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (syncingEod != null) {
+      return syncingEod();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Open value) open,
+    required TResult Function(_VarianceWarning value) varianceWarning,
+    required TResult Function(_Closed value) closed,
+    required TResult Function(_SyncingEod value) syncingEod,
+    required TResult Function(_SyncSuccess value) syncSuccess,
+    required TResult Function(_Error value) error,
+  }) {
+    return syncingEod(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Open value)? open,
+    TResult? Function(_VarianceWarning value)? varianceWarning,
+    TResult? Function(_Closed value)? closed,
+    TResult? Function(_SyncingEod value)? syncingEod,
+    TResult? Function(_SyncSuccess value)? syncSuccess,
+    TResult? Function(_Error value)? error,
+  }) {
+    return syncingEod?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Open value)? open,
+    TResult Function(_VarianceWarning value)? varianceWarning,
+    TResult Function(_Closed value)? closed,
+    TResult Function(_SyncingEod value)? syncingEod,
+    TResult Function(_SyncSuccess value)? syncSuccess,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (syncingEod != null) {
+      return syncingEod(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _SyncingEod implements ShiftState {
+  const factory _SyncingEod() = _$SyncingEodImpl;
+}
+
+/// @nodoc
+abstract class _$$SyncSuccessImplCopyWith<$Res> {
+  factory _$$SyncSuccessImplCopyWith(
+          _$SyncSuccessImpl value, $Res Function(_$SyncSuccessImpl) then) =
+      __$$SyncSuccessImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$SyncSuccessImplCopyWithImpl<$Res>
+    extends _$ShiftStateCopyWithImpl<$Res, _$SyncSuccessImpl>
+    implements _$$SyncSuccessImplCopyWith<$Res> {
+  __$$SyncSuccessImplCopyWithImpl(
+      _$SyncSuccessImpl _value, $Res Function(_$SyncSuccessImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ShiftState
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$SyncSuccessImpl implements _SyncSuccess {
+  const _$SyncSuccessImpl();
+
+  @override
+  String toString() {
+    return 'ShiftState.syncSuccess()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$SyncSuccessImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(ShiftSession shift, double totalPayIn,
+            double totalPayOut, double totalSafeDrops, double totalSales)
+        open,
+    required TResult Function(double variance, double actualCash)
+        varianceWarning,
+    required TResult Function() closed,
+    required TResult Function() syncingEod,
+    required TResult Function() syncSuccess,
+    required TResult Function(String message) error,
+  }) {
+    return syncSuccess();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(ShiftSession shift, double totalPayIn, double totalPayOut,
+            double totalSafeDrops, double totalSales)?
+        open,
+    TResult? Function(double variance, double actualCash)? varianceWarning,
+    TResult? Function()? closed,
+    TResult? Function()? syncingEod,
+    TResult? Function()? syncSuccess,
+    TResult? Function(String message)? error,
+  }) {
+    return syncSuccess?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(ShiftSession shift, double totalPayIn, double totalPayOut,
+            double totalSafeDrops, double totalSales)?
+        open,
+    TResult Function(double variance, double actualCash)? varianceWarning,
+    TResult Function()? closed,
+    TResult Function()? syncingEod,
+    TResult Function()? syncSuccess,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (syncSuccess != null) {
+      return syncSuccess();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Open value) open,
+    required TResult Function(_VarianceWarning value) varianceWarning,
+    required TResult Function(_Closed value) closed,
+    required TResult Function(_SyncingEod value) syncingEod,
+    required TResult Function(_SyncSuccess value) syncSuccess,
+    required TResult Function(_Error value) error,
+  }) {
+    return syncSuccess(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Open value)? open,
+    TResult? Function(_VarianceWarning value)? varianceWarning,
+    TResult? Function(_Closed value)? closed,
+    TResult? Function(_SyncingEod value)? syncingEod,
+    TResult? Function(_SyncSuccess value)? syncSuccess,
+    TResult? Function(_Error value)? error,
+  }) {
+    return syncSuccess?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Open value)? open,
+    TResult Function(_VarianceWarning value)? varianceWarning,
+    TResult Function(_Closed value)? closed,
+    TResult Function(_SyncingEod value)? syncingEod,
+    TResult Function(_SyncSuccess value)? syncSuccess,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (syncSuccess != null) {
+      return syncSuccess(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _SyncSuccess implements ShiftState {
+  const factory _SyncSuccess() = _$SyncSuccessImpl;
 }
 
 /// @nodoc
@@ -2363,6 +2999,8 @@ class _$ErrorImpl implements _Error {
     required TResult Function(double variance, double actualCash)
         varianceWarning,
     required TResult Function() closed,
+    required TResult Function() syncingEod,
+    required TResult Function() syncSuccess,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -2378,6 +3016,8 @@ class _$ErrorImpl implements _Error {
         open,
     TResult? Function(double variance, double actualCash)? varianceWarning,
     TResult? Function()? closed,
+    TResult? Function()? syncingEod,
+    TResult? Function()? syncSuccess,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -2393,6 +3033,8 @@ class _$ErrorImpl implements _Error {
         open,
     TResult Function(double variance, double actualCash)? varianceWarning,
     TResult Function()? closed,
+    TResult Function()? syncingEod,
+    TResult Function()? syncSuccess,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -2410,6 +3052,8 @@ class _$ErrorImpl implements _Error {
     required TResult Function(_Open value) open,
     required TResult Function(_VarianceWarning value) varianceWarning,
     required TResult Function(_Closed value) closed,
+    required TResult Function(_SyncingEod value) syncingEod,
+    required TResult Function(_SyncSuccess value) syncSuccess,
     required TResult Function(_Error value) error,
   }) {
     return error(this);
@@ -2423,6 +3067,8 @@ class _$ErrorImpl implements _Error {
     TResult? Function(_Open value)? open,
     TResult? Function(_VarianceWarning value)? varianceWarning,
     TResult? Function(_Closed value)? closed,
+    TResult? Function(_SyncingEod value)? syncingEod,
+    TResult? Function(_SyncSuccess value)? syncSuccess,
     TResult? Function(_Error value)? error,
   }) {
     return error?.call(this);
@@ -2436,6 +3082,8 @@ class _$ErrorImpl implements _Error {
     TResult Function(_Open value)? open,
     TResult Function(_VarianceWarning value)? varianceWarning,
     TResult Function(_Closed value)? closed,
+    TResult Function(_SyncingEod value)? syncingEod,
+    TResult Function(_SyncSuccess value)? syncSuccess,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {

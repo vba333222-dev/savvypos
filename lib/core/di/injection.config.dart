@@ -74,6 +74,8 @@ import '../../features/history/data/repositories/order_repository_impl.dart'
 import '../../features/history/domain/repositories/i_order_repository.dart'
     as _i67;
 import '../../features/history/presentation/bloc/history_bloc.dart' as _i1070;
+import '../../features/integration/domain/usecases/sync_eod_to_accounting.dart'
+    as _i392;
 import '../../features/inventory/data/repositories/advanced_inventory_repository_impl.dart'
     as _i281;
 import '../../features/inventory/data/repositories/inventory_repository_impl.dart'
@@ -179,6 +181,8 @@ import '../../features/shifts/data/repositories/shift_repository_impl.dart'
     as _i307;
 import '../../features/shifts/domain/repositories/i_shift_repository.dart'
     as _i19;
+import '../../features/shifts/domain/usecases/calculate_eod_financials.dart'
+    as _i46;
 import '../../features/shifts/presentation/bloc/shift_bloc.dart' as _i455;
 import '../../features/tables/data/repositories/table_repository_impl.dart'
     as _i392;
@@ -224,6 +228,8 @@ extension GetItInjectableX on _i174.GetIt {
     );
     final coreModule = _$CoreModule();
     gh.factory<_i29.NotificationBloc>(() => _i29.NotificationBloc());
+    gh.factory<_i392.SyncEodToAccountingUseCase>(
+        () => _i392.SyncEodToAccountingUseCase());
     gh.singleton<_i258.TokenLoader>(() => _i258.TokenLoader());
     gh.singleton<_i660.AppDatabase>(() => _i660.AppDatabase());
     gh.lazySingleton<_i974.Logger>(() => coreModule.logger);
@@ -407,8 +413,6 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i576.MenuManagementBloc>(
         () => _i576.MenuManagementBloc(gh<_i695.IProductRepository>()));
-    gh.lazySingleton<_i455.ShiftBloc>(
-        () => _i455.ShiftBloc(gh<_i19.IShiftRepository>()));
     gh.factory<_i797.CashManagementBloc>(() => _i797.CashManagementBloc(
           gh<_i821.StartShiftUseCase>(),
           gh<_i821.CloseShiftUseCase>(),
@@ -455,6 +459,13 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i22.ITableRepository>(),
           gh<_i411.SocketService>(),
           gh<_i430.PrinterRouter>(),
+        ));
+    gh.factory<_i46.CalculateEodFinancialsUseCase>(
+        () => _i46.CalculateEodFinancialsUseCase(gh<_i67.IOrderRepository>()));
+    gh.lazySingleton<_i455.ShiftBloc>(() => _i455.ShiftBloc(
+          gh<_i19.IShiftRepository>(),
+          gh<_i46.CalculateEodFinancialsUseCase>(),
+          gh<_i392.SyncEodToAccountingUseCase>(),
         ));
     gh.singleton<_i678.DeliveryOrchestratorService>(
       () => _i678.DeliveryOrchestratorService(

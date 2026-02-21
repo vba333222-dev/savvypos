@@ -3,6 +3,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/features/shifts/domain/entities/shift_entities.dart';
 import 'package:savvy_pos/features/shifts/domain/repositories/i_shift_repository.dart';
+import 'package:savvy_pos/features/shifts/domain/usecases/calculate_eod_financials.dart';
+import 'package:savvy_pos/features/integration/domain/usecases/sync_eod_to_accounting.dart';
 
 part 'shift_bloc.freezed.dart';
 
@@ -11,6 +13,7 @@ class ShiftEvent with _$ShiftEvent {
   const factory ShiftEvent.checkStatus() = _CheckStatus;
   const factory ShiftEvent.openShift(double startCash, String userId, String userName) = _OpenShift;
   const factory ShiftEvent.closeShift(double actualCash, {String? varianceReason}) = _CloseShift;
+  const factory ShiftEvent.closeShiftWithEod(double actualCash, {String? varianceReason}) = _CloseShiftWithEod;
   const factory ShiftEvent.verifyCashCount(double actualCash) = _VerifyCashCount;
   const factory ShiftEvent.payIn(double amount, String reason) = _PayIn;
   const factory ShiftEvent.payOut(double amount, String reason) = _PayOut;
@@ -29,17 +32,22 @@ class ShiftState with _$ShiftState {
   }) = _Open;
   const factory ShiftState.varianceWarning(double variance, double actualCash) = _VarianceWarning;
   const factory ShiftState.closed() = _Closed;
+  const factory ShiftState.syncingEod() = _SyncingEod;
+  const factory ShiftState.syncSuccess() = _SyncSuccess;
   const factory ShiftState.error(String message) = _Error;
 }
 
 @lazySingleton
 class ShiftBloc extends Bloc<ShiftEvent, ShiftState> {
   final IShiftRepository _repository;
+  final CalculateEodFinancialsUseCase _calcEod;
+  final SyncEodToAccountingUseCase _syncEod;
 
-  ShiftBloc(this._repository) : super(const ShiftState.initial()) {
+  ShiftBloc(this._repository, this._calcEod, this._syncEod) : super(const ShiftState.initial()) {
     on<_CheckStatus>(_onCheckStatus);
     on<_OpenShift>(_onOpenShift);
     on<_CloseShift>(_onCloseShift);
+    on<_CloseShiftWithEod>(_onCloseShiftWithEod);
     on<_VerifyCashCount>(_onVerifyCashCount);
     on<_PayIn>(_onPayIn);
     on<_PayOut>(_onPayOut);
@@ -155,6 +163,45 @@ class ShiftBloc extends Bloc<ShiftEvent, ShiftState> {
       await _repository.closeShift(
           shift.id, systemEndCash, event.actualCash,
           varianceReason: event.varianceReason);
+      emit(const ShiftState.closed());
+    } catch (e) {
+      emit(ShiftState.error(e.toString()));
+    }
+  }
+
+  Future<void> _onCloseShiftWithEod(_CloseShiftWithEod event, Emitter<ShiftState> emit) async {
+    try {
+      emit(const ShiftState.loading());
+      final activeShifts = await _repository.getActiveShifts();
+      if (activeShifts.isEmpty) {
+        emit(const ShiftState.error('No active shift found to close.'));
+        return;
+      }
+      final shift = activeShifts.first;
+
+      final summary = await _repository.getCashTransactionSummary(shift.id);
+      final sales = await _repository.getShiftSalesTotal(shift.id);
+      
+      final startCash = shift.startCash;
+      final payIn = summary['payIn'] ?? 0.0;
+      final payOut = summary['payOut'] ?? 0.0;
+      final safeDrop = summary['safeDrop'] ?? 0.0;
+      
+      final systemEndCash = startCash + payIn - payOut - safeDrop + sales;
+
+      emit(const ShiftState.syncingEod());
+      // Compile Financials
+      final financials = await _calcEod(shift.startTime);
+      
+      // Dispatch API to Go Backend
+      await _syncEod(shift.id, financials);
+      emit(const ShiftState.syncSuccess());
+
+      // Finally close locally
+      await _repository.closeShift(
+          shift.id, systemEndCash, event.actualCash,
+          varianceReason: event.varianceReason);
+      
       emit(const ShiftState.closed());
     } catch (e) {
       emit(ShiftState.error(e.toString()));

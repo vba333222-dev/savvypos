@@ -10,11 +10,11 @@ abstract class IDeliveryRepository {
   /// Simulate an incoming webhook from a provider
   /// [payload] mock JSON from Uber/Grab
   /// Returns the internal Order UUID created
-  Future<String> simulateIncomingOrder(DeliveryProvider provider, Map<String, dynamic> payload);
+  Future<String> simulateIncomingOrder(DeliveryChannel provider, Map<String, dynamic> payload);
 
   /// Update delivery status (e.g., driver arrived)
   Future<void> updateDeliveryStatus(String orderUuid, String status, {String? driverName});
   
   /// Sync menu to external provider (Mock)
-  Future<void> syncMenuToChannel(DeliveryProvider provider);
+  Future<void> syncMenuToChannel(DeliveryChannel provider);
 }

@@ -21,12 +21,11 @@ DeliveryChannelConfig _$DeliveryChannelConfigFromJson(
 
 /// @nodoc
 mixin _$DeliveryChannelConfig {
-  String get id => throw _privateConstructorUsedError; // e.g., 'uber-eats-001'
-  DeliveryProvider get provider => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
+  DeliveryChannel get provider => throw _privateConstructorUsedError;
   bool get isActive => throw _privateConstructorUsedError;
   bool get autoAcceptOrders => throw _privateConstructorUsedError;
-  double get surchargePercent =>
-      throw _privateConstructorUsedError; // e.g., 20.0 for 20% markup
+  double get surchargePercent => throw _privateConstructorUsedError;
   DateTime? get lastSyncedAt => throw _privateConstructorUsedError;
 
   /// Serializes this DeliveryChannelConfig to a JSON map.
@@ -47,7 +46,7 @@ abstract class $DeliveryChannelConfigCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      DeliveryProvider provider,
+      DeliveryChannel provider,
       bool isActive,
       bool autoAcceptOrders,
       double surchargePercent,
@@ -85,7 +84,7 @@ class _$DeliveryChannelConfigCopyWithImpl<$Res,
       provider: null == provider
           ? _value.provider
           : provider // ignore: cast_nullable_to_non_nullable
-              as DeliveryProvider,
+              as DeliveryChannel,
       isActive: null == isActive
           ? _value.isActive
           : isActive // ignore: cast_nullable_to_non_nullable
@@ -117,7 +116,7 @@ abstract class _$$DeliveryChannelConfigImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
-      DeliveryProvider provider,
+      DeliveryChannel provider,
       bool isActive,
       bool autoAcceptOrders,
       double surchargePercent,
@@ -153,7 +152,7 @@ class __$$DeliveryChannelConfigImplCopyWithImpl<$Res>
       provider: null == provider
           ? _value.provider
           : provider // ignore: cast_nullable_to_non_nullable
-              as DeliveryProvider,
+              as DeliveryChannel,
       isActive: null == isActive
           ? _value.isActive
           : isActive // ignore: cast_nullable_to_non_nullable
@@ -190,9 +189,8 @@ class _$DeliveryChannelConfigImpl implements _DeliveryChannelConfig {
 
   @override
   final String id;
-// e.g., 'uber-eats-001'
   @override
-  final DeliveryProvider provider;
+  final DeliveryChannel provider;
   @override
   @JsonKey()
   final bool isActive;
@@ -202,7 +200,6 @@ class _$DeliveryChannelConfigImpl implements _DeliveryChannelConfig {
   @override
   @JsonKey()
   final double surchargePercent;
-// e.g., 20.0 for 20% markup
   @override
   final DateTime? lastSyncedAt;
 
@@ -254,7 +251,7 @@ class _$DeliveryChannelConfigImpl implements _DeliveryChannelConfig {
 abstract class _DeliveryChannelConfig implements DeliveryChannelConfig {
   const factory _DeliveryChannelConfig(
       {required final String id,
-      required final DeliveryProvider provider,
+      required final DeliveryChannel provider,
       final bool isActive,
       final bool autoAcceptOrders,
       final double surchargePercent,
@@ -264,15 +261,15 @@ abstract class _DeliveryChannelConfig implements DeliveryChannelConfig {
       _$DeliveryChannelConfigImpl.fromJson;
 
   @override
-  String get id; // e.g., 'uber-eats-001'
+  String get id;
   @override
-  DeliveryProvider get provider;
+  DeliveryChannel get provider;
   @override
   bool get isActive;
   @override
   bool get autoAcceptOrders;
   @override
-  double get surchargePercent; // e.g., 20.0 for 20% markup
+  double get surchargePercent;
   @override
   DateTime? get lastSyncedAt;
 

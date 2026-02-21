@@ -36,6 +36,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<CheckoutSplit>(_onCheckoutSplit);
     on<UpdateNote>(_onUpdateNote);
     on<ScanItem>(_onScanItem);
+    on<ToggleItemHold>(_onToggleItemHold);
+    on<FireItem>(_onFireItem);
   }
 
   Future<void> _onScanItem(ScanItem event, Emitter<CartState> emit) async {
@@ -86,6 +88,43 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }).toList();
     
     emit(state.copyWith(items: updatedItems));
+  }
+
+  void _onToggleItemHold(ToggleItemHold event, Emitter<CartState> emit) {
+    final updatedItems = state.items.map((item) {
+      if (item.uuid == event.itemUuid) {
+        final newStatus = item.firingStatus == FiringStatus.hold
+            ? FiringStatus.fired
+            : FiringStatus.hold;
+        return item.copyWith(firingStatus: newStatus);
+      }
+      return item;
+    }).toList();
+    emit(state.copyWith(items: updatedItems));
+  }
+
+  void _onFireItem(FireItem event, Emitter<CartState> emit) {
+    // 1. Find item and set status to fired
+    CartItem? firedItem;
+    final updatedItems = state.items.map((item) {
+      if (item.uuid == event.itemUuid) {
+        firedItem = item.copyWith(firingStatus: FiringStatus.fired);
+        return firedItem!;
+      }
+      return item;
+    }).toList();
+
+    if (firedItem != null) {
+      // 2. Broadcast purely for Kitchen visualization (KDS)
+      _socketService.emit('KDS_ITEM_FIRED', {
+        'ticketId': state.activeOrderUuid ?? state.lastOrderNumber ?? 'NEW',
+        'itemUuid': firedItem!.uuid,
+        'name': firedItem!.product.name,
+        'course': firedItem!.courseType.toString(),
+      });
+      _sound.playBeep(); // Audio feedback for firing
+      emit(state.copyWith(items: updatedItems));
+    }
   }
 
   void _onSelectCustomer(SelectCustomer event, Emitter<CartState> emit) {

@@ -5,6 +5,9 @@ import 'package:savvy_pos/features/delivery/domain/entities/delivery_channel.dar
 import 'package:savvy_pos/features/delivery/domain/repositories/i_delivery_repository.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:injectable/injectable.dart';
+
+@LazySingleton(as: IDeliveryRepository)
 class DeliveryRepositoryImpl implements IDeliveryRepository {
   final AppDatabase db;
   final Logger _logger = Logger();
@@ -16,7 +19,7 @@ class DeliveryRepositoryImpl implements IDeliveryRepository {
     final rows = await db.select(db.deliveryChannelTable).get();
     return rows.map((row) => DeliveryChannelConfig(
       id: row.id,
-      provider: DeliveryProvider.values.firstWhere((e) => e.name == row.provider),
+      provider: DeliveryChannel.values.firstWhere((e) => e.name == row.provider, orElse: () => DeliveryChannel.unknown),
       isActive: row.isActive,
       autoAcceptOrders: row.autoAcceptOrders,
       surchargePercent: row.surchargePercent,
@@ -39,8 +42,8 @@ class DeliveryRepositoryImpl implements IDeliveryRepository {
   }
 
   @override
-  Future<String> simulateIncomingOrder(DeliveryProvider provider, Map<String, dynamic> payload) async {
-    final channelId = provider == DeliveryProvider.uberEats ? 'uber_eats' : 'grab_food';
+  Future<String> simulateIncomingOrder(DeliveryChannel provider, Map<String, dynamic> payload) async {
+    final channelId = provider == DeliveryChannel.gojek ? 'go_food' : 'grab_food';
     final config = await (db.select(db.deliveryChannelTable)..where((t) => t.id.equals(channelId))).getSingleOrNull();
     
     if (config == null || !config.isActive) {
@@ -109,10 +112,10 @@ class DeliveryRepositoryImpl implements IDeliveryRepository {
   }
 
   @override
-  Future<void> syncMenuToChannel(DeliveryProvider provider) async {
+  Future<void> syncMenuToChannel(DeliveryChannel provider) async {
     // Mock Sync
     await Future.delayed(const Duration(seconds: 2));
-    final channelId = provider == DeliveryProvider.uberEats ? 'uber_eats' : 'grab_food';
+    final channelId = provider == DeliveryChannel.gojek ? 'go_food' : 'grab_food';
     await (db.update(db.deliveryChannelTable)..where((t) => t.id.equals(channelId))).write(
       DeliveryChannelTableCompanion(lastSyncedAt: Value(DateTime.now()))
     );

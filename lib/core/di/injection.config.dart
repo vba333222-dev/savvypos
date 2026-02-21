@@ -43,6 +43,14 @@ import '../../features/dashboard/domain/repositories/i_dashboard_repository.dart
     as _i485;
 import '../../features/dashboard/presentation/bloc/dashboard_bloc.dart'
     as _i652;
+import '../../features/delivery/data/repositories/delivery_repository_impl.dart'
+    as _i43;
+import '../../features/delivery/domain/repositories/i_delivery_repository.dart'
+    as _i411;
+import '../../features/delivery/domain/services/delivery_orchestrator_service.dart'
+    as _i678;
+import '../../features/delivery/presentation/bloc/delivery_management_bloc.dart'
+    as _i658;
 import '../../features/emenu/data/repositories/kiosk_repository_impl.dart'
     as _i844;
 import '../../features/emenu/domain/repositories/i_kiosk_repository.dart'
@@ -276,6 +284,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i662.LoyaltyRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i617.IMarketingRepository>(
         () => _i904.MarketingRepositoryImpl(gh<_i660.AppDatabase>()));
+    gh.lazySingleton<_i411.IDeliveryRepository>(
+        () => _i43.DeliveryRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i67.IOrderRepository>(
         () => _i14.OrderRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i987.SyncWorker>(
@@ -410,6 +420,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i306.GiftCardBloc(gh<_i1067.IGiftCardRepository>()));
     gh.factory<_i521.BackupBloc>(
         () => _i521.BackupBloc(gh<_i847.BackupService>()));
+    gh.factory<_i658.DeliveryManagementBloc>(() => _i658.DeliveryManagementBloc(
+          gh<_i411.IDeliveryRepository>(),
+          gh<_i842.SoundHelper>(),
+        ));
     gh.factory<_i858.CheckoutBloc>(() => _i858.CheckoutBloc(
           gh<_i931.ProcessPaymentUseCase>(),
           gh<_i931.GetOrderBalanceUseCase>(),
@@ -435,6 +449,14 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i705.LoyaltyBloc(gh<_i63.ILoyaltyRepository>()));
     gh.factory<_i1053.GetProductsUseCase>(
         () => _i1053.GetProductsUseCase(gh<_i695.IProductRepository>()));
+    gh.singleton<_i678.DeliveryOrchestratorService>(
+      () => _i678.DeliveryOrchestratorService(
+        gh<_i658.DeliveryManagementBloc>(),
+        gh<_i430.PrinterRouter>(),
+        gh<_i660.AppDatabase>(),
+      ),
+      dispose: (i) => i.dispose(),
+    );
     gh.factory<_i249.SalesBloc>(() => _i249.SalesBloc(
           gh<_i873.WatchCategoriesUseCase>(),
           gh<_i873.WatchProductsByCategoryUseCase>(),

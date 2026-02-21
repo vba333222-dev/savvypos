@@ -46,4 +46,16 @@ class SoundHelper {
       await HapticFeedback.selectionClick();
     } catch (_) {}
   }
+
+  Future<void> playIncomingOrderRing() async {
+    try {
+      // Multiple strong vibrations to simulate "ringing" for delivery
+      for (int i = 0; i < 3; i++) {
+        await HapticFeedback.heavyImpact();
+        await Future.delayed(const Duration(milliseconds: 200));
+        await HapticFeedback.heavyImpact();
+        await Future.delayed(const Duration(milliseconds: 600));
+      }
+    } catch (_) {}
+  }
 }

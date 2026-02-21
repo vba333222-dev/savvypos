@@ -26,7 +26,10 @@ mixin _$CartItem {
       throw _privateConstructorUsedError; // New field for display Strikethrough
   List<ModifierItem> get modifiers => throw _privateConstructorUsedError;
   String? get note => throw _privateConstructorUsedError;
-  String? get appliedPromoCode => throw _privateConstructorUsedError;
+  String? get appliedPromoCode =>
+      throw _privateConstructorUsedError; // To track which promo hit this item
+  CourseType get courseType => throw _privateConstructorUsedError;
+  FiringStatus get firingStatus => throw _privateConstructorUsedError;
 
   /// Create a copy of CartItem
   /// with the given fields replaced by the non-null parameter values.
@@ -48,7 +51,9 @@ abstract class $CartItemCopyWith<$Res> {
       double discountedTotal,
       List<ModifierItem> modifiers,
       String? note,
-      String? appliedPromoCode});
+      String? appliedPromoCode,
+      CourseType courseType,
+      FiringStatus firingStatus});
 }
 
 /// @nodoc
@@ -74,6 +79,8 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
     Object? modifiers = null,
     Object? note = freezed,
     Object? appliedPromoCode = freezed,
+    Object? courseType = null,
+    Object? firingStatus = null,
   }) {
     return _then(_value.copyWith(
       uuid: null == uuid
@@ -108,6 +115,14 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
           ? _value.appliedPromoCode
           : appliedPromoCode // ignore: cast_nullable_to_non_nullable
               as String?,
+      courseType: null == courseType
+          ? _value.courseType
+          : courseType // ignore: cast_nullable_to_non_nullable
+              as CourseType,
+      firingStatus: null == firingStatus
+          ? _value.firingStatus
+          : firingStatus // ignore: cast_nullable_to_non_nullable
+              as FiringStatus,
     ) as $Val);
   }
 }
@@ -128,7 +143,9 @@ abstract class _$$CartItemImplCopyWith<$Res>
       double discountedTotal,
       List<ModifierItem> modifiers,
       String? note,
-      String? appliedPromoCode});
+      String? appliedPromoCode,
+      CourseType courseType,
+      FiringStatus firingStatus});
 }
 
 /// @nodoc
@@ -152,6 +169,8 @@ class __$$CartItemImplCopyWithImpl<$Res>
     Object? modifiers = null,
     Object? note = freezed,
     Object? appliedPromoCode = freezed,
+    Object? courseType = null,
+    Object? firingStatus = null,
   }) {
     return _then(_$CartItemImpl(
       uuid: null == uuid
@@ -186,6 +205,14 @@ class __$$CartItemImplCopyWithImpl<$Res>
           ? _value.appliedPromoCode
           : appliedPromoCode // ignore: cast_nullable_to_non_nullable
               as String?,
+      courseType: null == courseType
+          ? _value.courseType
+          : courseType // ignore: cast_nullable_to_non_nullable
+              as CourseType,
+      firingStatus: null == firingStatus
+          ? _value.firingStatus
+          : firingStatus // ignore: cast_nullable_to_non_nullable
+              as FiringStatus,
     ));
   }
 }
@@ -201,7 +228,9 @@ class _$CartItemImpl implements _CartItem {
       this.discountedTotal = 0.0,
       final List<ModifierItem> modifiers = const [],
       this.note,
-      this.appliedPromoCode})
+      this.appliedPromoCode,
+      this.courseType = CourseType.defaultCourse,
+      this.firingStatus = FiringStatus.fired})
       : _modifiers = modifiers;
 
   @override
@@ -232,10 +261,17 @@ class _$CartItemImpl implements _CartItem {
   final String? note;
   @override
   final String? appliedPromoCode;
+// To track which promo hit this item
+  @override
+  @JsonKey()
+  final CourseType courseType;
+  @override
+  @JsonKey()
+  final FiringStatus firingStatus;
 
   @override
   String toString() {
-    return 'CartItem(uuid: $uuid, product: $product, quantity: $quantity, total: $total, discountedTotal: $discountedTotal, modifiers: $modifiers, note: $note, appliedPromoCode: $appliedPromoCode)';
+    return 'CartItem(uuid: $uuid, product: $product, quantity: $quantity, total: $total, discountedTotal: $discountedTotal, modifiers: $modifiers, note: $note, appliedPromoCode: $appliedPromoCode, courseType: $courseType, firingStatus: $firingStatus)';
   }
 
   @override
@@ -254,7 +290,11 @@ class _$CartItemImpl implements _CartItem {
                 .equals(other._modifiers, _modifiers) &&
             (identical(other.note, note) || other.note == note) &&
             (identical(other.appliedPromoCode, appliedPromoCode) ||
-                other.appliedPromoCode == appliedPromoCode));
+                other.appliedPromoCode == appliedPromoCode) &&
+            (identical(other.courseType, courseType) ||
+                other.courseType == courseType) &&
+            (identical(other.firingStatus, firingStatus) ||
+                other.firingStatus == firingStatus));
   }
 
   @override
@@ -267,7 +307,9 @@ class _$CartItemImpl implements _CartItem {
       discountedTotal,
       const DeepCollectionEquality().hash(_modifiers),
       note,
-      appliedPromoCode);
+      appliedPromoCode,
+      courseType,
+      firingStatus);
 
   /// Create a copy of CartItem
   /// with the given fields replaced by the non-null parameter values.
@@ -287,7 +329,9 @@ abstract class _CartItem implements CartItem {
       final double discountedTotal,
       final List<ModifierItem> modifiers,
       final String? note,
-      final String? appliedPromoCode}) = _$CartItemImpl;
+      final String? appliedPromoCode,
+      final CourseType courseType,
+      final FiringStatus firingStatus}) = _$CartItemImpl;
 
   @override
   String get uuid; // Unique ID for this line item (to distinguish variants)
@@ -304,7 +348,11 @@ abstract class _CartItem implements CartItem {
   @override
   String? get note;
   @override
-  String? get appliedPromoCode;
+  String? get appliedPromoCode; // To track which promo hit this item
+  @override
+  CourseType get courseType;
+  @override
+  FiringStatus get firingStatus;
 
   /// Create a copy of CartItem
   /// with the given fields replaced by the non-null parameter values.

@@ -22,17 +22,57 @@ class CartItemTile extends StatelessWidget {
     // giving a strong physical signal that a destructive action is confirmed.
     return Dismissible(
       key: ValueKey('cart_item_${item.uuid}'),
-      direction: DismissDirection.endToStart,
-      // confirmDismiss lets us fire the haptic and BLoC event,
-      // then return false so the list is managed by BLoC stream (not Dismissible).
-      confirmDismiss: (_) async {
-        // ── CRITICAL ACTION HAPTIC: Strong vibration for destructive action ──
-        await HapticFeedback.heavyImpact();
-        context.read<CartBloc>().add(CartEvent.removeFromCart(item.uuid));
+      direction: DismissDirection.horizontal,
+      confirmDismiss: (direction) async {
+        if (direction == DismissDirection.endToStart) {
+          // ── LEFT swipe → VOID ──
+          await HapticFeedback.heavyImpact();
+          context.read<CartBloc>().add(CartEvent.removeFromCart(item.uuid));
+        } else if (direction == DismissDirection.startToEnd) {
+          // ── RIGHT swipe → HOLD / UNHOLD ──
+          await HapticFeedback.mediumImpact();
+          context.read<CartBloc>().add(CartEvent.toggleItemHold(item.uuid));
+        }
         return false; // BLoC controls list rebuild, not Dismissible
       },
-      background: _SwipeDeleteBackground(),
+      background: _SwipeHoldBackground(isHeld: item.firingStatus == FiringStatus.hold),
+      secondaryBackground: _SwipeDeleteBackground(),
       child: _CartItemBody(item: item, isDiscounted: isDiscounted),
+    );
+  }
+}
+
+// ── Swipe background: yellow/orange hold indicator ──────────────────────────
+class _SwipeHoldBackground extends StatelessWidget {
+  final bool isHeld;
+  const _SwipeHoldBackground({required this.isHeld});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: context.savvy.shapes.spacingSm),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        color: context.savvy.colors.stateWarning,
+        borderRadius: BorderRadius.circular(context.savvy.shapes.radiusMd),
+      ),
+      alignment: Alignment.centerLeft,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(isHeld ? Icons.play_arrow_rounded : Icons.pan_tool_rounded, color: Colors.white, size: 24),
+          const SizedBox(height: 2),
+          Text(
+            isHeld ? 'FIRE' : 'HOLD',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 10,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1.5,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -80,12 +120,14 @@ class _CartItemBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.savvy;
 
+    final isHeld = item.firingStatus == FiringStatus.hold;
+
     return Container(
       margin: EdgeInsets.only(bottom: theme.shapes.spacingSm),
       padding: EdgeInsets.all(theme.shapes.spacingSm),
       decoration: BoxDecoration(
-        color: theme.colors.bgElevated,
-        border: Border.all(color: theme.colors.borderDefault),
+        color: isHeld ? theme.colors.stateWarning.withValues(alpha: 0.05) : theme.colors.bgElevated,
+        border: Border.all(color: isHeld ? theme.colors.stateWarning : theme.colors.borderDefault),
         borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
         boxShadow: theme.elevations.sm,
       ),
@@ -137,12 +179,23 @@ class _CartItemBody extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SavvyText(
-                  item.product.name,
-                  style: SavvyTextStyle.bodyMedium,
-                  color: theme.colors.textPrimary,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (isHeld) ...[
+                      Icon(Icons.pan_tool_rounded, size: 14, color: theme.colors.stateWarning),
+                      const SizedBox(width: 4),
+                    ],
+                    Expanded(
+                      child: SavvyText(
+                        item.product.name,
+                        style: SavvyTextStyle.bodyMedium,
+                        color: theme.colors.textPrimary,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ),
                 if (item.modifiers.isNotEmpty)
                   Padding(

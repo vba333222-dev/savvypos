@@ -39,121 +39,72 @@ class _CartViewState extends State<CartView> {
   Widget build(BuildContext context) {
     final theme = context.savvy;
 
-    return BlocListener<CartBloc, CartState>(
-      listener: (context, state) {
-        _updateList(state.items);
-      },
-      child: Column(
-        children: [
-          // CART HEADER
-          Container(
-            padding: EdgeInsets.all(theme.shapes.spacingMd),
-            decoration: BoxDecoration(
-              border:
-                  Border(bottom: BorderSide(color: theme.colors.borderDefault)),
-            ),
-            child: Row(
-              children: [
-                Icon(Icons.shopping_cart_outlined,
-                        key: widget.cartTargetKey,
-                        color: theme.colors.brandPrimary)
-                    .animate(target: _bumpTrigger.toDouble())
-                    .scale(
-                        begin: const Offset(1, 1),
-                        end: const Offset(1.2, 1.2),
-                        duration: 100.ms,
-                        curve: Curves.easeOut)
-                    .then()
-                    .scale(
-                        begin: const Offset(1.2, 1.2),
-                        end: const Offset(1, 1),
-                        duration: 300.ms,
-                        curve: Curves.elasticOut),
-                SizedBox(width: theme.shapes.spacingSm),
-                SavvyText('Current Order',
-                    style: SavvyTextStyle.h3, color: theme.colors.textPrimary),
-                const Spacer(),
-                _CustomerInfoButton(),
-              ],
-            ),
-          ),
-
-          // CART LIST
-          Expanded(
-            child: DragTarget<Product>(
-              onWillAcceptWithDetails: (details) => true,
-              onAcceptWithDetails: (details) {
-                HapticFeedback.mediumImpact();
-                context
-                    .read<CartBloc>()
-                    .add(CartEvent.addProduct(details.data));
-                setState(() => _bumpTrigger++);
-              },
-              builder: (context, candidateData, rejectedData) {
-                final isHovering = candidateData.isNotEmpty;
-
-                return Container(
-                  decoration: isHovering
-                      ? BoxDecoration(
-                          color:
-                              theme.colors.brandPrimary.withValues(alpha: 0.05),
-                          border: Border.all(
-                              color: theme.colors.brandPrimary, width: 2),
-                          borderRadius:
-                              BorderRadius.circular(theme.shapes.radiusMd),
-                        )
-                      : null,
-                  child: BlocBuilder<CartBloc, CartState>(
-                    builder: (context, state) {
-                      if (state.items.isEmpty && _displayedItems.isEmpty) {
-                        return _EmptyCartState();
-                      }
-
-                      return AnimatedList(
-                        key: _listKey,
-                        padding: EdgeInsets.all(theme.shapes.spacingMd),
-                        initialItemCount: _displayedItems.length,
-                        itemBuilder: (context, index, animation) {
-                          if (index >= _displayedItems.length)
-                            return const SizedBox.shrink();
-                          final item = _displayedItems[index];
-
-                          // Dismissible wraps the Tile here
-                          return SlideTransition(
-                            position: Tween<Offset>(
-                              begin: const Offset(1, 0),
-                              end: Offset.zero,
-                            ).animate(CurvedAnimation(
-                                parent: animation, curve: Curves.easeOutQuart)),
-                            child: FadeTransition(
-                              opacity: animation,
-                              child: Dismissible(
-                                key: ValueKey(item.uuid),
-                                direction: DismissDirection.endToStart,
-                                dismissThresholds: const {
-                                  DismissDirection.endToStart: 0.4
-                                },
-                                onDismissed: (_) {
-                                  HapticFeedback.heavyImpact();
-                                  _swipedItems.add(item.uuid); // Mark as swiped
-                                  context
-                                      .read<CartBloc>()
-                                      .add(CartEvent.removeFromCart(item.uuid));
-                                },
-                                background: _DismissBackground(theme: theme),
-                                child: CartItemTile(item: item),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
+    return DefaultTabController(
+      length: 2,
+      child: BlocListener<CartBloc, CartState>(
+        listener: (context, state) {
+          _updateList(state.items);
+        },
+        child: Column(
+          children: [
+            // CART HEADER WITH TABS
+            Container(
+              padding: EdgeInsets.fromLTRB(theme.shapes.spacingMd, theme.shapes.spacingMd, theme.shapes.spacingMd, 0),
+              decoration: BoxDecoration(
+                border:
+                    Border(bottom: BorderSide(color: theme.colors.borderDefault)),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.shopping_cart_outlined,
+                              key: widget.cartTargetKey,
+                              color: theme.colors.brandPrimary)
+                          .animate(target: _bumpTrigger.toDouble())
+                          .scale(
+                              begin: const Offset(1, 1),
+                              end: const Offset(1.2, 1.2),
+                              duration: 100.ms,
+                              curve: Curves.easeOut)
+                          .then()
+                          .scale(
+                              begin: const Offset(1.2, 1.2),
+                              end: const Offset(1, 1),
+                              duration: 300.ms,
+                              curve: Curves.elasticOut),
+                      SizedBox(width: theme.shapes.spacingSm),
+                      SavvyText('Current Order',
+                          style: SavvyTextStyle.h3, color: theme.colors.textPrimary),
+                      const Spacer(),
+                      _CustomerInfoButton(),
+                    ],
                   ),
-                );
-              },
+                  SizedBox(height: theme.shapes.spacingSm),
+                  TabBar(
+                    labelColor: theme.colors.brandPrimary,
+                    unselectedLabelColor: theme.colors.textSecondary,
+                    indicatorColor: theme.colors.brandPrimary,
+                    tabs: const [
+                      Tab(text: 'Active'),
+                      Tab(text: 'Hold'),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
 
+            // CART SCROLL AREA
+            Expanded(
+              child: TabBarView(
+                children: [
+                  // TAB: ACTIVE ITEMS
+                  _buildCartListArea(theme, false),
+                  // TAB: HOLD ITEMS
+                  _buildCartListArea(theme, true),
+                ],
+              ),
+            ),
           // STICKY FOOTER
           BlocBuilder<CartBloc, CartState>(
             builder: (context, state) {
@@ -178,7 +129,86 @@ class _CartViewState extends State<CartView> {
           ),
         ],
       ),
+    ),
+   );
+  }
+
+  Widget _buildCartListArea(SavvyTheme theme, bool showHeldTasks) {
+    return DragTarget<Product>(
+      onWillAcceptWithDetails: (details) => !showHeldTasks, // Only accept drags on Active tab
+      onAcceptWithDetails: (details) {
+        HapticFeedback.mediumImpact();
+        context.read<CartBloc>().add(CartEvent.addProduct(details.data));
+        setState(() => _bumpTrigger++);
+      },
+      builder: (context, candidateData, rejectedData) {
+        final isHovering = candidateData.isNotEmpty;
+
+        return Container(
+          decoration: isHovering
+              ? BoxDecoration(
+                  color: theme.colors.brandPrimary.withValues(alpha: 0.05),
+                  border: Border.all(color: theme.colors.brandPrimary, width: 2),
+                  borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
+                )
+              : null,
+          child: BlocBuilder<CartBloc, CartState>(
+            builder: (context, state) {
+              final itemsToDisplay = showHeldTasks 
+                  ? _displayedItems.where((i) => i.firingStatus == FiringStatus.hold).toList()
+                  : _displayedItems.where((i) => i.firingStatus != FiringStatus.hold).toList();
+
+              if (itemsToDisplay.isEmpty) {
+                return _EmptyCartState(isHoldTab: showHeldTasks);
+              }
+
+              return ListView.builder(
+                padding: EdgeInsets.all(theme.shapes.spacingMd),
+                itemCount: itemsToDisplay.length,
+                itemBuilder: (context, index) {
+                  final item = itemsToDisplay[index];
+                  
+                  return showHeldTasks 
+                    ? _buildHeldItemCell(context, item, theme)
+                    : CartItemTile(key: ValueKey(item.uuid), item: item);
+                },
+              );
+            },
+          ),
+        );
+      },
     );
+  }
+
+  Widget _buildHeldItemCell(BuildContext context, CartItem item, SavvyTheme theme) {
+     return Padding(
+       padding: EdgeInsets.only(bottom: theme.shapes.spacingSm),
+       child: Stack(
+         children: [
+            CartItemTile(key: ValueKey(item.uuid), item: item),
+            Positioned(
+              right: 8,
+              top: 8,
+              bottom: 8,
+              child: Center(
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: theme.colors.stateWarning,
+                    foregroundColor: theme.colors.textInverse,
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  ),
+                  onPressed: () {
+                    HapticFeedback.mediumImpact();
+                    context.read<CartBloc>().add(CartEvent.fireItem(item.uuid));
+                  },
+                  icon: const Icon(Icons.whatshot, size: 16),
+                  label: const Text('Fire Now', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                ),
+              ),
+            ),
+         ],
+       ),
+     );
   }
 
   void _updateList(List<CartItem> newItems) {
@@ -245,30 +275,7 @@ class _CartViewState extends State<CartView> {
   }
 }
 
-class _DismissBackground extends StatelessWidget {
-  final SavvyTheme theme;
-  const _DismissBackground({required this.theme});
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.centerRight,
-      padding: EdgeInsets.only(right: theme.shapes.spacingLg),
-      margin: EdgeInsets.only(bottom: theme.shapes.spacingSm),
-      decoration: BoxDecoration(
-        color: theme.colors.stateError,
-        borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
-      ),
-      child:
-          Icon(Icons.delete_forever, color: theme.colors.textInverse, size: 32)
-              .animate(onPlay: (c) => c.repeat(reverse: true))
-              .scale(
-                  begin: const Offset(1, 1),
-                  end: const Offset(1.2, 1.2),
-                  duration: 500.ms),
-    );
-  }
-}
 
 class _CartFooter extends StatelessWidget {
   final CartState state;
@@ -473,6 +480,9 @@ class _CustomerInfoButton extends StatelessWidget {
 }
 
 class _EmptyCartState extends StatelessWidget {
+  final bool isHoldTab;
+  const _EmptyCartState({this.isHoldTab = false});
+
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
@@ -480,15 +490,15 @@ class _EmptyCartState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.shopping_bag_outlined,
+          Icon(isHoldTab ? Icons.pause_circle_outline : Icons.shopping_bag_outlined,
                   size: 64,
                   color: theme.colors.textMuted.withValues(alpha: 0.5))
               .animate()
               .scale(duration: 600.ms, curve: Curves.elasticOut),
           SizedBox(height: theme.shapes.spacingMd),
-          SavvyText('Cart is empty',
+          SavvyText(isHoldTab ? 'No Items on Hold' : 'Cart is empty',
               style: SavvyTextStyle.bodyLarge, color: theme.colors.textMuted),
-          SavvyText('Add items to start order',
+          SavvyText(isHoldTab ? 'Swipe right on an item to hold' : 'Add items to start order',
               style: SavvyTextStyle.bodySmall, color: theme.colors.textMuted),
         ],
       ),

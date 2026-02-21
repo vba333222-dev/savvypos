@@ -2,6 +2,10 @@ import 'dart:async';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:get_it/get_it.dart';
+import 'package:savvy_pos/features/delivery/domain/entities/delivery_order.dart';
+import 'package:savvy_pos/features/delivery/presentation/bloc/delivery_management_bloc.dart';
+import 'package:savvy_pos/features/delivery/presentation/bloc/delivery_management_event.dart';
 
 @lazySingleton
 class SocketService {
@@ -37,6 +41,24 @@ class SocketService {
     if (_messageSubject?.isClosed ?? true) {
       _messageSubject?.close();
       _messageSubject = PublishSubject<Map<String, dynamic>>();
+
+      // Delivery Integration: Listen for incoming webhook orders via Socket
+      _messageSubject!.stream.listen((payload) {
+        if (payload['event'] == 'ON_NEW_DELIVERY_ORDER') {
+          try {
+            final data = payload['data'] as Map<String, dynamic>;
+            final order = DeliveryOrder.fromJson(data);
+            
+            // Locate BLoC and transmit event
+            if (GetIt.I.isRegistered<DeliveryManagementBloc>()) {
+               final bloc = GetIt.I<DeliveryManagementBloc>();
+               bloc.add(DeliveryManagementEvent.incomingOrderReceived(order));
+            }
+          } catch (e) {
+            _logger.e('SocketService: Failed to parse ON_NEW_DELIVERY_ORDER payload', error: e);
+          }
+        }
+      });
     }
   }
 

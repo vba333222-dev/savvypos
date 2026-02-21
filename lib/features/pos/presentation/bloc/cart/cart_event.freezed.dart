@@ -36,6 +36,8 @@ mixin _$CartEvent {
     required TResult Function(List<String> itemUuids, String paymentMethod)
         checkoutSplit,
     required TResult Function(String productUuid, String? note) updateNote,
+    required TResult Function(String itemUuid) toggleItemHold,
+    required TResult Function(String itemUuid) fireItem,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -58,6 +60,8 @@ mixin _$CartEvent {
     TResult? Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult? Function(String productUuid, String? note)? updateNote,
+    TResult? Function(String itemUuid)? toggleItemHold,
+    TResult? Function(String itemUuid)? fireItem,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -79,6 +83,8 @@ mixin _$CartEvent {
     TResult Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult Function(String productUuid, String? note)? updateNote,
+    TResult Function(String itemUuid)? toggleItemHold,
+    TResult Function(String itemUuid)? fireItem,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -98,6 +104,8 @@ mixin _$CartEvent {
     required TResult Function(RetrieveOrder value) retrieveOrder,
     required TResult Function(CheckoutSplit value) checkoutSplit,
     required TResult Function(UpdateNote value) updateNote,
+    required TResult Function(ToggleItemHold value) toggleItemHold,
+    required TResult Function(FireItem value) fireItem,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -116,6 +124,8 @@ mixin _$CartEvent {
     TResult? Function(RetrieveOrder value)? retrieveOrder,
     TResult? Function(CheckoutSplit value)? checkoutSplit,
     TResult? Function(UpdateNote value)? updateNote,
+    TResult? Function(ToggleItemHold value)? toggleItemHold,
+    TResult? Function(FireItem value)? fireItem,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -134,6 +144,8 @@ mixin _$CartEvent {
     TResult Function(RetrieveOrder value)? retrieveOrder,
     TResult Function(CheckoutSplit value)? checkoutSplit,
     TResult Function(UpdateNote value)? updateNote,
+    TResult Function(ToggleItemHold value)? toggleItemHold,
+    TResult Function(FireItem value)? fireItem,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -263,6 +275,8 @@ class _$AddProductImpl implements AddProduct {
     required TResult Function(List<String> itemUuids, String paymentMethod)
         checkoutSplit,
     required TResult Function(String productUuid, String? note) updateNote,
+    required TResult Function(String itemUuid) toggleItemHold,
+    required TResult Function(String itemUuid) fireItem,
   }) {
     return addProduct(product, modifiers);
   }
@@ -288,6 +302,8 @@ class _$AddProductImpl implements AddProduct {
     TResult? Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult? Function(String productUuid, String? note)? updateNote,
+    TResult? Function(String itemUuid)? toggleItemHold,
+    TResult? Function(String itemUuid)? fireItem,
   }) {
     return addProduct?.call(product, modifiers);
   }
@@ -312,6 +328,8 @@ class _$AddProductImpl implements AddProduct {
     TResult Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult Function(String productUuid, String? note)? updateNote,
+    TResult Function(String itemUuid)? toggleItemHold,
+    TResult Function(String itemUuid)? fireItem,
     required TResult orElse(),
   }) {
     if (addProduct != null) {
@@ -337,6 +355,8 @@ class _$AddProductImpl implements AddProduct {
     required TResult Function(RetrieveOrder value) retrieveOrder,
     required TResult Function(CheckoutSplit value) checkoutSplit,
     required TResult Function(UpdateNote value) updateNote,
+    required TResult Function(ToggleItemHold value) toggleItemHold,
+    required TResult Function(FireItem value) fireItem,
   }) {
     return addProduct(this);
   }
@@ -358,6 +378,8 @@ class _$AddProductImpl implements AddProduct {
     TResult? Function(RetrieveOrder value)? retrieveOrder,
     TResult? Function(CheckoutSplit value)? checkoutSplit,
     TResult? Function(UpdateNote value)? updateNote,
+    TResult? Function(ToggleItemHold value)? toggleItemHold,
+    TResult? Function(FireItem value)? fireItem,
   }) {
     return addProduct?.call(this);
   }
@@ -379,6 +401,8 @@ class _$AddProductImpl implements AddProduct {
     TResult Function(RetrieveOrder value)? retrieveOrder,
     TResult Function(CheckoutSplit value)? checkoutSplit,
     TResult Function(UpdateNote value)? updateNote,
+    TResult Function(ToggleItemHold value)? toggleItemHold,
+    TResult Function(FireItem value)? fireItem,
     required TResult orElse(),
   }) {
     if (addProduct != null) {
@@ -499,6 +523,8 @@ class _$UpdateQuantityImpl implements UpdateQuantity {
     required TResult Function(List<String> itemUuids, String paymentMethod)
         checkoutSplit,
     required TResult Function(String productUuid, String? note) updateNote,
+    required TResult Function(String itemUuid) toggleItemHold,
+    required TResult Function(String itemUuid) fireItem,
   }) {
     return updateQuantity(itemUuid, quantity);
   }
@@ -524,6 +550,8 @@ class _$UpdateQuantityImpl implements UpdateQuantity {
     TResult? Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult? Function(String productUuid, String? note)? updateNote,
+    TResult? Function(String itemUuid)? toggleItemHold,
+    TResult? Function(String itemUuid)? fireItem,
   }) {
     return updateQuantity?.call(itemUuid, quantity);
   }
@@ -548,6 +576,8 @@ class _$UpdateQuantityImpl implements UpdateQuantity {
     TResult Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult Function(String productUuid, String? note)? updateNote,
+    TResult Function(String itemUuid)? toggleItemHold,
+    TResult Function(String itemUuid)? fireItem,
     required TResult orElse(),
   }) {
     if (updateQuantity != null) {
@@ -573,6 +603,8 @@ class _$UpdateQuantityImpl implements UpdateQuantity {
     required TResult Function(RetrieveOrder value) retrieveOrder,
     required TResult Function(CheckoutSplit value) checkoutSplit,
     required TResult Function(UpdateNote value) updateNote,
+    required TResult Function(ToggleItemHold value) toggleItemHold,
+    required TResult Function(FireItem value) fireItem,
   }) {
     return updateQuantity(this);
   }
@@ -594,6 +626,8 @@ class _$UpdateQuantityImpl implements UpdateQuantity {
     TResult? Function(RetrieveOrder value)? retrieveOrder,
     TResult? Function(CheckoutSplit value)? checkoutSplit,
     TResult? Function(UpdateNote value)? updateNote,
+    TResult? Function(ToggleItemHold value)? toggleItemHold,
+    TResult? Function(FireItem value)? fireItem,
   }) {
     return updateQuantity?.call(this);
   }
@@ -615,6 +649,8 @@ class _$UpdateQuantityImpl implements UpdateQuantity {
     TResult Function(RetrieveOrder value)? retrieveOrder,
     TResult Function(CheckoutSplit value)? checkoutSplit,
     TResult Function(UpdateNote value)? updateNote,
+    TResult Function(ToggleItemHold value)? toggleItemHold,
+    TResult Function(FireItem value)? fireItem,
     required TResult orElse(),
   }) {
     if (updateQuantity != null) {
@@ -726,6 +762,8 @@ class _$RemoveFromCartImpl implements RemoveFromCart {
     required TResult Function(List<String> itemUuids, String paymentMethod)
         checkoutSplit,
     required TResult Function(String productUuid, String? note) updateNote,
+    required TResult Function(String itemUuid) toggleItemHold,
+    required TResult Function(String itemUuid) fireItem,
   }) {
     return removeFromCart(itemUuid);
   }
@@ -751,6 +789,8 @@ class _$RemoveFromCartImpl implements RemoveFromCart {
     TResult? Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult? Function(String productUuid, String? note)? updateNote,
+    TResult? Function(String itemUuid)? toggleItemHold,
+    TResult? Function(String itemUuid)? fireItem,
   }) {
     return removeFromCart?.call(itemUuid);
   }
@@ -775,6 +815,8 @@ class _$RemoveFromCartImpl implements RemoveFromCart {
     TResult Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult Function(String productUuid, String? note)? updateNote,
+    TResult Function(String itemUuid)? toggleItemHold,
+    TResult Function(String itemUuid)? fireItem,
     required TResult orElse(),
   }) {
     if (removeFromCart != null) {
@@ -800,6 +842,8 @@ class _$RemoveFromCartImpl implements RemoveFromCart {
     required TResult Function(RetrieveOrder value) retrieveOrder,
     required TResult Function(CheckoutSplit value) checkoutSplit,
     required TResult Function(UpdateNote value) updateNote,
+    required TResult Function(ToggleItemHold value) toggleItemHold,
+    required TResult Function(FireItem value) fireItem,
   }) {
     return removeFromCart(this);
   }
@@ -821,6 +865,8 @@ class _$RemoveFromCartImpl implements RemoveFromCart {
     TResult? Function(RetrieveOrder value)? retrieveOrder,
     TResult? Function(CheckoutSplit value)? checkoutSplit,
     TResult? Function(UpdateNote value)? updateNote,
+    TResult? Function(ToggleItemHold value)? toggleItemHold,
+    TResult? Function(FireItem value)? fireItem,
   }) {
     return removeFromCart?.call(this);
   }
@@ -842,6 +888,8 @@ class _$RemoveFromCartImpl implements RemoveFromCart {
     TResult Function(RetrieveOrder value)? retrieveOrder,
     TResult Function(CheckoutSplit value)? checkoutSplit,
     TResult Function(UpdateNote value)? updateNote,
+    TResult Function(ToggleItemHold value)? toggleItemHold,
+    TResult Function(FireItem value)? fireItem,
     required TResult orElse(),
   }) {
     if (removeFromCart != null) {
@@ -922,6 +970,8 @@ class _$ClearCartImpl implements ClearCart {
     required TResult Function(List<String> itemUuids, String paymentMethod)
         checkoutSplit,
     required TResult Function(String productUuid, String? note) updateNote,
+    required TResult Function(String itemUuid) toggleItemHold,
+    required TResult Function(String itemUuid) fireItem,
   }) {
     return clearCart();
   }
@@ -947,6 +997,8 @@ class _$ClearCartImpl implements ClearCart {
     TResult? Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult? Function(String productUuid, String? note)? updateNote,
+    TResult? Function(String itemUuid)? toggleItemHold,
+    TResult? Function(String itemUuid)? fireItem,
   }) {
     return clearCart?.call();
   }
@@ -971,6 +1023,8 @@ class _$ClearCartImpl implements ClearCart {
     TResult Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult Function(String productUuid, String? note)? updateNote,
+    TResult Function(String itemUuid)? toggleItemHold,
+    TResult Function(String itemUuid)? fireItem,
     required TResult orElse(),
   }) {
     if (clearCart != null) {
@@ -996,6 +1050,8 @@ class _$ClearCartImpl implements ClearCart {
     required TResult Function(RetrieveOrder value) retrieveOrder,
     required TResult Function(CheckoutSplit value) checkoutSplit,
     required TResult Function(UpdateNote value) updateNote,
+    required TResult Function(ToggleItemHold value) toggleItemHold,
+    required TResult Function(FireItem value) fireItem,
   }) {
     return clearCart(this);
   }
@@ -1017,6 +1073,8 @@ class _$ClearCartImpl implements ClearCart {
     TResult? Function(RetrieveOrder value)? retrieveOrder,
     TResult? Function(CheckoutSplit value)? checkoutSplit,
     TResult? Function(UpdateNote value)? updateNote,
+    TResult? Function(ToggleItemHold value)? toggleItemHold,
+    TResult? Function(FireItem value)? fireItem,
   }) {
     return clearCart?.call(this);
   }
@@ -1038,6 +1096,8 @@ class _$ClearCartImpl implements ClearCart {
     TResult Function(RetrieveOrder value)? retrieveOrder,
     TResult Function(CheckoutSplit value)? checkoutSplit,
     TResult Function(UpdateNote value)? updateNote,
+    TResult Function(ToggleItemHold value)? toggleItemHold,
+    TResult Function(FireItem value)? fireItem,
     required TResult orElse(),
   }) {
     if (clearCart != null) {
@@ -1137,6 +1197,8 @@ class _$ScanItemImpl implements ScanItem {
     required TResult Function(List<String> itemUuids, String paymentMethod)
         checkoutSplit,
     required TResult Function(String productUuid, String? note) updateNote,
+    required TResult Function(String itemUuid) toggleItemHold,
+    required TResult Function(String itemUuid) fireItem,
   }) {
     return scanItem(barcode);
   }
@@ -1162,6 +1224,8 @@ class _$ScanItemImpl implements ScanItem {
     TResult? Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult? Function(String productUuid, String? note)? updateNote,
+    TResult? Function(String itemUuid)? toggleItemHold,
+    TResult? Function(String itemUuid)? fireItem,
   }) {
     return scanItem?.call(barcode);
   }
@@ -1186,6 +1250,8 @@ class _$ScanItemImpl implements ScanItem {
     TResult Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult Function(String productUuid, String? note)? updateNote,
+    TResult Function(String itemUuid)? toggleItemHold,
+    TResult Function(String itemUuid)? fireItem,
     required TResult orElse(),
   }) {
     if (scanItem != null) {
@@ -1211,6 +1277,8 @@ class _$ScanItemImpl implements ScanItem {
     required TResult Function(RetrieveOrder value) retrieveOrder,
     required TResult Function(CheckoutSplit value) checkoutSplit,
     required TResult Function(UpdateNote value) updateNote,
+    required TResult Function(ToggleItemHold value) toggleItemHold,
+    required TResult Function(FireItem value) fireItem,
   }) {
     return scanItem(this);
   }
@@ -1232,6 +1300,8 @@ class _$ScanItemImpl implements ScanItem {
     TResult? Function(RetrieveOrder value)? retrieveOrder,
     TResult? Function(CheckoutSplit value)? checkoutSplit,
     TResult? Function(UpdateNote value)? updateNote,
+    TResult? Function(ToggleItemHold value)? toggleItemHold,
+    TResult? Function(FireItem value)? fireItem,
   }) {
     return scanItem?.call(this);
   }
@@ -1253,6 +1323,8 @@ class _$ScanItemImpl implements ScanItem {
     TResult Function(RetrieveOrder value)? retrieveOrder,
     TResult Function(CheckoutSplit value)? checkoutSplit,
     TResult Function(UpdateNote value)? updateNote,
+    TResult Function(ToggleItemHold value)? toggleItemHold,
+    TResult Function(FireItem value)? fireItem,
     required TResult orElse(),
   }) {
     if (scanItem != null) {
@@ -1378,6 +1450,8 @@ class _$SelectCustomerImpl implements SelectCustomer {
     required TResult Function(List<String> itemUuids, String paymentMethod)
         checkoutSplit,
     required TResult Function(String productUuid, String? note) updateNote,
+    required TResult Function(String itemUuid) toggleItemHold,
+    required TResult Function(String itemUuid) fireItem,
   }) {
     return selectCustomer(customer);
   }
@@ -1403,6 +1477,8 @@ class _$SelectCustomerImpl implements SelectCustomer {
     TResult? Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult? Function(String productUuid, String? note)? updateNote,
+    TResult? Function(String itemUuid)? toggleItemHold,
+    TResult? Function(String itemUuid)? fireItem,
   }) {
     return selectCustomer?.call(customer);
   }
@@ -1427,6 +1503,8 @@ class _$SelectCustomerImpl implements SelectCustomer {
     TResult Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult Function(String productUuid, String? note)? updateNote,
+    TResult Function(String itemUuid)? toggleItemHold,
+    TResult Function(String itemUuid)? fireItem,
     required TResult orElse(),
   }) {
     if (selectCustomer != null) {
@@ -1452,6 +1530,8 @@ class _$SelectCustomerImpl implements SelectCustomer {
     required TResult Function(RetrieveOrder value) retrieveOrder,
     required TResult Function(CheckoutSplit value) checkoutSplit,
     required TResult Function(UpdateNote value) updateNote,
+    required TResult Function(ToggleItemHold value) toggleItemHold,
+    required TResult Function(FireItem value) fireItem,
   }) {
     return selectCustomer(this);
   }
@@ -1473,6 +1553,8 @@ class _$SelectCustomerImpl implements SelectCustomer {
     TResult? Function(RetrieveOrder value)? retrieveOrder,
     TResult? Function(CheckoutSplit value)? checkoutSplit,
     TResult? Function(UpdateNote value)? updateNote,
+    TResult? Function(ToggleItemHold value)? toggleItemHold,
+    TResult? Function(FireItem value)? fireItem,
   }) {
     return selectCustomer?.call(this);
   }
@@ -1494,6 +1576,8 @@ class _$SelectCustomerImpl implements SelectCustomer {
     TResult Function(RetrieveOrder value)? retrieveOrder,
     TResult Function(CheckoutSplit value)? checkoutSplit,
     TResult Function(UpdateNote value)? updateNote,
+    TResult Function(ToggleItemHold value)? toggleItemHold,
+    TResult Function(FireItem value)? fireItem,
     required TResult orElse(),
   }) {
     if (selectCustomer != null) {
@@ -1609,6 +1693,8 @@ class _$ApplyDiscountImpl implements ApplyDiscount {
     required TResult Function(List<String> itemUuids, String paymentMethod)
         checkoutSplit,
     required TResult Function(String productUuid, String? note) updateNote,
+    required TResult Function(String itemUuid) toggleItemHold,
+    required TResult Function(String itemUuid) fireItem,
   }) {
     return applyDiscount(percent, fixed);
   }
@@ -1634,6 +1720,8 @@ class _$ApplyDiscountImpl implements ApplyDiscount {
     TResult? Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult? Function(String productUuid, String? note)? updateNote,
+    TResult? Function(String itemUuid)? toggleItemHold,
+    TResult? Function(String itemUuid)? fireItem,
   }) {
     return applyDiscount?.call(percent, fixed);
   }
@@ -1658,6 +1746,8 @@ class _$ApplyDiscountImpl implements ApplyDiscount {
     TResult Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult Function(String productUuid, String? note)? updateNote,
+    TResult Function(String itemUuid)? toggleItemHold,
+    TResult Function(String itemUuid)? fireItem,
     required TResult orElse(),
   }) {
     if (applyDiscount != null) {
@@ -1683,6 +1773,8 @@ class _$ApplyDiscountImpl implements ApplyDiscount {
     required TResult Function(RetrieveOrder value) retrieveOrder,
     required TResult Function(CheckoutSplit value) checkoutSplit,
     required TResult Function(UpdateNote value) updateNote,
+    required TResult Function(ToggleItemHold value) toggleItemHold,
+    required TResult Function(FireItem value) fireItem,
   }) {
     return applyDiscount(this);
   }
@@ -1704,6 +1796,8 @@ class _$ApplyDiscountImpl implements ApplyDiscount {
     TResult? Function(RetrieveOrder value)? retrieveOrder,
     TResult? Function(CheckoutSplit value)? checkoutSplit,
     TResult? Function(UpdateNote value)? updateNote,
+    TResult? Function(ToggleItemHold value)? toggleItemHold,
+    TResult? Function(FireItem value)? fireItem,
   }) {
     return applyDiscount?.call(this);
   }
@@ -1725,6 +1819,8 @@ class _$ApplyDiscountImpl implements ApplyDiscount {
     TResult Function(RetrieveOrder value)? retrieveOrder,
     TResult Function(CheckoutSplit value)? checkoutSplit,
     TResult Function(UpdateNote value)? updateNote,
+    TResult Function(ToggleItemHold value)? toggleItemHold,
+    TResult Function(FireItem value)? fireItem,
     required TResult orElse(),
   }) {
     if (applyDiscount != null) {
@@ -1834,6 +1930,8 @@ class _$AddPromoCodeImpl implements AddPromoCode {
     required TResult Function(List<String> itemUuids, String paymentMethod)
         checkoutSplit,
     required TResult Function(String productUuid, String? note) updateNote,
+    required TResult Function(String itemUuid) toggleItemHold,
+    required TResult Function(String itemUuid) fireItem,
   }) {
     return addPromoCode(code);
   }
@@ -1859,6 +1957,8 @@ class _$AddPromoCodeImpl implements AddPromoCode {
     TResult? Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult? Function(String productUuid, String? note)? updateNote,
+    TResult? Function(String itemUuid)? toggleItemHold,
+    TResult? Function(String itemUuid)? fireItem,
   }) {
     return addPromoCode?.call(code);
   }
@@ -1883,6 +1983,8 @@ class _$AddPromoCodeImpl implements AddPromoCode {
     TResult Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult Function(String productUuid, String? note)? updateNote,
+    TResult Function(String itemUuid)? toggleItemHold,
+    TResult Function(String itemUuid)? fireItem,
     required TResult orElse(),
   }) {
     if (addPromoCode != null) {
@@ -1908,6 +2010,8 @@ class _$AddPromoCodeImpl implements AddPromoCode {
     required TResult Function(RetrieveOrder value) retrieveOrder,
     required TResult Function(CheckoutSplit value) checkoutSplit,
     required TResult Function(UpdateNote value) updateNote,
+    required TResult Function(ToggleItemHold value) toggleItemHold,
+    required TResult Function(FireItem value) fireItem,
   }) {
     return addPromoCode(this);
   }
@@ -1929,6 +2033,8 @@ class _$AddPromoCodeImpl implements AddPromoCode {
     TResult? Function(RetrieveOrder value)? retrieveOrder,
     TResult? Function(CheckoutSplit value)? checkoutSplit,
     TResult? Function(UpdateNote value)? updateNote,
+    TResult? Function(ToggleItemHold value)? toggleItemHold,
+    TResult? Function(FireItem value)? fireItem,
   }) {
     return addPromoCode?.call(this);
   }
@@ -1950,6 +2056,8 @@ class _$AddPromoCodeImpl implements AddPromoCode {
     TResult Function(RetrieveOrder value)? retrieveOrder,
     TResult Function(CheckoutSplit value)? checkoutSplit,
     TResult Function(UpdateNote value)? updateNote,
+    TResult Function(ToggleItemHold value)? toggleItemHold,
+    TResult Function(FireItem value)? fireItem,
     required TResult orElse(),
   }) {
     if (addPromoCode != null) {
@@ -2080,6 +2188,8 @@ class _$CheckoutProcessedImpl implements CheckoutProcessed {
     required TResult Function(List<String> itemUuids, String paymentMethod)
         checkoutSplit,
     required TResult Function(String productUuid, String? note) updateNote,
+    required TResult Function(String itemUuid) toggleItemHold,
+    required TResult Function(String itemUuid) fireItem,
   }) {
     return checkoutProcessed(paymentMethod, tenderedAmount, changeAmount);
   }
@@ -2105,6 +2215,8 @@ class _$CheckoutProcessedImpl implements CheckoutProcessed {
     TResult? Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult? Function(String productUuid, String? note)? updateNote,
+    TResult? Function(String itemUuid)? toggleItemHold,
+    TResult? Function(String itemUuid)? fireItem,
   }) {
     return checkoutProcessed?.call(paymentMethod, tenderedAmount, changeAmount);
   }
@@ -2129,6 +2241,8 @@ class _$CheckoutProcessedImpl implements CheckoutProcessed {
     TResult Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult Function(String productUuid, String? note)? updateNote,
+    TResult Function(String itemUuid)? toggleItemHold,
+    TResult Function(String itemUuid)? fireItem,
     required TResult orElse(),
   }) {
     if (checkoutProcessed != null) {
@@ -2154,6 +2268,8 @@ class _$CheckoutProcessedImpl implements CheckoutProcessed {
     required TResult Function(RetrieveOrder value) retrieveOrder,
     required TResult Function(CheckoutSplit value) checkoutSplit,
     required TResult Function(UpdateNote value) updateNote,
+    required TResult Function(ToggleItemHold value) toggleItemHold,
+    required TResult Function(FireItem value) fireItem,
   }) {
     return checkoutProcessed(this);
   }
@@ -2175,6 +2291,8 @@ class _$CheckoutProcessedImpl implements CheckoutProcessed {
     TResult? Function(RetrieveOrder value)? retrieveOrder,
     TResult? Function(CheckoutSplit value)? checkoutSplit,
     TResult? Function(UpdateNote value)? updateNote,
+    TResult? Function(ToggleItemHold value)? toggleItemHold,
+    TResult? Function(FireItem value)? fireItem,
   }) {
     return checkoutProcessed?.call(this);
   }
@@ -2196,6 +2314,8 @@ class _$CheckoutProcessedImpl implements CheckoutProcessed {
     TResult Function(RetrieveOrder value)? retrieveOrder,
     TResult Function(CheckoutSplit value)? checkoutSplit,
     TResult Function(UpdateNote value)? updateNote,
+    TResult Function(ToggleItemHold value)? toggleItemHold,
+    TResult Function(FireItem value)? fireItem,
     required TResult orElse(),
   }) {
     if (checkoutProcessed != null) {
@@ -2309,6 +2429,8 @@ class _$ParkOrderImpl implements ParkOrder {
     required TResult Function(List<String> itemUuids, String paymentMethod)
         checkoutSplit,
     required TResult Function(String productUuid, String? note) updateNote,
+    required TResult Function(String itemUuid) toggleItemHold,
+    required TResult Function(String itemUuid) fireItem,
   }) {
     return parkOrder(tableUuid);
   }
@@ -2334,6 +2456,8 @@ class _$ParkOrderImpl implements ParkOrder {
     TResult? Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult? Function(String productUuid, String? note)? updateNote,
+    TResult? Function(String itemUuid)? toggleItemHold,
+    TResult? Function(String itemUuid)? fireItem,
   }) {
     return parkOrder?.call(tableUuid);
   }
@@ -2358,6 +2482,8 @@ class _$ParkOrderImpl implements ParkOrder {
     TResult Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult Function(String productUuid, String? note)? updateNote,
+    TResult Function(String itemUuid)? toggleItemHold,
+    TResult Function(String itemUuid)? fireItem,
     required TResult orElse(),
   }) {
     if (parkOrder != null) {
@@ -2383,6 +2509,8 @@ class _$ParkOrderImpl implements ParkOrder {
     required TResult Function(RetrieveOrder value) retrieveOrder,
     required TResult Function(CheckoutSplit value) checkoutSplit,
     required TResult Function(UpdateNote value) updateNote,
+    required TResult Function(ToggleItemHold value) toggleItemHold,
+    required TResult Function(FireItem value) fireItem,
   }) {
     return parkOrder(this);
   }
@@ -2404,6 +2532,8 @@ class _$ParkOrderImpl implements ParkOrder {
     TResult? Function(RetrieveOrder value)? retrieveOrder,
     TResult? Function(CheckoutSplit value)? checkoutSplit,
     TResult? Function(UpdateNote value)? updateNote,
+    TResult? Function(ToggleItemHold value)? toggleItemHold,
+    TResult? Function(FireItem value)? fireItem,
   }) {
     return parkOrder?.call(this);
   }
@@ -2425,6 +2555,8 @@ class _$ParkOrderImpl implements ParkOrder {
     TResult Function(RetrieveOrder value)? retrieveOrder,
     TResult Function(CheckoutSplit value)? checkoutSplit,
     TResult Function(UpdateNote value)? updateNote,
+    TResult Function(ToggleItemHold value)? toggleItemHold,
+    TResult Function(FireItem value)? fireItem,
     required TResult orElse(),
   }) {
     if (parkOrder != null) {
@@ -2533,6 +2665,8 @@ class _$SelectTableImpl implements SelectTable {
     required TResult Function(List<String> itemUuids, String paymentMethod)
         checkoutSplit,
     required TResult Function(String productUuid, String? note) updateNote,
+    required TResult Function(String itemUuid) toggleItemHold,
+    required TResult Function(String itemUuid) fireItem,
   }) {
     return selectTable(tableUuid);
   }
@@ -2558,6 +2692,8 @@ class _$SelectTableImpl implements SelectTable {
     TResult? Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult? Function(String productUuid, String? note)? updateNote,
+    TResult? Function(String itemUuid)? toggleItemHold,
+    TResult? Function(String itemUuid)? fireItem,
   }) {
     return selectTable?.call(tableUuid);
   }
@@ -2582,6 +2718,8 @@ class _$SelectTableImpl implements SelectTable {
     TResult Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult Function(String productUuid, String? note)? updateNote,
+    TResult Function(String itemUuid)? toggleItemHold,
+    TResult Function(String itemUuid)? fireItem,
     required TResult orElse(),
   }) {
     if (selectTable != null) {
@@ -2607,6 +2745,8 @@ class _$SelectTableImpl implements SelectTable {
     required TResult Function(RetrieveOrder value) retrieveOrder,
     required TResult Function(CheckoutSplit value) checkoutSplit,
     required TResult Function(UpdateNote value) updateNote,
+    required TResult Function(ToggleItemHold value) toggleItemHold,
+    required TResult Function(FireItem value) fireItem,
   }) {
     return selectTable(this);
   }
@@ -2628,6 +2768,8 @@ class _$SelectTableImpl implements SelectTable {
     TResult? Function(RetrieveOrder value)? retrieveOrder,
     TResult? Function(CheckoutSplit value)? checkoutSplit,
     TResult? Function(UpdateNote value)? updateNote,
+    TResult? Function(ToggleItemHold value)? toggleItemHold,
+    TResult? Function(FireItem value)? fireItem,
   }) {
     return selectTable?.call(this);
   }
@@ -2649,6 +2791,8 @@ class _$SelectTableImpl implements SelectTable {
     TResult Function(RetrieveOrder value)? retrieveOrder,
     TResult Function(CheckoutSplit value)? checkoutSplit,
     TResult Function(UpdateNote value)? updateNote,
+    TResult Function(ToggleItemHold value)? toggleItemHold,
+    TResult Function(FireItem value)? fireItem,
     required TResult orElse(),
   }) {
     if (selectTable != null) {
@@ -2766,6 +2910,8 @@ class _$RetrieveOrderImpl implements RetrieveOrder {
     required TResult Function(List<String> itemUuids, String paymentMethod)
         checkoutSplit,
     required TResult Function(String productUuid, String? note) updateNote,
+    required TResult Function(String itemUuid) toggleItemHold,
+    required TResult Function(String itemUuid) fireItem,
   }) {
     return retrieveOrder(orderUuid, tableUuid);
   }
@@ -2791,6 +2937,8 @@ class _$RetrieveOrderImpl implements RetrieveOrder {
     TResult? Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult? Function(String productUuid, String? note)? updateNote,
+    TResult? Function(String itemUuid)? toggleItemHold,
+    TResult? Function(String itemUuid)? fireItem,
   }) {
     return retrieveOrder?.call(orderUuid, tableUuid);
   }
@@ -2815,6 +2963,8 @@ class _$RetrieveOrderImpl implements RetrieveOrder {
     TResult Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult Function(String productUuid, String? note)? updateNote,
+    TResult Function(String itemUuid)? toggleItemHold,
+    TResult Function(String itemUuid)? fireItem,
     required TResult orElse(),
   }) {
     if (retrieveOrder != null) {
@@ -2840,6 +2990,8 @@ class _$RetrieveOrderImpl implements RetrieveOrder {
     required TResult Function(RetrieveOrder value) retrieveOrder,
     required TResult Function(CheckoutSplit value) checkoutSplit,
     required TResult Function(UpdateNote value) updateNote,
+    required TResult Function(ToggleItemHold value) toggleItemHold,
+    required TResult Function(FireItem value) fireItem,
   }) {
     return retrieveOrder(this);
   }
@@ -2861,6 +3013,8 @@ class _$RetrieveOrderImpl implements RetrieveOrder {
     TResult? Function(RetrieveOrder value)? retrieveOrder,
     TResult? Function(CheckoutSplit value)? checkoutSplit,
     TResult? Function(UpdateNote value)? updateNote,
+    TResult? Function(ToggleItemHold value)? toggleItemHold,
+    TResult? Function(FireItem value)? fireItem,
   }) {
     return retrieveOrder?.call(this);
   }
@@ -2882,6 +3036,8 @@ class _$RetrieveOrderImpl implements RetrieveOrder {
     TResult Function(RetrieveOrder value)? retrieveOrder,
     TResult Function(CheckoutSplit value)? checkoutSplit,
     TResult Function(UpdateNote value)? updateNote,
+    TResult Function(ToggleItemHold value)? toggleItemHold,
+    TResult Function(FireItem value)? fireItem,
     required TResult orElse(),
   }) {
     if (retrieveOrder != null) {
@@ -3009,6 +3165,8 @@ class _$CheckoutSplitImpl implements CheckoutSplit {
     required TResult Function(List<String> itemUuids, String paymentMethod)
         checkoutSplit,
     required TResult Function(String productUuid, String? note) updateNote,
+    required TResult Function(String itemUuid) toggleItemHold,
+    required TResult Function(String itemUuid) fireItem,
   }) {
     return checkoutSplit(itemUuids, paymentMethod);
   }
@@ -3034,6 +3192,8 @@ class _$CheckoutSplitImpl implements CheckoutSplit {
     TResult? Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult? Function(String productUuid, String? note)? updateNote,
+    TResult? Function(String itemUuid)? toggleItemHold,
+    TResult? Function(String itemUuid)? fireItem,
   }) {
     return checkoutSplit?.call(itemUuids, paymentMethod);
   }
@@ -3058,6 +3218,8 @@ class _$CheckoutSplitImpl implements CheckoutSplit {
     TResult Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult Function(String productUuid, String? note)? updateNote,
+    TResult Function(String itemUuid)? toggleItemHold,
+    TResult Function(String itemUuid)? fireItem,
     required TResult orElse(),
   }) {
     if (checkoutSplit != null) {
@@ -3083,6 +3245,8 @@ class _$CheckoutSplitImpl implements CheckoutSplit {
     required TResult Function(RetrieveOrder value) retrieveOrder,
     required TResult Function(CheckoutSplit value) checkoutSplit,
     required TResult Function(UpdateNote value) updateNote,
+    required TResult Function(ToggleItemHold value) toggleItemHold,
+    required TResult Function(FireItem value) fireItem,
   }) {
     return checkoutSplit(this);
   }
@@ -3104,6 +3268,8 @@ class _$CheckoutSplitImpl implements CheckoutSplit {
     TResult? Function(RetrieveOrder value)? retrieveOrder,
     TResult? Function(CheckoutSplit value)? checkoutSplit,
     TResult? Function(UpdateNote value)? updateNote,
+    TResult? Function(ToggleItemHold value)? toggleItemHold,
+    TResult? Function(FireItem value)? fireItem,
   }) {
     return checkoutSplit?.call(this);
   }
@@ -3125,6 +3291,8 @@ class _$CheckoutSplitImpl implements CheckoutSplit {
     TResult Function(RetrieveOrder value)? retrieveOrder,
     TResult Function(CheckoutSplit value)? checkoutSplit,
     TResult Function(UpdateNote value)? updateNote,
+    TResult Function(ToggleItemHold value)? toggleItemHold,
+    TResult Function(FireItem value)? fireItem,
     required TResult orElse(),
   }) {
     if (checkoutSplit != null) {
@@ -3244,6 +3412,8 @@ class _$UpdateNoteImpl implements UpdateNote {
     required TResult Function(List<String> itemUuids, String paymentMethod)
         checkoutSplit,
     required TResult Function(String productUuid, String? note) updateNote,
+    required TResult Function(String itemUuid) toggleItemHold,
+    required TResult Function(String itemUuid) fireItem,
   }) {
     return updateNote(productUuid, note);
   }
@@ -3269,6 +3439,8 @@ class _$UpdateNoteImpl implements UpdateNote {
     TResult? Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult? Function(String productUuid, String? note)? updateNote,
+    TResult? Function(String itemUuid)? toggleItemHold,
+    TResult? Function(String itemUuid)? fireItem,
   }) {
     return updateNote?.call(productUuid, note);
   }
@@ -3293,6 +3465,8 @@ class _$UpdateNoteImpl implements UpdateNote {
     TResult Function(List<String> itemUuids, String paymentMethod)?
         checkoutSplit,
     TResult Function(String productUuid, String? note)? updateNote,
+    TResult Function(String itemUuid)? toggleItemHold,
+    TResult Function(String itemUuid)? fireItem,
     required TResult orElse(),
   }) {
     if (updateNote != null) {
@@ -3318,6 +3492,8 @@ class _$UpdateNoteImpl implements UpdateNote {
     required TResult Function(RetrieveOrder value) retrieveOrder,
     required TResult Function(CheckoutSplit value) checkoutSplit,
     required TResult Function(UpdateNote value) updateNote,
+    required TResult Function(ToggleItemHold value) toggleItemHold,
+    required TResult Function(FireItem value) fireItem,
   }) {
     return updateNote(this);
   }
@@ -3339,6 +3515,8 @@ class _$UpdateNoteImpl implements UpdateNote {
     TResult? Function(RetrieveOrder value)? retrieveOrder,
     TResult? Function(CheckoutSplit value)? checkoutSplit,
     TResult? Function(UpdateNote value)? updateNote,
+    TResult? Function(ToggleItemHold value)? toggleItemHold,
+    TResult? Function(FireItem value)? fireItem,
   }) {
     return updateNote?.call(this);
   }
@@ -3360,6 +3538,8 @@ class _$UpdateNoteImpl implements UpdateNote {
     TResult Function(RetrieveOrder value)? retrieveOrder,
     TResult Function(CheckoutSplit value)? checkoutSplit,
     TResult Function(UpdateNote value)? updateNote,
+    TResult Function(ToggleItemHold value)? toggleItemHold,
+    TResult Function(FireItem value)? fireItem,
     required TResult orElse(),
   }) {
     if (updateNote != null) {
@@ -3380,5 +3560,478 @@ abstract class UpdateNote implements CartEvent {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$UpdateNoteImplCopyWith<_$UpdateNoteImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ToggleItemHoldImplCopyWith<$Res> {
+  factory _$$ToggleItemHoldImplCopyWith(_$ToggleItemHoldImpl value,
+          $Res Function(_$ToggleItemHoldImpl) then) =
+      __$$ToggleItemHoldImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String itemUuid});
+}
+
+/// @nodoc
+class __$$ToggleItemHoldImplCopyWithImpl<$Res>
+    extends _$CartEventCopyWithImpl<$Res, _$ToggleItemHoldImpl>
+    implements _$$ToggleItemHoldImplCopyWith<$Res> {
+  __$$ToggleItemHoldImplCopyWithImpl(
+      _$ToggleItemHoldImpl _value, $Res Function(_$ToggleItemHoldImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? itemUuid = null,
+  }) {
+    return _then(_$ToggleItemHoldImpl(
+      null == itemUuid
+          ? _value.itemUuid
+          : itemUuid // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ToggleItemHoldImpl implements ToggleItemHold {
+  const _$ToggleItemHoldImpl(this.itemUuid);
+
+  @override
+  final String itemUuid;
+
+  @override
+  String toString() {
+    return 'CartEvent.toggleItemHold(itemUuid: $itemUuid)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ToggleItemHoldImpl &&
+            (identical(other.itemUuid, itemUuid) ||
+                other.itemUuid == itemUuid));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, itemUuid);
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ToggleItemHoldImplCopyWith<_$ToggleItemHoldImpl> get copyWith =>
+      __$$ToggleItemHoldImplCopyWithImpl<_$ToggleItemHoldImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Product product, List<ModifierItem> modifiers)
+        addProduct,
+    required TResult Function(String itemUuid, int quantity) updateQuantity,
+    required TResult Function(String itemUuid) removeFromCart,
+    required TResult Function() clearCart,
+    required TResult Function(String barcode) scanItem,
+    required TResult Function(Customer? customer) selectCustomer,
+    required TResult Function(double? percent, double? fixed) applyDiscount,
+    required TResult Function(String code) addPromoCode,
+    required TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)
+        checkoutProcessed,
+    required TResult Function(String tableUuid) parkOrder,
+    required TResult Function(String tableUuid) selectTable,
+    required TResult Function(String orderUuid, String tableUuid) retrieveOrder,
+    required TResult Function(List<String> itemUuids, String paymentMethod)
+        checkoutSplit,
+    required TResult Function(String productUuid, String? note) updateNote,
+    required TResult Function(String itemUuid) toggleItemHold,
+    required TResult Function(String itemUuid) fireItem,
+  }) {
+    return toggleItemHold(itemUuid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Product product, List<ModifierItem> modifiers)?
+        addProduct,
+    TResult? Function(String itemUuid, int quantity)? updateQuantity,
+    TResult? Function(String itemUuid)? removeFromCart,
+    TResult? Function()? clearCart,
+    TResult? Function(String barcode)? scanItem,
+    TResult? Function(Customer? customer)? selectCustomer,
+    TResult? Function(double? percent, double? fixed)? applyDiscount,
+    TResult? Function(String code)? addPromoCode,
+    TResult? Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
+    TResult? Function(String tableUuid)? parkOrder,
+    TResult? Function(String tableUuid)? selectTable,
+    TResult? Function(String orderUuid, String tableUuid)? retrieveOrder,
+    TResult? Function(List<String> itemUuids, String paymentMethod)?
+        checkoutSplit,
+    TResult? Function(String productUuid, String? note)? updateNote,
+    TResult? Function(String itemUuid)? toggleItemHold,
+    TResult? Function(String itemUuid)? fireItem,
+  }) {
+    return toggleItemHold?.call(itemUuid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Product product, List<ModifierItem> modifiers)? addProduct,
+    TResult Function(String itemUuid, int quantity)? updateQuantity,
+    TResult Function(String itemUuid)? removeFromCart,
+    TResult Function()? clearCart,
+    TResult Function(String barcode)? scanItem,
+    TResult Function(Customer? customer)? selectCustomer,
+    TResult Function(double? percent, double? fixed)? applyDiscount,
+    TResult Function(String code)? addPromoCode,
+    TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
+    TResult Function(String tableUuid)? parkOrder,
+    TResult Function(String tableUuid)? selectTable,
+    TResult Function(String orderUuid, String tableUuid)? retrieveOrder,
+    TResult Function(List<String> itemUuids, String paymentMethod)?
+        checkoutSplit,
+    TResult Function(String productUuid, String? note)? updateNote,
+    TResult Function(String itemUuid)? toggleItemHold,
+    TResult Function(String itemUuid)? fireItem,
+    required TResult orElse(),
+  }) {
+    if (toggleItemHold != null) {
+      return toggleItemHold(itemUuid);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(AddProduct value) addProduct,
+    required TResult Function(UpdateQuantity value) updateQuantity,
+    required TResult Function(RemoveFromCart value) removeFromCart,
+    required TResult Function(ClearCart value) clearCart,
+    required TResult Function(ScanItem value) scanItem,
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(ApplyDiscount value) applyDiscount,
+    required TResult Function(AddPromoCode value) addPromoCode,
+    required TResult Function(CheckoutProcessed value) checkoutProcessed,
+    required TResult Function(ParkOrder value) parkOrder,
+    required TResult Function(SelectTable value) selectTable,
+    required TResult Function(RetrieveOrder value) retrieveOrder,
+    required TResult Function(CheckoutSplit value) checkoutSplit,
+    required TResult Function(UpdateNote value) updateNote,
+    required TResult Function(ToggleItemHold value) toggleItemHold,
+    required TResult Function(FireItem value) fireItem,
+  }) {
+    return toggleItemHold(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(AddProduct value)? addProduct,
+    TResult? Function(UpdateQuantity value)? updateQuantity,
+    TResult? Function(RemoveFromCart value)? removeFromCart,
+    TResult? Function(ClearCart value)? clearCart,
+    TResult? Function(ScanItem value)? scanItem,
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(ApplyDiscount value)? applyDiscount,
+    TResult? Function(AddPromoCode value)? addPromoCode,
+    TResult? Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult? Function(ParkOrder value)? parkOrder,
+    TResult? Function(SelectTable value)? selectTable,
+    TResult? Function(RetrieveOrder value)? retrieveOrder,
+    TResult? Function(CheckoutSplit value)? checkoutSplit,
+    TResult? Function(UpdateNote value)? updateNote,
+    TResult? Function(ToggleItemHold value)? toggleItemHold,
+    TResult? Function(FireItem value)? fireItem,
+  }) {
+    return toggleItemHold?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(AddProduct value)? addProduct,
+    TResult Function(UpdateQuantity value)? updateQuantity,
+    TResult Function(RemoveFromCart value)? removeFromCart,
+    TResult Function(ClearCart value)? clearCart,
+    TResult Function(ScanItem value)? scanItem,
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(ApplyDiscount value)? applyDiscount,
+    TResult Function(AddPromoCode value)? addPromoCode,
+    TResult Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult Function(ParkOrder value)? parkOrder,
+    TResult Function(SelectTable value)? selectTable,
+    TResult Function(RetrieveOrder value)? retrieveOrder,
+    TResult Function(CheckoutSplit value)? checkoutSplit,
+    TResult Function(UpdateNote value)? updateNote,
+    TResult Function(ToggleItemHold value)? toggleItemHold,
+    TResult Function(FireItem value)? fireItem,
+    required TResult orElse(),
+  }) {
+    if (toggleItemHold != null) {
+      return toggleItemHold(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ToggleItemHold implements CartEvent {
+  const factory ToggleItemHold(final String itemUuid) = _$ToggleItemHoldImpl;
+
+  String get itemUuid;
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ToggleItemHoldImplCopyWith<_$ToggleItemHoldImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$FireItemImplCopyWith<$Res> {
+  factory _$$FireItemImplCopyWith(
+          _$FireItemImpl value, $Res Function(_$FireItemImpl) then) =
+      __$$FireItemImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String itemUuid});
+}
+
+/// @nodoc
+class __$$FireItemImplCopyWithImpl<$Res>
+    extends _$CartEventCopyWithImpl<$Res, _$FireItemImpl>
+    implements _$$FireItemImplCopyWith<$Res> {
+  __$$FireItemImplCopyWithImpl(
+      _$FireItemImpl _value, $Res Function(_$FireItemImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? itemUuid = null,
+  }) {
+    return _then(_$FireItemImpl(
+      null == itemUuid
+          ? _value.itemUuid
+          : itemUuid // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$FireItemImpl implements FireItem {
+  const _$FireItemImpl(this.itemUuid);
+
+  @override
+  final String itemUuid;
+
+  @override
+  String toString() {
+    return 'CartEvent.fireItem(itemUuid: $itemUuid)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FireItemImpl &&
+            (identical(other.itemUuid, itemUuid) ||
+                other.itemUuid == itemUuid));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, itemUuid);
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FireItemImplCopyWith<_$FireItemImpl> get copyWith =>
+      __$$FireItemImplCopyWithImpl<_$FireItemImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(Product product, List<ModifierItem> modifiers)
+        addProduct,
+    required TResult Function(String itemUuid, int quantity) updateQuantity,
+    required TResult Function(String itemUuid) removeFromCart,
+    required TResult Function() clearCart,
+    required TResult Function(String barcode) scanItem,
+    required TResult Function(Customer? customer) selectCustomer,
+    required TResult Function(double? percent, double? fixed) applyDiscount,
+    required TResult Function(String code) addPromoCode,
+    required TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)
+        checkoutProcessed,
+    required TResult Function(String tableUuid) parkOrder,
+    required TResult Function(String tableUuid) selectTable,
+    required TResult Function(String orderUuid, String tableUuid) retrieveOrder,
+    required TResult Function(List<String> itemUuids, String paymentMethod)
+        checkoutSplit,
+    required TResult Function(String productUuid, String? note) updateNote,
+    required TResult Function(String itemUuid) toggleItemHold,
+    required TResult Function(String itemUuid) fireItem,
+  }) {
+    return fireItem(itemUuid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(Product product, List<ModifierItem> modifiers)?
+        addProduct,
+    TResult? Function(String itemUuid, int quantity)? updateQuantity,
+    TResult? Function(String itemUuid)? removeFromCart,
+    TResult? Function()? clearCart,
+    TResult? Function(String barcode)? scanItem,
+    TResult? Function(Customer? customer)? selectCustomer,
+    TResult? Function(double? percent, double? fixed)? applyDiscount,
+    TResult? Function(String code)? addPromoCode,
+    TResult? Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
+    TResult? Function(String tableUuid)? parkOrder,
+    TResult? Function(String tableUuid)? selectTable,
+    TResult? Function(String orderUuid, String tableUuid)? retrieveOrder,
+    TResult? Function(List<String> itemUuids, String paymentMethod)?
+        checkoutSplit,
+    TResult? Function(String productUuid, String? note)? updateNote,
+    TResult? Function(String itemUuid)? toggleItemHold,
+    TResult? Function(String itemUuid)? fireItem,
+  }) {
+    return fireItem?.call(itemUuid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(Product product, List<ModifierItem> modifiers)? addProduct,
+    TResult Function(String itemUuid, int quantity)? updateQuantity,
+    TResult Function(String itemUuid)? removeFromCart,
+    TResult Function()? clearCart,
+    TResult Function(String barcode)? scanItem,
+    TResult Function(Customer? customer)? selectCustomer,
+    TResult Function(double? percent, double? fixed)? applyDiscount,
+    TResult Function(String code)? addPromoCode,
+    TResult Function(
+            String paymentMethod, double? tenderedAmount, double? changeAmount)?
+        checkoutProcessed,
+    TResult Function(String tableUuid)? parkOrder,
+    TResult Function(String tableUuid)? selectTable,
+    TResult Function(String orderUuid, String tableUuid)? retrieveOrder,
+    TResult Function(List<String> itemUuids, String paymentMethod)?
+        checkoutSplit,
+    TResult Function(String productUuid, String? note)? updateNote,
+    TResult Function(String itemUuid)? toggleItemHold,
+    TResult Function(String itemUuid)? fireItem,
+    required TResult orElse(),
+  }) {
+    if (fireItem != null) {
+      return fireItem(itemUuid);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(AddProduct value) addProduct,
+    required TResult Function(UpdateQuantity value) updateQuantity,
+    required TResult Function(RemoveFromCart value) removeFromCart,
+    required TResult Function(ClearCart value) clearCart,
+    required TResult Function(ScanItem value) scanItem,
+    required TResult Function(SelectCustomer value) selectCustomer,
+    required TResult Function(ApplyDiscount value) applyDiscount,
+    required TResult Function(AddPromoCode value) addPromoCode,
+    required TResult Function(CheckoutProcessed value) checkoutProcessed,
+    required TResult Function(ParkOrder value) parkOrder,
+    required TResult Function(SelectTable value) selectTable,
+    required TResult Function(RetrieveOrder value) retrieveOrder,
+    required TResult Function(CheckoutSplit value) checkoutSplit,
+    required TResult Function(UpdateNote value) updateNote,
+    required TResult Function(ToggleItemHold value) toggleItemHold,
+    required TResult Function(FireItem value) fireItem,
+  }) {
+    return fireItem(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(AddProduct value)? addProduct,
+    TResult? Function(UpdateQuantity value)? updateQuantity,
+    TResult? Function(RemoveFromCart value)? removeFromCart,
+    TResult? Function(ClearCart value)? clearCart,
+    TResult? Function(ScanItem value)? scanItem,
+    TResult? Function(SelectCustomer value)? selectCustomer,
+    TResult? Function(ApplyDiscount value)? applyDiscount,
+    TResult? Function(AddPromoCode value)? addPromoCode,
+    TResult? Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult? Function(ParkOrder value)? parkOrder,
+    TResult? Function(SelectTable value)? selectTable,
+    TResult? Function(RetrieveOrder value)? retrieveOrder,
+    TResult? Function(CheckoutSplit value)? checkoutSplit,
+    TResult? Function(UpdateNote value)? updateNote,
+    TResult? Function(ToggleItemHold value)? toggleItemHold,
+    TResult? Function(FireItem value)? fireItem,
+  }) {
+    return fireItem?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(AddProduct value)? addProduct,
+    TResult Function(UpdateQuantity value)? updateQuantity,
+    TResult Function(RemoveFromCart value)? removeFromCart,
+    TResult Function(ClearCart value)? clearCart,
+    TResult Function(ScanItem value)? scanItem,
+    TResult Function(SelectCustomer value)? selectCustomer,
+    TResult Function(ApplyDiscount value)? applyDiscount,
+    TResult Function(AddPromoCode value)? addPromoCode,
+    TResult Function(CheckoutProcessed value)? checkoutProcessed,
+    TResult Function(ParkOrder value)? parkOrder,
+    TResult Function(SelectTable value)? selectTable,
+    TResult Function(RetrieveOrder value)? retrieveOrder,
+    TResult Function(CheckoutSplit value)? checkoutSplit,
+    TResult Function(UpdateNote value)? updateNote,
+    TResult Function(ToggleItemHold value)? toggleItemHold,
+    TResult Function(FireItem value)? fireItem,
+    required TResult orElse(),
+  }) {
+    if (fireItem != null) {
+      return fireItem(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FireItem implements CartEvent {
+  const factory FireItem(final String itemUuid) = _$FireItemImpl;
+
+  String get itemUuid;
+
+  /// Create a copy of CartEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FireItemImplCopyWith<_$FireItemImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

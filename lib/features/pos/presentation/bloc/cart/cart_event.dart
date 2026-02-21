@@ -34,4 +34,6 @@ class CartEvent with _$CartEvent {
   
   // Kitchen Flow
   const factory CartEvent.updateNote(String productUuid, String? note) = UpdateNote;
+  const factory CartEvent.toggleItemHold(String itemUuid) = ToggleItemHold;
+  const factory CartEvent.fireItem(String itemUuid) = FireItem;
 }

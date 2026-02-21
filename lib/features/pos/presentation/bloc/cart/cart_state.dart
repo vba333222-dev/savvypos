@@ -8,6 +8,23 @@ import 'package:savvy_pos/features/sales/domain/entities/promotion.dart';
 
 part 'cart_state.freezed.dart';
 
+/// Course type for pacing
+enum CourseType {
+  appetizer,
+  mainCourse,
+  dessert,
+  beverage,
+  defaultCourse
+}
+
+/// Status of the item relative to the kitchen
+enum FiringStatus {
+  hold,
+  fired,
+  cooking,
+  ready
+}
+
 /// Represents a single line item in the cart
 @freezed
 class CartItem with _$CartItem {
@@ -20,6 +37,8 @@ class CartItem with _$CartItem {
     @Default([]) List<ModifierItem> modifiers,
     String? note,
     String? appliedPromoCode, // To track which promo hit this item
+    @Default(CourseType.defaultCourse) CourseType courseType,
+    @Default(FiringStatus.fired) FiringStatus firingStatus,
   }) = _CartItem;
 }
 

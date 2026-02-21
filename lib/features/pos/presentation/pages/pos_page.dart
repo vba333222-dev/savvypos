@@ -12,6 +12,10 @@ import 'package:savvy_pos/features/inventory/presentation/bloc/product_bloc.dart
 import 'package:savvy_pos/features/pos/presentation/pages/product_grid_page.dart';
 import 'package:savvy_pos/features/customers/presentation/bloc/customer_bloc.dart';
 import 'package:savvy_pos/features/loyalty/presentation/bloc/loyalty_bloc.dart';
+import 'package:savvy_pos/features/delivery/presentation/widgets/delivery_notification_overlay.dart';
+import 'package:savvy_pos/features/delivery/domain/entities/delivery_order.dart';
+import 'package:savvy_pos/features/delivery/presentation/bloc/delivery_management_bloc.dart';
+import 'package:savvy_pos/features/delivery/presentation/bloc/delivery_management_state.dart';
 import 'package:savvy_pos/core/presentation/widgets/fly_animation_layer.dart';
 import 'package:savvy_pos/features/shifts/presentation/bloc/shift_bloc.dart';
 import 'package:savvy_pos/features/shifts/presentation/pages/open_shift_page.dart';
@@ -52,6 +56,7 @@ class PosPage extends StatelessWidget {
         BlocProvider(create: (_) => GetIt.I<ProductBloc>()..add(const ProductEvent.load())),
         BlocProvider(create: (_) => GetIt.I<CustomerBloc>()),
         BlocProvider(create: (_) => GetIt.I<LoyaltyBloc>()),
+        BlocProvider(create: (_) => GetIt.I<DeliveryManagementBloc>()),
       ],
       child: const _PosShell(),
     );
@@ -140,6 +145,40 @@ class _PosShellState extends State<_PosShell> {
     );
   }
 
+  void _showDeliveryPopup(BuildContext context, DeliveryOrder order) {
+    OverlayState? overlayState = Overlay.of(context);
+    late OverlayEntry overlayEntry;
+
+    overlayEntry = OverlayEntry(
+      builder: (context) {
+        return Positioned(
+          top: 60,
+          left: 0,
+          right: 0,
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: DeliveryNotificationOverlay(
+              order: order,
+              onView: () {
+                if (overlayEntry.mounted) overlayEntry.remove();
+                // Navigate or open deliveries dialog
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Membuka detail pesanan...')));
+              },
+              onDismiss: () {
+                if (overlayEntry.mounted) overlayEntry.remove();
+              },
+            ),
+          ),
+        );
+      },
+    );
+
+    overlayState.insert(overlayEntry);
+    Future.delayed(const Duration(seconds: 15), () {
+      if (overlayEntry.mounted) overlayEntry.remove();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.savvy.colors;
@@ -174,8 +213,13 @@ class _PosShellState extends State<_PosShell> {
                 _handleAddToCart(context, notification);
                 return true;
               },
-              child: BlocListener<CartBloc, CartState>(
+              child: BlocListener<DeliveryManagementBloc, DeliveryManagementState>(
+                listenWhen: (prev, curr) => prev.lastReceivedOrder != curr.lastReceivedOrder && curr.lastReceivedOrder != null,
                 listener: (context, state) {
+                   _showDeliveryPopup(context, state.lastReceivedOrder!);
+                },
+                child: BlocListener<CartBloc, CartState>(
+                  listener: (context, state) {
                   if (state.isSuccess) {
                     Navigator.of(context).popUntil((route) => route.isFirst);
                     showGeneralDialog(
@@ -216,6 +260,7 @@ class _PosShellState extends State<_PosShell> {
                   },
                 ),
               ),
+            ),
             );
           },
         ),

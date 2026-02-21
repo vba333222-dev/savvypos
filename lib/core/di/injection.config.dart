@@ -196,6 +196,9 @@ import '../../features/tables/presentation/bloc/table_bloc.dart' as _i424;
 import '../../features/tips/data/repositories/tip_repository_impl.dart' as _i25;
 import '../../features/tips/domain/repositories/i_tip_repository.dart' as _i441;
 import '../database/database.dart' as _i660;
+import '../database/repositories/data_retention_repository_impl.dart' as _i339;
+import '../database/repositories/i_data_retention_repository.dart' as _i410;
+import '../database/usecases/purge_old_data_usecase.dart' as _i622;
 import '../design_system/token_loader.dart' as _i258;
 import '../hal/mock_edc_terminal.dart' as _i525;
 import '../hal/payment_terminal_interface.dart' as _i222;
@@ -274,6 +277,8 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i509.DashboardRepositoryImpl(gh<_i660.AppDatabase>()),
       registerFor: {_mobile},
     );
+    gh.lazySingleton<_i410.IDataRetentionRepository>(
+        () => _i339.DataRetentionRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i803.IKDSRepository>(
         () => _i933.KDSRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i327.IStaffAlertRepository>(
@@ -325,6 +330,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i386.ReservationRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i884.ICustomerRepository>(
         () => _i877.CustomerRepositoryImpl(gh<_i660.AppDatabase>()));
+    gh.factory<_i622.PurgeOldDataUseCase>(
+        () => _i622.PurgeOldDataUseCase(gh<_i410.IDataRetentionRepository>()));
     gh.lazySingleton<_i560.IPrinterService>(
         () => _i16.PrinterService(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i517.DataSeeder>(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
+import 'package:savvy_pos/core/database/usecases/purge_old_data_usecase.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_numpad.dart';
 import 'package:savvy_pos/features/shifts/domain/entities/shift_entities.dart';
 import 'package:savvy_pos/features/shifts/presentation/bloc/shift_bloc.dart';
@@ -208,6 +210,10 @@ class _CloseShiftDialogState extends State<CloseShiftDialog> {
             PaintingBinding.instance.imageCache.clear();
             PaintingBinding.instance.imageCache.clearLiveImages();
             debugPrint('[Cache] Image cache flushed on shift close. RAM freed.');
+            
+            // ── Execute Data Retention Auto-Purge Silently ──────────
+            Future.microtask(() => GetIt.I<PurgeOldDataUseCase>().call());
+            
             Navigator.pop(context);
           },
           error: (message) {

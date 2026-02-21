@@ -37,6 +37,8 @@ mixin _$InventoryManagementEvent {
     required TResult Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)
         receiveGoods,
+    required TResult Function() fetchIncomingTransfers,
+    required TResult Function(String transferUuid) receiveStockTransfer,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -57,6 +59,8 @@ mixin _$InventoryManagementEvent {
     TResult? Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)?
         receiveGoods,
+    TResult? Function()? fetchIncomingTransfers,
+    TResult? Function(String transferUuid)? receiveStockTransfer,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -77,6 +81,8 @@ mixin _$InventoryManagementEvent {
     TResult Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)?
         receiveGoods,
+    TResult Function()? fetchIncomingTransfers,
+    TResult Function(String transferUuid)? receiveStockTransfer,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -91,6 +97,9 @@ mixin _$InventoryManagementEvent {
     required TResult Function(_StockTransferRequested value)
         stockTransferRequested,
     required TResult Function(_ReceiveGoods value) receiveGoods,
+    required TResult Function(_FetchIncomingTransfers value)
+        fetchIncomingTransfers,
+    required TResult Function(_ReceiveStockTransfer value) receiveStockTransfer,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -103,6 +112,8 @@ mixin _$InventoryManagementEvent {
     TResult? Function(_InventoryUpdated value)? inventoryUpdated,
     TResult? Function(_StockTransferRequested value)? stockTransferRequested,
     TResult? Function(_ReceiveGoods value)? receiveGoods,
+    TResult? Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult? Function(_ReceiveStockTransfer value)? receiveStockTransfer,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -115,6 +126,8 @@ mixin _$InventoryManagementEvent {
     TResult Function(_InventoryUpdated value)? inventoryUpdated,
     TResult Function(_StockTransferRequested value)? stockTransferRequested,
     TResult Function(_ReceiveGoods value)? receiveGoods,
+    TResult Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult Function(_ReceiveStockTransfer value)? receiveStockTransfer,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -259,6 +272,8 @@ class _$AddProductImpl implements _AddProduct {
     required TResult Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)
         receiveGoods,
+    required TResult Function() fetchIncomingTransfers,
+    required TResult Function(String transferUuid) receiveStockTransfer,
   }) {
     return addProduct(product, imageFile, modifierGroupUuids);
   }
@@ -282,6 +297,8 @@ class _$AddProductImpl implements _AddProduct {
     TResult? Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)?
         receiveGoods,
+    TResult? Function()? fetchIncomingTransfers,
+    TResult? Function(String transferUuid)? receiveStockTransfer,
   }) {
     return addProduct?.call(product, imageFile, modifierGroupUuids);
   }
@@ -305,6 +322,8 @@ class _$AddProductImpl implements _AddProduct {
     TResult Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)?
         receiveGoods,
+    TResult Function()? fetchIncomingTransfers,
+    TResult Function(String transferUuid)? receiveStockTransfer,
     required TResult orElse(),
   }) {
     if (addProduct != null) {
@@ -325,6 +344,9 @@ class _$AddProductImpl implements _AddProduct {
     required TResult Function(_StockTransferRequested value)
         stockTransferRequested,
     required TResult Function(_ReceiveGoods value) receiveGoods,
+    required TResult Function(_FetchIncomingTransfers value)
+        fetchIncomingTransfers,
+    required TResult Function(_ReceiveStockTransfer value) receiveStockTransfer,
   }) {
     return addProduct(this);
   }
@@ -340,6 +362,8 @@ class _$AddProductImpl implements _AddProduct {
     TResult? Function(_InventoryUpdated value)? inventoryUpdated,
     TResult? Function(_StockTransferRequested value)? stockTransferRequested,
     TResult? Function(_ReceiveGoods value)? receiveGoods,
+    TResult? Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult? Function(_ReceiveStockTransfer value)? receiveStockTransfer,
   }) {
     return addProduct?.call(this);
   }
@@ -355,6 +379,8 @@ class _$AddProductImpl implements _AddProduct {
     TResult Function(_InventoryUpdated value)? inventoryUpdated,
     TResult Function(_StockTransferRequested value)? stockTransferRequested,
     TResult Function(_ReceiveGoods value)? receiveGoods,
+    TResult Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult Function(_ReceiveStockTransfer value)? receiveStockTransfer,
     required TResult orElse(),
   }) {
     if (addProduct != null) {
@@ -496,6 +522,8 @@ class _$UpdateProductImpl implements _UpdateProduct {
     required TResult Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)
         receiveGoods,
+    required TResult Function() fetchIncomingTransfers,
+    required TResult Function(String transferUuid) receiveStockTransfer,
   }) {
     return updateProduct(product, imageFile, modifierGroupUuids);
   }
@@ -519,6 +547,8 @@ class _$UpdateProductImpl implements _UpdateProduct {
     TResult? Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)?
         receiveGoods,
+    TResult? Function()? fetchIncomingTransfers,
+    TResult? Function(String transferUuid)? receiveStockTransfer,
   }) {
     return updateProduct?.call(product, imageFile, modifierGroupUuids);
   }
@@ -542,6 +572,8 @@ class _$UpdateProductImpl implements _UpdateProduct {
     TResult Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)?
         receiveGoods,
+    TResult Function()? fetchIncomingTransfers,
+    TResult Function(String transferUuid)? receiveStockTransfer,
     required TResult orElse(),
   }) {
     if (updateProduct != null) {
@@ -562,6 +594,9 @@ class _$UpdateProductImpl implements _UpdateProduct {
     required TResult Function(_StockTransferRequested value)
         stockTransferRequested,
     required TResult Function(_ReceiveGoods value) receiveGoods,
+    required TResult Function(_FetchIncomingTransfers value)
+        fetchIncomingTransfers,
+    required TResult Function(_ReceiveStockTransfer value) receiveStockTransfer,
   }) {
     return updateProduct(this);
   }
@@ -577,6 +612,8 @@ class _$UpdateProductImpl implements _UpdateProduct {
     TResult? Function(_InventoryUpdated value)? inventoryUpdated,
     TResult? Function(_StockTransferRequested value)? stockTransferRequested,
     TResult? Function(_ReceiveGoods value)? receiveGoods,
+    TResult? Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult? Function(_ReceiveStockTransfer value)? receiveStockTransfer,
   }) {
     return updateProduct?.call(this);
   }
@@ -592,6 +629,8 @@ class _$UpdateProductImpl implements _UpdateProduct {
     TResult Function(_InventoryUpdated value)? inventoryUpdated,
     TResult Function(_StockTransferRequested value)? stockTransferRequested,
     TResult Function(_ReceiveGoods value)? receiveGoods,
+    TResult Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult Function(_ReceiveStockTransfer value)? receiveStockTransfer,
     required TResult orElse(),
   }) {
     if (updateProduct != null) {
@@ -703,6 +742,8 @@ class _$DeleteProductImpl implements _DeleteProduct {
     required TResult Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)
         receiveGoods,
+    required TResult Function() fetchIncomingTransfers,
+    required TResult Function(String transferUuid) receiveStockTransfer,
   }) {
     return deleteProduct(uuid);
   }
@@ -726,6 +767,8 @@ class _$DeleteProductImpl implements _DeleteProduct {
     TResult? Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)?
         receiveGoods,
+    TResult? Function()? fetchIncomingTransfers,
+    TResult? Function(String transferUuid)? receiveStockTransfer,
   }) {
     return deleteProduct?.call(uuid);
   }
@@ -749,6 +792,8 @@ class _$DeleteProductImpl implements _DeleteProduct {
     TResult Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)?
         receiveGoods,
+    TResult Function()? fetchIncomingTransfers,
+    TResult Function(String transferUuid)? receiveStockTransfer,
     required TResult orElse(),
   }) {
     if (deleteProduct != null) {
@@ -769,6 +814,9 @@ class _$DeleteProductImpl implements _DeleteProduct {
     required TResult Function(_StockTransferRequested value)
         stockTransferRequested,
     required TResult Function(_ReceiveGoods value) receiveGoods,
+    required TResult Function(_FetchIncomingTransfers value)
+        fetchIncomingTransfers,
+    required TResult Function(_ReceiveStockTransfer value) receiveStockTransfer,
   }) {
     return deleteProduct(this);
   }
@@ -784,6 +832,8 @@ class _$DeleteProductImpl implements _DeleteProduct {
     TResult? Function(_InventoryUpdated value)? inventoryUpdated,
     TResult? Function(_StockTransferRequested value)? stockTransferRequested,
     TResult? Function(_ReceiveGoods value)? receiveGoods,
+    TResult? Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult? Function(_ReceiveStockTransfer value)? receiveStockTransfer,
   }) {
     return deleteProduct?.call(this);
   }
@@ -799,6 +849,8 @@ class _$DeleteProductImpl implements _DeleteProduct {
     TResult Function(_InventoryUpdated value)? inventoryUpdated,
     TResult Function(_StockTransferRequested value)? stockTransferRequested,
     TResult Function(_ReceiveGoods value)? receiveGoods,
+    TResult Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult Function(_ReceiveStockTransfer value)? receiveStockTransfer,
     required TResult orElse(),
   }) {
     if (deleteProduct != null) {
@@ -915,6 +967,8 @@ class _$UpdateStockImpl implements _UpdateStock {
     required TResult Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)
         receiveGoods,
+    required TResult Function() fetchIncomingTransfers,
+    required TResult Function(String transferUuid) receiveStockTransfer,
   }) {
     return updateStock(uuid, delta);
   }
@@ -938,6 +992,8 @@ class _$UpdateStockImpl implements _UpdateStock {
     TResult? Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)?
         receiveGoods,
+    TResult? Function()? fetchIncomingTransfers,
+    TResult? Function(String transferUuid)? receiveStockTransfer,
   }) {
     return updateStock?.call(uuid, delta);
   }
@@ -961,6 +1017,8 @@ class _$UpdateStockImpl implements _UpdateStock {
     TResult Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)?
         receiveGoods,
+    TResult Function()? fetchIncomingTransfers,
+    TResult Function(String transferUuid)? receiveStockTransfer,
     required TResult orElse(),
   }) {
     if (updateStock != null) {
@@ -981,6 +1039,9 @@ class _$UpdateStockImpl implements _UpdateStock {
     required TResult Function(_StockTransferRequested value)
         stockTransferRequested,
     required TResult Function(_ReceiveGoods value) receiveGoods,
+    required TResult Function(_FetchIncomingTransfers value)
+        fetchIncomingTransfers,
+    required TResult Function(_ReceiveStockTransfer value) receiveStockTransfer,
   }) {
     return updateStock(this);
   }
@@ -996,6 +1057,8 @@ class _$UpdateStockImpl implements _UpdateStock {
     TResult? Function(_InventoryUpdated value)? inventoryUpdated,
     TResult? Function(_StockTransferRequested value)? stockTransferRequested,
     TResult? Function(_ReceiveGoods value)? receiveGoods,
+    TResult? Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult? Function(_ReceiveStockTransfer value)? receiveStockTransfer,
   }) {
     return updateStock?.call(this);
   }
@@ -1011,6 +1074,8 @@ class _$UpdateStockImpl implements _UpdateStock {
     TResult Function(_InventoryUpdated value)? inventoryUpdated,
     TResult Function(_StockTransferRequested value)? stockTransferRequested,
     TResult Function(_ReceiveGoods value)? receiveGoods,
+    TResult Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult Function(_ReceiveStockTransfer value)? receiveStockTransfer,
     required TResult orElse(),
   }) {
     if (updateStock != null) {
@@ -1123,6 +1188,8 @@ class _$WatchInventoryImpl implements _WatchInventory {
     required TResult Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)
         receiveGoods,
+    required TResult Function() fetchIncomingTransfers,
+    required TResult Function(String transferUuid) receiveStockTransfer,
   }) {
     return watchInventory(warehouseId);
   }
@@ -1146,6 +1213,8 @@ class _$WatchInventoryImpl implements _WatchInventory {
     TResult? Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)?
         receiveGoods,
+    TResult? Function()? fetchIncomingTransfers,
+    TResult? Function(String transferUuid)? receiveStockTransfer,
   }) {
     return watchInventory?.call(warehouseId);
   }
@@ -1169,6 +1238,8 @@ class _$WatchInventoryImpl implements _WatchInventory {
     TResult Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)?
         receiveGoods,
+    TResult Function()? fetchIncomingTransfers,
+    TResult Function(String transferUuid)? receiveStockTransfer,
     required TResult orElse(),
   }) {
     if (watchInventory != null) {
@@ -1189,6 +1260,9 @@ class _$WatchInventoryImpl implements _WatchInventory {
     required TResult Function(_StockTransferRequested value)
         stockTransferRequested,
     required TResult Function(_ReceiveGoods value) receiveGoods,
+    required TResult Function(_FetchIncomingTransfers value)
+        fetchIncomingTransfers,
+    required TResult Function(_ReceiveStockTransfer value) receiveStockTransfer,
   }) {
     return watchInventory(this);
   }
@@ -1204,6 +1278,8 @@ class _$WatchInventoryImpl implements _WatchInventory {
     TResult? Function(_InventoryUpdated value)? inventoryUpdated,
     TResult? Function(_StockTransferRequested value)? stockTransferRequested,
     TResult? Function(_ReceiveGoods value)? receiveGoods,
+    TResult? Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult? Function(_ReceiveStockTransfer value)? receiveStockTransfer,
   }) {
     return watchInventory?.call(this);
   }
@@ -1219,6 +1295,8 @@ class _$WatchInventoryImpl implements _WatchInventory {
     TResult Function(_InventoryUpdated value)? inventoryUpdated,
     TResult Function(_StockTransferRequested value)? stockTransferRequested,
     TResult Function(_ReceiveGoods value)? receiveGoods,
+    TResult Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult Function(_ReceiveStockTransfer value)? receiveStockTransfer,
     required TResult orElse(),
   }) {
     if (watchInventory != null) {
@@ -1337,6 +1415,8 @@ class _$InventoryUpdatedImpl implements _InventoryUpdated {
     required TResult Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)
         receiveGoods,
+    required TResult Function() fetchIncomingTransfers,
+    required TResult Function(String transferUuid) receiveStockTransfer,
   }) {
     return inventoryUpdated(inventory);
   }
@@ -1360,6 +1440,8 @@ class _$InventoryUpdatedImpl implements _InventoryUpdated {
     TResult? Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)?
         receiveGoods,
+    TResult? Function()? fetchIncomingTransfers,
+    TResult? Function(String transferUuid)? receiveStockTransfer,
   }) {
     return inventoryUpdated?.call(inventory);
   }
@@ -1383,6 +1465,8 @@ class _$InventoryUpdatedImpl implements _InventoryUpdated {
     TResult Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)?
         receiveGoods,
+    TResult Function()? fetchIncomingTransfers,
+    TResult Function(String transferUuid)? receiveStockTransfer,
     required TResult orElse(),
   }) {
     if (inventoryUpdated != null) {
@@ -1403,6 +1487,9 @@ class _$InventoryUpdatedImpl implements _InventoryUpdated {
     required TResult Function(_StockTransferRequested value)
         stockTransferRequested,
     required TResult Function(_ReceiveGoods value) receiveGoods,
+    required TResult Function(_FetchIncomingTransfers value)
+        fetchIncomingTransfers,
+    required TResult Function(_ReceiveStockTransfer value) receiveStockTransfer,
   }) {
     return inventoryUpdated(this);
   }
@@ -1418,6 +1505,8 @@ class _$InventoryUpdatedImpl implements _InventoryUpdated {
     TResult? Function(_InventoryUpdated value)? inventoryUpdated,
     TResult? Function(_StockTransferRequested value)? stockTransferRequested,
     TResult? Function(_ReceiveGoods value)? receiveGoods,
+    TResult? Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult? Function(_ReceiveStockTransfer value)? receiveStockTransfer,
   }) {
     return inventoryUpdated?.call(this);
   }
@@ -1433,6 +1522,8 @@ class _$InventoryUpdatedImpl implements _InventoryUpdated {
     TResult Function(_InventoryUpdated value)? inventoryUpdated,
     TResult Function(_StockTransferRequested value)? stockTransferRequested,
     TResult Function(_ReceiveGoods value)? receiveGoods,
+    TResult Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult Function(_ReceiveStockTransfer value)? receiveStockTransfer,
     required TResult orElse(),
   }) {
     if (inventoryUpdated != null) {
@@ -1593,6 +1684,8 @@ class _$StockTransferRequestedImpl implements _StockTransferRequested {
     required TResult Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)
         receiveGoods,
+    required TResult Function() fetchIncomingTransfers,
+    required TResult Function(String transferUuid) receiveStockTransfer,
   }) {
     return stockTransferRequested(
         sourceWarehouseId, targetWarehouseId, items, referenceNote);
@@ -1617,6 +1710,8 @@ class _$StockTransferRequestedImpl implements _StockTransferRequested {
     TResult? Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)?
         receiveGoods,
+    TResult? Function()? fetchIncomingTransfers,
+    TResult? Function(String transferUuid)? receiveStockTransfer,
   }) {
     return stockTransferRequested?.call(
         sourceWarehouseId, targetWarehouseId, items, referenceNote);
@@ -1641,6 +1736,8 @@ class _$StockTransferRequestedImpl implements _StockTransferRequested {
     TResult Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)?
         receiveGoods,
+    TResult Function()? fetchIncomingTransfers,
+    TResult Function(String transferUuid)? receiveStockTransfer,
     required TResult orElse(),
   }) {
     if (stockTransferRequested != null) {
@@ -1662,6 +1759,9 @@ class _$StockTransferRequestedImpl implements _StockTransferRequested {
     required TResult Function(_StockTransferRequested value)
         stockTransferRequested,
     required TResult Function(_ReceiveGoods value) receiveGoods,
+    required TResult Function(_FetchIncomingTransfers value)
+        fetchIncomingTransfers,
+    required TResult Function(_ReceiveStockTransfer value) receiveStockTransfer,
   }) {
     return stockTransferRequested(this);
   }
@@ -1677,6 +1777,8 @@ class _$StockTransferRequestedImpl implements _StockTransferRequested {
     TResult? Function(_InventoryUpdated value)? inventoryUpdated,
     TResult? Function(_StockTransferRequested value)? stockTransferRequested,
     TResult? Function(_ReceiveGoods value)? receiveGoods,
+    TResult? Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult? Function(_ReceiveStockTransfer value)? receiveStockTransfer,
   }) {
     return stockTransferRequested?.call(this);
   }
@@ -1692,6 +1794,8 @@ class _$StockTransferRequestedImpl implements _StockTransferRequested {
     TResult Function(_InventoryUpdated value)? inventoryUpdated,
     TResult Function(_StockTransferRequested value)? stockTransferRequested,
     TResult Function(_ReceiveGoods value)? receiveGoods,
+    TResult Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult Function(_ReceiveStockTransfer value)? receiveStockTransfer,
     required TResult orElse(),
   }) {
     if (stockTransferRequested != null) {
@@ -1838,6 +1942,8 @@ class _$ReceiveGoodsImpl implements _ReceiveGoods {
     required TResult Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)
         receiveGoods,
+    required TResult Function() fetchIncomingTransfers,
+    required TResult Function(String transferUuid) receiveStockTransfer,
   }) {
     return receiveGoods(purchaseOrderUuid, warehouseUuid, items);
   }
@@ -1861,6 +1967,8 @@ class _$ReceiveGoodsImpl implements _ReceiveGoods {
     TResult? Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)?
         receiveGoods,
+    TResult? Function()? fetchIncomingTransfers,
+    TResult? Function(String transferUuid)? receiveStockTransfer,
   }) {
     return receiveGoods?.call(purchaseOrderUuid, warehouseUuid, items);
   }
@@ -1884,6 +1992,8 @@ class _$ReceiveGoodsImpl implements _ReceiveGoods {
     TResult Function(String purchaseOrderUuid, String warehouseUuid,
             List<Map<String, dynamic>> items)?
         receiveGoods,
+    TResult Function()? fetchIncomingTransfers,
+    TResult Function(String transferUuid)? receiveStockTransfer,
     required TResult orElse(),
   }) {
     if (receiveGoods != null) {
@@ -1904,6 +2014,9 @@ class _$ReceiveGoodsImpl implements _ReceiveGoods {
     required TResult Function(_StockTransferRequested value)
         stockTransferRequested,
     required TResult Function(_ReceiveGoods value) receiveGoods,
+    required TResult Function(_FetchIncomingTransfers value)
+        fetchIncomingTransfers,
+    required TResult Function(_ReceiveStockTransfer value) receiveStockTransfer,
   }) {
     return receiveGoods(this);
   }
@@ -1919,6 +2032,8 @@ class _$ReceiveGoodsImpl implements _ReceiveGoods {
     TResult? Function(_InventoryUpdated value)? inventoryUpdated,
     TResult? Function(_StockTransferRequested value)? stockTransferRequested,
     TResult? Function(_ReceiveGoods value)? receiveGoods,
+    TResult? Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult? Function(_ReceiveStockTransfer value)? receiveStockTransfer,
   }) {
     return receiveGoods?.call(this);
   }
@@ -1934,6 +2049,8 @@ class _$ReceiveGoodsImpl implements _ReceiveGoods {
     TResult Function(_InventoryUpdated value)? inventoryUpdated,
     TResult Function(_StockTransferRequested value)? stockTransferRequested,
     TResult Function(_ReceiveGoods value)? receiveGoods,
+    TResult Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult Function(_ReceiveStockTransfer value)? receiveStockTransfer,
     required TResult orElse(),
   }) {
     if (receiveGoods != null) {
@@ -1961,6 +2078,414 @@ abstract class _ReceiveGoods implements InventoryManagementEvent {
 }
 
 /// @nodoc
+abstract class _$$FetchIncomingTransfersImplCopyWith<$Res> {
+  factory _$$FetchIncomingTransfersImplCopyWith(
+          _$FetchIncomingTransfersImpl value,
+          $Res Function(_$FetchIncomingTransfersImpl) then) =
+      __$$FetchIncomingTransfersImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$FetchIncomingTransfersImplCopyWithImpl<$Res>
+    extends _$InventoryManagementEventCopyWithImpl<$Res,
+        _$FetchIncomingTransfersImpl>
+    implements _$$FetchIncomingTransfersImplCopyWith<$Res> {
+  __$$FetchIncomingTransfersImplCopyWithImpl(
+      _$FetchIncomingTransfersImpl _value,
+      $Res Function(_$FetchIncomingTransfersImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of InventoryManagementEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$FetchIncomingTransfersImpl implements _FetchIncomingTransfers {
+  const _$FetchIncomingTransfersImpl();
+
+  @override
+  String toString() {
+    return 'InventoryManagementEvent.fetchIncomingTransfers()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FetchIncomingTransfersImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        addProduct,
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        updateProduct,
+    required TResult Function(String uuid) deleteProduct,
+    required TResult Function(String uuid, int delta) updateStock,
+    required TResult Function(String warehouseId) watchInventory,
+    required TResult Function(List<ProductStock> inventory) inventoryUpdated,
+    required TResult Function(
+            String sourceWarehouseId,
+            String targetWarehouseId,
+            List<StockTransferItem> items,
+            String referenceNote)
+        stockTransferRequested,
+    required TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)
+        receiveGoods,
+    required TResult Function() fetchIncomingTransfers,
+    required TResult Function(String transferUuid) receiveStockTransfer,
+  }) {
+    return fetchIncomingTransfers();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
+    TResult? Function(String uuid)? deleteProduct,
+    TResult? Function(String uuid, int delta)? updateStock,
+    TResult? Function(String warehouseId)? watchInventory,
+    TResult? Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult? Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult? Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
+    TResult? Function()? fetchIncomingTransfers,
+    TResult? Function(String transferUuid)? receiveStockTransfer,
+  }) {
+    return fetchIncomingTransfers?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
+    TResult Function(String uuid)? deleteProduct,
+    TResult Function(String uuid, int delta)? updateStock,
+    TResult Function(String warehouseId)? watchInventory,
+    TResult Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
+    TResult Function()? fetchIncomingTransfers,
+    TResult Function(String transferUuid)? receiveStockTransfer,
+    required TResult orElse(),
+  }) {
+    if (fetchIncomingTransfers != null) {
+      return fetchIncomingTransfers();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_AddProduct value) addProduct,
+    required TResult Function(_UpdateProduct value) updateProduct,
+    required TResult Function(_DeleteProduct value) deleteProduct,
+    required TResult Function(_UpdateStock value) updateStock,
+    required TResult Function(_WatchInventory value) watchInventory,
+    required TResult Function(_InventoryUpdated value) inventoryUpdated,
+    required TResult Function(_StockTransferRequested value)
+        stockTransferRequested,
+    required TResult Function(_ReceiveGoods value) receiveGoods,
+    required TResult Function(_FetchIncomingTransfers value)
+        fetchIncomingTransfers,
+    required TResult Function(_ReceiveStockTransfer value) receiveStockTransfer,
+  }) {
+    return fetchIncomingTransfers(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_AddProduct value)? addProduct,
+    TResult? Function(_UpdateProduct value)? updateProduct,
+    TResult? Function(_DeleteProduct value)? deleteProduct,
+    TResult? Function(_UpdateStock value)? updateStock,
+    TResult? Function(_WatchInventory value)? watchInventory,
+    TResult? Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult? Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult? Function(_ReceiveGoods value)? receiveGoods,
+    TResult? Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult? Function(_ReceiveStockTransfer value)? receiveStockTransfer,
+  }) {
+    return fetchIncomingTransfers?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_AddProduct value)? addProduct,
+    TResult Function(_UpdateProduct value)? updateProduct,
+    TResult Function(_DeleteProduct value)? deleteProduct,
+    TResult Function(_UpdateStock value)? updateStock,
+    TResult Function(_WatchInventory value)? watchInventory,
+    TResult Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult Function(_ReceiveGoods value)? receiveGoods,
+    TResult Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult Function(_ReceiveStockTransfer value)? receiveStockTransfer,
+    required TResult orElse(),
+  }) {
+    if (fetchIncomingTransfers != null) {
+      return fetchIncomingTransfers(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _FetchIncomingTransfers implements InventoryManagementEvent {
+  const factory _FetchIncomingTransfers() = _$FetchIncomingTransfersImpl;
+}
+
+/// @nodoc
+abstract class _$$ReceiveStockTransferImplCopyWith<$Res> {
+  factory _$$ReceiveStockTransferImplCopyWith(_$ReceiveStockTransferImpl value,
+          $Res Function(_$ReceiveStockTransferImpl) then) =
+      __$$ReceiveStockTransferImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String transferUuid});
+}
+
+/// @nodoc
+class __$$ReceiveStockTransferImplCopyWithImpl<$Res>
+    extends _$InventoryManagementEventCopyWithImpl<$Res,
+        _$ReceiveStockTransferImpl>
+    implements _$$ReceiveStockTransferImplCopyWith<$Res> {
+  __$$ReceiveStockTransferImplCopyWithImpl(_$ReceiveStockTransferImpl _value,
+      $Res Function(_$ReceiveStockTransferImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of InventoryManagementEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? transferUuid = null,
+  }) {
+    return _then(_$ReceiveStockTransferImpl(
+      null == transferUuid
+          ? _value.transferUuid
+          : transferUuid // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ReceiveStockTransferImpl implements _ReceiveStockTransfer {
+  const _$ReceiveStockTransferImpl(this.transferUuid);
+
+  @override
+  final String transferUuid;
+
+  @override
+  String toString() {
+    return 'InventoryManagementEvent.receiveStockTransfer(transferUuid: $transferUuid)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ReceiveStockTransferImpl &&
+            (identical(other.transferUuid, transferUuid) ||
+                other.transferUuid == transferUuid));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, transferUuid);
+
+  /// Create a copy of InventoryManagementEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ReceiveStockTransferImplCopyWith<_$ReceiveStockTransferImpl>
+      get copyWith =>
+          __$$ReceiveStockTransferImplCopyWithImpl<_$ReceiveStockTransferImpl>(
+              this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        addProduct,
+    required TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)
+        updateProduct,
+    required TResult Function(String uuid) deleteProduct,
+    required TResult Function(String uuid, int delta) updateStock,
+    required TResult Function(String warehouseId) watchInventory,
+    required TResult Function(List<ProductStock> inventory) inventoryUpdated,
+    required TResult Function(
+            String sourceWarehouseId,
+            String targetWarehouseId,
+            List<StockTransferItem> items,
+            String referenceNote)
+        stockTransferRequested,
+    required TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)
+        receiveGoods,
+    required TResult Function() fetchIncomingTransfers,
+    required TResult Function(String transferUuid) receiveStockTransfer,
+  }) {
+    return receiveStockTransfer(transferUuid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult? Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
+    TResult? Function(String uuid)? deleteProduct,
+    TResult? Function(String uuid, int delta)? updateStock,
+    TResult? Function(String warehouseId)? watchInventory,
+    TResult? Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult? Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult? Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
+    TResult? Function()? fetchIncomingTransfers,
+    TResult? Function(String transferUuid)? receiveStockTransfer,
+  }) {
+    return receiveStockTransfer?.call(transferUuid);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        addProduct,
+    TResult Function(
+            Product product, File? imageFile, List<String>? modifierGroupUuids)?
+        updateProduct,
+    TResult Function(String uuid)? deleteProduct,
+    TResult Function(String uuid, int delta)? updateStock,
+    TResult Function(String warehouseId)? watchInventory,
+    TResult Function(List<ProductStock> inventory)? inventoryUpdated,
+    TResult Function(String sourceWarehouseId, String targetWarehouseId,
+            List<StockTransferItem> items, String referenceNote)?
+        stockTransferRequested,
+    TResult Function(String purchaseOrderUuid, String warehouseUuid,
+            List<Map<String, dynamic>> items)?
+        receiveGoods,
+    TResult Function()? fetchIncomingTransfers,
+    TResult Function(String transferUuid)? receiveStockTransfer,
+    required TResult orElse(),
+  }) {
+    if (receiveStockTransfer != null) {
+      return receiveStockTransfer(transferUuid);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_AddProduct value) addProduct,
+    required TResult Function(_UpdateProduct value) updateProduct,
+    required TResult Function(_DeleteProduct value) deleteProduct,
+    required TResult Function(_UpdateStock value) updateStock,
+    required TResult Function(_WatchInventory value) watchInventory,
+    required TResult Function(_InventoryUpdated value) inventoryUpdated,
+    required TResult Function(_StockTransferRequested value)
+        stockTransferRequested,
+    required TResult Function(_ReceiveGoods value) receiveGoods,
+    required TResult Function(_FetchIncomingTransfers value)
+        fetchIncomingTransfers,
+    required TResult Function(_ReceiveStockTransfer value) receiveStockTransfer,
+  }) {
+    return receiveStockTransfer(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_AddProduct value)? addProduct,
+    TResult? Function(_UpdateProduct value)? updateProduct,
+    TResult? Function(_DeleteProduct value)? deleteProduct,
+    TResult? Function(_UpdateStock value)? updateStock,
+    TResult? Function(_WatchInventory value)? watchInventory,
+    TResult? Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult? Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult? Function(_ReceiveGoods value)? receiveGoods,
+    TResult? Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult? Function(_ReceiveStockTransfer value)? receiveStockTransfer,
+  }) {
+    return receiveStockTransfer?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_AddProduct value)? addProduct,
+    TResult Function(_UpdateProduct value)? updateProduct,
+    TResult Function(_DeleteProduct value)? deleteProduct,
+    TResult Function(_UpdateStock value)? updateStock,
+    TResult Function(_WatchInventory value)? watchInventory,
+    TResult Function(_InventoryUpdated value)? inventoryUpdated,
+    TResult Function(_StockTransferRequested value)? stockTransferRequested,
+    TResult Function(_ReceiveGoods value)? receiveGoods,
+    TResult Function(_FetchIncomingTransfers value)? fetchIncomingTransfers,
+    TResult Function(_ReceiveStockTransfer value)? receiveStockTransfer,
+    required TResult orElse(),
+  }) {
+    if (receiveStockTransfer != null) {
+      return receiveStockTransfer(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ReceiveStockTransfer implements InventoryManagementEvent {
+  const factory _ReceiveStockTransfer(final String transferUuid) =
+      _$ReceiveStockTransferImpl;
+
+  String get transferUuid;
+
+  /// Create a copy of InventoryManagementEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ReceiveStockTransferImplCopyWith<_$ReceiveStockTransferImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$InventoryManagementState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
@@ -1968,6 +2493,8 @@ mixin _$InventoryManagementState {
     required TResult Function() loading,
     required TResult Function() success,
     required TResult Function(List<ProductStock> inventory) loaded,
+    required TResult Function(List<StockTransfer> transfers)
+        incomingTransfersLoaded,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -1977,6 +2504,7 @@ mixin _$InventoryManagementState {
     TResult? Function()? loading,
     TResult? Function()? success,
     TResult? Function(List<ProductStock> inventory)? loaded,
+    TResult? Function(List<StockTransfer> transfers)? incomingTransfersLoaded,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -1986,6 +2514,7 @@ mixin _$InventoryManagementState {
     TResult Function()? loading,
     TResult Function()? success,
     TResult Function(List<ProductStock> inventory)? loaded,
+    TResult Function(List<StockTransfer> transfers)? incomingTransfersLoaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -1996,6 +2525,8 @@ mixin _$InventoryManagementState {
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) success,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_IncomingTransfersLoaded value)
+        incomingTransfersLoaded,
     required TResult Function(_Error value) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -2005,6 +2536,7 @@ mixin _$InventoryManagementState {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? success,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_IncomingTransfersLoaded value)? incomingTransfersLoaded,
     TResult? Function(_Error value)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -2014,6 +2546,7 @@ mixin _$InventoryManagementState {
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? success,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_IncomingTransfersLoaded value)? incomingTransfersLoaded,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) =>
@@ -2087,6 +2620,8 @@ class _$InitialImpl implements _Initial {
     required TResult Function() loading,
     required TResult Function() success,
     required TResult Function(List<ProductStock> inventory) loaded,
+    required TResult Function(List<StockTransfer> transfers)
+        incomingTransfersLoaded,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -2099,6 +2634,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? loading,
     TResult? Function()? success,
     TResult? Function(List<ProductStock> inventory)? loaded,
+    TResult? Function(List<StockTransfer> transfers)? incomingTransfersLoaded,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -2111,6 +2647,7 @@ class _$InitialImpl implements _Initial {
     TResult Function()? loading,
     TResult Function()? success,
     TResult Function(List<ProductStock> inventory)? loaded,
+    TResult Function(List<StockTransfer> transfers)? incomingTransfersLoaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -2127,6 +2664,8 @@ class _$InitialImpl implements _Initial {
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) success,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_IncomingTransfersLoaded value)
+        incomingTransfersLoaded,
     required TResult Function(_Error value) error,
   }) {
     return initial(this);
@@ -2139,6 +2678,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? success,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_IncomingTransfersLoaded value)? incomingTransfersLoaded,
     TResult? Function(_Error value)? error,
   }) {
     return initial?.call(this);
@@ -2151,6 +2691,7 @@ class _$InitialImpl implements _Initial {
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? success,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_IncomingTransfersLoaded value)? incomingTransfersLoaded,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -2210,6 +2751,8 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() loading,
     required TResult Function() success,
     required TResult Function(List<ProductStock> inventory) loaded,
+    required TResult Function(List<StockTransfer> transfers)
+        incomingTransfersLoaded,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -2222,6 +2765,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? loading,
     TResult? Function()? success,
     TResult? Function(List<ProductStock> inventory)? loaded,
+    TResult? Function(List<StockTransfer> transfers)? incomingTransfersLoaded,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -2234,6 +2778,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? loading,
     TResult Function()? success,
     TResult Function(List<ProductStock> inventory)? loaded,
+    TResult Function(List<StockTransfer> transfers)? incomingTransfersLoaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -2250,6 +2795,8 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) success,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_IncomingTransfersLoaded value)
+        incomingTransfersLoaded,
     required TResult Function(_Error value) error,
   }) {
     return loading(this);
@@ -2262,6 +2809,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? success,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_IncomingTransfersLoaded value)? incomingTransfersLoaded,
     TResult? Function(_Error value)? error,
   }) {
     return loading?.call(this);
@@ -2274,6 +2822,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? success,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_IncomingTransfersLoaded value)? incomingTransfersLoaded,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -2333,6 +2882,8 @@ class _$SuccessImpl implements _Success {
     required TResult Function() loading,
     required TResult Function() success,
     required TResult Function(List<ProductStock> inventory) loaded,
+    required TResult Function(List<StockTransfer> transfers)
+        incomingTransfersLoaded,
     required TResult Function(String message) error,
   }) {
     return success();
@@ -2345,6 +2896,7 @@ class _$SuccessImpl implements _Success {
     TResult? Function()? loading,
     TResult? Function()? success,
     TResult? Function(List<ProductStock> inventory)? loaded,
+    TResult? Function(List<StockTransfer> transfers)? incomingTransfersLoaded,
     TResult? Function(String message)? error,
   }) {
     return success?.call();
@@ -2357,6 +2909,7 @@ class _$SuccessImpl implements _Success {
     TResult Function()? loading,
     TResult Function()? success,
     TResult Function(List<ProductStock> inventory)? loaded,
+    TResult Function(List<StockTransfer> transfers)? incomingTransfersLoaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -2373,6 +2926,8 @@ class _$SuccessImpl implements _Success {
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) success,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_IncomingTransfersLoaded value)
+        incomingTransfersLoaded,
     required TResult Function(_Error value) error,
   }) {
     return success(this);
@@ -2385,6 +2940,7 @@ class _$SuccessImpl implements _Success {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? success,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_IncomingTransfersLoaded value)? incomingTransfersLoaded,
     TResult? Function(_Error value)? error,
   }) {
     return success?.call(this);
@@ -2397,6 +2953,7 @@ class _$SuccessImpl implements _Success {
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? success,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_IncomingTransfersLoaded value)? incomingTransfersLoaded,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -2491,6 +3048,8 @@ class _$LoadedImpl implements _Loaded {
     required TResult Function() loading,
     required TResult Function() success,
     required TResult Function(List<ProductStock> inventory) loaded,
+    required TResult Function(List<StockTransfer> transfers)
+        incomingTransfersLoaded,
     required TResult Function(String message) error,
   }) {
     return loaded(inventory);
@@ -2503,6 +3062,7 @@ class _$LoadedImpl implements _Loaded {
     TResult? Function()? loading,
     TResult? Function()? success,
     TResult? Function(List<ProductStock> inventory)? loaded,
+    TResult? Function(List<StockTransfer> transfers)? incomingTransfersLoaded,
     TResult? Function(String message)? error,
   }) {
     return loaded?.call(inventory);
@@ -2515,6 +3075,7 @@ class _$LoadedImpl implements _Loaded {
     TResult Function()? loading,
     TResult Function()? success,
     TResult Function(List<ProductStock> inventory)? loaded,
+    TResult Function(List<StockTransfer> transfers)? incomingTransfersLoaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -2531,6 +3092,8 @@ class _$LoadedImpl implements _Loaded {
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) success,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_IncomingTransfersLoaded value)
+        incomingTransfersLoaded,
     required TResult Function(_Error value) error,
   }) {
     return loaded(this);
@@ -2543,6 +3106,7 @@ class _$LoadedImpl implements _Loaded {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? success,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_IncomingTransfersLoaded value)? incomingTransfersLoaded,
     TResult? Function(_Error value)? error,
   }) {
     return loaded?.call(this);
@@ -2555,6 +3119,7 @@ class _$LoadedImpl implements _Loaded {
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? success,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_IncomingTransfersLoaded value)? incomingTransfersLoaded,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -2575,6 +3140,185 @@ abstract class _Loaded implements InventoryManagementState {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$IncomingTransfersLoadedImplCopyWith<$Res> {
+  factory _$$IncomingTransfersLoadedImplCopyWith(
+          _$IncomingTransfersLoadedImpl value,
+          $Res Function(_$IncomingTransfersLoadedImpl) then) =
+      __$$IncomingTransfersLoadedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({List<StockTransfer> transfers});
+}
+
+/// @nodoc
+class __$$IncomingTransfersLoadedImplCopyWithImpl<$Res>
+    extends _$InventoryManagementStateCopyWithImpl<$Res,
+        _$IncomingTransfersLoadedImpl>
+    implements _$$IncomingTransfersLoadedImplCopyWith<$Res> {
+  __$$IncomingTransfersLoadedImplCopyWithImpl(
+      _$IncomingTransfersLoadedImpl _value,
+      $Res Function(_$IncomingTransfersLoadedImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of InventoryManagementState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? transfers = null,
+  }) {
+    return _then(_$IncomingTransfersLoadedImpl(
+      null == transfers
+          ? _value._transfers
+          : transfers // ignore: cast_nullable_to_non_nullable
+              as List<StockTransfer>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$IncomingTransfersLoadedImpl implements _IncomingTransfersLoaded {
+  const _$IncomingTransfersLoadedImpl(final List<StockTransfer> transfers)
+      : _transfers = transfers;
+
+  final List<StockTransfer> _transfers;
+  @override
+  List<StockTransfer> get transfers {
+    if (_transfers is EqualUnmodifiableListView) return _transfers;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_transfers);
+  }
+
+  @override
+  String toString() {
+    return 'InventoryManagementState.incomingTransfersLoaded(transfers: $transfers)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$IncomingTransfersLoadedImpl &&
+            const DeepCollectionEquality()
+                .equals(other._transfers, _transfers));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_transfers));
+
+  /// Create a copy of InventoryManagementState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$IncomingTransfersLoadedImplCopyWith<_$IncomingTransfersLoadedImpl>
+      get copyWith => __$$IncomingTransfersLoadedImplCopyWithImpl<
+          _$IncomingTransfersLoadedImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function() success,
+    required TResult Function(List<ProductStock> inventory) loaded,
+    required TResult Function(List<StockTransfer> transfers)
+        incomingTransfersLoaded,
+    required TResult Function(String message) error,
+  }) {
+    return incomingTransfersLoaded(transfers);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function()? success,
+    TResult? Function(List<ProductStock> inventory)? loaded,
+    TResult? Function(List<StockTransfer> transfers)? incomingTransfersLoaded,
+    TResult? Function(String message)? error,
+  }) {
+    return incomingTransfersLoaded?.call(transfers);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function()? success,
+    TResult Function(List<ProductStock> inventory)? loaded,
+    TResult Function(List<StockTransfer> transfers)? incomingTransfersLoaded,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (incomingTransfersLoaded != null) {
+      return incomingTransfersLoaded(transfers);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Success value) success,
+    required TResult Function(_Loaded value) loaded,
+    required TResult Function(_IncomingTransfersLoaded value)
+        incomingTransfersLoaded,
+    required TResult Function(_Error value) error,
+  }) {
+    return incomingTransfersLoaded(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Success value)? success,
+    TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_IncomingTransfersLoaded value)? incomingTransfersLoaded,
+    TResult? Function(_Error value)? error,
+  }) {
+    return incomingTransfersLoaded?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Success value)? success,
+    TResult Function(_Loaded value)? loaded,
+    TResult Function(_IncomingTransfersLoaded value)? incomingTransfersLoaded,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (incomingTransfersLoaded != null) {
+      return incomingTransfersLoaded(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _IncomingTransfersLoaded implements InventoryManagementState {
+  const factory _IncomingTransfersLoaded(final List<StockTransfer> transfers) =
+      _$IncomingTransfersLoadedImpl;
+
+  List<StockTransfer> get transfers;
+
+  /// Create a copy of InventoryManagementState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$IncomingTransfersLoadedImplCopyWith<_$IncomingTransfersLoadedImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -2649,6 +3393,8 @@ class _$ErrorImpl implements _Error {
     required TResult Function() loading,
     required TResult Function() success,
     required TResult Function(List<ProductStock> inventory) loaded,
+    required TResult Function(List<StockTransfer> transfers)
+        incomingTransfersLoaded,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -2661,6 +3407,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function()? loading,
     TResult? Function()? success,
     TResult? Function(List<ProductStock> inventory)? loaded,
+    TResult? Function(List<StockTransfer> transfers)? incomingTransfersLoaded,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -2673,6 +3420,7 @@ class _$ErrorImpl implements _Error {
     TResult Function()? loading,
     TResult Function()? success,
     TResult Function(List<ProductStock> inventory)? loaded,
+    TResult Function(List<StockTransfer> transfers)? incomingTransfersLoaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -2689,6 +3437,8 @@ class _$ErrorImpl implements _Error {
     required TResult Function(_Loading value) loading,
     required TResult Function(_Success value) success,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_IncomingTransfersLoaded value)
+        incomingTransfersLoaded,
     required TResult Function(_Error value) error,
   }) {
     return error(this);
@@ -2701,6 +3451,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Success value)? success,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_IncomingTransfersLoaded value)? incomingTransfersLoaded,
     TResult? Function(_Error value)? error,
   }) {
     return error?.call(this);
@@ -2713,6 +3464,7 @@ class _$ErrorImpl implements _Error {
     TResult Function(_Loading value)? loading,
     TResult Function(_Success value)? success,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_IncomingTransfersLoaded value)? incomingTransfersLoaded,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {

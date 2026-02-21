@@ -32,7 +32,7 @@ class ExecuteStockTransfer {
       uuid: const Uuid().v4(),
       sourceWarehouseUuid: sourceWarehouseId,
       targetWarehouseUuid: targetWarehouseId,
-      status: 'PENDING',
+      status: 'IN_TRANSIT',
       createdBy: createdBy,
       createdAt: DateTime.now(),
       items: items,

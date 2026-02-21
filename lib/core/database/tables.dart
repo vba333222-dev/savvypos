@@ -56,6 +56,11 @@ class RestaurantTable extends Table {
   // State
   BoolColumn get isOccupied => boolean().withDefault(const Constant(false))();
   TextColumn get currentOrderUuid => text().nullable()(); // Linked Open Order
+  
+  // BYOD - Dynamic QR Session Tracking
+  TextColumn get currentSessionToken => text().nullable()(); 
+  TextColumn get qrCodeUrl => text().nullable()(); 
+  TextColumn get sessionStatus => text().withDefault(const Constant('LOCKED'))();
 
   DateTimeColumn get updatedAt => dateTime()();
   BoolColumn get isDeleted => boolean().withDefault(const Constant(false))();
@@ -138,6 +143,7 @@ class ProductTable extends Table {
   BoolColumn get isSynced => boolean().withDefault(const Constant(false))();
   IntColumn get version => integer().withDefault(const Constant(1))();
   BoolColumn get isDeleted => boolean().withDefault(const Constant(false))();
+  TextColumn get outletId => text().nullable()(); // Added for Multi-Store filtering
 
   // Back of House (BoH)
   BoolColumn get isComposite => boolean()
@@ -243,6 +249,7 @@ class OrderTable extends Table {
   TextColumn get shiftUuid => text().nullable()();
   TextColumn get customerUuid => text().nullable()();
   TextColumn get tenantId => text().nullable()(); // Added missing
+  TextColumn get outletId => text().nullable()(); // Added for Multi-Store
   TextColumn get status =>
       text().withDefault(const Constant('COMPLETED'))(); // Added missing
   TextColumn get paymentStatus =>
@@ -327,7 +334,8 @@ class ShiftSessionTable extends Table {
   TextColumn get uuid => text().unique()();
   TextColumn get staffId => text()();
   TextColumn get staffName => text()();
-
+  TextColumn get outletId => text().nullable()(); // Added for Multi-Store
+  
   DateTimeColumn get startShift => dateTime()();
   DateTimeColumn get endShift => dateTime().nullable()();
 

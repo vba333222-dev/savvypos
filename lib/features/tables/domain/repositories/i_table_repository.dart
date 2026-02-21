@@ -16,4 +16,7 @@ abstract class ITableRepository {
   Future<void> updateTable(SavvyTable table);
   Future<void> transferTable(String sourceUuid, String targetUuid);
   Future<void> mergeTables(String sourceUuid, String targetUuid);
+  
+  // BYOD QR Session methods
+  Future<void> updateSessionInfo(String tableUuid, String? token, String? url, TableSessionStatus status);
 }

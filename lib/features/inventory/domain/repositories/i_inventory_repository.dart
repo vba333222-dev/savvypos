@@ -13,7 +13,7 @@ abstract class IInventoryRepository {
   Future<void> receivePurchaseOrder(String poUuid, Map<String, double> receivedQuantities);
   
   // Stock Logic
-  Future<void> updateStock(String productUuid, double quantityChange, String reason, {String? referenceId});
+  Future<void> updateStock(String productUuid, String warehouseUuid, double quantityChange, String reason, {String? referenceId});
   Future<double> getStockQuantity(String productUuid);
   
   // Stock Count
@@ -22,6 +22,8 @@ abstract class IInventoryRepository {
   
   // Stock Transfer
   Future<void> transferStock(StockTransfer transfer);
+  Future<void> receiveStockTransfer(String transferUuid, String receiverId);
+  Future<List<StockTransfer>> getIncomingTransfers(String targetWarehouseUuid);
   
   // Receiving
   Future<void> receiveGoods(String poUuid, Map<String, double> quantities);

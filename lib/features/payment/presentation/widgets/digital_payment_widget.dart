@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get_it/get_it.dart';
+import 'package:savvy_pos/core/services/socket_service.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 
@@ -33,9 +35,15 @@ class _DigitalPaymentWidgetState extends State<DigitalPaymentWidget> {
   }
 
   void _simulateFlow() async {
+    final socketService = GetIt.I<SocketService>();
+    final mockQrString = '00020101021126660016COM.GOJEK.WWW01189360091531580252510209580252515204581253033605407${widget.amount}5802ID5912Savvy Bistro6007Jakarta61051211062070703A016304EE88';
+    
     // 1. Simulate API Call to Get QR
     await Future.delayed(const Duration(seconds: 1));
-    if (mounted) setState(() => _isQrReady = true);
+    if (mounted) {
+       setState(() => _isQrReady = true);
+       socketService.simulateIncomingMessage('CDS_PAYMENT_REQUEST', {'qr_data': mockQrString});
+    }
 
     // 2. Simulate User Paying (Mock Webhook wait)
     await Future.delayed(const Duration(seconds: 4));
@@ -43,9 +51,11 @@ class _DigitalPaymentWidgetState extends State<DigitalPaymentWidget> {
     if (mounted) {
       setState(() => _isSuccess = true);
       // Cha-ching sound here
+      socketService.simulateIncomingMessage('CDS_SUCCESS', {'points': (widget.amount * 0.1).toInt()});
 
       // Auto Close
-      await Future.delayed(const Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 2));
+      socketService.simulateIncomingMessage('CDS_IDLE', {});
       widget.onPaymentSuccess();
     }
   }

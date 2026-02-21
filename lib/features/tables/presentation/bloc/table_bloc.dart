@@ -2,8 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/services/socket_service.dart';
+import 'package:savvy_pos/core/hal/printer_router.dart';
 import 'package:savvy_pos/features/tables/domain/entities/table.dart';
 import 'package:savvy_pos/features/tables/domain/repositories/i_table_repository.dart';
+import 'package:uuid/uuid.dart';
 
 part 'table_bloc.freezed.dart';
 
@@ -17,6 +19,7 @@ class TableEvent with _$TableEvent {
   const factory TableEvent.toggleOccupied(String uuid, bool isOccupied) = _ToggleOccupied; 
   const factory TableEvent.transferTable(String sourceUuid, String targetUuid) = _TransferTable;
   const factory TableEvent.mergeTables(String sourceUuid, String targetUuid) = _MergeTables;
+  const factory TableEvent.openQRSession(String tableUuid) = _OpenQRSession;
 }
 
 @freezed
@@ -32,8 +35,9 @@ class TableState with _$TableState {
 class TableBloc extends Bloc<TableEvent, TableState> {
   final ITableRepository _repository;
   final SocketService _socketService;
+  final PrinterRouter _printerRouter;
 
-  TableBloc(this._repository, this._socketService) : super(const TableState()) {
+  TableBloc(this._repository, this._socketService, this._printerRouter) : super(const TableState()) {
     on<_LoadTables>(_onLoadTables);
     on<_TablesUpdated>(_onTablesUpdated);
     on<_AddTable>(_onAddTable);
@@ -42,6 +46,7 @@ class TableBloc extends Bloc<TableEvent, TableState> {
     on<_ToggleOccupied>(_onToggleOccupied);
     on<_TransferTable>(_onTransferTable);
     on<_MergeTables>(_onMergeTables);
+    on<_OpenQRSession>(_onOpenQRSession);
   }
 
   Future<void> _onLoadTables(_LoadTables event, Emitter<TableState> emit) async {
@@ -100,6 +105,28 @@ class TableBloc extends Bloc<TableEvent, TableState> {
       _socketService.emit('table_merged', {'source': event.sourceUuid, 'target': event.targetUuid});
     } catch (e) {
       emit(state.copyWith(error: 'Failed to merge tables: $e'));
+    }
+  }
+
+  Future<void> _onOpenQRSession(_OpenQRSession event, Emitter<TableState> emit) async {
+    try {
+      final token = const Uuid().v4();
+      final table = state.tables.firstWhere((t) => t.id == event.tableUuid);
+      final url = 'https://menu.savvypos.com/order?token=$token&table=${table.name}';
+      
+      // Update Database
+      await _repository.updateSessionInfo(
+        event.tableUuid, 
+        token, 
+        url, 
+        TableSessionStatus.ordering
+      );
+      
+      // Print the QR Ticket
+      await _printerRouter.printQRSessionTicket(table.name, url);
+      
+    } catch (e) {
+      emit(state.copyWith(error: 'Failed to open QR session: $e'));
     }
   }
 }

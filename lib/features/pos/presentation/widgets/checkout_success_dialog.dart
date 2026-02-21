@@ -1,8 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:savvy_pos/core/presentation/widgets/digital_receipt_widget.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_numpad.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
+import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
+import 'package:savvy_pos/core/utils/receipt_generator.dart';
+import 'package:savvy_pos/features/customers/domain/repositories/i_customer_repository.dart';
+import 'package:savvy_pos/features/customers/domain/entities/customer.dart';
+import 'package:uuid/uuid.dart';
+
+Future<List<int>> _generateReceiptIsolate(Map<String, dynamic> args) async {
+  // Compute must run a top-level function and ESC/POS generator inside it
+  return await ReceiptGenerator.generateReceipt(
+    storeName: args['storeName'],
+    orderNumber: args['orderNumber'],
+    date: args['date'],
+    items: args['items'],
+    subtotal: args['subtotal'],
+    discount: args['discount'],
+    tax: args['tax'],
+    total: args['total'],
+    paymentMethod: args['paymentMethod'],
+  );
+}
 
 class CheckoutSuccessDialog extends StatefulWidget {
   final dynamic order; 
@@ -21,6 +45,11 @@ class CheckoutSuccessDialog extends StatefulWidget {
 }
 
 class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with TickerProviderStateMixin {
+  // State for E-Receipt Flow
+  bool _isAddingWhatsapp = false;
+  String _whatsappNumber = '';
+  bool _isSending = false;
+
   // State for Physics
   Offset _dragOffset = Offset.zero;
   double _rotation = 0.0;
@@ -113,9 +142,22 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with Tick
     
     return Scaffold(
       backgroundColor: Colors.black54,
-      body: Stack(
-        alignment: Alignment.topCenter,
-        children: [
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 400),
+        switchInCurve: Curves.easeInOut,
+        switchOutCurve: Curves.easeInOut,
+        child: _isAddingWhatsapp 
+            ? _buildWhatsappView(context)
+            : _buildReceiptView(total, subtotal, tax),
+      ),
+    );
+  }
+
+  Widget _buildReceiptView(double total, double subtotal, double tax) {
+    return Stack(
+      key: const ValueKey('receipt'),
+      alignment: Alignment.topCenter,
+      children: [
           // 1. RECEIPT SLOT (Visual Shadow/Hole)
            Positioned(
              top: -20,
@@ -183,7 +225,7 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with Tick
            ),
 
            // 3. ACTION BUTTONS (Appear after print)
-           Positioned(
+            Positioned(
              bottom: 40,
              left: 20, right: 20,
              child: FadeTransition(
@@ -193,29 +235,28 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with Tick
                  children: [
                     _ActionButton(
                       icon: Icons.print, 
-                      label: 'Print', 
+                      label: 'Cetak Kertas', 
                       onTap: () {
                          HapticFeedback.selectionClick();
                          // Implementation for physical print
                       }
                     ),
-                    SizedBox(width: 24),
+                    const SizedBox(width: 24),
                     _ActionButton(
-                      icon: Icons.email_outlined, 
-                      label: 'Email', 
+                      icon: Icons.chat_bubble_outline, 
+                      label: 'WhatsApp', 
                       onTap: () {
                          HapticFeedback.selectionClick();
-                         // Implementation for email
+                         setState(() => _isAddingWhatsapp = true);
                       }
                     ),
-                    SizedBox(width: 24),
+                    const SizedBox(width: 24),
                     _ActionButton(
-                      icon: Icons.close, 
-                      label: 'Close', 
+                      icon: Icons.check, 
+                      label: 'Selesai', 
                       isPrimary: true,
                       onTap: () {
-                         // Manual Close (if they don't tear)
-                         widget.onNewOrder(); // Or just pop? Requirement says "New Order"
+                         widget.onNewOrder();
                       }
                     ),
                  ],
@@ -223,8 +264,148 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with Tick
              ),
            ),
         ],
+      );
+  }
+
+  Widget _buildWhatsappView(BuildContext context) {
+    return Center(
+      key: const ValueKey('whatsapp'),
+      child: Container(
+        width: 600,
+        height: 700,
+        decoration: BoxDecoration(
+          color: context.savvy.colors.bgPrimary,
+          borderRadius: BorderRadius.circular(context.savvy.shapes.radiusLg),
+        ),
+        padding: EdgeInsets.all(context.savvy.shapes.spacingXl),
+        child: Column(
+          children: [
+            const SavvyText.h2('Kirim E-Receipt'),
+            const SizedBox(height: 8),
+            SavvyText.body('Masukkan nomor WhatsApp pelanggan', color: context.savvy.colors.textSecondary),
+            const SizedBox(height: 32),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              decoration: BoxDecoration(
+                color: context.savvy.colors.bgElevated,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: context.savvy.colors.borderDefault),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SavvyText.h1('+62 ', color: Colors.grey),
+                  SavvyText.h1(
+                    _whatsappNumber.isEmpty ? '000 0000 0000' : _whatsappNumber,
+                    color: _whatsappNumber.isEmpty ? Colors.grey : context.savvy.colors.textPrimary,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
+            Expanded(
+              child: SavvyNumpad(
+                onInput: (key) {
+                  if (_whatsappNumber.length < 13) {
+                    setState(() => _whatsappNumber += key);
+                  }
+                },
+                onBackspace: () {
+                  if (_whatsappNumber.isNotEmpty) {
+                    setState(() => _whatsappNumber = _whatsappNumber.substring(0, _whatsappNumber.length - 1));
+                  }
+                },
+                onClear: () => setState(() => _whatsappNumber = ''),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: _isSending ? null : () => setState(() => _isAddingWhatsapp = false),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                    ),
+                    child: const Text('Batal'),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: (_isSending || _whatsappNumber.length < 8) ? null : _sendEReceipt,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                    ),
+                    child: _isSending 
+                        ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                        : const Text('Kirim PDF', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  void _sendEReceipt() async {
+    setState(() => _isSending = true);
+    
+    try {
+      final double total = widget.items.fold(0, (sum, item) => sum + item.total);
+      final double subtotal = total / 1.1; 
+      final double tax = total - subtotal;
+      
+      // 1. Generate PDF in Background Isolate
+      // ignore: unused_local_variable
+      final pdfBytes = await compute(_generateReceiptIsolate, {
+        'storeName': 'Savvy Bistro',
+        'orderNumber': widget.order?.orderNumber ?? 'ORD-001',
+        'date': widget.order?.createdAt ?? DateTime.now(),
+        'items': widget.items.map((i) => {'name': i.product.name, 'qty': i.quantity, 'price': i.product.price, 'total': i.total}).toList(),
+        'subtotal': subtotal,
+        'discount': 0.0,
+        'tax': tax,
+        'total': total,
+        'paymentMethod': 'Digital QR',
+      });
+      
+      // 2. Mock API Gateway Transmission logic
+      await Future.delayed(const Duration(seconds: 1)); // Sending bits to WA API...
+      
+      // 3. CRM Capture
+      final crmRepo = GetIt.I<ICustomerRepository>();
+      final existingCusts = await crmRepo.searchCustomers(_whatsappNumber);
+      
+      if (existingCusts.isEmpty) {
+         // Auto-Create Profile for Marketing
+         final newCustomer = Customer(
+            uuid: const Uuid().v4(),
+            name: 'Guest-$_whatsappNumber',
+            phone: _whatsappNumber,
+            email: '',
+            totalPoints: 0,
+            lastVisitAt: DateTime.now(),
+         );
+         await crmRepo.saveCustomer(newCustomer);
+      }
+      
+      HapticFeedback.heavyImpact();
+      if (mounted) {
+         ScaffoldMessenger.of(context).showSnackBar(
+           const SnackBar(content: Text('E-Receipt terkirim & Kontak tersimpan di CRM!'), backgroundColor: Colors.green),
+         );
+         setState(() => _isSending = false);
+         widget.onNewOrder();
+      }
+    } catch (e) {
+      if (mounted) {
+         setState(() => _isSending = false);
+         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+      }
+    }
   }
 }
 

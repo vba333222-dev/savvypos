@@ -1013,6 +1013,26 @@ class $RestaurantTableTable extends RestaurantTable
   late final GeneratedColumn<String> currentOrderUuid = GeneratedColumn<String>(
       'current_order_uuid', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _currentSessionTokenMeta =
+      const VerificationMeta('currentSessionToken');
+  @override
+  late final GeneratedColumn<String> currentSessionToken =
+      GeneratedColumn<String>('current_session_token', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _qrCodeUrlMeta =
+      const VerificationMeta('qrCodeUrl');
+  @override
+  late final GeneratedColumn<String> qrCodeUrl = GeneratedColumn<String>(
+      'qr_code_url', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _sessionStatusMeta =
+      const VerificationMeta('sessionStatus');
+  @override
+  late final GeneratedColumn<String> sessionStatus = GeneratedColumn<String>(
+      'session_status', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('LOCKED'));
   static const VerificationMeta _updatedAtMeta =
       const VerificationMeta('updatedAt');
   @override
@@ -1044,6 +1064,9 @@ class $RestaurantTableTable extends RestaurantTable
         zoneUuid,
         isOccupied,
         currentOrderUuid,
+        currentSessionToken,
+        qrCodeUrl,
+        sessionStatus,
         updatedAt,
         isDeleted
       ];
@@ -1115,6 +1138,24 @@ class $RestaurantTableTable extends RestaurantTable
           currentOrderUuid.isAcceptableOrUnknown(
               data['current_order_uuid']!, _currentOrderUuidMeta));
     }
+    if (data.containsKey('current_session_token')) {
+      context.handle(
+          _currentSessionTokenMeta,
+          currentSessionToken.isAcceptableOrUnknown(
+              data['current_session_token']!, _currentSessionTokenMeta));
+    }
+    if (data.containsKey('qr_code_url')) {
+      context.handle(
+          _qrCodeUrlMeta,
+          qrCodeUrl.isAcceptableOrUnknown(
+              data['qr_code_url']!, _qrCodeUrlMeta));
+    }
+    if (data.containsKey('session_status')) {
+      context.handle(
+          _sessionStatusMeta,
+          sessionStatus.isAcceptableOrUnknown(
+              data['session_status']!, _sessionStatusMeta));
+    }
     if (data.containsKey('updated_at')) {
       context.handle(_updatedAtMeta,
           updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
@@ -1160,6 +1201,12 @@ class $RestaurantTableTable extends RestaurantTable
           .read(DriftSqlType.bool, data['${effectivePrefix}is_occupied'])!,
       currentOrderUuid: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}current_order_uuid']),
+      currentSessionToken: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}current_session_token']),
+      qrCodeUrl: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}qr_code_url']),
+      sessionStatus: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}session_status'])!,
       updatedAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
       isDeleted: attachedDatabase.typeMapping
@@ -1188,6 +1235,9 @@ class RestaurantTableData extends DataClass
   final String? zoneUuid;
   final bool isOccupied;
   final String? currentOrderUuid;
+  final String? currentSessionToken;
+  final String? qrCodeUrl;
+  final String sessionStatus;
   final DateTime updatedAt;
   final bool isDeleted;
   const RestaurantTableData(
@@ -1204,6 +1254,9 @@ class RestaurantTableData extends DataClass
       this.zoneUuid,
       required this.isOccupied,
       this.currentOrderUuid,
+      this.currentSessionToken,
+      this.qrCodeUrl,
+      required this.sessionStatus,
       required this.updatedAt,
       required this.isDeleted});
   @override
@@ -1226,6 +1279,13 @@ class RestaurantTableData extends DataClass
     if (!nullToAbsent || currentOrderUuid != null) {
       map['current_order_uuid'] = Variable<String>(currentOrderUuid);
     }
+    if (!nullToAbsent || currentSessionToken != null) {
+      map['current_session_token'] = Variable<String>(currentSessionToken);
+    }
+    if (!nullToAbsent || qrCodeUrl != null) {
+      map['qr_code_url'] = Variable<String>(qrCodeUrl);
+    }
+    map['session_status'] = Variable<String>(sessionStatus);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     map['is_deleted'] = Variable<bool>(isDeleted);
     return map;
@@ -1250,6 +1310,13 @@ class RestaurantTableData extends DataClass
       currentOrderUuid: currentOrderUuid == null && nullToAbsent
           ? const Value.absent()
           : Value(currentOrderUuid),
+      currentSessionToken: currentSessionToken == null && nullToAbsent
+          ? const Value.absent()
+          : Value(currentSessionToken),
+      qrCodeUrl: qrCodeUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(qrCodeUrl),
+      sessionStatus: Value(sessionStatus),
       updatedAt: Value(updatedAt),
       isDeleted: Value(isDeleted),
     );
@@ -1272,6 +1339,10 @@ class RestaurantTableData extends DataClass
       zoneUuid: serializer.fromJson<String?>(json['zoneUuid']),
       isOccupied: serializer.fromJson<bool>(json['isOccupied']),
       currentOrderUuid: serializer.fromJson<String?>(json['currentOrderUuid']),
+      currentSessionToken:
+          serializer.fromJson<String?>(json['currentSessionToken']),
+      qrCodeUrl: serializer.fromJson<String?>(json['qrCodeUrl']),
+      sessionStatus: serializer.fromJson<String>(json['sessionStatus']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       isDeleted: serializer.fromJson<bool>(json['isDeleted']),
     );
@@ -1293,6 +1364,9 @@ class RestaurantTableData extends DataClass
       'zoneUuid': serializer.toJson<String?>(zoneUuid),
       'isOccupied': serializer.toJson<bool>(isOccupied),
       'currentOrderUuid': serializer.toJson<String?>(currentOrderUuid),
+      'currentSessionToken': serializer.toJson<String?>(currentSessionToken),
+      'qrCodeUrl': serializer.toJson<String?>(qrCodeUrl),
+      'sessionStatus': serializer.toJson<String>(sessionStatus),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'isDeleted': serializer.toJson<bool>(isDeleted),
     };
@@ -1312,6 +1386,9 @@ class RestaurantTableData extends DataClass
           Value<String?> zoneUuid = const Value.absent(),
           bool? isOccupied,
           Value<String?> currentOrderUuid = const Value.absent(),
+          Value<String?> currentSessionToken = const Value.absent(),
+          Value<String?> qrCodeUrl = const Value.absent(),
+          String? sessionStatus,
           DateTime? updatedAt,
           bool? isDeleted}) =>
       RestaurantTableData(
@@ -1330,6 +1407,11 @@ class RestaurantTableData extends DataClass
         currentOrderUuid: currentOrderUuid.present
             ? currentOrderUuid.value
             : this.currentOrderUuid,
+        currentSessionToken: currentSessionToken.present
+            ? currentSessionToken.value
+            : this.currentSessionToken,
+        qrCodeUrl: qrCodeUrl.present ? qrCodeUrl.value : this.qrCodeUrl,
+        sessionStatus: sessionStatus ?? this.sessionStatus,
         updatedAt: updatedAt ?? this.updatedAt,
         isDeleted: isDeleted ?? this.isDeleted,
       );
@@ -1351,6 +1433,13 @@ class RestaurantTableData extends DataClass
       currentOrderUuid: data.currentOrderUuid.present
           ? data.currentOrderUuid.value
           : this.currentOrderUuid,
+      currentSessionToken: data.currentSessionToken.present
+          ? data.currentSessionToken.value
+          : this.currentSessionToken,
+      qrCodeUrl: data.qrCodeUrl.present ? data.qrCodeUrl.value : this.qrCodeUrl,
+      sessionStatus: data.sessionStatus.present
+          ? data.sessionStatus.value
+          : this.sessionStatus,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       isDeleted: data.isDeleted.present ? data.isDeleted.value : this.isDeleted,
     );
@@ -1372,6 +1461,9 @@ class RestaurantTableData extends DataClass
           ..write('zoneUuid: $zoneUuid, ')
           ..write('isOccupied: $isOccupied, ')
           ..write('currentOrderUuid: $currentOrderUuid, ')
+          ..write('currentSessionToken: $currentSessionToken, ')
+          ..write('qrCodeUrl: $qrCodeUrl, ')
+          ..write('sessionStatus: $sessionStatus, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('isDeleted: $isDeleted')
           ..write(')'))
@@ -1393,6 +1485,9 @@ class RestaurantTableData extends DataClass
       zoneUuid,
       isOccupied,
       currentOrderUuid,
+      currentSessionToken,
+      qrCodeUrl,
+      sessionStatus,
       updatedAt,
       isDeleted);
   @override
@@ -1412,6 +1507,9 @@ class RestaurantTableData extends DataClass
           other.zoneUuid == this.zoneUuid &&
           other.isOccupied == this.isOccupied &&
           other.currentOrderUuid == this.currentOrderUuid &&
+          other.currentSessionToken == this.currentSessionToken &&
+          other.qrCodeUrl == this.qrCodeUrl &&
+          other.sessionStatus == this.sessionStatus &&
           other.updatedAt == this.updatedAt &&
           other.isDeleted == this.isDeleted);
 }
@@ -1430,6 +1528,9 @@ class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
   final Value<String?> zoneUuid;
   final Value<bool> isOccupied;
   final Value<String?> currentOrderUuid;
+  final Value<String?> currentSessionToken;
+  final Value<String?> qrCodeUrl;
+  final Value<String> sessionStatus;
   final Value<DateTime> updatedAt;
   final Value<bool> isDeleted;
   const RestaurantTableCompanion({
@@ -1446,6 +1547,9 @@ class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
     this.zoneUuid = const Value.absent(),
     this.isOccupied = const Value.absent(),
     this.currentOrderUuid = const Value.absent(),
+    this.currentSessionToken = const Value.absent(),
+    this.qrCodeUrl = const Value.absent(),
+    this.sessionStatus = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.isDeleted = const Value.absent(),
   });
@@ -1463,6 +1567,9 @@ class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
     this.zoneUuid = const Value.absent(),
     this.isOccupied = const Value.absent(),
     this.currentOrderUuid = const Value.absent(),
+    this.currentSessionToken = const Value.absent(),
+    this.qrCodeUrl = const Value.absent(),
+    this.sessionStatus = const Value.absent(),
     required DateTime updatedAt,
     this.isDeleted = const Value.absent(),
   })  : uuid = Value(uuid),
@@ -1482,6 +1589,9 @@ class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
     Expression<String>? zoneUuid,
     Expression<bool>? isOccupied,
     Expression<String>? currentOrderUuid,
+    Expression<String>? currentSessionToken,
+    Expression<String>? qrCodeUrl,
+    Expression<String>? sessionStatus,
     Expression<DateTime>? updatedAt,
     Expression<bool>? isDeleted,
   }) {
@@ -1499,6 +1609,10 @@ class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
       if (zoneUuid != null) 'zone_uuid': zoneUuid,
       if (isOccupied != null) 'is_occupied': isOccupied,
       if (currentOrderUuid != null) 'current_order_uuid': currentOrderUuid,
+      if (currentSessionToken != null)
+        'current_session_token': currentSessionToken,
+      if (qrCodeUrl != null) 'qr_code_url': qrCodeUrl,
+      if (sessionStatus != null) 'session_status': sessionStatus,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (isDeleted != null) 'is_deleted': isDeleted,
     });
@@ -1518,6 +1632,9 @@ class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
       Value<String?>? zoneUuid,
       Value<bool>? isOccupied,
       Value<String?>? currentOrderUuid,
+      Value<String?>? currentSessionToken,
+      Value<String?>? qrCodeUrl,
+      Value<String>? sessionStatus,
       Value<DateTime>? updatedAt,
       Value<bool>? isDeleted}) {
     return RestaurantTableCompanion(
@@ -1534,6 +1651,9 @@ class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
       zoneUuid: zoneUuid ?? this.zoneUuid,
       isOccupied: isOccupied ?? this.isOccupied,
       currentOrderUuid: currentOrderUuid ?? this.currentOrderUuid,
+      currentSessionToken: currentSessionToken ?? this.currentSessionToken,
+      qrCodeUrl: qrCodeUrl ?? this.qrCodeUrl,
+      sessionStatus: sessionStatus ?? this.sessionStatus,
       updatedAt: updatedAt ?? this.updatedAt,
       isDeleted: isDeleted ?? this.isDeleted,
     );
@@ -1581,6 +1701,16 @@ class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
     if (currentOrderUuid.present) {
       map['current_order_uuid'] = Variable<String>(currentOrderUuid.value);
     }
+    if (currentSessionToken.present) {
+      map['current_session_token'] =
+          Variable<String>(currentSessionToken.value);
+    }
+    if (qrCodeUrl.present) {
+      map['qr_code_url'] = Variable<String>(qrCodeUrl.value);
+    }
+    if (sessionStatus.present) {
+      map['session_status'] = Variable<String>(sessionStatus.value);
+    }
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
@@ -1606,6 +1736,9 @@ class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
           ..write('zoneUuid: $zoneUuid, ')
           ..write('isOccupied: $isOccupied, ')
           ..write('currentOrderUuid: $currentOrderUuid, ')
+          ..write('currentSessionToken: $currentSessionToken, ')
+          ..write('qrCodeUrl: $qrCodeUrl, ')
+          ..write('sessionStatus: $sessionStatus, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('isDeleted: $isDeleted')
           ..write(')'))
@@ -3082,6 +3215,12 @@ class $ProductTableTable extends ProductTable
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('CHECK ("is_deleted" IN (0, 1))'),
       defaultValue: const Constant(false));
+  static const VerificationMeta _outletIdMeta =
+      const VerificationMeta('outletId');
+  @override
+  late final GeneratedColumn<String> outletId = GeneratedColumn<String>(
+      'outlet_id', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _isCompositeMeta =
       const VerificationMeta('isComposite');
   @override
@@ -3113,6 +3252,7 @@ class $ProductTableTable extends ProductTable
         isSynced,
         version,
         isDeleted,
+        outletId,
         isComposite
       ];
   @override
@@ -3224,6 +3364,10 @@ class $ProductTableTable extends ProductTable
       context.handle(_isDeletedMeta,
           isDeleted.isAcceptableOrUnknown(data['is_deleted']!, _isDeletedMeta));
     }
+    if (data.containsKey('outlet_id')) {
+      context.handle(_outletIdMeta,
+          outletId.isAcceptableOrUnknown(data['outlet_id']!, _outletIdMeta));
+    }
     if (data.containsKey('is_composite')) {
       context.handle(
           _isCompositeMeta,
@@ -3281,6 +3425,8 @@ class $ProductTableTable extends ProductTable
           .read(DriftSqlType.int, data['${effectivePrefix}version'])!,
       isDeleted: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_deleted'])!,
+      outletId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}outlet_id']),
       isComposite: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_composite'])!,
     );
@@ -3313,6 +3459,7 @@ class ProductTableData extends DataClass
   final bool isSynced;
   final int version;
   final bool isDeleted;
+  final String? outletId;
   final bool isComposite;
   const ProductTableData(
       {required this.id,
@@ -3334,6 +3481,7 @@ class ProductTableData extends DataClass
       required this.isSynced,
       required this.version,
       required this.isDeleted,
+      this.outletId,
       required this.isComposite});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -3369,6 +3517,9 @@ class ProductTableData extends DataClass
     map['is_synced'] = Variable<bool>(isSynced);
     map['version'] = Variable<int>(version);
     map['is_deleted'] = Variable<bool>(isDeleted);
+    if (!nullToAbsent || outletId != null) {
+      map['outlet_id'] = Variable<String>(outletId);
+    }
     map['is_composite'] = Variable<bool>(isComposite);
     return map;
   }
@@ -3404,6 +3555,9 @@ class ProductTableData extends DataClass
       isSynced: Value(isSynced),
       version: Value(version),
       isDeleted: Value(isDeleted),
+      outletId: outletId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(outletId),
       isComposite: Value(isComposite),
     );
   }
@@ -3431,6 +3585,7 @@ class ProductTableData extends DataClass
       isSynced: serializer.fromJson<bool>(json['isSynced']),
       version: serializer.fromJson<int>(json['version']),
       isDeleted: serializer.fromJson<bool>(json['isDeleted']),
+      outletId: serializer.fromJson<String?>(json['outletId']),
       isComposite: serializer.fromJson<bool>(json['isComposite']),
     );
   }
@@ -3457,6 +3612,7 @@ class ProductTableData extends DataClass
       'isSynced': serializer.toJson<bool>(isSynced),
       'version': serializer.toJson<int>(version),
       'isDeleted': serializer.toJson<bool>(isDeleted),
+      'outletId': serializer.toJson<String?>(outletId),
       'isComposite': serializer.toJson<bool>(isComposite),
     };
   }
@@ -3481,6 +3637,7 @@ class ProductTableData extends DataClass
           bool? isSynced,
           int? version,
           bool? isDeleted,
+          Value<String?> outletId = const Value.absent(),
           bool? isComposite}) =>
       ProductTableData(
         id: id ?? this.id,
@@ -3502,6 +3659,7 @@ class ProductTableData extends DataClass
         isSynced: isSynced ?? this.isSynced,
         version: version ?? this.version,
         isDeleted: isDeleted ?? this.isDeleted,
+        outletId: outletId.present ? outletId.value : this.outletId,
         isComposite: isComposite ?? this.isComposite,
       );
   ProductTableData copyWithCompanion(ProductTableCompanion data) {
@@ -3531,6 +3689,7 @@ class ProductTableData extends DataClass
       isSynced: data.isSynced.present ? data.isSynced.value : this.isSynced,
       version: data.version.present ? data.version.value : this.version,
       isDeleted: data.isDeleted.present ? data.isDeleted.value : this.isDeleted,
+      outletId: data.outletId.present ? data.outletId.value : this.outletId,
       isComposite:
           data.isComposite.present ? data.isComposite.value : this.isComposite,
     );
@@ -3558,33 +3717,36 @@ class ProductTableData extends DataClass
           ..write('isSynced: $isSynced, ')
           ..write('version: $version, ')
           ..write('isDeleted: $isDeleted, ')
+          ..write('outletId: $outletId, ')
           ..write('isComposite: $isComposite')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-      id,
-      uuid,
-      name,
-      sku,
-      barcode,
-      price,
-      costPrice,
-      categoryId,
-      trackStock,
-      isService,
-      totalSpent,
-      lastVisitAt,
-      colorHex,
-      imageUrl,
-      printerCategory,
-      updatedAt,
-      isSynced,
-      version,
-      isDeleted,
-      isComposite);
+  int get hashCode => Object.hashAll([
+        id,
+        uuid,
+        name,
+        sku,
+        barcode,
+        price,
+        costPrice,
+        categoryId,
+        trackStock,
+        isService,
+        totalSpent,
+        lastVisitAt,
+        colorHex,
+        imageUrl,
+        printerCategory,
+        updatedAt,
+        isSynced,
+        version,
+        isDeleted,
+        outletId,
+        isComposite
+      ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -3608,6 +3770,7 @@ class ProductTableData extends DataClass
           other.isSynced == this.isSynced &&
           other.version == this.version &&
           other.isDeleted == this.isDeleted &&
+          other.outletId == this.outletId &&
           other.isComposite == this.isComposite);
 }
 
@@ -3631,6 +3794,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
   final Value<bool> isSynced;
   final Value<int> version;
   final Value<bool> isDeleted;
+  final Value<String?> outletId;
   final Value<bool> isComposite;
   const ProductTableCompanion({
     this.id = const Value.absent(),
@@ -3652,6 +3816,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
     this.isSynced = const Value.absent(),
     this.version = const Value.absent(),
     this.isDeleted = const Value.absent(),
+    this.outletId = const Value.absent(),
     this.isComposite = const Value.absent(),
   });
   ProductTableCompanion.insert({
@@ -3674,6 +3839,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
     this.isSynced = const Value.absent(),
     this.version = const Value.absent(),
     this.isDeleted = const Value.absent(),
+    this.outletId = const Value.absent(),
     this.isComposite = const Value.absent(),
   })  : uuid = Value(uuid),
         name = Value(name),
@@ -3702,6 +3868,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
     Expression<bool>? isSynced,
     Expression<int>? version,
     Expression<bool>? isDeleted,
+    Expression<String>? outletId,
     Expression<bool>? isComposite,
   }) {
     return RawValuesInsertable({
@@ -3724,6 +3891,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
       if (isSynced != null) 'is_synced': isSynced,
       if (version != null) 'version': version,
       if (isDeleted != null) 'is_deleted': isDeleted,
+      if (outletId != null) 'outlet_id': outletId,
       if (isComposite != null) 'is_composite': isComposite,
     });
   }
@@ -3748,6 +3916,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
       Value<bool>? isSynced,
       Value<int>? version,
       Value<bool>? isDeleted,
+      Value<String?>? outletId,
       Value<bool>? isComposite}) {
     return ProductTableCompanion(
       id: id ?? this.id,
@@ -3769,6 +3938,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
       isSynced: isSynced ?? this.isSynced,
       version: version ?? this.version,
       isDeleted: isDeleted ?? this.isDeleted,
+      outletId: outletId ?? this.outletId,
       isComposite: isComposite ?? this.isComposite,
     );
   }
@@ -3833,6 +4003,9 @@ class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
     if (isDeleted.present) {
       map['is_deleted'] = Variable<bool>(isDeleted.value);
     }
+    if (outletId.present) {
+      map['outlet_id'] = Variable<String>(outletId.value);
+    }
     if (isComposite.present) {
       map['is_composite'] = Variable<bool>(isComposite.value);
     }
@@ -3861,6 +4034,7 @@ class ProductTableCompanion extends UpdateCompanion<ProductTableData> {
           ..write('isSynced: $isSynced, ')
           ..write('version: $version, ')
           ..write('isDeleted: $isDeleted, ')
+          ..write('outletId: $outletId, ')
           ..write('isComposite: $isComposite')
           ..write(')'))
         .toString();
@@ -6252,6 +6426,12 @@ class $OrderTableTable extends OrderTable
   late final GeneratedColumn<String> tenantId = GeneratedColumn<String>(
       'tenant_id', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _outletIdMeta =
+      const VerificationMeta('outletId');
+  @override
+  late final GeneratedColumn<String> outletId = GeneratedColumn<String>(
+      'outlet_id', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _statusMeta = const VerificationMeta('status');
   @override
   late final GeneratedColumn<String> status = GeneratedColumn<String>(
@@ -6367,6 +6547,7 @@ class $OrderTableTable extends OrderTable
         shiftUuid,
         customerUuid,
         tenantId,
+        outletId,
         status,
         paymentStatus,
         transactionDate,
@@ -6423,6 +6604,10 @@ class $OrderTableTable extends OrderTable
     if (data.containsKey('tenant_id')) {
       context.handle(_tenantIdMeta,
           tenantId.isAcceptableOrUnknown(data['tenant_id']!, _tenantIdMeta));
+    }
+    if (data.containsKey('outlet_id')) {
+      context.handle(_outletIdMeta,
+          outletId.isAcceptableOrUnknown(data['outlet_id']!, _outletIdMeta));
     }
     if (data.containsKey('status')) {
       context.handle(_statusMeta,
@@ -6533,6 +6718,8 @@ class $OrderTableTable extends OrderTable
           .read(DriftSqlType.string, data['${effectivePrefix}customer_uuid']),
       tenantId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}tenant_id']),
+      outletId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}outlet_id']),
       status: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
       paymentStatus: attachedDatabase.typeMapping
@@ -6579,6 +6766,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
   final String? shiftUuid;
   final String? customerUuid;
   final String? tenantId;
+  final String? outletId;
   final String status;
   final String paymentStatus;
   final DateTime transactionDate;
@@ -6601,6 +6789,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       this.shiftUuid,
       this.customerUuid,
       this.tenantId,
+      this.outletId,
       required this.status,
       required this.paymentStatus,
       required this.transactionDate,
@@ -6630,6 +6819,9 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
     }
     if (!nullToAbsent || tenantId != null) {
       map['tenant_id'] = Variable<String>(tenantId);
+    }
+    if (!nullToAbsent || outletId != null) {
+      map['outlet_id'] = Variable<String>(outletId);
     }
     map['status'] = Variable<String>(status);
     map['payment_status'] = Variable<String>(paymentStatus);
@@ -6669,6 +6861,9 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       tenantId: tenantId == null && nullToAbsent
           ? const Value.absent()
           : Value(tenantId),
+      outletId: outletId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(outletId),
       status: Value(status),
       paymentStatus: Value(paymentStatus),
       transactionDate: Value(transactionDate),
@@ -6703,6 +6898,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       shiftUuid: serializer.fromJson<String?>(json['shiftUuid']),
       customerUuid: serializer.fromJson<String?>(json['customerUuid']),
       tenantId: serializer.fromJson<String?>(json['tenantId']),
+      outletId: serializer.fromJson<String?>(json['outletId']),
       status: serializer.fromJson<String>(json['status']),
       paymentStatus: serializer.fromJson<String>(json['paymentStatus']),
       transactionDate: serializer.fromJson<DateTime>(json['transactionDate']),
@@ -6730,6 +6926,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       'shiftUuid': serializer.toJson<String?>(shiftUuid),
       'customerUuid': serializer.toJson<String?>(customerUuid),
       'tenantId': serializer.toJson<String?>(tenantId),
+      'outletId': serializer.toJson<String?>(outletId),
       'status': serializer.toJson<String>(status),
       'paymentStatus': serializer.toJson<String>(paymentStatus),
       'transactionDate': serializer.toJson<DateTime>(transactionDate),
@@ -6755,6 +6952,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
           Value<String?> shiftUuid = const Value.absent(),
           Value<String?> customerUuid = const Value.absent(),
           Value<String?> tenantId = const Value.absent(),
+          Value<String?> outletId = const Value.absent(),
           String? status,
           String? paymentStatus,
           DateTime? transactionDate,
@@ -6778,6 +6976,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
         customerUuid:
             customerUuid.present ? customerUuid.value : this.customerUuid,
         tenantId: tenantId.present ? tenantId.value : this.tenantId,
+        outletId: outletId.present ? outletId.value : this.outletId,
         status: status ?? this.status,
         paymentStatus: paymentStatus ?? this.paymentStatus,
         transactionDate: transactionDate ?? this.transactionDate,
@@ -6808,6 +7007,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
           ? data.customerUuid.value
           : this.customerUuid,
       tenantId: data.tenantId.present ? data.tenantId.value : this.tenantId,
+      outletId: data.outletId.present ? data.outletId.value : this.outletId,
       status: data.status.present ? data.status.value : this.status,
       paymentStatus: data.paymentStatus.present
           ? data.paymentStatus.value
@@ -6851,6 +7051,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
           ..write('shiftUuid: $shiftUuid, ')
           ..write('customerUuid: $customerUuid, ')
           ..write('tenantId: $tenantId, ')
+          ..write('outletId: $outletId, ')
           ..write('status: $status, ')
           ..write('paymentStatus: $paymentStatus, ')
           ..write('transactionDate: $transactionDate, ')
@@ -6878,6 +7079,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
         shiftUuid,
         customerUuid,
         tenantId,
+        outletId,
         status,
         paymentStatus,
         transactionDate,
@@ -6904,6 +7106,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
           other.shiftUuid == this.shiftUuid &&
           other.customerUuid == this.customerUuid &&
           other.tenantId == this.tenantId &&
+          other.outletId == this.outletId &&
           other.status == this.status &&
           other.paymentStatus == this.paymentStatus &&
           other.transactionDate == this.transactionDate &&
@@ -6928,6 +7131,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
   final Value<String?> shiftUuid;
   final Value<String?> customerUuid;
   final Value<String?> tenantId;
+  final Value<String?> outletId;
   final Value<String> status;
   final Value<String> paymentStatus;
   final Value<DateTime> transactionDate;
@@ -6950,6 +7154,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
     this.shiftUuid = const Value.absent(),
     this.customerUuid = const Value.absent(),
     this.tenantId = const Value.absent(),
+    this.outletId = const Value.absent(),
     this.status = const Value.absent(),
     this.paymentStatus = const Value.absent(),
     this.transactionDate = const Value.absent(),
@@ -6973,6 +7178,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
     this.shiftUuid = const Value.absent(),
     this.customerUuid = const Value.absent(),
     this.tenantId = const Value.absent(),
+    this.outletId = const Value.absent(),
     this.status = const Value.absent(),
     this.paymentStatus = const Value.absent(),
     required DateTime transactionDate,
@@ -7002,6 +7208,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
     Expression<String>? shiftUuid,
     Expression<String>? customerUuid,
     Expression<String>? tenantId,
+    Expression<String>? outletId,
     Expression<String>? status,
     Expression<String>? paymentStatus,
     Expression<DateTime>? transactionDate,
@@ -7025,6 +7232,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
       if (shiftUuid != null) 'shift_uuid': shiftUuid,
       if (customerUuid != null) 'customer_uuid': customerUuid,
       if (tenantId != null) 'tenant_id': tenantId,
+      if (outletId != null) 'outlet_id': outletId,
       if (status != null) 'status': status,
       if (paymentStatus != null) 'payment_status': paymentStatus,
       if (transactionDate != null) 'transaction_date': transactionDate,
@@ -7050,6 +7258,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
       Value<String?>? shiftUuid,
       Value<String?>? customerUuid,
       Value<String?>? tenantId,
+      Value<String?>? outletId,
       Value<String>? status,
       Value<String>? paymentStatus,
       Value<DateTime>? transactionDate,
@@ -7072,6 +7281,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
       shiftUuid: shiftUuid ?? this.shiftUuid,
       customerUuid: customerUuid ?? this.customerUuid,
       tenantId: tenantId ?? this.tenantId,
+      outletId: outletId ?? this.outletId,
       status: status ?? this.status,
       paymentStatus: paymentStatus ?? this.paymentStatus,
       transactionDate: transactionDate ?? this.transactionDate,
@@ -7110,6 +7320,9 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
     }
     if (tenantId.present) {
       map['tenant_id'] = Variable<String>(tenantId.value);
+    }
+    if (outletId.present) {
+      map['outlet_id'] = Variable<String>(outletId.value);
     }
     if (status.present) {
       map['status'] = Variable<String>(status.value);
@@ -7168,6 +7381,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
           ..write('shiftUuid: $shiftUuid, ')
           ..write('customerUuid: $customerUuid, ')
           ..write('tenantId: $tenantId, ')
+          ..write('outletId: $outletId, ')
           ..write('status: $status, ')
           ..write('paymentStatus: $paymentStatus, ')
           ..write('transactionDate: $transactionDate, ')
@@ -10535,6 +10749,12 @@ class $ShiftSessionTableTable extends ShiftSessionTable
   late final GeneratedColumn<String> staffName = GeneratedColumn<String>(
       'staff_name', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _outletIdMeta =
+      const VerificationMeta('outletId');
+  @override
+  late final GeneratedColumn<String> outletId = GeneratedColumn<String>(
+      'outlet_id', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _startShiftMeta =
       const VerificationMeta('startShift');
   @override
@@ -10603,6 +10823,7 @@ class $ShiftSessionTableTable extends ShiftSessionTable
         uuid,
         staffId,
         staffName,
+        outletId,
         startShift,
         endShift,
         startCash,
@@ -10644,6 +10865,10 @@ class $ShiftSessionTableTable extends ShiftSessionTable
           staffName.isAcceptableOrUnknown(data['staff_name']!, _staffNameMeta));
     } else if (isInserting) {
       context.missing(_staffNameMeta);
+    }
+    if (data.containsKey('outlet_id')) {
+      context.handle(_outletIdMeta,
+          outletId.isAcceptableOrUnknown(data['outlet_id']!, _outletIdMeta));
     }
     if (data.containsKey('start_shift')) {
       context.handle(
@@ -10718,6 +10943,8 @@ class $ShiftSessionTableTable extends ShiftSessionTable
           .read(DriftSqlType.string, data['${effectivePrefix}staff_id'])!,
       staffName: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}staff_name'])!,
+      outletId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}outlet_id']),
       startShift: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}start_shift'])!,
       endShift: attachedDatabase.typeMapping
@@ -10751,6 +10978,7 @@ class ShiftSessionTableData extends DataClass
   final String uuid;
   final String staffId;
   final String staffName;
+  final String? outletId;
   final DateTime startShift;
   final DateTime? endShift;
   final double startCash;
@@ -10765,6 +10993,7 @@ class ShiftSessionTableData extends DataClass
       required this.uuid,
       required this.staffId,
       required this.staffName,
+      this.outletId,
       required this.startShift,
       this.endShift,
       required this.startCash,
@@ -10781,6 +11010,9 @@ class ShiftSessionTableData extends DataClass
     map['uuid'] = Variable<String>(uuid);
     map['staff_id'] = Variable<String>(staffId);
     map['staff_name'] = Variable<String>(staffName);
+    if (!nullToAbsent || outletId != null) {
+      map['outlet_id'] = Variable<String>(outletId);
+    }
     map['start_shift'] = Variable<DateTime>(startShift);
     if (!nullToAbsent || endShift != null) {
       map['end_shift'] = Variable<DateTime>(endShift);
@@ -10803,6 +11035,9 @@ class ShiftSessionTableData extends DataClass
       uuid: Value(uuid),
       staffId: Value(staffId),
       staffName: Value(staffName),
+      outletId: outletId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(outletId),
       startShift: Value(startShift),
       endShift: endShift == null && nullToAbsent
           ? const Value.absent()
@@ -10827,6 +11062,7 @@ class ShiftSessionTableData extends DataClass
       uuid: serializer.fromJson<String>(json['uuid']),
       staffId: serializer.fromJson<String>(json['staffId']),
       staffName: serializer.fromJson<String>(json['staffName']),
+      outletId: serializer.fromJson<String?>(json['outletId']),
       startShift: serializer.fromJson<DateTime>(json['startShift']),
       endShift: serializer.fromJson<DateTime?>(json['endShift']),
       startCash: serializer.fromJson<double>(json['startCash']),
@@ -10846,6 +11082,7 @@ class ShiftSessionTableData extends DataClass
       'uuid': serializer.toJson<String>(uuid),
       'staffId': serializer.toJson<String>(staffId),
       'staffName': serializer.toJson<String>(staffName),
+      'outletId': serializer.toJson<String?>(outletId),
       'startShift': serializer.toJson<DateTime>(startShift),
       'endShift': serializer.toJson<DateTime?>(endShift),
       'startCash': serializer.toJson<double>(startCash),
@@ -10863,6 +11100,7 @@ class ShiftSessionTableData extends DataClass
           String? uuid,
           String? staffId,
           String? staffName,
+          Value<String?> outletId = const Value.absent(),
           DateTime? startShift,
           Value<DateTime?> endShift = const Value.absent(),
           double? startCash,
@@ -10877,6 +11115,7 @@ class ShiftSessionTableData extends DataClass
         uuid: uuid ?? this.uuid,
         staffId: staffId ?? this.staffId,
         staffName: staffName ?? this.staffName,
+        outletId: outletId.present ? outletId.value : this.outletId,
         startShift: startShift ?? this.startShift,
         endShift: endShift.present ? endShift.value : this.endShift,
         startCash: startCash ?? this.startCash,
@@ -10894,6 +11133,7 @@ class ShiftSessionTableData extends DataClass
       uuid: data.uuid.present ? data.uuid.value : this.uuid,
       staffId: data.staffId.present ? data.staffId.value : this.staffId,
       staffName: data.staffName.present ? data.staffName.value : this.staffName,
+      outletId: data.outletId.present ? data.outletId.value : this.outletId,
       startShift:
           data.startShift.present ? data.startShift.value : this.startShift,
       endShift: data.endShift.present ? data.endShift.value : this.endShift,
@@ -10920,6 +11160,7 @@ class ShiftSessionTableData extends DataClass
           ..write('uuid: $uuid, ')
           ..write('staffId: $staffId, ')
           ..write('staffName: $staffName, ')
+          ..write('outletId: $outletId, ')
           ..write('startShift: $startShift, ')
           ..write('endShift: $endShift, ')
           ..write('startCash: $startCash, ')
@@ -10939,6 +11180,7 @@ class ShiftSessionTableData extends DataClass
       uuid,
       staffId,
       staffName,
+      outletId,
       startShift,
       endShift,
       startCash,
@@ -10956,6 +11198,7 @@ class ShiftSessionTableData extends DataClass
           other.uuid == this.uuid &&
           other.staffId == this.staffId &&
           other.staffName == this.staffName &&
+          other.outletId == this.outletId &&
           other.startShift == this.startShift &&
           other.endShift == this.endShift &&
           other.startCash == this.startCash &&
@@ -10973,6 +11216,7 @@ class ShiftSessionTableCompanion
   final Value<String> uuid;
   final Value<String> staffId;
   final Value<String> staffName;
+  final Value<String?> outletId;
   final Value<DateTime> startShift;
   final Value<DateTime?> endShift;
   final Value<double> startCash;
@@ -10987,6 +11231,7 @@ class ShiftSessionTableCompanion
     this.uuid = const Value.absent(),
     this.staffId = const Value.absent(),
     this.staffName = const Value.absent(),
+    this.outletId = const Value.absent(),
     this.startShift = const Value.absent(),
     this.endShift = const Value.absent(),
     this.startCash = const Value.absent(),
@@ -11002,6 +11247,7 @@ class ShiftSessionTableCompanion
     required String uuid,
     required String staffId,
     required String staffName,
+    this.outletId = const Value.absent(),
     required DateTime startShift,
     this.endShift = const Value.absent(),
     required double startCash,
@@ -11024,6 +11270,7 @@ class ShiftSessionTableCompanion
     Expression<String>? uuid,
     Expression<String>? staffId,
     Expression<String>? staffName,
+    Expression<String>? outletId,
     Expression<DateTime>? startShift,
     Expression<DateTime>? endShift,
     Expression<double>? startCash,
@@ -11039,6 +11286,7 @@ class ShiftSessionTableCompanion
       if (uuid != null) 'uuid': uuid,
       if (staffId != null) 'staff_id': staffId,
       if (staffName != null) 'staff_name': staffName,
+      if (outletId != null) 'outlet_id': outletId,
       if (startShift != null) 'start_shift': startShift,
       if (endShift != null) 'end_shift': endShift,
       if (startCash != null) 'start_cash': startCash,
@@ -11056,6 +11304,7 @@ class ShiftSessionTableCompanion
       Value<String>? uuid,
       Value<String>? staffId,
       Value<String>? staffName,
+      Value<String?>? outletId,
       Value<DateTime>? startShift,
       Value<DateTime?>? endShift,
       Value<double>? startCash,
@@ -11070,6 +11319,7 @@ class ShiftSessionTableCompanion
       uuid: uuid ?? this.uuid,
       staffId: staffId ?? this.staffId,
       staffName: staffName ?? this.staffName,
+      outletId: outletId ?? this.outletId,
       startShift: startShift ?? this.startShift,
       endShift: endShift ?? this.endShift,
       startCash: startCash ?? this.startCash,
@@ -11096,6 +11346,9 @@ class ShiftSessionTableCompanion
     }
     if (staffName.present) {
       map['staff_name'] = Variable<String>(staffName.value);
+    }
+    if (outletId.present) {
+      map['outlet_id'] = Variable<String>(outletId.value);
     }
     if (startShift.present) {
       map['start_shift'] = Variable<DateTime>(startShift.value);
@@ -11134,6 +11387,7 @@ class ShiftSessionTableCompanion
           ..write('uuid: $uuid, ')
           ..write('staffId: $staffId, ')
           ..write('staffName: $staffName, ')
+          ..write('outletId: $outletId, ')
           ..write('startShift: $startShift, ')
           ..write('endShift: $endShift, ')
           ..write('startCash: $startCash, ')
@@ -40290,6 +40544,9 @@ typedef $$RestaurantTableTableCreateCompanionBuilder = RestaurantTableCompanion
   Value<String?> zoneUuid,
   Value<bool> isOccupied,
   Value<String?> currentOrderUuid,
+  Value<String?> currentSessionToken,
+  Value<String?> qrCodeUrl,
+  Value<String> sessionStatus,
   required DateTime updatedAt,
   Value<bool> isDeleted,
 });
@@ -40308,6 +40565,9 @@ typedef $$RestaurantTableTableUpdateCompanionBuilder = RestaurantTableCompanion
   Value<String?> zoneUuid,
   Value<bool> isOccupied,
   Value<String?> currentOrderUuid,
+  Value<String?> currentSessionToken,
+  Value<String?> qrCodeUrl,
+  Value<String> sessionStatus,
   Value<DateTime> updatedAt,
   Value<bool> isDeleted,
 });
@@ -40378,6 +40638,16 @@ class $$RestaurantTableTableFilterComposer
   ColumnFilters<String> get currentOrderUuid => $composableBuilder(
       column: $table.currentOrderUuid,
       builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get currentSessionToken => $composableBuilder(
+      column: $table.currentSessionToken,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get qrCodeUrl => $composableBuilder(
+      column: $table.qrCodeUrl, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get sessionStatus => $composableBuilder(
+      column: $table.sessionStatus, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<DateTime> get updatedAt => $composableBuilder(
       column: $table.updatedAt, builder: (column) => ColumnFilters(column));
@@ -40452,6 +40722,17 @@ class $$RestaurantTableTableOrderingComposer
       column: $table.currentOrderUuid,
       builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get currentSessionToken => $composableBuilder(
+      column: $table.currentSessionToken,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get qrCodeUrl => $composableBuilder(
+      column: $table.qrCodeUrl, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get sessionStatus => $composableBuilder(
+      column: $table.sessionStatus,
+      builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
       column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
 
@@ -40524,6 +40805,15 @@ class $$RestaurantTableTableAnnotationComposer
   GeneratedColumn<String> get currentOrderUuid => $composableBuilder(
       column: $table.currentOrderUuid, builder: (column) => column);
 
+  GeneratedColumn<String> get currentSessionToken => $composableBuilder(
+      column: $table.currentSessionToken, builder: (column) => column);
+
+  GeneratedColumn<String> get qrCodeUrl =>
+      $composableBuilder(column: $table.qrCodeUrl, builder: (column) => column);
+
+  GeneratedColumn<String> get sessionStatus => $composableBuilder(
+      column: $table.sessionStatus, builder: (column) => column);
+
   GeneratedColumn<DateTime> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
@@ -40588,6 +40878,9 @@ class $$RestaurantTableTableTableManager extends RootTableManager<
             Value<String?> zoneUuid = const Value.absent(),
             Value<bool> isOccupied = const Value.absent(),
             Value<String?> currentOrderUuid = const Value.absent(),
+            Value<String?> currentSessionToken = const Value.absent(),
+            Value<String?> qrCodeUrl = const Value.absent(),
+            Value<String> sessionStatus = const Value.absent(),
             Value<DateTime> updatedAt = const Value.absent(),
             Value<bool> isDeleted = const Value.absent(),
           }) =>
@@ -40605,6 +40898,9 @@ class $$RestaurantTableTableTableManager extends RootTableManager<
             zoneUuid: zoneUuid,
             isOccupied: isOccupied,
             currentOrderUuid: currentOrderUuid,
+            currentSessionToken: currentSessionToken,
+            qrCodeUrl: qrCodeUrl,
+            sessionStatus: sessionStatus,
             updatedAt: updatedAt,
             isDeleted: isDeleted,
           ),
@@ -40622,6 +40918,9 @@ class $$RestaurantTableTableTableManager extends RootTableManager<
             Value<String?> zoneUuid = const Value.absent(),
             Value<bool> isOccupied = const Value.absent(),
             Value<String?> currentOrderUuid = const Value.absent(),
+            Value<String?> currentSessionToken = const Value.absent(),
+            Value<String?> qrCodeUrl = const Value.absent(),
+            Value<String> sessionStatus = const Value.absent(),
             required DateTime updatedAt,
             Value<bool> isDeleted = const Value.absent(),
           }) =>
@@ -40639,6 +40938,9 @@ class $$RestaurantTableTableTableManager extends RootTableManager<
             zoneUuid: zoneUuid,
             isOccupied: isOccupied,
             currentOrderUuid: currentOrderUuid,
+            currentSessionToken: currentSessionToken,
+            qrCodeUrl: qrCodeUrl,
+            sessionStatus: sessionStatus,
             updatedAt: updatedAt,
             isDeleted: isDeleted,
           ),
@@ -41392,6 +41694,7 @@ typedef $$ProductTableTableCreateCompanionBuilder = ProductTableCompanion
   Value<bool> isSynced,
   Value<int> version,
   Value<bool> isDeleted,
+  Value<String?> outletId,
   Value<bool> isComposite,
 });
 typedef $$ProductTableTableUpdateCompanionBuilder = ProductTableCompanion
@@ -41415,6 +41718,7 @@ typedef $$ProductTableTableUpdateCompanionBuilder = ProductTableCompanion
   Value<bool> isSynced,
   Value<int> version,
   Value<bool> isDeleted,
+  Value<String?> outletId,
   Value<bool> isComposite,
 });
 
@@ -41582,6 +41886,9 @@ class $$ProductTableTableFilterComposer
 
   ColumnFilters<bool> get isDeleted => $composableBuilder(
       column: $table.isDeleted, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get outletId => $composableBuilder(
+      column: $table.outletId, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<bool> get isComposite => $composableBuilder(
       column: $table.isComposite, builder: (column) => ColumnFilters(column));
@@ -41764,6 +42071,9 @@ class $$ProductTableTableOrderingComposer
   ColumnOrderings<bool> get isDeleted => $composableBuilder(
       column: $table.isDeleted, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get outletId => $composableBuilder(
+      column: $table.outletId, builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<bool> get isComposite => $composableBuilder(
       column: $table.isComposite, builder: (column) => ColumnOrderings(column));
 }
@@ -41833,6 +42143,9 @@ class $$ProductTableTableAnnotationComposer
 
   GeneratedColumn<bool> get isDeleted =>
       $composableBuilder(column: $table.isDeleted, builder: (column) => column);
+
+  GeneratedColumn<String> get outletId =>
+      $composableBuilder(column: $table.outletId, builder: (column) => column);
 
   GeneratedColumn<bool> get isComposite => $composableBuilder(
       column: $table.isComposite, builder: (column) => column);
@@ -41997,6 +42310,7 @@ class $$ProductTableTableTableManager extends RootTableManager<
             Value<bool> isSynced = const Value.absent(),
             Value<int> version = const Value.absent(),
             Value<bool> isDeleted = const Value.absent(),
+            Value<String?> outletId = const Value.absent(),
             Value<bool> isComposite = const Value.absent(),
           }) =>
               ProductTableCompanion(
@@ -42019,6 +42333,7 @@ class $$ProductTableTableTableManager extends RootTableManager<
             isSynced: isSynced,
             version: version,
             isDeleted: isDeleted,
+            outletId: outletId,
             isComposite: isComposite,
           ),
           createCompanionCallback: ({
@@ -42041,6 +42356,7 @@ class $$ProductTableTableTableManager extends RootTableManager<
             Value<bool> isSynced = const Value.absent(),
             Value<int> version = const Value.absent(),
             Value<bool> isDeleted = const Value.absent(),
+            Value<String?> outletId = const Value.absent(),
             Value<bool> isComposite = const Value.absent(),
           }) =>
               ProductTableCompanion.insert(
@@ -42063,6 +42379,7 @@ class $$ProductTableTableTableManager extends RootTableManager<
             isSynced: isSynced,
             version: version,
             isDeleted: isDeleted,
+            outletId: outletId,
             isComposite: isComposite,
           ),
           withReferenceMapper: (p0) => p0
@@ -44301,6 +44618,7 @@ typedef $$OrderTableTableCreateCompanionBuilder = OrderTableCompanion Function({
   Value<String?> shiftUuid,
   Value<String?> customerUuid,
   Value<String?> tenantId,
+  Value<String?> outletId,
   Value<String> status,
   Value<String> paymentStatus,
   required DateTime transactionDate,
@@ -44324,6 +44642,7 @@ typedef $$OrderTableTableUpdateCompanionBuilder = OrderTableCompanion Function({
   Value<String?> shiftUuid,
   Value<String?> customerUuid,
   Value<String?> tenantId,
+  Value<String?> outletId,
   Value<String> status,
   Value<String> paymentStatus,
   Value<DateTime> transactionDate,
@@ -44448,6 +44767,9 @@ class $$OrderTableTableFilterComposer
 
   ColumnFilters<String> get tenantId => $composableBuilder(
       column: $table.tenantId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get outletId => $composableBuilder(
+      column: $table.outletId, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get status => $composableBuilder(
       column: $table.status, builder: (column) => ColumnFilters(column));
@@ -44616,6 +44938,9 @@ class $$OrderTableTableOrderingComposer
   ColumnOrderings<String> get tenantId => $composableBuilder(
       column: $table.tenantId, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get outletId => $composableBuilder(
+      column: $table.outletId, builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<String> get status => $composableBuilder(
       column: $table.status, builder: (column) => ColumnOrderings(column));
 
@@ -44695,6 +45020,9 @@ class $$OrderTableTableAnnotationComposer
 
   GeneratedColumn<String> get tenantId =>
       $composableBuilder(column: $table.tenantId, builder: (column) => column);
+
+  GeneratedColumn<String> get outletId =>
+      $composableBuilder(column: $table.outletId, builder: (column) => column);
 
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
@@ -44866,6 +45194,7 @@ class $$OrderTableTableTableManager extends RootTableManager<
             Value<String?> shiftUuid = const Value.absent(),
             Value<String?> customerUuid = const Value.absent(),
             Value<String?> tenantId = const Value.absent(),
+            Value<String?> outletId = const Value.absent(),
             Value<String> status = const Value.absent(),
             Value<String> paymentStatus = const Value.absent(),
             Value<DateTime> transactionDate = const Value.absent(),
@@ -44889,6 +45218,7 @@ class $$OrderTableTableTableManager extends RootTableManager<
             shiftUuid: shiftUuid,
             customerUuid: customerUuid,
             tenantId: tenantId,
+            outletId: outletId,
             status: status,
             paymentStatus: paymentStatus,
             transactionDate: transactionDate,
@@ -44912,6 +45242,7 @@ class $$OrderTableTableTableManager extends RootTableManager<
             Value<String?> shiftUuid = const Value.absent(),
             Value<String?> customerUuid = const Value.absent(),
             Value<String?> tenantId = const Value.absent(),
+            Value<String?> outletId = const Value.absent(),
             Value<String> status = const Value.absent(),
             Value<String> paymentStatus = const Value.absent(),
             required DateTime transactionDate,
@@ -44935,6 +45266,7 @@ class $$OrderTableTableTableManager extends RootTableManager<
             shiftUuid: shiftUuid,
             customerUuid: customerUuid,
             tenantId: tenantId,
+            outletId: outletId,
             status: status,
             paymentStatus: paymentStatus,
             transactionDate: transactionDate,
@@ -47748,6 +48080,7 @@ typedef $$ShiftSessionTableTableCreateCompanionBuilder
   required String uuid,
   required String staffId,
   required String staffName,
+  Value<String?> outletId,
   required DateTime startShift,
   Value<DateTime?> endShift,
   required double startCash,
@@ -47764,6 +48097,7 @@ typedef $$ShiftSessionTableTableUpdateCompanionBuilder
   Value<String> uuid,
   Value<String> staffId,
   Value<String> staffName,
+  Value<String?> outletId,
   Value<DateTime> startShift,
   Value<DateTime?> endShift,
   Value<double> startCash,
@@ -47795,6 +48129,9 @@ class $$ShiftSessionTableTableFilterComposer
 
   ColumnFilters<String> get staffName => $composableBuilder(
       column: $table.staffName, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get outletId => $composableBuilder(
+      column: $table.outletId, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<DateTime> get startShift => $composableBuilder(
       column: $table.startShift, builder: (column) => ColumnFilters(column));
@@ -47846,6 +48183,9 @@ class $$ShiftSessionTableTableOrderingComposer
   ColumnOrderings<String> get staffName => $composableBuilder(
       column: $table.staffName, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get outletId => $composableBuilder(
+      column: $table.outletId, builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<DateTime> get startShift => $composableBuilder(
       column: $table.startShift, builder: (column) => ColumnOrderings(column));
 
@@ -47896,6 +48236,9 @@ class $$ShiftSessionTableTableAnnotationComposer
 
   GeneratedColumn<String> get staffName =>
       $composableBuilder(column: $table.staffName, builder: (column) => column);
+
+  GeneratedColumn<String> get outletId =>
+      $composableBuilder(column: $table.outletId, builder: (column) => column);
 
   GeneratedColumn<DateTime> get startShift => $composableBuilder(
       column: $table.startShift, builder: (column) => column);
@@ -47958,6 +48301,7 @@ class $$ShiftSessionTableTableTableManager extends RootTableManager<
             Value<String> uuid = const Value.absent(),
             Value<String> staffId = const Value.absent(),
             Value<String> staffName = const Value.absent(),
+            Value<String?> outletId = const Value.absent(),
             Value<DateTime> startShift = const Value.absent(),
             Value<DateTime?> endShift = const Value.absent(),
             Value<double> startCash = const Value.absent(),
@@ -47973,6 +48317,7 @@ class $$ShiftSessionTableTableTableManager extends RootTableManager<
             uuid: uuid,
             staffId: staffId,
             staffName: staffName,
+            outletId: outletId,
             startShift: startShift,
             endShift: endShift,
             startCash: startCash,
@@ -47988,6 +48333,7 @@ class $$ShiftSessionTableTableTableManager extends RootTableManager<
             required String uuid,
             required String staffId,
             required String staffName,
+            Value<String?> outletId = const Value.absent(),
             required DateTime startShift,
             Value<DateTime?> endShift = const Value.absent(),
             required double startCash,
@@ -48003,6 +48349,7 @@ class $$ShiftSessionTableTableTableManager extends RootTableManager<
             uuid: uuid,
             staffId: staffId,
             staffName: staffName,
+            outletId: outletId,
             startShift: startShift,
             endShift: endShift,
             startCash: startCash,

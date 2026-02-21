@@ -57,6 +57,18 @@ class SocketService {
           } catch (e) {
             _logger.e('SocketService: Failed to parse ON_NEW_DELIVERY_ORDER payload', error: e);
           }
+        } 
+        else if (payload['event'] == 'ON_NEW_TABLE_ORDER') {
+          try {
+            final data = payload['data'] as Map<String, dynamic>;
+            // In a real app we'd decode to OrderTableData and send to KitchenBloc
+            _logger.i('SocketService: Received ON_NEW_TABLE_ORDER for table ${data['tableNumber']}');
+            
+            // For now, we rely on the DB sync or specific Bloc mapping.
+            // If TableBloc is a singleton we could call it here.
+          } catch (e) {
+             _logger.e('SocketService: Failed to parse ON_NEW_TABLE_ORDER payload', error: e);
+          }
         }
       });
     }

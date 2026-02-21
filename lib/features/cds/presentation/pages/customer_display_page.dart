@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:savvy_pos/features/cds/presentation/bloc/cds_bloc.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:lottie/lottie.dart';
 
 class CustomerDisplayPage extends StatelessWidget {
   const CustomerDisplayPage({super.key});
@@ -165,10 +167,24 @@ class _PaymentView extends StatelessWidget {
               borderRadius: BorderRadius.circular(32),
               boxShadow: const [BoxShadow(color: Colors.greenAccent, blurRadius: 40)],
             ),
-            child: Icon(Icons.qr_code_2, size: 300, color: Colors.black),
+            child: QrImageView(
+               data: state.qrData,
+               version: QrVersions.auto,
+               size: 300,
+            ),
           ).animate(onPlay: (c) => c.repeat(reverse: true)).scale(begin: const Offset(1,1), end: const Offset(1.05, 1.05), duration: 1.seconds),
           const SizedBox(height: 24),
           const SavvyText.h3('Waiting for payment...', color: Colors.white70),
+          const SizedBox(height: 16),
+          TweenAnimationBuilder<Duration>(
+            duration: const Duration(minutes: 5),
+            tween: Tween(begin: const Duration(minutes: 5), end: Duration.zero),
+            builder: (BuildContext context, Duration value, Widget? child) {
+              final minutes = value.inMinutes.toString().padLeft(2, '0');
+              final seconds = (value.inSeconds % 60).toString().padLeft(2, '0');
+              return SavvyText.h3('Expires in: $minutes:$seconds', color: Colors.redAccent);
+            },
+          ),
         ],
       ),
     );
@@ -187,8 +203,8 @@ class _SuccessView extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.check_circle, color: Colors.green, size: 120).animate().scale(curve: Curves.elasticOut),
-              const SizedBox(height: 24),
+              Lottie.network('https://assets3.lottiefiles.com/packages/lf20_rc5d0f61.json', width: 250, height: 250, repeat: false),
+              const SizedBox(height: 16),
               const SavvyText.h1('Payment Successful!', color: Colors.white),
               const SizedBox(height: 16),
               Container(

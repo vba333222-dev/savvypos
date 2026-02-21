@@ -8,29 +8,37 @@ import 'package:savvy_pos/features/inventory/domain/entities/ingredient.dart';
 import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:savvy_pos/core/error/failures.dart';
+import 'package:savvy_pos/features/auth/domain/repositories/i_tenant_repository.dart';
 
 @LazySingleton(as: IProductRepository)
 class ProductRepositoryImpl implements IProductRepository {
   final AppDatabase db;
+  final ITenantRepository _tenantRepo;
 
-  ProductRepositoryImpl(this.db);
+  ProductRepositoryImpl(this.db, this._tenantRepo);
 
   @override
-  Stream<List<Product>> watchAllProducts() {
-    return db.select(db.productTable).watch().map((rows) {
+  Stream<List<Product>> watchAllProducts() async* {
+    final scope = await _tenantRepo.getActiveScope();
+    final outletId = scope['outletId'];
+    
+    yield* (db.select(db.productTable)..where((tbl) => tbl.outletId.equals(outletId ?? ''))).watch().map((rows) {
       return rows.map((row) => _mapToDomain(row)).toList();
     });
   }
 
   @override
-  Stream<List<ProductStock>> watchInventory(String warehouseId) {
+  Stream<List<ProductStock>> watchInventory(String warehouseId) async* {
+    final scope = await _tenantRepo.getActiveScope();
+    final outletId = scope['outletId'];
+
     final query = db.select(db.productTable).join([
       leftOuterJoin(db.localStocksTable, 
         db.localStocksTable.productUuid.equalsExp(db.productTable.uuid) & 
         db.localStocksTable.warehouseUuid.equals(warehouseId))
-    ]);
+    ])..where(db.productTable.outletId.equals(outletId ?? ''));
 
-    return query.watch().map((rows) {
+    yield* query.watch().map((rows) {
       return rows.map((row) {
         final product = _mapToDomain(row.readTable(db.productTable));
         final stockRow = row.readTableOrNull(db.localStocksTable);
@@ -41,8 +49,11 @@ class ProductRepositoryImpl implements IProductRepository {
 
   @override
   Future<List<Product>> searchProducts(String query) async {
+    final scope = await _tenantRepo.getActiveScope();
+    final outletId = scope['outletId'];
+
     final rows = await (db.select(db.productTable)
-      ..where((tbl) => tbl.name.contains(query) | tbl.sku.contains(query)))
+      ..where((tbl) => tbl.outletId.equals(outletId ?? '') & (tbl.name.contains(query) | tbl.sku.contains(query))))
       .get();
       
     return rows.map((row) => _mapToDomain(row)).toList();
@@ -56,8 +67,10 @@ class ProductRepositoryImpl implements IProductRepository {
 
   @override
   Future<void> saveProduct(Product product) async {
+    final scope = await _tenantRepo.getActiveScope();
     final companion = ProductTableCompanion(
       uuid: Value(product.uuid),
+      outletId: Value(scope['outletId']),
       name: Value(product.name),
       sku: Value(product.sku),
       price: Value(product.price),

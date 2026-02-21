@@ -9582,6 +9582,12 @@ class $OrderTableTable extends OrderTable
   late final GeneratedColumn<String> tenantId = GeneratedColumn<String>(
       'tenant_id', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _outletIdMeta =
+      const VerificationMeta('outletId');
+  @override
+  late final GeneratedColumn<String> outletId = GeneratedColumn<String>(
+      'outlet_id', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _statusMeta = const VerificationMeta('status');
   @override
   late final GeneratedColumn<String> status = GeneratedColumn<String>(
@@ -9697,6 +9703,7 @@ class $OrderTableTable extends OrderTable
         shiftUuid,
         customerUuid,
         tenantId,
+        outletId,
         status,
         paymentStatus,
         transactionDate,
@@ -9753,6 +9760,10 @@ class $OrderTableTable extends OrderTable
     if (data.containsKey('tenant_id')) {
       context.handle(_tenantIdMeta,
           tenantId.isAcceptableOrUnknown(data['tenant_id']!, _tenantIdMeta));
+    }
+    if (data.containsKey('outlet_id')) {
+      context.handle(_outletIdMeta,
+          outletId.isAcceptableOrUnknown(data['outlet_id']!, _outletIdMeta));
     }
     if (data.containsKey('status')) {
       context.handle(_statusMeta,
@@ -9863,6 +9874,8 @@ class $OrderTableTable extends OrderTable
           .read(DriftSqlType.string, data['${effectivePrefix}customer_uuid']),
       tenantId: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}tenant_id']),
+      outletId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}outlet_id']),
       status: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
       paymentStatus: attachedDatabase.typeMapping
@@ -9909,6 +9922,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
   final String? shiftUuid;
   final String? customerUuid;
   final String? tenantId;
+  final String? outletId;
   final String status;
   final String paymentStatus;
   final DateTime transactionDate;
@@ -9931,6 +9945,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       this.shiftUuid,
       this.customerUuid,
       this.tenantId,
+      this.outletId,
       required this.status,
       required this.paymentStatus,
       required this.transactionDate,
@@ -9960,6 +9975,9 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
     }
     if (!nullToAbsent || tenantId != null) {
       map['tenant_id'] = Variable<String>(tenantId);
+    }
+    if (!nullToAbsent || outletId != null) {
+      map['outlet_id'] = Variable<String>(outletId);
     }
     map['status'] = Variable<String>(status);
     map['payment_status'] = Variable<String>(paymentStatus);
@@ -9999,6 +10017,9 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       tenantId: tenantId == null && nullToAbsent
           ? const Value.absent()
           : Value(tenantId),
+      outletId: outletId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(outletId),
       status: Value(status),
       paymentStatus: Value(paymentStatus),
       transactionDate: Value(transactionDate),
@@ -10033,6 +10054,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       shiftUuid: serializer.fromJson<String?>(json['shiftUuid']),
       customerUuid: serializer.fromJson<String?>(json['customerUuid']),
       tenantId: serializer.fromJson<String?>(json['tenantId']),
+      outletId: serializer.fromJson<String?>(json['outletId']),
       status: serializer.fromJson<String>(json['status']),
       paymentStatus: serializer.fromJson<String>(json['paymentStatus']),
       transactionDate: serializer.fromJson<DateTime>(json['transactionDate']),
@@ -10060,6 +10082,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
       'shiftUuid': serializer.toJson<String?>(shiftUuid),
       'customerUuid': serializer.toJson<String?>(customerUuid),
       'tenantId': serializer.toJson<String?>(tenantId),
+      'outletId': serializer.toJson<String?>(outletId),
       'status': serializer.toJson<String>(status),
       'paymentStatus': serializer.toJson<String>(paymentStatus),
       'transactionDate': serializer.toJson<DateTime>(transactionDate),
@@ -10085,6 +10108,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
           Value<String?> shiftUuid = const Value.absent(),
           Value<String?> customerUuid = const Value.absent(),
           Value<String?> tenantId = const Value.absent(),
+          Value<String?> outletId = const Value.absent(),
           String? status,
           String? paymentStatus,
           DateTime? transactionDate,
@@ -10108,6 +10132,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
         customerUuid:
             customerUuid.present ? customerUuid.value : this.customerUuid,
         tenantId: tenantId.present ? tenantId.value : this.tenantId,
+        outletId: outletId.present ? outletId.value : this.outletId,
         status: status ?? this.status,
         paymentStatus: paymentStatus ?? this.paymentStatus,
         transactionDate: transactionDate ?? this.transactionDate,
@@ -10138,6 +10163,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
           ? data.customerUuid.value
           : this.customerUuid,
       tenantId: data.tenantId.present ? data.tenantId.value : this.tenantId,
+      outletId: data.outletId.present ? data.outletId.value : this.outletId,
       status: data.status.present ? data.status.value : this.status,
       paymentStatus: data.paymentStatus.present
           ? data.paymentStatus.value
@@ -10181,6 +10207,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
           ..write('shiftUuid: $shiftUuid, ')
           ..write('customerUuid: $customerUuid, ')
           ..write('tenantId: $tenantId, ')
+          ..write('outletId: $outletId, ')
           ..write('status: $status, ')
           ..write('paymentStatus: $paymentStatus, ')
           ..write('transactionDate: $transactionDate, ')
@@ -10208,6 +10235,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
         shiftUuid,
         customerUuid,
         tenantId,
+        outletId,
         status,
         paymentStatus,
         transactionDate,
@@ -10234,6 +10262,7 @@ class OrderTableData extends DataClass implements Insertable<OrderTableData> {
           other.shiftUuid == this.shiftUuid &&
           other.customerUuid == this.customerUuid &&
           other.tenantId == this.tenantId &&
+          other.outletId == this.outletId &&
           other.status == this.status &&
           other.paymentStatus == this.paymentStatus &&
           other.transactionDate == this.transactionDate &&
@@ -10258,6 +10287,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
   final Value<String?> shiftUuid;
   final Value<String?> customerUuid;
   final Value<String?> tenantId;
+  final Value<String?> outletId;
   final Value<String> status;
   final Value<String> paymentStatus;
   final Value<DateTime> transactionDate;
@@ -10280,6 +10310,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
     this.shiftUuid = const Value.absent(),
     this.customerUuid = const Value.absent(),
     this.tenantId = const Value.absent(),
+    this.outletId = const Value.absent(),
     this.status = const Value.absent(),
     this.paymentStatus = const Value.absent(),
     this.transactionDate = const Value.absent(),
@@ -10303,6 +10334,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
     this.shiftUuid = const Value.absent(),
     this.customerUuid = const Value.absent(),
     this.tenantId = const Value.absent(),
+    this.outletId = const Value.absent(),
     this.status = const Value.absent(),
     this.paymentStatus = const Value.absent(),
     required DateTime transactionDate,
@@ -10332,6 +10364,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
     Expression<String>? shiftUuid,
     Expression<String>? customerUuid,
     Expression<String>? tenantId,
+    Expression<String>? outletId,
     Expression<String>? status,
     Expression<String>? paymentStatus,
     Expression<DateTime>? transactionDate,
@@ -10355,6 +10388,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
       if (shiftUuid != null) 'shift_uuid': shiftUuid,
       if (customerUuid != null) 'customer_uuid': customerUuid,
       if (tenantId != null) 'tenant_id': tenantId,
+      if (outletId != null) 'outlet_id': outletId,
       if (status != null) 'status': status,
       if (paymentStatus != null) 'payment_status': paymentStatus,
       if (transactionDate != null) 'transaction_date': transactionDate,
@@ -10380,6 +10414,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
       Value<String?>? shiftUuid,
       Value<String?>? customerUuid,
       Value<String?>? tenantId,
+      Value<String?>? outletId,
       Value<String>? status,
       Value<String>? paymentStatus,
       Value<DateTime>? transactionDate,
@@ -10402,6 +10437,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
       shiftUuid: shiftUuid ?? this.shiftUuid,
       customerUuid: customerUuid ?? this.customerUuid,
       tenantId: tenantId ?? this.tenantId,
+      outletId: outletId ?? this.outletId,
       status: status ?? this.status,
       paymentStatus: paymentStatus ?? this.paymentStatus,
       transactionDate: transactionDate ?? this.transactionDate,
@@ -10440,6 +10476,9 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
     }
     if (tenantId.present) {
       map['tenant_id'] = Variable<String>(tenantId.value);
+    }
+    if (outletId.present) {
+      map['outlet_id'] = Variable<String>(outletId.value);
     }
     if (status.present) {
       map['status'] = Variable<String>(status.value);
@@ -10498,6 +10537,7 @@ class OrderTableCompanion extends UpdateCompanion<OrderTableData> {
           ..write('shiftUuid: $shiftUuid, ')
           ..write('customerUuid: $customerUuid, ')
           ..write('tenantId: $tenantId, ')
+          ..write('outletId: $outletId, ')
           ..write('status: $status, ')
           ..write('paymentStatus: $paymentStatus, ')
           ..write('transactionDate: $transactionDate, ')
@@ -15932,6 +15972,7 @@ typedef $$OrderTableTableCreateCompanionBuilder = OrderTableCompanion Function({
   Value<String?> shiftUuid,
   Value<String?> customerUuid,
   Value<String?> tenantId,
+  Value<String?> outletId,
   Value<String> status,
   Value<String> paymentStatus,
   required DateTime transactionDate,
@@ -15955,6 +15996,7 @@ typedef $$OrderTableTableUpdateCompanionBuilder = OrderTableCompanion Function({
   Value<String?> shiftUuid,
   Value<String?> customerUuid,
   Value<String?> tenantId,
+  Value<String?> outletId,
   Value<String> status,
   Value<String> paymentStatus,
   Value<DateTime> transactionDate,
@@ -16023,6 +16065,9 @@ class $$OrderTableTableFilterComposer
 
   ColumnFilters<String> get tenantId => $composableBuilder(
       column: $table.tenantId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get outletId => $composableBuilder(
+      column: $table.outletId, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get status => $composableBuilder(
       column: $table.status, builder: (column) => ColumnFilters(column));
@@ -16123,6 +16168,9 @@ class $$OrderTableTableOrderingComposer
   ColumnOrderings<String> get tenantId => $composableBuilder(
       column: $table.tenantId, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get outletId => $composableBuilder(
+      column: $table.outletId, builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<String> get status => $composableBuilder(
       column: $table.status, builder: (column) => ColumnOrderings(column));
 
@@ -16202,6 +16250,9 @@ class $$OrderTableTableAnnotationComposer
 
   GeneratedColumn<String> get tenantId =>
       $composableBuilder(column: $table.tenantId, builder: (column) => column);
+
+  GeneratedColumn<String> get outletId =>
+      $composableBuilder(column: $table.outletId, builder: (column) => column);
 
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
@@ -16301,6 +16352,7 @@ class $$OrderTableTableTableManager extends RootTableManager<
             Value<String?> shiftUuid = const Value.absent(),
             Value<String?> customerUuid = const Value.absent(),
             Value<String?> tenantId = const Value.absent(),
+            Value<String?> outletId = const Value.absent(),
             Value<String> status = const Value.absent(),
             Value<String> paymentStatus = const Value.absent(),
             Value<DateTime> transactionDate = const Value.absent(),
@@ -16324,6 +16376,7 @@ class $$OrderTableTableTableManager extends RootTableManager<
             shiftUuid: shiftUuid,
             customerUuid: customerUuid,
             tenantId: tenantId,
+            outletId: outletId,
             status: status,
             paymentStatus: paymentStatus,
             transactionDate: transactionDate,
@@ -16347,6 +16400,7 @@ class $$OrderTableTableTableManager extends RootTableManager<
             Value<String?> shiftUuid = const Value.absent(),
             Value<String?> customerUuid = const Value.absent(),
             Value<String?> tenantId = const Value.absent(),
+            Value<String?> outletId = const Value.absent(),
             Value<String> status = const Value.absent(),
             Value<String> paymentStatus = const Value.absent(),
             required DateTime transactionDate,
@@ -16370,6 +16424,7 @@ class $$OrderTableTableTableManager extends RootTableManager<
             shiftUuid: shiftUuid,
             customerUuid: customerUuid,
             tenantId: tenantId,
+            outletId: outletId,
             status: status,
             paymentStatus: paymentStatus,
             transactionDate: transactionDate,

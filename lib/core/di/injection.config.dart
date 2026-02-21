@@ -92,10 +92,14 @@ import '../../features/inventory/domain/repositories/i_recipe_repository.dart'
     as _i212;
 import '../../features/inventory/domain/usecases/execute_stock_transfer.dart'
     as _i595;
+import '../../features/inventory/domain/usecases/get_incoming_transfers.dart'
+    as _i781;
 import '../../features/inventory/domain/usecases/get_products.dart' as _i1053;
 import '../../features/inventory/domain/usecases/inventory_usecases.dart'
     as _i380;
 import '../../features/inventory/domain/usecases/receive_goods.dart' as _i932;
+import '../../features/inventory/domain/usecases/receive_stock_transfer.dart'
+    as _i81;
 import '../../features/inventory/presentation/bloc/advanced_inventory_bloc.dart'
     as _i926;
 import '../../features/inventory/presentation/bloc/inventory_bloc.dart'
@@ -274,8 +278,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i307.ShiftRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i739.ICustomerCrmRepository>(
         () => _i942.CustomerCrmRepositoryImpl(gh<_i660.AppDatabase>()));
-    gh.lazySingleton<_i695.IProductRepository>(
-        () => _i777.ProductRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i302.ITenantRepository>(
         () => _i422.TenantRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i989.ISplitBillRepository>(
@@ -286,8 +288,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i904.MarketingRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i411.IDeliveryRepository>(
         () => _i43.DeliveryRepositoryImpl(gh<_i660.AppDatabase>()));
-    gh.lazySingleton<_i67.IOrderRepository>(
-        () => _i14.OrderRepositoryImpl(gh<_i660.AppDatabase>()));
     gh.lazySingleton<_i987.SyncWorker>(
       () => _i987.SyncWorker(
         gh<_i660.AppDatabase>(),
@@ -339,6 +339,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i380.ReceiveStockUseCase(gh<_i110.IInventoryRepository>()));
     gh.factory<_i380.GetLowStockItemsUseCase>(
         () => _i380.GetLowStockItemsUseCase(gh<_i110.IInventoryRepository>()));
+    gh.factory<_i81.ReceiveStockTransfer>(
+        () => _i81.ReceiveStockTransfer(gh<_i110.IInventoryRepository>()));
+    gh.factory<_i781.GetIncomingTransfers>(
+        () => _i781.GetIncomingTransfers(gh<_i110.IInventoryRepository>()));
     gh.factory<_i105.GetModifiersUseCase>(
         () => _i105.GetModifiersUseCase(gh<_i639.ISalesRepository>()));
     gh.factory<_i873.WatchCategoriesUseCase>(
@@ -367,6 +371,11 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i426.SaveTableUseCase(gh<_i22.ITableRepository>()));
     gh.factory<_i426.DeleteTableUseCase>(
         () => _i426.DeleteTableUseCase(gh<_i22.ITableRepository>()));
+    gh.lazySingleton<_i695.IProductRepository>(
+        () => _i777.ProductRepositoryImpl(
+              gh<_i660.AppDatabase>(),
+              gh<_i302.ITenantRepository>(),
+            ));
     gh.lazySingleton<_i797.AuthBloc>(() => _i797.AuthBloc(
           gh<_i660.AppDatabase>(),
           gh<_i302.ITenantRepository>(),
@@ -378,6 +387,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i426.DeleteZoneUseCase>(),
           gh<_i426.SaveTableUseCase>(),
           gh<_i426.DeleteTableUseCase>(),
+        ));
+    gh.lazySingleton<_i67.IOrderRepository>(() => _i14.OrderRepositoryImpl(
+          gh<_i660.AppDatabase>(),
+          gh<_i302.ITenantRepository>(),
         ));
     gh.factory<_i652.ReportBloc>(
         () => _i652.ReportBloc(gh<_i912.IReportRepository>()));
@@ -405,13 +418,6 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i86.KitchenBloc>(
         () => _i86.KitchenBloc(gh<_i856.IKitchenRepository>()));
-    gh.factory<_i965.InventoryManagementBloc>(
-        () => _i965.InventoryManagementBloc(
-              gh<_i695.IProductRepository>(),
-              gh<_i797.AuthBloc>(),
-              gh<_i595.ExecuteStockTransfer>(),
-              gh<_i932.ReceiveGoods>(),
-            ));
     gh.factory<_i118.ReservationBloc>(
         () => _i118.ReservationBloc(gh<_i856.IReservationRepository>()));
     gh.factory<_i676.CustomerBloc>(
@@ -441,14 +447,15 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i820.ProductBloc>(
         () => _i820.ProductBloc(gh<_i695.IProductRepository>()));
-    gh.factory<_i424.TableBloc>(() => _i424.TableBloc(
-          gh<_i22.ITableRepository>(),
-          gh<_i411.SocketService>(),
-        ));
     gh.factory<_i705.LoyaltyBloc>(
         () => _i705.LoyaltyBloc(gh<_i63.ILoyaltyRepository>()));
     gh.factory<_i1053.GetProductsUseCase>(
         () => _i1053.GetProductsUseCase(gh<_i695.IProductRepository>()));
+    gh.factory<_i424.TableBloc>(() => _i424.TableBloc(
+          gh<_i22.ITableRepository>(),
+          gh<_i411.SocketService>(),
+          gh<_i430.PrinterRouter>(),
+        ));
     gh.singleton<_i678.DeliveryOrchestratorService>(
       () => _i678.DeliveryOrchestratorService(
         gh<_i658.DeliveryManagementBloc>(),
@@ -463,6 +470,15 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i873.CreateOrderUseCase>(),
           gh<_i105.GetModifiersUseCase>(),
         ));
+    gh.factory<_i965.InventoryManagementBloc>(
+        () => _i965.InventoryManagementBloc(
+              gh<_i695.IProductRepository>(),
+              gh<_i797.AuthBloc>(),
+              gh<_i595.ExecuteStockTransfer>(),
+              gh<_i932.ReceiveGoods>(),
+              gh<_i81.ReceiveStockTransfer>(),
+              gh<_i781.GetIncomingTransfers>(),
+            ));
     return this;
   }
 }

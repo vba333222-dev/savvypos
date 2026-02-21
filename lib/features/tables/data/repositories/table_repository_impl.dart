@@ -50,6 +50,12 @@ class TableRepositoryImpl implements ITableRepository {
           capacity: row.capacity,
           isOccupied: row.isOccupied,
           currentOrderUuid: row.currentOrderUuid,
+          currentSessionToken: row.currentSessionToken,
+          qrCodeUrl: row.qrCodeUrl,
+          sessionStatus: TableSessionStatus.values.firstWhere(
+            (e) => e.name == row.sessionStatus,
+            orElse: () => TableSessionStatus.locked,
+          ),
         );
       }).toList();
     });
@@ -237,5 +243,17 @@ class TableRepositoryImpl implements ITableRepository {
         )
       );
     });
+  }
+
+  @override
+  Future<void> updateSessionInfo(String tableUuid, String? token, String? url, TableSessionStatus status) async {
+    await (_db.update(_db.restaurantTable)..where((t) => t.uuid.equals(tableUuid))).write(
+      RestaurantTableCompanion(
+        currentSessionToken: Value(token),
+        qrCodeUrl: Value(url),
+        sessionStatus: Value(status.name),
+        updatedAt: Value(DateTime.now()),
+      ),
+    );
   }
 }

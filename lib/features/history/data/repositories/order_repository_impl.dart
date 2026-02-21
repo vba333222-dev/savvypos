@@ -2,16 +2,20 @@ import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/features/history/domain/repositories/i_order_repository.dart';
+import 'package:savvy_pos/features/auth/domain/repositories/i_tenant_repository.dart';
 
 @LazySingleton(as: IOrderRepository)
 class OrderRepositoryImpl implements IOrderRepository {
   final AppDatabase db;
+  final ITenantRepository _tenantRepo;
 
-  OrderRepositoryImpl(this.db);
+  OrderRepositoryImpl(this.db, this._tenantRepo);
 
   @override
-  Stream<List<OrderTableData>> getOrders() {
-    return (db.select(db.orderTable)
+  Stream<List<OrderTableData>> getOrders() async* {
+    final scope = await _tenantRepo.getActiveScope();
+    yield* (db.select(db.orderTable)
+          ..where((t) => t.outletId.equals(scope['outletId'] ?? ''))
           ..orderBy([(t) => OrderingTerm(expression: t.transactionDate, mode: OrderingMode.desc)]))
         .watch();
   }
@@ -22,17 +26,19 @@ class OrderRepositoryImpl implements IOrderRepository {
   }
 
   @override
-  Future<List<OrderTableData>> getOrdersByDateRange(DateTime start, DateTime end) {
+  Future<List<OrderTableData>> getOrdersByDateRange(DateTime start, DateTime end) async {
+    final scope = await _tenantRepo.getActiveScope();
     return (db.select(db.orderTable)
-      ..where((tbl) => tbl.transactionDate.isBetweenValues(start, end))
+      ..where((tbl) => tbl.outletId.equals(scope['outletId'] ?? '') & tbl.transactionDate.isBetweenValues(start, end))
       ..orderBy([(tbl) => OrderingTerm.desc(tbl.transactionDate)]))
       .get();
   }
 
   @override
-  Stream<List<OrderTableData>> watchKitchenOrders() {
-    return (db.select(db.orderTable)
-      ..where((t) => t.isFulfilled.equals(false))
+  Stream<List<OrderTableData>> watchKitchenOrders() async* {
+    final scope = await _tenantRepo.getActiveScope();
+    yield* (db.select(db.orderTable)
+      ..where((t) => t.outletId.equals(scope['outletId'] ?? '') & t.isFulfilled.equals(false))
       ..orderBy([(t) => OrderingTerm(expression: t.transactionDate, mode: OrderingMode.asc)]))
       .watch();
   }

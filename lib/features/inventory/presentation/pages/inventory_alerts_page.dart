@@ -6,15 +6,20 @@ import 'package:get_it/get_it.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/advanced_inventory_entities.dart';
+import 'package:savvy_pos/features/inventory/domain/entities/inventory_entities.dart';
 import 'package:savvy_pos/features/inventory/presentation/bloc/advanced_inventory_bloc.dart';
+import 'package:savvy_pos/features/inventory/presentation/bloc/inventory_management_bloc.dart';
 
 class InventoryAlertsPage extends StatelessWidget {
   const InventoryAlertsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => GetIt.I<AdvancedInventoryBloc>()..add(const AdvancedInventoryEvent.loadAlerts()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => GetIt.I<AdvancedInventoryBloc>()..add(const AdvancedInventoryEvent.loadAlerts())),
+        BlocProvider(create: (_) => GetIt.I<InventoryManagementBloc>()..add(const InventoryManagementEvent.fetchIncomingTransfers())),
+      ],
       child: const _AlertsContent(),
     );
   }
@@ -49,16 +54,23 @@ class _AlertsContent extends StatelessWidget {
           ),
         ],
       ),
-      body: BlocBuilder<AdvancedInventoryBloc, AdvancedInventoryState>(
-        builder: (context, state) {
-          if (state.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: BlocBuilder<InventoryManagementBloc, InventoryManagementState>(
+        builder: (context, invState) {
+          final incomingTransfers = invState.maybeWhen(
+            incomingTransfersLoaded: (transfers) => transfers,
+            orElse: () => <StockTransfer>[],
+          );
+          
+          return BlocBuilder<AdvancedInventoryBloc, AdvancedInventoryState>(
+            builder: (context, state) {
+              if (state.isLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-          final unacknowledged = state.alerts.where((a) => !a.isAcknowledged).toList();
-          final acknowledged = state.alerts.where((a) => a.isAcknowledged && !a.isResolved).toList();
+              final unacknowledged = state.alerts.where((a) => !a.isAcknowledged).toList();
+              final acknowledged = state.alerts.where((a) => a.isAcknowledged && !a.isResolved).toList();
 
-          if (state.alerts.isEmpty) {
+          if (state.alerts.isEmpty && incomingTransfers.isEmpty) {
             return Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -156,6 +168,65 @@ class _AlertsContent extends StatelessWidget {
                   ),
                 ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.1, end: 0),
               ),
+              
+              // Incoming Transfers Section
+              if (incomingTransfers.isNotEmpty) ...[
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 10,
+                          height: 10,
+                          decoration: const BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+                        ),
+                        const SizedBox(width: 8),
+                        const SavvyText.label('INCOMING TRANSFERS'),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                       final transfer = incomingTransfers[index];
+                       return Container(
+                         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                         padding: const EdgeInsets.all(16),
+                         decoration: BoxDecoration(
+                           color: theme.colors.bgSurface,
+                           borderRadius: BorderRadius.circular(12),
+                           border: Border(left: const BorderSide(color: Colors.blue, width: 4), top: BorderSide(color: theme.colors.border), right: BorderSide(color: theme.colors.border), bottom: BorderSide(color: theme.colors.border)),
+                         ),
+                         child: Row(
+                           children: [
+                             Icon(Icons.local_shipping, color: theme.colors.brandPrimary, size: 36),
+                             const SizedBox(width: 16),
+                             Expanded(
+                               child: Column(
+                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                 children: [
+                                    Text('From: ${transfer.sourceWarehouseUuid}', style: TextStyle(fontWeight: FontWeight.bold, color: theme.colors.textPrimary)),
+                                    Text('${transfer.items.length} Items En-Route', style: TextStyle(color: theme.colors.textSecondary)),
+                                 ],
+                               )
+                             ),
+                             FilledButton.icon(
+                               onPressed: () {
+                                  context.read<InventoryManagementBloc>().add(InventoryManagementEvent.receiveStockTransfer(transfer.uuid));
+                               },
+                               icon: const Icon(Icons.download_done),
+                               label: const Text('Terima Barang'),
+                             ),
+                           ],
+                         ),
+                       );
+                    },
+                    childCount: incomingTransfers.length,
+                  ),
+                ),
+              ],
 
               // Unacknowledged Section
               if (unacknowledged.isNotEmpty) ...[
@@ -223,8 +294,10 @@ class _AlertsContent extends StatelessWidget {
             ],
           );
         },
-      ),
-    );
+      );
+     },
+    ),
+   );
   }
 }
 

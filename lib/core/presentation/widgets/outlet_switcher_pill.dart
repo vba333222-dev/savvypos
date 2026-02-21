@@ -28,9 +28,20 @@ class OutletSwitcherPill extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        // Mock Name Mapping (In real app, fetch from Repo/Config)
-        final outletName = state.activeOutletId == 'outlet-002' ? 'Outlet Downtown' : 'Main Outlet';
-        final warehouseName = state.activeWarehouseId == 'wh-002' ? 'Downtown WH' : 'Main Warehouse';
+        // Better UX mapping (In real app, fetch names from Config repo)
+        final scopeOutlets = {
+          'outlet-001': 'Main Cafe - Downtown',
+          'outlet-002': 'Pop-up Store - Brooklyn',
+          'outlet-003': 'Airport Kiosk',
+        };
+        final outletName = scopeOutlets[state.activeOutletId] ?? 'Main Cafe - Downtown';
+        
+        final scopeWarehouses = {
+          'wh-001': 'Main Warehouse',
+          'wh-002': 'Downtown WH', 
+          'wh-003': 'Terminal 4 WH',
+        };
+        final warehouseName = scopeWarehouses[state.activeWarehouseId] ?? 'Main Warehouse';
 
         return GestureDetector(
           onTap: () => _showOutletSelectionDialog(context),

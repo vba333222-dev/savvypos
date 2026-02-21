@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 
 enum TableShape { rectangle, round }
 
+enum TableSessionStatus { locked, ordering, waitingForFood, billed }
+
 class SavvyTable extends Equatable {
   final String id;
   final String name;
@@ -15,6 +17,12 @@ class SavvyTable extends Equatable {
   final int capacity;
   final bool isOccupied;
   final String? currentOrderUuid;
+  
+  // BYOD - Dynamic QR Session
+  final String? currentSessionToken;
+  final String? qrCodeUrl;
+  final TableSessionStatus sessionStatus;
+  
   final DateTime? updatedAt;
 
   const SavvyTable({
@@ -30,6 +38,9 @@ class SavvyTable extends Equatable {
     this.capacity = 4,
     this.isOccupied = false,
     this.currentOrderUuid,
+    this.currentSessionToken,
+    this.qrCodeUrl,
+    this.sessionStatus = TableSessionStatus.locked,
     this.updatedAt,
   });
 
@@ -46,6 +57,9 @@ class SavvyTable extends Equatable {
     int? capacity,
     bool? isOccupied,
     String? currentOrderUuid,
+    String? currentSessionToken,
+    String? qrCodeUrl,
+    TableSessionStatus? sessionStatus,
     DateTime? updatedAt,
   }) {
     return SavvyTable(
@@ -61,12 +75,15 @@ class SavvyTable extends Equatable {
       capacity: capacity ?? this.capacity,
       isOccupied: isOccupied ?? this.isOccupied,
       currentOrderUuid: currentOrderUuid ?? this.currentOrderUuid,
+      currentSessionToken: currentSessionToken ?? this.currentSessionToken,
+      qrCodeUrl: qrCodeUrl ?? this.qrCodeUrl,
+      sessionStatus: sessionStatus ?? this.sessionStatus,
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
   @override
   List<Object?> get props => [
-    id, name, zoneId, x, y, width, height, rotation, shape, capacity, isOccupied, currentOrderUuid, updatedAt
+    id, name, zoneId, x, y, width, height, rotation, shape, capacity, isOccupied, currentOrderUuid, currentSessionToken, qrCodeUrl, sessionStatus, updatedAt
   ];
 }

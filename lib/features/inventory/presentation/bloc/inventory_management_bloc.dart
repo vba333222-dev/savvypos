@@ -10,7 +10,9 @@ import 'package:savvy_pos/features/inventory/domain/entities/inventory_entities.
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
 import 'package:savvy_pos/features/inventory/domain/usecases/execute_stock_transfer.dart';
+import 'package:savvy_pos/features/inventory/domain/usecases/get_incoming_transfers.dart';
 import 'package:savvy_pos/features/inventory/domain/usecases/receive_goods.dart';
+import 'package:savvy_pos/features/inventory/domain/usecases/receive_stock_transfer.dart';
 import 'package:uuid/uuid.dart';
 import 'package:path/path.dart' as p;
 
@@ -35,6 +37,8 @@ class InventoryManagementEvent with _$InventoryManagementEvent {
     required String warehouseUuid,
     required List<Map<String, dynamic>> items,
   }) = _ReceiveGoods;
+  const factory InventoryManagementEvent.fetchIncomingTransfers() = _FetchIncomingTransfers;
+  const factory InventoryManagementEvent.receiveStockTransfer(String transferUuid) = _ReceiveStockTransfer;
 }
 
 @freezed
@@ -43,6 +47,7 @@ class InventoryManagementState with _$InventoryManagementState {
   const factory InventoryManagementState.loading() = _Loading;
   const factory InventoryManagementState.success() = _Success;
   const factory InventoryManagementState.loaded(List<ProductStock> inventory) = _Loaded;
+  const factory InventoryManagementState.incomingTransfersLoaded(List<StockTransfer> transfers) = _IncomingTransfersLoaded;
   const factory InventoryManagementState.error(String message) = _Error;
 }
 
@@ -52,12 +57,14 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
   final AuthBloc _authBloc;
   final ExecuteStockTransfer _executeStockTransfer;
   final ReceiveGoods _receiveGoods;
+  final ReceiveStockTransfer _receiveStockTransfer;
+  final GetIncomingTransfers _getIncomingTransfers;
   final Uuid _uuid = const Uuid();
   
   StreamSubscription? _authSubscription;
   StreamSubscription? _inventorySubscription;
 
-  InventoryManagementBloc(this._repository, this._authBloc, this._executeStockTransfer, this._receiveGoods) : super(const InventoryManagementState.initial()) {
+  InventoryManagementBloc(this._repository, this._authBloc, this._executeStockTransfer, this._receiveGoods, this._receiveStockTransfer, this._getIncomingTransfers) : super(const InventoryManagementState.initial()) {
     on<_AddProduct>(_onAddProduct);
     on<_UpdateProduct>(_onUpdateProduct);
     on<_DeleteProduct>(_onDeleteProduct);
@@ -66,6 +73,8 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
     on<_InventoryUpdated>(_onInventoryUpdated);
     on<_StockTransferRequested>(_onStockTransferRequested);
     on<_ReceiveGoods>(_onReceiveGoods);
+    on<_FetchIncomingTransfers>(_onFetchIncomingTransfers);
+    on<_ReceiveStockTransfer>(_onReceiveStockTransfer);
 
     // React to Auth Changes
     _authSubscription = _authBloc.stream.listen((authState) {
@@ -217,6 +226,33 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
       }
       await _receiveGoods(event.purchaseOrderUuid, quantities);
       emit(const InventoryManagementState.success());
+    } catch (e) {
+      emit(InventoryManagementState.error(e.toString()));
+    }
+  }
+
+  Future<void> _onFetchIncomingTransfers(_FetchIncomingTransfers event, Emitter<InventoryManagementState> emit) async {
+    emit(const InventoryManagementState.loading());
+    try {
+      final warehouseId = _authBloc.state.activeWarehouseId;
+      if (warehouseId == null) throw Exception("No active warehouse context.");
+      
+      final transfers = await _getIncomingTransfers(warehouseId);
+      emit(InventoryManagementState.incomingTransfersLoaded(transfers));
+    } catch (e) {
+      emit(InventoryManagementState.error(e.toString()));
+    }
+  }
+
+  Future<void> _onReceiveStockTransfer(_ReceiveStockTransfer event, Emitter<InventoryManagementState> emit) async {
+    emit(const InventoryManagementState.loading());
+    try {
+      final empId = _authBloc.state.employee?.uuid ?? 'unknown';
+      await _receiveStockTransfer(transferUuid: event.transferUuid, receiverId: empId);
+      
+      emit(const InventoryManagementState.success());
+      
+      add(const InventoryManagementEvent.fetchIncomingTransfers());
     } catch (e) {
       emit(InventoryManagementState.error(e.toString()));
     }

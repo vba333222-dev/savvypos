@@ -170,4 +170,27 @@ class PrinterRouter {
       debugPrint('Printer Router Error ($title): $e');
     }
   }
+
+  Future<void> printQRSessionTicket(String tableNumber, String url) async {
+    if (_cashierPrinterAddress == null) return;
+    
+    try {
+      await _printerService.connect(_cashierPrinterAddress!, type: _cashierPrinterType);
+      
+      StringBuffer buffer = StringBuffer();
+      buffer.writeln("=== TABLE QR ORDERING ===");
+      buffer.writeln("TABLE: $tableNumber");
+      buffer.writeln("Scan this code to order:");
+      buffer.writeln("");
+      buffer.writeln(url); // Emulate printing QR
+      buffer.writeln("");
+      buffer.writeln("Thank you!");
+      buffer.writeln("--------------------------------");
+      buffer.writeln("\n\n");
+      
+      await _printerService.printText(buffer.toString(), isLarge: false);
+    } catch (e) {
+      debugPrint('Printer Router QR Error: $e');
+    }
+  }
 }

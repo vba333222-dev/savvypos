@@ -4,7 +4,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
-import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_widgets.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/inventory_entities.dart';
 import 'package:savvy_pos/features/inventory/presentation/bloc/inventory_management_bloc.dart';
@@ -29,7 +28,14 @@ class _StockTransferPageState extends State<StockTransferPage> {
   final String mockProductUuid = 'prod-001'; 
 
   final _controller = ActionSliderController();
+  final TextEditingController _barcodeController = TextEditingController();
   bool _showPacket = false; // Trigger for packet animation
+
+  final List<DropdownMenuItem<String>> warehouseOptions = [
+    const DropdownMenuItem(value: 'wh-001', child: Text('Main Warehouse')),
+    const DropdownMenuItem(value: 'wh-002', child: Text('Outlet Downtown')),
+    const DropdownMenuItem(value: 'wh-003', child: Text('Branch A')),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -64,13 +70,41 @@ class _StockTransferPageState extends State<StockTransferPage> {
                 elevation: 0,
                 iconTheme: IconThemeData(color: context.savvy.colors.textPrimary),
               ),
-              body: Column(
-                children: [
-                   if (isLoading) const LinearProgressIndicator(),
-                  Expanded(
-                    child: Stack(
-                      children: [
-                        Row(
+               body: Column(
+                 children: [
+                    if (isLoading) const LinearProgressIndicator(),
+                    
+                    // Barcode Scanner Section
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      color: context.savvy.colors.bgSurface,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: SavvyTextField(
+                              controller: _barcodeController,
+                              hintText: 'Scan Barcode or Enter Product SKU...',
+                              prefixIcon: const Icon(Icons.qr_code_scanner),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          FilledButton.icon(
+                            onPressed: () {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Searching for: ${_barcodeController.text}')));
+                              _barcodeController.clear();
+                            },
+                            icon: const Icon(Icons.search),
+                            label: const Text('Find'),
+                          )
+                        ],
+                      ),
+                    ),
+                    const Divider(height: 1),
+
+                   Expanded(
+                     child: Stack(
+                       children: [
+                         Row(
                           children: [
                             // SOURCE (LEFT)
                             Expanded(
@@ -83,7 +117,15 @@ class _StockTransferPageState extends State<StockTransferPage> {
                                   children: [
                                     SavvyText.label('SOURCE'),
                                     const SizedBox(height: 8),
-                                    SavvyText.h3(sourceWarehouseName),
+                                    DropdownButtonHideUnderline(
+                                      child: DropdownButton<String>(
+                                        value: sourceWarehouseId,
+                                        items: warehouseOptions,
+                                        onChanged: (val) {
+                                          if (val != null) setState(() => sourceWarehouseId = val);
+                                        },
+                                      ),
+                                    ),
                                     const SizedBox(height: 32),
                                     Icon(Icons.warehouse, size: 80, color: context.savvy.colors.textDisabled),
                                     const SizedBox(height: 16),
@@ -108,7 +150,15 @@ class _StockTransferPageState extends State<StockTransferPage> {
                                   children: [
                                     SavvyText.label('DESTINATION'),
                                     const SizedBox(height: 8),
-                                    SavvyText.h3(destWarehouseName),
+                                    DropdownButtonHideUnderline(
+                                      child: DropdownButton<String>(
+                                        value: destWarehouseId,
+                                        items: warehouseOptions,
+                                        onChanged: (val) {
+                                          if (val != null) setState(() => destWarehouseId = val);
+                                        },
+                                      ),
+                                    ),
                                     const SizedBox(height: 32),
                                     Icon(Icons.storefront, size: 80, color: context.savvy.colors.textDisabled),
                                     const SizedBox(height: 16),

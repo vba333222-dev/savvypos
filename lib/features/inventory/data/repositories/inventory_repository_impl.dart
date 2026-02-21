@@ -174,6 +174,7 @@ class InventoryRepositoryImpl implements IInventoryRepository {
              if (item.productUuid != null) {
                await updateStock(
                  item.productUuid!, 
+                 po.targetWarehouseUuid,
                  rcv, 
                  "PO Receive ${po.referenceNumber}", 
                  referenceId: poUuid
@@ -198,7 +199,7 @@ class InventoryRepositoryImpl implements IInventoryRepository {
   // STOCK LOGIC
   // ===================================
   @override
-  Future<void> updateStock(String productUuid, double quantityChange, String reason, {String? referenceId}) async {
+  Future<void> updateStock(String productUuid, String warehouseUuid, double quantityChange, String reason, {String? referenceId}) async {
     await _db.into(_db.inventoryLedgerTable).insert(
       InventoryLedgerTableCompanion.insert(
         productUuid: productUuid,
@@ -209,7 +210,6 @@ class InventoryRepositoryImpl implements IInventoryRepository {
       )
     );
 
-    const warehouseUuid = 'MAIN_WH'; 
     
     final currentStock = await (_db.select(_db.localStocksTable)..where((t) => t.productUuid.equals(productUuid) & t.warehouseUuid.equals(warehouseUuid))).getSingleOrNull();
     
@@ -279,6 +279,7 @@ class InventoryRepositoryImpl implements IInventoryRepository {
         if (item.variance != 0) {
           await updateStock(
              item.productUuid, 
+             count.warehouseUuid,
              item.variance, 
              "Stock Count Adjustment", 
              referenceId: count.uuid
@@ -294,16 +295,89 @@ class InventoryRepositoryImpl implements IInventoryRepository {
   @override
   Future<void> transferStock(StockTransfer transfer) async {
     await _db.transaction(() async {
-      // Deduct from source warehouse
-      for (final item in transfer.items) {
-        await updateStock(item.productUuid, -item.quantity, 'Transfer Out', referenceId: transfer.uuid);
-      }
+      await _db.into(_db.stockTransferTable).insert(
+        StockTransferTableCompanion.insert(
+          uuid: transfer.uuid,
+          transferNumber: 'TRF-${DateTime.now().millisecondsSinceEpoch}',
+          sourceWarehouseUuid: transfer.sourceWarehouseUuid,
+          sourceWarehouseName: 'Cache Source',
+          targetWarehouseUuid: transfer.targetWarehouseUuid,
+          targetWarehouseName: 'Cache Target',
+          status: const Value('IN_TRANSIT'),
+          createdBy: transfer.createdBy,
+          createdByName: transfer.createdBy,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        )
+      );
       
-      // Add to target warehouse (simplified - using same MAIN_WH for MVP)
       for (final item in transfer.items) {
-        await updateStock(item.productUuid, item.quantity, 'Transfer In', referenceId: transfer.uuid);
+        await _db.into(_db.stockTransferItemTable).insert(
+          StockTransferItemTableCompanion.insert(
+             transferUuid: transfer.uuid,
+             productUuid: item.productUuid,
+             productName: 'Cache Product',
+             quantityRequested: item.quantity,
+             quantityShipped: Value(item.quantity),
+             unitCost: 0.0,
+          )
+        );
+        
+        await updateStock(item.productUuid, transfer.sourceWarehouseUuid, -item.quantity, 'Transfer Out', referenceId: transfer.uuid);
       }
     });
+  }
+
+  @override
+  Future<void> receiveStockTransfer(String transferUuid, String receiverId) async {
+    await _db.transaction(() async {
+      final transfer = await (_db.select(_db.stockTransferTable)..where((t) => t.uuid.equals(transferUuid))).getSingleOrNull();
+      if (transfer == null) throw Exception('Transfer not found');
+      
+      await (_db.update(_db.stockTransferTable)..where((t) => t.uuid.equals(transferUuid))).write(
+         StockTransferTableCompanion(
+            status: const Value('COMPLETED'),
+            receivedAt: Value(DateTime.now()),
+            updatedAt: Value(DateTime.now()),
+         )
+      );
+      
+      final items = await (_db.select(_db.stockTransferItemTable)..where((t) => t.transferUuid.equals(transferUuid))).get();
+      
+      for (final item in items) {
+         await (_db.update(_db.stockTransferItemTable)..where((t) => t.id.equals(item.id))).write(
+            StockTransferItemTableCompanion(
+               quantityReceived: Value(item.quantityShipped)
+            )
+         );
+         
+         await updateStock(item.productUuid, transfer.targetWarehouseUuid, item.quantityShipped, 'Transfer In', referenceId: transferUuid);
+      }
+    });
+  }
+
+  @override
+  Future<List<StockTransfer>> getIncomingTransfers(String targetWarehouseUuid) async {
+    final rows = await (_db.select(_db.stockTransferTable)
+        ..where((t) => t.targetWarehouseUuid.equals(targetWarehouseUuid) & t.status.equals('IN_TRANSIT')))
+        .get();
+        
+    final mapped = <StockTransfer>[];
+    for (final row in rows) {
+       final itemsRows = await (_db.select(_db.stockTransferItemTable)..where((t) => t.transferUuid.equals(row.uuid))).get();
+       final items = itemsRows.map((i) => StockTransferItem(productUuid: i.productUuid, quantity: i.quantityShipped)).toList();
+       
+       mapped.add(StockTransfer(
+          uuid: row.uuid,
+          sourceWarehouseUuid: row.sourceWarehouseUuid,
+          targetWarehouseUuid: row.targetWarehouseUuid,
+          status: row.status,
+          createdBy: row.createdBy,
+          createdAt: row.createdAt,
+          items: items,
+       ));
+    }
+    return mapped;
   }
 
   // ===================================

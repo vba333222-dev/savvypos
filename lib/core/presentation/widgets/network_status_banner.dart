@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get_it/get_it.dart';
+import 'package:savvy_pos/core/services/socket_service.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // NetworkStatusBanner
@@ -96,41 +98,56 @@ class _BannerContent extends StatelessWidget {
     const textColor = Color(0xFF1A1A1A); // Dark text on colored bg
 
     final icon = isOffline ? Icons.wifi_off_rounded : Icons.wifi_rounded;
-    final label = isOffline
+    final defaultLabel = isOffline
         ? 'Mode Offline — Transaksi Disimpan Lokal'
         : 'Koneksi Pulih — Sinkronisasi Otomatis';
 
-    Widget content = Container(
-      width: double.infinity,
-      height: 24,
-      color: bgColor,
-      alignment: Alignment.center,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 13, color: textColor),
-          const SizedBox(width: 6),
-          Text(
-            label,
-            style: const TextStyle(
-              color: textColor,
-              fontWeight: FontWeight.w700,
-              fontSize: 11,
-              letterSpacing: 0.3,
+    // Build the inner row for the layout
+    Widget buildRow(String labelText) {
+      return Container(
+        width: double.infinity,
+        height: 24,
+        color: bgColor,
+        alignment: Alignment.center,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 13, color: textColor),
+            const SizedBox(width: 6),
+            Text(
+              labelText,
+              style: const TextStyle(
+                color: textColor,
+                fontWeight: FontWeight.w700,
+                fontSize: 11,
+                letterSpacing: 0.3,
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    }
 
-    // Offline: subtle left-right pulse to attract attention without being obnoxious
+    Widget content;
     if (isOffline) {
-      content = content
-          .animate(onPlay: (c) => c.repeat(reverse: true))
-          .shimmer(
-            duration: 2000.ms,
-            color: Colors.white.withValues(alpha: 0.15),
-          );
+      // Connect UI to the live socket SocketService reconnect countdown
+      content = StreamBuilder<int?>(
+        stream: GetIt.I<SocketService>().reconnectCountdownStatus,
+        builder: (context, snapshot) {
+          final countdown = snapshot.data;
+          final dynamicLabel = (countdown != null && countdown > 0)
+              ? 'Cuba menyambung semula dalam $countdown saat...'
+              : defaultLabel;
+              
+          return buildRow(dynamicLabel);
+        },
+      ).animate(onPlay: (c) => c.repeat(reverse: true))
+       .shimmer(
+         duration: 2000.ms,
+         color: Colors.white.withValues(alpha: 0.15),
+       );
+    } else {
+      content = buildRow(defaultLabel);
     }
 
     // Both states slide in from top when they appear

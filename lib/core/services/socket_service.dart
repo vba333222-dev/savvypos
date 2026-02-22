@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:rxdart/rxdart.dart';
@@ -19,6 +20,10 @@ class SocketService {
   // Real implementation would have a WebSocketChannel or similar here
   // WebSocketChannel? _channel;
   // StreamSubscription? _socketSubscription;
+
+  // RxDart Subject to emit live countdown for UI displays
+  final BehaviorSubject<int?> _reconnectCountdown = BehaviorSubject<int?>.seeded(null);
+  Stream<int?> get reconnectCountdownStatus => _reconnectCountdown.stream;
 
   // RxDart Subject to throttle connect intents and prevent overlapping connections
   final PublishSubject<void> _connectIntent = PublishSubject<void>();
@@ -104,6 +109,7 @@ class SocketService {
 
     // Reset backoff on success
     _reconnectAttempts = 0;
+    _reconnectCountdown.add(null);
   }
 
   // ignore: unused_element
@@ -132,19 +138,34 @@ class SocketService {
     // This prevents "stacking" of concurrent timers if network drops repeatedly.
     _reconnectTimer?.cancel();
     _reconnectTimer = null;
+    _reconnectCountdown.add(null); // Reset UI stream until calc finishes
 
     _reconnectAttempts++;
 
-    // Exponential backoff (capped at 30 seconds)
-    int delaySeconds = 2 * _reconnectAttempts;
-    if (delaySeconds > 30) delaySeconds = 30;
+    // Exponential backoff: 2^attempts (capped at 60 seconds)
+    int delaySeconds = pow(2, _reconnectAttempts).toInt();
+    if (delaySeconds > 60) delaySeconds = 60;
 
     _logger.i(
         'SocketService: Reconnecting in $delaySeconds seconds (Attempt $_reconnectAttempts)...');
 
-    _reconnectTimer = Timer(Duration(seconds: delaySeconds), () {
-      if (!_isDisposed) {
-        connect();
+    int remaining = delaySeconds;
+    _reconnectCountdown.add(remaining);
+
+    // Live countdown timer emitting per second for the UI
+    _reconnectTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_isDisposed) {
+        timer.cancel();
+        return;
+      }
+
+      remaining--;
+      if (remaining <= 0) {
+        timer.cancel();
+        _reconnectCountdown.add(null);
+        connect(); // Trigger connection attempt
+      } else {
+        _reconnectCountdown.add(remaining);
       }
     });
   }

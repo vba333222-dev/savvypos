@@ -19,5 +19,6 @@ class MarketingCampaign with _$MarketingCampaign {
     DateTime? lastRunAt,
   }) = _MarketingCampaign;
 
-  factory MarketingCampaign.fromJson(Map<String, dynamic> json) => _$MarketingCampaignFromJson(json);
+  factory MarketingCampaign.fromJson(Map<String, dynamic> json) =>
+      _$MarketingCampaignFromJson(json);
 }

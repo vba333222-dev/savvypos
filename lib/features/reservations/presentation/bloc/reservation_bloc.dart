@@ -21,16 +21,19 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
     on<_UpdateStatus>(_onUpdateStatus);
   }
 
-  Future<void> _onLoadReservations(_LoadReservations event, Emitter<ReservationState> emit) async {
+  Future<void> _onLoadReservations(
+      _LoadReservations event, Emitter<ReservationState> emit) async {
     emit(const ReservationState.loading());
     await emit.forEach(
       _repo.watchReservations(),
-      onData: (List<ReservationTableData> data) => ReservationState.loaded(data),
+      onData: (List<ReservationTableData> data) =>
+          ReservationState.loaded(data),
       onError: (e, s) => ReservationState.error(e.toString()),
     );
   }
 
-  Future<void> _onAddReservation(_AddReservation event, Emitter<ReservationState> emit) async {
+  Future<void> _onAddReservation(
+      _AddReservation event, Emitter<ReservationState> emit) async {
     try {
       final now = DateTime.now();
       await _repo.createReservation(ReservationTableCompanion.insert(
@@ -48,11 +51,13 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
     }
   }
 
-  Future<void> _onUpdateStatus(_UpdateStatus event, Emitter<ReservationState> emit) async {
+  Future<void> _onUpdateStatus(
+      _UpdateStatus event, Emitter<ReservationState> emit) async {
     try {
-      await _repo.updateStatus(event.uuid, event.status, tableUuid: event.tableUuid);
+      await _repo.updateStatus(event.uuid, event.status,
+          tableUuid: event.tableUuid);
     } catch (e) {
-       // Handle error
+      // Handle error
     }
   }
 }

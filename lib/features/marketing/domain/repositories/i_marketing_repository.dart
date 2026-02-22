@@ -10,7 +10,7 @@ abstract class IMarketingRepository {
   /// Trigger automation check for all active campaigns.
   /// Returns the number of messages sent.
   Future<int> runAutomations();
-  
+
   /// Delete a campaign
   Future<void> deleteCampaign(String id);
 }

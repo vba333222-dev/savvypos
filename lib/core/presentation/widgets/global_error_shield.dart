@@ -39,18 +39,21 @@ class GlobalErrorShield extends StatelessWidget {
               children: [
                 Icon(Icons.monitor_heart_outlined, size: 80, color: errorColor)
                     .animate(onPlay: (c) => c.loop(reverse: true))
-                    .scale(begin: const Offset(1, 1), end: const Offset(1.1, 1.1), duration: 1.seconds),
+                    .scale(
+                        begin: const Offset(1, 1),
+                        end: const Offset(1.1, 1.1),
+                        duration: 1.seconds),
                 const SizedBox(height: 24),
-                
                 SavvyText(
                   "System Anomaly Detected",
                   style: SavvyTextStyle.h2,
                   color: textColor,
                   align: TextAlign.center,
-                  textStyle: const TextStyle(fontWeight: FontWeight.w900, decoration: TextDecoration.none),
+                  textStyle: const TextStyle(
+                      fontWeight: FontWeight.w900,
+                      decoration: TextDecoration.none),
                 ),
                 const SizedBox(height: 12),
-                
                 SavvyText(
                   "Our rendering core encountered an unexpected state. This has been logged for immediate analysis.",
                   style: SavvyTextStyle.bodyMedium,
@@ -58,43 +61,50 @@ class GlobalErrorShield extends StatelessWidget {
                   align: TextAlign.center,
                   textStyle: const TextStyle(decoration: TextDecoration.none),
                 ),
-                
                 const SizedBox(height: 32),
-                
                 ElevatedButton.icon(
-                  onPressed: onReset ?? () {
-                    // Default action
-                  },
+                  onPressed: onReset ??
+                      () {
+                        // Default action
+                      },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: errorColor,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32, vertical: 16),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
                   ),
                   icon: const Icon(Icons.restart_alt),
-                  label: const Text("Perform System Restore", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  label: const Text("Perform System Restore",
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ).animate().shimmer(delay: 2.seconds, duration: 1.seconds),
-                
                 if (details.exceptionAsString().isNotEmpty) ...[
                   const SizedBox(height: 48),
                   SavvyBox(
                     color: theme?.colors.bgElevated ?? Colors.grey.shade100,
                     padding: const EdgeInsets.all(16),
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: theme?.colors.borderDefault ?? Colors.grey.shade300),
+                    border: Border.all(
+                        color: theme?.colors.borderDefault ??
+                            Colors.grey.shade300),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        SavvyText('Technical Diagnostics', style: SavvyTextStyle.labelMedium, color: theme?.colors.textMuted),
+                        SavvyText('Technical Diagnostics',
+                            style: SavvyTextStyle.labelMedium,
+                            color: theme?.colors.textMuted),
                         const SizedBox(height: 8),
-                         Text(
+                        Text(
                           details.exceptionAsString(),
                           maxLines: 4,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontFamily: 'monospace',
                             fontSize: 11,
-                            color: theme?.colors.textSecondary ?? Colors.black87,
+                            color:
+                                theme?.colors.textSecondary ?? Colors.black87,
                             decoration: TextDecoration.none,
                           ),
                         ),

@@ -17,7 +17,8 @@ class WatchProductsByCategoryUseCase {
   final ISalesRepository _repository;
   WatchProductsByCategoryUseCase(this._repository);
 
-  Stream<List<Product>> call({String? categoryId}) => _repository.watchProducts(categoryId: categoryId);
+  Stream<List<Product>> call({String? categoryId}) =>
+      _repository.watchProducts(categoryId: categoryId);
 }
 
 @injectable
@@ -25,6 +26,6 @@ class CreateOrderUseCase {
   final ISalesRepository _repository;
   CreateOrderUseCase(this._repository);
 
-  Future<String> call(Cart cart, {String? tableUuid, String? customerUuid}) => 
+  Future<String> call(Cart cart, {String? tableUuid, String? customerUuid}) =>
       _repository.createOrder(cart, tableUuid, customerUuid);
 }

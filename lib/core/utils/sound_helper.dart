@@ -7,11 +7,11 @@ class SoundHelper {
   // ignore: unused_field - Kept for future audio asset support
   final AudioPlayer _player = AudioPlayer();
 
-  // Simple asset paths (assuming you'd add assets, but for now we can use system sounds or synthesis if possible, 
-  // or just Haptic if assets missing. The prompt implies we add logic, but didn't explicitly ask to add assets file. 
+  // Simple asset paths (assuming you'd add assets, but for now we can use system sounds or synthesis if possible,
+  // or just Haptic if assets missing. The prompt implies we add logic, but didn't explicitly ask to add assets file.
   // We will assume 'beep.mp3' etc exist or use placeholder logic with Haptics as fallback).
   // Actually, to avoid asset errors without files, we will primarily rely on Haptics and try/catch audio.
-  
+
   Future<void> playBeep() async {
     try {
       // await _player.play(AssetSource('sounds/beep.mp3'));

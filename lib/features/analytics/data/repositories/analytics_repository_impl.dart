@@ -39,10 +39,10 @@ class AnalyticsRepositoryImpl implements IAnalyticsRepository {
     final taxTotal = result.read<double>('tax_total');
 
     // 2. Calculate COGS (Cost of Goods Sold)
-    // Join OrderItem -> Product. Join Product -> Recipe? 
+    // Join OrderItem -> Product. Join Product -> Recipe?
     // For MVP performance, we'll use a simplified assumption that 'average food cost' is 32%.
     // In a full implementation, we would sum(item.quantity * product.currentCost).
-    
+
     // Let's try to get a slightly better COGS using ProductTable.price * 0.3 if valid, else fallback.
     final cogsQuery = db.customSelect(
       '''
@@ -52,13 +52,13 @@ class AnalyticsRepositoryImpl implements IAnalyticsRepository {
       WHERE o.transaction_date >= ? AND o.transaction_date <= ?
         AND o.status = 'COMPLETED'
       ''',
-       variables: [
+      variables: [
         Variable.withDateTime(range.start),
         Variable.withDateTime(range.end),
       ],
       readsFrom: {db.orderItemTable, db.orderTable},
     );
-    
+
     double cogs = 0.0;
     try {
       cogs = (await cogsQuery.getSingle()).read<double>('estimated_cogs');
@@ -106,7 +106,10 @@ class AnalyticsRepositoryImpl implements IAnalyticsRepository {
       GROUP BY oi.product_uuid, oi.name
       ORDER BY total_revenue DESC
       ''',
-      variables: [Variable.withDateTime(range.start), Variable.withDateTime(range.end)],
+      variables: [
+        Variable.withDateTime(range.start),
+        Variable.withDateTime(range.end)
+      ],
       readsFrom: {db.orderItemTable, db.orderTable},
     );
 
@@ -114,18 +117,20 @@ class AnalyticsRepositoryImpl implements IAnalyticsRepository {
     if (rows.isEmpty) return [];
 
     // Calculate Global Averages for Boston Matrix
-    final totalRev = rows.fold<double>(0, (sum, r) => sum + r.read<double>('total_revenue'));
-    final totalQty = rows.fold<double>(0, (sum, r) => sum + r.read<double>('qty_sold'));
-    
+    final totalRev =
+        rows.fold<double>(0, (sum, r) => sum + r.read<double>('total_revenue'));
+    final totalQty =
+        rows.fold<double>(0, (sum, r) => sum + r.read<double>('qty_sold'));
+
     final avgRevPerItem = totalRev / rows.length;
     final avgQtyPerItem = totalQty / rows.length; // Popularity benchmark
 
     return rows.map((row) {
       final revenue = row.read<double>('total_revenue');
       final qty = row.read<double>('qty_sold').toInt();
-      
+
       // Cost Logic: 32% Food Cost Assumption
-      final cogs = revenue * 0.32; 
+      final cogs = revenue * 0.32;
       final margin = revenue > 0 ? (revenue - cogs) / revenue : 0.0;
       // Contribution margin calculated for future use
       // final contribution = revenue - cogs;
@@ -136,20 +141,20 @@ class AnalyticsRepositoryImpl implements IAnalyticsRepository {
       // Puzzles: High Profit, Low Popularity
       // Dogs: Low Profit, Low Popularity
       // Note: "Profit" here usually means Contribution Margin. "Popularity" means Quantity Sold.
-      
+
       // Boston Matrix classification based on quantity vs averages
       // Note: isHighProfit would require varied cost data
       // Note: isStar simplified based on qty since cost is hardcoded
-      
+
       MenuItemCategory category;
       if (qty > avgQtyPerItem) {
-         category = MenuItemCategory.star; // High Pop
+        category = MenuItemCategory.star; // High Pop
       } else if (qty > avgQtyPerItem * 0.5) {
-         category = MenuItemCategory.plowhorse; // Mid Pop
+        category = MenuItemCategory.plowhorse; // Mid Pop
       } else if (revenue > avgRevPerItem) {
-         category = MenuItemCategory.puzzle; // High Rev, Low Pop
+        category = MenuItemCategory.puzzle; // High Rev, Low Pop
       } else {
-         category = MenuItemCategory.dog;
+        category = MenuItemCategory.dog;
       }
 
       return MenuPerformance(
@@ -181,15 +186,19 @@ class AnalyticsRepositoryImpl implements IAnalyticsRepository {
       GROUP BY strftime('%H', transaction_date)
       ORDER BY hour
       ''',
-      variables: [Variable.withDateTime(startOfDay), Variable.withDateTime(endOfDay)],
+      variables: [
+        Variable.withDateTime(startOfDay),
+        Variable.withDateTime(endOfDay)
+      ],
       readsFrom: {db.orderTable},
     );
 
     final rows = await query.get();
-    
+
     // Fill in missing hours with 0
     final Map<int, HourlySales> salesByHour = {
-      for (int i = 0; i < 24; i++) i: HourlySales(hour: i, sales: 0, transactionCount: 0),
+      for (int i = 0; i < 24; i++)
+        i: HourlySales(hour: i, sales: 0, transactionCount: 0),
     };
 
     for (final row in rows) {

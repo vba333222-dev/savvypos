@@ -34,18 +34,35 @@ class OutletSwitcherSheet extends StatelessWidget {
     // In a real app, this list comes from AuthBloc state (e.g. user.allowedOutlets)
     // For now, we mock the list but check Active ID from Bloc
     final mockOutlets = [
-      OutletUIModel(id: 'outlet-001', name: 'Main Cafe - Downtown', address: '123 Coffee St, New York, NY', isOnline: true, warehouseId: 'wh-001'),
-      OutletUIModel(id: 'outlet-002', name: 'Pop-up Store - Brooklyn', address: '456 Maker Ave, Brooklyn, NY', isOnline: true, warehouseId: 'wh-002'),
-      OutletUIModel(id: 'outlet-003', name: 'Airport Kiosk', address: 'Terminal 4, JFK', isOnline: false, warehouseId: 'wh-003'),
+      OutletUIModel(
+          id: 'outlet-001',
+          name: 'Main Cafe - Downtown',
+          address: '123 Coffee St, New York, NY',
+          isOnline: true,
+          warehouseId: 'wh-001'),
+      OutletUIModel(
+          id: 'outlet-002',
+          name: 'Pop-up Store - Brooklyn',
+          address: '456 Maker Ave, Brooklyn, NY',
+          isOnline: true,
+          warehouseId: 'wh-002'),
+      OutletUIModel(
+          id: 'outlet-003',
+          name: 'Airport Kiosk',
+          address: 'Terminal 4, JFK',
+          isOnline: false,
+          warehouseId: 'wh-003'),
     ];
 
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
-        final activeOutletId = state.activeOutletId; // Assuming this exists in AuthState from previous tasks
+        final activeOutletId = state
+            .activeOutletId; // Assuming this exists in AuthState from previous tasks
 
         return Column(
           children: [
-            const SavvyText.body('Select an outlet to switch your active context. This will change inventory visibility.'),
+            const SavvyText.body(
+                'Select an outlet to switch your active context. This will change inventory visibility.'),
             const SizedBox(height: 24),
             ListView.separated(
               shrinkWrap: true,
@@ -62,14 +79,14 @@ class OutletSwitcherSheet extends StatelessWidget {
                   onTap: () {
                     // Dispatch Change
                     context.read<AuthBloc>().add(AuthEvent.changeActiveOutlet(
-                      outlet.id, 
-                      outlet.warehouseId, // In real app, map outlet->warehouse
-                    ));
+                          outlet.id,
+                          outlet
+                              .warehouseId, // In real app, map outlet->warehouse
+                        ));
                     Navigator.pop(context);
-                    
+
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Switched to ${outlet.name}'))
-                    );
+                        SnackBar(content: Text('Switched to ${outlet.name}')));
                   },
                 );
               },
@@ -89,7 +106,12 @@ class OutletUIModel {
   final bool isOnline;
   final String warehouseId;
 
-  OutletUIModel({required this.id, required this.name, required this.address, required this.isOnline, required this.warehouseId});
+  OutletUIModel(
+      {required this.id,
+      required this.name,
+      required this.address,
+      required this.isOnline,
+      required this.warehouseId});
 }
 
 class _OutletCard extends StatelessWidget {
@@ -97,16 +119,19 @@ class _OutletCard extends StatelessWidget {
   final bool isActive;
   final VoidCallback onTap;
 
-  const _OutletCard({required this.outlet, required this.isActive, required this.onTap});
+  const _OutletCard(
+      {required this.outlet, required this.isActive, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     return GestureDetector(
       onTap: onTap,
       child: SavvyBox(
-        color: isActive ? theme.colors.primary.withValues(alpha: 0.05) : theme.colors.bgSurface,
+        color: isActive
+            ? theme.colors.primary.withValues(alpha: 0.05)
+            : theme.colors.bgSurface,
         border: Border.all(
           color: isActive ? theme.colors.primary : theme.colors.border,
           width: isActive ? 2 : 1,
@@ -121,14 +146,12 @@ class _OutletCard extends StatelessWidget {
                 color: isActive ? theme.colors.primary : theme.colors.bgCanvas,
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                Icons.storefront, 
-                color: isActive ? Colors.white : theme.colors.textSecondary,
-                size: 24
-              ),
+              child: Icon(Icons.storefront,
+                  color: isActive ? Colors.white : theme.colors.textSecondary,
+                  size: 24),
             ),
             const SizedBox(width: 16),
-            
+
             // Info
             Expanded(
               child: Column(
@@ -137,20 +160,25 @@ class _OutletCard extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(child: SavvyText.h4(outlet.name)),
-                      if (!outlet.isOnline) 
-                         Container(
-                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                           decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
-                           child: const SavvyText.label('OFFLINE', color: Colors.red),
-                         )
+                      if (!outlet.isOnline)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(
+                              color: Colors.red.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(4)),
+                          child: const SavvyText.label('OFFLINE',
+                              color: Colors.red),
+                        )
                     ],
                   ),
                   const SizedBox(height: 4),
-                  SavvyText.body(outlet.address, color: theme.colors.textSecondary, maxLines: 1),
+                  SavvyText.body(outlet.address,
+                      color: theme.colors.textSecondary, maxLines: 1),
                 ],
               ),
             ),
-            
+
             // Check
             if (isActive)
               Padding(

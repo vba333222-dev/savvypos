@@ -1,4 +1,3 @@
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/ingredient.dart';
 
@@ -22,5 +21,6 @@ class RecipeItem with _$RecipeItem {
     required double quantity,
   }) = _RecipeItem;
 
-  factory RecipeItem.fromJson(Map<String, dynamic> json) => _$RecipeItemFromJson(json);
+  factory RecipeItem.fromJson(Map<String, dynamic> json) =>
+      _$RecipeItemFromJson(json);
 }

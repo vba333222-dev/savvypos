@@ -5,7 +5,8 @@ class StockLevelIndicator extends StatelessWidget {
   final int stock;
   final int lowStockThreshold;
 
-  const StockLevelIndicator({super.key, required this.stock, this.lowStockThreshold = 10});
+  const StockLevelIndicator(
+      {super.key, required this.stock, this.lowStockThreshold = 10});
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +45,11 @@ class StockLevelIndicator extends StatelessWidget {
             ),
           ),
           Center(
-            child: Text(
-              stock <= 0 ? 'OUT' : '$stock', 
-              style: TextStyle(
-                fontWeight: FontWeight.bold, 
-                color: stock <= 0 ? color : theme.colors.textPrimary,
-                fontSize: 12
-              )
-            ),
+            child: Text(stock <= 0 ? 'OUT' : '$stock',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: stock <= 0 ? color : theme.colors.textPrimary,
+                    fontSize: 12)),
           ),
         ],
       ),

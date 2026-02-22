@@ -15,14 +15,14 @@ enum AlertType { lowStock, outOfStock, overstock, expiringSoon, expired }
 
 enum AlertSeverity { info, warning, critical }
 
-enum TransferStatus { 
-  draft, 
-  pendingApproval, 
-  approved, 
-  inTransit, 
-  partiallyReceived, 
-  completed, 
-  cancelled 
+enum TransferStatus {
+  draft,
+  pendingApproval,
+  approved,
+  inTransit,
+  partiallyReceived,
+  completed,
+  cancelled
 }
 
 enum MovementType {
@@ -64,7 +64,8 @@ class Warehouse with _$Warehouse {
     DateTime? updatedAt,
   }) = _Warehouse;
 
-  factory Warehouse.fromJson(Map<String, dynamic> json) => _$WarehouseFromJson(json);
+  factory Warehouse.fromJson(Map<String, dynamic> json) =>
+      _$WarehouseFromJson(json);
 }
 
 @freezed
@@ -90,7 +91,8 @@ class StockLevel with _$StockLevel {
     String? categoryName,
   }) = _StockLevel;
 
-  factory StockLevel.fromJson(Map<String, dynamic> json) => _$StockLevelFromJson(json);
+  factory StockLevel.fromJson(Map<String, dynamic> json) =>
+      _$StockLevelFromJson(json);
 }
 
 @freezed
@@ -142,7 +144,8 @@ class StockAlert with _$StockAlert {
     DateTime? createdAt,
   }) = _StockAlert;
 
-  factory StockAlert.fromJson(Map<String, dynamic> json) => _$StockAlertFromJson(json);
+  factory StockAlert.fromJson(Map<String, dynamic> json) =>
+      _$StockAlertFromJson(json);
 }
 
 @freezed
@@ -160,7 +163,8 @@ class StockAlertConfig with _$StockAlertConfig {
     @Default(true) bool expiryEmailEnabled,
   }) = _StockAlertConfig;
 
-  factory StockAlertConfig.fromJson(Map<String, dynamic> json) => _$StockAlertConfigFromJson(json);
+  factory StockAlertConfig.fromJson(Map<String, dynamic> json) =>
+      _$StockAlertConfigFromJson(json);
 }
 
 @freezed
@@ -187,7 +191,8 @@ class AdvancedStockTransfer with _$AdvancedStockTransfer {
     @Default([]) List<AdvancedStockTransferItem> items,
   }) = _AdvancedStockTransfer;
 
-  factory AdvancedStockTransfer.fromJson(Map<String, dynamic> json) => _$AdvancedStockTransferFromJson(json);
+  factory AdvancedStockTransfer.fromJson(Map<String, dynamic> json) =>
+      _$AdvancedStockTransferFromJson(json);
 }
 
 @freezed
@@ -204,7 +209,8 @@ class AdvancedStockTransferItem with _$AdvancedStockTransferItem {
     String? notes,
   }) = _AdvancedStockTransferItem;
 
-  factory AdvancedStockTransferItem.fromJson(Map<String, dynamic> json) => _$AdvancedStockTransferItemFromJson(json);
+  factory AdvancedStockTransferItem.fromJson(Map<String, dynamic> json) =>
+      _$AdvancedStockTransferItemFromJson(json);
 }
 
 @freezed
@@ -232,7 +238,8 @@ class StockMovement with _$StockMovement {
     required DateTime timestamp,
   }) = _StockMovement;
 
-  factory StockMovement.fromJson(Map<String, dynamic> json) => _$StockMovementFromJson(json);
+  factory StockMovement.fromJson(Map<String, dynamic> json) =>
+      _$StockMovementFromJson(json);
 }
 
 @freezed
@@ -241,7 +248,8 @@ class InventoryInsight with _$InventoryInsight {
     required String id,
     required String title,
     required String description,
-    required String insightType, // RESTOCK, OVERSTOCK, EXPIRING, SLOW_MOVING, POPULAR
+    required String
+        insightType, // RESTOCK, OVERSTOCK, EXPIRING, SLOW_MOVING, POPULAR
     required String severity, // INFO, WARNING, CRITICAL
     String? productUuid,
     String? productName,
@@ -252,7 +260,8 @@ class InventoryInsight with _$InventoryInsight {
     DateTime? createdAt,
   }) = _InventoryInsight;
 
-  factory InventoryInsight.fromJson(Map<String, dynamic> json) => _$InventoryInsightFromJson(json);
+  factory InventoryInsight.fromJson(Map<String, dynamic> json) =>
+      _$InventoryInsightFromJson(json);
 }
 
 @freezed
@@ -272,7 +281,8 @@ class InventoryDashboardStats with _$InventoryDashboardStats {
     @Default([]) List<InventoryInsight> insights,
   }) = _InventoryDashboardStats;
 
-  factory InventoryDashboardStats.fromJson(Map<String, dynamic> json) => _$InventoryDashboardStatsFromJson(json);
+  factory InventoryDashboardStats.fromJson(Map<String, dynamic> json) =>
+      _$InventoryDashboardStatsFromJson(json);
 }
 
 @freezed
@@ -291,5 +301,6 @@ class VarianceReport with _$VarianceReport {
     DateTime? countDate,
   }) = _VarianceReport;
 
-  factory VarianceReport.fromJson(Map<String, dynamic> json) => _$VarianceReportFromJson(json);
+  factory VarianceReport.fromJson(Map<String, dynamic> json) =>
+      _$VarianceReportFromJson(json);
 }

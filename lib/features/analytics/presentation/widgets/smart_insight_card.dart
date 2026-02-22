@@ -11,8 +11,10 @@ class SmartInsightCard extends StatelessWidget {
     if (pmix.isEmpty) return 'Not enough data to generate insights.';
 
     // Find Stars and Dogs
-    final stars = pmix.where((p) => p.category == MenuItemCategory.star).toList();
-    final puzzles = pmix.where((p) => p.category == MenuItemCategory.puzzle).toList();
+    final stars =
+        pmix.where((p) => p.category == MenuItemCategory.star).toList();
+    final puzzles =
+        pmix.where((p) => p.category == MenuItemCategory.puzzle).toList();
     final dogs = pmix.where((p) => p.category == MenuItemCategory.dog).toList();
 
     final insights = <String>[];
@@ -21,13 +23,17 @@ class SmartInsightCard extends StatelessWidget {
       insights.add('🌟 "${stars.first.itemName}" is a Star! Keep it featured.');
     }
     if (puzzles.isNotEmpty) {
-      insights.add('💡 Promote "${puzzles.first.itemName}" - High margin, needs more visibility.');
+      insights.add(
+          '💡 Promote "${puzzles.first.itemName}" - High margin, needs more visibility.');
     }
     if (dogs.isNotEmpty) {
-      insights.add('⚠️ Consider removing "${dogs.last.itemName}" - Low margin, low volume.');
+      insights.add(
+          '⚠️ Consider removing "${dogs.last.itemName}" - Low margin, low volume.');
     }
 
-    return insights.isNotEmpty ? insights.join('\n') : 'Your menu is performing well!';
+    return insights.isNotEmpty
+        ? insights.join('\n')
+        : 'Your menu is performing well!';
   }
 
   @override
@@ -42,7 +48,10 @@ class SmartInsightCard extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: Colors.purple.withValues(alpha: 0.3), blurRadius: 12, offset: const Offset(0, 4)),
+          BoxShadow(
+              color: Colors.purple.withValues(alpha: 0.3),
+              blurRadius: 12,
+              offset: const Offset(0, 4)),
         ],
       ),
       child: Column(
@@ -52,16 +61,23 @@ class SmartInsightCard extends StatelessWidget {
             children: const [
               Icon(Icons.auto_awesome, color: Colors.white),
               SizedBox(width: 8),
-              Text('AI Menu Insights', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+              Text('AI Menu Insights',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16)),
             ],
           ),
           const SizedBox(height: 12),
           Text(
             _generateInsight(),
-            style: const TextStyle(color: Colors.white, fontSize: 14, height: 1.5),
+            style:
+                const TextStyle(color: Colors.white, fontSize: 14, height: 1.5),
           ),
         ],
       ),
-    ).animate().shimmer(duration: 2000.ms, color: Colors.white.withValues(alpha: 0.2));
+    )
+        .animate()
+        .shimmer(duration: 2000.ms, color: Colors.white.withValues(alpha: 0.2));
   }
 }

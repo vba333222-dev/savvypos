@@ -10,11 +10,14 @@ class DeviceMeshPage extends StatefulWidget {
   State<DeviceMeshPage> createState() => _DeviceMeshPageState();
 }
 
-class _DeviceMeshPageState extends State<DeviceMeshPage> with TickerProviderStateMixin {
+class _DeviceMeshPageState extends State<DeviceMeshPage>
+    with TickerProviderStateMixin {
   late AnimationController _sonarController;
   final List<_PrinterNode> _printers = [
-    _PrinterNode('Kitchen Printer', '192.168.1.101', true, const Offset(0.5, 0.3)),
-    _PrinterNode('Receipt Printer', 'Bluetooth - TSP100', true, const Offset(0.2, 0.6)),
+    _PrinterNode(
+        'Kitchen Printer', '192.168.1.101', true, const Offset(0.5, 0.3)),
+    _PrinterNode(
+        'Receipt Printer', 'Bluetooth - TSP100', true, const Offset(0.2, 0.6)),
     _PrinterNode('Bar Printer', 'Disconnected', false, const Offset(0.8, 0.6)),
   ];
 
@@ -25,18 +28,18 @@ class _DeviceMeshPageState extends State<DeviceMeshPage> with TickerProviderStat
   @override
   void initState() {
     super.initState();
-    _sonarController = AnimationController(
-      vsync: this, 
-      duration: const Duration(seconds: 4)
-    )..repeat();
+    _sonarController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 4))
+          ..repeat();
 
-    _particleController = AnimationController(vsync: this, duration: const Duration(seconds: 1))
-      ..addListener(() {
-        setState(() {
-          // Remove finished particles
-          _particles.removeWhere((p) => p.progress >= 1.0);
-        });
-      });
+    _particleController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1))
+          ..addListener(() {
+            setState(() {
+              // Remove finished particles
+              _particles.removeWhere((p) => p.progress >= 1.0);
+            });
+          });
   }
 
   void _firePulse(Offset endPos) {
@@ -83,29 +86,33 @@ class _DeviceMeshPageState extends State<DeviceMeshPage> with TickerProviderStat
               ),
             ),
           ),
-          
+
           // 2. Data Particles
           ..._particles.map((p) => _buildParticle(p, theme)),
 
           // 3. Center Node (Hub)
           Center(
-             child: Container(
-               width: 80,
-               height: 80,
-               decoration: BoxDecoration(
-                 shape: BoxShape.circle,
-                 color: theme.colors.brandPrimary,
-                 boxShadow: [
-                   BoxShadow(color: theme.colors.brandPrimary.withValues(alpha: 0.5), blurRadius: 20, spreadRadius: 5)
-                 ],
-               ),
-               child: const Icon(Icons.phone_iphone, color: Colors.white, size: 40),
-             ),
+            child: Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: theme.colors.brandPrimary,
+                boxShadow: [
+                  BoxShadow(
+                      color: theme.colors.brandPrimary.withValues(alpha: 0.5),
+                      blurRadius: 20,
+                      spreadRadius: 5)
+                ],
+              ),
+              child:
+                  const Icon(Icons.phone_iphone, color: Colors.white, size: 40),
+            ),
           ),
 
           // 4. Printer Nodes
           ..._printers.map((node) => _buildPrinterNode(node, theme)),
-          
+
           // 5. Scan Button
           Positioned(
             bottom: 32,
@@ -139,11 +146,17 @@ class _DeviceMeshPageState extends State<DeviceMeshPage> with TickerProviderStat
       builder: (context, constraints) {
         final w = constraints.maxWidth;
         final h = constraints.maxHeight;
-        
+
         // Lerp position
-        final dx = math.min(w * particle.start.dx + (w * particle.end.dx - w * particle.start.dx) * progress, w);
-        final dy = math.min(h * particle.start.dy + (h * particle.end.dy - h * particle.start.dy) * progress, h);
-        
+        final dx = math.min(
+            w * particle.start.dx +
+                (w * particle.end.dx - w * particle.start.dx) * progress,
+            w);
+        final dy = math.min(
+            h * particle.start.dy +
+                (h * particle.end.dy - h * particle.start.dy) * progress,
+            h);
+
         return Positioned(
           left: dx - 6,
           top: dy - 6,
@@ -154,7 +167,10 @@ class _DeviceMeshPageState extends State<DeviceMeshPage> with TickerProviderStat
               color: Colors.white,
               shape: BoxShape.circle,
               boxShadow: [
-                BoxShadow(color: theme.colors.brandAccent, blurRadius: 10, spreadRadius: 2)
+                BoxShadow(
+                    color: theme.colors.brandAccent,
+                    blurRadius: 10,
+                    spreadRadius: 2)
               ],
             ),
           ),
@@ -168,13 +184,13 @@ class _DeviceMeshPageState extends State<DeviceMeshPage> with TickerProviderStat
       builder: (context, constraints) {
         final w = constraints.maxWidth;
         final h = constraints.maxHeight;
-        
+
         return Positioned(
           left: w * node.position.dx - 40,
           top: h * node.position.dy - 40,
           child: GestureDetector(
             onTap: () {
-               if (node.isOnline) _firePulse(node.position);
+              if (node.isOnline) _firePulse(node.position);
             },
             child: Column(
               children: [
@@ -182,24 +198,43 @@ class _DeviceMeshPageState extends State<DeviceMeshPage> with TickerProviderStat
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: node.isOnline ? theme.colors.bgElevated : Colors.grey[800],
+                    color: node.isOnline
+                        ? theme.colors.bgElevated
+                        : Colors.grey[800],
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: node.isOnline ? theme.colors.stateSuccess : Colors.grey,
-                      width: 2
-                    ),
-                    boxShadow: node.isOnline ? [
-                       BoxShadow(color: theme.colors.stateSuccess.withValues(alpha: 0.3), blurRadius: 15)
-                    ] : [],
+                        color: node.isOnline
+                            ? theme.colors.stateSuccess
+                            : Colors.grey,
+                        width: 2),
+                    boxShadow: node.isOnline
+                        ? [
+                            BoxShadow(
+                                color: theme.colors.stateSuccess
+                                    .withValues(alpha: 0.3),
+                                blurRadius: 15)
+                          ]
+                        : [],
                   ),
-                  child: Icon(Icons.print, color: node.isOnline ? theme.colors.textPrimary : Colors.grey),
-                ).animate(target: node.isOnline ? 1 : 0)
-                 .scale(duration: 2.seconds, begin: const Offset(1,1), end: const Offset(1.05, 1.05), curve: Curves.easeInOut)
-                 .then().scale(begin: const Offset(1.05, 1.05), end: const Offset(1,1)),
-                
+                  child: Icon(Icons.print,
+                      color: node.isOnline
+                          ? theme.colors.textPrimary
+                          : Colors.grey),
+                )
+                    .animate(target: node.isOnline ? 1 : 0)
+                    .scale(
+                        duration: 2.seconds,
+                        begin: const Offset(1, 1),
+                        end: const Offset(1.05, 1.05),
+                        curve: Curves.easeInOut)
+                    .then()
+                    .scale(
+                        begin: const Offset(1.05, 1.05),
+                        end: const Offset(1, 1)),
                 const SizedBox(height: 8),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: Colors.black54,
                     borderRadius: BorderRadius.circular(12),
@@ -211,8 +246,10 @@ class _DeviceMeshPageState extends State<DeviceMeshPage> with TickerProviderStat
                 ),
                 if (node.isOnline)
                   Padding(
-                     padding: const EdgeInsets.only(top: 4),
-                     child: Text("Tap to Test", style: TextStyle(color: theme.colors.textMuted, fontSize: 10)),
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text("Tap to Test",
+                        style: TextStyle(
+                            color: theme.colors.textMuted, fontSize: 10)),
                   ),
               ],
             ),
@@ -228,7 +265,8 @@ class _DataParticle {
   final Offset end;
   final DateTime startTime;
   double progress = 0.0;
-  _DataParticle({required this.start, required this.end, required this.startTime});
+  _DataParticle(
+      {required this.start, required this.end, required this.startTime});
 }
 
 class _PrinterNode {
@@ -243,13 +281,15 @@ class _RadarPainter extends CustomPainter {
   final Animation<double> animation;
   final Color color;
 
-  _RadarPainter({required this.animation, required this.color}) : super(repaint: animation);
+  _RadarPainter({required this.animation, required this.color})
+      : super(repaint: animation);
 
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
-    final maxRadius = math.sqrt(size.width * size.width + size.height * size.height) / 2;
-    
+    final maxRadius =
+        math.sqrt(size.width * size.width + size.height * size.height) / 2;
+
     final paint = Paint()
       ..color = color.withValues(alpha: 0.2)
       ..style = PaintingStyle.stroke
@@ -257,7 +297,7 @@ class _RadarPainter extends CustomPainter {
 
     // Static Rings
     for (int i = 1; i <= 4; i++) {
-        canvas.drawCircle(center, maxRadius * (i/4), paint);
+      canvas.drawCircle(center, maxRadius * (i / 4), paint);
     }
 
     // Ripple
@@ -266,7 +306,7 @@ class _RadarPainter extends CustomPainter {
       ..color = color.withValues(alpha: 1.0 - animation.value)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
-      
+
     canvas.drawCircle(center, rippleRadius, ripplePaint);
   }
 

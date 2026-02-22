@@ -4,9 +4,9 @@ part 'shift_entities.freezed.dart';
 part 'shift_entities.g.dart';
 
 enum ShiftStatus {
-  active,     // Currently clocked in
-  completed,  // Clocked out normally
-  autoEnded,  // System ended shift (forgot to clock out)
+  active, // Currently clocked in
+  completed, // Clocked out normally
+  autoEnded, // System ended shift (forgot to clock out)
 }
 
 @freezed
@@ -27,7 +27,8 @@ class ShiftSession with _$ShiftSession {
     @Default(ShiftStatus.active) ShiftStatus status,
   }) = _ShiftSession;
 
-  factory ShiftSession.fromJson(Map<String, dynamic> json) => _$ShiftSessionFromJson(json);
+  factory ShiftSession.fromJson(Map<String, dynamic> json) =>
+      _$ShiftSessionFromJson(json);
 }
 
 extension ShiftSessionX on ShiftSession {
@@ -64,5 +65,6 @@ class EmployeeShiftSummary with _$EmployeeShiftSummary {
     required int shiftCount,
   }) = _EmployeeShiftSummary;
 
-  factory EmployeeShiftSummary.fromJson(Map<String, dynamic> json) => _$EmployeeShiftSummaryFromJson(json);
+  factory EmployeeShiftSummary.fromJson(Map<String, dynamic> json) =>
+      _$EmployeeShiftSummaryFromJson(json);
 }

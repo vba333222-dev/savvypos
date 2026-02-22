@@ -38,14 +38,14 @@ final getIt = GetIt.instance;
 )
 Future<void> configureDependencies(String environment) async {
   getIt.init(environment: environment);
-  
+
   // Manual registrations for new feature repositories
   if (!getIt.isRegistered<IMarketingRepository>()) {
     getIt.registerLazySingleton<IMarketingRepository>(
       () => MarketingRepositoryImpl(getIt<AppDatabase>()),
     );
   }
-  
+
   if (!getIt.isRegistered<IDeliveryRepository>()) {
     getIt.registerLazySingleton<IDeliveryRepository>(
       () => DeliveryRepositoryImpl(getIt<AppDatabase>()),
@@ -61,31 +61,31 @@ Future<void> configureDependencies(String environment) async {
       ),
     );
   }
-  
+
   if (!getIt.isRegistered<IAnalyticsRepository>()) {
     getIt.registerLazySingleton<IAnalyticsRepository>(
       () => AnalyticsRepositoryImpl(getIt<AppDatabase>()),
     );
   }
-  
+
   if (!getIt.isRegistered<IShiftRepository>()) {
     getIt.registerLazySingleton<IShiftRepository>(
       () => ShiftRepositoryImpl(getIt<AppDatabase>()),
     );
   }
-  
+
   if (!getIt.isRegistered<ILoyaltyRepository>()) {
     getIt.registerLazySingleton<ILoyaltyRepository>(
       () => LoyaltyRepositoryImpl(getIt<AppDatabase>()),
     );
   }
-  
+
   if (!getIt.isRegistered<ICashDrawerRepository>()) {
     getIt.registerLazySingleton<ICashDrawerRepository>(
       () => CashDrawerRepositoryImpl(getIt<AppDatabase>()),
     );
   }
-  
+
   if (!getIt.isRegistered<ICustomerCrmRepository>()) {
     getIt.registerLazySingleton<ICustomerCrmRepository>(
       () => CustomerCrmRepositoryImpl(getIt<AppDatabase>()),

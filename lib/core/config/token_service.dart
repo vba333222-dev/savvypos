@@ -12,11 +12,13 @@ class TokenService {
 
   Future<void> loadTokens() async {
     try {
-      final jsonString = await rootBundle.loadString('assets/config/token.json');
+      final jsonString =
+          await rootBundle.loadString('assets/config/token.json');
       _tokens = json.decode(jsonString);
       _logger.i('TokenService: loaded token.json');
     } catch (e) {
-      _logger.e('TokenService: Failed to load token.json. Using fallbacks.', error: e);
+      _logger.e('TokenService: Failed to load token.json. Using fallbacks.',
+          error: e);
       _tokens = null;
     }
   }
@@ -35,9 +37,9 @@ class TokenService {
 
   // --- Motion ---
   int? getDuration(String key) {
-     final val = _tokens?['motion']?[key];
-     if (val is num) return val.toInt();
-     return null;
+    final val = _tokens?['motion']?[key];
+    if (val is num) return val.toInt();
+    return null;
   }
 
   // --- Elevations ---

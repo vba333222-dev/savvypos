@@ -16,17 +16,20 @@ class ProcessPaymentUseCase {
   }) async {
     // 1. Validate
     if (amount <= 0) throw Exception('Payment amount must be positive');
-    
+
     // 2. Calculate Change
     double? change;
     if (method == PaymentMethod.cash && tendered != null) {
-      if (tendered < amount) throw Exception('Tendered amount is less than due amount');
+      if (tendered < amount)
+        throw Exception('Tendered amount is less than due amount');
       change = tendered - amount;
     }
 
     // 3. Create Transaction
     final transaction = PaymentTransaction(
-      uuid: DateTime.now().millisecondsSinceEpoch.toString(), // Temporary UUID gen
+      uuid: DateTime.now()
+          .millisecondsSinceEpoch
+          .toString(), // Temporary UUID gen
       orderUuid: orderUuid,
       method: method,
       amount: amount,

@@ -25,7 +25,7 @@ part 'test_database.g.dart';
   TimeEntryTable,
   // Tables from gift_card_tables.dart
   GiftCardTable,
-  // Tables from loyalty_tables.dart  
+  // Tables from loyalty_tables.dart
   LoyaltyProgramTable,
   LoyaltyMemberTable,
   LoyaltyTransactionTable,
@@ -47,7 +47,7 @@ part 'test_database.g.dart';
 ])
 class TestDatabase extends _$TestDatabase {
   TestDatabase() : super(NativeDatabase.memory());
-  
+
   @override
   int get schemaVersion => 1;
 }

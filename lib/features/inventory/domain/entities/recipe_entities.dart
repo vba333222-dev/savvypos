@@ -14,7 +14,8 @@ class Ingredient with _$Ingredient {
     @Default(false) bool isDeleted,
   }) = _Ingredient;
 
-  factory Ingredient.fromJson(Map<String, dynamic> json) => _$IngredientFromJson(json);
+  factory Ingredient.fromJson(Map<String, dynamic> json) =>
+      _$IngredientFromJson(json);
 }
 
 @freezed
@@ -33,8 +34,9 @@ class RecipeItem with _$RecipeItem {
     required String ingredientUuid,
     required double quantityRequired,
     String? ingredientName, // Helper for UI
-    String? unit,          // Helper for UI
+    String? unit, // Helper for UI
   }) = _RecipeItem;
 
-  factory RecipeItem.fromJson(Map<String, dynamic> json) => _$RecipeItemFromJson(json);
+  factory RecipeItem.fromJson(Map<String, dynamic> json) =>
+      _$RecipeItemFromJson(json);
 }

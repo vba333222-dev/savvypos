@@ -8,5 +8,6 @@ abstract class ISalesRepository {
   Stream<List<Product>> watchProducts({String? categoryId});
   Future<List<ModifierGroupTableData>> getModifierGroups(String productUuid);
   Future<List<ModifierItemTableData>> getModifierItems(String groupId);
-  Future<String> createOrder(Cart cart, String? tableUuid, String? customerUuid);
+  Future<String> createOrder(
+      Cart cart, String? tableUuid, String? customerUuid);
 }

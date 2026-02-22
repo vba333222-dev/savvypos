@@ -10,7 +10,7 @@ abstract class IAnalyticsRepository {
 
   /// Get product mix (PMIX) analysis for a date range
   Future<List<MenuPerformance>> getProductMix(DateTimeRange range);
-  
+
   /// Get hourly sales breakdown for a specific day
   Future<List<HourlySales>> getHourlySales(DateTime date);
 }

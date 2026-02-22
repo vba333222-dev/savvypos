@@ -17,9 +17,24 @@ class GoodsReceiptPage extends StatefulWidget {
 class _GoodsReceiptPageState extends State<GoodsReceiptPage> {
   // Mock State
   final List<POItemUIModel> items = [
-    POItemUIModel(uuid: 'prod-001', name: 'Espresso Beans', sku: '001', ordered: 100, received: 0),
-    POItemUIModel(uuid: 'prod-002', name: 'Almond Milk', sku: '002', ordered: 50, received: 0),
-    POItemUIModel(uuid: 'prod-003', name: 'Paper Cups', sku: '003', ordered: 500, received: 100),
+    POItemUIModel(
+        uuid: 'prod-001',
+        name: 'Espresso Beans',
+        sku: '001',
+        ordered: 100,
+        received: 0),
+    POItemUIModel(
+        uuid: 'prod-002',
+        name: 'Almond Milk',
+        sku: '002',
+        ordered: 50,
+        received: 0),
+    POItemUIModel(
+        uuid: 'prod-003',
+        name: 'Paper Cups',
+        sku: '003',
+        ordered: 500,
+        received: 100),
   ];
 
   String? _lastScannedSku;
@@ -37,9 +52,9 @@ class _GoodsReceiptPageState extends State<GoodsReceiptPage> {
           // Play sound here
         }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Item $code not found in PO'), backgroundColor: Colors.orange)
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Item $code not found in PO'),
+            backgroundColor: Colors.orange));
       }
     });
 
@@ -66,15 +81,17 @@ class _GoodsReceiptPageState extends State<GoodsReceiptPage> {
           backgroundColor: context.savvy.colors.bgSurface,
           elevation: 0,
           actions: [
-             if (isComplete)
-               TextButton.icon(
-                 icon: const Icon(Icons.check_circle, color: Colors.green),
-                 label: const Text('FINISH', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
-                 onPressed: () {
-                   // Complete Usecase
-                   Navigator.pop(context);
-                 },
-               )
+            if (isComplete)
+              TextButton.icon(
+                icon: const Icon(Icons.check_circle, color: Colors.green),
+                label: const Text('FINISH',
+                    style: TextStyle(
+                        color: Colors.green, fontWeight: FontWeight.bold)),
+                onPressed: () {
+                  // Complete Usecase
+                  Navigator.pop(context);
+                },
+              )
           ],
         ),
         body: Column(
@@ -89,14 +106,19 @@ class _GoodsReceiptPageState extends State<GoodsReceiptPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SavvyText.label('PROGRESS'),
-                      SavvyText.h4('${(progress * 100).toInt()}%', color: isComplete ? Colors.green : context.savvy.colors.primary),
+                      SavvyText.h4('${(progress * 100).toInt()}%',
+                          color: isComplete
+                              ? Colors.green
+                              : context.savvy.colors.primary),
                     ],
                   ),
                   const SizedBox(height: 12),
                   LinearProgressIndicator(
-                    value: progress, 
+                    value: progress,
                     backgroundColor: context.savvy.colors.border,
-                    color: isComplete ? Colors.green : context.savvy.colors.primary,
+                    color: isComplete
+                        ? Colors.green
+                        : context.savvy.colors.primary,
                     minHeight: 12,
                     borderRadius: BorderRadius.circular(6),
                   ),
@@ -120,40 +142,46 @@ class _GoodsReceiptPageState extends State<GoodsReceiptPage> {
                     margin: const EdgeInsets.only(bottom: 12),
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: isJustScanned ? Colors.green.withValues(alpha: 0.2) : context.savvy.colors.bgSurface,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: isDone ? Colors.green : (isJustScanned ? Colors.green : Colors.transparent),
-                        width: isDone || isJustScanned ? 2 : 0
-                      )
-                    ),
+                        color: isJustScanned
+                            ? Colors.green.withValues(alpha: 0.2)
+                            : context.savvy.colors.bgSurface,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                            color: isDone
+                                ? Colors.green
+                                : (isJustScanned
+                                    ? Colors.green
+                                    : Colors.transparent),
+                            width: isDone || isJustScanned ? 2 : 0)),
                     child: Row(
                       children: [
                         // Status Icon
                         if (isDone)
-                          const Icon(Icons.check_circle, color: Colors.green, size: 32)
+                          const Icon(Icons.check_circle,
+                              color: Colors.green, size: 32)
                         else
                           Container(
-                            width: 32, height: 32,
+                            width: 32,
+                            height: 32,
                             decoration: BoxDecoration(
-                              color: context.savvy.colors.bgCanvas,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: context.savvy.colors.border)
-                            ),
+                                color: context.savvy.colors.bgCanvas,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    color: context.savvy.colors.border)),
                             child: Center(child: SavvyText.label(item.sku)),
                           ),
                         const SizedBox(width: 16),
 
                         // Details
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SavvyText.h4(item.name),
-                              SavvyText.body('SKU: ${item.sku}', color: context.savvy.colors.textSecondary),
-                            ],
-                          )
-                        ),
+                            child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SavvyText.h4(item.name),
+                            SavvyText.body('SKU: ${item.sku}',
+                                color: context.savvy.colors.textSecondary),
+                          ],
+                        )),
 
                         // Qty
                         Column(
@@ -169,18 +197,19 @@ class _GoodsReceiptPageState extends State<GoodsReceiptPage> {
                 },
               ),
             ),
-            
+
             // Manual Footer
             Container(
               padding: const EdgeInsets.all(16),
               color: context.savvy.colors.bgSurface,
               child: Row(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                 children: [
-                    const Icon(Icons.qr_code_scanner, size: 20),
-                    const SizedBox(width: 8),
-                    SavvyText.body('Ready to scan...', color: context.savvy.colors.textSecondary)
-                 ],
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.qr_code_scanner, size: 20),
+                  const SizedBox(width: 8),
+                  SavvyText.body('Ready to scan...',
+                      color: context.savvy.colors.textSecondary)
+                ],
               ),
             )
           ],
@@ -197,7 +226,12 @@ class POItemUIModel {
   final int ordered;
   final int received;
 
-  POItemUIModel({required this.uuid, required this.name, required this.sku, required this.ordered, required this.received});
+  POItemUIModel(
+      {required this.uuid,
+      required this.name,
+      required this.sku,
+      required this.ordered,
+      required this.received});
 
   POItemUIModel copyWith({int? received}) {
     return POItemUIModel(

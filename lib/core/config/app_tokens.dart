@@ -98,39 +98,71 @@ class _AppElevations {
 
   // Shadows (Light/Dark variants handled in ThemeConfig usually, but exposed here as raw data)
   // Converting straight from JSON to BoxShadow list
-  
+
   // None
   List<BoxShadow> get none => [];
 
   // SM
   List<BoxShadow> get smLight => [
-    BoxShadow(color: Color(0x0D000000), offset: Offset(0, 1), blurRadius: 2, spreadRadius: 0) // 0.05 opacity = 0x0D
-  ];
+        BoxShadow(
+            color: Color(0x0D000000),
+            offset: Offset(0, 1),
+            blurRadius: 2,
+            spreadRadius: 0) // 0.05 opacity = 0x0D
+      ];
   List<BoxShadow> get smDark => [
-    BoxShadow(color: Color(0x40000000), offset: Offset(0, 1), blurRadius: 2, spreadRadius: 0) // 0.25 opacity = 0x40
-  ];
+        BoxShadow(
+            color: Color(0x40000000),
+            offset: Offset(0, 1),
+            blurRadius: 2,
+            spreadRadius: 0) // 0.25 opacity = 0x40
+      ];
 
   // MD
   List<BoxShadow> get mdLight => [
-    BoxShadow(color: Color(0x1A000000), offset: Offset(0, 4), blurRadius: 6, spreadRadius: -1) // 0.1 opacity = 0x1A
-  ];
+        BoxShadow(
+            color: Color(0x1A000000),
+            offset: Offset(0, 4),
+            blurRadius: 6,
+            spreadRadius: -1) // 0.1 opacity = 0x1A
+      ];
   List<BoxShadow> get mdDark => [
-    BoxShadow(color: Color(0x66000000), offset: Offset(0, 4), blurRadius: 6, spreadRadius: -1) // 0.4 opacity = 0x66
-  ];
+        BoxShadow(
+            color: Color(0x66000000),
+            offset: Offset(0, 4),
+            blurRadius: 6,
+            spreadRadius: -1) // 0.4 opacity = 0x66
+      ];
 
   // LG
   List<BoxShadow> get lgLight => [
-    BoxShadow(color: Color(0x1A000000), offset: Offset(0, 10), blurRadius: 15, spreadRadius: -3) // 0.1 opacity = 0x1A
-  ];
+        BoxShadow(
+            color: Color(0x1A000000),
+            offset: Offset(0, 10),
+            blurRadius: 15,
+            spreadRadius: -3) // 0.1 opacity = 0x1A
+      ];
   List<BoxShadow> get lgDark => [
-    BoxShadow(color: Color(0x80000000), offset: Offset(0, 10), blurRadius: 15, spreadRadius: -3) // 0.5 opacity = 0x80
-  ];
+        BoxShadow(
+            color: Color(0x80000000),
+            offset: Offset(0, 10),
+            blurRadius: 15,
+            spreadRadius: -3) // 0.5 opacity = 0x80
+      ];
 
   // Floating
   List<BoxShadow> get floatingLight => [
-    BoxShadow(color: Color(0x26000000), offset: Offset(0, 20), blurRadius: 25, spreadRadius: -5) // 0.15 opacity = 0x26
-  ];
+        BoxShadow(
+            color: Color(0x26000000),
+            offset: Offset(0, 20),
+            blurRadius: 25,
+            spreadRadius: -5) // 0.15 opacity = 0x26
+      ];
   List<BoxShadow> get floatingDark => [
-    BoxShadow(color: Color(0x99000000), offset: Offset(0, 20), blurRadius: 25, spreadRadius: -5) // 0.6 opacity = 0x99
-  ];
+        BoxShadow(
+            color: Color(0x99000000),
+            offset: Offset(0, 20),
+            blurRadius: 25,
+            spreadRadius: -5) // 0.6 opacity = 0x99
+      ];
 }

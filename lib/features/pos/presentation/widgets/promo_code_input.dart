@@ -23,7 +23,7 @@ class _PromoCodeInputState extends State<PromoCodeInput> {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     return Row(
       children: [
         Expanded(
@@ -33,8 +33,10 @@ class _PromoCodeInputState extends State<PromoCodeInput> {
               controller: _controller,
               decoration: InputDecoration(
                 hintText: 'Enter Promo Code',
-                hintStyle: TextStyle(fontSize: 14, color: theme.colors.textSecondary),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                hintStyle:
+                    TextStyle(fontSize: 14, color: theme.colors.textSecondary),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
                   borderSide: BorderSide(color: theme.colors.borderDefault),
@@ -45,7 +47,8 @@ class _PromoCodeInputState extends State<PromoCodeInput> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
-                  borderSide: BorderSide(color: theme.colors.brandPrimary, width: 2),
+                  borderSide:
+                      BorderSide(color: theme.colors.brandPrimary, width: 2),
                 ),
                 filled: true,
                 fillColor: theme.colors.bgPrimary,
@@ -66,14 +69,18 @@ class _PromoCodeInputState extends State<PromoCodeInput> {
           child: ElevatedButton(
             onPressed: () => _applyPromo(context),
             style: ElevatedButton.styleFrom(
-              backgroundColor: theme.colors.brandSecondary, // Make it pop a bit more or keep neutral?
+              backgroundColor: theme.colors
+                  .brandSecondary, // Make it pop a bit more or keep neutral?
               foregroundColor: theme.colors.brandPrimary,
               elevation: 0,
-              side: BorderSide(color: theme.colors.brandPrimary.withValues(alpha: 0.5)),
+              side: BorderSide(
+                  color: theme.colors.brandPrimary.withValues(alpha: 0.5)),
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(theme.shapes.radiusMd)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(theme.shapes.radiusMd)),
             ),
-            child: const Text('APPLY', style: TextStyle(fontWeight: FontWeight.bold)),
+            child: const Text('APPLY',
+                style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ),
       ],

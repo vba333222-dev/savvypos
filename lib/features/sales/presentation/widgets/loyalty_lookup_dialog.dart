@@ -30,7 +30,8 @@ class _LoyaltyLookupDialogState extends State<LoyaltyLookupDialog> {
           children: [
             Padding(
               padding: const EdgeInsets.all(24.0),
-              child: Text("Loyalty Lookup", style: Theme.of(context).textTheme.headlineSmall),
+              child: Text("Loyalty Lookup",
+                  style: Theme.of(context).textTheme.headlineSmall),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -41,7 +42,8 @@ class _LoyaltyLookupDialogState extends State<LoyaltyLookupDialog> {
                   border: const OutlineInputBorder(),
                   prefixIcon: const Icon(Icons.phone),
                   errorText: _error,
-                  suffixIcon: IconButton(icon: const Icon(Icons.search), onPressed: _search),
+                  suffixIcon: IconButton(
+                      icon: const Icon(Icons.search), onPressed: _search),
                 ),
                 readOnly: true, // Use Numpad
               ),
@@ -50,32 +52,33 @@ class _LoyaltyLookupDialogState extends State<LoyaltyLookupDialog> {
             Expanded(
               child: NumpadWidget(
                 onKeyPressed: (key) {
-                   if (key == '.') return; // Phone doesn't have decimals
-                   setState(() {
-                     _phoneCtrl.text += key;
-                     _error = null;
-                   });
+                  if (key == '.') return; // Phone doesn't have decimals
+                  setState(() {
+                    _phoneCtrl.text += key;
+                    _error = null;
+                  });
                 },
                 onClear: () => setState(() => _phoneCtrl.clear()),
                 onBackspace: () {
                   if (_phoneCtrl.text.isNotEmpty) {
-                    setState(() => _phoneCtrl.text = _phoneCtrl.text.substring(0, _phoneCtrl.text.length - 1));
+                    setState(() => _phoneCtrl.text = _phoneCtrl.text
+                        .substring(0, _phoneCtrl.text.length - 1));
                   }
                 },
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(24.0),
-              child: _isLoading 
-                ? const CircularProgressIndicator()
-                : SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: _search,
-                    child: const Text("FIND MEMBER"),
-                  ),
-                ),
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: _search,
+                        child: const Text("FIND MEMBER"),
+                      ),
+                    ),
             )
           ],
         ),
@@ -85,7 +88,7 @@ class _LoyaltyLookupDialogState extends State<LoyaltyLookupDialog> {
 
   Future<void> _search() async {
     if (_phoneCtrl.text.isEmpty) return;
-    
+
     setState(() {
       _isLoading = true;
       _error = null;
@@ -94,56 +97,56 @@ class _LoyaltyLookupDialogState extends State<LoyaltyLookupDialog> {
     try {
       final repo = GetIt.I<ILoyaltyRepository>();
       final member = await repo.getMemberByPhone(_phoneCtrl.text);
-      
+
       if (member != null) {
         widget.onMemberSelected(member);
         if (mounted) Navigator.pop(context);
       } else {
         // Offer to Enroll
         if (mounted) {
-           setState(() => _isLoading = false);
-           _showEnrollDialog();
+          setState(() => _isLoading = false);
+          _showEnrollDialog();
         }
       }
     } catch (e) {
       if (mounted) {
         setState(() {
-        _isLoading = false;
-        _error = e.toString();
-      });
+          _isLoading = false;
+          _error = e.toString();
+        });
       }
     }
   }
-  
+
   void _showEnrollDialog() {
     showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: const Text("Member Not Found"),
-        content: const Text("Would you like to enroll this customer?"),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancel")),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.pop(context); // Close confirm
-              // Simple enrollment logic for MVP
-              try {
-                final repo = GetIt.I<ILoyaltyRepository>();
-                // Generate a UUID for customer (in real app, creating Customer entity first)
-                // Here we just enroll directly into Loyalty which creates the record.
-                final member = await repo.enrollCustomer(
-                   const Uuid().v4(), // Hack: generating random UUID. Ideally linked to CRM.
-                   "New Member", 
-                   _phoneCtrl.text
-                );
-                widget.onMemberSelected(member);
-                if (mounted) Navigator.pop(context); // Close Lookup
-              } catch (_) {}
-            }, 
-            child: const Text("Enroll")
-          ),
-        ],
-      )
-    );
+        context: context,
+        builder: (_) => AlertDialog(
+              title: const Text("Member Not Found"),
+              content: const Text("Would you like to enroll this customer?"),
+              actions: [
+                TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text("Cancel")),
+                ElevatedButton(
+                    onPressed: () async {
+                      Navigator.pop(context); // Close confirm
+                      // Simple enrollment logic for MVP
+                      try {
+                        final repo = GetIt.I<ILoyaltyRepository>();
+                        // Generate a UUID for customer (in real app, creating Customer entity first)
+                        // Here we just enroll directly into Loyalty which creates the record.
+                        final member = await repo.enrollCustomer(
+                            const Uuid()
+                                .v4(), // Hack: generating random UUID. Ideally linked to CRM.
+                            "New Member",
+                            _phoneCtrl.text);
+                        widget.onMemberSelected(member);
+                        if (mounted) Navigator.pop(context); // Close Lookup
+                      } catch (_) {}
+                    },
+                    child: const Text("Enroll")),
+              ],
+            ));
   }
 }

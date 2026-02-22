@@ -14,7 +14,7 @@ class ReceiveStockTransfer {
     if (transferUuid.isEmpty) {
       throw Exception("Transfer UUID cannot be empty.");
     }
-    
+
     await _repository.receiveStockTransfer(transferUuid, receiverId);
   }
 }

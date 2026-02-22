@@ -25,15 +25,14 @@ class _IngredientListPageState extends State<IngredientListPage> {
   Future<void> _loadIngredients() async {
     final result = await _repo.getAllIngredients();
     result.fold(
-      (l) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.message))),
-      (list) {
-        if (!mounted) return;
-        setState(() {
-          _ingredients = list;
-          _isLoading = false;
-        });
-      }
-    );
+        (l) => ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(l.message))), (list) {
+      if (!mounted) return;
+      setState(() {
+        _ingredients = list;
+        _isLoading = false;
+      });
+    });
   }
 
   @override
@@ -54,7 +53,8 @@ class _IngredientListPageState extends State<IngredientListPage> {
                     final item = _ingredients[index];
                     return ListTile(
                       title: Text(item.name),
-                      subtitle: Text('${item.currentStock} ${item.unit} | Cost: \$${item.costPerUnit}/${item.unit}'),
+                      subtitle: Text(
+                          '${item.currentStock} ${item.unit} | Cost: \$${item.costPerUnit}/${item.unit}'),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete),
                         onPressed: () async {
@@ -72,8 +72,10 @@ class _IngredientListPageState extends State<IngredientListPage> {
   Future<void> _showDialog({Ingredient? ingredient}) async {
     final nameCtrl = TextEditingController(text: ingredient?.name ?? '');
     final unitCtrl = TextEditingController(text: ingredient?.unit ?? 'units');
-    final stockCtrl = TextEditingController(text: ingredient?.currentStock.toString() ?? '0');
-    final costCtrl = TextEditingController(text: ingredient?.costPerUnit.toString() ?? '0.0');
+    final stockCtrl =
+        TextEditingController(text: ingredient?.currentStock.toString() ?? '0');
+    final costCtrl = TextEditingController(
+        text: ingredient?.costPerUnit.toString() ?? '0.0');
 
     await showDialog(
       context: context,
@@ -83,15 +85,27 @@ class _IngredientListPageState extends State<IngredientListPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextField(controller: nameCtrl, decoration: const InputDecoration(labelText: 'Name')),
-              TextField(controller: unitCtrl, decoration: const InputDecoration(labelText: 'Unit (e.g. g, ml, pcs)')),
-              TextField(controller: stockCtrl, decoration: const InputDecoration(labelText: 'Current Stock'), keyboardType: TextInputType.number),
-              TextField(controller: costCtrl, decoration: const InputDecoration(labelText: 'Cost Per Unit'), keyboardType: TextInputType.number),
+              TextField(
+                  controller: nameCtrl,
+                  decoration: const InputDecoration(labelText: 'Name')),
+              TextField(
+                  controller: unitCtrl,
+                  decoration: const InputDecoration(
+                      labelText: 'Unit (e.g. g, ml, pcs)')),
+              TextField(
+                  controller: stockCtrl,
+                  decoration: const InputDecoration(labelText: 'Current Stock'),
+                  keyboardType: TextInputType.number),
+              TextField(
+                  controller: costCtrl,
+                  decoration: const InputDecoration(labelText: 'Cost Per Unit'),
+                  keyboardType: TextInputType.number),
             ],
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
           ElevatedButton(
             onPressed: () async {
               if (nameCtrl.text.isNotEmpty) {
@@ -104,8 +118,8 @@ class _IngredientListPageState extends State<IngredientListPage> {
                 );
                 await _repo.saveIngredient(newIg);
                 if (mounted) {
-                   Navigator.of(context).pop();
-                   _loadIngredients();
+                  Navigator.of(context).pop();
+                  _loadIngredients();
                 }
               }
             },

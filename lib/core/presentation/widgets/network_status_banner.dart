@@ -147,14 +147,13 @@ class _BannerContent extends StatelessWidget {
           final dynamicLabel = (countdown != null && countdown > 0)
               ? 'Cuba menyambung semula dalam $countdown saat...'
               : defaultLabel;
-              
+
           return buildRow(dynamicLabel);
         },
-      ).animate(onPlay: (c) => c.repeat(reverse: true))
-       .shimmer(
-         duration: 2000.ms,
-         color: Colors.white.withValues(alpha: 0.15),
-       );
+      ).animate(onPlay: (c) => c.repeat(reverse: true)).shimmer(
+            duration: 2000.ms,
+            color: Colors.white.withValues(alpha: 0.15),
+          );
     } else {
       content = buildRow(defaultLabel);
     }
@@ -162,7 +161,8 @@ class _BannerContent extends StatelessWidget {
     // Both states slide in from top when they appear
     return content
         .animate()
-        .slideY(begin: -1.0, end: 0, duration: 280.ms, curve: Curves.easeOutCubic)
+        .slideY(
+            begin: -1.0, end: 0, duration: 280.ms, curve: Curves.easeOutCubic)
         .fadeIn(duration: 200.ms);
   }
 }
@@ -173,36 +173,38 @@ class SyncCloudStatusIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!GetIt.I.isRegistered<SyncWorker>()) return const SizedBox.shrink();
-    
-    return StreamBuilder<int>(
-      stream: GetIt.I<SyncWorker>().pendingQueueCountStatus,
-      initialData: 0,
-      builder: (context, snapshot) {
-        final count = snapshot.data ?? 0;
-        final isSyncing = count > 0;
 
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              isSyncing ? '$count queuing' : 'Synced',
-              style: TextStyle(
-                color: const Color(0xFF1A1A1A).withValues(alpha: isSyncing ? 1.0 : 0.6),
-                fontSize: 10,
-                fontWeight: FontWeight.w600,
+    return StreamBuilder<int>(
+        stream: GetIt.I<SyncWorker>().pendingQueueCountStatus,
+        initialData: 0,
+        builder: (context, snapshot) {
+          final count = snapshot.data ?? 0;
+          final isSyncing = count > 0;
+
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                isSyncing ? '$count queuing' : 'Synced',
+                style: TextStyle(
+                  color: const Color(0xFF1A1A1A)
+                      .withValues(alpha: isSyncing ? 1.0 : 0.6),
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
-            const SizedBox(width: 4),
-            isSyncing 
-              ? const Icon(Icons.cloud_sync_outlined, size: 14, color: Color(0xFF1A1A1A))
-                  .animate(onPlay: (c) => c.repeat())
-                  .rotate(duration: 2.seconds)
-              : const Icon(Icons.cloud_done_outlined, size: 14, color: Color(0xFF1A1A1A))
-                  .animate()
-                  .fade(duration: 400.ms),
-          ],
-        );
-      }
-    );
+              const SizedBox(width: 4),
+              isSyncing
+                  ? const Icon(Icons.cloud_sync_outlined,
+                          size: 14, color: Color(0xFF1A1A1A))
+                      .animate(onPlay: (c) => c.repeat())
+                      .rotate(duration: 2.seconds)
+                  : const Icon(Icons.cloud_done_outlined,
+                          size: 14, color: Color(0xFF1A1A1A))
+                      .animate()
+                      .fade(duration: 400.ms),
+            ],
+          );
+        });
   }
 }

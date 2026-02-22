@@ -4,22 +4,22 @@ class KioskWelcomePage extends StatelessWidget {
   final VoidCallback onStart;
 
   const KioskWelcomePage({
-    super.key, 
+    super.key,
     required this.onStart,
   });
 
   @override
   Widget build(BuildContext context) {
-     return Stack(
+    return Stack(
       fit: StackFit.expand,
       children: [
         // Background
         Image.asset(
           'assets/images/kiosk_landing.jpg', // Placeholder
           fit: BoxFit.cover,
-           errorBuilder: (_,__,___) => Container(color: Colors.black),
+          errorBuilder: (_, __, ___) => Container(color: Colors.black),
         ),
-        
+
         // Gradient overlay
         Container(
           decoration: BoxDecoration(
@@ -41,7 +41,8 @@ class KioskWelcomePage extends StatelessWidget {
             children: [
               const Spacer(),
               // Logo
-              const Icon(Icons.fastfood, size: 80, color: Colors.white), // Placeholder logo
+              const Icon(Icons.fastfood,
+                  size: 80, color: Colors.white), // Placeholder logo
               const SizedBox(height: 24),
               const Text(
                 'Savvy Burger',
@@ -61,23 +62,25 @@ class KioskWelcomePage extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              
+
               // Start Button with Pulse Effect (simulated static for now)
               GestureDetector(
                 onTap: onStart,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 64, vertical: 32),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 64, vertical: 32),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.circular(60),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context).primaryColor.withValues(alpha: 0.5),
-                        blurRadius: 30,
-                        spreadRadius: 5,
-                      )
-                    ]
-                  ),
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(60),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context)
+                              .primaryColor
+                              .withValues(alpha: 0.5),
+                          blurRadius: 30,
+                          spreadRadius: 5,
+                        )
+                      ]),
                   child: const Text(
                     'ORDER NOW',
                     style: TextStyle(
@@ -88,9 +91,9 @@ class KioskWelcomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 64),
-              
+
               // Language Selector (Mock)
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

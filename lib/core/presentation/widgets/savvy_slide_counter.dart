@@ -30,8 +30,9 @@ class _SavvySlideCounterState extends State<SavvySlideCounter> {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    final effectiveStyle = widget.style ?? SavvyTextStyle.bodyMedium.copyWith(color: theme.colors.textPrimary);
-    
+    final effectiveStyle = widget.style ??
+        SavvyTextStyle.bodyMedium.copyWith(color: theme.colors.textPrimary);
+
     // Determine direction: Increment = Slide Up (New comes from bottom), Decrement = Slide Down (New comes from top)
     final bool isIncrement = (widget.value > (_oldValue ?? widget.value));
 
@@ -39,19 +40,21 @@ class _SavvySlideCounterState extends State<SavvySlideCounter> {
       duration: widget.duration,
       transitionBuilder: (Widget child, Animation<double> animation) {
         final inTween = Tween<Offset>(
-          begin: Offset(0.0, isIncrement ? 1.0 : -1.0), 
+          begin: Offset(0.0, isIncrement ? 1.0 : -1.0),
           end: Offset.zero,
         );
-        
+
         final outTween = Tween<Offset>(
-          begin: Offset(0.0, isIncrement ? -1.0 : 1.0), 
+          begin: Offset(0.0, isIncrement ? -1.0 : 1.0),
           end: Offset.zero,
         );
 
         if (child.key == ValueKey(widget.value)) {
-           return SlideTransition(position: inTween.animate(animation), child: child);
+          return SlideTransition(
+              position: inTween.animate(animation), child: child);
         } else {
-           return SlideTransition(position: outTween.animate(animation), child: child);
+          return SlideTransition(
+              position: outTween.animate(animation), child: child);
         }
       },
       layoutBuilder: (currentChild, previousChildren) {

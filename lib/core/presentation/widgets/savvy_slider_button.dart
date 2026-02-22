@@ -32,7 +32,7 @@ class _SavvySliderButtonState extends State<SavvySliderButton> {
   Widget build(BuildContext context) {
     final theme = context.savvy;
     final primaryColor = widget.color ?? theme.colors.brandPrimary;
-    
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final maxWidth = constraints.maxWidth;
@@ -42,7 +42,9 @@ class _SavvySliderButtonState extends State<SavvySliderButton> {
         return Container(
           height: widget.height,
           decoration: BoxDecoration(
-            color: widget.enabled ? theme.colors.bgElevated : theme.colors.bgSurface,
+            color: widget.enabled
+                ? theme.colors.bgElevated
+                : theme.colors.bgSurface,
             borderRadius: BorderRadius.circular(theme.shapes.radiusPill),
             border: Border.all(color: theme.colors.borderDefault),
             boxShadow: theme.elevations.sm,
@@ -56,14 +58,16 @@ class _SavvySliderButtonState extends State<SavvySliderButton> {
                   child: Text(
                     widget.label,
                     style: TextStyle(
-                      color: widget.enabled ? theme.colors.textSecondary : theme.colors.textMuted,
+                      color: widget.enabled
+                          ? theme.colors.textSecondary
+                          : theme.colors.textMuted,
                       fontWeight: FontWeight.w600,
                       letterSpacing: 1.0,
                     ),
                   ),
                 ),
               ),
-              
+
               // Progress Fill
               Container(
                 width: sliderWidth + _dragValue,
@@ -81,7 +85,8 @@ class _SavvySliderButtonState extends State<SavvySliderButton> {
                   onHorizontalDragUpdate: (details) {
                     if (!widget.enabled || _confirmed) return;
                     setState(() {
-                      _dragValue = (_dragValue + details.delta.dx).clamp(0.0, travelDistance);
+                      _dragValue = (_dragValue + details.delta.dx)
+                          .clamp(0.0, travelDistance);
                     });
                   },
                   onHorizontalDragEnd: (details) {
@@ -105,14 +110,16 @@ class _SavvySliderButtonState extends State<SavvySliderButton> {
                     width: sliderWidth,
                     height: widget.height,
                     decoration: BoxDecoration(
-                      color: widget.enabled ? primaryColor : theme.colors.textMuted,
+                      color: widget.enabled
+                          ? primaryColor
+                          : theme.colors.textMuted,
                       shape: BoxShape.circle,
                       boxShadow: [
-                         BoxShadow(
-                           color: Colors.black26, 
-                           blurRadius: 4, 
-                           offset: Offset(0, 2),
-                         )
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        )
                       ],
                     ),
                     child: Icon(

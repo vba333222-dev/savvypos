@@ -15,13 +15,39 @@ class EMenuHomePage extends StatefulWidget {
 
 class _EMenuHomePageState extends State<EMenuHomePage> {
   // Mock Data
-  final List<String> stories = ['🔥 Hot', '⭐ Chef', '🍔 Burger', '🥤 Drinks', '🍰 Dessert'];
+  final List<String> stories = [
+    '🔥 Hot',
+    '⭐ Chef',
+    '🍔 Burger',
+    '🥤 Drinks',
+    '🍰 Dessert'
+  ];
   final List<Map<String, dynamic>> products = [
-    {'name': 'Truffle Burger', 'price': 15.00, 'image': 'https://placehold.co/150x150/orange/white?text=Burger'},
-    {'name': 'Wagyu Steak', 'price': 45.00, 'image': 'https://placehold.co/150x150/red/white?text=Steak'},
-    {'name': 'Caesar Salad', 'price': 12.00, 'image': 'https://placehold.co/150x150/green/white?text=Salad'},
-    {'name': 'Mojito', 'price': 8.00, 'image': 'https://placehold.co/150x150/blue/white?text=Mojito'},
-    {'name': 'Cheesecake', 'price': 9.00, 'image': 'https://placehold.co/150x150/purple/white?text=Cake'},
+    {
+      'name': 'Truffle Burger',
+      'price': 15.00,
+      'image': 'https://placehold.co/150x150/orange/white?text=Burger'
+    },
+    {
+      'name': 'Wagyu Steak',
+      'price': 45.00,
+      'image': 'https://placehold.co/150x150/red/white?text=Steak'
+    },
+    {
+      'name': 'Caesar Salad',
+      'price': 12.00,
+      'image': 'https://placehold.co/150x150/green/white?text=Salad'
+    },
+    {
+      'name': 'Mojito',
+      'price': 8.00,
+      'image': 'https://placehold.co/150x150/blue/white?text=Mojito'
+    },
+    {
+      'name': 'Cheesecake',
+      'price': 9.00,
+      'image': 'https://placehold.co/150x150/purple/white?text=Cake'
+    },
   ];
 
   int cartCount = 0;
@@ -62,9 +88,13 @@ class _EMenuHomePageState extends State<EMenuHomePage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                             const SavvyText.h2('Savvy Menu'),
-                             if (widget.tableId != null) 
-                               Chip(label: Text('Table ${widget.tableId}'), backgroundColor: Colors.black, labelStyle: const TextStyle(color: Colors.white)),
+                            const SavvyText.h2('Savvy Menu'),
+                            if (widget.tableId != null)
+                              Chip(
+                                  label: Text('Table ${widget.tableId}'),
+                                  backgroundColor: Colors.black,
+                                  labelStyle:
+                                      const TextStyle(color: Colors.white)),
                           ],
                         ),
                       ),
@@ -84,7 +114,10 @@ class _EMenuHomePageState extends State<EMenuHomePage> {
                                     padding: const EdgeInsets.all(3),
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      gradient: const LinearGradient(colors: [Colors.purple, Colors.orange]),
+                                      gradient: const LinearGradient(colors: [
+                                        Colors.purple,
+                                        Colors.orange
+                                      ]),
                                     ),
                                     child: CircleAvatar(
                                       radius: 30,
@@ -92,7 +125,9 @@ class _EMenuHomePageState extends State<EMenuHomePage> {
                                       child: CircleAvatar(
                                         radius: 27,
                                         backgroundColor: Colors.grey.shade200,
-                                        child: Text(stories[index][0], style: const TextStyle(fontSize: 24)),
+                                        child: Text(stories[index][0],
+                                            style:
+                                                const TextStyle(fontSize: 24)),
                                       ),
                                     ),
                                   ),
@@ -111,7 +146,8 @@ class _EMenuHomePageState extends State<EMenuHomePage> {
 
               // 2. Product List
               SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
@@ -121,7 +157,11 @@ class _EMenuHomePageState extends State<EMenuHomePage> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CommonNetworkImage(url: product['image'], width: 100, height: 100, radius: 12),
+                            CommonNetworkImage(
+                                url: product['image'],
+                                width: 100,
+                                height: 100,
+                                radius: 12),
                             const SizedBox(width: 16),
                             Expanded(
                               child: Column(
@@ -129,10 +169,13 @@ class _EMenuHomePageState extends State<EMenuHomePage> {
                                 children: [
                                   SavvyText.h4(product['name']),
                                   const SizedBox(height: 4),
-                                  SavvyText.body('Delicious description goes here.', color: Colors.grey),
+                                  SavvyText.body(
+                                      'Delicious description goes here.',
+                                      color: Colors.grey),
                                   const SizedBox(height: 8),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       SavvyText.h4('\$${product['price']}'),
                                       _LiquidAddButton(onAdd: _addToCart),
@@ -143,13 +186,16 @@ class _EMenuHomePageState extends State<EMenuHomePage> {
                             )
                           ],
                         ),
-                      ).animate().fadeIn(delay: (100 * index).ms).slideY(begin: 0.2);
+                      )
+                          .animate()
+                          .fadeIn(delay: (100 * index).ms)
+                          .slideY(begin: 0.2);
                     },
                     childCount: products.length,
                   ),
                 ),
               ),
-              
+
               const SliverToBoxAdapter(child: SizedBox(height: 100)),
             ],
           ),
@@ -163,58 +209,83 @@ class _EMenuHomePageState extends State<EMenuHomePage> {
               child: GestureDetector(
                 onTap: _placeOrder,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                   decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(32),
-                    boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.3), blurRadius: 20, offset: const Offset(0, 10))]
-                  ),
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(32),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.3),
+                            blurRadius: 20,
+                            offset: const Offset(0, 10))
+                      ]),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                        decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(12)),
-                        child: Text('$cartCount items', style: const TextStyle(color: Colors.white)),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Text('$cartCount items',
+                            style: const TextStyle(color: Colors.white)),
                       ),
-                      const Text('View Cart', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
-                      const Text('\$54.00', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+                      const Text('View Cart',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16)),
+                      const Text('\$54.00',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16)),
                     ],
                   ),
                 ),
               ).animate().scale(curve: Curves.elasticOut, duration: 400.ms),
             ),
-            
+
           // 4. Cooking Tracker Overlay
           if (isCooking)
             Positioned(
-               bottom: 0,
-               left: 0,
-               right: 0,
-               child: Container(
-                 padding: const EdgeInsets.all(24),
-                 decoration: BoxDecoration(
-                   color: Colors.white,
-                   borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-                   boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 20)]
-                 ),
-                 child: Column(
-                   mainAxisSize: MainAxisSize.min,
-                   children: [
-                     const SavvyText.h3('Order #1234'),
-                     const SizedBox(height: 24),
-                     Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                       children: [
-                         _TrackerStep(icon: '👨‍🍳', label: 'Cooking', isActive: true),
-                         _TrackerStep(icon: '🛎️', label: 'Ready', isActive: false),
-                         _TrackerStep(icon: '🏃', label: 'Serving', isActive: false),
-                       ],
-                     ),
-                     const SizedBox(height: 16),
-                   ],
-                 ),
-               ).animate().slideY(begin: 1, duration: 400.ms, curve: Curves.easeOutBack),
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                        const BorderRadius.vertical(top: Radius.circular(24)),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.1),
+                          blurRadius: 20)
+                    ]),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SavvyText.h3('Order #1234'),
+                    const SizedBox(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        _TrackerStep(
+                            icon: '👨‍🍳', label: 'Cooking', isActive: true),
+                        _TrackerStep(
+                            icon: '🛎️', label: 'Ready', isActive: false),
+                        _TrackerStep(
+                            icon: '🏃', label: 'Serving', isActive: false),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              ).animate().slideY(
+                  begin: 1, duration: 400.ms, curve: Curves.easeOutBack),
             ),
         ],
       ),
@@ -237,7 +308,7 @@ class _LiquidAddButtonState extends State<_LiquidAddButton> {
     widget.onAdd();
     setState(() => _isAnimating = true);
     await Future.delayed(const Duration(milliseconds: 300));
-    if(mounted) setState(() => _isAnimating = false);
+    if (mounted) setState(() => _isAnimating = false);
   }
 
   @override
@@ -254,9 +325,9 @@ class _LiquidAddButtonState extends State<_LiquidAddButton> {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Center(
-          child: _isAnimating 
-             ? const Icon(Icons.check, color: Colors.white, size: 20)
-             : const Icon(Icons.add, color: Colors.white, size: 20),
+          child: _isAnimating
+              ? const Icon(Icons.check, color: Colors.white, size: 20)
+              : const Icon(Icons.add, color: Colors.white, size: 20),
         ),
       ),
     );
@@ -267,17 +338,25 @@ class _TrackerStep extends StatelessWidget {
   final String icon;
   final String label;
   final bool isActive;
-  const _TrackerStep({required this.icon, required this.label, required this.isActive});
+  const _TrackerStep(
+      {required this.icon, required this.label, required this.isActive});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(icon, style: TextStyle(fontSize: 32, color: isActive ? null : Colors.grey)),
+        Text(icon,
+            style:
+                TextStyle(fontSize: 32, color: isActive ? null : Colors.grey)),
         const SizedBox(height: 8),
-        Text(label, style: TextStyle(fontWeight: FontWeight.bold, color: isActive ? Colors.black : Colors.grey)),
+        Text(label,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: isActive ? Colors.black : Colors.grey)),
       ],
-    ).animate(target: isActive ? 1 : 0).scale(begin: const Offset(0.8, 0.8), end: const Offset(1.1, 1.1));
+    )
+        .animate(target: isActive ? 1 : 0)
+        .scale(begin: const Offset(0.8, 0.8), end: const Offset(1.1, 1.1));
   }
 }
 
@@ -287,7 +366,12 @@ class CommonNetworkImage extends StatelessWidget {
   final double width;
   final double height;
   final double radius;
-  const CommonNetworkImage({super.key, required this.url, required this.width, required this.height, this.radius=0});
+  const CommonNetworkImage(
+      {super.key,
+      required this.url,
+      required this.width,
+      required this.height,
+      this.radius = 0});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -297,7 +381,8 @@ class CommonNetworkImage extends StatelessWidget {
         color: Colors.grey.shade200,
         borderRadius: BorderRadius.circular(radius),
       ),
-      child: Center(child: Icon(Icons.image, color: Colors.grey.shade400)), // Placeholder
+      child: Center(
+          child: Icon(Icons.image, color: Colors.grey.shade400)), // Placeholder
     );
   }
 }

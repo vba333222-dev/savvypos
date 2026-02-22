@@ -30,7 +30,8 @@ class _TransfersContent extends StatefulWidget {
   State<_TransfersContent> createState() => _TransfersContentState();
 }
 
-class _TransfersContentState extends State<_TransfersContent> with SingleTickerProviderStateMixin {
+class _TransfersContentState extends State<_TransfersContent>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -76,7 +77,9 @@ class _TransfersContentState extends State<_TransfersContent> with SingleTickerP
             icon: const Icon(Icons.refresh),
             onPressed: () {
               HapticFeedback.mediumImpact();
-              context.read<AdvancedInventoryBloc>().add(const AdvancedInventoryEvent.loadTransfers());
+              context
+                  .read<AdvancedInventoryBloc>()
+                  .add(const AdvancedInventoryEvent.loadTransfers());
             },
           ),
         ],
@@ -84,9 +87,19 @@ class _TransfersContentState extends State<_TransfersContent> with SingleTickerP
       body: TabBarView(
         controller: _tabController,
         children: [
-          _TransfersList(statuses: const [TransferStatus.draft, TransferStatus.pendingApproval, TransferStatus.approved]),
-          _TransfersList(statuses: const [TransferStatus.inTransit, TransferStatus.partiallyReceived]),
-          _TransfersList(statuses: const [TransferStatus.completed, TransferStatus.cancelled]),
+          _TransfersList(statuses: const [
+            TransferStatus.draft,
+            TransferStatus.pendingApproval,
+            TransferStatus.approved
+          ]),
+          _TransfersList(statuses: const [
+            TransferStatus.inTransit,
+            TransferStatus.partiallyReceived
+          ]),
+          _TransfersList(statuses: const [
+            TransferStatus.completed,
+            TransferStatus.cancelled
+          ]),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -100,7 +113,7 @@ class _TransfersContentState extends State<_TransfersContent> with SingleTickerP
 
   void _showCreateTransferSheet(BuildContext context) {
     final theme = context.savvy;
-    
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -113,7 +126,8 @@ class _TransfersContentState extends State<_TransfersContent> with SingleTickerP
         minChildSize: 0.5,
         maxChildSize: 0.95,
         expand: false,
-        builder: (context, scrollController) => _CreateTransferSheet(scrollController: scrollController),
+        builder: (context, scrollController) =>
+            _CreateTransferSheet(scrollController: scrollController),
       ),
     );
   }
@@ -134,16 +148,19 @@ class _TransfersList extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
 
-        final filtered = state.transfers.where((t) => statuses.contains(t.status)).toList();
+        final filtered =
+            state.transfers.where((t) => statuses.contains(t.status)).toList();
 
         if (filtered.isEmpty) {
           return Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.swap_horiz, size: 64, color: theme.colors.textSecondary),
+                Icon(Icons.swap_horiz,
+                    size: 64, color: theme.colors.textSecondary),
                 const SizedBox(height: 16),
-                Text('No transfers', style: TextStyle(color: theme.colors.textSecondary)),
+                Text('No transfers',
+                    style: TextStyle(color: theme.colors.textSecondary)),
               ],
             ),
           );
@@ -172,7 +189,7 @@ class _TransferCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     final statusColor = _getStatusColor(transfer.status);
     final statusIcon = _getStatusIcon(transfer.status);
 
@@ -220,7 +237,8 @@ class _TransferCard extends StatelessWidget {
                           ),
                           const SizedBox(height: 2),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
                               color: statusColor.withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(4),
@@ -250,7 +268,8 @@ class _TransferCard extends StatelessWidget {
                         ),
                         Text(
                           '${transfer.totalItems} items',
-                          style: TextStyle(fontSize: 12, color: theme.colors.textSecondary),
+                          style: TextStyle(
+                              fontSize: 12, color: theme.colors.textSecondary),
                         ),
                       ],
                     ),
@@ -275,7 +294,9 @@ class _TransferCard extends StatelessWidget {
                             const SizedBox(height: 4),
                             Text(
                               'From',
-                              style: TextStyle(fontSize: 10, color: theme.colors.textSecondary),
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  color: theme.colors.textSecondary),
                             ),
                             Text(
                               transfer.sourceWarehouseName,
@@ -289,7 +310,8 @@ class _TransferCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Icon(Icons.arrow_forward, color: theme.colors.textSecondary),
+                      Icon(Icons.arrow_forward,
+                          color: theme.colors.textSecondary),
                       Expanded(
                         child: Column(
                           children: [
@@ -297,7 +319,9 @@ class _TransferCard extends StatelessWidget {
                             const SizedBox(height: 4),
                             Text(
                               'To',
-                              style: TextStyle(fontSize: 10, color: theme.colors.textSecondary),
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  color: theme.colors.textSecondary),
                             ),
                             Text(
                               transfer.targetWarehouseName,
@@ -319,17 +343,20 @@ class _TransferCard extends StatelessWidget {
                 const SizedBox(height: 12),
                 Row(
                   children: [
-                    Icon(Icons.person, size: 14, color: theme.colors.textSecondary),
+                    Icon(Icons.person,
+                        size: 14, color: theme.colors.textSecondary),
                     const SizedBox(width: 4),
                     Text(
                       transfer.createdByName,
-                      style: TextStyle(fontSize: 12, color: theme.colors.textSecondary),
+                      style: TextStyle(
+                          fontSize: 12, color: theme.colors.textSecondary),
                     ),
                     const Spacer(),
                     if (transfer.createdAt != null)
                       Text(
                         DateFormat('MMM d, h:mm a').format(transfer.createdAt!),
-                        style: TextStyle(fontSize: 12, color: theme.colors.textSecondary),
+                        style: TextStyle(
+                            fontSize: 12, color: theme.colors.textSecondary),
                       ),
                   ],
                 ),
@@ -345,8 +372,9 @@ class _TransferCard extends StatelessWidget {
                             onPressed: () {
                               HapticFeedback.mediumImpact();
                               context.read<AdvancedInventoryBloc>().add(
-                                AdvancedInventoryEvent.approveTransfer(transfer.uuid),
-                              );
+                                    AdvancedInventoryEvent.approveTransfer(
+                                        transfer.uuid),
+                                  );
                             },
                             child: const Text('Approve'),
                           ),
@@ -357,8 +385,9 @@ class _TransferCard extends StatelessWidget {
                             onPressed: () {
                               HapticFeedback.mediumImpact();
                               context.read<AdvancedInventoryBloc>().add(
-                                AdvancedInventoryEvent.receiveTransfer(transfer.uuid, transfer.items),
-                              );
+                                    AdvancedInventoryEvent.receiveTransfer(
+                                        transfer.uuid, transfer.items),
+                                  );
                             },
                             child: const Text('Receive'),
                           ),
@@ -376,42 +405,64 @@ class _TransferCard extends StatelessWidget {
   }
 
   bool _canTakeAction(TransferStatus status) {
-    return status == TransferStatus.pendingApproval || status == TransferStatus.inTransit;
+    return status == TransferStatus.pendingApproval ||
+        status == TransferStatus.inTransit;
   }
 
   Color _getStatusColor(TransferStatus status) {
     switch (status) {
-      case TransferStatus.draft: return Colors.grey;
-      case TransferStatus.pendingApproval: return Colors.orange;
-      case TransferStatus.approved: return Colors.blue;
-      case TransferStatus.inTransit: return Colors.purple;
-      case TransferStatus.partiallyReceived: return Colors.teal;
-      case TransferStatus.completed: return Colors.green;
-      case TransferStatus.cancelled: return Colors.red;
+      case TransferStatus.draft:
+        return Colors.grey;
+      case TransferStatus.pendingApproval:
+        return Colors.orange;
+      case TransferStatus.approved:
+        return Colors.blue;
+      case TransferStatus.inTransit:
+        return Colors.purple;
+      case TransferStatus.partiallyReceived:
+        return Colors.teal;
+      case TransferStatus.completed:
+        return Colors.green;
+      case TransferStatus.cancelled:
+        return Colors.red;
     }
   }
 
   IconData _getStatusIcon(TransferStatus status) {
     switch (status) {
-      case TransferStatus.draft: return Icons.edit;
-      case TransferStatus.pendingApproval: return Icons.pending;
-      case TransferStatus.approved: return Icons.check_circle;
-      case TransferStatus.inTransit: return Icons.local_shipping;
-      case TransferStatus.partiallyReceived: return Icons.call_split;
-      case TransferStatus.completed: return Icons.done_all;
-      case TransferStatus.cancelled: return Icons.cancel;
+      case TransferStatus.draft:
+        return Icons.edit;
+      case TransferStatus.pendingApproval:
+        return Icons.pending;
+      case TransferStatus.approved:
+        return Icons.check_circle;
+      case TransferStatus.inTransit:
+        return Icons.local_shipping;
+      case TransferStatus.partiallyReceived:
+        return Icons.call_split;
+      case TransferStatus.completed:
+        return Icons.done_all;
+      case TransferStatus.cancelled:
+        return Icons.cancel;
     }
   }
 
   String _getStatusLabel(TransferStatus status) {
     switch (status) {
-      case TransferStatus.draft: return 'Draft';
-      case TransferStatus.pendingApproval: return 'Pending Approval';
-      case TransferStatus.approved: return 'Approved';
-      case TransferStatus.inTransit: return 'In Transit';
-      case TransferStatus.partiallyReceived: return 'Partially Received';
-      case TransferStatus.completed: return 'Completed';
-      case TransferStatus.cancelled: return 'Cancelled';
+      case TransferStatus.draft:
+        return 'Draft';
+      case TransferStatus.pendingApproval:
+        return 'Pending Approval';
+      case TransferStatus.approved:
+        return 'Approved';
+      case TransferStatus.inTransit:
+        return 'In Transit';
+      case TransferStatus.partiallyReceived:
+        return 'Partially Received';
+      case TransferStatus.completed:
+        return 'Completed';
+      case TransferStatus.cancelled:
+        return 'Cancelled';
     }
   }
 
@@ -477,10 +528,12 @@ class _CreateTransferSheetState extends State<_CreateTransferSheet> {
                   border: OutlineInputBorder(),
                   hintText: 'Select source warehouse',
                 ),
-                items: state.warehouses.map((w) => DropdownMenuItem(
-                  value: w.uuid,
-                  child: Text(w.name),
-                )).toList(),
+                items: state.warehouses
+                    .map((w) => DropdownMenuItem(
+                          value: w.uuid,
+                          child: Text(w.name),
+                        ))
+                    .toList(),
                 onChanged: (value) => setState(() => _sourceWarehouse = value),
               ),
               const SizedBox(height: 16),
@@ -496,9 +549,10 @@ class _CreateTransferSheetState extends State<_CreateTransferSheet> {
                 items: state.warehouses
                     .where((w) => w.uuid != _sourceWarehouse)
                     .map((w) => DropdownMenuItem(
-                  value: w.uuid,
-                  child: Text(w.name),
-                )).toList(),
+                          value: w.uuid,
+                          child: Text(w.name),
+                        ))
+                    .toList(),
                 onChanged: (value) => setState(() => _targetWarehouse = value),
               ),
               const SizedBox(height: 16),
@@ -522,11 +576,13 @@ class _CreateTransferSheetState extends State<_CreateTransferSheet> {
                 decoration: BoxDecoration(
                   color: theme.colors.bgCanvas,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: theme.colors.border, style: BorderStyle.solid),
+                  border: Border.all(
+                      color: theme.colors.border, style: BorderStyle.solid),
                 ),
                 child: Column(
                   children: [
-                    Icon(Icons.add_shopping_cart, size: 48, color: theme.colors.textSecondary),
+                    Icon(Icons.add_shopping_cart,
+                        size: 48, color: theme.colors.textSecondary),
                     const SizedBox(height: 12),
                     Text(
                       'Add Items to Transfer',
@@ -552,7 +608,8 @@ class _CreateTransferSheetState extends State<_CreateTransferSheet> {
                 width: double.infinity,
                 height: 56,
                 child: FilledButton(
-                  onPressed: _sourceWarehouse != null && _targetWarehouse != null
+                  onPressed: _sourceWarehouse != null &&
+                          _targetWarehouse != null
                       ? () {
                           HapticFeedback.mediumImpact();
                           // Create transfer
@@ -562,7 +619,8 @@ class _CreateTransferSheetState extends State<_CreateTransferSheet> {
                           );
                         }
                       : null,
-                  child: const Text('Create Transfer', style: TextStyle(fontSize: 16)),
+                  child: const Text('Create Transfer',
+                      style: TextStyle(fontSize: 16)),
                 ),
               ),
             ],

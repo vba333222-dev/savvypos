@@ -22,9 +22,24 @@ class GoodsReceiptDialog extends StatefulWidget {
 class _GoodsReceiptDialogState extends State<GoodsReceiptDialog> {
   // Mocking PO Items for UI - In real app, fetch from Repo using widget.purchaseOrderUuid
   final List<Map<String, dynamic>> _items = [
-    {'productUuid': 'prod-001', 'name': 'Espresso Beans', 'ordered': 100.0, 'received': 50.0},
-    {'productUuid': 'prod-002', 'name': 'Milk (1L)', 'ordered': 20.0, 'received': 20.0},
-    {'productUuid': 'prod-003', 'name': 'Vanilla Syrup', 'ordered': 5.0, 'received': 0.0},
+    {
+      'productUuid': 'prod-001',
+      'name': 'Espresso Beans',
+      'ordered': 100.0,
+      'received': 50.0
+    },
+    {
+      'productUuid': 'prod-002',
+      'name': 'Milk (1L)',
+      'ordered': 20.0,
+      'received': 20.0
+    },
+    {
+      'productUuid': 'prod-003',
+      'name': 'Vanilla Syrup',
+      'ordered': 5.0,
+      'received': 0.0
+    },
   ];
 
   final Map<String, double> _receivingNow = {};
@@ -42,7 +57,7 @@ class _GoodsReceiptDialogState extends State<GoodsReceiptDialog> {
 
   Future<void> _submitReceipt() async {
     setState(() => _isSubmitting = true);
-    
+
     // Simulate API/DB Latency
     await Future.delayed(500.ms);
 
@@ -67,7 +82,8 @@ class _GoodsReceiptDialogState extends State<GoodsReceiptDialog> {
       // Build quantities map from payload
       final quantities = <String, double>{};
       for (final p in payload) {
-        quantities[p['productUuid'] as String] = (p['quantityReceived'] as num).toDouble();
+        quantities[p['productUuid'] as String] =
+            (p['quantityReceived'] as num).toDouble();
       }
       await receiveGoods(widget.purchaseOrderUuid, quantities);
 
@@ -76,7 +92,7 @@ class _GoodsReceiptDialogState extends State<GoodsReceiptDialog> {
           _isSubmitting = false;
           _isSuccess = true;
         });
-        
+
         // Auto Close after animation
         Future.delayed(1.5.seconds, () {
           if (mounted) Navigator.pop(context, true);
@@ -85,7 +101,8 @@ class _GoodsReceiptDialogState extends State<GoodsReceiptDialog> {
     } catch (e) {
       if (mounted) {
         setState(() => _isSubmitting = false);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     }
   }
@@ -114,14 +131,18 @@ class _GoodsReceiptDialogState extends State<GoodsReceiptDialog> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const SavvyText.h3('Receive Goods'),
-                IconButton(icon: const Icon(Icons.close), onPressed: () => Navigator.pop(context)),
+                IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.pop(context)),
               ],
             ),
             const SizedBox(height: 8),
-            SavvyText.body('PO #${widget.purchaseOrderUuid.substring(0, 8).toUpperCase()}', color: context.savvy.colors.textSecondary),
-            
+            SavvyText.body(
+                'PO #${widget.purchaseOrderUuid.substring(0, 8).toUpperCase()}',
+                color: context.savvy.colors.textSecondary),
+
             const SizedBox(height: 24),
-            
+
             // Header
             Row(
               children: [
@@ -132,7 +153,7 @@ class _GoodsReceiptDialogState extends State<GoodsReceiptDialog> {
               ],
             ),
             const Divider(),
-            
+
             // List
             Flexible(
               child: ListView.separated(
@@ -145,39 +166,53 @@ class _GoodsReceiptDialogState extends State<GoodsReceiptDialog> {
                   final ordered = item['ordered'] as double;
                   final prevReceived = item['received'] as double;
                   final remaining = ordered - prevReceived;
-                  
+
                   // Simple Stepper UI
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     child: Row(
                       children: [
                         Expanded(flex: 3, child: SavvyText.body(item['name'])),
-                        Expanded(flex: 1, child: SavvyText.body(ordered.toStringAsFixed(0))),
-                        Expanded(flex: 1, child: SavvyText.body(prevReceived.toStringAsFixed(0), color: context.savvy.colors.textSecondary)),
+                        Expanded(
+                            flex: 1,
+                            child: SavvyText.body(ordered.toStringAsFixed(0))),
+                        Expanded(
+                            flex: 1,
+                            child: SavvyText.body(
+                                prevReceived.toStringAsFixed(0),
+                                color: context.savvy.colors.textSecondary)),
                         Expanded(
                           flex: 2,
                           child: Row(
                             children: [
                               IconButton(
-                                icon: const Icon(Icons.remove_circle_outline, size: 20),
+                                icon: const Icon(Icons.remove_circle_outline,
+                                    size: 20),
                                 onPressed: () {
                                   final current = _receivingNow[pid] ?? 0;
                                   if (current > 0) {
-                                    setState(() => _receivingNow[pid] = current - 1);
+                                    setState(
+                                        () => _receivingNow[pid] = current - 1);
                                   }
                                 },
                               ),
                               SizedBox(
                                 width: 40,
-                                child: Center(child: SavvyText.h4((_receivingNow[pid] ?? 0).toStringAsFixed(0))),
+                                child: Center(
+                                    child: SavvyText.h4(
+                                        (_receivingNow[pid] ?? 0)
+                                            .toStringAsFixed(0))),
                               ),
                               IconButton(
-                                icon: const Icon(Icons.add_circle_outline, size: 20),
+                                icon: const Icon(Icons.add_circle_outline,
+                                    size: 20),
                                 onPressed: () {
-                                   final current = _receivingNow[pid] ?? 0;
-                                   if (current < remaining) { // Cap at remaining? Optional.
-                                     setState(() => _receivingNow[pid] = current + 1);
-                                   }
+                                  final current = _receivingNow[pid] ?? 0;
+                                  if (current < remaining) {
+                                    // Cap at remaining? Optional.
+                                    setState(
+                                        () => _receivingNow[pid] = current + 1);
+                                  }
                                 },
                               ),
                             ],
@@ -189,9 +224,9 @@ class _GoodsReceiptDialogState extends State<GoodsReceiptDialog> {
                 },
               ),
             ),
-            
+
             const SizedBox(height: 24),
-            
+
             // Footer
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -230,15 +265,24 @@ class _SuccessView extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(color: Colors.green.withValues(alpha: 0.1), shape: BoxShape.circle),
+            decoration: BoxDecoration(
+                color: Colors.green.withValues(alpha: 0.1),
+                shape: BoxShape.circle),
             child: const Icon(Icons.check, color: Colors.green, size: 48),
-          ).animate(onPlay: (c) => c.repeat(reverse: true)).scale(begin: const Offset(1,1), end: const Offset(1.1, 1.1), duration: 1.seconds),
+          ).animate(onPlay: (c) => c.repeat(reverse: true)).scale(
+              begin: const Offset(1, 1),
+              end: const Offset(1.1, 1.1),
+              duration: 1.seconds),
           const SizedBox(height: 24),
           const SavvyText.h3('Stock Updated!'),
           const SizedBox(height: 8),
-          SavvyText.body('Inventory levels have been adjusted.', color: context.savvy.colors.textSecondary),
+          SavvyText.body('Inventory levels have been adjusted.',
+              color: context.savvy.colors.textSecondary),
         ],
-      ).animate().fadeIn().slideY(begin: 0.2, end: 0, curve: Curves.easeOutBack),
+      )
+          .animate()
+          .fadeIn()
+          .slideY(begin: 0.2, end: 0, curve: Curves.easeOutBack),
     );
   }
 }

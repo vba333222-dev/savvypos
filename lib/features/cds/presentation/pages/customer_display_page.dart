@@ -19,9 +19,12 @@ class CustomerDisplayPage extends StatelessWidget {
             duration: const Duration(milliseconds: 500),
             child: state.map(
               idle: (_) => const _IdleView(key: ValueKey('idle')),
-              activeCart: (s) => _ActiveCartView(key: const ValueKey('cart'), state: s),
-              paymentRequest: (s) => _PaymentView(key: const ValueKey('pay'), state: s),
-              success: (s) => _SuccessView(key: const ValueKey('success'), state: s),
+              activeCart: (s) =>
+                  _ActiveCartView(key: const ValueKey('cart'), state: s),
+              paymentRequest: (s) =>
+                  _PaymentView(key: const ValueKey('pay'), state: s),
+              success: (s) =>
+                  _SuccessView(key: const ValueKey('success'), state: s),
             ),
           );
         },
@@ -40,21 +43,27 @@ class _IdleView extends StatelessWidget {
       children: [
         // Simulated Ken Burns Effect
         Image.network(
-          'https://placehold.co/1920x1080/1a1a1a/white?text=Savvy+Bistro', 
+          'https://placehold.co/1920x1080/1a1a1a/white?text=Savvy+Bistro',
           fit: BoxFit.cover,
-        ).animate(onPlay: (c) => c.repeat(reverse: true))
-         .scale(begin: const Offset(1,1), end: const Offset(1.1, 1.1), duration: 10.seconds)
-         .moveX(begin: -20, end: 20, duration: 10.seconds),
-         
+        )
+            .animate(onPlay: (c) => c.repeat(reverse: true))
+            .scale(
+                begin: const Offset(1, 1),
+                end: const Offset(1.1, 1.1),
+                duration: 10.seconds)
+            .moveX(begin: -20, end: 20, duration: 10.seconds),
+
         Container(color: Colors.black.withValues(alpha: 0.3)),
-        
+
         Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const SavvyText.h1('Welcome to Savvy Bistro', color: Colors.white, textStyle: TextStyle(fontSize: 64)),
+              const SavvyText.h1('Welcome to Savvy Bistro',
+                  color: Colors.white, textStyle: TextStyle(fontSize: 64)),
               const SizedBox(height: 24),
-              const SavvyText.h3('A Culinary Experience', color: Colors.white70),
+              const SavvyText.h3('A Culinary Experience',
+                  color: Colors.white70),
             ],
           ).animate().fadeIn(duration: 2.seconds).slideY(begin: 0.2),
         ),
@@ -70,7 +79,7 @@ class _ActiveCartView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = state.items;
-    
+
     return Row(
       children: [
         // Left: Order List
@@ -99,24 +108,32 @@ class _ActiveCartView extends StatelessWidget {
                         child: Row(
                           children: [
                             CircleAvatar(
-                              backgroundColor: Colors.orange, 
-                              child: Text('${item['qty']}', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                              backgroundColor: Colors.orange,
+                              child: Text('${item['qty']}',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black)),
                             ),
                             const SizedBox(width: 16),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SavvyText.h3(item['name'], color: Colors.white),
+                                  SavvyText.h3(item['name'],
+                                      color: Colors.white),
                                   if (item['modifier'] != null)
-                                    Text(item['modifier'], style: const TextStyle(color: Colors.grey)),
+                                    Text(item['modifier'],
+                                        style: const TextStyle(
+                                            color: Colors.grey)),
                                 ],
                               ),
                             ),
-                            SavvyText.h3('\$${item['price']}', color: Colors.white),
+                            SavvyText.h3('\$${item['price']}',
+                                color: Colors.white),
                           ],
                         ),
-                      ).animate().slideX(begin: -0.5, curve: Curves.easeOutBack); // Fly In
+                      ).animate().slideX(
+                          begin: -0.5, curve: Curves.easeOutBack); // Fly In
                     },
                   ),
                 ),
@@ -124,7 +141,7 @@ class _ActiveCartView extends StatelessWidget {
             ),
           ),
         ),
-        
+
         // Right: Total
         Expanded(
           flex: 2,
@@ -136,9 +153,12 @@ class _ActiveCartView extends StatelessWidget {
               children: [
                 const SavvyText.h3('Total to Pay', color: Colors.grey),
                 const SizedBox(height: 16),
-                SavvyText.h1('\$${state.total.toStringAsFixed(2)}', color: Colors.greenAccent, textStyle: const TextStyle(fontSize: 72)),
+                SavvyText.h1('\$${state.total.toStringAsFixed(2)}',
+                    color: Colors.greenAccent,
+                    textStyle: const TextStyle(fontSize: 72)),
                 const SizedBox(height: 8),
-                Text('Tax included: \$${state.tax.toStringAsFixed(2)}', style: const TextStyle(color: Colors.grey)),
+                Text('Tax included: \$${state.tax.toStringAsFixed(2)}',
+                    style: const TextStyle(color: Colors.grey)),
               ],
             ),
           ),
@@ -165,14 +185,19 @@ class _PaymentView extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(32),
-              boxShadow: const [BoxShadow(color: Colors.greenAccent, blurRadius: 40)],
+              boxShadow: const [
+                BoxShadow(color: Colors.greenAccent, blurRadius: 40)
+              ],
             ),
             child: QrImageView(
-               data: state.qrData,
-               version: QrVersions.auto,
-               size: 300,
+              data: state.qrData,
+              version: QrVersions.auto,
+              size: 300,
             ),
-          ).animate(onPlay: (c) => c.repeat(reverse: true)).scale(begin: const Offset(1,1), end: const Offset(1.05, 1.05), duration: 1.seconds),
+          ).animate(onPlay: (c) => c.repeat(reverse: true)).scale(
+              begin: const Offset(1, 1),
+              end: const Offset(1.05, 1.05),
+              duration: 1.seconds),
           const SizedBox(height: 24),
           const SavvyText.h3('Waiting for payment...', color: Colors.white70),
           const SizedBox(height: 16),
@@ -182,7 +207,8 @@ class _PaymentView extends StatelessWidget {
             builder: (BuildContext context, Duration value, Widget? child) {
               final minutes = value.inMinutes.toString().padLeft(2, '0');
               final seconds = (value.inSeconds % 60).toString().padLeft(2, '0');
-              return SavvyText.h3('Expires in: $minutes:$seconds', color: Colors.redAccent);
+              return SavvyText.h3('Expires in: $minutes:$seconds',
+                  color: Colors.redAccent);
             },
           ),
         ],
@@ -203,19 +229,31 @@ class _SuccessView extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Lottie.network('https://assets3.lottiefiles.com/packages/lf20_rc5d0f61.json', width: 250, height: 250, repeat: false),
+              Lottie.network(
+                  'https://assets3.lottiefiles.com/packages/lf20_rc5d0f61.json',
+                  width: 250,
+                  height: 250,
+                  repeat: false),
               const SizedBox(height: 16),
               const SavvyText.h1('Payment Successful!', color: Colors.white),
               const SizedBox(height: 16),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                decoration: BoxDecoration(color: Colors.orange.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(50), border: Border.all(color: Colors.orange)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                decoration: BoxDecoration(
+                    color: Colors.orange.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(50),
+                    border: Border.all(color: Colors.orange)),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Icon(Icons.star, color: Colors.orange),
                     const SizedBox(width: 8),
-                    Text('You earned +${state.pointsEarned} Points', style: const TextStyle(color: Colors.orange, fontSize: 24, fontWeight: FontWeight.bold)),
+                    Text('You earned +${state.pointsEarned} Points',
+                        style: const TextStyle(
+                            color: Colors.orange,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold)),
                   ],
                 ),
               ).animate().shimmer(),

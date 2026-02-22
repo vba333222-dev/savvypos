@@ -37,7 +37,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     on<_Load>(_onLoad);
     on<_MarkAsRead>(_onMarkAsRead);
     on<_Receive>(_onReceive);
-    
+
     // Trigger mock load
     add(const NotificationEvent.load());
   }
@@ -46,23 +46,23 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     // Mock Data
     final mockItems = [
       NotificationItem(
-        id: '1', 
-        title: 'Stock Alert: Milk', 
-        body: 'Inventory is below 5 units.', 
-        type: 'ALERT', 
+        id: '1',
+        title: 'Stock Alert: Milk',
+        body: 'Inventory is below 5 units.',
+        type: 'ALERT',
         isRead: false,
         createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
       ),
       NotificationItem(
-        id: '2', 
-        title: 'Payment Received', 
-        body: 'Table 5 paid \$54.00 via QRIS.', 
-        type: 'INFO', 
+        id: '2',
+        title: 'Payment Received',
+        body: 'Table 5 paid \$54.00 via QRIS.',
+        type: 'INFO',
         isRead: true,
         createdAt: DateTime.now().subtract(const Duration(hours: 1)),
       ),
     ];
-    
+
     emit(state.copyWith(items: mockItems, unreadCount: 1));
   }
 
@@ -71,13 +71,14 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       if (item.id == event.id) return item.copyWith(isRead: true);
       return item;
     }).toList();
-    
+
     final count = updatedItems.where((i) => !i.isRead).length;
     emit(state.copyWith(items: updatedItems, unreadCount: count));
   }
-  
+
   void _onReceive(_Receive event, Emitter<NotificationState> emit) {
     final updatedItems = [event.item, ...state.items];
-    emit(state.copyWith(items: updatedItems, unreadCount: state.unreadCount + 1));
+    emit(state.copyWith(
+        items: updatedItems, unreadCount: state.unreadCount + 1));
   }
 }

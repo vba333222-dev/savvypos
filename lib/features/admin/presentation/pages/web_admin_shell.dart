@@ -40,19 +40,24 @@ class _WebAdminShellState extends State<WebAdminShell> {
         builder: (context, constraints) {
           if (constraints.maxWidth < 600) {
             // Small screen: Drawer functionality could be added here or bottom nav.
-            // For now, simpler implementation for Admin is usually desktop focused, but let's just hide rail 
-            // and maybe show a bottom bar or expect a drawer. 
-            // Given the requirements "Sidebar Menu", let's keep it simple: 
+            // For now, simpler implementation for Admin is usually desktop focused, but let's just hide rail
+            // and maybe show a bottom bar or expect a drawer.
+            // Given the requirements "Sidebar Menu", let's keep it simple:
             // If < 600, maybe show BottomNavigationBar? Or just a smaller rail.
-            return Scaffold( // Nested scaffold for specific internal layout if needed
+            return Scaffold(
+              // Nested scaffold for specific internal layout if needed
               bottomNavigationBar: BottomNavigationBar(
                 currentIndex: _selectedIndex,
                 onTap: (index) => setState(() => _selectedIndex = index),
                 items: const [
-                  BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Dash'),
-                  BottomNavigationBarItem(icon: Icon(Icons.inventory), label: 'Prod'),
-                  BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: 'Rpts'),
-                  BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Sets'),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.dashboard), label: 'Dash'),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.inventory), label: 'Prod'),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.bar_chart), label: 'Rpts'),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.settings), label: 'Sets'),
                 ],
                 type: BottomNavigationBarType.fixed,
               ),

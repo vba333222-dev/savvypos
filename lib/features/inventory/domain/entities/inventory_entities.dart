@@ -15,7 +15,8 @@ class Supplier with _$Supplier {
     DateTime? updatedAt,
   }) = _Supplier;
 
-  factory Supplier.fromJson(Map<String, dynamic> json) => _$SupplierFromJson(json);
+  factory Supplier.fromJson(Map<String, dynamic> json) =>
+      _$SupplierFromJson(json);
 }
 
 enum PoStatus { pending, sent, partiallyReceived, completed, cancelled }
@@ -35,7 +36,8 @@ class PurchaseOrder with _$PurchaseOrder {
     @Default([]) List<PurchaseOrderItem> items,
   }) = _PurchaseOrder;
 
-  factory PurchaseOrder.fromJson(Map<String, dynamic> json) => _$PurchaseOrderFromJson(json);
+  factory PurchaseOrder.fromJson(Map<String, dynamic> json) =>
+      _$PurchaseOrderFromJson(json);
 }
 
 @freezed
@@ -50,7 +52,8 @@ class PurchaseOrderItem with _$PurchaseOrderItem {
     String? productName, // Helper for UI
   }) = _PurchaseOrderItem;
 
-  factory PurchaseOrderItem.fromJson(Map<String, dynamic> json) => _$PurchaseOrderItemFromJson(json);
+  factory PurchaseOrderItem.fromJson(Map<String, dynamic> json) =>
+      _$PurchaseOrderItemFromJson(json);
 }
 
 @freezed
@@ -64,8 +67,9 @@ class StockCount with _$StockCount {
     required String conductedBy,
     @Default([]) List<StockCountItem> items,
   }) = _StockCount;
-  
-  factory StockCount.fromJson(Map<String, dynamic> json) => _$StockCountFromJson(json);
+
+  factory StockCount.fromJson(Map<String, dynamic> json) =>
+      _$StockCountFromJson(json);
 }
 
 @freezed
@@ -79,20 +83,22 @@ class StockCountItem with _$StockCountItem {
     String? productName,
   }) = _StockCountItem;
 
-  factory StockCountItem.fromJson(Map<String, dynamic> json) => _$StockCountItemFromJson(json);
+  factory StockCountItem.fromJson(Map<String, dynamic> json) =>
+      _$StockCountItemFromJson(json);
 }
 
 @freezed
 class InventoryLedger with _$InventoryLedger {
   const factory InventoryLedger({
-     required String productUuid,
-     required double quantityChange,
-     required String referenceId,
-     required String type, // sale, restock, waste, audit
-     required DateTime timestamp,
+    required String productUuid,
+    required double quantityChange,
+    required String referenceId,
+    required String type, // sale, restock, waste, audit
+    required DateTime timestamp,
   }) = _InventoryLedger;
-  
-   factory InventoryLedger.fromJson(Map<String, dynamic> json) => _$InventoryLedgerFromJson(json);
+
+  factory InventoryLedger.fromJson(Map<String, dynamic> json) =>
+      _$InventoryLedgerFromJson(json);
 }
 
 @freezed
@@ -102,8 +108,9 @@ class StockTransferItem with _$StockTransferItem {
     required double quantity,
     String? productName,
   }) = _StockTransferItem;
-  
-  factory StockTransferItem.fromJson(Map<String, dynamic> json) => _$StockTransferItemFromJson(json);
+
+  factory StockTransferItem.fromJson(Map<String, dynamic> json) =>
+      _$StockTransferItemFromJson(json);
 }
 
 @freezed
@@ -118,6 +125,7 @@ class StockTransfer with _$StockTransfer {
     DateTime? completedAt,
     @Default([]) List<StockTransferItem> items,
   }) = _StockTransfer;
-  
-  factory StockTransfer.fromJson(Map<String, dynamic> json) => _$StockTransferFromJson(json);
+
+  factory StockTransfer.fromJson(Map<String, dynamic> json) =>
+      _$StockTransferFromJson(json);
 }

@@ -11,18 +11,21 @@ class FontResolver {
       return GoogleFonts.notoSansJpTextTheme(baseTheme);
     } else if (locale.languageCode == 'ko') {
       return GoogleFonts.notoSansKrTextTheme(baseTheme);
-    } else if (locale.languageCode == 'ms' || locale.languageCode == 'id' || locale.languageCode == 'vi' || locale.languageCode == 'fil')  {
+    } else if (locale.languageCode == 'ms' ||
+        locale.languageCode == 'id' ||
+        locale.languageCode == 'vi' ||
+        locale.languageCode == 'fil') {
       return GoogleFonts.poppinsTextTheme(baseTheme);
     }
     // Default
     return GoogleFonts.poppinsTextTheme(baseTheme);
   }
-  
+
   static String? getFontFamily(Locale locale) {
-     if (locale.languageCode == 'th') return GoogleFonts.prompt().fontFamily;
-     if (locale.languageCode == 'zh') return GoogleFonts.notoSansSc().fontFamily;
-     if (locale.languageCode == 'ja') return GoogleFonts.notoSansJp().fontFamily;
-     if (locale.languageCode == 'ko') return GoogleFonts.notoSansKr().fontFamily;
-     return GoogleFonts.poppins().fontFamily;
+    if (locale.languageCode == 'th') return GoogleFonts.prompt().fontFamily;
+    if (locale.languageCode == 'zh') return GoogleFonts.notoSansSc().fontFamily;
+    if (locale.languageCode == 'ja') return GoogleFonts.notoSansJp().fontFamily;
+    if (locale.languageCode == 'ko') return GoogleFonts.notoSansKr().fontFamily;
+    return GoogleFonts.poppins().fontFamily;
   }
 }

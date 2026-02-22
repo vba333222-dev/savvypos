@@ -24,25 +24,30 @@ class BackupService {
         throw Exception("Database file not found");
       }
 
-      // Checkpoint WAL if needed? Drift usually handles this, 
+      // Checkpoint WAL if needed? Drift usually handles this,
       // but copying active DB might be risky if WAL not merged.
-      // Ideally, we run 'VACUUM INTO' or just copy. 
+      // Ideally, we run 'VACUUM INTO' or just copy.
       // For MVP, simplistic copy.
-      
-      final now = DateTime.now().toIso8601String().replaceAll(':', '-').split('.').first;
+
+      final now = DateTime.now()
+          .toIso8601String()
+          .replaceAll(':', '-')
+          .split('.')
+          .first;
       final fileName = 'savvy_backup_$now.sqlite';
 
       // Use SharePlus for easiest export on mobile (Share to Drive, Email, Save to Files)
       // Or FilePicker.saveFile for Desktop/Android
-      
+
       // Let's try SharePlus first as it's more user-friendly on mobile
       if (Platform.isAndroid || Platform.isIOS) {
         final xFile = XFile(dbFile.path, name: fileName);
-        final result = await SharePlus.instance.share(ShareParams(files: [xFile], text: 'Savvy POS Backup'));
+        final result = await SharePlus.instance
+            .share(ShareParams(files: [xFile], text: 'Savvy POS Backup'));
         if (result.status == ShareResultStatus.success) {
           return "Backup shared successfully";
         } else {
-           return "Backup export cancelled"; 
+          return "Backup export cancelled";
         }
       } else {
         // Desktop
@@ -50,7 +55,7 @@ class BackupService {
           dialogTitle: 'Save Backup',
           fileName: fileName,
         );
-        
+
         if (result != null) {
           await dbFile.copy(result);
           return "Backup saved to $result";
@@ -72,24 +77,24 @@ class BackupService {
       if (result != null && result.files.single.path != null) {
         final pickedPath = result.files.single.path!;
         final dbFile = await _getDbFile();
-        
+
         // Validation: Check if it's a valid SQLite file?
         // Skip for MVP.
-        
+
         // Close DB connection before overwriting?
         await _db.close();
-        
+
         // Overwrite
         await File(pickedPath).copy(dbFile.path);
-        
+
         // We MUST restart the app or re-open the DB.
-        // Drift LazyDatabase auto-opens on next access, 
+        // Drift LazyDatabase auto-opens on next access,
         // BUT we closed the singleton instance's connection.
         // If the singleton is kept alive, `_openConnection` lambda might not run again?
         // AppDatabase extends _$AppDatabase which calls super(executor).
         // If we close, the executor is closed.
         // We might need to crash/restart the app or instruct user.
-        
+
         return "Restore successful. Please restart the app.";
       }
       return "Import cancelled";

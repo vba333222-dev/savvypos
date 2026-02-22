@@ -33,13 +33,13 @@ class _DateScrubberWidgetState extends State<DateScrubberWidget> {
     }
     // _dates.last is Today.
     // Index of Today is 59.
-    
+
     // Find index of selected Date
     final index = _dates.indexWhere((d) => isSameDay(d, widget.selectedDate));
     final initialIndex = index != -1 ? index : _dates.length - 1;
 
     _controller = PageController(
-      viewportFraction: 0.2, 
+      viewportFraction: 0.2,
       initialPage: initialIndex,
     );
   }
@@ -70,17 +70,17 @@ class _DateScrubberWidgetState extends State<DateScrubberWidget> {
             builder: (context, child) {
               double opacity = 0.5;
               double scale = 1.0;
-              
+
               if (_controller.position.haveDimensions) {
-                 final page = _controller.page ?? 0;
-                 final diff = (page - index).abs();
-                 if (diff < 1) {
-                   scale = 1.0 + (1 - diff) * 0.3; // Scale up to 1.3
-                   opacity = 0.5 + (1 - diff) * 0.5; // Fade to 1.0
-                 }
+                final page = _controller.page ?? 0;
+                final diff = (page - index).abs();
+                if (diff < 1) {
+                  scale = 1.0 + (1 - diff) * 0.3; // Scale up to 1.3
+                  opacity = 0.5 + (1 - diff) * 0.5; // Fade to 1.0
+                }
               } else if (isSelected) {
-                 scale = 1.3;
-                 opacity = 1.0;
+                scale = 1.3;
+                opacity = 1.0;
               }
 
               return Center(
@@ -94,8 +94,8 @@ class _DateScrubberWidgetState extends State<DateScrubberWidget> {
                         Text(
                           DateFormat('E').format(date).toUpperCase(),
                           style: TextStyle(
-                            fontSize: 12, 
-                            fontWeight: FontWeight.bold, 
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
                             color: theme.colors.textSecondary,
                             letterSpacing: 1,
                           ),
@@ -107,17 +107,27 @@ class _DateScrubberWidgetState extends State<DateScrubberWidget> {
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: isSelected ? theme.colors.brandPrimary : Colors.transparent,
-                            boxShadow: isSelected 
-                              ? [BoxShadow(color: theme.colors.brandPrimary.withValues(alpha: 0.4), blurRadius: 8, spreadRadius: 2)] 
-                              : null,
+                            color: isSelected
+                                ? theme.colors.brandPrimary
+                                : Colors.transparent,
+                            boxShadow: isSelected
+                                ? [
+                                    BoxShadow(
+                                        color: theme.colors.brandPrimary
+                                            .withValues(alpha: 0.4),
+                                        blurRadius: 8,
+                                        spreadRadius: 2)
+                                  ]
+                                : null,
                           ),
                           child: Text(
                             date.day.toString(),
                             style: TextStyle(
-                              fontSize: 16, 
-                              fontWeight: FontWeight.bold, 
-                              color: isSelected ? theme.colors.textInverse : theme.colors.textPrimary,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: isSelected
+                                  ? theme.colors.textInverse
+                                  : theme.colors.textPrimary,
                             ),
                           ),
                         ),

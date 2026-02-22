@@ -17,7 +17,7 @@ class _LanguageSelectorState extends State<LanguageSelector> {
   @override
   Widget build(BuildContext context) {
     final currentLocale = context.locale;
-    
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -37,14 +37,19 @@ class _LanguageSelectorState extends State<LanguageSelector> {
               children: [
                 _buildFlag(currentLocale.languageCode),
                 const SizedBox(width: 8),
-                SavvyText.body(currentLocale.languageCode == 'en' ? 'English' : 'Bahasa'),
+                SavvyText.body(
+                    currentLocale.languageCode == 'en' ? 'English' : 'Bahasa'),
                 const SizedBox(width: 4),
-                Icon(_isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down, size: 16),
+                Icon(
+                    _isExpanded
+                        ? Icons.keyboard_arrow_up
+                        : Icons.keyboard_arrow_down,
+                    size: 16),
               ],
             ),
           ),
         ),
-        
+
         // Expanded Options
         if (_isExpanded)
           Container(
@@ -53,7 +58,10 @@ class _LanguageSelectorState extends State<LanguageSelector> {
             decoration: BoxDecoration(
               color: context.savvy.colors.bgSurface,
               borderRadius: BorderRadius.circular(16),
-              boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 10)],
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1), blurRadius: 10)
+              ],
             ),
             child: Column(
               children: [
@@ -80,7 +88,11 @@ class _LanguageSelectorState extends State<LanguageSelector> {
           children: [
             _buildFlag(code),
             const SizedBox(width: 8),
-            Text(label, style: TextStyle(fontWeight: context.locale.languageCode == code ? FontWeight.bold : FontWeight.normal)),
+            Text(label,
+                style: TextStyle(
+                    fontWeight: context.locale.languageCode == code
+                        ? FontWeight.bold
+                        : FontWeight.normal)),
           ],
         ),
       ),
@@ -89,6 +101,7 @@ class _LanguageSelectorState extends State<LanguageSelector> {
 
   Widget _buildFlag(String code) {
     // Simple Emoji Flags for MVP
-    return Text(code == 'en' ? '🇺🇸' : '🇮🇩', style: const TextStyle(fontSize: 20));
+    return Text(code == 'en' ? '🇺🇸' : '🇮🇩',
+        style: const TextStyle(fontSize: 20));
   }
 }

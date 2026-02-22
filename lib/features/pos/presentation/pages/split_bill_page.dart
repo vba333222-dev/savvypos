@@ -19,7 +19,7 @@ class SplitBillPage extends StatefulWidget {
 class _SplitBillPageState extends State<SplitBillPage> {
   // Master List (Unassigned Items)
   late List<CartItem> _masterItems;
-  
+
   // Split Groups (Lists of assigned Items)
   final List<List<CartItem>> _splitGroups = [[]]; // Start with 1 empty bill
 
@@ -30,31 +30,31 @@ class _SplitBillPageState extends State<SplitBillPage> {
     super.initState();
     // Initialize Master from Cart Bloc on first load
     // We do this in build or didChangeDependencies usually if we want live updates,
-    // but for Split logic, we often take a snapshot. 
+    // but for Split logic, we often take a snapshot.
     // Here we'll listen to Bloc but store local "distribution" state.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-       if (context.read<CartBloc>().state.items.isNotEmpty) {
-         setState(() {
-           _masterItems = List.from(context.read<CartBloc>().state.items);
-           _initialized = true;
-         });
-       }
+      if (context.read<CartBloc>().state.items.isNotEmpty) {
+        setState(() {
+          _masterItems = List.from(context.read<CartBloc>().state.items);
+          _initialized = true;
+        });
+      }
     });
   }
 
   void _createBudgetSplit() {
     // "Smart Equi-Split" Visual: Shuffle items round-robin
     if (!_initialized) return;
-    
+
     // Reset
     final allItems = [..._masterItems, ..._splitGroups.expand((e) => e)];
-    
+
     // Create 3 groups for fun/demo (or ask user?)
     final newGroups = <List<CartItem>>[[], [], []];
-    
+
     // Distribute
     for (int i = 0; i < allItems.length; i++) {
-       newGroups[i % 3].add(allItems[i]);
+      newGroups[i % 3].add(allItems[i]);
     }
 
     setState(() {
@@ -62,10 +62,10 @@ class _SplitBillPageState extends State<SplitBillPage> {
       _splitGroups.clear();
       _splitGroups.addAll(newGroups);
     });
-    
+
     HapticFeedback.mediumImpact();
   }
-  
+
   void _addNewBill() {
     setState(() {
       _splitGroups.add([]);
@@ -78,18 +78,18 @@ class _SplitBillPageState extends State<SplitBillPage> {
     setState(() {
       // Remove from Master if there
       _masterItems.remove(item);
-      
+
       // Remove from other groups if there
       for (var group in _splitGroups) {
         group.remove(item);
       }
-      
+
       // Add to Target
       if (targetGroupIndex == -1) {
-         // -1 means return to Master
-         _masterItems.add(item);
+        // -1 means return to Master
+        _masterItems.add(item);
       } else {
-         _splitGroups[targetGroupIndex].add(item);
+        _splitGroups[targetGroupIndex].add(item);
       }
     });
   }
@@ -97,7 +97,7 @@ class _SplitBillPageState extends State<SplitBillPage> {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     if (!_initialized) {
       return Scaffold(body: Center(child: CircularProgressIndicator()));
     }
@@ -128,19 +128,26 @@ class _SplitBillPageState extends State<SplitBillPage> {
             child: Container(
               color: theme.colors.bgPrimary,
               child: DragTarget<CartItem>(
-                onWillAcceptWithDetails: (details) => !_masterItems.contains(details.data),
-                onAcceptWithDetails: (details) => _onItemDrop(details.data, -1), // -1 = Master
+                onWillAcceptWithDetails: (details) =>
+                    !_masterItems.contains(details.data),
+                onAcceptWithDetails: (details) =>
+                    _onItemDrop(details.data, -1), // -1 = Master
                 builder: (context, candidates, rejected) {
                   return Column(
                     children: [
                       Container(
                         padding: EdgeInsets.all(16),
-                        color: candidates.isNotEmpty ? theme.colors.brandPrimary.withValues(alpha: 0.1) : null,
+                        color: candidates.isNotEmpty
+                            ? theme.colors.brandPrimary.withValues(alpha: 0.1)
+                            : null,
                         child: Row(
                           children: [
-                            Icon(Icons.receipt_long, color: theme.colors.textSecondary),
+                            Icon(Icons.receipt_long,
+                                color: theme.colors.textSecondary),
                             SizedBox(width: 8),
-                            Text('Master Bill (${_masterItems.length} items)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                            Text('Master Bill (${_masterItems.length} items)',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 14)),
                           ],
                         ),
                       ),
@@ -151,7 +158,9 @@ class _SplitBillPageState extends State<SplitBillPage> {
                           itemBuilder: (context, index) {
                             final item = _masterItems[index];
                             return DraggableBillItem(item: item)
-                                .animate().fadeIn(duration: 300.ms).slideX(begin: -0.1, end: 0); 
+                                .animate()
+                                .fadeIn(duration: 300.ms)
+                                .slideX(begin: -0.1, end: 0);
                           },
                         ),
                       ),
@@ -161,7 +170,7 @@ class _SplitBillPageState extends State<SplitBillPage> {
               ),
             ),
           ),
-          
+
           // DIVIDER
           Container(width: 1, color: theme.colors.borderDefault),
 
@@ -171,33 +180,38 @@ class _SplitBillPageState extends State<SplitBillPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 Padding(
-                   padding: const EdgeInsets.all(16),
-                   child: Text('Split Groups', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                 ),
-                 Expanded(
-                   child: ListView.separated(
-                     padding: EdgeInsets.symmetric(horizontal: 16),
-                     scrollDirection: Axis.horizontal,
-                     itemCount: _splitGroups.length,
-                     separatorBuilder: (_,__) => SizedBox(width: 8),
-                     itemBuilder: (context, index) {
-                       return SplitTargetZone(
-                         index: index,
-                         items: _splitGroups[index],
-                         onRemove: (item) => _onItemDrop(item, -1), // Return to master logic inside widget? Handled by drag out actually.
-                         onAccept: (item) => _onItemDrop(item, index),
-                         onPay: () {
-                           // Trigger Payment Logic for this Sub-Bill
-                           final items = _splitGroups[index];
-                           context.read<CartBloc>().add(CartEvent.checkoutSplit(items.map((e) => e.uuid).toList(), 'CASH')); // Mock Payment
-                           Navigator.pop(context);
-                         },
-                       );
-                     },
-                   ),
-                 ),
-                 SizedBox(height: 32),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text('Split Groups',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                ),
+                Expanded(
+                  child: ListView.separated(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _splitGroups.length,
+                    separatorBuilder: (_, __) => SizedBox(width: 8),
+                    itemBuilder: (context, index) {
+                      return SplitTargetZone(
+                        index: index,
+                        items: _splitGroups[index],
+                        onRemove: (item) => _onItemDrop(item,
+                            -1), // Return to master logic inside widget? Handled by drag out actually.
+                        onAccept: (item) => _onItemDrop(item, index),
+                        onPay: () {
+                          // Trigger Payment Logic for this Sub-Bill
+                          final items = _splitGroups[index];
+                          context.read<CartBloc>().add(CartEvent.checkoutSplit(
+                              items.map((e) => e.uuid).toList(),
+                              'CASH')); // Mock Payment
+                          Navigator.pop(context);
+                        },
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(height: 32),
               ],
             ),
           ),

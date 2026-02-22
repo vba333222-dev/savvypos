@@ -23,7 +23,8 @@ class SupplierRecommendation {
 
 class RecommendSupplier {
   List<SupplierRecommendation> execute({
-    required List<Map<String, dynamic>> linkedSuppliers, // List of {supplierUuid, name, cost, leadTime}
+    required List<Map<String, dynamic>>
+        linkedSuppliers, // List of {supplierUuid, name, cost, leadTime}
     required double quantityNeeded,
     required ReplenishmentStrategy strategy,
   }) {

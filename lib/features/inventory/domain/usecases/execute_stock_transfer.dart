@@ -24,7 +24,7 @@ class ExecuteStockTransfer {
       throw Exception("Transfer list cannot be empty.");
     }
     if (items.any((i) => i.quantity <= 0)) {
-       throw Exception("Quantity must be greater than zero.");
+      throw Exception("Quantity must be greater than zero.");
     }
 
     // 2. Execute Atomic Transfer via StockTransfer entity
@@ -37,7 +37,7 @@ class ExecuteStockTransfer {
       createdAt: DateTime.now(),
       items: items,
     );
-    
+
     await _repository.transferStock(transfer);
   }
 }

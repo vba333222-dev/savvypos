@@ -20,13 +20,10 @@ class EntryPage extends StatelessWidget {
     return LifecycleManager(
       onLockRequest: () {
         if (context.mounted) {
-             GetIt.I<AuthBloc>().add(const AuthEvent.logout());
-             ScaffoldMessenger.of(context).showSnackBar(
-               const SnackBar(
-                 content: Text("Session Locked due to inactivity"), 
-                 backgroundColor: Colors.orange
-               )
-             );
+          GetIt.I<AuthBloc>().add(const AuthEvent.logout());
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Session Locked due to inactivity"),
+              backgroundColor: Colors.orange));
         }
       },
       child: const _EntryContent(),
@@ -39,10 +36,10 @@ class _EntryContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     if (kIsWeb) {
+    if (kIsWeb) {
       return const WebAdminLayout();
     }
-    
+
     // Check Tenant Config
     return FutureBuilder(
       future: Future.wait([
@@ -53,7 +50,7 @@ class _EntryContent extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(body: Center(child: _SavvySplashLoader()));
         }
-        
+
         final config = snapshot.data?[0] as TenantConfigTableData?;
         if (config == null) {
           return const OnboardingPage();
@@ -62,7 +59,7 @@ class _EntryContent extends StatelessWidget {
         }
       },
     );
-    }
+  }
 }
 
 class _SavvySplashLoader extends StatelessWidget {
@@ -74,19 +71,20 @@ class _SavvySplashLoader extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Icon(Icons.storefront, size: 64, color: Theme.of(context).primaryColor)
-          .animate(onPlay: (c) => c.repeat(reverse: true))
-          .scale(begin: const Offset(1, 1), end: const Offset(1.2, 1.2), duration: 800.ms)
-          .then()
-          .tint(color: Colors.purpleAccent, duration: 800.ms)
-          .then()
-          .tint(color: Theme.of(context).primaryColor, duration: 800.ms),
+            .animate(onPlay: (c) => c.repeat(reverse: true))
+            .scale(
+                begin: const Offset(1, 1),
+                end: const Offset(1.2, 1.2),
+                duration: 800.ms)
+            .then()
+            .tint(color: Colors.purpleAccent, duration: 800.ms)
+            .then()
+            .tint(color: Theme.of(context).primaryColor, duration: 800.ms),
         const SizedBox(height: 24),
-        const Text("Savvy POS", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
+        const Text("Savvy POS",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
         const SizedBox(height: 8),
-        const SizedBox(
-          width: 120, 
-          child: LinearProgressIndicator(minHeight: 2)
-        )
+        const SizedBox(width: 120, child: LinearProgressIndicator(minHeight: 2))
       ],
     );
   }

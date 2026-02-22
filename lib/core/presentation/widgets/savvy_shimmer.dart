@@ -38,15 +38,15 @@ class SavvyShimmer extends StatelessWidget {
       decoration: BoxDecoration(
         color: baseColor,
         shape: shape,
-        borderRadius: shape == BoxShape.rectangle ? BorderRadius.circular(borderRadius) : null,
+        borderRadius: shape == BoxShape.rectangle
+            ? BorderRadius.circular(borderRadius)
+            : null,
       ),
-    )
-    .animate(onPlay: (controller) => controller.repeat())
-    .shimmer(
-      duration: 1500.ms,
-      color: highlightColor,
-      angle: 0.8, // Diagonal shine
-    );
+    ).animate(onPlay: (controller) => controller.repeat()).shimmer(
+          duration: 1500.ms,
+          color: highlightColor,
+          angle: 0.8, // Diagonal shine
+        );
   }
 }
 
@@ -66,7 +66,8 @@ class ProductCardShimmer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SavvyShimmer(width: double.infinity, height: 100, borderRadius: 12),
+          const SavvyShimmer(
+              width: double.infinity, height: 100, borderRadius: 12),
           const Spacer(),
           const SavvyShimmer(width: 80, height: 16),
           const SizedBox(height: 8),

@@ -17,8 +17,12 @@ class InventoryAlertsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => GetIt.I<AdvancedInventoryBloc>()..add(const AdvancedInventoryEvent.loadAlerts())),
-        BlocProvider(create: (_) => GetIt.I<InventoryManagementBloc>()..add(const InventoryManagementEvent.fetchIncomingTransfers())),
+        BlocProvider(
+            create: (_) => GetIt.I<AdvancedInventoryBloc>()
+              ..add(const AdvancedInventoryEvent.loadAlerts())),
+        BlocProvider(
+            create: (_) => GetIt.I<InventoryManagementBloc>()
+              ..add(const InventoryManagementEvent.fetchIncomingTransfers())),
       ],
       child: const _AlertsContent(),
     );
@@ -49,7 +53,9 @@ class _AlertsContent extends StatelessWidget {
             tooltip: 'Refresh & Generate Alerts',
             onPressed: () {
               HapticFeedback.mediumImpact();
-              context.read<AdvancedInventoryBloc>().add(const AdvancedInventoryEvent.generateAlerts());
+              context
+                  .read<AdvancedInventoryBloc>()
+                  .add(const AdvancedInventoryEvent.generateAlerts());
             },
           ),
         ],
@@ -60,244 +66,278 @@ class _AlertsContent extends StatelessWidget {
             incomingTransfersLoaded: (transfers) => transfers,
             orElse: () => <StockTransfer>[],
           );
-          
+
           return BlocBuilder<AdvancedInventoryBloc, AdvancedInventoryState>(
             builder: (context, state) {
               if (state.isLoading) {
                 return const Center(child: CircularProgressIndicator());
               }
 
-              final unacknowledged = state.alerts.where((a) => !a.isAcknowledged).toList();
-              final acknowledged = state.alerts.where((a) => a.isAcknowledged && !a.isResolved).toList();
+              final unacknowledged =
+                  state.alerts.where((a) => !a.isAcknowledged).toList();
+              final acknowledged = state.alerts
+                  .where((a) => a.isAcknowledged && !a.isResolved)
+                  .toList();
 
-          if (state.alerts.isEmpty && incomingTransfers.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: Colors.green.withValues(alpha: 0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(Icons.check_circle, size: 64, color: Colors.green),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    'All Clear!',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: theme.colors.textPrimary,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'No active stock alerts at this time',
-                    style: TextStyle(color: theme.colors.textSecondary),
-                  ),
-                ],
-              ).animate().scale(duration: 300.ms, curve: Curves.elasticOut),
-            );
-          }
-
-          return CustomScrollView(
-            slivers: [
-              // Summary Header
-              SliverToBoxAdapter(
-                child: Container(
-                  margin: const EdgeInsets.all(16),
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Colors.orange.withValues(alpha: 0.15),
-                        Colors.red.withValues(alpha: 0.1),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
-                  ),
-                  child: Row(
+              if (state.alerts.isEmpty && incomingTransfers.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(24),
                         decoration: BoxDecoration(
-                          color: Colors.orange.withValues(alpha: 0.2),
-                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.green.withValues(alpha: 0.1),
+                          shape: BoxShape.circle,
                         ),
-                        child: Icon(Icons.warning_amber, color: Colors.orange, size: 28),
+                        child: Icon(Icons.check_circle,
+                            size: 64, color: Colors.green),
                       ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      const SizedBox(height: 24),
+                      Text(
+                        'All Clear!',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: theme.colors.textPrimary,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'No active stock alerts at this time',
+                        style: TextStyle(color: theme.colors.textSecondary),
+                      ),
+                    ],
+                  ).animate().scale(duration: 300.ms, curve: Curves.elasticOut),
+                );
+              }
+
+              return CustomScrollView(
+                slivers: [
+                  // Summary Header
+                  SliverToBoxAdapter(
+                    child: Container(
+                      margin: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Colors.orange.withValues(alpha: 0.15),
+                            Colors.red.withValues(alpha: 0.1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                            color: Colors.orange.withValues(alpha: 0.3)),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.orange.withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(Icons.warning_amber,
+                                color: Colors.orange, size: 28),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${state.alerts.length} Active Alerts',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: theme.colors.textPrimary,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  '${unacknowledged.length} require attention',
+                                  style: TextStyle(
+                                      fontSize: 13,
+                                      color: theme.colors.textSecondary),
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (unacknowledged.isNotEmpty)
+                            FilledButton(
+                              onPressed: () {
+                                // Acknowledge all
+                                for (final alert in unacknowledged) {
+                                  context.read<AdvancedInventoryBloc>().add(
+                                        AdvancedInventoryEvent.acknowledgeAlert(
+                                            alert.uuid),
+                                      );
+                                }
+                              },
+                              child: const Text('Ack All'),
+                            ),
+                        ],
+                      ),
+                    )
+                        .animate()
+                        .fadeIn(duration: 300.ms)
+                        .slideY(begin: 0.1, end: 0),
+                  ),
+
+                  // Incoming Transfers Section
+                  if (incomingTransfers.isNotEmpty) ...[
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                        child: Row(
                           children: [
-                            Text(
-                              '${state.alerts.length} Active Alerts',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: theme.colors.textPrimary,
-                              ),
+                            Container(
+                              width: 10,
+                              height: 10,
+                              decoration: const BoxDecoration(
+                                  color: Colors.blue, shape: BoxShape.circle),
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              '${unacknowledged.length} require attention',
-                              style: TextStyle(fontSize: 13, color: theme.colors.textSecondary),
-                            ),
+                            const SizedBox(width: 8),
+                            const SavvyText.label('INCOMING TRANSFERS'),
                           ],
                         ),
                       ),
-                      if (unacknowledged.isNotEmpty)
-                        FilledButton(
-                          onPressed: () {
-                            // Acknowledge all
-                            for (final alert in unacknowledged) {
-                              context.read<AdvancedInventoryBloc>().add(
-                                AdvancedInventoryEvent.acknowledgeAlert(alert.uuid),
-                              );
-                            }
-                          },
-                          child: const Text('Ack All'),
-                        ),
-                    ],
-                  ),
-                ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.1, end: 0),
-              ),
-              
-              // Incoming Transfers Section
-              if (incomingTransfers.isNotEmpty) ...[
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 10,
-                          height: 10,
-                          decoration: const BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
-                        ),
-                        const SizedBox(width: 8),
-                        const SavvyText.label('INCOMING TRANSFERS'),
-                      ],
                     ),
-                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                       final transfer = incomingTransfers[index];
-                       return Container(
-                         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                         padding: const EdgeInsets.all(16),
-                         decoration: BoxDecoration(
-                           color: theme.colors.bgSurface,
-                           borderRadius: BorderRadius.circular(12),
-                           border: Border(left: const BorderSide(color: Colors.blue, width: 4), top: BorderSide(color: theme.colors.border), right: BorderSide(color: theme.colors.border), bottom: BorderSide(color: theme.colors.border)),
-                         ),
-                         child: Row(
-                           children: [
-                             Icon(Icons.local_shipping, color: theme.colors.brandPrimary, size: 36),
-                             const SizedBox(width: 16),
-                             Expanded(
-                               child: Column(
-                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                 children: [
-                                    Text('From: ${transfer.sourceWarehouseUuid}', style: TextStyle(fontWeight: FontWeight.bold, color: theme.colors.textPrimary)),
-                                    Text('${transfer.items.length} Items En-Route', style: TextStyle(color: theme.colors.textSecondary)),
-                                 ],
-                               )
-                             ),
-                             FilledButton.icon(
-                               onPressed: () {
-                                  context.read<InventoryManagementBloc>().add(InventoryManagementEvent.receiveStockTransfer(transfer.uuid));
-                               },
-                               icon: const Icon(Icons.download_done),
-                               label: const Text('Terima Barang'),
-                             ),
-                           ],
-                         ),
-                       );
-                    },
-                    childCount: incomingTransfers.length,
-                  ),
-                ),
-              ],
-
-              // Unacknowledged Section
-              if (unacknowledged.isNotEmpty) ...[
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 10,
-                          height: 10,
-                          decoration: const BoxDecoration(
-                            color: Colors.red,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        const SavvyText.label('NEEDS ATTENTION'),
-                      ],
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final transfer = incomingTransfers[index];
+                          return Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 6),
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: theme.colors.bgSurface,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border(
+                                  left: const BorderSide(
+                                      color: Colors.blue, width: 4),
+                                  top: BorderSide(color: theme.colors.border),
+                                  right: BorderSide(color: theme.colors.border),
+                                  bottom:
+                                      BorderSide(color: theme.colors.border)),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(Icons.local_shipping,
+                                    color: theme.colors.brandPrimary, size: 36),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                    child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                        'From: ${transfer.sourceWarehouseUuid}',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: theme.colors.textPrimary)),
+                                    Text(
+                                        '${transfer.items.length} Items En-Route',
+                                        style: TextStyle(
+                                            color: theme.colors.textSecondary)),
+                                  ],
+                                )),
+                                FilledButton.icon(
+                                  onPressed: () {
+                                    context.read<InventoryManagementBloc>().add(
+                                        InventoryManagementEvent
+                                            .receiveStockTransfer(
+                                                transfer.uuid));
+                                  },
+                                  icon: const Icon(Icons.download_done),
+                                  label: const Text('Terima Barang'),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        childCount: incomingTransfers.length,
+                      ),
                     ),
-                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) => _AlertCard(
-                      alert: unacknowledged[index],
-                    ).animate().fadeIn(duration: 200.ms, delay: (index * 50).ms),
-                    childCount: unacknowledged.length,
-                  ),
-                ),
-              ],
+                  ],
 
-              // Acknowledged Section
-              if (acknowledged.isNotEmpty) ...[
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 10,
-                          height: 10,
-                          decoration: BoxDecoration(
-                            color: Colors.orange.withValues(alpha: 0.5),
-                            shape: BoxShape.circle,
-                          ),
+                  // Unacknowledged Section
+                  if (unacknowledged.isNotEmpty) ...[
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 10,
+                              height: 10,
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            const SavvyText.label('NEEDS ATTENTION'),
+                          ],
                         ),
-                        const SizedBox(width: 8),
-                        const SavvyText.label('ACKNOWLEDGED'),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) => _AlertCard(
-                      alert: acknowledged[index],
-                    ).animate().fadeIn(duration: 200.ms, delay: (index * 50).ms),
-                    childCount: acknowledged.length,
-                  ),
-                ),
-              ],
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) => _AlertCard(
+                          alert: unacknowledged[index],
+                        )
+                            .animate()
+                            .fadeIn(duration: 200.ms, delay: (index * 50).ms),
+                        childCount: unacknowledged.length,
+                      ),
+                    ),
+                  ],
 
-              const SliverToBoxAdapter(child: SizedBox(height: 80)),
-            ],
+                  // Acknowledged Section
+                  if (acknowledged.isNotEmpty) ...[
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 10,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                color: Colors.orange.withValues(alpha: 0.5),
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            const SavvyText.label('ACKNOWLEDGED'),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) => _AlertCard(
+                          alert: acknowledged[index],
+                        )
+                            .animate()
+                            .fadeIn(duration: 200.ms, delay: (index * 50).ms),
+                        childCount: acknowledged.length,
+                      ),
+                    ),
+                  ],
+
+                  const SliverToBoxAdapter(child: SizedBox(height: 80)),
+                ],
+              );
+            },
           );
         },
-      );
-     },
-    ),
-   );
+      ),
+    );
   }
 }
 
@@ -309,10 +349,10 @@ class _AlertCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     Color alertColor;
     IconData alertIcon;
-    
+
     switch (alert.alertType) {
       case AlertType.outOfStock:
         alertColor = Colors.red;
@@ -379,16 +419,19 @@ class _AlertCard extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         alert.message,
-                        style: TextStyle(fontSize: 13, color: theme.colors.textSecondary),
+                        style: TextStyle(
+                            fontSize: 13, color: theme.colors.textSecondary),
                       ),
                     ],
                   ),
                 ),
                 // Severity Badge
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: _getSeverityColor(alert.severity).withValues(alpha: 0.15),
+                    color: _getSeverityColor(alert.severity)
+                        .withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
@@ -448,8 +491,9 @@ class _AlertCard extends StatelessWidget {
                       onPressed: () {
                         HapticFeedback.mediumImpact();
                         context.read<AdvancedInventoryBloc>().add(
-                          AdvancedInventoryEvent.acknowledgeAlert(alert.uuid),
-                        );
+                              AdvancedInventoryEvent.acknowledgeAlert(
+                                  alert.uuid),
+                            );
                       },
                       icon: const Icon(Icons.check, size: 18),
                       label: const Text('Acknowledge'),
@@ -477,16 +521,19 @@ class _AlertCard extends StatelessWidget {
 
   Color _getSeverityColor(AlertSeverity severity) {
     switch (severity) {
-      case AlertSeverity.info: return Colors.blue;
-      case AlertSeverity.warning: return Colors.orange;
-      case AlertSeverity.critical: return Colors.red;
+      case AlertSeverity.info:
+        return Colors.blue;
+      case AlertSeverity.warning:
+        return Colors.orange;
+      case AlertSeverity.critical:
+        return Colors.red;
     }
   }
 
   void _showResolveDialog(BuildContext context) {
     final theme = context.savvy;
     final actionController = TextEditingController();
-    
+
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
@@ -520,11 +567,13 @@ class _AlertCard extends StatelessWidget {
             onPressed: () {
               Navigator.pop(dialogContext);
               context.read<AdvancedInventoryBloc>().add(
-                AdvancedInventoryEvent.resolveAlert(
-                  alert.uuid,
-                  actionController.text.isEmpty ? 'Resolved' : actionController.text,
-                ),
-              );
+                    AdvancedInventoryEvent.resolveAlert(
+                      alert.uuid,
+                      actionController.text.isEmpty
+                          ? 'Resolved'
+                          : actionController.text,
+                    ),
+                  );
             },
             child: const Text('Resolve'),
           ),
@@ -548,7 +597,7 @@ class _InfoItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     return Column(
       children: [
         Text(

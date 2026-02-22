@@ -17,7 +17,7 @@ class RecipeSetupPage extends StatefulWidget {
 class _RecipeSetupPageState extends State<RecipeSetupPage> {
   final IProductRepository _repo = GetIt.I<IProductRepository>();
   bool _isLoading = true;
-  
+
   List<Ingredient> _allIngredients = [];
   Map<String, double> _recipe = {}; // Ingredient UUID -> Quantity
 
@@ -33,7 +33,7 @@ class _RecipeSetupPageState extends State<RecipeSetupPage> {
 
     final recipeResult = await _repo.getRecipeForProduct(widget.product.uuid);
     final recipe = recipeResult.fold((l) => null, (r) => r);
-    
+
     // Map<String, double>
     final currentRecipe = <String, double>{};
     if (recipe != null) {
@@ -59,54 +59,60 @@ class _RecipeSetupPageState extends State<RecipeSetupPage> {
         onPressed: _addIngredientToRecipe,
         child: const Icon(Icons.add),
       ),
-      body: _isLoading 
-        ? const Center(child: CircularProgressIndicator()) 
-        : Column(
-            children: [
-               Expanded(
-                 child: ListView.builder(
-                   itemCount: _recipe.length,
-                   itemBuilder: (context, index) {
-                     final entry = _recipe.entries.elementAt(index);
-                     final ingredient = _allIngredients.firstWhere((i) => i.uuid == entry.key, orElse: () => Ingredient(uuid: '', name: 'Unknown', unit: '', currentStock: 0, costPerUnit: 0));
-                     
-                     return ListTile(
-                       title: Text(ingredient.name),
-                       subtitle: Text('${entry.value} ${ingredient.unit}'),
-                       trailing: IconButton(
-                         icon: const Icon(Icons.delete),
-                         onPressed: () => setState(() => _recipe.remove(entry.key)),
-                       ),
-                       onTap: () => _editQuantity(entry.key, entry.value),
-                     );
-                   },
-                 ),
-               ),
-               Padding(
-                 padding: const EdgeInsets.all(16.0),
-                 child: ElevatedButton(
-                   style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(50)),
-                   onPressed: _saveRecipe,
-                   child: const Text('Save Recipe'),
-                 ),
-               ),
-            ],
-          ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _recipe.length,
+                    itemBuilder: (context, index) {
+                      final entry = _recipe.entries.elementAt(index);
+                      final ingredient = _allIngredients.firstWhere(
+                          (i) => i.uuid == entry.key,
+                          orElse: () => Ingredient(
+                              uuid: '',
+                              name: 'Unknown',
+                              unit: '',
+                              currentStock: 0,
+                              costPerUnit: 0));
+
+                      return ListTile(
+                        title: Text(ingredient.name),
+                        subtitle: Text('${entry.value} ${ingredient.unit}'),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () =>
+                              setState(() => _recipe.remove(entry.key)),
+                        ),
+                        onTap: () => _editQuantity(entry.key, entry.value),
+                      );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(50)),
+                    onPressed: _saveRecipe,
+                    child: const Text('Save Recipe'),
+                  ),
+                ),
+              ],
+            ),
     );
   }
 
   Future<void> _saveRecipe() async {
     setState(() => _isLoading = true);
-    
+
     final items = _recipe.entries.map((entry) {
-       final ingredient = _allIngredients.firstWhere((i) => i.uuid == entry.key);
-       return RecipeItem(ingredient: ingredient, quantity: entry.value);
+      final ingredient = _allIngredients.firstWhere((i) => i.uuid == entry.key);
+      return RecipeItem(ingredient: ingredient, quantity: entry.value);
     }).toList();
 
-    final recipe = Recipe(
-      productUuid: widget.product.uuid, 
-      items: items
-    );
+    final recipe = Recipe(productUuid: widget.product.uuid, items: items);
 
     await _repo.updateRecipe(recipe);
     if (mounted) {
@@ -116,10 +122,12 @@ class _RecipeSetupPageState extends State<RecipeSetupPage> {
 
   Future<void> _addIngredientToRecipe() async {
     // Show list of ingredients not in recipe
-    final available = _allIngredients.where((i) => !_recipe.containsKey(i.uuid)).toList();
-    
+    final available =
+        _allIngredients.where((i) => !_recipe.containsKey(i.uuid)).toList();
+
     if (available.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('No more ingredients available')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No more ingredients available')));
       return;
     }
 
@@ -133,15 +141,15 @@ class _RecipeSetupPageState extends State<RecipeSetupPage> {
           child: ListView.builder(
             itemCount: available.length,
             itemBuilder: (ctx, index) {
-               final item = available[index];
-               return ListTile(
-                 title: Text(item.name),
-                 subtitle: Text(item.unit),
-                 onTap: () {
-                   Navigator.pop(ctx);
-                   _editQuantity(item.uuid, 1.0); // Default 1.0
-                 },
-               );
+              final item = available[index];
+              return ListTile(
+                title: Text(item.name),
+                subtitle: Text(item.unit),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _editQuantity(item.uuid, 1.0); // Default 1.0
+                },
+              );
             },
           ),
         ),
@@ -151,7 +159,8 @@ class _RecipeSetupPageState extends State<RecipeSetupPage> {
 
   Future<void> _editQuantity(String ingredientUuid, double currentQty) async {
     final ctrl = TextEditingController(text: currentQty.toString());
-    final ingredient = _allIngredients.firstWhere((i) => i.uuid == ingredientUuid);
+    final ingredient =
+        _allIngredients.firstWhere((i) => i.uuid == ingredientUuid);
 
     await showDialog(
       context: context,
@@ -163,16 +172,17 @@ class _RecipeSetupPageState extends State<RecipeSetupPage> {
           autofocus: true,
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
           ElevatedButton(
             onPressed: () {
-               final val = double.tryParse(ctrl.text);
-               if (val != null && val > 0) {
-                 setState(() {
-                   _recipe[ingredientUuid] = val;
-                 });
-                 Navigator.pop(ctx);
-               }
+              final val = double.tryParse(ctrl.text);
+              if (val != null && val > 0) {
+                setState(() {
+                  _recipe[ingredientUuid] = val;
+                });
+                Navigator.pop(ctx);
+              }
             },
             child: const Text('Set'),
           ),

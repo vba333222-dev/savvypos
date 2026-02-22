@@ -5,7 +5,7 @@ abstract class IDiscountRepository {
   // ===================================
   // DISCOUNT CRUD
   // ===================================
-  
+
   /// Get all discounts
   Future<List<Discount>> getDiscounts({
     DiscountStatus? status,
@@ -13,26 +13,26 @@ abstract class IDiscountRepository {
     DiscountScope? scope,
     bool? activeOnly,
   });
-  
+
   /// Get discount by UUID
   Future<Discount?> getDiscount(String uuid);
-  
+
   /// Get discount by code
   Future<Discount?> getDiscountByCode(String code);
-  
+
   /// Create discount
   Future<Discount> createDiscount(Discount discount);
-  
+
   /// Update discount
   Future<void> updateDiscount(Discount discount);
-  
+
   /// Delete discount
   Future<void> deleteDiscount(String uuid);
-  
+
   // ===================================
   // VALIDATION
   // ===================================
-  
+
   /// Validate discount code
   Future<DiscountValidationResult> validateDiscountCode({
     required String code,
@@ -40,17 +40,18 @@ abstract class IDiscountRepository {
     required List<String> orderItemUuids,
     String? customerUuid,
   });
-  
+
   /// Check if discount is applicable to item
-  bool isApplicableToItem(Discount discount, String productUuid, String categoryUuid);
-  
+  bool isApplicableToItem(
+      Discount discount, String productUuid, String categoryUuid);
+
   /// Check if discount is valid for time/date
   bool isValidForDateTime(Discount discount, DateTime dateTime);
-  
+
   // ===================================
   // APPLICATION
   // ===================================
-  
+
   /// Apply discount to order
   Future<AppliedDiscount> applyDiscount({
     required String orderUuid,
@@ -60,37 +61,37 @@ abstract class IDiscountRepository {
     String? appliedToItemName,
     String? appliedByUuid,
   });
-  
+
   /// Calculate discount amount
   double calculateDiscountAmount({
     required Discount discount,
     required double orderTotal,
     required List<OrderItemForDiscount> orderItems,
   });
-  
+
   /// Remove applied discount
   Future<void> removeAppliedDiscount(String appliedDiscountUuid);
-  
+
   /// Get applied discounts for order
   Future<List<AppliedDiscount>> getAppliedDiscounts(String orderUuid);
-  
+
   // ===================================
   // STACKING
   // ===================================
-  
+
   /// Get stackable discounts
   Future<List<Discount>> getStackableDiscounts(List<String> discountUuids);
-  
+
   /// Sort discounts by stack priority
   List<Discount> sortByStackPriority(List<Discount> discounts);
-  
+
   // ===================================
   // QUICK DISCOUNTS
   // ===================================
-  
+
   /// Get quick discount presets
   List<QuickDiscount> getQuickDiscounts();
-  
+
   /// Apply quick percentage discount
   Future<AppliedDiscount> applyQuickDiscount({
     required String orderUuid,
@@ -98,14 +99,14 @@ abstract class IDiscountRepository {
     required String label,
     String? appliedByUuid,
   });
-  
+
   // ===================================
   // USAGE TRACKING
   // ===================================
-  
+
   /// Increment usage count
   Future<void> incrementUsageCount(String discountUuid);
-  
+
   /// Get usage statistics
   Future<DiscountUsageStats> getUsageStats(String discountUuid);
 }
@@ -116,7 +117,7 @@ class DiscountValidationResult {
   final String? errorMessage;
   final Discount? discount;
   final double? calculatedAmount;
-  
+
   const DiscountValidationResult({
     required this.isValid,
     this.errorMessage,
@@ -132,7 +133,7 @@ class OrderItemForDiscount {
   final String categoryUuid;
   final double price;
   final int quantity;
-  
+
   const OrderItemForDiscount({
     required this.uuid,
     required this.productUuid,
@@ -148,7 +149,7 @@ class DiscountUsageStats {
   final double totalDiscounted;
   final double avgDiscountAmount;
   final Map<String, int> usesByDay;
-  
+
   const DiscountUsageStats({
     required this.totalUses,
     required this.totalDiscounted,

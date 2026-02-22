@@ -12,29 +12,33 @@ class RecipeRepositoryImpl implements IRecipeRepository {
 
   @override
   Future<List<Ingredient>> getIngredients() async {
-    final rows = await (_db.select(_db.ingredientTable)..where((t) => t.isDeleted.equals(false))).get();
-    return rows.map((r) => Ingredient(
-      uuid: r.uuid,
-      name: r.name,
-      unit: r.unit,
-      currentStock: r.currentStock,
-      costPerUnit: r.costPerUnit,
-    )).toList();
+    final rows = await (_db.select(_db.ingredientTable)
+          ..where((t) => t.isDeleted.equals(false)))
+        .get();
+    return rows
+        .map((r) => Ingredient(
+              uuid: r.uuid,
+              name: r.name,
+              unit: r.unit,
+              currentStock: r.currentStock,
+              costPerUnit: r.costPerUnit,
+            ))
+        .toList();
   }
 
   @override
   Future<void> saveIngredient(Ingredient ingredient) async {
     await _db.into(_db.ingredientTable).insert(
-      IngredientTableCompanion.insert(
-        uuid: ingredient.uuid,
-        name: ingredient.name,
-        unit: ingredient.unit,
-        currentStock: drift.Value(ingredient.currentStock),
-        costPerUnit: drift.Value(ingredient.costPerUnit),
-        updatedAt: DateTime.now(),
-      ),
-      mode: drift.InsertMode.insertOrReplace,
-    );
+          IngredientTableCompanion.insert(
+            uuid: ingredient.uuid,
+            name: ingredient.name,
+            unit: ingredient.unit,
+            currentStock: drift.Value(ingredient.currentStock),
+            costPerUnit: drift.Value(ingredient.costPerUnit),
+            updatedAt: DateTime.now(),
+          ),
+          mode: drift.InsertMode.insertOrReplace,
+        );
   }
 
   @override
@@ -47,17 +51,19 @@ class RecipeRepositoryImpl implements IRecipeRepository {
   Future<Recipe?> getRecipeForProduct(String productUuid) async {
     // 1. Get recipe links
     final query = _db.select(_db.recipeTable).join([
-      drift.innerJoin(_db.ingredientTable, _db.ingredientTable.uuid.equalsExp(_db.recipeTable.ingredientUuid))
-    ])..where(_db.recipeTable.productUuid.equals(productUuid));
+      drift.innerJoin(_db.ingredientTable,
+          _db.ingredientTable.uuid.equalsExp(_db.recipeTable.ingredientUuid))
+    ])
+      ..where(_db.recipeTable.productUuid.equals(productUuid));
 
     final rows = await query.get();
-    
+
     if (rows.isEmpty) return null;
 
     final items = rows.map((row) {
       final recipe = row.readTable(_db.recipeTable);
       final ingredient = row.readTable(_db.ingredientTable);
-      
+
       return RecipeItem(
         ingredientUuid: recipe.ingredientUuid,
         quantityRequired: recipe.quantityRequired,
@@ -73,23 +79,26 @@ class RecipeRepositoryImpl implements IRecipeRepository {
   Future<void> saveRecipe(Recipe recipe) async {
     await _db.transaction(() async {
       // 1. Delete existing connections
-      await (_db.delete(_db.recipeTable)..where((t) => t.productUuid.equals(recipe.productUuid))).go();
-      
+      await (_db.delete(_db.recipeTable)
+            ..where((t) => t.productUuid.equals(recipe.productUuid)))
+          .go();
+
       // 2. Insert new ones
       for (final item in recipe.items) {
         await _db.into(_db.recipeTable).insert(
-          RecipeTableCompanion.insert(
-            productUuid: recipe.productUuid,
-            ingredientUuid: item.ingredientUuid,
-            quantityRequired: item.quantityRequired,
-          ),
-        );
+              RecipeTableCompanion.insert(
+                productUuid: recipe.productUuid,
+                ingredientUuid: item.ingredientUuid,
+                quantityRequired: item.quantityRequired,
+              ),
+            );
       }
-      
+
       // 3. Update Product isComposite flag
-      await (_db.update(_db.productTable)..where((t) => t.uuid.equals(recipe.productUuid))).write(
-        ProductTableCompanion(isComposite: drift.Value(recipe.items.isNotEmpty))
-      );
+      await (_db.update(_db.productTable)
+            ..where((t) => t.uuid.equals(recipe.productUuid)))
+          .write(ProductTableCompanion(
+              isComposite: drift.Value(recipe.items.isNotEmpty)));
     });
   }
 
@@ -101,16 +110,20 @@ class RecipeRepositoryImpl implements IRecipeRepository {
     await _db.transaction(() async {
       for (final item in recipe.items) {
         final deduction = item.quantityRequired * quantity;
-        
+
         // Find ingredient and update stock
         // Note: Using custom SQL might be atomic, but read-modify-write in transaction is okay for now
-        final ingredient = await (_db.select(_db.ingredientTable)..where((t) => t.uuid.equals(item.ingredientUuid))).getSingle();
-        
+        final ingredient = await (_db.select(_db.ingredientTable)
+              ..where((t) => t.uuid.equals(item.ingredientUuid)))
+            .getSingle();
+
         final newStock = ingredient.currentStock - deduction;
-        
-        await (_db.update(_db.ingredientTable)..where((t) => t.uuid.equals(item.ingredientUuid)))
-            .write(IngredientTableCompanion(currentStock: drift.Value(newStock)));
-            
+
+        await (_db.update(_db.ingredientTable)
+              ..where((t) => t.uuid.equals(item.ingredientUuid)))
+            .write(
+                IngredientTableCompanion(currentStock: drift.Value(newStock)));
+
         // TODO: Log to InventoryLedger (omitted for brevity, but crucial for auditing)
       }
     });

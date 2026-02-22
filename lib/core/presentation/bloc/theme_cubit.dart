@@ -35,7 +35,8 @@ class ThemeCubit extends Cubit<ThemeMode> {
     // Write to prefs BEFORE emitting — guarantees persistence even if
     // the app is killed immediately after the toggle
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_kThemePrefKey, next == ThemeMode.dark ? 'dark' : 'light');
+    await prefs.setString(
+        _kThemePrefKey, next == ThemeMode.dark ? 'dark' : 'light');
     emit(next);
   }
 
@@ -97,11 +98,13 @@ class ThemeToggleButton extends StatelessWidget {
                     transitionBuilder: (child, anim) =>
                         ScaleTransition(scale: anim, child: child),
                     child: Icon(
-                      isDark ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
+                      isDark
+                          ? Icons.dark_mode_rounded
+                          : Icons.light_mode_rounded,
                       key: ValueKey(isDark),
                       size: 18,
                       color: isDark
-                          ? const Color(0xFF7AA2FF)  // blue-ish for night
+                          ? const Color(0xFF7AA2FF) // blue-ish for night
                           : const Color(0xFFF59E0B), // amber for day
                     ),
                   ),

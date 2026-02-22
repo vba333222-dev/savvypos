@@ -65,9 +65,12 @@ class Promotion with _$Promotion {
 
   bool meetsMinPurchase(double subtotal) {
     return map(
-      percentage: (p) => p.minPurchaseAmount == null || subtotal >= p.minPurchaseAmount!,
-      fixedAmount: (p) => p.minPurchaseAmount == null || subtotal >= p.minPurchaseAmount!,
-      buyXGetY: (p) => p.minPurchaseAmount == null || subtotal >= p.minPurchaseAmount!,
+      percentage: (p) =>
+          p.minPurchaseAmount == null || subtotal >= p.minPurchaseAmount!,
+      fixedAmount: (p) =>
+          p.minPurchaseAmount == null || subtotal >= p.minPurchaseAmount!,
+      buyXGetY: (p) =>
+          p.minPurchaseAmount == null || subtotal >= p.minPurchaseAmount!,
     );
   }
 }

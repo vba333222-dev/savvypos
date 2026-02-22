@@ -29,5 +29,6 @@ class CustomerFeedback with _$CustomerFeedback {
     @Default(false) bool isActioned, // If a manager has reviewed/resolved it
   }) = _CustomerFeedback;
 
-  factory CustomerFeedback.fromJson(Map<String, dynamic> json) => _$CustomerFeedbackFromJson(json);
+  factory CustomerFeedback.fromJson(Map<String, dynamic> json) =>
+      _$CustomerFeedbackFromJson(json);
 }

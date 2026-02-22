@@ -22,9 +22,11 @@ class CheckoutEvent with _$CheckoutEvent {
     double? tendered,
     String? note,
   }) = _ProcessPayment;
-  const factory CheckoutEvent.addPaymentPart(PaymentPart part) = _AddPaymentPart;
+  const factory CheckoutEvent.addPaymentPart(PaymentPart part) =
+      _AddPaymentPart;
   const factory CheckoutEvent.removePaymentPart(int index) = _RemovePaymentPart;
-  const factory CheckoutEvent.confirmSplitTenderCheckout() = _ConfirmSplitTenderCheckout;
+  const factory CheckoutEvent.confirmSplitTenderCheckout() =
+      _ConfirmSplitTenderCheckout;
   const factory CheckoutEvent.refreshWithBalance(double balance) =
       _RefreshWithBalance;
   const factory CheckoutEvent.attachLoyaltyMember(LoyaltyMember member) =
@@ -264,12 +266,13 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
   void _onAddPaymentPart(_AddPaymentPart event, Emitter<CheckoutState> emit) {
     if (state.remainingBalance <= 0) return;
 
-    final newParts = List<PaymentPart>.from(state.paymentParts)..add(event.part);
-    
+    final newParts = List<PaymentPart>.from(state.paymentParts)
+      ..add(event.part);
+
     // Calculate new totals
     double newAmountPaid = state.amountPaid + event.part.amount;
     double newRemaining = state.totalAmount - newAmountPaid;
-    
+
     if (newRemaining < 0) newRemaining = 0;
 
     emit(state.copyWith(
@@ -279,15 +282,16 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     ));
   }
 
-  void _onRemovePaymentPart(_RemovePaymentPart event, Emitter<CheckoutState> emit) {
+  void _onRemovePaymentPart(
+      _RemovePaymentPart event, Emitter<CheckoutState> emit) {
     if (event.index < 0 || event.index >= state.paymentParts.length) return;
 
     final newParts = List<PaymentPart>.from(state.paymentParts);
     final removed = newParts.removeAt(event.index);
-    
+
     double newAmountPaid = state.amountPaid - removed.amount;
     if (newAmountPaid < 0) newAmountPaid = 0;
-    
+
     double newRemaining = state.totalAmount - newAmountPaid;
 
     emit(state.copyWith(
@@ -297,25 +301,27 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     ));
   }
 
-  Future<void> _onConfirmSplitTenderCheckout(_ConfirmSplitTenderCheckout event, Emitter<CheckoutState> emit) async {
+  Future<void> _onConfirmSplitTenderCheckout(
+      _ConfirmSplitTenderCheckout event, Emitter<CheckoutState> emit) async {
     if (state.paymentParts.isEmpty) return;
-    
+
     emit(state.copyWith(isLoading: true, errorMessage: null));
 
     try {
       // Process each part
       for (final part in state.paymentParts) {
-         await _processPayment(
-            orderUuid: state.orderUuid,
-            method: part.method,
-            amount: part.amount,
-            tendered: part.tendered,
-            note: part.note,
-         );
+        await _processPayment(
+          orderUuid: state.orderUuid,
+          method: part.method,
+          amount: part.amount,
+          tendered: part.tendered,
+          note: part.note,
+        );
       }
 
       // Mark order complete since remaining balance must be <= 0 to trigger this
-      emit(state.copyWith(isLoading: false, isComplete: true, remainingBalance: 0));
+      emit(state.copyWith(
+          isLoading: false, isComplete: true, remainingBalance: 0));
       await _repository.updateOrderStatus(state.orderUuid, 'COMPLETED');
 
       if (state.attachedMember != null) {
@@ -326,7 +332,6 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
               orderUuid: state.orderUuid);
         } catch (e) {}
       }
-      
     } catch (e) {
       emit(state.copyWith(isLoading: false, errorMessage: e.toString()));
     }

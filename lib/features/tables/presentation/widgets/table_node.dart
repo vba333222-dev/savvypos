@@ -40,9 +40,10 @@ class _TableNodeState extends State<TableNode> {
   void _startTimer() {
     _timer?.cancel();
     _updateElapsed();
-    
+
     if (widget.tableStatus.isOccupied) {
-      _timer = Timer.periodic(const Duration(minutes: 1), (_) => _updateElapsed());
+      _timer =
+          Timer.periodic(const Duration(minutes: 1), (_) => _updateElapsed());
     }
   }
 
@@ -58,12 +59,12 @@ class _TableNodeState extends State<TableNode> {
     // Let's assume we want to show the mechanic working.
     // We will calculate relative to 'now' if timestamp exists, or just increment.
     // Since entity definition isn't fully visible, we'll use a mock start time derived from hashCode/random or just 0 for new sessions.
-    
+
     // For this implementation, let's pretend 'updatedAt' is the start time.
-    final start = widget.tableStatus.updatedAt ?? DateTime.now(); 
+    final start = widget.tableStatus.updatedAt ?? DateTime.now();
     final now = DateTime.now();
     final diff = now.difference(start);
-    
+
     setState(() => _elapsed = diff);
   }
 
@@ -75,7 +76,7 @@ class _TableNodeState extends State<TableNode> {
 
   Color _getHeatmapColor(SavvyTheme theme) {
     if (!widget.tableStatus.isOccupied) return theme.colors.bgElevated;
-    
+
     final minutes = _elapsed.inMinutes;
     if (minutes < 30) return theme.colors.stateSuccess; // Fresh
     if (minutes < 60) return theme.colors.stateWarning; // Medium
@@ -91,14 +92,16 @@ class _TableNodeState extends State<TableNode> {
     // Heatmap Logic
     Color bgColor = _getHeatmapColor(theme);
     Color borderColor = isOccupied ? bgColor : theme.colors.borderDefault;
-    Color textColor = isOccupied ? theme.colors.textInverse : theme.colors.textPrimary;
+    Color textColor =
+        isOccupied ? theme.colors.textInverse : theme.colors.textPrimary;
 
     final isLarge = table.capacity > 4;
 
     Widget nodeContent = Container(
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.circular(isLarge ? theme.shapes.radiusMd : theme.shapes.radiusLg),
+        borderRadius: BorderRadius.circular(
+            isLarge ? theme.shapes.radiusMd : theme.shapes.radiusLg),
         border: Border.all(color: borderColor, width: 2),
         boxShadow: isOccupied ? theme.elevations.md : theme.elevations.sm,
       ),
@@ -112,15 +115,19 @@ class _TableNodeState extends State<TableNode> {
             color: textColor,
           ),
           if (isOccupied)
-             Padding(
-               padding: const EdgeInsets.only(top: 4.0),
-               child: _DurationTimer(textColor: textColor.withValues(alpha: 0.9), elapsed: _elapsed),
-             ),
+            Padding(
+              padding: const EdgeInsets.only(top: 4.0),
+              child: _DurationTimer(
+                  textColor: textColor.withValues(alpha: 0.9),
+                  elapsed: _elapsed),
+            ),
           if (!isOccupied)
-             Padding(
-               padding: const EdgeInsets.only(top: 2.0),
-               child: SavvyText('${table.capacity}p', style: SavvyTextStyle.label, color: theme.colors.textSecondary),
-             ),
+            Padding(
+              padding: const EdgeInsets.only(top: 2.0),
+              child: SavvyText('${table.capacity}p',
+                  style: SavvyTextStyle.label,
+                  color: theme.colors.textSecondary),
+            ),
         ],
       ),
     );
@@ -129,7 +136,11 @@ class _TableNodeState extends State<TableNode> {
     if (isOccupied) {
       nodeContent = nodeContent
           .animate(onPlay: (c) => c.repeat(reverse: true))
-          .scale(begin: const Offset(1, 1), end: const Offset(1.03, 1.03), duration: 2.seconds, curve: Curves.easeInOut);
+          .scale(
+              begin: const Offset(1, 1),
+              end: const Offset(1.03, 1.03),
+              duration: 2.seconds,
+              curve: Curves.easeInOut);
     }
 
     // Hero Transition
@@ -149,7 +160,7 @@ class _TableNodeState extends State<TableNode> {
 class _DurationTimer extends StatelessWidget {
   final Color textColor;
   final Duration elapsed;
-  
+
   const _DurationTimer({required this.textColor, required this.elapsed});
 
   @override
@@ -162,8 +173,9 @@ class _DurationTimer extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(
-        '${minutes}m', 
-        style: TextStyle(fontSize: 10, color: textColor, fontWeight: FontWeight.bold),
+        '${minutes}m',
+        style: TextStyle(
+            fontSize: 10, color: textColor, fontWeight: FontWeight.bold),
       ),
     );
   }

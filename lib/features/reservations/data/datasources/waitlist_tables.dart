@@ -7,13 +7,15 @@ class WaitlistTable extends Table {
   TextColumn get guestName => text()();
   TextColumn get phoneNumber => text()();
   IntColumn get partySize => integer()();
-  
+
   // Preferences
   TextColumn get specialRequests => text().nullable()();
-  BoolColumn get highchairNeeded => boolean().withDefault(const Constant(false))();
-  BoolColumn get wheelchairAccessible => boolean().withDefault(const Constant(false))();
+  BoolColumn get highchairNeeded =>
+      boolean().withDefault(const Constant(false))();
+  BoolColumn get wheelchairAccessible =>
+      boolean().withDefault(const Constant(false))();
   TextColumn get tablePreference => text().nullable()();
-  
+
   // Status
   TextColumn get status => text().withDefault(const Constant('waiting'))();
   DateTimeColumn get createdAt => dateTime()();
@@ -21,6 +23,6 @@ class WaitlistTable extends Table {
   DateTimeColumn get notifiedAt => dateTime().nullable()();
   DateTimeColumn get seatedAt => dateTime().nullable()();
   TextColumn get seatedTableUuid => text().nullable()();
-  
+
   IntColumn get queuePosition => integer().nullable()();
 }

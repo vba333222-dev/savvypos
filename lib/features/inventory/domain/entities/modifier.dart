@@ -14,7 +14,8 @@ class ModifierGroup with _$ModifierGroup {
     @Default([]) List<ModifierItem> items,
   }) = _ModifierGroup;
 
-  factory ModifierGroup.fromJson(Map<String, dynamic> json) => _$ModifierGroupFromJson(json);
+  factory ModifierGroup.fromJson(Map<String, dynamic> json) =>
+      _$ModifierGroupFromJson(json);
 }
 
 @freezed
@@ -25,5 +26,6 @@ class ModifierItem with _$ModifierItem {
     required double priceDelta,
   }) = _ModifierItem;
 
-  factory ModifierItem.fromJson(Map<String, dynamic> json) => _$ModifierItemFromJson(json);
+  factory ModifierItem.fromJson(Map<String, dynamic> json) =>
+      _$ModifierItemFromJson(json);
 }

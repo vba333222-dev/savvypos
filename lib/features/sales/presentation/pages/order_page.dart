@@ -31,7 +31,8 @@ class OrderPage extends StatelessWidget {
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => CheckoutPage(
                 orderUuid: state.lastCreatedOrderUuid!,
-                cart: state.cart, // Note: Cart is cleared in Bloc success, so this might be empty!
+                cart: state
+                    .cart, // Note: Cart is cleared in Bloc success, so this might be empty!
                 // FIX: We need the cart BEFORE it was cleared, or reload order summary.
                 // Since Bloc clears cart immediately, we can't pass 'state.cart' here effectively if it's already cleared.
                 // However, CheckoutPage fetches order balance. But it needs items for Receipt.
@@ -40,15 +41,15 @@ class OrderPage extends StatelessWidget {
                 // 1. Don't clear cart in Bloc until "RESET" event.
                 // 2. Return order items from CreateOrder (Repository).
                 // 3. Pass empty cart to CheckoutPage and let it fetch items (Best Practice).
-                
+
                 // For now, simple workaround: Check if CheckoutPage can load items.
-                // CheckoutPage takes 'Cart'. 
+                // CheckoutPage takes 'Cart'.
                 // I will update CheckoutPage to accept 'List<CartItem>' optionally OR fetch items.
                 // Given time constraints: Let's fetch items in `CheckoutBloc` too.
-                
+
                 // ACTUALLY: Let's delay clearing cart in Bloc? No, clean architecture.
                 // I will change CheckoutPage to fetch Items.
-                
+
                 // Temporary fallback: Pass the CLEARED cart (empty) and fix CheckoutPage to load from DB.
                 // This is safer.
                 tableName: tableName,
@@ -67,60 +68,54 @@ class OrderPage extends StatelessWidget {
                 product: state.selectedProductForModifiers!,
                 modifierGroups: state.modifierGroups,
                 onAddToCart: (p, qty, mods, note) {
-                  context.read<SalesBloc>().add(SalesEvent.addToCart(
-                    p, 
-                    quantity: qty, 
-                    modifiers: mods, 
-                    note: note
-                  ));
+                  context.read<SalesBloc>().add(SalesEvent.addToCart(p,
+                      quantity: qty, modifiers: mods, note: note));
                 },
               ),
             ).then((_) {
-               // Ensure we clear selection if dialog dismissed without adding
-               // This logic might need a "ClearSelection" event if dismiss doesn't trigger addToCart
-               // But addToCart clears it. If user cancels, we might want to clear it too.
-               // For now, let's keep it simple. If we don't clear, re-tap might be weird.
-               // Ideally Bloc handles "DialogDismissed".
+              // Ensure we clear selection if dialog dismissed without adding
+              // This logic might need a "ClearSelection" event if dismiss doesn't trigger addToCart
+              // But addToCart clears it. If user cancels, we might want to clear it too.
+              // For now, let's keep it simple. If we don't clear, re-tap might be weird.
+              // Ideally Bloc handles "DialogDismissed".
             });
           }
         },
-        child: Builder(
-          builder: (context) {
-            return Scaffold(
-              appBar: AppBar(
-                title: Text(tableName != null ? 'Order: $tableName' : 'New Order'),
-              ),
-              body: Row(
-                children: [
-                  // LEFT: Menu (Categories + Products)
-                  Expanded(
-                    flex: 3,
-                    child: Column(
-                      children: [
-                        const CategorySelectorWidget(),
-                        const SidebarDivider(),
-                        const Expanded(child: ProductGridWidget()),
-                      ],
-                    ),
+        child: Builder(builder: (context) {
+          return Scaffold(
+            appBar: AppBar(
+              title:
+                  Text(tableName != null ? 'Order: $tableName' : 'New Order'),
+            ),
+            body: Row(
+              children: [
+                // LEFT: Menu (Categories + Products)
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    children: [
+                      const CategorySelectorWidget(),
+                      const SidebarDivider(),
+                      const Expanded(child: ProductGridWidget()),
+                    ],
                   ),
-                  
-                  // RIGHT: Cart Sidebar
-                  const VerticalDivider(width: 1),
-                  Expanded(
-                    flex: 2,
-                    child: CartSidebar(
-                      onPay: () {
-                         context.read<SalesBloc>().add(
-                           SalesEvent.createOrder(tableUuid: tableUuid, customerUuid: customerUuid)
-                         );
-                      },
-                    ),
+                ),
+
+                // RIGHT: Cart Sidebar
+                const VerticalDivider(width: 1),
+                Expanded(
+                  flex: 2,
+                  child: CartSidebar(
+                    onPay: () {
+                      context.read<SalesBloc>().add(SalesEvent.createOrder(
+                          tableUuid: tableUuid, customerUuid: customerUuid));
+                    },
                   ),
-                ],
-              ),
-            );
-          }
-        ),
+                ),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }

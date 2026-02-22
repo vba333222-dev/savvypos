@@ -11,8 +11,10 @@ part 'menu_management_bloc.freezed.dart';
 @freezed
 class MenuManagementEvent with _$MenuManagementEvent {
   const factory MenuManagementEvent.loadAllModifiers() = _LoadAllModifiers;
-  const factory MenuManagementEvent.saveModifierGroup(String name, bool multiSelect, int min, int? max, List<ModifierItem> items, {String? uuid}) = _SaveModifierGroup;
-  
+  const factory MenuManagementEvent.saveModifierGroup(String name,
+      bool multiSelect, int min, int? max, List<ModifierItem> items,
+      {String? uuid}) = _SaveModifierGroup;
+
   const factory MenuManagementEvent.saveProduct({
     required String name,
     required double price,
@@ -22,8 +24,9 @@ class MenuManagementEvent with _$MenuManagementEvent {
     List<String>? modifierGroupUuids,
     String? uuid, // If null, create new
   }) = _SaveProduct;
-  
-  const factory MenuManagementEvent.loadProductDetails(String productUuid) = _LoadProductDetails;
+
+  const factory MenuManagementEvent.loadProductDetails(String productUuid) =
+      _LoadProductDetails;
 }
 
 @freezed
@@ -39,7 +42,8 @@ class MenuManagementState with _$MenuManagementState {
 }
 
 @injectable
-class MenuManagementBloc extends Bloc<MenuManagementEvent, MenuManagementState> {
+class MenuManagementBloc
+    extends Bloc<MenuManagementEvent, MenuManagementState> {
   final IProductRepository _repo;
 
   MenuManagementBloc(this._repo) : super(const MenuManagementState()) {
@@ -49,7 +53,8 @@ class MenuManagementBloc extends Bloc<MenuManagementEvent, MenuManagementState> 
     on<_LoadProductDetails>(_onLoadProductDetails);
   }
 
-  Future<void> _onLoadAllModifiers(_LoadAllModifiers event, Emitter<MenuManagementState> emit) async {
+  Future<void> _onLoadAllModifiers(
+      _LoadAllModifiers event, Emitter<MenuManagementState> emit) async {
     emit(state.copyWith(isLoading: true));
     final result = await _repo.getAllModifierGroups();
     result.fold(
@@ -58,9 +63,10 @@ class MenuManagementBloc extends Bloc<MenuManagementEvent, MenuManagementState> 
     );
   }
 
-  Future<void> _onSaveModifierGroup(_SaveModifierGroup event, Emitter<MenuManagementState> emit) async {
+  Future<void> _onSaveModifierGroup(
+      _SaveModifierGroup event, Emitter<MenuManagementState> emit) async {
     emit(state.copyWith(isLoading: true));
-    
+
     final group = ModifierGroup(
       uuid: event.uuid ?? const Uuid().v4(),
       name: event.name,
@@ -69,22 +75,24 @@ class MenuManagementBloc extends Bloc<MenuManagementEvent, MenuManagementState> 
       maxSelection: event.max,
       items: event.items,
     );
-    
+
     final result = await _repo.saveModifierGroup(group);
-    
+
     await result.fold(
-      (l) async => emit(state.copyWith(isLoading: false, errorMessage: l.toString())),
-      (r) async {
-        // Reload list
-        add(const MenuManagementEvent.loadAllModifiers());
-        emit(state.copyWith(isLoading: false, isSuccess: true)); // Trigger UI success
-      }
-    );
+        (l) async =>
+            emit(state.copyWith(isLoading: false, errorMessage: l.toString())),
+        (r) async {
+      // Reload list
+      add(const MenuManagementEvent.loadAllModifiers());
+      emit(state.copyWith(
+          isLoading: false, isSuccess: true)); // Trigger UI success
+    });
   }
 
-  Future<void> _onSaveProduct(_SaveProduct event, Emitter<MenuManagementState> emit) async {
+  Future<void> _onSaveProduct(
+      _SaveProduct event, Emitter<MenuManagementState> emit) async {
     emit(state.copyWith(isLoading: true, errorMessage: null));
-    
+
     final productUuid = event.uuid ?? const Uuid().v4();
     final product = Product(
       uuid: productUuid,
@@ -96,23 +104,25 @@ class MenuManagementBloc extends Bloc<MenuManagementEvent, MenuManagementState> 
       trackStock: true, // Default
       isService: false,
       colorHex: null, // Basic for now
-      imageUrl: null, 
+      imageUrl: null,
     );
-    
+
     try {
       await _repo.saveProduct(product);
-      
+
       if (event.modifierGroupUuids != null) {
-        await _repo.updateProductModifiers(productUuid, event.modifierGroupUuids!);
+        await _repo.updateProductModifiers(
+            productUuid, event.modifierGroupUuids!);
       }
-      
+
       emit(state.copyWith(isLoading: false, isSuccess: true));
     } catch (e) {
       emit(state.copyWith(isLoading: false, errorMessage: e.toString()));
     }
   }
 
-  Future<void> _onLoadProductDetails(_LoadProductDetails event, Emitter<MenuManagementState> emit) async {
+  Future<void> _onLoadProductDetails(
+      _LoadProductDetails event, Emitter<MenuManagementState> emit) async {
     emit(state.copyWith(isLoading: true));
     // Load Product
     final product = await _repo.getProductByUuid(event.productUuid);
@@ -120,17 +130,16 @@ class MenuManagementBloc extends Bloc<MenuManagementEvent, MenuManagementState> 
       emit(state.copyWith(isLoading: false, errorMessage: "Product not found"));
       return;
     }
-    
+
     // Load Linked Modifiers
     final modResult = await _repo.getModifierGroups(event.productUuid);
-    
+
     modResult.fold(
-      (l) => emit(state.copyWith(isLoading: false, errorMessage: l.toString())),
-      (groups) => emit(state.copyWith(
-        isLoading: false, 
-        editingProduct: product, 
-        editingProductModifierIds: groups.map((g) => g.uuid).toList()
-      ))
-    );
+        (l) =>
+            emit(state.copyWith(isLoading: false, errorMessage: l.toString())),
+        (groups) => emit(state.copyWith(
+            isLoading: false,
+            editingProduct: product,
+            editingProductModifierIds: groups.map((g) => g.uuid).toList())));
   }
 }

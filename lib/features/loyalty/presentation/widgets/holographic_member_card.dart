@@ -22,7 +22,8 @@ class HolographicMemberCard extends StatefulWidget {
   State<HolographicMemberCard> createState() => _HolographicMemberCardState();
 }
 
-class _HolographicMemberCardState extends State<HolographicMemberCard> with SingleTickerProviderStateMixin {
+class _HolographicMemberCardState extends State<HolographicMemberCard>
+    with SingleTickerProviderStateMixin {
   // Parallax Values
   double _rotationX = 0;
   double _rotationY = 0;
@@ -32,7 +33,7 @@ class _HolographicMemberCardState extends State<HolographicMemberCard> with Sing
     return MouseRegion(
       onHover: (event) {
         final dx = event.localPosition.dx - 150; // Half width
-        final dy = event.localPosition.dy - 90;  // Half height
+        final dy = event.localPosition.dy - 90; // Half height
         setState(() {
           _rotationY = -dx * 0.001;
           _rotationX = dy * 0.001;
@@ -62,7 +63,8 @@ class _HolographicMemberCardState extends State<HolographicMemberCard> with Sing
                 offset: const Offset(0, 10),
               )
             ],
-            border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 1),
+            border: Border.all(
+                color: Colors.white.withValues(alpha: 0.3), width: 1),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,14 +72,15 @@ class _HolographicMemberCardState extends State<HolographicMemberCard> with Sing
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                   SavvyText.h3('SAVVY MEMBER', color: Colors.white.withValues(alpha: 0.9)),
-                   Icon(Icons.nfc, color: Colors.white.withValues(alpha: 0.6)),
+                  SavvyText.h3('SAVVY MEMBER',
+                      color: Colors.white.withValues(alpha: 0.9)),
+                  Icon(Icons.nfc, color: Colors.white.withValues(alpha: 0.6)),
                 ],
               ),
               const Spacer(),
-              SavvyText.h2(widget.memberName.toUpperCase(), color: Colors.white),
+              SavvyText.h2(widget.memberName.toUpperCase(),
+                  color: Colors.white),
               const SizedBox(height: 8),
-              
               Row(
                 children: [
                   Expanded(
@@ -92,14 +95,18 @@ class _HolographicMemberCardState extends State<HolographicMemberCard> with Sing
                     ),
                   ),
                   const SizedBox(width: 12),
-                  SavvyText.label('${widget.points} / ${widget.nextTierThreshold} XP', color: Colors.white),
+                  SavvyText.label(
+                      '${widget.points} / ${widget.nextTierThreshold} XP',
+                      color: Colors.white),
                 ],
               ),
               const SizedBox(height: 4),
-              SavvyText.label(widget.tier.name.toUpperCase(), color: Colors.white.withValues(alpha: 0.8)),
+              SavvyText.label(widget.tier.name.toUpperCase(),
+                  color: Colors.white.withValues(alpha: 0.8)),
             ],
           ),
-        ).animate(onPlay: (c) => c.repeat(reverse: true)).shimmer(duration: 3.seconds, color: Colors.white.withValues(alpha: 0.1)),
+        ).animate(onPlay: (c) => c.repeat(reverse: true)).shimmer(
+            duration: 3.seconds, color: Colors.white.withValues(alpha: 0.1)),
       ),
     );
   }
@@ -119,7 +126,6 @@ class _HolographicMemberCardState extends State<HolographicMemberCard> with Sing
           end: Alignment.bottomRight,
         );
       case LoyaltyTier.bronze:
-
         return const LinearGradient(
           colors: [Color(0xFFCD7F32), Color(0xFF8B4513)],
           begin: Alignment.topLeft,
@@ -127,12 +133,15 @@ class _HolographicMemberCardState extends State<HolographicMemberCard> with Sing
         );
     }
   }
-  
+
   Color _getShadowColor(LoyaltyTier tier) {
-     switch(tier) {
-       case LoyaltyTier.gold: return Colors.amber;
-       case LoyaltyTier.silver: return Colors.blueGrey;
-       default: return Colors.brown;
-     } 
+    switch (tier) {
+      case LoyaltyTier.gold:
+        return Colors.amber;
+      case LoyaltyTier.silver:
+        return Colors.blueGrey;
+      default:
+        return Colors.brown;
+    }
   }
 }

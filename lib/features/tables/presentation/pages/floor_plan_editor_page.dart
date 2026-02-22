@@ -13,7 +13,8 @@ class FloorPlanEditorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<FloorPlanEditorBloc>()..add(const FloorPlanEditorEvent.started()),
+      create: (_) => getIt<FloorPlanEditorBloc>()
+        ..add(const FloorPlanEditorEvent.started()),
       child: const _FloorPlanEditorView(),
     );
   }
@@ -35,9 +36,10 @@ class _FloorPlanEditorView extends StatelessWidget {
               final bloc = context.read<FloorPlanEditorBloc>();
               final state = bloc.state;
               if (state.selectedZoneId == null && state.zones.isNotEmpty) {
-                 bloc.add(FloorPlanEditorEvent.zoneSelected(state.zones.first.id));
+                bloc.add(
+                    FloorPlanEditorEvent.zoneSelected(state.zones.first.id));
               }
-              
+
               // Default new table
               final newTable = SavvyTable(
                 id: const Uuid().v4(),
@@ -52,15 +54,15 @@ class _FloorPlanEditorView extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.add_location_alt),
             onPressed: () async {
-               // Show Add Zone Dialog
-               // Simplified for now
-               final bloc = context.read<FloorPlanEditorBloc>();
-               final newZone = Zone(
-                 id: const Uuid().v4(),
-                 name: 'New Zone ${bloc.state.zones.length + 1}',
-               );
-               bloc.add(FloorPlanEditorEvent.zoneSaved(newZone));
-               bloc.add(FloorPlanEditorEvent.zoneSelected(newZone.id));
+              // Show Add Zone Dialog
+              // Simplified for now
+              final bloc = context.read<FloorPlanEditorBloc>();
+              final newZone = Zone(
+                id: const Uuid().v4(),
+                name: 'New Zone ${bloc.state.zones.length + 1}',
+              );
+              bloc.add(FloorPlanEditorEvent.zoneSaved(newZone));
+              bloc.add(FloorPlanEditorEvent.zoneSelected(newZone.id));
             },
           )
         ],
@@ -70,14 +72,15 @@ class _FloorPlanEditorView extends StatelessWidget {
           if (state.isLoading) {
             return const Center(child: CircularProgressIndicator());
           }
-          
+
           if (state.zones.isEmpty) {
-             return const Center(child: Text('Create a Zone to start'));
+            return const Center(child: Text('Create a Zone to start'));
           }
-          
+
           final selectedZoneId = state.selectedZoneId ?? state.zones.first.id;
-          final currentZoneTables = state.tables.where((t) => t.zoneId == selectedZoneId).toList();
-          
+          final currentZoneTables =
+              state.tables.where((t) => t.zoneId == selectedZoneId).toList();
+
           return Column(
             children: [
               // Zone Selector Bar
@@ -93,7 +96,8 @@ class _FloorPlanEditorView extends StatelessWidget {
                         selected: isSelected,
                         onSelected: (selected) {
                           if (selected) {
-                            context.read<FloorPlanEditorBloc>().add(FloorPlanEditorEvent.zoneSelected(zone.id));
+                            context.read<FloorPlanEditorBloc>().add(
+                                FloorPlanEditorEvent.zoneSelected(zone.id));
                           }
                         },
                       ),
@@ -101,7 +105,7 @@ class _FloorPlanEditorView extends StatelessWidget {
                   }).toList(),
                 ),
               ),
-              
+
               // Editor Canvas
               Expanded(
                 child: InteractiveViewer(
@@ -122,9 +126,7 @@ class _FloorPlanEditorView extends StatelessWidget {
                             onPanUpdate: (details) {
                               // Logic handled by child widget for performance
                             },
-                            onPanEnd: (details) {
-                               
-                            },
+                            onPanEnd: (details) {},
                             child: _DraggableTableWidget(table: table),
                           ),
                         );
@@ -152,14 +154,14 @@ class _DraggableTableWidget extends StatefulWidget {
 class _DraggableTableWidgetState extends State<_DraggableTableWidget> {
   late double x;
   late double y;
-  
+
   @override
   void initState() {
     super.initState();
     x = widget.table.x;
     y = widget.table.y;
   }
-  
+
   @override
   void didUpdateWidget(_DraggableTableWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -176,11 +178,11 @@ class _DraggableTableWidgetState extends State<_DraggableTableWidget> {
     // So this widget must be the child of Positioned which is managed by parent?
     // Parent maps state to Positioned.
     // So parent needs `onPanUpdate`.
-    
+
     // To support drag properly without re-rendering parent on every frame:
     // We should use a `Stack` where the children are stateful and manage their own ephemeral position,
     // and only notify parent (Bloc) on drag end.
-    
+
     return GestureDetector(
       onTap: () async {
         final updated = await showDialog<SavvyTable>(
@@ -189,7 +191,9 @@ class _DraggableTableWidgetState extends State<_DraggableTableWidget> {
         );
         if (updated == null || !mounted) return;
         // ignore: use_build_context_synchronously
-        context.read<FloorPlanEditorBloc>().add(FloorPlanEditorEvent.tableSaved(updated));
+        context
+            .read<FloorPlanEditorBloc>()
+            .add(FloorPlanEditorEvent.tableSaved(updated));
       },
       onPanUpdate: (details) {
         setState(() {
@@ -199,22 +203,22 @@ class _DraggableTableWidgetState extends State<_DraggableTableWidget> {
       },
       onPanEnd: (details) {
         context.read<FloorPlanEditorBloc>().add(
-          FloorPlanEditorEvent.tableSaved(
-            widget.table.copyWith(x: x, y: y)
-          )
-        );
+            FloorPlanEditorEvent.tableSaved(widget.table.copyWith(x: x, y: y)));
       },
       child: Transform.translate(
-        offset: Offset(x - widget.table.x, y - widget.table.y), 
+        offset: Offset(x - widget.table.x, y - widget.table.y),
         child: Container(
           width: widget.table.width,
           height: widget.table.height,
           decoration: BoxDecoration(
             color: Colors.white,
-            shape: widget.table.shape == TableShape.round ? BoxShape.circle : BoxShape.rectangle,
+            shape: widget.table.shape == TableShape.round
+                ? BoxShape.circle
+                : BoxShape.rectangle,
             border: Border.all(color: Colors.black),
             boxShadow: [
-               BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 4),
+              BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.1), blurRadius: 4),
             ],
           ),
           alignment: Alignment.center,

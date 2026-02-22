@@ -8,6 +8,6 @@ void main() async {
     apiBaseUrl: 'http://localhost:8080/api',
     enableLogs: true,
   );
-  
+
   await bootstrap(config);
 }

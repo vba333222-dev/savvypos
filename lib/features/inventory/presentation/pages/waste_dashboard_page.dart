@@ -33,7 +33,7 @@ class _WasteDashboardPageState extends State<WasteDashboardPage> {
       final records = await _repo.getWasteReports(from: start);
       // Sort by date desc
       records.sort((a, b) => b.recordedAt.compareTo(a.recordedAt));
-      
+
       if (mounted) {
         setState(() {
           _records = records;
@@ -46,14 +46,16 @@ class _WasteDashboardPageState extends State<WasteDashboardPage> {
           _isLoading = false;
           _records = [];
         });
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error loading waste data: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error loading waste data: $e')));
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final totalLoss = _records?.fold<double>(0, (sum, item) => sum + item.costLoss) ?? 0;
+    final totalLoss =
+        _records?.fold<double>(0, (sum, item) => sum + item.costLoss) ?? 0;
 
     return Scaffold(
       appBar: AppBar(
@@ -74,71 +76,93 @@ class _WasteDashboardPageState extends State<WasteDashboardPage> {
         backgroundColor: Colors.red.shade100,
         foregroundColor: Colors.red.shade900,
       ),
-      body: _isLoading 
-        ? const Center(child: CircularProgressIndicator())
-        : RefreshIndicator(
-            onRefresh: _loadData,
-            child: CustomScrollView(
-              slivers: [
-                 SliverToBoxAdapter(
-                   child: Padding(
-                     padding: const EdgeInsets.all(16.0),
-                     child: _SummaryCard(totalLoss: totalLoss, recordCount: _records?.length ?? 0),
-                   ),
-                 ),
-                if (_records != null && _records!.isEmpty)
-                   SliverFillRemaining(
-                     child: Center(
-                       child: Column(
-                         mainAxisAlignment: MainAxisAlignment.center,
-                         children: [
-                           Icon(Icons.eco_outlined, size: 80, color: Colors.grey[300])
-                             .animate().fade(duration: 500.ms).scale(),
-                           const Gap(16),
-                           Text(
-                             'No Waste Recorded',
-                             style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.grey),
-                           ),
-                           const Text('Great job keeping waste low!', style: TextStyle(color: Colors.grey)),
-                         ],
-                       ),
-                     ),
-                   )
-                 else
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : RefreshIndicator(
+              onRefresh: _loadData,
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: _SummaryCard(
+                          totalLoss: totalLoss,
+                          recordCount: _records?.length ?? 0),
+                    ),
+                  ),
+                  if (_records != null && _records!.isEmpty)
+                    SliverFillRemaining(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.eco_outlined,
+                                    size: 80, color: Colors.grey[300])
+                                .animate()
+                                .fade(duration: 500.ms)
+                                .scale(),
+                            const Gap(16),
+                            Text(
+                              'No Waste Recorded',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge
+                                  ?.copyWith(color: Colors.grey),
+                            ),
+                            const Text('Great job keeping waste low!',
+                                style: TextStyle(color: Colors.grey)),
+                          ],
+                        ),
+                      ),
+                    )
+                  else
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
                           final record = _records![index];
                           return Card(
-                            margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 4),
                             elevation: 0,
-                            color: Theme.of(context).colorScheme.surfaceContainerLow,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .surfaceContainerLow,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
                             child: ListTile(
-                              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
                               leading: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   color: Colors.red.withValues(alpha: 0.1),
                                   shape: BoxShape.circle,
                                 ),
-                                child: Icon(Icons.delete_outline, color: Colors.red[700]),
+                                child: Icon(Icons.delete_outline,
+                                    color: Colors.red[700]),
                               ),
-                              title: Text(record.itemName ?? 'Unknown Item', style: const TextStyle(fontWeight: FontWeight.w600)),
+                              title: Text(record.itemName ?? 'Unknown Item',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600)),
                               subtitle: Padding(
                                 padding: const EdgeInsets.only(top: 4),
                                 child: Row(
                                   children: [
                                     Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 6, vertical: 2),
                                       decoration: BoxDecoration(
-                                        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .surfaceContainerHighest,
                                         borderRadius: BorderRadius.circular(4),
                                       ),
-                                      child: Text(
-                                        record.reason.label, 
-                                        style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant)
-                                      ),
+                                      child: Text(record.reason.label,
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSurfaceVariant)),
                                     ),
                                     const Gap(8),
                                     Text('${record.quantity} ${record.unit}'),
@@ -150,16 +174,20 @@ class _WasteDashboardPageState extends State<WasteDashboardPage> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    DateFormat.MMMEd().format(record.recordedAt),
-                                    style: Theme.of(context).textTheme.bodySmall,
+                                    DateFormat.MMMEd()
+                                        .format(record.recordedAt),
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall,
                                   ),
                                   const Gap(4),
                                   Text(
-                                    NumberFormat.currency(symbol: '\$').format(record.costLoss),
+                                    NumberFormat.currency(symbol: '\$')
+                                        .format(record.costLoss),
                                     style: TextStyle(
-                                      fontWeight: FontWeight.bold, 
-                                      color: Theme.of(context).colorScheme.error
-                                    ),
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .error),
                                   ),
                                 ],
                               ),
@@ -169,9 +197,9 @@ class _WasteDashboardPageState extends State<WasteDashboardPage> {
                         childCount: _records?.length ?? 0,
                       ),
                     ),
-              ],
+                ],
+              ),
             ),
-          ),
     );
   }
 }
@@ -204,35 +232,41 @@ class _SummaryCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-           Column(
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-               Text('Total Loss (30 Days)', style: TextStyle(color: Colors.red.shade100)),
-               const Gap(8),
-               Text(
-                 NumberFormat.currency(symbol: '\$').format(totalLoss),
-                 style: const TextStyle(
-                   fontSize: 32,
-                   fontWeight: FontWeight.bold,
-                   color: Colors.white,
-                 ),
-               ),
-             ],
-           ),
-           Container(
-             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-             decoration: BoxDecoration(
-               color: Colors.white.withValues(alpha: 0.15),
-               borderRadius: BorderRadius.circular(16),
-               border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
-             ),
-             child: Column(
-               children: [
-                 Text('$recordCount', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
-                 const Text('Incidents', style: TextStyle(fontSize: 12, color: Colors.white70)),
-               ],
-             ),
-           ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Total Loss (30 Days)',
+                  style: TextStyle(color: Colors.red.shade100)),
+              const Gap(8),
+              Text(
+                NumberFormat.currency(symbol: '\$').format(totalLoss),
+                style: const TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
+            ),
+            child: Column(
+              children: [
+                Text('$recordCount',
+                    style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white)),
+                const Text('Incidents',
+                    style: TextStyle(fontSize: 12, color: Colors.white70)),
+              ],
+            ),
+          ),
         ],
       ),
     ).animate().scale(duration: 400.ms, curve: Curves.easeOutBack);

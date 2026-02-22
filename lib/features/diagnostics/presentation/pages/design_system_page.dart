@@ -20,15 +20,14 @@ class DesignSystemPage extends StatelessWidget {
         children: [
           _SectionHeader(title: 'Colors'),
           _ColorGrid(colors: savvy.colors),
-          
           _SectionHeader(title: 'Shapes & Spacing'),
-          _SpacingDemo(shapes: savvy.shapes, color: savvy.colors.brandSecondary),
-
+          _SpacingDemo(
+              shapes: savvy.shapes, color: savvy.colors.brandSecondary),
           _SectionHeader(title: 'Motion'),
           _MotionDemo(motion: savvy.motion, color: savvy.colors.brandAccent),
-          
           _SectionHeader(title: 'Elevations'),
-          _ElevationDemo(elevations: savvy.elevations, bg: savvy.colors.bgElevated),
+          _ElevationDemo(
+              elevations: savvy.elevations, bg: savvy.colors.bgElevated),
         ],
       ),
     );
@@ -46,9 +45,9 @@ class _SectionHeader extends StatelessWidget {
       child: Text(
         title,
         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-          color: context.savvy.colors.textPrimary,
-          fontWeight: FontWeight.bold,
-        ),
+              color: context.savvy.colors.textPrimary,
+              fontWeight: FontWeight.bold,
+            ),
       ),
     );
   }
@@ -80,7 +79,9 @@ class _ColorGrid extends StatelessWidget {
     return Wrap(
       spacing: context.savvy.shapes.spacingSm,
       runSpacing: context.savvy.shapes.spacingSm,
-      children: colorMap.entries.map((e) => _ColorChip(name: e.key, color: e.value)).toList(),
+      children: colorMap.entries
+          .map((e) => _ColorChip(name: e.key, color: e.value))
+          .toList(),
     );
   }
 }
@@ -130,21 +131,23 @@ class _SpacingDemo extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: spaces.entries.map((e) => Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
-        child: Row(
-          children: [
-            SizedBox(width: 40, child: Text(e.key)),
-            Container(
-              height: 20,
-              width: e.value,
-              color: color,
-            ),
-            const SizedBox(width: 8),
-            Text('${e.value}px'),
-          ],
-        ),
-      )).toList(),
+      children: spaces.entries
+          .map((e) => Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Row(
+                  children: [
+                    SizedBox(width: 40, child: Text(e.key)),
+                    Container(
+                      height: 20,
+                      width: e.value,
+                      color: color,
+                    ),
+                    const SizedBox(width: 8),
+                    Text('${e.value}px'),
+                  ],
+                ),
+              ))
+          .toList(),
     );
   }
 }
@@ -173,9 +176,21 @@ class _MotionDemoState extends State<_MotionDemo> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _AnimatedBox(label: 'Fast', duration: widget.motion.durationFast, expanded: _expanded, color: widget.color),
-            _AnimatedBox(label: 'Medium', duration: widget.motion.durationMedium, expanded: _expanded, color: widget.color),
-            _AnimatedBox(label: 'Slow', duration: widget.motion.durationSlow, expanded: _expanded, color: widget.color),
+            _AnimatedBox(
+                label: 'Fast',
+                duration: widget.motion.durationFast,
+                expanded: _expanded,
+                color: widget.color),
+            _AnimatedBox(
+                label: 'Medium',
+                duration: widget.motion.durationMedium,
+                expanded: _expanded,
+                color: widget.color),
+            _AnimatedBox(
+                label: 'Slow',
+                duration: widget.motion.durationSlow,
+                expanded: _expanded,
+                color: widget.color),
           ],
         ),
       ],
@@ -225,9 +240,24 @@ class _ElevationDemo extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        _ShadowBox(label: 'Sm', shadow: elevations.sm.isNotEmpty ? elevations.sm.first : const BoxShadow(), bg: bg),
-        _ShadowBox(label: 'Md', shadow: elevations.md.isNotEmpty ? elevations.md.first : const BoxShadow(), bg: bg),
-        _ShadowBox(label: 'Lg', shadow: elevations.lg.isNotEmpty ? elevations.lg.first : const BoxShadow(), bg: bg),
+        _ShadowBox(
+            label: 'Sm',
+            shadow: elevations.sm.isNotEmpty
+                ? elevations.sm.first
+                : const BoxShadow(),
+            bg: bg),
+        _ShadowBox(
+            label: 'Md',
+            shadow: elevations.md.isNotEmpty
+                ? elevations.md.first
+                : const BoxShadow(),
+            bg: bg),
+        _ShadowBox(
+            label: 'Lg',
+            shadow: elevations.lg.isNotEmpty
+                ? elevations.lg.first
+                : const BoxShadow(),
+            bg: bg),
       ],
     );
   }
@@ -238,7 +268,8 @@ class _ShadowBox extends StatelessWidget {
   final BoxShadow shadow;
   final Color bg;
 
-  const _ShadowBox({required this.label, required this.shadow, required this.bg});
+  const _ShadowBox(
+      {required this.label, required this.shadow, required this.bg});
 
   @override
   Widget build(BuildContext context) {

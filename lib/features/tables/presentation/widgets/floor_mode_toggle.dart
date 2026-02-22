@@ -21,7 +21,8 @@ class FloorModeToggle extends StatelessWidget {
 
     return FloatingActionButton.extended(
       onPressed: onToggle,
-      backgroundColor: isLayout ? theme.colors.brandAccent : theme.colors.brandPrimary,
+      backgroundColor:
+          isLayout ? theme.colors.brandAccent : theme.colors.brandPrimary,
       foregroundColor: Colors.white,
       label: AnimatedSwitcher(
         duration: 300.ms,
@@ -33,7 +34,8 @@ class FloorModeToggle extends StatelessWidget {
       ),
       icon: AnimatedSwitcher(
         duration: 300.ms,
-        transitionBuilder: (child, anim) => RotationTransition(turns: anim, child: child),
+        transitionBuilder: (child, anim) =>
+            RotationTransition(turns: anim, child: child),
         child: Icon(
           isLayout ? Icons.check : Icons.grid_view_rounded,
           key: ValueKey(isLayout),

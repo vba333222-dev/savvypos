@@ -87,7 +87,7 @@ class _NumpadButtonState extends State<_NumpadButton> {
     HapticFeedback.lightImpact();
     SystemSound.play(SystemSoundType.click);
     widget.onTap();
-    
+
     // Trigger animation manually if needed, but InkResponse/AnimatedScale handles state
     setState(() => _isPressed = true);
     Future.delayed(100.ms, () {
@@ -98,12 +98,12 @@ class _NumpadButtonState extends State<_NumpadButton> {
   @override
   Widget build(BuildContext context) {
     final isBackspace = widget.value == 'backspace';
-    
+
     return GestureDetector(
       onTapDown: (_) => setState(() => _isPressed = true),
       onTapUp: (_) {
-         setState(() => _isPressed = false);
-         _handleTap();
+        setState(() => _isPressed = false);
+        _handleTap();
       },
       onTapCancel: () => setState(() => _isPressed = false),
       onLongPress: () {
@@ -111,8 +111,8 @@ class _NumpadButtonState extends State<_NumpadButton> {
           HapticFeedback.mediumImpact();
           widget.onLongPress!();
           setState(() => _isPressed = true);
-          Future.delayed(100.ms, () { 
-             if (mounted) setState(() => _isPressed = false); 
+          Future.delayed(100.ms, () {
+            if (mounted) setState(() => _isPressed = false);
           });
         }
       },
@@ -123,25 +123,30 @@ class _NumpadButtonState extends State<_NumpadButton> {
         child: Container(
           height: 64,
           decoration: BoxDecoration(
-            color: _isPressed ? widget.theme.colors.bgPrimary : widget.theme.colors.bgElevated,
+            color: _isPressed
+                ? widget.theme.colors.bgPrimary
+                : widget.theme.colors.bgElevated,
             borderRadius: BorderRadius.circular(widget.theme.shapes.radiusMd),
             border: Border.all(
-              color: _isPressed 
-                ? widget.theme.colors.brandPrimary 
-                : widget.theme.colors.borderDefault,
+              color: _isPressed
+                  ? widget.theme.colors.brandPrimary
+                  : widget.theme.colors.borderDefault,
               width: _isPressed ? 2 : 1,
             ),
-            boxShadow: _isPressed ? [] : [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
-              )
-            ],
+            boxShadow: _isPressed
+                ? []
+                : [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.05),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    )
+                  ],
           ),
           alignment: Alignment.center,
           child: isBackspace
-              ? Icon(Icons.backspace_outlined, color: widget.theme.colors.textSecondary)
+              ? Icon(Icons.backspace_outlined,
+                  color: widget.theme.colors.textSecondary)
               : SavvyText(
                   widget.value,
                   style: SavvyTextStyle.h2,

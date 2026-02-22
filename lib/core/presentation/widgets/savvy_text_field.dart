@@ -38,7 +38,9 @@ class SavvyTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (labelText != null) ...[
-          SavvyText(labelText!, style: SavvyTextStyle.labelSmall, color: theme.colors.textSecondary),
+          SavvyText(labelText!,
+              style: SavvyTextStyle.labelSmall,
+              color: theme.colors.textSecondary),
           SizedBox(height: theme.shapes.spacingXs),
         ],
         TextFormField(
@@ -68,7 +70,8 @@ class SavvyTextField extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
-              borderSide: BorderSide(color: theme.colors.brandPrimary, width: 2),
+              borderSide:
+                  BorderSide(color: theme.colors.brandPrimary, width: 2),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(theme.shapes.radiusMd),

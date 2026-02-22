@@ -8,13 +8,16 @@ abstract class ICustomerCrmRepository {
   Future<CustomerProfile?> getCustomerByPhone(String phoneNumber);
 
   /// Get all customers with optional filters
-  Future<List<CustomerProfile>> getAllCustomers({CustomerSegment? segment, String? searchQuery});
+  Future<List<CustomerProfile>> getAllCustomers(
+      {CustomerSegment? segment, String? searchQuery});
 
   /// Get purchase history for a customer
-  Future<List<OrderHistoryItem>> getOrderHistory(String customerUuid, {int limit = 50});
+  Future<List<OrderHistoryItem>> getOrderHistory(String customerUuid,
+      {int limit = 50});
 
   /// Add a note to customer profile
-  Future<void> addNote(String customerUuid, String content, String createdBy, {bool isCritical = false});
+  Future<void> addNote(String customerUuid, String content, String createdBy,
+      {bool isCritical = false});
 
   /// Delete a note
   Future<void> deleteNote(String customerUuid, String noteId);
@@ -35,5 +38,6 @@ abstract class ICustomerCrmRepository {
   Future<List<CustomerNote>> getCriticalNotes(String customerUuid);
 
   /// Create a new customer
-  Future<CustomerProfile> createCustomer(String name, String phone, String email);
+  Future<CustomerProfile> createCustomer(
+      String name, String phone, String email);
 }

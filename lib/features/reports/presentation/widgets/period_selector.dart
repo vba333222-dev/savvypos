@@ -27,7 +27,7 @@ class PeriodSelector extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final width = constraints.maxWidth / periods.length;
-          
+
           return Stack(
             children: [
               // Sliding Pill
@@ -41,12 +41,13 @@ class PeriodSelector extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     color: theme.colors.brandPrimary,
-                    borderRadius: BorderRadius.circular(theme.shapes.radiusMd), // Slightly smaller than container
+                    borderRadius: BorderRadius.circular(theme
+                        .shapes.radiusMd), // Slightly smaller than container
                     boxShadow: theme.elevations.xs,
                   ),
                 ),
               ),
-              
+
               // Text Labels
               Row(
                 children: periods.map((period) {
@@ -59,7 +60,9 @@ class PeriodSelector extends StatelessWidget {
                         child: AnimatedDefaultTextStyle(
                           duration: const Duration(milliseconds: 200),
                           style: TextStyle(
-                            color: isSelected ? Colors.white : theme.colors.textSecondary,
+                            color: isSelected
+                                ? Colors.white
+                                : theme.colors.textSecondary,
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
                           ),
@@ -79,9 +82,12 @@ class PeriodSelector extends StatelessWidget {
 
   String _label(SalesPeriod p) {
     switch (p) {
-      case SalesPeriod.today: return 'Today';
-      case SalesPeriod.week: return 'This Week';
-      case SalesPeriod.month: return 'This Month';
+      case SalesPeriod.today:
+        return 'Today';
+      case SalesPeriod.week:
+        return 'This Week';
+      case SalesPeriod.month:
+        return 'This Month';
     }
   }
 }

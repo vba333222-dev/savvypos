@@ -19,14 +19,14 @@ class AccessControlWidget extends StatelessWidget {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         final role = state.employee?.role ?? 'CASHIER';
-        
+
         // Simple Permission Logic (MVP)
         // OWNER: All
         // MANAGER: All except critical system wipes?
         // CASHIER: Sales, No Reports, No Inventory Edit
-        
+
         bool hasAccess = false;
-        
+
         if (role == 'OWNER') {
           hasAccess = true;
         } else if (role == 'MANAGER') {
@@ -45,7 +45,7 @@ class AccessControlWidget extends StatelessWidget {
         }
 
         if (hasAccess) return child;
-        
+
         return fallback ?? const SizedBox.shrink();
       },
     );

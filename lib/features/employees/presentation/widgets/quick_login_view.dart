@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:savvy_pos/features/auth/presentation/widgets/pin_pad_dialog.dart';
-// Note: Assuming we have an Employee Entity or similar. 
+// Note: Assuming we have an Employee Entity or similar.
 // For now, I'll mock a list of "Recent Users" or fetch from a future EmployeeBloc.
 // But requirement says "Fetch & Display: Load all active employees from EmployeeRepository".
 // Does EmployeeRepository exist? Previous searches saw `employees/presentation/pages/employee_list_page.dart`.
-// I will create a simple mock list here or use a Bloc if available. 
+// I will create a simple mock list here or use a Bloc if available.
 // Let's assume we pass in a list of mock users for the UI visualization as requested for "Antigravity".
 
 class QuickLoginView extends StatelessWidget {
@@ -16,7 +16,7 @@ class QuickLoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     // Mock Data for "Sentient Staff"
     final employees = [
       _emp("Admin", "AD", Colors.purple),
@@ -30,24 +30,26 @@ class QuickLoginView extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text("Who's working?", style: TextStyle(
-            fontSize: 32, 
-            fontWeight: FontWeight.w300, 
-            color: theme.colors.textPrimary,
-            letterSpacing: 1.5,
-          )),
+          Text("Who's working?",
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.w300,
+                color: theme.colors.textPrimary,
+                letterSpacing: 1.5,
+              )),
           const SizedBox(height: 48),
-          
           Wrap(
             spacing: 32,
             runSpacing: 32,
             alignment: WrapAlignment.center,
-            children: employees.map((emp) => _AvatarItem(
-              name: emp['name'] as String,
-              initials: emp['initials'] as String,
-              color: emp['color'] as Color,
-              onTap: () => _handleLogin(context, emp),
-            )).toList(),
+            children: employees
+                .map((emp) => _AvatarItem(
+                      name: emp['name'] as String,
+                      initials: emp['initials'] as String,
+                      color: emp['color'] as Color,
+                      onTap: () => _handleLogin(context, emp),
+                    ))
+                .toList(),
           ),
         ],
       ),
@@ -80,7 +82,11 @@ class _AvatarItem extends StatelessWidget {
   final Color color;
   final VoidCallback onTap;
 
-  const _AvatarItem({required this.name, required this.initials, required this.color, required this.onTap});
+  const _AvatarItem(
+      {required this.name,
+      required this.initials,
+      required this.color,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -98,18 +104,21 @@ class _AvatarItem extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(color: color.withValues(alpha: 0.5), width: 2),
               boxShadow: [
-                BoxShadow(color: color.withValues(alpha: 0.3), blurRadius: 15, spreadRadius: 2)
+                BoxShadow(
+                    color: color.withValues(alpha: 0.3),
+                    blurRadius: 15,
+                    spreadRadius: 2)
               ],
             ),
             alignment: Alignment.center,
-            child: Text(initials, style: TextStyle(
-              fontSize: 32, 
-              fontWeight: FontWeight.bold, 
-              color: color
-            )),
+            child: Text(initials,
+                style: TextStyle(
+                    fontSize: 32, fontWeight: FontWeight.bold, color: color)),
           ),
           const SizedBox(height: 16),
-          Text(name, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
+          Text(name,
+              style:
+                  const TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
         ],
       ),
     );

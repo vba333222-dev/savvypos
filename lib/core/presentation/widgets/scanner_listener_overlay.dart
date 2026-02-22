@@ -6,7 +6,7 @@ import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 class MockScannerService {
   final _controller = StreamController<String>.broadcast();
   Stream<String> get scanResults => _controller.stream;
-  
+
   void simulateScan(String data) => _controller.add(data);
 }
 
@@ -19,7 +19,8 @@ class ScannerListenerOverlay extends StatefulWidget {
 }
 
 class _ScannerListenerOverlayState extends State<ScannerListenerOverlay> {
-  final MockScannerService _scanner = MockScannerService(); // Should be GetIt.I<ScannerService>()
+  final MockScannerService _scanner =
+      MockScannerService(); // Should be GetIt.I<ScannerService>()
   String? _lastScan;
   Timer? _dismissTimer;
   bool _isVisible = false;
@@ -36,7 +37,7 @@ class _ScannerListenerOverlayState extends State<ScannerListenerOverlay> {
       _lastScan = data;
       _isVisible = true;
     });
-    
+
     _dismissTimer?.cancel();
     _dismissTimer = Timer(const Duration(seconds: 3), () {
       if (mounted) setState(() => _isVisible = false);
@@ -44,7 +45,8 @@ class _ScannerListenerOverlayState extends State<ScannerListenerOverlay> {
   }
 
   // Helper to test overlay (since we don't have a physical scanner attached to emulator usually)
-  void testScan() => _scanner.simulateScan("SKU-${DateTime.now().millisecondsSinceEpoch % 1000}");
+  void testScan() => _scanner
+      .simulateScan("SKU-${DateTime.now().millisecondsSinceEpoch % 1000}");
 
   @override
   Widget build(BuildContext context) {
@@ -53,20 +55,19 @@ class _ScannerListenerOverlayState extends State<ScannerListenerOverlay> {
     return Stack(
       children: [
         widget.child,
-        
+
         // Debug Trigger (Remove in Prod)
         Positioned(
-          bottom: 100, 
-          right: 16, 
-          child: Opacity(
-            opacity: 0.3,
-            child: FloatingActionButton.small(
-              heroTag: 'scanner_test',
-              onPressed: testScan,
-              child: const Icon(Icons.qr_code_scanner),
-            ),
-          )
-        ),
+            bottom: 100,
+            right: 16,
+            child: Opacity(
+              opacity: 0.3,
+              child: FloatingActionButton.small(
+                heroTag: 'scanner_test',
+                onPressed: testScan,
+                child: const Icon(Icons.qr_code_scanner),
+              ),
+            )),
 
         // The Capsule Notification
         AnimatedPositioned(
@@ -86,13 +87,14 @@ class _ScannerListenerOverlayState extends State<ScannerListenerOverlay> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.qr_code, color: Colors.greenAccent, size: 20),
+                  const Icon(Icons.qr_code,
+                      color: Colors.greenAccent, size: 20),
                   const SizedBox(width: 12),
                   Text(
                     "SCANNER ACTIVE",
                     style: TextStyle(
-                      color: theme.colors.textInverse.withValues(alpha: 0.7), 
-                      fontSize: 10, 
+                      color: theme.colors.textInverse.withValues(alpha: 0.7),
+                      fontSize: 10,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1.0,
                     ),
@@ -103,10 +105,9 @@ class _ScannerListenerOverlayState extends State<ScannerListenerOverlay> {
                   Text(
                     _lastScan ?? '',
                     style: TextStyle(
-                      color: theme.colors.textInverse, 
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'monospace'
-                    ),
+                        color: theme.colors.textInverse,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'monospace'),
                   ),
                 ],
               ),

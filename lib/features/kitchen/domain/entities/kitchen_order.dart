@@ -1,10 +1,6 @@
 import 'package:savvy_pos/core/database/database.dart';
 
-enum KitchenOrderType {
-  dineIn,
-  takeaway,
-  delivery
-}
+enum KitchenOrderType { dineIn, takeaway, delivery }
 
 class KitchenOrder {
   final OrderTableData order;
@@ -19,7 +15,8 @@ class KitchenOrder {
 
   // Getters for easy access
   String get uuid => order.uuid;
-  String get displayId => order.orderNumber.split('-').last; // e.g. ORD-1234 -> 1234
+  String get displayId =>
+      order.orderNumber.split('-').last; // e.g. ORD-1234 -> 1234
   DateTime get orderTime => order.transactionDate;
 
   KitchenOrderType get type {

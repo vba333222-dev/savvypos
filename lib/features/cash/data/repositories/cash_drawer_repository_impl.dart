@@ -6,7 +6,6 @@ import 'package:uuid/uuid.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton(as: ICashDrawerRepository)
-
 class CashDrawerRepositoryImpl implements ICashDrawerRepository {
   final AppDatabase db;
 
@@ -14,24 +13,37 @@ class CashDrawerRepositoryImpl implements ICashDrawerRepository {
 
   CashEventType _parseEventType(String type) {
     switch (type) {
-      case 'cashIn': return CashEventType.cashIn;
-      case 'cashOut': return CashEventType.cashOut;
-      case 'cashDrop': return CashEventType.cashDrop;
-      case 'noSale': return CashEventType.noSale;
-      case 'sale': return CashEventType.sale;
-      case 'refund': return CashEventType.refund;
-      default: return CashEventType.cashIn;
+      case 'cashIn':
+        return CashEventType.cashIn;
+      case 'cashOut':
+        return CashEventType.cashOut;
+      case 'cashDrop':
+        return CashEventType.cashDrop;
+      case 'noSale':
+        return CashEventType.noSale;
+      case 'sale':
+        return CashEventType.sale;
+      case 'refund':
+        return CashEventType.refund;
+      default:
+        return CashEventType.cashIn;
     }
   }
 
   String _eventTypeToString(CashEventType type) {
     switch (type) {
-      case CashEventType.cashIn: return 'cashIn';
-      case CashEventType.cashOut: return 'cashOut';
-      case CashEventType.cashDrop: return 'cashDrop';
-      case CashEventType.noSale: return 'noSale';
-      case CashEventType.sale: return 'sale';
-      case CashEventType.refund: return 'refund';
+      case CashEventType.cashIn:
+        return 'cashIn';
+      case CashEventType.cashOut:
+        return 'cashOut';
+      case CashEventType.cashDrop:
+        return 'cashDrop';
+      case CashEventType.noSale:
+        return 'noSale';
+      case CashEventType.sale:
+        return 'sale';
+      case CashEventType.refund:
+        return 'refund';
     }
   }
 
@@ -67,22 +79,23 @@ class CashDrawerRepositoryImpl implements ICashDrawerRepository {
   }
 
   @override
-  Future<CashDrawer> openDrawer(String shiftUuid, String employeeUuid, String employeeName, double startingBalance) async {
+  Future<CashDrawer> openDrawer(String shiftUuid, String employeeUuid,
+      String employeeName, double startingBalance) async {
     final uuid = const Uuid().v4();
     final now = DateTime.now();
 
     await db.into(db.cashDrawerTable).insert(
-      CashDrawerTableCompanion.insert(
-        uuid: uuid,
-        shiftUuid: shiftUuid,
-        employeeUuid: employeeUuid,
-        employeeName: employeeName,
-        startingBalance: startingBalance,
-        currentBalance: startingBalance,
-        expectedBalance: startingBalance,
-        openedAt: now,
-      ),
-    );
+          CashDrawerTableCompanion.insert(
+            uuid: uuid,
+            shiftUuid: shiftUuid,
+            employeeUuid: employeeUuid,
+            employeeName: employeeName,
+            startingBalance: startingBalance,
+            currentBalance: startingBalance,
+            expectedBalance: startingBalance,
+            openedAt: now,
+          ),
+        );
 
     return CashDrawer(
       id: uuid,
@@ -100,32 +113,37 @@ class CashDrawerRepositoryImpl implements ICashDrawerRepository {
   @override
   Future<CashDrawer?> getCurrentDrawer(String shiftUuid) async {
     final row = await (db.select(db.cashDrawerTable)
-      ..where((t) => t.shiftUuid.equals(shiftUuid) & t.state.equals('open')))
-      .getSingleOrNull();
+          ..where(
+              (t) => t.shiftUuid.equals(shiftUuid) & t.state.equals('open')))
+        .getSingleOrNull();
     return row != null ? _mapToDrawer(row) : null;
   }
 
   @override
-  Future<CashEvent> recordEvent(String drawerUuid, CashEventType type, double amount, String reason, {String? comment, String? orderUuid}) async {
+  Future<CashEvent> recordEvent(
+      String drawerUuid, CashEventType type, double amount, String reason,
+      {String? comment, String? orderUuid}) async {
     final uuid = const Uuid().v4();
     final now = DateTime.now();
 
     await db.into(db.cashEventTable).insert(
-      CashEventTableCompanion.insert(
-        uuid: uuid,
-        drawerUuid: drawerUuid,
-        type: _eventTypeToString(type),
-        amount: amount,
-        reason: reason,
-        comment: Value(comment),
-        orderUuid: Value(orderUuid),
-        timestamp: now,
-      ),
-    );
+          CashEventTableCompanion.insert(
+            uuid: uuid,
+            drawerUuid: drawerUuid,
+            type: _eventTypeToString(type),
+            amount: amount,
+            reason: reason,
+            comment: Value(comment),
+            orderUuid: Value(orderUuid),
+            timestamp: now,
+          ),
+        );
 
     // Update drawer balance
-    final drawer = await (db.select(db.cashDrawerTable)..where((t) => t.uuid.equals(drawerUuid))).getSingle();
-    
+    final drawer = await (db.select(db.cashDrawerTable)
+          ..where((t) => t.uuid.equals(drawerUuid)))
+        .getSingle();
+
     double balanceChange = 0;
     switch (type) {
       case CashEventType.cashIn:
@@ -142,7 +160,9 @@ class CashDrawerRepositoryImpl implements ICashDrawerRepository {
         break;
     }
 
-    await (db.update(db.cashDrawerTable)..where((t) => t.uuid.equals(drawerUuid))).write(
+    await (db.update(db.cashDrawerTable)
+          ..where((t) => t.uuid.equals(drawerUuid)))
+        .write(
       CashDrawerTableCompanion(
         currentBalance: Value(drawer.currentBalance + balanceChange),
         expectedBalance: Value(drawer.expectedBalance + balanceChange),
@@ -162,12 +182,17 @@ class CashDrawerRepositoryImpl implements ICashDrawerRepository {
   }
 
   @override
-  Future<CashDrawer> closeDrawer(String drawerUuid, double actualBalance) async {
+  Future<CashDrawer> closeDrawer(
+      String drawerUuid, double actualBalance) async {
     final now = DateTime.now();
-    final drawer = await (db.select(db.cashDrawerTable)..where((t) => t.uuid.equals(drawerUuid))).getSingle();
+    final drawer = await (db.select(db.cashDrawerTable)
+          ..where((t) => t.uuid.equals(drawerUuid)))
+        .getSingle();
     final variance = actualBalance - drawer.expectedBalance;
 
-    await (db.update(db.cashDrawerTable)..where((t) => t.uuid.equals(drawerUuid))).write(
+    await (db.update(db.cashDrawerTable)
+          ..where((t) => t.uuid.equals(drawerUuid)))
+        .write(
       CashDrawerTableCompanion(
         state: const Value('closed'),
         closedAt: Value(now),
@@ -187,9 +212,9 @@ class CashDrawerRepositoryImpl implements ICashDrawerRepository {
   @override
   Future<List<CashEvent>> getDrawerEvents(String drawerUuid) async {
     final rows = await (db.select(db.cashEventTable)
-      ..where((t) => t.drawerUuid.equals(drawerUuid))
-      ..orderBy([(t) => OrderingTerm.desc(t.timestamp)]))
-      .get();
+          ..where((t) => t.drawerUuid.equals(drawerUuid))
+          ..orderBy([(t) => OrderingTerm.desc(t.timestamp)]))
+        .get();
     return rows.map(_mapToEvent).toList();
   }
 
@@ -197,22 +222,45 @@ class CashDrawerRepositoryImpl implements ICashDrawerRepository {
   Future<CashDrawerSummary> getDrawerSummary(String drawerUuid) async {
     final events = await getDrawerEvents(drawerUuid);
 
-    double totalCashIn = 0, totalCashOut = 0, totalSales = 0, totalRefunds = 0, totalDrops = 0;
+    double totalCashIn = 0,
+        totalCashOut = 0,
+        totalSales = 0,
+        totalRefunds = 0,
+        totalDrops = 0;
     int noSaleCount = 0;
 
     for (final e in events) {
       switch (e.type) {
-        case CashEventType.cashIn: totalCashIn += e.amount; break;
-        case CashEventType.cashOut: totalCashOut += e.amount; break;
-        case CashEventType.sale: totalSales += e.amount; break;
-        case CashEventType.refund: totalRefunds += e.amount; break;
-        case CashEventType.cashDrop: totalDrops += e.amount; break;
-        case CashEventType.noSale: noSaleCount++; break;
+        case CashEventType.cashIn:
+          totalCashIn += e.amount;
+          break;
+        case CashEventType.cashOut:
+          totalCashOut += e.amount;
+          break;
+        case CashEventType.sale:
+          totalSales += e.amount;
+          break;
+        case CashEventType.refund:
+          totalRefunds += e.amount;
+          break;
+        case CashEventType.cashDrop:
+          totalDrops += e.amount;
+          break;
+        case CashEventType.noSale:
+          noSaleCount++;
+          break;
       }
     }
 
-    final drawer = await (db.select(db.cashDrawerTable)..where((t) => t.uuid.equals(drawerUuid))).getSingle();
-    final netCash = drawer.startingBalance + totalSales - totalRefunds + totalCashIn - totalCashOut - totalDrops;
+    final drawer = await (db.select(db.cashDrawerTable)
+          ..where((t) => t.uuid.equals(drawerUuid)))
+        .getSingle();
+    final netCash = drawer.startingBalance +
+        totalSales -
+        totalRefunds +
+        totalCashIn -
+        totalCashOut -
+        totalDrops;
 
     return CashDrawerSummary(
       totalCashIn: totalCashIn,
@@ -226,17 +274,22 @@ class CashDrawerRepositoryImpl implements ICashDrawerRepository {
   }
 
   @override
-  Future<List<CashDrawer>> getDrawerHistory(DateTime start, DateTime end) async {
+  Future<List<CashDrawer>> getDrawerHistory(
+      DateTime start, DateTime end) async {
     final rows = await (db.select(db.cashDrawerTable)
-      ..where((t) => t.openedAt.isBiggerOrEqualValue(start) & t.openedAt.isSmallerOrEqualValue(end))
-      ..orderBy([(t) => OrderingTerm.desc(t.openedAt)]))
-      .get();
+          ..where((t) =>
+              t.openedAt.isBiggerOrEqualValue(start) &
+              t.openedAt.isSmallerOrEqualValue(end))
+          ..orderBy([(t) => OrderingTerm.desc(t.openedAt)]))
+        .get();
     return rows.map(_mapToDrawer).toList();
   }
 
   @override
   Future<CashDrawer> reopenDrawer(String drawerUuid) async {
-    await (db.update(db.cashDrawerTable)..where((t) => t.uuid.equals(drawerUuid))).write(
+    await (db.update(db.cashDrawerTable)
+          ..where((t) => t.uuid.equals(drawerUuid)))
+        .write(
       const CashDrawerTableCompanion(
         state: Value('open'),
         closedAt: Value(null),
@@ -245,7 +298,9 @@ class CashDrawerRepositoryImpl implements ICashDrawerRepository {
       ),
     );
 
-    final row = await (db.select(db.cashDrawerTable)..where((t) => t.uuid.equals(drawerUuid))).getSingle();
+    final row = await (db.select(db.cashDrawerTable)
+          ..where((t) => t.uuid.equals(drawerUuid)))
+        .getSingle();
     return _mapToDrawer(row);
   }
 }

@@ -163,7 +163,8 @@ class SavvyElevations {
 
 @JsonSerializable()
 class SavvyShadow {
-  @JsonKey(fromJson: SavvyColors._colorFromJson, toJson: SavvyColors._colorToJson)
+  @JsonKey(
+      fromJson: SavvyColors._colorFromJson, toJson: SavvyColors._colorToJson)
   final Color color;
   final double y;
   final double blur;

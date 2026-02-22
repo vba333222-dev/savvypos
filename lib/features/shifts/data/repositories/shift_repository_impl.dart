@@ -31,19 +31,19 @@ class ShiftRepositoryImpl implements IShiftRepository {
     final now = DateTime.now();
 
     await db.into(db.shiftSessionTable).insert(
-      ShiftSessionTableCompanion.insert(
-        uuid: uuid,
-        staffId: employeeUuid,
-        staffName: employeeName,
-        startShift: now,
-        startCash: 0.0,
-        expectedCash: 0.0,
-        actualCash: 0.0,
-        difference: 0.0,
-        isClosed: const Value(false),
-        isSynced: const Value(false),
-      ),
-    );
+          ShiftSessionTableCompanion.insert(
+            uuid: uuid,
+            staffId: employeeUuid,
+            staffName: employeeName,
+            startShift: now,
+            startCash: 0.0,
+            expectedCash: 0.0,
+            actualCash: 0.0,
+            difference: 0.0,
+            isClosed: const Value(false),
+            isSynced: const Value(false),
+          ),
+        );
 
     return ShiftSession(
       id: uuid,
@@ -55,20 +55,24 @@ class ShiftRepositoryImpl implements IShiftRepository {
   }
 
   @override
-  Future<ShiftSession> clockOut(String employeeUuid, {double tipsDeclared = 0.0}) async {
+  Future<ShiftSession> clockOut(String employeeUuid,
+      {double tipsDeclared = 0.0}) async {
     final now = DateTime.now();
 
     // Find active shift
     final activeShift = await (db.select(db.shiftSessionTable)
-      ..where((t) => t.staffId.equals(employeeUuid) & t.isClosed.equals(false)))
-      .getSingleOrNull();
+          ..where(
+              (t) => t.staffId.equals(employeeUuid) & t.isClosed.equals(false)))
+        .getSingleOrNull();
 
     if (activeShift == null) {
       throw Exception('No active shift found for employee');
     }
 
     // Update shift to closed
-    await (db.update(db.shiftSessionTable)..where((t) => t.uuid.equals(activeShift.uuid))).write(
+    await (db.update(db.shiftSessionTable)
+          ..where((t) => t.uuid.equals(activeShift.uuid)))
+        .write(
       ShiftSessionTableCompanion(
         endShift: Value(now),
         isClosed: const Value(true),
@@ -89,8 +93,9 @@ class ShiftRepositoryImpl implements IShiftRepository {
   @override
   Future<ShiftSession?> getCurrentShift(String employeeUuid) async {
     final row = await (db.select(db.shiftSessionTable)
-      ..where((t) => t.staffId.equals(employeeUuid) & t.isClosed.equals(false)))
-      .getSingleOrNull();
+          ..where(
+              (t) => t.staffId.equals(employeeUuid) & t.isClosed.equals(false)))
+        .getSingleOrNull();
 
     return row != null ? _mapToEntity(row) : null;
   }
@@ -98,28 +103,30 @@ class ShiftRepositoryImpl implements IShiftRepository {
   @override
   Future<List<ShiftSession>> getActiveShifts() async {
     final rows = await (db.select(db.shiftSessionTable)
-      ..where((t) => t.isClosed.equals(false))
-      ..orderBy([(t) => OrderingTerm.asc(t.startShift)]))
-      .get();
+          ..where((t) => t.isClosed.equals(false))
+          ..orderBy([(t) => OrderingTerm.asc(t.startShift)]))
+        .get();
 
     return rows.map(_mapToEntity).toList();
   }
 
   @override
-  Future<List<ShiftSession>> getShiftHistory(String employeeUuid, DateTimeRange range) async {
+  Future<List<ShiftSession>> getShiftHistory(
+      String employeeUuid, DateTimeRange range) async {
     final rows = await (db.select(db.shiftSessionTable)
-      ..where((t) => 
-          t.staffId.equals(employeeUuid) & 
-          t.startShift.isBiggerOrEqualValue(range.start) &
-          t.startShift.isSmallerOrEqualValue(range.end))
-      ..orderBy([(t) => OrderingTerm.desc(t.startShift)]))
-      .get();
+          ..where((t) =>
+              t.staffId.equals(employeeUuid) &
+              t.startShift.isBiggerOrEqualValue(range.start) &
+              t.startShift.isSmallerOrEqualValue(range.end))
+          ..orderBy([(t) => OrderingTerm.desc(t.startShift)]))
+        .get();
 
     return rows.map(_mapToEntity).toList();
   }
 
   @override
-  Future<EmployeeShiftSummary> getEmployeeSummary(String employeeUuid, DateTimeRange range) async {
+  Future<EmployeeShiftSummary> getEmployeeSummary(
+      String employeeUuid, DateTimeRange range) async {
     final shifts = await getShiftHistory(employeeUuid, range);
 
     double totalHours = 0;
@@ -134,7 +141,8 @@ class ShiftRepositoryImpl implements IShiftRepository {
       totalTips += shift.tipsDeclared;
     }
 
-    final employeeName = shifts.isNotEmpty ? shifts.first.employeeName : 'Unknown';
+    final employeeName =
+        shifts.isNotEmpty ? shifts.first.employeeName : 'Unknown';
 
     return EmployeeShiftSummary(
       employeeUuid: employeeUuid,
@@ -161,25 +169,32 @@ class ShiftRepositoryImpl implements IShiftRepository {
   // --- Cash Management Implementation ---
 
   @override
-  Future<void> openCashShift(double startCash, String staffId, String staffName) async {
+  Future<void> openCashShift(
+      double startCash, String staffId, String staffName) async {
     final now = DateTime.now();
-    await db.into(db.shiftSessionTable).insert(ShiftSessionTableCompanion.insert(
-      uuid: const Uuid().v4(),
-      startShift: now,
-      startCash: startCash,
-      isClosed: const Value(false),
-      staffId: staffId,
-      staffName: staffName,
-      expectedCash: 0.0,
-      actualCash: 0.0,
-      difference: 0.0,
-    ));
+    await db
+        .into(db.shiftSessionTable)
+        .insert(ShiftSessionTableCompanion.insert(
+          uuid: const Uuid().v4(),
+          startShift: now,
+          startCash: startCash,
+          isClosed: const Value(false),
+          staffId: staffId,
+          staffName: staffName,
+          expectedCash: 0.0,
+          actualCash: 0.0,
+          difference: 0.0,
+        ));
   }
 
   @override
-  Future<void> closeShift(String shiftUuid, double calculatedEndCash, double actualCash, {String? varianceReason}) async {
+  Future<void> closeShift(
+      String shiftUuid, double calculatedEndCash, double actualCash,
+      {String? varianceReason}) async {
     final now = DateTime.now();
-    await (db.update(db.shiftSessionTable)..where((t) => t.uuid.equals(shiftUuid))).write(
+    await (db.update(db.shiftSessionTable)
+          ..where((t) => t.uuid.equals(shiftUuid)))
+        .write(
       ShiftSessionTableCompanion(
         endShift: Value(now),
         expectedCash: Value(calculatedEndCash),
@@ -193,21 +208,26 @@ class ShiftRepositoryImpl implements IShiftRepository {
 
   @override
   Future<int> getOpenOrderCount() async {
-    final results = await (db.select(db.orderTable)..where((t) => t.status.equals('OPEN'))).get();
+    final results = await (db.select(db.orderTable)
+          ..where((t) => t.status.equals('OPEN')))
+        .get();
     return results.length;
   }
 
   @override
   Future<double> getShiftSalesTotal(String shiftUuid) async {
-    final shift = await (db.select(db.shiftSessionTable)..where((t) => t.uuid.equals(shiftUuid))).getSingleOrNull();
+    final shift = await (db.select(db.shiftSessionTable)
+          ..where((t) => t.uuid.equals(shiftUuid)))
+        .getSingleOrNull();
     if (shift == null) return 0.0;
-    
+
     // Sum all COMPLETED orders created after shift start
     final orders = await (db.select(db.orderTable)
-      ..where((t) => t.transactionDate.isBiggerOrEqualValue(shift.startShift))
-      ..where((t) => t.status.equals('COMPLETED')))
-      .get();
-      
+          ..where(
+              (t) => t.transactionDate.isBiggerOrEqualValue(shift.startShift))
+          ..where((t) => t.status.equals('COMPLETED')))
+        .get();
+
     double total = 0.0;
     for (var o in orders) {
       total += o.grandTotal;
@@ -216,35 +236,42 @@ class ShiftRepositoryImpl implements IShiftRepository {
   }
 
   @override
-  Future<void> addCashTransaction(String shiftUuid, String type, double amount, String reason) async {
+  Future<void> addCashTransaction(
+      String shiftUuid, String type, double amount, String reason) async {
     final now = DateTime.now();
     // Assuming cashTransactionTable exists in schema as per old repo assumption
-    await db.into(db.cashTransactionTable).insert(CashTransactionTableCompanion.insert(
-       uuid: const Uuid().v4(),
-       shiftUuid: Value(shiftUuid),
-       type: type,
-       amount: amount,
-       reason: Value(reason),
-       createdAt: now,
-    ));
+    await db
+        .into(db.cashTransactionTable)
+        .insert(CashTransactionTableCompanion.insert(
+          uuid: const Uuid().v4(),
+          shiftUuid: Value(shiftUuid),
+          type: type,
+          amount: amount,
+          reason: Value(reason),
+          createdAt: now,
+        ));
   }
 
   @override
-  Future<Map<String, double>> getCashTransactionSummary(String shiftUuid) async {
-     final payIns = await (db.select(db.cashTransactionTable)
-       ..where((t) => t.shiftUuid.equals(shiftUuid) & t.type.equals('PAY_IN')))
-       .get();
-     final payOuts = await (db.select(db.cashTransactionTable)
-       ..where((t) => t.shiftUuid.equals(shiftUuid) & t.type.equals('PAY_OUT')))
-       .get();
-     final safeDrops = await (db.select(db.cashTransactionTable)
-       ..where((t) => t.shiftUuid.equals(shiftUuid) & t.type.equals('SAFE_DROP')))
-       .get();
-       
-     double totalIn = payIns.fold(0, (sum, i) => sum + i.amount);
-     double totalOut = payOuts.fold(0, (sum, i) => sum + i.amount);
-     double totalSafeDrop = safeDrops.fold(0, (sum, i) => sum + i.amount);
-     
-     return {'payIn': totalIn, 'payOut': totalOut, 'safeDrop': totalSafeDrop};
+  Future<Map<String, double>> getCashTransactionSummary(
+      String shiftUuid) async {
+    final payIns = await (db.select(db.cashTransactionTable)
+          ..where(
+              (t) => t.shiftUuid.equals(shiftUuid) & t.type.equals('PAY_IN')))
+        .get();
+    final payOuts = await (db.select(db.cashTransactionTable)
+          ..where(
+              (t) => t.shiftUuid.equals(shiftUuid) & t.type.equals('PAY_OUT')))
+        .get();
+    final safeDrops = await (db.select(db.cashTransactionTable)
+          ..where((t) =>
+              t.shiftUuid.equals(shiftUuid) & t.type.equals('SAFE_DROP')))
+        .get();
+
+    double totalIn = payIns.fold(0, (sum, i) => sum + i.amount);
+    double totalOut = payOuts.fold(0, (sum, i) => sum + i.amount);
+    double totalSafeDrop = safeDrops.fold(0, (sum, i) => sum + i.amount);
+
+    return {'payIn': totalIn, 'payOut': totalOut, 'safeDrop': totalSafeDrop};
   }
 }

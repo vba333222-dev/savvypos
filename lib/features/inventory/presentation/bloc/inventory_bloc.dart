@@ -37,7 +37,8 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
   final GetLowStockItemsUseCase _getLowStock;
   final CreatePurchaseOrderUseCase _createPo;
 
-  InventoryBloc(this._repository, this._getLowStock, this._createPo) : super(const InventoryState()) {
+  InventoryBloc(this._repository, this._getLowStock, this._createPo)
+      : super(const InventoryState()) {
     on<_Started>(_onStarted);
     on<_Refresh>(_onRefresh);
     on<_CreatePo>(_onCreatePo);
@@ -64,13 +65,13 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
       final partialPOs = results[2] as List<PurchaseOrder>;
       final suppliers = results[3] as List<Supplier>;
       final lowStock = results[4] as List<String>;
-      
+
       final activePOs = [...pendingPOs, ...sentPOs, ...partialPOs];
-      
+
       // Calculate Total Value?
       // Repository doesn't have "getTotalValue".
       // For now mock or 0.
-      
+
       emit(state.copyWith(
         isLoading: false,
         activePurchaseOrders: activePOs,
@@ -82,7 +83,8 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
     }
   }
 
-  Future<void> _onCreatePo(_CreatePo event, Emitter<InventoryState> emit) async {
+  Future<void> _onCreatePo(
+      _CreatePo event, Emitter<InventoryState> emit) async {
     emit(state.copyWith(isLoading: true));
     try {
       await _createPo(

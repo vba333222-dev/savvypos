@@ -68,7 +68,7 @@ class _SavvyButtonState extends State<SavvyButton> {
     if (!widget.isLoading && !_isThrottled && widget.onPressed != null) {
       setState(() => _isThrottled = true);
       widget.onPressed!();
-      
+
       Timer(const Duration(milliseconds: 1500), () {
         if (mounted) setState(() => _isThrottled = false);
       });
@@ -118,7 +118,8 @@ class _SavvyButtonState extends State<SavvyButton> {
     if (widget.foregroundColor != null) fgColor = widget.foregroundColor!;
 
     // Disabled state
-    final isEnabled = widget.onPressed != null && !widget.isLoading && !_isThrottled;
+    final isEnabled =
+        widget.onPressed != null && !widget.isLoading && !_isThrottled;
     if (!isEnabled) {
       bgColor = theme.colors.bgDisabled;
       fgColor = theme.colors.textDisabled;

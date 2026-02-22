@@ -47,7 +47,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 backgroundColor: Colors.green,
               ),
             );
-            Navigator.of(context).popUntil((route) => route.settings.name == '/floor_plan');
+            Navigator.of(context)
+                .popUntil((route) => route.settings.name == '/floor_plan');
           }
           if (state.errorMessage != null && !state.isAwaitingEdc) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -70,8 +71,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 if (state.isAwaitingEdc)
                   _EdcAwaitingOverlay(
                     status: state.edcTerminalStatus,
-                    onCancel: () =>
-                        context.read<CheckoutBloc>().add(const CheckoutEvent.cancelEdcPayment()),
+                    onCancel: () => context
+                        .read<CheckoutBloc>()
+                        .add(const CheckoutEvent.cancelEdcPayment()),
                   ),
               ],
             );
@@ -81,8 +83,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
     );
   }
 
-  Widget _buildMainContent(
-      BuildContext context, CheckoutState state, double tenderValue, double due) {
+  Widget _buildMainContent(BuildContext context, CheckoutState state,
+      double tenderValue, double due) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Checkout: ${widget.tableName ?? "Order"}'),
@@ -103,7 +105,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     width: double.infinity,
                     child: const Text(
                       'ORDER SUMMARY',
-                      style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.2),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, letterSpacing: 1.2),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -117,11 +120,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             itemBuilder: (context, index) {
                               final item = state.items[index];
                               return Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 4),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 4),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text('${item.quantity.toInt()}x  ${item.name}'),
+                                    Text(
+                                        '${item.quantity.toInt()}x  ${item.name}'),
                                     Text('\$${item.total.toStringAsFixed(2)}'),
                                   ],
                                 ),
@@ -192,7 +198,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           child: NumpadWidget(
                             onKeyPressed: (key) {
                               setState(() {
-                                if (_tenderInput.contains('.') && key == '.') return;
+                                if (_tenderInput.contains('.') && key == '.')
+                                  return;
                                 if (key == '.' && _tenderInput.isEmpty) {
                                   _tenderInput = '0.';
                                 } else {
@@ -203,7 +210,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             onClear: () => setState(() => _tenderInput = ''),
                             onBackspace: () => setState(() => _tenderInput =
                                 _tenderInput.isNotEmpty
-                                    ? _tenderInput.substring(0, _tenderInput.length - 1)
+                                    ? _tenderInput.substring(
+                                        0, _tenderInput.length - 1)
                                     : ''),
                           ),
                         ),
@@ -231,7 +239,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                       );
                                 },
                                 child: const Text('EXACT CASH',
-                                    style: TextStyle(fontWeight: FontWeight.bold)),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
                               ),
                               const SizedBox(height: 16),
 
@@ -239,7 +248,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 label: 'CASH',
                                 icon: Icons.money,
                                 onTap: () {
-                                  final amount = tenderValue > 0 ? tenderValue : due;
+                                  final amount =
+                                      tenderValue > 0 ? tenderValue : due;
                                   context.read<CheckoutBloc>().add(
                                         CheckoutEvent.processPayment(
                                           method: PaymentMethod.cash,
@@ -256,11 +266,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                 label: 'CARD (EDC)',
                                 icon: Icons.contactless,
                                 onTap: () {
-                                  final amount = tenderValue > 0 ? tenderValue : due;
+                                  final amount =
+                                      tenderValue > 0 ? tenderValue : due;
                                   // Sends amount to the physical EDC terminal.
                                   // CheckoutBloc will auto-confirm when terminal responds.
                                   context.read<CheckoutBloc>().add(
-                                        CheckoutEvent.initiateEdcPayment(amount),
+                                        CheckoutEvent.initiateEdcPayment(
+                                            amount),
                                       );
                                 },
                               ),
@@ -300,7 +312,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                       builder: (_) => LoyaltyLookupDialog(
                                         onMemberSelected: (member) {
                                           context.read<CheckoutBloc>().add(
-                                              CheckoutEvent.attachLoyaltyMember(member));
+                                              CheckoutEvent.attachLoyaltyMember(
+                                                  member));
                                         },
                                       ),
                                     );
@@ -334,7 +347,8 @@ class _Row extends StatelessWidget {
   final Color? color;
   final double? size;
 
-  const _Row(this.label, this.amount, {this.isBold = false, this.color, this.size});
+  const _Row(this.label, this.amount,
+      {this.isBold = false, this.color, this.size});
 
   @override
   Widget build(BuildContext context) {
@@ -364,7 +378,8 @@ class _PaymentBtn extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
 
-  const _PaymentBtn({required this.label, required this.icon, required this.onTap});
+  const _PaymentBtn(
+      {required this.label, required this.icon, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -446,7 +461,8 @@ class _EdcAwaitingOverlay extends StatelessWidget {
             children: [
               // Animated pulsing icon
               Icon(_statusIcon, size: 72, color: _statusColor)
-                  .animate(onPlay: (c) => isActive ? c.repeat(reverse: true) : null)
+                  .animate(
+                      onPlay: (c) => isActive ? c.repeat(reverse: true) : null)
                   .scale(
                     begin: const Offset(1, 1),
                     end: const Offset(1.12, 1.12),
@@ -467,8 +483,10 @@ class _EdcAwaitingOverlay extends StatelessWidget {
               Text(
                 _statusMessage,
                 textAlign: TextAlign.center,
-                style:
-                    const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
               ).animate().fadeIn(delay: 100.ms).slideY(begin: 0.2, end: 0),
 
               // Indeterminate progress indicator for active states
@@ -479,13 +497,16 @@ class _EdcAwaitingOverlay extends StatelessWidget {
                     color: _statusColor,
                     backgroundColor: Colors.grey[800],
                   ),
-                ).animate(onPlay: (c) => c.repeat()).shimmer(color: _statusColor),
+                )
+                    .animate(onPlay: (c) => c.repeat())
+                    .shimmer(color: _statusColor),
 
               const SizedBox(height: 24),
               TextButton.icon(
                 onPressed: onCancel,
                 icon: const Icon(Icons.close, color: Colors.white54),
-                label: const Text('Cancel', style: TextStyle(color: Colors.white54)),
+                label: const Text('Cancel',
+                    style: TextStyle(color: Colors.white54)),
               ),
             ],
           ),

@@ -29,7 +29,8 @@ class _ShiftReportPageState extends State<ShiftReportPage> {
   }
 
   void _executeEod(BuildContext context) {
-    final actual = double.tryParse(_actualCashController.text) ?? widget.summary.netCash;
+    final actual =
+        double.tryParse(_actualCashController.text) ?? widget.summary.netCash;
     context.read<ShiftBloc>().add(ShiftEvent.closeShiftWithEod(actual));
   }
 
@@ -58,18 +59,23 @@ class _ShiftReportPageState extends State<ShiftReportPage> {
             HapticFeedback.mediumImpact();
             Navigator.of(context, rootNavigator: true).pop(); // close dialog
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Ledger Synced to Jurnal successfully!', style: TextStyle(color: Colors.white)), backgroundColor: Colors.green),
+              const SnackBar(
+                  content: Text('Ledger Synced to Jurnal successfully!',
+                      style: TextStyle(color: Colors.white)),
+                  backgroundColor: Colors.green),
             );
           },
           closed: () {
-             // Already popped dialog. Now pop widget.
-             if (Navigator.canPop(context)) {
-                 Navigator.pop(context);
-             }
+            // Already popped dialog. Now pop widget.
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
           },
           error: (msg) {
-             Navigator.of(context, rootNavigator: true).pop(); // close dialog if open
-             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg), backgroundColor: Colors.red));
+            Navigator.of(context, rootNavigator: true)
+                .pop(); // close dialog if open
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(msg), backgroundColor: Colors.red));
           },
           orElse: () {},
         );
@@ -98,7 +104,8 @@ class _ShiftReportPageState extends State<ShiftReportPage> {
               content: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Enter the actual physical cash currently in the drawer. Do not look at expected totals yet.'),
+                  const Text(
+                      'Enter the actual physical cash currently in the drawer. Do not look at expected totals yet.'),
                   const SizedBox(height: 16),
                   TextField(
                     controller: _actualCashController,
@@ -118,26 +125,27 @@ class _ShiftReportPageState extends State<ShiftReportPage> {
               content: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                   const Text('Review recorded waste for today before closing.'),
-                   Container(
-                     margin: const EdgeInsets.symmetric(vertical: 16),
-                     padding: const EdgeInsets.all(16),
-                     color: Colors.orange.shade50,
-                     child: const Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                       children: [
-                         Text('Unrecorded Spoilage?'),
-                         Icon(Icons.warning, color: Colors.orange),
-                       ],
-                     ),
-                   )
+                  const Text('Review recorded waste for today before closing.'),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 16),
+                    padding: const EdgeInsets.all(16),
+                    color: Colors.orange.shade50,
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Unrecorded Spoilage?'),
+                        Icon(Icons.warning, color: Colors.orange),
+                      ],
+                    ),
+                  )
                 ],
               ),
               isActive: _currentStep >= 1,
             ),
             Step(
               title: const Text('Z-Report & Ledger Sync'),
-              content: _ZReportSummary(summary: widget.summary, drawer: widget.drawer),
+              content: _ZReportSummary(
+                  summary: widget.summary, drawer: widget.drawer),
               isActive: _currentStep >= 2,
             ),
           ],
@@ -163,14 +171,17 @@ class _ZReportSummary extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Center(child: Text('Z-REPORT AGGREGATION', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
+          const Center(
+              child: Text('Z-REPORT AGGREGATION',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
           const Divider(),
           _Row('Cash Sales', '\$${summary.totalSales.toStringAsFixed(2)}'),
           _Row('Pay In', '\$${summary.totalCashIn.toStringAsFixed(2)}'),
           _Row('Pay Out', '\$${summary.totalCashOut.toStringAsFixed(2)}'),
           _Row('Safe Drops', '\$${summary.totalDrops.toStringAsFixed(2)}'),
           const Divider(),
-          _Row('Expected Cash', '\$${summary.netCash.toStringAsFixed(2)}', isBold: true),
+          _Row('Expected Cash', '\$${summary.netCash.toStringAsFixed(2)}',
+              isBold: true),
         ],
       ),
     );
@@ -191,8 +202,12 @@ class _Row extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: TextStyle(fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
-          Text(value, style: TextStyle(fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
+          Text(label,
+              style: TextStyle(
+                  fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
+          Text(value,
+              style: TextStyle(
+                  fontWeight: isBold ? FontWeight.bold : FontWeight.normal)),
         ],
       ),
     );

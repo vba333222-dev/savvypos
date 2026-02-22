@@ -17,12 +17,12 @@ class SavvyTable extends Equatable {
   final int capacity;
   final bool isOccupied;
   final String? currentOrderUuid;
-  
+
   // BYOD - Dynamic QR Session
   final String? currentSessionToken;
   final String? qrCodeUrl;
   final TableSessionStatus sessionStatus;
-  
+
   final DateTime? updatedAt;
 
   const SavvyTable({
@@ -84,6 +84,21 @@ class SavvyTable extends Equatable {
 
   @override
   List<Object?> get props => [
-    id, name, zoneId, x, y, width, height, rotation, shape, capacity, isOccupied, currentOrderUuid, currentSessionToken, qrCodeUrl, sessionStatus, updatedAt
-  ];
+        id,
+        name,
+        zoneId,
+        x,
+        y,
+        width,
+        height,
+        rotation,
+        shape,
+        capacity,
+        isOccupied,
+        currentOrderUuid,
+        currentSessionToken,
+        qrCodeUrl,
+        sessionStatus,
+        updatedAt
+      ];
 }

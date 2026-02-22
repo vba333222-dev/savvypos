@@ -4,17 +4,17 @@ part 'cash_drawer_entities.freezed.dart';
 part 'cash_drawer_entities.g.dart';
 
 enum DrawerState {
-  open,   // Active or paused
+  open, // Active or paused
   closed, // Reconciled and closed
 }
 
 enum CashEventType {
-  cashIn,     // Add cash (non-transactional)
-  cashOut,    // Remove cash (payout, tip out)
-  cashDrop,   // Drop to safe
-  noSale,     // Drawer open without transaction
-  sale,       // Cash received from sale
-  refund,     // Cash returned for refund
+  cashIn, // Add cash (non-transactional)
+  cashOut, // Remove cash (payout, tip out)
+  cashDrop, // Drop to safe
+  noSale, // Drawer open without transaction
+  sale, // Cash received from sale
+  refund, // Cash returned for refund
 }
 
 @freezed
@@ -34,7 +34,8 @@ class CashDrawer with _$CashDrawer {
     double? variance, // closingBalance - expectedBalance
   }) = _CashDrawer;
 
-  factory CashDrawer.fromJson(Map<String, dynamic> json) => _$CashDrawerFromJson(json);
+  factory CashDrawer.fromJson(Map<String, dynamic> json) =>
+      _$CashDrawerFromJson(json);
 }
 
 extension CashDrawerX on CashDrawer {
@@ -57,7 +58,8 @@ class CashEvent with _$CashEvent {
     required DateTime timestamp,
   }) = _CashEvent;
 
-  factory CashEvent.fromJson(Map<String, dynamic> json) => _$CashEventFromJson(json);
+  factory CashEvent.fromJson(Map<String, dynamic> json) =>
+      _$CashEventFromJson(json);
 }
 
 @freezed
@@ -69,8 +71,10 @@ class CashDrawerSummary with _$CashDrawerSummary {
     required double totalRefunds,
     required double totalDrops,
     required int noSaleCount,
-    required double netCash, // starting + sales - refunds + cashIn - cashOut - drops
+    required double
+        netCash, // starting + sales - refunds + cashIn - cashOut - drops
   }) = _CashDrawerSummary;
 
-  factory CashDrawerSummary.fromJson(Map<String, dynamic> json) => _$CashDrawerSummaryFromJson(json);
+  factory CashDrawerSummary.fromJson(Map<String, dynamic> json) =>
+      _$CashDrawerSummaryFromJson(json);
 }

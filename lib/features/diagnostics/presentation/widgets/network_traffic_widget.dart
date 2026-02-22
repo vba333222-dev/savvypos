@@ -7,7 +7,8 @@ class NetworkRequest {
   final int durationMs;
   final String? responseBody;
 
-  NetworkRequest(this.method, this.endpoint, this.statusCode, this.durationMs, {this.responseBody});
+  NetworkRequest(this.method, this.endpoint, this.statusCode, this.durationMs,
+      {this.responseBody});
 }
 
 class NetworkTrafficWidget extends StatelessWidget {
@@ -17,10 +18,13 @@ class NetworkTrafficWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // Mock Data
     final requests = [
-      NetworkRequest('GET', '/v1/config/sync', 200, 45, responseBody: '{"sync_interval": 300, "features": [...]}'),
-      NetworkRequest('POST', '/v1/orders/batch', 201, 120, responseBody: '{"id": "ord_123", "status": "queued"}'),
+      NetworkRequest('GET', '/v1/config/sync', 200, 45,
+          responseBody: '{"sync_interval": 300, "features": [...]}'),
+      NetworkRequest('POST', '/v1/orders/batch', 201, 120,
+          responseBody: '{"id": "ord_123", "status": "queued"}'),
       NetworkRequest('GET', '/v1/inventory/delta', 200, 89),
-      NetworkRequest('POST', '/v1/telemetry', 500, 60, responseBody: '{"error": "Internal Server Error"}'),
+      NetworkRequest('POST', '/v1/telemetry', 500, 60,
+          responseBody: '{"error": "Internal Server Error"}'),
       NetworkRequest('GET', '/v1/products', 200, 210),
     ];
 
@@ -37,22 +41,34 @@ class NetworkTrafficWidget extends StatelessWidget {
           margin: const EdgeInsets.only(bottom: 8),
           child: ExpansionTile(
             leading: div(
-              width: 12, height: 12, 
-              decoration: BoxDecoration(
-                color: color, 
-                shape: BoxShape.circle,
-                boxShadow: [BoxShadow(color: color.withValues(alpha: 0.4), blurRadius: 6)]
-              )
-            ),
-            title: Text(req.endpoint, style: const TextStyle(color: Colors.white, fontFamily: 'monospace', fontSize: 12)),
+                width: 12,
+                height: 12,
+                decoration: BoxDecoration(
+                    color: color,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                          color: color.withValues(alpha: 0.4), blurRadius: 6)
+                    ])),
+            title: Text(req.endpoint,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'monospace',
+                    fontSize: 12)),
             subtitle: Row(
-               children: [
-                 Text(req.method, style: const TextStyle(color: Colors.white70, fontWeight: FontWeight.bold, fontSize: 10)),
-                 const SizedBox(width: 8),
-                 Text('${req.statusCode}', style: TextStyle(color: color, fontSize: 10)),
-                 const SizedBox(width: 8),
-                 Text('${req.durationMs}ms', style: const TextStyle(color: Colors.grey, fontSize: 10)),
-               ],
+              children: [
+                Text(req.method,
+                    style: const TextStyle(
+                        color: Colors.white70,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10)),
+                const SizedBox(width: 8),
+                Text('${req.statusCode}',
+                    style: TextStyle(color: color, fontSize: 10)),
+                const SizedBox(width: 8),
+                Text('${req.durationMs}ms',
+                    style: const TextStyle(color: Colors.grey, fontSize: 10)),
+              ],
             ),
             children: [
               Container(
@@ -61,7 +77,10 @@ class NetworkTrafficWidget extends StatelessWidget {
                 color: Colors.black54,
                 child: Text(
                   req.responseBody ?? 'No Body',
-                  style: const TextStyle(color: Colors.grey, fontFamily: 'monospace', fontSize: 10),
+                  style: const TextStyle(
+                      color: Colors.grey,
+                      fontFamily: 'monospace',
+                      fontSize: 10),
                 ),
               ),
             ],
@@ -71,7 +90,10 @@ class NetworkTrafficWidget extends StatelessWidget {
     );
   }
 
-  Widget div({required double width, required double height, required Decoration decoration}) {
+  Widget div(
+      {required double width,
+      required double height,
+      required Decoration decoration}) {
     return Container(width: width, height: height, decoration: decoration);
   }
 }

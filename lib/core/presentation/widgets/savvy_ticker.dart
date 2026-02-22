@@ -25,32 +25,34 @@ class SavvyTicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    final formatStyle = style ?? SavvyTextStyle.bodyMedium.copyWith(color: theme.colors.textPrimary);
-    final formatter = format ?? NumberFormat.currency(symbol: '\$', decimalDigits: 2);
+    final formatStyle = style ??
+        SavvyTextStyle.bodyMedium.copyWith(color: theme.colors.textPrimary);
+    final formatter =
+        format ?? NumberFormat.currency(symbol: '\$', decimalDigits: 2);
     final formattedValue = formatter.format(value);
-    
+
     // Split into characters to animate digits individually
     List<Widget> children = [];
-    
+
     if (prefix.isNotEmpty) {
       children.add(Text(prefix, style: formatStyle));
     }
 
     for (int i = 0; i < formattedValue.length; i++) {
-        final char = formattedValue[i];
-        if (RegExp(r'[0-9]').hasMatch(char)) {
-           // Provide a Key based on position to ensure state preservation? 
-           // Actually, standard Row flow is enough if length is stable. 
-           // If length changes ($9.00 -> $10.00), position 0 becomes '1'.
-           children.add(_RollingDigit(
-             digit: int.parse(char), 
-             style: formatStyle,
-             duration: duration,
-             curve: curve,
-           ));
-        } else {
-           children.add(Text(char, style: formatStyle));
-        }
+      final char = formattedValue[i];
+      if (RegExp(r'[0-9]').hasMatch(char)) {
+        // Provide a Key based on position to ensure state preservation?
+        // Actually, standard Row flow is enough if length is stable.
+        // If length changes ($9.00 -> $10.00), position 0 becomes '1'.
+        children.add(_RollingDigit(
+          digit: int.parse(char),
+          style: formatStyle,
+          duration: duration,
+          curve: curve,
+        ));
+      } else {
+        children.add(Text(char, style: formatStyle));
+      }
     }
 
     return Row(
@@ -84,25 +86,28 @@ class _RollingDigit extends StatelessWidget {
       transitionBuilder: (child, animation) {
         // "Odometer" effect: New number comes from Bottom (Offset 0,1) -> (0,0)
         // Old number goes to Top (Offset 0,0) -> (0,-1)
-        
+
         // Incoming
-        final inOffset = Tween<Offset>(begin: const Offset(0.0, 1.0), end: Offset.zero).animate(animation);
-        // Outgoing: The animation runs 1.0 -> 0.0 for the exiting child? 
+        final inOffset =
+            Tween<Offset>(begin: const Offset(0.0, 1.0), end: Offset.zero)
+                .animate(animation);
+        // Outgoing: The animation runs 1.0 -> 0.0 for the exiting child?
         // No, standard AnimatedSwitcher runs the same animation object.
-        // For the exiting child, it runs in reverse (if we use the same builder). 
+        // For the exiting child, it runs in reverse (if we use the same builder).
         // Reverse of (0,1->0,0) is (0,0->0,1). This would make it go back down.
         // We want it to go UP.
-        
+
         // To achieve "Continuous Flow Up", exit must go UP.
-        
-        final outOffset = Tween<Offset>(begin: const Offset(0.0, -1.0), end: Offset.zero).animate(animation);
-        
+
+        final outOffset =
+            Tween<Offset>(begin: const Offset(0.0, -1.0), end: Offset.zero)
+                .animate(animation);
+
         if (child.key == ValueKey(digit)) {
           // Entering Child
           return SlideTransition(
-             position: inOffset, 
-             child: FadeTransition(opacity: animation, child: child)
-          );
+              position: inOffset,
+              child: FadeTransition(opacity: animation, child: child));
         } else {
           // Exiting Child
           // We apply the 'outOffset' but checking the animation direction?
@@ -111,9 +116,8 @@ class _RollingDigit extends StatelessWidget {
           // We want (0,0) at 1.0 and (0,-1) at 0.0.
           // Tween(begin: (0,-1), end: (0,0)).
           return SlideTransition(
-            position: outOffset,
-            child: FadeTransition(opacity: animation, child: child)
-          );
+              position: outOffset,
+              child: FadeTransition(opacity: animation, child: child));
         }
       },
       layoutBuilder: (currentChild, previousChildren) {

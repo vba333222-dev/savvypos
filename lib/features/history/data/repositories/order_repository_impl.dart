@@ -16,49 +16,62 @@ class OrderRepositoryImpl implements IOrderRepository {
     final scope = await _tenantRepo.getActiveScope();
     yield* (db.select(db.orderTable)
           ..where((t) => t.outletId.equals(scope['outletId'] ?? ''))
-          ..orderBy([(t) => OrderingTerm(expression: t.transactionDate, mode: OrderingMode.desc)]))
+          ..orderBy([
+            (t) => OrderingTerm(
+                expression: t.transactionDate, mode: OrderingMode.desc)
+          ]))
         .watch();
   }
 
   @override
   Future<List<OrderItemTableData>> getOrderItems(String orderUuid) {
-    return (db.select(db.orderItemTable)..where((t) => t.orderUuid.equals(orderUuid))).get();
+    return (db.select(db.orderItemTable)
+          ..where((t) => t.orderUuid.equals(orderUuid)))
+        .get();
   }
 
   @override
-  Future<List<OrderTableData>> getOrdersByDateRange(DateTime start, DateTime end) async {
+  Future<List<OrderTableData>> getOrdersByDateRange(
+      DateTime start, DateTime end) async {
     final scope = await _tenantRepo.getActiveScope();
     return (db.select(db.orderTable)
-      ..where((tbl) => tbl.outletId.equals(scope['outletId'] ?? '') & tbl.transactionDate.isBetweenValues(start, end))
-      ..orderBy([(tbl) => OrderingTerm.desc(tbl.transactionDate)]))
-      .get();
+          ..where((tbl) =>
+              tbl.outletId.equals(scope['outletId'] ?? '') &
+              tbl.transactionDate.isBetweenValues(start, end))
+          ..orderBy([(tbl) => OrderingTerm.desc(tbl.transactionDate)]))
+        .get();
   }
 
   @override
   Stream<List<OrderTableData>> watchKitchenOrders() async* {
     final scope = await _tenantRepo.getActiveScope();
     yield* (db.select(db.orderTable)
-      ..where((t) => t.outletId.equals(scope['outletId'] ?? '') & t.isFulfilled.equals(false))
-      ..orderBy([(t) => OrderingTerm(expression: t.transactionDate, mode: OrderingMode.asc)]))
-      .watch();
+          ..where((t) =>
+              t.outletId.equals(scope['outletId'] ?? '') &
+              t.isFulfilled.equals(false))
+          ..orderBy([
+            (t) => OrderingTerm(
+                expression: t.transactionDate, mode: OrderingMode.asc)
+          ]))
+        .watch();
   }
 
   @override
   Future<void> markOrderFulfilled(String uuid) async {
-    await (db.update(db.orderTable)..where((t) => t.uuid.equals(uuid))).write(
-      OrderTableCompanion(
-        isFulfilled: const Value(true),
-        updatedAt: Value(DateTime.now()), // Timestamp updated for change tracking
-      )
-    );
+    await (db.update(db.orderTable)..where((t) => t.uuid.equals(uuid)))
+        .write(OrderTableCompanion(
+      isFulfilled: const Value(true),
+      updatedAt: Value(DateTime.now()), // Timestamp updated for change tracking
+    ));
   }
 
   @override
-  Future<void> upsertOrderWithConflictResolution(OrderTableData remoteOrder) async {
+  Future<void> upsertOrderWithConflictResolution(
+      OrderTableData remoteOrder) async {
     return await db.transaction(() async {
       final existing = await (db.select(db.orderTable)
-        ..where((t) => t.uuid.equals(remoteOrder.uuid)))
-        .getSingleOrNull();
+            ..where((t) => t.uuid.equals(remoteOrder.uuid)))
+          .getSingleOrNull();
 
       if (existing == null) {
         // Doesn't exist locally, insert blindly
@@ -74,14 +87,14 @@ class OrderRepositoryImpl implements IOrderRepository {
           // Keep local kitchen status if local is fulfilled already
           isFulfilled: existing.isFulfilled || remoteOrder.isFulfilled,
         );
-        
+
         await db.update(db.orderTable).replace(mergedOrder);
       } else {
         // Local is newer. Current local state wins.
         // We ensure it gets queued for sync so the server gets our fresher update.
-        await (db.update(db.orderTable)..where((t) => t.uuid.equals(existing.uuid))).write(
-          const OrderTableCompanion(isSynced: Value(false))
-        );
+        await (db.update(db.orderTable)
+              ..where((t) => t.uuid.equals(existing.uuid)))
+            .write(const OrderTableCompanion(isSynced: Value(false)));
       }
     });
   }

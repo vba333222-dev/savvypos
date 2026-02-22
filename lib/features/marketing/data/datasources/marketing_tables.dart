@@ -9,8 +9,10 @@ class MarketingCampaignTable extends Table {
   TextColumn get uuid => text().unique()();
   TextColumn get name => text()();
   TextColumn get channel => text()(); // EMAIL, SMS, PUSH
-  TextColumn get triggerType => text()(); // SIGNUP, PURCHASE, BIRTHDAY, INACTIVITY
-  TextColumn get triggerValue => text().nullable()(); // e.g., "30" for 30 days of inactivity
+  TextColumn get triggerType =>
+      text()(); // SIGNUP, PURCHASE, BIRTHDAY, INACTIVITY
+  TextColumn get triggerValue =>
+      text().nullable()(); // e.g., "30" for 30 days of inactivity
   TextColumn get content => text()(); // The message template
   BoolColumn get isActive => boolean().withDefault(const Constant(true))();
   DateTimeColumn get createdAt => dateTime()();

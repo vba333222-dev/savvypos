@@ -22,27 +22,35 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
       query.where((t) => t.isActive.equals(true));
     }
     final rows = await query.get();
-    return rows.map((r) => Warehouse(
-      uuid: r.uuid,
-      name: r.name,
-      code: r.code,
-      type: WarehouseType.values.firstWhere((e) => e.name == r.type.toLowerCase(), orElse: () => WarehouseType.warehouse),
-      address: r.address,
-      contactPhone: r.contactPhone,
-      isPrimary: r.isPrimary,
-      isActive: r.isActive,
-    )).toList();
+    return rows
+        .map((r) => Warehouse(
+              uuid: r.uuid,
+              name: r.name,
+              code: r.code,
+              type: WarehouseType.values.firstWhere(
+                  (e) => e.name == r.type.toLowerCase(),
+                  orElse: () => WarehouseType.warehouse),
+              address: r.address,
+              contactPhone: r.contactPhone,
+              isPrimary: r.isPrimary,
+              isActive: r.isActive,
+            ))
+        .toList();
   }
 
   @override
   Future<Warehouse?> getWarehouse(String uuid) async {
-    final row = await (_db.select(_db.warehouseTable)..where((t) => t.uuid.equals(uuid))).getSingleOrNull();
+    final row = await (_db.select(_db.warehouseTable)
+          ..where((t) => t.uuid.equals(uuid)))
+        .getSingleOrNull();
     if (row == null) return null;
     return Warehouse(
       uuid: row.uuid,
       name: row.name,
       code: row.code,
-      type: WarehouseType.values.firstWhere((e) => e.name == row.type.toLowerCase(), orElse: () => WarehouseType.warehouse),
+      type: WarehouseType.values.firstWhere(
+          (e) => e.name == row.type.toLowerCase(),
+          orElse: () => WarehouseType.warehouse),
       address: row.address,
       contactPhone: row.contactPhone,
       isPrimary: row.isPrimary,
@@ -53,48 +61,45 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
   @override
   Future<Warehouse> createWarehouse(Warehouse warehouse) async {
     final uuid = _uuid.v4();
-    await _db.into(_db.warehouseTable).insert(
-      WarehouseTableCompanion(
-        uuid: Value(uuid),
-        name: Value(warehouse.name),
-        code: Value(warehouse.code),
-        type: Value(warehouse.type.name),
-        address: Value(warehouse.address),
-        contactPhone: Value(warehouse.contactPhone),
-        isPrimary: Value(warehouse.isPrimary),
-        isActive: Value(warehouse.isActive),
-        createdAt: Value(DateTime.now()),
-        updatedAt: Value(DateTime.now()),
-      )
-    );
+    await _db.into(_db.warehouseTable).insert(WarehouseTableCompanion(
+          uuid: Value(uuid),
+          name: Value(warehouse.name),
+          code: Value(warehouse.code),
+          type: Value(warehouse.type.name),
+          address: Value(warehouse.address),
+          contactPhone: Value(warehouse.contactPhone),
+          isPrimary: Value(warehouse.isPrimary),
+          isActive: Value(warehouse.isActive),
+          createdAt: Value(DateTime.now()),
+          updatedAt: Value(DateTime.now()),
+        ));
     return warehouse.copyWith(uuid: uuid);
   }
 
   @override
   Future<void> updateWarehouse(Warehouse warehouse) async {
-    await (_db.update(_db.warehouseTable)..where((t) => t.uuid.equals(warehouse.uuid))).write(
-      WarehouseTableCompanion(
-        name: Value(warehouse.name),
-        code: Value(warehouse.code),
-        type: Value(warehouse.type.name),
-        address: Value(warehouse.address),
-        contactPhone: Value(warehouse.contactPhone),
-        isPrimary: Value(warehouse.isPrimary),
-        isActive: Value(warehouse.isActive),
-        updatedAt: Value(DateTime.now()),
-      )
-    );
+    await (_db.update(_db.warehouseTable)
+          ..where((t) => t.uuid.equals(warehouse.uuid)))
+        .write(WarehouseTableCompanion(
+      name: Value(warehouse.name),
+      code: Value(warehouse.code),
+      type: Value(warehouse.type.name),
+      address: Value(warehouse.address),
+      contactPhone: Value(warehouse.contactPhone),
+      isPrimary: Value(warehouse.isPrimary),
+      isActive: Value(warehouse.isActive),
+      updatedAt: Value(DateTime.now()),
+    ));
   }
 
   @override
   Future<void> deleteWarehouse(String uuid) async {
-    await (_db.update(_db.warehouseTable)..where((t) => t.uuid.equals(uuid))).write(
-      WarehouseTableCompanion(
-        isDeleted: const Value(true),
-        isActive: const Value(false),
-        updatedAt: Value(DateTime.now()),
-      )
-    );
+    await (_db.update(_db.warehouseTable)..where((t) => t.uuid.equals(uuid)))
+        .write(WarehouseTableCompanion(
+      isDeleted: const Value(true),
+      isActive: const Value(false),
+      updatedAt: Value(DateTime.now()),
+    ));
   }
 
   // ===================================
@@ -113,29 +118,34 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
     // Determine primary warehouse if none specified
     String? effectiveWarehouseUuid = warehouseUuid;
     if (effectiveWarehouseUuid == null) {
-      final primary = await (_db.select(_db.warehouseTable)..where((t) => t.isPrimary.equals(true))).getSingleOrNull();
+      final primary = await (_db.select(_db.warehouseTable)
+            ..where((t) => t.isPrimary.equals(true)))
+          .getSingleOrNull();
       effectiveWarehouseUuid = primary?.uuid;
     }
 
     if (effectiveWarehouseUuid == null) return [];
 
     final query = _db.select(_db.stockLevelTable).join([
-      innerJoin(_db.productTable, _db.productTable.uuid.equalsExp(_db.stockLevelTable.productUuid)),
+      innerJoin(_db.productTable,
+          _db.productTable.uuid.equalsExp(_db.stockLevelTable.productUuid)),
     ]);
 
-    query.where(_db.stockLevelTable.warehouseUuid.equals(effectiveWarehouseUuid));
+    query.where(
+        _db.stockLevelTable.warehouseUuid.equals(effectiveWarehouseUuid));
 
     if (categoryUuid != null) {
       query.where(_db.productTable.categoryId.equals(categoryUuid));
     }
-    
+
     if (searchQuery != null && searchQuery.isNotEmpty) {
       query.where(_db.productTable.name.contains(searchQuery));
     }
 
     if (lowStockOnly) {
-      query.where(_db.stockLevelTable.reorderPoint.isNotNull() & 
-                  _db.stockLevelTable.quantity.isSmallerThan(_db.stockLevelTable.reorderPoint));
+      query.where(_db.stockLevelTable.reorderPoint.isNotNull() &
+          _db.stockLevelTable.quantity
+              .isSmallerThan(_db.stockLevelTable.reorderPoint));
     }
 
     if (outOfStockOnly) {
@@ -145,7 +155,7 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
     if (limit != null) query.limit(limit, offset: offset);
 
     final result = await query.get();
-    
+
     return result.map((row) {
       final stock = row.readTable(_db.stockLevelTable);
       final product = row.readTable(_db.productTable);
@@ -165,14 +175,16 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
   }
 
   @override
-  Future<StockLevel?> getStockLevel(String productUuid, String warehouseUuid) async {
+  Future<StockLevel?> getStockLevel(
+      String productUuid, String warehouseUuid) async {
     final query = _db.select(_db.stockLevelTable).join([
-      innerJoin(_db.productTable, _db.productTable.uuid.equalsExp(_db.stockLevelTable.productUuid)),
+      innerJoin(_db.productTable,
+          _db.productTable.uuid.equalsExp(_db.stockLevelTable.productUuid)),
     ]);
-    
-    query.where(_db.stockLevelTable.productUuid.equals(productUuid) & 
-                _db.stockLevelTable.warehouseUuid.equals(warehouseUuid));
-                
+
+    query.where(_db.stockLevelTable.productUuid.equals(productUuid) &
+        _db.stockLevelTable.warehouseUuid.equals(warehouseUuid));
+
     final row = await query.getSingleOrNull();
     if (row == null) return null;
 
@@ -195,24 +207,25 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
   @override
   Future<double> getTotalStock(String productUuid) async {
     final result = await (_db.selectOnly(_db.stockLevelTable)
-      ..addColumns([_db.stockLevelTable.quantity.sum()])
-      ..where(_db.stockLevelTable.productUuid.equals(productUuid)))
-      .getSingle();
-      
+          ..addColumns([_db.stockLevelTable.quantity.sum()])
+          ..where(_db.stockLevelTable.productUuid.equals(productUuid)))
+        .getSingle();
+
     return result.read(_db.stockLevelTable.quantity.sum()) ?? 0.0;
   }
 
   @override
-  Future<void> updateStockLevel(String productUuid, String warehouseUuid, double newQuantity) async {
-    await _db.into(_db.stockLevelTable).insertOnConflictUpdate(
-      StockLevelTableCompanion(
-        productUuid: Value(productUuid),
-        warehouseUuid: Value(warehouseUuid),
-        quantity: Value(newQuantity),
-        availableQuantity: Value(newQuantity), // Simplified
-        updatedAt: Value(DateTime.now()),
-      )
-    );
+  Future<void> updateStockLevel(
+      String productUuid, String warehouseUuid, double newQuantity) async {
+    await _db
+        .into(_db.stockLevelTable)
+        .insertOnConflictUpdate(StockLevelTableCompanion(
+          productUuid: Value(productUuid),
+          warehouseUuid: Value(warehouseUuid),
+          quantity: Value(newQuantity),
+          availableQuantity: Value(newQuantity), // Simplified
+          updatedAt: Value(DateTime.now()),
+        ));
   }
 
   // ===================================
@@ -239,46 +252,47 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
       final currentStock = await getStockLevel(productUuid, warehouseUuid);
       final currentQty = currentStock?.quantity ?? 0.0;
       final newQty = currentQty + quantityChange;
-      
+
       // 2. Update Stock Table
       await updateStockLevel(productUuid, warehouseUuid, newQty);
-      
+
       // 3. Update Batch if applicable
       if (batchUuid != null) {
         final batch = await getBatch(batchUuid);
         if (batch != null) {
-          await updateBatchQuantity(batchUuid, batch.currentQuantity + quantityChange);
+          await updateBatchQuantity(
+              batchUuid, batch.currentQuantity + quantityChange);
         }
       }
-      
+
       // 4. Get Product Name for log
-      final product = await (_db.select(_db.productTable)..where((t) => t.uuid.equals(productUuid))).getSingle();
-      
+      final product = await (_db.select(_db.productTable)
+            ..where((t) => t.uuid.equals(productUuid)))
+          .getSingle();
+
       // 5. Insert Movement Log
       final uuid = _uuid.v4();
-      await _db.into(_db.stockMovementTable).insert(
-        StockMovementTableCompanion(
-          uuid: Value(uuid),
-          productUuid: Value(productUuid),
-          productName: Value(product.name),
-          warehouseUuid: Value(warehouseUuid),
-          batchUuid: Value(batchUuid),
-          movementType: Value(movementType.name),
-          quantityChange: Value(quantityChange),
-          unitCost: Value(unitCost),
-          referenceType: Value(referenceType),
-          referenceUuid: Value(referenceUuid),
-          referenceNumber: Value(referenceNumber),
-          reasonCode: Value(reasonCode),
-          notes: Value(notes),
-          performedBy: Value(performedBy),
-          performedByName: Value(performedByName),
-          balanceBefore: Value(currentQty),
-          balanceAfter: Value(newQty),
-          timestamp: Value(DateTime.now()),
-        )
-      );
-      
+      await _db.into(_db.stockMovementTable).insert(StockMovementTableCompanion(
+            uuid: Value(uuid),
+            productUuid: Value(productUuid),
+            productName: Value(product.name),
+            warehouseUuid: Value(warehouseUuid),
+            batchUuid: Value(batchUuid),
+            movementType: Value(movementType.name),
+            quantityChange: Value(quantityChange),
+            unitCost: Value(unitCost),
+            referenceType: Value(referenceType),
+            referenceUuid: Value(referenceUuid),
+            referenceNumber: Value(referenceNumber),
+            reasonCode: Value(reasonCode),
+            notes: Value(notes),
+            performedBy: Value(performedBy),
+            performedByName: Value(performedByName),
+            balanceBefore: Value(currentQty),
+            balanceAfter: Value(newQty),
+            timestamp: Value(DateTime.now()),
+          ));
+
       return StockMovement(
         uuid: uuid,
         productUuid: productUuid,
@@ -308,32 +322,41 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
     int offset = 0,
   }) async {
     final query = _db.select(_db.stockMovementTable);
-    
-    if (productUuid != null) query.where((t) => t.productUuid.equals(productUuid));
-    if (warehouseUuid != null) query.where((t) => t.warehouseUuid.equals(warehouseUuid));
-    if (movementType != null) query.where((t) => t.movementType.equals(movementType.name));
-    if (startDate != null) query.where((t) => t.timestamp.isBiggerOrEqualValue(startDate));
-    if (endDate != null) query.where((t) => t.timestamp.isSmallerOrEqualValue(endDate));
-    
+
+    if (productUuid != null)
+      query.where((t) => t.productUuid.equals(productUuid));
+    if (warehouseUuid != null)
+      query.where((t) => t.warehouseUuid.equals(warehouseUuid));
+    if (movementType != null)
+      query.where((t) => t.movementType.equals(movementType.name));
+    if (startDate != null)
+      query.where((t) => t.timestamp.isBiggerOrEqualValue(startDate));
+    if (endDate != null)
+      query.where((t) => t.timestamp.isSmallerOrEqualValue(endDate));
+
     query.orderBy([(t) => OrderingTerm.desc(t.timestamp)]);
     query.limit(limit, offset: offset);
-    
+
     final rows = await query.get();
-    return rows.map((r) => StockMovement(
-      uuid: r.uuid,
-      productUuid: r.productUuid,
-      productName: r.productName,
-      warehouseUuid: r.warehouseUuid,
-      movementType: MovementType.values.firstWhere((e) => e.name == r.movementType, orElse: () => MovementType.adjustment),
-      quantityChange: r.quantityChange,
-      performedBy: r.performedBy,
-      performedByName: r.performedByName,
-      timestamp: r.timestamp,
-      reasonCode: r.reasonCode,
-      referenceNumber: r.referenceNumber,
-      balanceBefore: r.balanceBefore,
-      balanceAfter: r.balanceAfter,
-    )).toList();
+    return rows
+        .map((r) => StockMovement(
+              uuid: r.uuid,
+              productUuid: r.productUuid,
+              productName: r.productName,
+              warehouseUuid: r.warehouseUuid,
+              movementType: MovementType.values.firstWhere(
+                  (e) => e.name == r.movementType,
+                  orElse: () => MovementType.adjustment),
+              quantityChange: r.quantityChange,
+              performedBy: r.performedBy,
+              performedByName: r.performedByName,
+              timestamp: r.timestamp,
+              reasonCode: r.reasonCode,
+              referenceNumber: r.referenceNumber,
+              balanceBefore: r.balanceBefore,
+              balanceAfter: r.balanceAfter,
+            ))
+        .toList();
   }
 
   // ===================================
@@ -348,17 +371,44 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
     int? days,
   }) async {
     final query = _db.select(_db.batchTable);
-    if (productUuid != null) query.where((t) => t.productUuid.equals(productUuid));
-    if (warehouseUuid != null) query.where((t) => t.warehouseUuid.equals(warehouseUuid));
+    if (productUuid != null)
+      query.where((t) => t.productUuid.equals(productUuid));
+    if (warehouseUuid != null)
+      query.where((t) => t.warehouseUuid.equals(warehouseUuid));
     if (status != null) query.where((t) => t.status.equals(status.name));
-    
+
     if (expiringWithinDays && days != null) {
       final expiryThreshold = DateTime.now().add(Duration(days: days));
-      query.where((t) => t.expiryDate.isNotNull() & t.expiryDate.isSmallerOrEqualValue(expiryThreshold));
+      query.where((t) =>
+          t.expiryDate.isNotNull() &
+          t.expiryDate.isSmallerOrEqualValue(expiryThreshold));
     }
-    
+
     final rows = await query.get();
-    return rows.map((r) => Batch(
+    return rows
+        .map((r) => Batch(
+              uuid: r.uuid,
+              productUuid: r.productUuid,
+              warehouseUuid: r.warehouseUuid,
+              batchNumber: r.batchNumber,
+              initialQuantity: r.initialQuantity,
+              currentQuantity: r.currentQuantity,
+              unitCost: r.unitCost,
+              expiryDate: r.expiryDate,
+              receivedAt: r.receivedAt,
+              status: BatchStatus.values.firstWhere((e) => e.name == r.status,
+                  orElse: () => BatchStatus.active),
+            ))
+        .toList();
+  }
+
+  @override
+  Future<Batch?> getBatch(String uuid) async {
+    final r = await (_db.select(_db.batchTable)
+          ..where((t) => t.uuid.equals(uuid)))
+        .getSingleOrNull();
+    if (r == null) return null;
+    return Batch(
       uuid: r.uuid,
       productUuid: r.productUuid,
       warehouseUuid: r.warehouseUuid,
@@ -368,25 +418,8 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
       unitCost: r.unitCost,
       expiryDate: r.expiryDate,
       receivedAt: r.receivedAt,
-      status: BatchStatus.values.firstWhere((e) => e.name == r.status, orElse: () => BatchStatus.active),
-    )).toList();
-  }
-
-  @override
-  Future<Batch?> getBatch(String uuid) async {
-    final r = await (_db.select(_db.batchTable)..where((t) => t.uuid.equals(uuid))).getSingleOrNull();
-    if (r == null) return null;
-    return Batch(
-       uuid: r.uuid,
-       productUuid: r.productUuid,
-       warehouseUuid: r.warehouseUuid,
-       batchNumber: r.batchNumber,
-       initialQuantity: r.initialQuantity,
-       currentQuantity: r.currentQuantity,
-       unitCost: r.unitCost,
-       expiryDate: r.expiryDate,
-       receivedAt: r.receivedAt,
-       status: BatchStatus.values.firstWhere((e) => e.name == r.status, orElse: () => BatchStatus.active),
+      status: BatchStatus.values.firstWhere((e) => e.name == r.status,
+          orElse: () => BatchStatus.active),
     );
   }
 
@@ -398,47 +431,53 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
 
   @override
   Future<void> updateBatchQuantity(String uuid, double newQuantity) async {
-     await (_db.update(_db.batchTable)..where((t) => t.uuid.equals(uuid))).write(
-      BatchTableCompanion(
-        currentQuantity: Value(newQuantity),
-        updatedAt: Value(DateTime.now()),
-      )
-    );
+    await (_db.update(_db.batchTable)..where((t) => t.uuid.equals(uuid)))
+        .write(BatchTableCompanion(
+      currentQuantity: Value(newQuantity),
+      updatedAt: Value(DateTime.now()),
+    ));
   }
 
   @override
   Future<void> updateBatchStatus(String uuid, BatchStatus status) {
-     return (_db.update(_db.batchTable)..where((t) => t.uuid.equals(uuid))).write(
-      BatchTableCompanion(
-        status: Value(status.name),
-        updatedAt: Value(DateTime.now()),
-      )
-    );
+    return (_db.update(_db.batchTable)..where((t) => t.uuid.equals(uuid)))
+        .write(BatchTableCompanion(
+      status: Value(status.name),
+      updatedAt: Value(DateTime.now()),
+    ));
   }
 
   // ===================================
   // ALERTS
   // ===================================
   @override
-  Future<List<StockAlert>> getActiveAlerts({AlertType? type, AlertSeverity? severity, String? warehouseUuid, int limit = 50}) async {
+  Future<List<StockAlert>> getActiveAlerts(
+      {AlertType? type,
+      AlertSeverity? severity,
+      String? warehouseUuid,
+      int limit = 50}) async {
     final query = _db.select(_db.stockAlertTable);
     query.where((t) => t.isResolved.equals(false));
     if (type != null) query.where((t) => t.alertType.equals(type.name));
     if (severity != null) query.where((t) => t.severity.equals(severity.name));
-    
+
     final rows = await query.get();
-    return rows.map((r) => StockAlert(
-      uuid: r.uuid,
-      productUuid: r.productUuid,
-      productName: r.productName,
-      alertType: AlertType.values.firstWhere((e) => e.name == r.alertType),
-      severity: AlertSeverity.values.firstWhere((e) => e.name == r.severity),
-      message: r.message,
-      createdAt: r.createdAt,
-      isAcknowledged: r.isAcknowledged,
-      currentValue: r.currentValue ?? 0,
-      thresholdValue: r.thresholdValue ?? 0,
-    )).toList();
+    return rows
+        .map((r) => StockAlert(
+              uuid: r.uuid,
+              productUuid: r.productUuid,
+              productName: r.productName,
+              alertType:
+                  AlertType.values.firstWhere((e) => e.name == r.alertType),
+              severity:
+                  AlertSeverity.values.firstWhere((e) => e.name == r.severity),
+              message: r.message,
+              createdAt: r.createdAt,
+              isAcknowledged: r.isAcknowledged,
+              currentValue: r.currentValue ?? 0,
+              thresholdValue: r.thresholdValue ?? 0,
+            ))
+        .toList();
   }
 
   @override
@@ -449,29 +488,28 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
 
   @override
   Future<void> acknowledgeAlert(String uuid, String acknowledgedBy) async {
-    await (_db.update(_db.stockAlertTable)..where((t) => t.uuid.equals(uuid))).write(
-      StockAlertTableCompanion(
-        isAcknowledged: const Value(true),
-        acknowledgedBy: Value(acknowledgedBy),
-        acknowledgedAt: Value(DateTime.now()),
-      )
-    );
+    await (_db.update(_db.stockAlertTable)..where((t) => t.uuid.equals(uuid)))
+        .write(StockAlertTableCompanion(
+      isAcknowledged: const Value(true),
+      acknowledgedBy: Value(acknowledgedBy),
+      acknowledgedAt: Value(DateTime.now()),
+    ));
   }
 
   @override
   Future<void> resolveAlert(String uuid, String actionTaken) async {
-     await (_db.update(_db.stockAlertTable)..where((t) => t.uuid.equals(uuid))).write(
-      StockAlertTableCompanion(
-        isResolved: const Value(true),
-        actionTaken: Value(actionTaken),
-        resolvedAt: Value(DateTime.now()),
-      )
-    );
+    await (_db.update(_db.stockAlertTable)..where((t) => t.uuid.equals(uuid)))
+        .write(StockAlertTableCompanion(
+      isResolved: const Value(true),
+      actionTaken: Value(actionTaken),
+      resolvedAt: Value(DateTime.now()),
+    ));
   }
 
   @override
-  Future<StockAlertConfig?> getAlertConfig(String productUuid, String? warehouseUuid) async {
-    return null; 
+  Future<StockAlertConfig?> getAlertConfig(
+      String productUuid, String? warehouseUuid) async {
+    return null;
   }
 
   @override
@@ -490,25 +528,30 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
     int limit = 50,
   }) async {
     final query = _db.select(_db.stockTransferTable);
-    if (sourceWarehouseUuid != null) query.where((t) => t.sourceWarehouseUuid.equals(sourceWarehouseUuid));
-    if (targetWarehouseUuid != null) query.where((t) => t.targetWarehouseUuid.equals(targetWarehouseUuid));
+    if (sourceWarehouseUuid != null)
+      query.where((t) => t.sourceWarehouseUuid.equals(sourceWarehouseUuid));
+    if (targetWarehouseUuid != null)
+      query.where((t) => t.targetWarehouseUuid.equals(targetWarehouseUuid));
     if (status != null) query.where((t) => t.status.equals(status.name));
-    
+
     final rows = await query.get();
-    return rows.map((r) => AdvancedStockTransfer(
-      uuid: r.uuid,
-      transferNumber: r.transferNumber,
-      sourceWarehouseUuid: r.sourceWarehouseUuid,
-      sourceWarehouseName: r.sourceWarehouseName,
-      targetWarehouseUuid: r.targetWarehouseUuid,
-      targetWarehouseName: r.targetWarehouseName,
-      status: TransferStatus.values.firstWhere((e) => e.name == r.status),
-      createdBy: r.createdBy,
-      createdByName: r.createdByName,
-      totalItems: r.totalItems,
-      totalValue: r.totalValue,
-      createdAt: r.createdAt,
-    )).toList();
+    return rows
+        .map((r) => AdvancedStockTransfer(
+              uuid: r.uuid,
+              transferNumber: r.transferNumber,
+              sourceWarehouseUuid: r.sourceWarehouseUuid,
+              sourceWarehouseName: r.sourceWarehouseName,
+              targetWarehouseUuid: r.targetWarehouseUuid,
+              targetWarehouseName: r.targetWarehouseName,
+              status:
+                  TransferStatus.values.firstWhere((e) => e.name == r.status),
+              createdBy: r.createdBy,
+              createdByName: r.createdByName,
+              totalItems: r.totalItems,
+              totalValue: r.totalValue,
+              createdAt: r.createdAt,
+            ))
+        .toList();
   }
 
   @override
@@ -517,52 +560,55 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
   }
 
   @override
-  Future<AdvancedStockTransfer> createTransfer(AdvancedStockTransfer transfer) async {
+  Future<AdvancedStockTransfer> createTransfer(
+      AdvancedStockTransfer transfer) async {
     final uuid = _uuid.v4();
-    await _db.into(_db.stockTransferTable).insert(
-      StockTransferTableCompanion(
-        uuid: Value(uuid),
-        transferNumber: Value(transfer.transferNumber),
-        sourceWarehouseUuid: Value(transfer.sourceWarehouseUuid),
-        sourceWarehouseName: Value(transfer.sourceWarehouseName),
-        targetWarehouseUuid: Value(transfer.targetWarehouseUuid),
-        targetWarehouseName: Value(transfer.targetWarehouseName),
-        status: Value(TransferStatus.draft.name),
-        createdByName: Value(transfer.createdByName),
-        createdBy: Value('sys'),
-        createdAt: Value(DateTime.now()),
-        updatedAt: Value(DateTime.now()),
-      )
-    );
+    await _db.into(_db.stockTransferTable).insert(StockTransferTableCompanion(
+          uuid: Value(uuid),
+          transferNumber: Value(transfer.transferNumber),
+          sourceWarehouseUuid: Value(transfer.sourceWarehouseUuid),
+          sourceWarehouseName: Value(transfer.sourceWarehouseName),
+          targetWarehouseUuid: Value(transfer.targetWarehouseUuid),
+          targetWarehouseName: Value(transfer.targetWarehouseName),
+          status: Value(TransferStatus.draft.name),
+          createdByName: Value(transfer.createdByName),
+          createdBy: Value('sys'),
+          createdAt: Value(DateTime.now()),
+          updatedAt: Value(DateTime.now()),
+        ));
     return transfer.copyWith(uuid: uuid);
   }
 
   @override
-  Future<void> updateTransferStatus(String uuid, TransferStatus status, {String? approvedBy}) async {
-    await (_db.update(_db.stockTransferTable)..where((t) => t.uuid.equals(uuid))).write(
-      StockTransferTableCompanion(
-        status: Value(status.name),
-        approvedBy: Value(approvedBy),
-        updatedAt: Value(DateTime.now()),
-      )
-    );
+  Future<void> updateTransferStatus(String uuid, TransferStatus status,
+      {String? approvedBy}) async {
+    await (_db.update(_db.stockTransferTable)
+          ..where((t) => t.uuid.equals(uuid)))
+        .write(StockTransferTableCompanion(
+      status: Value(status.name),
+      approvedBy: Value(approvedBy),
+      updatedAt: Value(DateTime.now()),
+    ));
   }
 
   @override
-  Future<void> shipTransfer(String uuid, List<AdvancedStockTransferItem> items) async {
-      await updateTransferStatus(uuid, TransferStatus.inTransit);
+  Future<void> shipTransfer(
+      String uuid, List<AdvancedStockTransferItem> items) async {
+    await updateTransferStatus(uuid, TransferStatus.inTransit);
   }
 
   @override
-  Future<void> receiveTransfer(String uuid, List<AdvancedStockTransferItem> items, String receivedBy) async {
-      await updateTransferStatus(uuid, TransferStatus.completed);
+  Future<void> receiveTransfer(String uuid,
+      List<AdvancedStockTransferItem> items, String receivedBy) async {
+    await updateTransferStatus(uuid, TransferStatus.completed);
   }
 
   // ===================================
   // DASHBOARD & INSIGHTS
   // ===================================
   @override
-  Future<InventoryDashboardStats> getDashboardStats({String? warehouseUuid}) async {
+  Future<InventoryDashboardStats> getDashboardStats(
+      {String? warehouseUuid}) async {
     // Check if table defined
     // Basic stats
     return const InventoryDashboardStats(
@@ -575,7 +621,8 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
   }
 
   @override
-  Future<List<InventoryInsight>> generateInsights({String? warehouseUuid}) async {
+  Future<List<InventoryInsight>> generateInsights(
+      {String? warehouseUuid}) async {
     return [
       InventoryInsight(
         id: '1',
@@ -588,7 +635,8 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
   }
 
   @override
-  Future<List<VarianceReport>> getVarianceReport({String? warehouseUuid, DateTime? startDate, DateTime? endDate}) async {
+  Future<List<VarianceReport>> getVarianceReport(
+      {String? warehouseUuid, DateTime? startDate, DateTime? endDate}) async {
     return [];
   }
 
@@ -598,7 +646,8 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
   }
 
   @override
-  Future<Map<String, double>> getStockTurnover({String? warehouseUuid, DateTime? startDate, DateTime? endDate}) async {
+  Future<Map<String, double>> getStockTurnover(
+      {String? warehouseUuid, DateTime? startDate, DateTime? endDate}) async {
     return {};
   }
 
@@ -606,17 +655,24 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
   // PHYSICAL COUNT
   // ===================================
   @override
-  Future<String> startPhysicalCount({required String warehouseUuid, required String initiatedBy, required String initiatedByName, String? auditType}) async {
+  Future<String> startPhysicalCount(
+      {required String warehouseUuid,
+      required String initiatedBy,
+      required String initiatedByName,
+      String? auditType}) async {
     return _uuid.v4();
   }
 
   @override
-  Future<void> recordCount({required String countSessionUuid, required String productUuid, required double countedQty, String? countedBy, String? batchUuid}) async {
-  }
+  Future<void> recordCount(
+      {required String countSessionUuid,
+      required String productUuid,
+      required double countedQty,
+      String? countedBy,
+      String? batchUuid}) async {}
 
   @override
-  Future<void> completePhysicalCount(String uuid, String completedBy) async {
-  }
+  Future<void> completePhysicalCount(String uuid, String completedBy) async {}
 
   @override
   Future<Map<String, dynamic>?> getCountSession(String uuid) async {

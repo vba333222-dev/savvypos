@@ -7,7 +7,8 @@ enum UserRole {
 
   static UserRole fromString(String role) {
     try {
-      return UserRole.values.firstWhere((e) => e.name.toLowerCase() == role.toLowerCase());
+      return UserRole.values
+          .firstWhere((e) => e.name.toLowerCase() == role.toLowerCase());
     } catch (_) {
       return UserRole.unknown;
     }
@@ -30,11 +31,11 @@ class RoleGuard {
   static bool canPerformRefund(UserRole role) {
     return role == UserRole.owner || role == UserRole.manager;
   }
-  
+
   static bool canPerformManagerOverride(UserRole role) {
     return role == UserRole.owner || role == UserRole.manager;
   }
-  
+
   static bool canAccessAdminPanel(UserRole role) {
     return role == UserRole.owner || role == UserRole.manager;
   }

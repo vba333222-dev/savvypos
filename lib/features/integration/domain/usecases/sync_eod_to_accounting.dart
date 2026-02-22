@@ -11,22 +11,23 @@ class SyncEodToAccountingUseCase {
     _dio.options.baseUrl = 'https://api.savvypos.com'; // Mock Go Backend URL
     _dio.options.connectTimeout = const Duration(seconds: 10);
     _dio.options.receiveTimeout = const Duration(seconds: 10);
-    
+
     _dio.interceptors.add(
       RetryInterceptor(
         dio: _dio,
         logPrint: print,
-        retries: 3, 
+        retries: 3,
         retryDelays: const [
-          Duration(seconds: 1), 
-          Duration(seconds: 2), 
+          Duration(seconds: 1),
+          Duration(seconds: 2),
           Duration(seconds: 3),
         ],
       ),
     );
   }
 
-  Future<bool> call(String shiftId, FinancialAggregationResult financials) async {
+  Future<bool> call(
+      String shiftId, FinancialAggregationResult financials) async {
     try {
       final payload = {
         'shift_id': shiftId,
@@ -47,7 +48,7 @@ class SyncEodToAccountingUseCase {
       print('Mock Dispatch EOD Payload: $payload');
       // Simulate network latency for Lottie loader test
       await Future.delayed(const Duration(seconds: 3));
-      
+
       return true; // Simulate 200 OK
     } catch (e) {
       throw Exception('Failed to sync EOD ledger: $e');

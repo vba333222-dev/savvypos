@@ -6,7 +6,8 @@ import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
 
 class DraggableBillItem extends StatelessWidget {
   final CartItem item;
-  final bool isGhost; // If true, renders as a placeholder (when item is dragged out)
+  final bool
+      isGhost; // If true, renders as a placeholder (when item is dragged out)
 
   const DraggableBillItem({
     super.key,
@@ -57,15 +58,23 @@ class _BillCard extends StatelessWidget {
               color: theme.colors.bgPrimary,
               borderRadius: BorderRadius.circular(4),
             ),
-            child: Text('${item.quantity}x', style: TextStyle(fontWeight: FontWeight.bold, color: theme.colors.textPrimary)),
+            child: Text('${item.quantity}x',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: theme.colors.textPrimary)),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(item.product.name, style: TextStyle(fontWeight: FontWeight.w500, color: theme.colors.textPrimary)),
-                Text('\$${item.total.toStringAsFixed(2)}', style: TextStyle(color: theme.colors.textSecondary, fontSize: 12)),
+                Text(item.product.name,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: theme.colors.textPrimary)),
+                Text('\$${item.total.toStringAsFixed(2)}',
+                    style: TextStyle(
+                        color: theme.colors.textSecondary, fontSize: 12)),
               ],
             ),
           ),
@@ -89,10 +98,13 @@ class _FeedbackCard extends StatelessWidget {
       child: Transform.rotate(
         angle: 0.1, // Slight tilt
         child: SizedBox(
-          width: 300, 
+          width: 300,
           child: _BillCard(item: item)
-             .animate(onPlay: (c) => c.repeat(reverse: true))
-             .scale(begin: const Offset(1.05, 1.05), end: const Offset(1.08, 1.08), duration: 600.ms), // Breathing effect
+              .animate(onPlay: (c) => c.repeat(reverse: true))
+              .scale(
+                  begin: const Offset(1.05, 1.05),
+                  end: const Offset(1.08, 1.08),
+                  duration: 600.ms), // Breathing effect
         ),
       ),
     );

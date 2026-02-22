@@ -15,14 +15,15 @@ class ApiClient {
     return 'http://10.0.2.2:8080/v1';
   }
 
-  ApiClient() : _dio = Dio(BaseOptions(
-    baseUrl: baseUrl,
-    connectTimeout: const Duration(seconds: 5),
-    receiveTimeout: const Duration(seconds: 5),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  )) {
+  ApiClient()
+      : _dio = Dio(BaseOptions(
+          baseUrl: baseUrl,
+          connectTimeout: const Duration(seconds: 5),
+          receiveTimeout: const Duration(seconds: 5),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        )) {
     _dio.interceptors.add(AuthInterceptor(_dio));
   }
 
@@ -33,7 +34,7 @@ class ApiClient {
         data: {
           // Backend expects: action, payload, idempotency_key (matching json tags)
           'action': payload['action'],
-          'payload': payload['payload'], 
+          'payload': payload['payload'],
           'idempotency_key': payload['idempotency_key']
         },
         options: Options(
@@ -47,12 +48,12 @@ class ApiClient {
       return response;
     } catch (e) {
       _logger.e('Push Failed', error: e);
-      // Rethrow so Worker knows it's a network/system failure? 
+      // Rethrow so Worker knows it's a network/system failure?
       // Or return null? SyncWorker needs to differentiate Network Error vs Server Error.
       rethrow;
     }
   }
-  
+
   Future<Map<String, dynamic>?> pullSyncData(String lastSyncedAt) async {
     try {
       final response = await _dio.get(
@@ -61,7 +62,7 @@ class ApiClient {
           'last_synced_at': lastSyncedAt,
         },
         options: Options(
-           receiveTimeout: const Duration(seconds: 10),
+          receiveTimeout: const Duration(seconds: 10),
         ),
       );
 

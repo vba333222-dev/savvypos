@@ -7,7 +7,8 @@ part 'cds_bloc.freezed.dart';
 
 @freezed
 class CdsEvent with _$CdsEvent {
-  const factory CdsEvent.socketMessageReceived(Map<String, dynamic> message) = _SocketMessageReceived;
+  const factory CdsEvent.socketMessageReceived(Map<String, dynamic> message) =
+      _SocketMessageReceived;
 }
 
 @freezed
@@ -18,7 +19,8 @@ class CdsState with _$CdsState {
     required double total,
     required double tax,
   }) = _ActiveCart;
-  const factory CdsState.paymentRequest({required String qrData}) = _PaymentRequest;
+  const factory CdsState.paymentRequest({required String qrData}) =
+      _PaymentRequest;
   const factory CdsState.success({required int pointsEarned}) = _Success;
 }
 
@@ -35,7 +37,8 @@ class CdsBloc extends Bloc<CdsEvent, CdsState> {
     });
   }
 
-  void _onSocketMessageReceived(_SocketMessageReceived event, Emitter<CdsState> emit) {
+  void _onSocketMessageReceived(
+      _SocketMessageReceived event, Emitter<CdsState> emit) {
     final msg = event.message;
     final type = msg['event'];
     final data = msg['data'];

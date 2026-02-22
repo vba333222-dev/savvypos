@@ -45,11 +45,11 @@ class _TimeClockPageState extends State<TimeClockPage> {
     try {
       final authBloc = context.read<AuthBloc>();
       final employee = authBloc.state.employee;
-      
+
       if (employee != null) {
         final current = await _repo.getCurrentShift(employee.uuid);
         final activeShifts = await _repo.getActiveShifts();
-        
+
         if (mounted) {
           setState(() {
             _currentShift = current;
@@ -68,7 +68,7 @@ class _TimeClockPageState extends State<TimeClockPage> {
   Future<void> _clockIn() async {
     final authBloc = context.read<AuthBloc>();
     final employee = authBloc.state.employee;
-    
+
     if (employee == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please log in first')),
@@ -82,7 +82,8 @@ class _TimeClockPageState extends State<TimeClockPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Clocked in at ${DateFormat('HH:mm').format(shift.startTime)}'),
+            content: Text(
+                'Clocked in at ${DateFormat('HH:mm').format(shift.startTime)}'),
             backgroundColor: Colors.green,
           ),
         );
@@ -100,7 +101,7 @@ class _TimeClockPageState extends State<TimeClockPage> {
   Future<void> _clockOut() async {
     final authBloc = context.read<AuthBloc>();
     final employee = authBloc.state.employee;
-    
+
     if (employee == null || _currentShift == null) return;
 
     // Show tip declaration dialog (Toast-style Shift Review)
@@ -117,7 +118,8 @@ class _TimeClockPageState extends State<TimeClockPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Clocked out. Total: ${shift.workedHours.toStringAsFixed(1)} hours'),
+            content: Text(
+                'Clocked out. Total: ${shift.workedHours.toStringAsFixed(1)} hours'),
             backgroundColor: Colors.blue,
           ),
         );
@@ -142,7 +144,8 @@ class _TimeClockPageState extends State<TimeClockPage> {
   }
 
   void _openCashDrawer() {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => const CashDrawerPage()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (_) => const CashDrawerPage()));
   }
 
   @override
@@ -167,23 +170,30 @@ class _TimeClockPageState extends State<TimeClockPage> {
                 children: [
                   // Status
                   Text(
-                    _currentShift != null ? 'Currently Clocked In' : 'Not Clocked In',
+                    _currentShift != null
+                        ? 'Currently Clocked In'
+                        : 'Not Clocked In',
                     style: TextStyle(
                       fontSize: 18,
                       color: _currentShift != null ? Colors.green : Colors.grey,
                     ),
                   ),
                   const Gap(16),
-                  
+
                   // Elapsed Time
                   if (_currentShift != null)
                     Text(
                       _formatElapsed(),
-                      style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold, fontFamily: 'monospace'),
-                    ).animate(onPlay: (c) => c.repeat()).shimmer(duration: 2000.ms, color: Colors.green.withValues(alpha: 0.3)),
-                  
+                      style: const TextStyle(
+                          fontSize: 48,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'monospace'),
+                    ).animate(onPlay: (c) => c.repeat()).shimmer(
+                        duration: 2000.ms,
+                        color: Colors.green.withValues(alpha: 0.3)),
+
                   const Gap(32),
-                  
+
                   // Clock Button
                   SizedBox(
                     width: 200,
@@ -192,24 +202,30 @@ class _TimeClockPageState extends State<TimeClockPage> {
                       onPressed: _currentShift != null ? _clockOut : _clockIn,
                       style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
-                        backgroundColor: _currentShift != null ? Colors.red : Colors.green,
+                        backgroundColor:
+                            _currentShift != null ? Colors.red : Colors.green,
                         foregroundColor: Colors.white,
                         elevation: 8,
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(_currentShift != null ? Icons.logout : Icons.login, size: 48),
+                          Icon(
+                              _currentShift != null
+                                  ? Icons.logout
+                                  : Icons.login,
+                              size: 48),
                           const Gap(8),
                           Text(
                             _currentShift != null ? 'Clock Out' : 'Clock In',
-                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
                     ),
                   ).animate().scale(duration: 300.ms, curve: Curves.elasticOut),
-                  
+
                   const Gap(16),
                   if (_currentShift != null)
                     Text(
@@ -220,9 +236,9 @@ class _TimeClockPageState extends State<TimeClockPage> {
               ),
             ),
           ),
-          
+
           const VerticalDivider(width: 1),
-          
+
           // Right: Who's Working (Manager View)
           Expanded(
             flex: 1,
@@ -236,27 +252,39 @@ class _TimeClockPageState extends State<TimeClockPage> {
                     children: [
                       const Icon(Icons.people, size: 20),
                       const Gap(8),
-                      Text('Who\'s Working (${_activeShifts.length})', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                      Text('Who\'s Working (${_activeShifts.length})',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16)),
                     ],
                   ),
                   const Gap(16),
                   const Divider(),
                   Expanded(
                     child: _activeShifts.isEmpty
-                        ? const Center(child: Text('No one clocked in', style: TextStyle(color: Colors.grey)))
+                        ? const Center(
+                            child: Text('No one clocked in',
+                                style: TextStyle(color: Colors.grey)))
                         : ListView.builder(
                             itemCount: _activeShifts.length,
                             itemBuilder: (context, index) {
                               final shift = _activeShifts[index];
-                              final elapsed = DateTime.now().difference(shift.startTime);
+                              final elapsed =
+                                  DateTime.now().difference(shift.startTime);
                               return ListTile(
                                 leading: CircleAvatar(
-                                  backgroundColor: Colors.green.withValues(alpha: 0.2),
-                                  child: Text(shift.employeeName.isNotEmpty ? shift.employeeName[0].toUpperCase() : '?'),
+                                  backgroundColor:
+                                      Colors.green.withValues(alpha: 0.2),
+                                  child: Text(shift.employeeName.isNotEmpty
+                                      ? shift.employeeName[0].toUpperCase()
+                                      : '?'),
                                 ),
                                 title: Text(shift.employeeName),
-                                subtitle: Text('Since ${DateFormat('HH:mm').format(shift.startTime)}'),
-                                trailing: Text('${elapsed.inHours}h ${elapsed.inMinutes % 60}m', style: const TextStyle(fontWeight: FontWeight.bold)),
+                                subtitle: Text(
+                                    'Since ${DateFormat('HH:mm').format(shift.startTime)}'),
+                                trailing: Text(
+                                    '${elapsed.inHours}h ${elapsed.inMinutes % 60}m',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold)),
                               ).animate().fadeIn(delay: (index * 100).ms);
                             },
                           ),
@@ -299,14 +327,15 @@ class _TipDeclarationDialogState extends State<_TipDeclarationDialog> {
   @override
   Widget build(BuildContext context) {
     final elapsed = DateTime.now().difference(widget.shift.startTime);
-    
+
     return AlertDialog(
       title: const Text('Shift Review'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Shift Duration: ${elapsed.inHours}h ${elapsed.inMinutes % 60}m'),
+          Text(
+              'Shift Duration: ${elapsed.inHours}h ${elapsed.inMinutes % 60}m'),
           const Gap(16),
           TextField(
             controller: _controller,

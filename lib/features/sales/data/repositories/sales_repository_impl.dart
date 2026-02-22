@@ -59,29 +59,32 @@ class SalesRepositoryImpl implements ISalesRepository {
   }
 
   @override
-  Future<List<ModifierGroupTableData>> getModifierGroups(String productUuid) async {
+  Future<List<ModifierGroupTableData>> getModifierGroups(
+      String productUuid) async {
     // Join Link Table to get Groups
     final query = _db.select(_db.modifierGroupTable).join([
       innerJoin(
         _db.productModifierLinkTable,
-        _db.productModifierLinkTable.modifierGroupUuid.equalsExp(_db.modifierGroupTable.uuid),
+        _db.productModifierLinkTable.modifierGroupUuid
+            .equalsExp(_db.modifierGroupTable.uuid),
       ),
     ])
       ..where(_db.productModifierLinkTable.productUuid.equals(productUuid));
-      
+
     return query.map((row) => row.readTable(_db.modifierGroupTable)).get();
   }
 
   @override
   Future<List<ModifierItemTableData>> getModifierItems(String groupId) {
-     return (_db.select(_db.modifierItemTable)
-       ..where((t) => t.groupUuid.equals(groupId))
-       ..where((t) => t.isDeleted.equals(false)))
-       .get();
+    return (_db.select(_db.modifierItemTable)
+          ..where((t) => t.groupUuid.equals(groupId))
+          ..where((t) => t.isDeleted.equals(false)))
+        .get();
   }
 
   @override
-  Future<String> createOrder(Cart cart, String? tableUuid, String? customerUuid) async {
+  Future<String> createOrder(
+      Cart cart, String? tableUuid, String? customerUuid) async {
     if (cart.items.isEmpty) throw Exception("Cart is empty");
 
     final orderUuid = _uuid.v4();
@@ -90,39 +93,43 @@ class SalesRepositoryImpl implements ISalesRepository {
     await _db.transaction(() async {
       // 1. Create Order
       await _db.into(_db.orderTable).insert(OrderTableCompanion.insert(
-        uuid: orderUuid,
-        orderNumber: 'ORD-${now.millisecondsSinceEpoch}', // Simple ID gen
-        transactionDate: now,
-        subtotal: cart.subtotal,
-        discountTotal: 0, // Implement discount logic later
-        taxTotal: cart.taxAmount,
-        grandTotal: cart.total,
-        paymentMethod: const Value('PENDING'),
-        status: const Value('PROCESSING'),
-        paymentStatus: const Value('PENDING'),
-        isSynced: const Value(false),
-        customerUuid: Value(customerUuid),
-        isFulfilled: const Value(false),
-      ));
+            uuid: orderUuid,
+            orderNumber: 'ORD-${now.millisecondsSinceEpoch}', // Simple ID gen
+            transactionDate: now,
+            subtotal: cart.subtotal,
+            discountTotal: 0, // Implement discount logic later
+            taxTotal: cart.taxAmount,
+            grandTotal: cart.total,
+            paymentMethod: const Value('PENDING'),
+            status: const Value('PROCESSING'),
+            paymentStatus: const Value('PENDING'),
+            isSynced: const Value(false),
+            customerUuid: Value(customerUuid),
+            isFulfilled: const Value(false),
+          ));
 
       // 2. Create Order Items
       for (final item in cart.items) {
-        await _db.into(_db.orderItemTable).insert(OrderItemTableCompanion.insert(
-          orderUuid: orderUuid,
-          productUuid: item.product.uuid,
-          name: item.product.name,
-          price: item.product.price,
-          quantity: item.quantity.toDouble(),
-          total: item.total,
-          paidQty: const Value(0),
-          modifiersJson: Value(item.modifiers.join(',')),
-        ));
+        await _db
+            .into(_db.orderItemTable)
+            .insert(OrderItemTableCompanion.insert(
+              orderUuid: orderUuid,
+              productUuid: item.product.uuid,
+              name: item.product.name,
+              price: item.product.price,
+              quantity: item.quantity.toDouble(),
+              total: item.total,
+              paidQty: const Value(0),
+              modifiersJson: Value(item.modifiers.join(',')),
+            ));
       }
 
       // 3. Link to Table if provided
       if (tableUuid != null) {
         // Update table to be occupied and linked to this order
-        await (_db.update(_db.restaurantTable)..where((t) => t.uuid.equals(tableUuid))).write(
+        await (_db.update(_db.restaurantTable)
+              ..where((t) => t.uuid.equals(tableUuid)))
+            .write(
           RestaurantTableCompanion(
             isOccupied: const Value(true),
             currentOrderUuid: Value(orderUuid),
@@ -131,7 +138,7 @@ class SalesRepositoryImpl implements ISalesRepository {
         );
       }
     });
-    
+
     return orderUuid;
   }
 }

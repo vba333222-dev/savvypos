@@ -41,7 +41,7 @@ class _LogTerminalWidgetState extends State<LogTerminalWidget> {
       _logs.add(log);
       if (_logs.length > 200) _logs.removeAt(0); // Buffer limit
     });
-    
+
     if (_autoScroll && _scrollController.hasClients) {
       // Scroll to bottom
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -53,7 +53,13 @@ class _LogTerminalWidgetState extends State<LogTerminalWidget> {
   LogEntry _generateMockLog() {
     final now = DateTime.now();
     final types = ['INFO', 'DEBUG', 'WARN', 'ERROR', 'NET'];
-    final tags = ['AuthBloc', 'PrinterService', 'SyncWorker', 'Database', 'Dio'];
+    final tags = [
+      'AuthBloc',
+      'PrinterService',
+      'SyncWorker',
+      'Database',
+      'Dio'
+    ];
     final msgs = [
       'User session refreshed',
       'Heartbeat sent to server',
@@ -62,7 +68,7 @@ class _LogTerminalWidgetState extends State<LogTerminalWidget> {
       'GET /api/v1/health 200 OK',
       'Scanning for peripherals...',
     ];
-    
+
     final type = types[now.microsecond % types.length];
     Color color = Colors.greenAccent;
     if (type == 'WARN') color = Colors.orangeAccent;
@@ -70,9 +76,9 @@ class _LogTerminalWidgetState extends State<LogTerminalWidget> {
     if (type == 'NET') color = Colors.lightBlueAccent;
 
     return LogEntry(
-      now, 
-      type, 
-      tags[now.microsecond % tags.length], 
+      now,
+      type,
+      tags[now.microsecond % tags.length],
       msgs[now.microsecond % msgs.length],
       color: color,
     );
@@ -87,7 +93,6 @@ class _LogTerminalWidgetState extends State<LogTerminalWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       color: Colors.black,
       child: Column(
@@ -100,32 +105,42 @@ class _LogTerminalWidgetState extends State<LogTerminalWidget> {
               children: [
                 const Icon(Icons.terminal, color: Colors.green, size: 16),
                 const SizedBox(width: 8),
-                const Text("SYS.LOG_STREAM", style: TextStyle(color: Colors.green, fontFamily: 'monospace', fontSize: 12)),
+                const Text("SYS.LOG_STREAM",
+                    style: TextStyle(
+                        color: Colors.green,
+                        fontFamily: 'monospace',
+                        fontSize: 12)),
                 const Spacer(),
                 IconButton(
-                  icon: Icon(_autoScroll ? Icons.arrow_downward : Icons.pause, color: Colors.white70, size: 16),
+                  icon: Icon(_autoScroll ? Icons.arrow_downward : Icons.pause,
+                      color: Colors.white70, size: 16),
                   onPressed: () => setState(() => _autoScroll = !_autoScroll),
                   tooltip: 'Auto Scroll',
                 ),
                 IconButton(
-                  icon: const Icon(Icons.delete_outline, color: Colors.white70, size: 16),
+                  icon: const Icon(Icons.delete_outline,
+                      color: Colors.white70, size: 16),
                   onPressed: () => setState(() => _logs.clear()),
                   tooltip: 'Clear',
                 ),
                 IconButton(
-                  icon: const Icon(Icons.share, color: Colors.white70, size: 16),
+                  icon:
+                      const Icon(Icons.share, color: Colors.white70, size: 16),
                   onPressed: () {
                     // Clipboard
-                    final text = _logs.map((l) => "${l.timestamp} [${l.level}] ${l.message}").join("\n");
+                    final text = _logs
+                        .map((l) => "${l.timestamp} [${l.level}] ${l.message}")
+                        .join("\n");
                     Clipboard.setData(ClipboardData(text: text));
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Logs copied to clipboard")));
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Logs copied to clipboard")));
                   },
                   tooltip: 'Copy All',
                 ),
               ],
             ),
           ),
-          
+
           // Log List
           Expanded(
             child: ListView.builder(
@@ -138,12 +153,23 @@ class _LogTerminalWidgetState extends State<LogTerminalWidget> {
                   padding: const EdgeInsets.symmetric(vertical: 2),
                   child: RichText(
                     text: TextSpan(
-                      style: const TextStyle(fontFamily: 'monospace', fontSize: 11),
+                      style: const TextStyle(
+                          fontFamily: 'monospace', fontSize: 11),
                       children: [
-                        TextSpan(text: "${DateFormat('HH:mm:ss').format(log.timestamp)} ", style: TextStyle(color: Colors.grey[600])),
-                        TextSpan(text: "[${log.level}] ", style: TextStyle(color: log.color, fontWeight: FontWeight.bold)),
-                        TextSpan(text: "${log.tag}: ", style: const TextStyle(color: Colors.white60)),
-                        TextSpan(text: log.message, style: TextStyle(color: Colors.grey[300])),
+                        TextSpan(
+                            text:
+                                "${DateFormat('HH:mm:ss').format(log.timestamp)} ",
+                            style: TextStyle(color: Colors.grey[600])),
+                        TextSpan(
+                            text: "[${log.level}] ",
+                            style: TextStyle(
+                                color: log.color, fontWeight: FontWeight.bold)),
+                        TextSpan(
+                            text: "${log.tag}: ",
+                            style: const TextStyle(color: Colors.white60)),
+                        TextSpan(
+                            text: log.message,
+                            style: TextStyle(color: Colors.grey[300])),
                       ],
                     ),
                   ),

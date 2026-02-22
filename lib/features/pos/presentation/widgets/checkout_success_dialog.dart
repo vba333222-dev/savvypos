@@ -29,22 +29,19 @@ Future<List<int>> _generateReceiptIsolate(Map<String, dynamic> args) async {
 }
 
 class CheckoutSuccessDialog extends StatefulWidget {
-  final dynamic order; 
+  final dynamic order;
   final List<CartItem> items;
   final VoidCallback onNewOrder;
 
-  const CheckoutSuccessDialog({
-    super.key, 
-    this.order, 
-    required this.items, 
-    required this.onNewOrder
-  });
+  const CheckoutSuccessDialog(
+      {super.key, this.order, required this.items, required this.onNewOrder});
 
   @override
   State<CheckoutSuccessDialog> createState() => _CheckoutSuccessDialogState();
 }
 
-class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with TickerProviderStateMixin {
+class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog>
+    with TickerProviderStateMixin {
   // State for E-Receipt Flow
   bool _isAddingWhatsapp = false;
   String _whatsappNumber = '';
@@ -55,7 +52,7 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with Tick
   double _rotation = 0.0;
 
   bool _isTearing = false;
-  
+
   // Animation Controller for "Printing" Entrance
   late AnimationController _printController;
   late Animation<double> _printAnimation; // Translation Y: -Height -> 0
@@ -63,18 +60,17 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with Tick
   @override
   void initState() {
     super.initState();
-    
+
     // Setup Print Animation
-    _printController = AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
-    _printAnimation = Tween<double>(begin: -600, end: 0).animate(CurvedAnimation(
-      parent: _printController, 
-      curve: Curves.easeOutQuart
-    ));
+    _printController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 800));
+    _printAnimation = Tween<double>(begin: -600, end: 0).animate(
+        CurvedAnimation(parent: _printController, curve: Curves.easeOutQuart));
 
     // Start Printing after frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
-       _printController.forward();
-       _playPrintingHaptics();
+      _printController.forward();
+      _playPrintingHaptics();
     });
   }
 
@@ -87,9 +83,9 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with Tick
   void _playPrintingHaptics() async {
     // Simulate "Chug chug chug" of printer
     for (int i = 0; i < 6; i++) {
-       if (!mounted) break;
-       await Future.delayed(80.ms);
-       HapticFeedback.selectionClick();
+      if (!mounted) break;
+      await Future.delayed(80.ms);
+      HapticFeedback.selectionClick();
     }
     // Final "Cut" click
     if (mounted) HapticFeedback.mediumImpact();
@@ -97,14 +93,13 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with Tick
 
   void _onPanUpdate(DragUpdateDetails details) {
     if (_isTearing) return;
-    
-    setState(() {
 
+    setState(() {
       _dragOffset += details.delta;
-      
+
       // Swing Logic: Rotate based on X drag relative to top center anchor
       // Simple approximation: X / 1000 radians
-      _rotation = (_dragOffset.dx / 600).clamp(-0.4, 0.4); 
+      _rotation = (_dragOffset.dx / 600).clamp(-0.4, 0.4);
     });
   }
 
@@ -113,20 +108,20 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with Tick
 
     // Check Threshold for Tear (Downwards)
     if (_dragOffset.dy > 150) {
-       _tearOff();
+      _tearOff();
     } else {
-       // Snap Back
-       setState(() {
-         _dragOffset = Offset.zero;
-         _rotation = 0.0;
-       });
+      // Snap Back
+      setState(() {
+        _dragOffset = Offset.zero;
+        _rotation = 0.0;
+      });
     }
   }
 
   void _tearOff() {
     setState(() => _isTearing = true);
     HapticFeedback.heavyImpact(); // Rrrrrip!
-    
+
     // Complete the dismissal
     Future.delayed(300.ms, () {
       widget.onNewOrder();
@@ -139,14 +134,14 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with Tick
     final double total = widget.items.fold(0, (sum, item) => sum + item.total);
     final double subtotal = total / 1.1; // Approx
     final double tax = total - subtotal;
-    
+
     return Scaffold(
       backgroundColor: Colors.black54,
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 400),
         switchInCurve: Curves.easeInOut,
         switchOutCurve: Curves.easeInOut,
-        child: _isAddingWhatsapp 
+        child: _isAddingWhatsapp
             ? _buildWhatsappView(context)
             : _buildReceiptView(total, subtotal, tax),
       ),
@@ -158,113 +153,116 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with Tick
       key: const ValueKey('receipt'),
       alignment: Alignment.topCenter,
       children: [
-          // 1. RECEIPT SLOT (Visual Shadow/Hole)
-           Positioned(
-             top: -20,
-             left: 0, right: 0,
-             height: 40,
-             child: Container(
-               decoration: BoxDecoration(
-                 boxShadow: [BoxShadow(color: Colors.black87, blurRadius: 30, spreadRadius: 5)],
-               ),
-             ),
-           ),
+        // 1. RECEIPT SLOT (Visual Shadow/Hole)
+        Positioned(
+          top: -20,
+          left: 0,
+          right: 0,
+          height: 40,
+          child: Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black87, blurRadius: 30, spreadRadius: 5)
+              ],
+            ),
+          ),
+        ),
 
-           // 2. THE RECEIPT (Interactive)
-           AnimatedBuilder(
-             animation: _printController,
-             builder: (context, child) {
-               // Combine Print Animation (Y Translation) + Drag Physics (Offset + Rotation)
-               double yPos = _printAnimation.value;
-               
-               // If tearing, accelerate down
-               if (_isTearing) {
-                  yPos += 800; // Drop off screen
-               } else {
-                  yPos += _dragOffset.dy;
-               }
+        // 2. THE RECEIPT (Interactive)
+        AnimatedBuilder(
+          animation: _printController,
+          builder: (context, child) {
+            // Combine Print Animation (Y Translation) + Drag Physics (Offset + Rotation)
+            double yPos = _printAnimation.value;
 
-               return Transform.translate(
-                 offset: Offset(_dragOffset.dx, yPos),
-                 child: Transform.rotate(
-                   angle: _rotation,
-                   alignment: Alignment.topCenter,
-                   child: GestureDetector(
-                     onPanUpdate: _onPanUpdate,
-                     onPanEnd: _onPanEnd,
-                     child: AnimatedOpacity(
-                       opacity: _isTearing ? 0.0 : 1.0,
-                       duration: 300.ms,
-                       child: Container(
-                         margin: const EdgeInsets.only(top: 60), // Init position below slot
-                         decoration: BoxDecoration(
-                           boxShadow: [
-                             BoxShadow(
-                               color: Colors.black26, 
-                               blurRadius: 15, 
-                               offset: Offset(_dragOffset.dx * 0.1, 10 + _dragOffset.dy * 0.1)
-                             )
-                           ],
-                         ),
-                         child: DigitalReceiptWidget(
-                           items: widget.items,
-                           total: total,
-                           subtotal: subtotal,
-                           tax: tax,
-                           discount: 0,
-                           change: 12.50, // Mock
-                           orderNumber: widget.order?.orderNumber ?? 'ORD-001',
-                           date: widget.order?.createdAt ?? DateTime.now(),
-                         ),
-                       ),
-                     ),
-                   ),
-                 ),
-               );
-             },
-           ),
+            // If tearing, accelerate down
+            if (_isTearing) {
+              yPos += 800; // Drop off screen
+            } else {
+              yPos += _dragOffset.dy;
+            }
 
-           // 3. ACTION BUTTONS (Appear after print)
-            Positioned(
-             bottom: 40,
-             left: 20, right: 20,
-             child: FadeTransition(
-               opacity: _printController, // Fade in with print
-               child: Row(
-                 mainAxisAlignment: MainAxisAlignment.center,
-                 children: [
-                    _ActionButton(
-                      icon: Icons.print, 
-                      label: 'Cetak Kertas', 
-                      onTap: () {
-                         HapticFeedback.selectionClick();
-                         // Implementation for physical print
-                      }
+            return Transform.translate(
+              offset: Offset(_dragOffset.dx, yPos),
+              child: Transform.rotate(
+                angle: _rotation,
+                alignment: Alignment.topCenter,
+                child: GestureDetector(
+                  onPanUpdate: _onPanUpdate,
+                  onPanEnd: _onPanEnd,
+                  child: AnimatedOpacity(
+                    opacity: _isTearing ? 0.0 : 1.0,
+                    duration: 300.ms,
+                    child: Container(
+                      margin: const EdgeInsets.only(
+                          top: 60), // Init position below slot
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 15,
+                              offset: Offset(_dragOffset.dx * 0.1,
+                                  10 + _dragOffset.dy * 0.1))
+                        ],
+                      ),
+                      child: DigitalReceiptWidget(
+                        items: widget.items,
+                        total: total,
+                        subtotal: subtotal,
+                        tax: tax,
+                        discount: 0,
+                        change: 12.50, // Mock
+                        orderNumber: widget.order?.orderNumber ?? 'ORD-001',
+                        date: widget.order?.createdAt ?? DateTime.now(),
+                      ),
                     ),
-                    const SizedBox(width: 24),
-                    _ActionButton(
-                      icon: Icons.chat_bubble_outline, 
-                      label: 'WhatsApp', 
-                      onTap: () {
-                         HapticFeedback.selectionClick();
-                         setState(() => _isAddingWhatsapp = true);
-                      }
-                    ),
-                    const SizedBox(width: 24),
-                    _ActionButton(
-                      icon: Icons.check, 
-                      label: 'Selesai', 
-                      isPrimary: true,
-                      onTap: () {
-                         widget.onNewOrder();
-                      }
-                    ),
-                 ],
-               ),
-             ),
-           ),
-        ],
-      );
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+
+        // 3. ACTION BUTTONS (Appear after print)
+        Positioned(
+          bottom: 40,
+          left: 20,
+          right: 20,
+          child: FadeTransition(
+            opacity: _printController, // Fade in with print
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _ActionButton(
+                    icon: Icons.print,
+                    label: 'Cetak Kertas',
+                    onTap: () {
+                      HapticFeedback.selectionClick();
+                      // Implementation for physical print
+                    }),
+                const SizedBox(width: 24),
+                _ActionButton(
+                    icon: Icons.chat_bubble_outline,
+                    label: 'WhatsApp',
+                    onTap: () {
+                      HapticFeedback.selectionClick();
+                      setState(() => _isAddingWhatsapp = true);
+                    }),
+                const SizedBox(width: 24),
+                _ActionButton(
+                    icon: Icons.check,
+                    label: 'Selesai',
+                    isPrimary: true,
+                    onTap: () {
+                      widget.onNewOrder();
+                    }),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _buildWhatsappView(BuildContext context) {
@@ -282,7 +280,8 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with Tick
           children: [
             const SavvyText.h2('Kirim E-Receipt'),
             const SizedBox(height: 8),
-            SavvyText.body('Masukkan nomor WhatsApp pelanggan', color: context.savvy.colors.textSecondary),
+            SavvyText.body('Masukkan nomor WhatsApp pelanggan',
+                color: context.savvy.colors.textSecondary),
             const SizedBox(height: 32),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -297,7 +296,9 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with Tick
                   const SavvyText.h1('+62 ', color: Colors.grey),
                   SavvyText.h1(
                     _whatsappNumber.isEmpty ? '000 0000 0000' : _whatsappNumber,
-                    color: _whatsappNumber.isEmpty ? Colors.grey : context.savvy.colors.textPrimary,
+                    color: _whatsappNumber.isEmpty
+                        ? Colors.grey
+                        : context.savvy.colors.textPrimary,
                   ),
                 ],
               ),
@@ -312,7 +313,8 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with Tick
                 },
                 onBackspace: () {
                   if (_whatsappNumber.isNotEmpty) {
-                    setState(() => _whatsappNumber = _whatsappNumber.substring(0, _whatsappNumber.length - 1));
+                    setState(() => _whatsappNumber = _whatsappNumber.substring(
+                        0, _whatsappNumber.length - 1));
                   }
                 },
                 onClear: () => setState(() => _whatsappNumber = ''),
@@ -323,7 +325,9 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with Tick
               children: [
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: _isSending ? null : () => setState(() => _isAddingWhatsapp = false),
+                    onPressed: _isSending
+                        ? null
+                        : () => setState(() => _isAddingWhatsapp = false),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 20),
                     ),
@@ -333,13 +337,22 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with Tick
                 const SizedBox(width: 16),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: (_isSending || _whatsappNumber.length < 8) ? null : _sendEReceipt,
+                    onPressed: (_isSending || _whatsappNumber.length < 8)
+                        ? null
+                        : _sendEReceipt,
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 20),
                     ),
-                    child: _isSending 
-                        ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                        : const Text('Kirim PDF', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+                    child: _isSending
+                        ? const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                                color: Colors.white, strokeWidth: 2))
+                        : const Text('Kirim PDF',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white)),
                   ),
                 ),
               ],
@@ -352,58 +365,70 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog> with Tick
 
   void _sendEReceipt() async {
     setState(() => _isSending = true);
-    
+
     try {
-      final double total = widget.items.fold(0, (sum, item) => sum + item.total);
-      final double subtotal = total / 1.1; 
+      final double total =
+          widget.items.fold(0, (sum, item) => sum + item.total);
+      final double subtotal = total / 1.1;
       final double tax = total - subtotal;
-      
+
       // 1. Generate PDF in Background Isolate
       // ignore: unused_local_variable
       final pdfBytes = await compute(_generateReceiptIsolate, {
         'storeName': 'Savvy Bistro',
         'orderNumber': widget.order?.orderNumber ?? 'ORD-001',
         'date': widget.order?.createdAt ?? DateTime.now(),
-        'items': widget.items.map((i) => {'name': i.product.name, 'qty': i.quantity, 'price': i.product.price, 'total': i.total}).toList(),
+        'items': widget.items
+            .map((i) => {
+                  'name': i.product.name,
+                  'qty': i.quantity,
+                  'price': i.product.price,
+                  'total': i.total
+                })
+            .toList(),
         'subtotal': subtotal,
         'discount': 0.0,
         'tax': tax,
         'total': total,
         'paymentMethod': 'Digital QR',
       });
-      
+
       // 2. Mock API Gateway Transmission logic
-      await Future.delayed(const Duration(seconds: 1)); // Sending bits to WA API...
-      
+      await Future.delayed(
+          const Duration(seconds: 1)); // Sending bits to WA API...
+
       // 3. CRM Capture
       final crmRepo = GetIt.I<ICustomerRepository>();
       final existingCusts = await crmRepo.searchCustomers(_whatsappNumber);
-      
+
       if (existingCusts.isEmpty) {
-         // Auto-Create Profile for Marketing
-         final newCustomer = Customer(
-            uuid: const Uuid().v4(),
-            name: 'Guest-$_whatsappNumber',
-            phone: _whatsappNumber,
-            email: '',
-            totalPoints: 0,
-            lastVisitAt: DateTime.now(),
-         );
-         await crmRepo.saveCustomer(newCustomer);
+        // Auto-Create Profile for Marketing
+        final newCustomer = Customer(
+          uuid: const Uuid().v4(),
+          name: 'Guest-$_whatsappNumber',
+          phone: _whatsappNumber,
+          email: '',
+          totalPoints: 0,
+          lastVisitAt: DateTime.now(),
+        );
+        await crmRepo.saveCustomer(newCustomer);
       }
-      
+
       HapticFeedback.heavyImpact();
       if (mounted) {
-         ScaffoldMessenger.of(context).showSnackBar(
-           const SnackBar(content: Text('E-Receipt terkirim & Kontak tersimpan di CRM!'), backgroundColor: Colors.green),
-         );
-         setState(() => _isSending = false);
-         widget.onNewOrder();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('E-Receipt terkirim & Kontak tersimpan di CRM!'),
+              backgroundColor: Colors.green),
+        );
+        setState(() => _isSending = false);
+        widget.onNewOrder();
       }
     } catch (e) {
       if (mounted) {
-         setState(() => _isSending = false);
-         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+        setState(() => _isSending = false);
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     }
   }
@@ -416,8 +441,8 @@ class _ActionButton extends StatelessWidget {
   final bool isPrimary;
 
   const _ActionButton({
-    required this.icon, 
-    required this.label, 
+    required this.icon,
+    required this.label,
     required this.onTap,
     this.isPrimary = false,
   });

@@ -12,7 +12,8 @@ class ModifierManagePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => GetIt.I<MenuManagementBloc>()..add(const MenuManagementEvent.loadAllModifiers()),
+      create: (context) => GetIt.I<MenuManagementBloc>()
+        ..add(const MenuManagementEvent.loadAllModifiers()),
       child: const _ModifierManageView(),
     );
   }
@@ -24,7 +25,7 @@ class _ModifierManageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     return Scaffold(
       backgroundColor: theme.colors.bgPrimary,
       appBar: AppBar(
@@ -38,11 +39,15 @@ class _ModifierManageView extends StatelessWidget {
       ),
       body: BlocBuilder<MenuManagementBloc, MenuManagementState>(
         builder: (context, state) {
-          if (state.isLoading) return const Center(child: CircularProgressIndicator());
-          if (state.errorMessage != null) return Center(child: Text('Error: ${state.errorMessage}'));
-          
+          if (state.isLoading)
+            return const Center(child: CircularProgressIndicator());
+          if (state.errorMessage != null)
+            return Center(child: Text('Error: ${state.errorMessage}'));
+
           if (state.allModifierGroups.isEmpty) {
-            return const Center(child: Text('No modifier groups found. Create one like "Steak Temp" or "Sides".'));
+            return const Center(
+                child: Text(
+                    'No modifier groups found. Create one like "Steak Temp" or "Sides".'));
           }
 
           return ListView.builder(
@@ -52,10 +57,10 @@ class _ModifierManageView extends StatelessWidget {
               final group = state.allModifierGroups[index];
               return Card(
                 child: ListTile(
-                  title: Text(group.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  title: Text(group.name,
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text(
-                    '${group.items.length} options | ${group.allowMultiSelect ? "Multi-select" : "Single-select"} | Min: ${group.minSelection}, Max: ${group.maxSelection ?? "∞"}'
-                  ),
+                      '${group.items.length} options | ${group.allowMultiSelect ? "Multi-select" : "Single-select"} | Min: ${group.minSelection}, Max: ${group.maxSelection ?? "∞"}'),
                   trailing: const Icon(Icons.edit),
                   onTap: () => _showEditDialog(context, group),
                 ),
@@ -75,7 +80,7 @@ class _ModifierManageView extends StatelessWidget {
         child: _ModifierGroupDialog(group: group),
       ),
     ).then((_) {
-       // Refresh handled by Bloc logic if needed or auto-refresh
+      // Refresh handled by Bloc logic if needed or auto-refresh
     });
   }
 }
@@ -93,17 +98,19 @@ class _ModifierGroupDialogState extends State<_ModifierGroupDialog> {
   late TextEditingController _minCtrl;
   late TextEditingController _maxCtrl;
   bool _multiSelect = false;
-  
+
   List<ModifierItem> _items = [];
 
   @override
   void initState() {
     super.initState();
     _nameCtrl = TextEditingController(text: widget.group?.name ?? '');
-    _minCtrl = TextEditingController(text: widget.group?.minSelection.toString() ?? '0');
-    _maxCtrl = TextEditingController(text: widget.group?.maxSelection?.toString() ?? '');
+    _minCtrl = TextEditingController(
+        text: widget.group?.minSelection.toString() ?? '0');
+    _maxCtrl = TextEditingController(
+        text: widget.group?.maxSelection?.toString() ?? '');
     _multiSelect = widget.group?.allowMultiSelect ?? false;
-    
+
     if (widget.group != null) {
       _items = List.from(widget.group!.items);
     } else {
@@ -113,7 +120,8 @@ class _ModifierGroupDialogState extends State<_ModifierGroupDialog> {
 
   void _addItem() {
     setState(() {
-      _items.add(ModifierItem(uuid: const Uuid().v4(), name: '', priceDelta: 0));
+      _items
+          .add(ModifierItem(uuid: const Uuid().v4(), name: '', priceDelta: 0));
     });
   }
 
@@ -122,7 +130,7 @@ class _ModifierGroupDialogState extends State<_ModifierGroupDialog> {
       _items[index] = _items[index].copyWith(name: name, priceDelta: price);
     });
   }
-  
+
   void _removeItem(int index) {
     setState(() {
       _items.removeAt(index);
@@ -141,33 +149,51 @@ class _ModifierGroupDialogState extends State<_ModifierGroupDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Basic Info
-              TextField(controller: _nameCtrl, decoration: const InputDecoration(labelText: 'Group Name (e.g. Steak Temp)')),
+              TextField(
+                  controller: _nameCtrl,
+                  decoration: const InputDecoration(
+                      labelText: 'Group Name (e.g. Steak Temp)')),
               const SizedBox(height: 16),
               Row(
                 children: [
-                  Expanded(child: CheckboxListTile(
+                  Expanded(
+                      child: CheckboxListTile(
                     title: const Text('Multi-select?'),
-                    value: _multiSelect, 
+                    value: _multiSelect,
                     onChanged: (v) => setState(() => _multiSelect = v!),
                     controlAffinity: ListTileControlAffinity.leading,
                     contentPadding: EdgeInsets.zero,
                   )),
-                  Expanded(child: TextField(controller: _minCtrl, decoration: const InputDecoration(labelText: 'Min Selection'), keyboardType: TextInputType.number)),
+                  Expanded(
+                      child: TextField(
+                          controller: _minCtrl,
+                          decoration:
+                              const InputDecoration(labelText: 'Min Selection'),
+                          keyboardType: TextInputType.number)),
                   const SizedBox(width: 16),
-                  Expanded(child: TextField(controller: _maxCtrl, decoration: const InputDecoration(labelText: 'Max Selection'), keyboardType: TextInputType.number)),
+                  Expanded(
+                      child: TextField(
+                          controller: _maxCtrl,
+                          decoration:
+                              const InputDecoration(labelText: 'Max Selection'),
+                          keyboardType: TextInputType.number)),
                 ],
               ),
               const Divider(height: 32),
-              
+
               // Items
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Options', style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextButton.icon(onPressed: _addItem, icon: const Icon(Icons.add), label: const Text('Add Option')),
+                  const Text('Options',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  TextButton.icon(
+                      onPressed: _addItem,
+                      icon: const Icon(Icons.add),
+                      label: const Text('Add Option')),
                 ],
               ),
-              
+
               ..._items.asMap().entries.map((entry) {
                 final i = entry.key;
                 final item = entry.value;
@@ -179,7 +205,8 @@ class _ModifierGroupDialogState extends State<_ModifierGroupDialog> {
                         flex: 2,
                         child: TextFormField(
                           initialValue: item.name,
-                          decoration: const InputDecoration(labelText: 'Name', isDense: true),
+                          decoration: const InputDecoration(
+                              labelText: 'Name', isDense: true),
                           onChanged: (v) => _updateItem(i, v, item.priceDelta),
                         ),
                       ),
@@ -188,12 +215,18 @@ class _ModifierGroupDialogState extends State<_ModifierGroupDialog> {
                         flex: 1,
                         child: TextFormField(
                           initialValue: item.priceDelta.toString(),
-                          decoration: const InputDecoration(labelText: 'Price (+/-)', isDense: true, prefixText: '\$'),
+                          decoration: const InputDecoration(
+                              labelText: 'Price (+/-)',
+                              isDense: true,
+                              prefixText: '\$'),
                           keyboardType: TextInputType.number,
-                          onChanged: (v) => _updateItem(i, item.name, double.tryParse(v) ?? 0),
+                          onChanged: (v) => _updateItem(
+                              i, item.name, double.tryParse(v) ?? 0),
                         ),
                       ),
-                      IconButton(onPressed: () => _removeItem(i), icon: const Icon(Icons.delete, color: Colors.grey)),
+                      IconButton(
+                          onPressed: () => _removeItem(i),
+                          icon: const Icon(Icons.delete, color: Colors.grey)),
                     ],
                   ),
                 );
@@ -203,17 +236,21 @@ class _ModifierGroupDialogState extends State<_ModifierGroupDialog> {
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+        TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel')),
         ElevatedButton(
           onPressed: () {
-            context.read<MenuManagementBloc>().add(MenuManagementEvent.saveModifierGroup(
-              _nameCtrl.text,
-              _multiSelect,
-              int.tryParse(_minCtrl.text) ?? 0,
-              int.tryParse(_maxCtrl.text),
-              _items,
-              uuid: widget.group?.uuid,
-            ));
+            context
+                .read<MenuManagementBloc>()
+                .add(MenuManagementEvent.saveModifierGroup(
+                  _nameCtrl.text,
+                  _multiSelect,
+                  int.tryParse(_minCtrl.text) ?? 0,
+                  int.tryParse(_maxCtrl.text),
+                  _items,
+                  uuid: widget.group?.uuid,
+                ));
             Navigator.pop(context);
           },
           child: const Text('Save Group'),

@@ -11,7 +11,7 @@ class SplitBillDialog extends StatefulWidget {
   final String orderNumber;
   final List<SplitBillItem> orderItems;
   final Function(SplitBill) onSplitCreated;
-  
+
   const SplitBillDialog({
     super.key,
     required this.orderTotal,
@@ -29,21 +29,19 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
   SplitMode _selectedMode = SplitMode.equal;
   int _guestCount = 2;
   final Map<int, double> _customAmounts = {};
-  
+
   List<double> get _equalSplits {
     if (_guestCount <= 0) return [];
     final base = (widget.orderTotal / _guestCount * 100).floor() / 100;
     final remainder = widget.orderTotal - (base * _guestCount);
     return List.generate(_guestCount, (i) => i == 0 ? base + remainder : base);
   }
-  
-
 
   @override
   Widget build(BuildContext context) {
     final colors = context.savvy.colors;
     final shapes = context.savvy.shapes;
-    
+
     return Dialog(
       backgroundColor: colors.bgElevated,
       shape: RoundedRectangleBorder(
@@ -57,7 +55,7 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
           children: [
             // Header
             _buildHeader(colors, shapes),
-            
+
             // Content
             Flexible(
               child: SingleChildScrollView(
@@ -67,40 +65,44 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
                   children: [
                     // Split mode selector
                     _buildModeSelector(colors, shapes),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // Guest count selector
                     _buildGuestCounter(colors, shapes),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // Split preview
                     _buildSplitPreview(colors, shapes),
                   ],
                 ),
               ),
             ),
-            
+
             // Footer
             _buildFooter(colors, shapes),
           ],
         ),
       ),
-    )
-    .animate()
-    .fadeIn(duration: 200.ms)
-    .scale(begin: const Offset(0.95, 0.95), duration: 200.ms, curve: Curves.easeOutQuad);
+    ).animate().fadeIn(duration: 200.ms).scale(
+        begin: const Offset(0.95, 0.95),
+        duration: 200.ms,
+        curve: Curves.easeOutQuad);
   }
-  
+
   Widget _buildHeader(SavvyColors colors, SavvyShapes shapes) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [colors.brandPrimary, colors.brandPrimary.withValues(alpha: 0.8)],
+          colors: [
+            colors.brandPrimary,
+            colors.brandPrimary.withValues(alpha: 0.8)
+          ],
         ),
-        borderRadius: BorderRadius.vertical(top: Radius.circular(shapes.radiusLg)),
+        borderRadius:
+            BorderRadius.vertical(top: Radius.circular(shapes.radiusLg)),
       ),
       child: Row(
         children: [
@@ -136,14 +138,14 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
       ),
     );
   }
-  
+
   Widget _buildModeSelector(SavvyColors colors, SavvyShapes shapes) {
     final modes = [
       (SplitMode.equal, 'Equal Split', Icons.pie_chart),
       (SplitMode.byItem, 'By Item', Icons.list_alt),
       (SplitMode.custom, 'Custom', Icons.edit),
     ];
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -173,27 +175,36 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
                     decoration: BoxDecoration(
                       gradient: isSelected
                           ? LinearGradient(
-                              colors: [colors.brandPrimary, colors.brandPrimary.withValues(alpha: 0.8)],
+                              colors: [
+                                colors.brandPrimary,
+                                colors.brandPrimary.withValues(alpha: 0.8)
+                              ],
                             )
                           : null,
                       color: isSelected ? null : colors.bgPrimary,
                       borderRadius: BorderRadius.circular(shapes.radiusMd),
                       border: Border.all(
-                        color: isSelected ? colors.brandPrimary : colors.borderDefault,
+                        color: isSelected
+                            ? colors.brandPrimary
+                            : colors.borderDefault,
                       ),
                     ),
                     child: Column(
                       children: [
                         Icon(
                           m.$3,
-                          color: isSelected ? colors.textInverse : colors.textSecondary,
+                          color: isSelected
+                              ? colors.textInverse
+                              : colors.textSecondary,
                           size: 22,
                         ),
                         const SizedBox(height: 6),
                         Text(
                           m.$2,
                           style: TextStyle(
-                            color: isSelected ? colors.textInverse : colors.textPrimary,
+                            color: isSelected
+                                ? colors.textInverse
+                                : colors.textPrimary,
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),
@@ -209,7 +220,7 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
       ],
     );
   }
-  
+
   Widget _buildGuestCounter(SavvyColors colors, SavvyShapes shapes) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -231,9 +242,9 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
                 fontWeight: FontWeight.w700,
               ),
             )
-            .animate(key: ValueKey(_guestCount))
-            .scale(begin: const Offset(1.2, 1.2), duration: 150.ms)
-            .fadeIn(duration: 150.ms),
+                .animate(key: ValueKey(_guestCount))
+                .scale(begin: const Offset(1.2, 1.2), duration: 150.ms)
+                .fadeIn(duration: 150.ms),
             Text(
               'Guests',
               style: TextStyle(
@@ -253,7 +264,7 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
       ],
     );
   }
-  
+
   Widget _buildCounterButton({
     required IconData icon,
     required VoidCallback? onTap,
@@ -261,7 +272,7 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
     required SavvyShapes shapes,
   }) {
     final isEnabled = onTap != null;
-    
+
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -272,7 +283,11 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
           color: isEnabled ? colors.brandPrimary : colors.bgPrimary,
           borderRadius: BorderRadius.circular(shapes.radiusMd),
           boxShadow: isEnabled
-              ? [BoxShadow(color: colors.brandPrimary.withValues(alpha: 0.3), blurRadius: 12)]
+              ? [
+                  BoxShadow(
+                      color: colors.brandPrimary.withValues(alpha: 0.3),
+                      blurRadius: 12)
+                ]
               : null,
         ),
         child: Icon(
@@ -283,10 +298,10 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
       ),
     );
   }
-  
+
   Widget _buildSplitPreview(SavvyColors colors, SavvyShapes shapes) {
     final splits = _equalSplits;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -307,9 +322,12 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
           ),
           child: Column(
             children: List.generate(_guestCount, (i) {
-              final amount = splits.isNotEmpty ? splits[i] : widget.orderTotal / _guestCount;
+              final amount = splits.isNotEmpty
+                  ? splits[i]
+                  : widget.orderTotal / _guestCount;
               return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
                   border: i < _guestCount - 1
                       ? Border(bottom: BorderSide(color: colors.borderDefault))
@@ -319,7 +337,8 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
                   children: [
                     CircleAvatar(
                       radius: 18,
-                      backgroundColor: colors.brandPrimary.withValues(alpha: 0.15),
+                      backgroundColor:
+                          colors.brandPrimary.withValues(alpha: 0.15),
                       child: Text(
                         '${i + 1}',
                         style: TextStyle(
@@ -348,22 +367,23 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
                   ],
                 ),
               )
-              .animate(delay: (i * 50).ms)
-              .fadeIn(duration: 200.ms)
-              .slideX(begin: 0.1, end: 0);
+                  .animate(delay: (i * 50).ms)
+                  .fadeIn(duration: 200.ms)
+                  .slideX(begin: 0.1, end: 0);
             }),
           ),
         ),
       ],
     );
   }
-  
+
   Widget _buildFooter(SavvyColors colors, SavvyShapes shapes) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: colors.bgPrimary,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(shapes.radiusLg)),
+        borderRadius:
+            BorderRadius.vertical(bottom: Radius.circular(shapes.radiusLg)),
         border: Border(top: BorderSide(color: colors.borderDefault)),
       ),
       child: Row(
@@ -410,16 +430,16 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
       ),
     );
   }
-  
+
   void _createSplit() {
     HapticFeedback.mediumImpact();
-    
+
     final now = DateTime.now();
     final guestBills = List.generate(_guestCount, (i) {
       final amount = _selectedMode == SplitMode.custom
           ? (_customAmounts[i + 1] ?? 0)
           : _equalSplits[i];
-      
+
       return GuestBill(
         uuid: 'guest_${i + 1}_${now.millisecondsSinceEpoch}',
         splitBillUuid: '',
@@ -427,7 +447,7 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
         totalAmount: amount,
       );
     });
-    
+
     final splitBill = SplitBill(
       uuid: 'split_${now.millisecondsSinceEpoch}',
       orderUuid: widget.orderUuid,
@@ -440,7 +460,7 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
       createdByName: 'Staff',
       createdAt: now,
     );
-    
+
     widget.onSplitCreated(splitBill);
     Navigator.of(context).pop();
   }

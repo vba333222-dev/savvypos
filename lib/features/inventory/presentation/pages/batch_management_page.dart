@@ -15,7 +15,8 @@ class BatchManagementPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => GetIt.I<AdvancedInventoryBloc>()..add(const AdvancedInventoryEvent.loadBatches()),
+      create: (_) => GetIt.I<AdvancedInventoryBloc>()
+        ..add(const AdvancedInventoryEvent.loadBatches()),
       child: const _BatchManagementContent(),
     );
   }
@@ -25,7 +26,8 @@ class _BatchManagementContent extends StatefulWidget {
   const _BatchManagementContent();
 
   @override
-  State<_BatchManagementContent> createState() => _BatchManagementContentState();
+  State<_BatchManagementContent> createState() =>
+      _BatchManagementContentState();
 }
 
 class _BatchManagementContentState extends State<_BatchManagementContent> {
@@ -51,15 +53,18 @@ class _BatchManagementContentState extends State<_BatchManagementContent> {
           IconButton(
             icon: Icon(
               Icons.timer,
-              color: _showExpiringOnly ? Colors.orange : theme.colors.textSecondary,
+              color: _showExpiringOnly
+                  ? Colors.orange
+                  : theme.colors.textSecondary,
             ),
             tooltip: 'Show expiring only',
             onPressed: () {
               HapticFeedback.selectionClick();
               setState(() => _showExpiringOnly = !_showExpiringOnly);
               context.read<AdvancedInventoryBloc>().add(
-                AdvancedInventoryEvent.loadBatches(expiringOnly: _showExpiringOnly),
-              );
+                    AdvancedInventoryEvent.loadBatches(
+                        expiringOnly: _showExpiringOnly),
+                  );
             },
           ),
           IconButton(
@@ -67,8 +72,9 @@ class _BatchManagementContentState extends State<_BatchManagementContent> {
             onPressed: () {
               HapticFeedback.mediumImpact();
               context.read<AdvancedInventoryBloc>().add(
-                AdvancedInventoryEvent.loadBatches(expiringOnly: _showExpiringOnly),
-              );
+                    AdvancedInventoryEvent.loadBatches(
+                        expiringOnly: _showExpiringOnly),
+                  );
             },
           ),
         ],
@@ -84,13 +90,18 @@ class _BatchManagementContentState extends State<_BatchManagementContent> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.layers, size: 64, color: theme.colors.textSecondary),
+                  Icon(Icons.layers,
+                      size: 64, color: theme.colors.textSecondary),
                   const SizedBox(height: 16),
-                  Text('No batches found', style: TextStyle(color: theme.colors.textSecondary)),
+                  Text('No batches found',
+                      style: TextStyle(color: theme.colors.textSecondary)),
                   const SizedBox(height: 8),
                   Text(
-                    _showExpiringOnly ? 'No items expiring soon' : 'Batches will appear here when goods are received',
-                    style: TextStyle(fontSize: 12, color: theme.colors.textSecondary),
+                    _showExpiringOnly
+                        ? 'No items expiring soon'
+                        : 'Batches will appear here when goods are received',
+                    style: TextStyle(
+                        fontSize: 12, color: theme.colors.textSecondary),
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -104,11 +115,12 @@ class _BatchManagementContentState extends State<_BatchManagementContent> {
           final active = <Batch>[];
 
           for (final batch in state.batches) {
-            if (batch.status == BatchStatus.expired || 
-                (batch.expiryDate != null && batch.expiryDate!.isBefore(DateTime.now()))) {
+            if (batch.status == BatchStatus.expired ||
+                (batch.expiryDate != null &&
+                    batch.expiryDate!.isBefore(DateTime.now()))) {
               expired.add(batch);
-            } else if (batch.expiryDate != null && 
-                       batch.expiryDate!.difference(DateTime.now()).inDays <= 7) {
+            } else if (batch.expiryDate != null &&
+                batch.expiryDate!.difference(DateTime.now()).inDays <= 7) {
               expiringSoon.add(batch);
             } else {
               active.add(batch);
@@ -150,7 +162,10 @@ class _BatchManagementContentState extends State<_BatchManagementContent> {
                         ),
                       ),
                     ],
-                  ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.1, end: 0),
+                  )
+                      .animate()
+                      .fadeIn(duration: 300.ms)
+                      .slideY(begin: 0.1, end: 0),
                 ),
               ),
 
@@ -171,7 +186,8 @@ class _BatchManagementContentState extends State<_BatchManagementContent> {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 4),
                       child: _BatchCard(batch: expired[index])
                           .animate()
                           .fadeIn(duration: 200.ms, delay: (index * 30).ms),
@@ -198,7 +214,8 @@ class _BatchManagementContentState extends State<_BatchManagementContent> {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 4),
                       child: _BatchCard(batch: expiringSoon[index])
                           .animate()
                           .fadeIn(duration: 200.ms, delay: (index * 30).ms),
@@ -225,7 +242,8 @@ class _BatchManagementContentState extends State<_BatchManagementContent> {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 4),
                       child: _BatchCard(batch: active[index])
                           .animate()
                           .fadeIn(duration: 200.ms, delay: (index * 30).ms),
@@ -299,12 +317,12 @@ class _BatchCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     // Calculate days until expiry
     int? daysUntilExpiry;
     Color expiryColor = Colors.green;
     String expiryText = 'No expiry';
-    
+
     if (batch.expiryDate != null) {
       daysUntilExpiry = batch.expiryDate!.difference(DateTime.now()).inDays;
       if (daysUntilExpiry < 0) {
@@ -327,8 +345,10 @@ class _BatchCard extends StatelessWidget {
       }
     }
 
-    final usagePercent = batch.initialQuantity > 0 
-        ? ((batch.initialQuantity - batch.currentQuantity) / batch.initialQuantity * 100)
+    final usagePercent = batch.initialQuantity > 0
+        ? ((batch.initialQuantity - batch.currentQuantity) /
+            batch.initialQuantity *
+            100)
         : 0.0;
 
     return Container(
@@ -360,7 +380,7 @@ class _BatchCard extends StatelessWidget {
                       child: Icon(Icons.layers, color: expiryColor, size: 24),
                     ),
                     const SizedBox(width: 12),
-                    
+
                     // Batch Info
                     Expanded(
                       child: Column(
@@ -379,18 +399,24 @@ class _BatchCard extends StatelessWidget {
                             children: [
                               Text(
                                 'Batch: ${batch.batchNumber}',
-                                style: TextStyle(fontSize: 12, color: theme.colors.textSecondary),
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: theme.colors.textSecondary),
                               ),
                               const SizedBox(width: 8),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 2),
                                 decoration: BoxDecoration(
                                   color: expiryColor.withValues(alpha: 0.15),
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: Text(
                                   expiryText,
-                                  style: TextStyle(fontSize: 10, color: expiryColor, fontWeight: FontWeight.w600),
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      color: expiryColor,
+                                      fontWeight: FontWeight.w600),
                                 ),
                               ),
                             ],
@@ -398,7 +424,7 @@ class _BatchCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    
+
                     // Quantity
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -413,7 +439,8 @@ class _BatchCard extends StatelessWidget {
                         ),
                         Text(
                           'of ${batch.initialQuantity.toStringAsFixed(0)}',
-                          style: TextStyle(fontSize: 11, color: theme.colors.textSecondary),
+                          style: TextStyle(
+                              fontSize: 11, color: theme.colors.textSecondary),
                         ),
                       ],
                     ),
@@ -431,11 +458,13 @@ class _BatchCard extends StatelessWidget {
                       children: [
                         Text(
                           '${usagePercent.toStringAsFixed(0)}% used',
-                          style: TextStyle(fontSize: 11, color: theme.colors.textSecondary),
+                          style: TextStyle(
+                              fontSize: 11, color: theme.colors.textSecondary),
                         ),
                         Text(
                           'Received ${DateFormat('MMM d').format(batch.receivedAt)}',
-                          style: TextStyle(fontSize: 11, color: theme.colors.textSecondary),
+                          style: TextStyle(
+                              fontSize: 11, color: theme.colors.textSecondary),
                         ),
                       ],
                     ),
@@ -447,9 +476,11 @@ class _BatchCard extends StatelessWidget {
                         minHeight: 6,
                         backgroundColor: theme.colors.border,
                         valueColor: AlwaysStoppedAnimation(
-                          usagePercent > 80 ? Colors.green 
-                              : usagePercent > 50 ? Colors.blue 
-                              : Colors.orange,
+                          usagePercent > 80
+                              ? Colors.green
+                              : usagePercent > 50
+                                  ? Colors.blue
+                                  : Colors.orange,
                         ),
                       ),
                     ),
@@ -470,7 +501,9 @@ class _BatchCard extends StatelessWidget {
                         label: const Text('Mark Used'),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: theme.colors.brandPrimary,
-                          side: BorderSide(color: theme.colors.brandPrimary.withValues(alpha: 0.5)),
+                          side: BorderSide(
+                              color: theme.colors.brandPrimary
+                                  .withValues(alpha: 0.5)),
                         ),
                       ),
                     ),
@@ -481,10 +514,13 @@ class _BatchCard extends StatelessWidget {
                           HapticFeedback.mediumImpact();
                           // Report waste
                         },
-                        icon: Icon(Icons.delete_outline, size: 18, color: Colors.red),
-                        label: Text('Report Waste', style: TextStyle(color: Colors.red)),
+                        icon: Icon(Icons.delete_outline,
+                            size: 18, color: Colors.red),
+                        label: Text('Report Waste',
+                            style: TextStyle(color: Colors.red)),
                         style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: Colors.red.withValues(alpha: 0.5)),
+                          side: BorderSide(
+                              color: Colors.red.withValues(alpha: 0.5)),
                         ),
                       ),
                     ),

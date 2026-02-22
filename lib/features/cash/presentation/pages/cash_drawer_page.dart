@@ -19,7 +19,7 @@ class CashDrawerPage extends StatefulWidget {
 class _CashDrawerPageState extends State<CashDrawerPage> {
   final _repo = GetIt.I<ICashDrawerRepository>();
   final _shiftRepo = GetIt.I<IShiftRepository>();
-  
+
   CashDrawer? _currentDrawer;
   // ignore: unused_field - Will be used for summary display in future enhancement
   CashDrawerSummary? _summary;
@@ -38,7 +38,7 @@ class _CashDrawerPageState extends State<CashDrawerPage> {
     try {
       final authBloc = context.read<AuthBloc>();
       final employee = authBloc.state.employee;
-      
+
       if (employee != null) {
         final shift = await _shiftRepo.getCurrentShift(employee.uuid);
         if (shift != null) {
@@ -47,7 +47,7 @@ class _CashDrawerPageState extends State<CashDrawerPage> {
           if (drawer != null) {
             final summary = await _repo.getDrawerSummary(drawer.id);
             final events = await _repo.getDrawerEvents(drawer.id);
-            
+
             if (mounted) {
               setState(() {
                 _currentDrawer = drawer;
@@ -69,7 +69,9 @@ class _CashDrawerPageState extends State<CashDrawerPage> {
     final employee = authBloc.state.employee;
     if (employee == null || _currentShiftUuid == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please clock in first'), backgroundColor: Colors.orange),
+        const SnackBar(
+            content: Text('Please clock in first'),
+            backgroundColor: Colors.orange),
       );
       return;
     }
@@ -77,7 +79,8 @@ class _CashDrawerPageState extends State<CashDrawerPage> {
     final amount = await _showAmountDialog('Starting Balance');
     if (amount == null) return;
 
-    final drawer = await _repo.openDrawer(_currentShiftUuid!, employee.uuid, employee.name, amount);
+    final drawer = await _repo.openDrawer(
+        _currentShiftUuid!, employee.uuid, employee.name, amount);
     setState(() => _currentDrawer = drawer);
     _loadData();
   }
@@ -88,7 +91,8 @@ class _CashDrawerPageState extends State<CashDrawerPage> {
     final result = await _showEventDialog(title, type);
     if (result == null) return;
 
-    await _repo.recordEvent(_currentDrawer!.id, type, result.$1, result.$2, comment: result.$3);
+    await _repo.recordEvent(_currentDrawer!.id, type, result.$1, result.$2,
+        comment: result.$3);
     _loadData();
   }
 
@@ -99,7 +103,7 @@ class _CashDrawerPageState extends State<CashDrawerPage> {
     if (amount == null) return;
 
     final drawer = await _repo.closeDrawer(_currentDrawer!.id, amount);
-    
+
     if (mounted) {
       _showReconciliationResult(drawer);
     }
@@ -115,13 +119,19 @@ class _CashDrawerPageState extends State<CashDrawerPage> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _ResultRow(label: 'Expected', value: '\$${drawer.expectedBalance.toStringAsFixed(2)}'),
-            _ResultRow(label: 'Actual', value: '\$${drawer.closingBalance?.toStringAsFixed(2) ?? '0'}'),
+            _ResultRow(
+                label: 'Expected',
+                value: '\$${drawer.expectedBalance.toStringAsFixed(2)}'),
+            _ResultRow(
+                label: 'Actual',
+                value: '\$${drawer.closingBalance?.toStringAsFixed(2) ?? '0'}'),
             const Divider(),
             _ResultRow(
-              label: 'Variance', 
+              label: 'Variance',
               value: '\$${drawer.variance?.toStringAsFixed(2) ?? '0'}',
-              valueColor: drawer.hasVariance ? (drawer.isOverage ? Colors.green : Colors.red) : null,
+              valueColor: drawer.hasVariance
+                  ? (drawer.isOverage ? Colors.green : Colors.red)
+                  : null,
             ),
             if (drawer.hasVariance) ...[
               const Gap(8),
@@ -136,7 +146,8 @@ class _CashDrawerPageState extends State<CashDrawerPage> {
           ],
         ),
         actions: [
-          ElevatedButton(onPressed: () => Navigator.pop(context), child: const Text('OK')),
+          ElevatedButton(
+              onPressed: () => Navigator.pop(context), child: const Text('OK')),
         ],
       ),
     );
@@ -158,7 +169,9 @@ class _CashDrawerPageState extends State<CashDrawerPage> {
           autofocus: true,
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel')),
           ElevatedButton(
             onPressed: () {
               final amount = double.tryParse(controller.text);
@@ -171,12 +184,17 @@ class _CashDrawerPageState extends State<CashDrawerPage> {
     );
   }
 
-  Future<(double, String, String?)?> _showEventDialog(String title, CashEventType type) async {
+  Future<(double, String, String?)?> _showEventDialog(
+      String title, CashEventType type) async {
     final amountController = TextEditingController();
     final commentController = TextEditingController();
-    String selectedReason = type == CashEventType.cashIn ? 'Change' : 
-                           type == CashEventType.cashOut ? 'Tip Out' : 
-                           type == CashEventType.cashDrop ? 'Bank Deposit' : 'Other';
+    String selectedReason = type == CashEventType.cashIn
+        ? 'Change'
+        : type == CashEventType.cashOut
+            ? 'Tip Out'
+            : type == CashEventType.cashDrop
+                ? 'Bank Deposit'
+                : 'Other';
 
     return showDialog<(double, String, String?)>(
       context: context,
@@ -187,33 +205,48 @@ class _CashDrawerPageState extends State<CashDrawerPage> {
           children: [
             TextField(
               controller: amountController,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              decoration: const InputDecoration(labelText: 'Amount', prefixText: '\$ ', border: OutlineInputBorder()),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              decoration: const InputDecoration(
+                  labelText: 'Amount',
+                  prefixText: '\$ ',
+                  border: OutlineInputBorder()),
             ),
             const Gap(12),
             DropdownButtonFormField<String>(
               initialValue: selectedReason,
-              decoration: const InputDecoration(labelText: 'Reason', border: OutlineInputBorder()),
-              items: (type == CashEventType.cashIn 
-                ? ['Change', 'Other'] 
-                : type == CashEventType.cashOut 
-                  ? ['Tip Out', 'Payout', 'Other'] 
-                  : ['Bank Deposit', 'Safe Drop']).map((r) => DropdownMenuItem(value: r, child: Text(r))).toList(),
+              decoration: const InputDecoration(
+                  labelText: 'Reason', border: OutlineInputBorder()),
+              items: (type == CashEventType.cashIn
+                      ? ['Change', 'Other']
+                      : type == CashEventType.cashOut
+                          ? ['Tip Out', 'Payout', 'Other']
+                          : ['Bank Deposit', 'Safe Drop'])
+                  .map((r) => DropdownMenuItem(value: r, child: Text(r)))
+                  .toList(),
               onChanged: (v) => selectedReason = v ?? selectedReason,
             ),
             const Gap(12),
             TextField(
               controller: commentController,
-              decoration: const InputDecoration(labelText: 'Comment (Optional)', border: OutlineInputBorder()),
+              decoration: const InputDecoration(
+                  labelText: 'Comment (Optional)',
+                  border: OutlineInputBorder()),
             ),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel')),
           ElevatedButton(
             onPressed: () {
               final amount = double.tryParse(amountController.text) ?? 0;
-              Navigator.pop(context, (amount, selectedReason, commentController.text.isEmpty ? null : commentController.text));
+              Navigator.pop(context, (
+                amount,
+                selectedReason,
+                commentController.text.isEmpty ? null : commentController.text
+              ));
             },
             child: const Text('Submit'),
           ),
@@ -248,13 +281,16 @@ class _CashDrawerPageState extends State<CashDrawerPage> {
         children: [
           const Icon(Icons.point_of_sale, size: 80, color: Colors.grey),
           const Gap(16),
-          const Text('No drawer open', style: TextStyle(fontSize: 18, color: Colors.grey)),
+          const Text('No drawer open',
+              style: TextStyle(fontSize: 18, color: Colors.grey)),
           const Gap(24),
           ElevatedButton.icon(
             onPressed: _openDrawer,
             icon: const Icon(Icons.add),
             label: const Text('Open Drawer'),
-            style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16)),
+            style: ElevatedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 16)),
           ),
         ],
       ).animate().fadeIn(),
@@ -287,31 +323,58 @@ class _CashDrawerPageState extends State<CashDrawerPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Current Balance', style: TextStyle(color: Colors.white70)),
+                      const Text('Current Balance',
+                          style: TextStyle(color: Colors.white70)),
                       const Gap(8),
-                      Text(currFmt.format(_currentDrawer!.currentBalance), style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.white)),
+                      Text(currFmt.format(_currentDrawer!.currentBalance),
+                          style: const TextStyle(
+                              fontSize: 36,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white)),
                       const Gap(8),
-                      Text('Expected: ${currFmt.format(_currentDrawer!.expectedBalance)}', style: const TextStyle(color: Colors.white54)),
+                      Text(
+                          'Expected: ${currFmt.format(_currentDrawer!.expectedBalance)}',
+                          style: const TextStyle(color: Colors.white54)),
                     ],
                   ),
                 ).animate().scale(duration: 300.ms),
-                
+
                 const Gap(24),
-                
+
                 // Quick Actions Grid
                 Wrap(
                   spacing: 12,
                   runSpacing: 12,
                   children: [
-                    _ActionButton(icon: Icons.add, label: 'Cash In', color: Colors.green, onTap: () => _recordEvent(CashEventType.cashIn, 'Cash In')),
-                    _ActionButton(icon: Icons.remove, label: 'Cash Out', color: Colors.orange, onTap: () => _recordEvent(CashEventType.cashOut, 'Cash Out')),
-                    _ActionButton(icon: Icons.savings, label: 'Cash Drop', color: Colors.blue, onTap: () => _recordEvent(CashEventType.cashDrop, 'Cash Drop to Safe')),
-                    _ActionButton(icon: Icons.receipt_long, label: 'No Sale', color: Colors.grey, onTap: () => _recordEvent(CashEventType.noSale, 'No Sale')),
+                    _ActionButton(
+                        icon: Icons.add,
+                        label: 'Cash In',
+                        color: Colors.green,
+                        onTap: () =>
+                            _recordEvent(CashEventType.cashIn, 'Cash In')),
+                    _ActionButton(
+                        icon: Icons.remove,
+                        label: 'Cash Out',
+                        color: Colors.orange,
+                        onTap: () =>
+                            _recordEvent(CashEventType.cashOut, 'Cash Out')),
+                    _ActionButton(
+                        icon: Icons.savings,
+                        label: 'Cash Drop',
+                        color: Colors.blue,
+                        onTap: () => _recordEvent(
+                            CashEventType.cashDrop, 'Cash Drop to Safe')),
+                    _ActionButton(
+                        icon: Icons.receipt_long,
+                        label: 'No Sale',
+                        color: Colors.grey,
+                        onTap: () =>
+                            _recordEvent(CashEventType.noSale, 'No Sale')),
                   ],
                 ),
-                
+
                 const Spacer(),
-                
+
                 // Close Drawer Button
                 SizedBox(
                   width: double.infinity,
@@ -330,9 +393,9 @@ class _CashDrawerPageState extends State<CashDrawerPage> {
             ),
           ),
         ),
-        
+
         const VerticalDivider(width: 1),
-        
+
         // Right: Activity Log
         Expanded(
           flex: 1,
@@ -342,25 +405,34 @@ class _CashDrawerPageState extends State<CashDrawerPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Activity Log', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                const Text('Activity Log',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 const Gap(12),
                 Expanded(
                   child: _events.isEmpty
-                      ? const Center(child: Text('No activity yet', style: TextStyle(color: Colors.grey)))
+                      ? const Center(
+                          child: Text('No activity yet',
+                              style: TextStyle(color: Colors.grey)))
                       : ListView.builder(
                           itemCount: _events.length,
                           itemBuilder: (context, index) {
                             final e = _events[index];
                             return ListTile(
                               dense: true,
-                              leading: Icon(_getEventIcon(e.type), size: 20, color: _getEventColor(e.type)),
+                              leading: Icon(_getEventIcon(e.type),
+                                  size: 20, color: _getEventColor(e.type)),
                               title: Text('${e.type.name} - ${e.reason}'),
-                              subtitle: Text(DateFormat('HH:mm').format(e.timestamp)),
+                              subtitle:
+                                  Text(DateFormat('HH:mm').format(e.timestamp)),
                               trailing: Text(
                                 '${e.type == CashEventType.cashIn || e.type == CashEventType.sale ? '+' : '-'}\$${e.amount.toStringAsFixed(2)}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: e.type == CashEventType.cashIn || e.type == CashEventType.sale ? Colors.green : Colors.red,
+                                  color: e.type == CashEventType.cashIn ||
+                                          e.type == CashEventType.sale
+                                      ? Colors.green
+                                      : Colors.red,
                                 ),
                               ),
                             );
@@ -377,12 +449,18 @@ class _CashDrawerPageState extends State<CashDrawerPage> {
 
   IconData _getEventIcon(CashEventType type) {
     switch (type) {
-      case CashEventType.cashIn: return Icons.add_circle;
-      case CashEventType.cashOut: return Icons.remove_circle;
-      case CashEventType.cashDrop: return Icons.savings;
-      case CashEventType.noSale: return Icons.receipt_long;
-      case CashEventType.sale: return Icons.attach_money;
-      case CashEventType.refund: return Icons.undo;
+      case CashEventType.cashIn:
+        return Icons.add_circle;
+      case CashEventType.cashOut:
+        return Icons.remove_circle;
+      case CashEventType.cashDrop:
+        return Icons.savings;
+      case CashEventType.noSale:
+        return Icons.receipt_long;
+      case CashEventType.sale:
+        return Icons.attach_money;
+      case CashEventType.refund:
+        return Icons.undo;
     }
   }
 
@@ -408,7 +486,11 @@ class _ActionButton extends StatelessWidget {
   final Color color;
   final VoidCallback onTap;
 
-  const _ActionButton({required this.icon, required this.label, required this.color, required this.onTap});
+  const _ActionButton(
+      {required this.icon,
+      required this.label,
+      required this.color,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -427,7 +509,8 @@ class _ActionButton extends StatelessWidget {
           children: [
             Icon(icon, color: color, size: 28),
             const Gap(8),
-            Text(label, style: TextStyle(color: color, fontWeight: FontWeight.w600)),
+            Text(label,
+                style: TextStyle(color: color, fontWeight: FontWeight.w600)),
           ],
         ),
       ),
@@ -450,7 +533,8 @@ class _ResultRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label),
-          Text(value, style: TextStyle(fontWeight: FontWeight.bold, color: valueColor)),
+          Text(value,
+              style: TextStyle(fontWeight: FontWeight.bold, color: valueColor)),
         ],
       ),
     );

@@ -4,9 +4,9 @@ part 'loyalty_entities.freezed.dart';
 part 'loyalty_entities.g.dart';
 
 enum LoyaltyTier {
-  bronze,   // 0-99 points
-  silver,   // 100-499 points
-  gold,     // 500-999 points
+  bronze, // 0-99 points
+  silver, // 100-499 points
+  gold, // 500-999 points
   platinum, // 1000+ points
 }
 
@@ -18,10 +18,13 @@ class LoyaltyConfig with _$LoyaltyConfig {
     @Default(50) int signupBonus, // Points for new registration
     @Default(100) int birthdayBonus, // Birthday reward points
     @Default(100) int redeemThreshold, // Minimum points to redeem
-    @Default(10.0) double redeemValue, // Dollar value when reaching threshold ($10 off for 100 pts)
+    @Default(10.0)
+    double
+        redeemValue, // Dollar value when reaching threshold ($10 off for 100 pts)
   }) = _LoyaltyConfig;
 
-  factory LoyaltyConfig.fromJson(Map<String, dynamic> json) => _$LoyaltyConfigFromJson(json);
+  factory LoyaltyConfig.fromJson(Map<String, dynamic> json) =>
+      _$LoyaltyConfigFromJson(json);
 }
 
 @freezed
@@ -38,13 +41,15 @@ class LoyaltyMember with _$LoyaltyMember {
     DateTime? birthday,
   }) = _LoyaltyMember;
 
-  factory LoyaltyMember.fromJson(Map<String, dynamic> json) => _$LoyaltyMemberFromJson(json);
+  factory LoyaltyMember.fromJson(Map<String, dynamic> json) =>
+      _$LoyaltyMemberFromJson(json);
 }
 
 extension LoyaltyMemberX on LoyaltyMember {
   /// Check if member can redeem (>= threshold)
-  bool canRedeem(LoyaltyConfig config) => currentPoints >= config.redeemThreshold;
-  
+  bool canRedeem(LoyaltyConfig config) =>
+      currentPoints >= config.redeemThreshold;
+
   /// Get redemption value in dollars
   double getRedeemValue(LoyaltyConfig config) {
     if (!canRedeem(config)) return 0;
@@ -54,10 +59,14 @@ extension LoyaltyMemberX on LoyaltyMember {
   /// Points needed for next tier
   int get pointsToNextTier {
     switch (tier) {
-      case LoyaltyTier.bronze: return 100 - lifetimePoints;
-      case LoyaltyTier.silver: return 500 - lifetimePoints;
-      case LoyaltyTier.gold: return 1000 - lifetimePoints;
-      case LoyaltyTier.platinum: return 0; // Already max
+      case LoyaltyTier.bronze:
+        return 100 - lifetimePoints;
+      case LoyaltyTier.silver:
+        return 500 - lifetimePoints;
+      case LoyaltyTier.gold:
+        return 1000 - lifetimePoints;
+      case LoyaltyTier.platinum:
+        return 0; // Already max
     }
   }
 }
@@ -73,7 +82,8 @@ class LoyaltyTransaction with _$LoyaltyTransaction {
     String? orderUuid, // Link to order if purchase-related
   }) = _LoyaltyTransaction;
 
-  factory LoyaltyTransaction.fromJson(Map<String, dynamic> json) => _$LoyaltyTransactionFromJson(json);
+  factory LoyaltyTransaction.fromJson(Map<String, dynamic> json) =>
+      _$LoyaltyTransactionFromJson(json);
 }
 
 @freezed
@@ -88,5 +98,6 @@ class LoyaltyReward with _$LoyaltyReward {
     @Default(true) bool isActive,
   }) = _LoyaltyReward;
 
-  factory LoyaltyReward.fromJson(Map<String, dynamic> json) => _$LoyaltyRewardFromJson(json);
+  factory LoyaltyReward.fromJson(Map<String, dynamic> json) =>
+      _$LoyaltyRewardFromJson(json);
 }

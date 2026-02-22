@@ -21,7 +21,8 @@ class FeatureTourOverlay extends StatelessWidget {
     required String title,
     required String description,
   }) {
-    final RenderBox? renderBox = targetKey.currentContext?.findRenderObject() as RenderBox?;
+    final RenderBox? renderBox =
+        targetKey.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox == null) return;
 
     final offset = renderBox.localToGlobal(Offset.zero);
@@ -32,7 +33,7 @@ class FeatureTourOverlay extends StatelessWidget {
       context: context,
       barrierColor: Colors.black.withValues(alpha: 0.8),
       barrierDismissible: true,
-      useSafeArea: false, 
+      useSafeArea: false,
       builder: (_) => FeatureTourOverlay(
         targetRect: rect,
         title: title,
@@ -48,17 +49,17 @@ class FeatureTourOverlay extends StatelessWidget {
 
     return Stack(
       children: [
-        // Cutout Painter (Hole in the dark overlay) comes from barrierColor primarily, 
-        // but to make a "hole", we actually need a CustomPainter full screen. 
+        // Cutout Painter (Hole in the dark overlay) comes from barrierColor primarily,
+        // but to make a "hole", we actually need a CustomPainter full screen.
         // Since showDialog provides barrier, we can't easily punch a hole in it.
         // Alternative: transparent barrier and CustomPaint full screen.
         Positioned.fill(
-           child: GestureDetector(
-             onTap: onDismiss,
-             child: CustomPaint(
-               painter: _SpotlightPainter(targetRect),
-             ),
-           ),
+          child: GestureDetector(
+            onTap: onDismiss,
+            child: CustomPaint(
+              painter: _SpotlightPainter(targetRect),
+            ),
+          ),
         ),
 
         // Description Card (positioned below or above target)
@@ -78,16 +79,16 @@ class FeatureTourOverlay extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                  Text(title,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 18)),
                   const SizedBox(height: 8),
                   Text(description, style: const TextStyle(fontSize: 14)),
                   const SizedBox(height: 16),
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: onDismiss, 
-                      child: const Text("Got it")
-                    ),
+                        onPressed: onDismiss, child: const Text("Got it")),
                   )
                 ],
               ),
@@ -120,8 +121,10 @@ class _SpotlightPainter extends CustomPainter {
       ..color = Colors.white
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
-      
-    canvas.drawRRect(RRect.fromRectAndRadius(target.inflate(4), const Radius.circular(12)), borderPaint);
+
+    canvas.drawRRect(
+        RRect.fromRectAndRadius(target.inflate(4), const Radius.circular(12)),
+        borderPaint);
   }
 
   @override

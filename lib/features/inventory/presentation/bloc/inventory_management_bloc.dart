@@ -20,12 +20,20 @@ part 'inventory_management_bloc.freezed.dart';
 
 @freezed
 class InventoryManagementEvent with _$InventoryManagementEvent {
-  const factory InventoryManagementEvent.addProduct(Product product, File? imageFile, {List<String>? modifierGroupUuids}) = _AddProduct;
-  const factory InventoryManagementEvent.updateProduct(Product product, File? imageFile, {List<String>? modifierGroupUuids}) = _UpdateProduct;
-  const factory InventoryManagementEvent.deleteProduct(String uuid) = _DeleteProduct;
-  const factory InventoryManagementEvent.updateStock(String uuid, int delta) = _UpdateStock;
-  const factory InventoryManagementEvent.watchInventory(String warehouseId) = _WatchInventory;
-  const factory InventoryManagementEvent.inventoryUpdated(List<ProductStock> inventory) = _InventoryUpdated;
+  const factory InventoryManagementEvent.addProduct(
+      Product product, File? imageFile,
+      {List<String>? modifierGroupUuids}) = _AddProduct;
+  const factory InventoryManagementEvent.updateProduct(
+      Product product, File? imageFile,
+      {List<String>? modifierGroupUuids}) = _UpdateProduct;
+  const factory InventoryManagementEvent.deleteProduct(String uuid) =
+      _DeleteProduct;
+  const factory InventoryManagementEvent.updateStock(String uuid, int delta) =
+      _UpdateStock;
+  const factory InventoryManagementEvent.watchInventory(String warehouseId) =
+      _WatchInventory;
+  const factory InventoryManagementEvent.inventoryUpdated(
+      List<ProductStock> inventory) = _InventoryUpdated;
   const factory InventoryManagementEvent.stockTransferRequested({
     required String sourceWarehouseId,
     required String targetWarehouseId,
@@ -37,8 +45,10 @@ class InventoryManagementEvent with _$InventoryManagementEvent {
     required String warehouseUuid,
     required List<Map<String, dynamic>> items,
   }) = _ReceiveGoods;
-  const factory InventoryManagementEvent.fetchIncomingTransfers() = _FetchIncomingTransfers;
-  const factory InventoryManagementEvent.receiveStockTransfer(String transferUuid) = _ReceiveStockTransfer;
+  const factory InventoryManagementEvent.fetchIncomingTransfers() =
+      _FetchIncomingTransfers;
+  const factory InventoryManagementEvent.receiveStockTransfer(
+      String transferUuid) = _ReceiveStockTransfer;
 }
 
 @freezed
@@ -46,13 +56,16 @@ class InventoryManagementState with _$InventoryManagementState {
   const factory InventoryManagementState.initial() = _Initial;
   const factory InventoryManagementState.loading() = _Loading;
   const factory InventoryManagementState.success() = _Success;
-  const factory InventoryManagementState.loaded(List<ProductStock> inventory) = _Loaded;
-  const factory InventoryManagementState.incomingTransfersLoaded(List<StockTransfer> transfers) = _IncomingTransfersLoaded;
+  const factory InventoryManagementState.loaded(List<ProductStock> inventory) =
+      _Loaded;
+  const factory InventoryManagementState.incomingTransfersLoaded(
+      List<StockTransfer> transfers) = _IncomingTransfersLoaded;
   const factory InventoryManagementState.error(String message) = _Error;
 }
 
 @injectable
-class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryManagementState> {
+class InventoryManagementBloc
+    extends Bloc<InventoryManagementEvent, InventoryManagementState> {
   final IProductRepository _repository;
   final AuthBloc _authBloc;
   final ExecuteStockTransfer _executeStockTransfer;
@@ -60,11 +73,18 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
   final ReceiveStockTransfer _receiveStockTransfer;
   final GetIncomingTransfers _getIncomingTransfers;
   final Uuid _uuid = const Uuid();
-  
+
   StreamSubscription? _authSubscription;
   StreamSubscription? _inventorySubscription;
 
-  InventoryManagementBloc(this._repository, this._authBloc, this._executeStockTransfer, this._receiveGoods, this._receiveStockTransfer, this._getIncomingTransfers) : super(const InventoryManagementState.initial()) {
+  InventoryManagementBloc(
+      this._repository,
+      this._authBloc,
+      this._executeStockTransfer,
+      this._receiveGoods,
+      this._receiveStockTransfer,
+      this._getIncomingTransfers)
+      : super(const InventoryManagementState.initial()) {
     on<_AddProduct>(_onAddProduct);
     on<_UpdateProduct>(_onUpdateProduct);
     on<_DeleteProduct>(_onDeleteProduct);
@@ -78,14 +98,16 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
 
     // React to Auth Changes
     _authSubscription = _authBloc.stream.listen((authState) {
-       if (authState.activeWarehouseId != null) {
-         add(InventoryManagementEvent.watchInventory(authState.activeWarehouseId!));
-       }
+      if (authState.activeWarehouseId != null) {
+        add(InventoryManagementEvent.watchInventory(
+            authState.activeWarehouseId!));
+      }
     });
 
     // Initial Load
     if (_authBloc.state.activeWarehouseId != null) {
-       add(InventoryManagementEvent.watchInventory(_authBloc.state.activeWarehouseId!));
+      add(InventoryManagementEvent.watchInventory(
+          _authBloc.state.activeWarehouseId!));
     }
   }
 
@@ -95,8 +117,9 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
     _inventorySubscription?.cancel();
     return super.close();
   }
-  
-  Future<void> _onStockTransferRequested(_StockTransferRequested event, Emitter<InventoryManagementState> emit) async {
+
+  Future<void> _onStockTransferRequested(_StockTransferRequested event,
+      Emitter<InventoryManagementState> emit) async {
     emit(const InventoryManagementState.loading());
     try {
       await _executeStockTransfer(
@@ -109,24 +132,27 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
       // Wait a tick for streams to update
       await Future.delayed(const Duration(milliseconds: 300));
       emit(const InventoryManagementState.success());
-      
-      // Return to loaded state shortly after to show list again if needed, 
+
+      // Return to loaded state shortly after to show list again if needed,
       // but UI likely pops or refreshes.
     } catch (e) {
       emit(InventoryManagementState.error(e.toString()));
     }
   }
 
-  Future<void> _onWatchInventory(_WatchInventory event, Emitter<InventoryManagementState> emit) async {
-     emit(const InventoryManagementState.loading());
-     await _inventorySubscription?.cancel();
-     _inventorySubscription = _repository.watchInventory(event.warehouseId).listen(
-       (items) => add(InventoryManagementEvent.inventoryUpdated(items)),
-       onError: (e) => add(InventoryManagementEvent.updateStock('error', 0)) // Hacky but reuses logic or just log. Ideally add error event.
-     );
+  Future<void> _onWatchInventory(
+      _WatchInventory event, Emitter<InventoryManagementState> emit) async {
+    emit(const InventoryManagementState.loading());
+    await _inventorySubscription?.cancel();
+    _inventorySubscription = _repository.watchInventory(event.warehouseId).listen(
+        (items) => add(InventoryManagementEvent.inventoryUpdated(items)),
+        onError: (e) => add(InventoryManagementEvent.updateStock('error',
+            0)) // Hacky but reuses logic or just log. Ideally add error event.
+        );
   }
 
-  Future<void> _onInventoryUpdated(_InventoryUpdated event, Emitter<InventoryManagementState> emit) async {
+  Future<void> _onInventoryUpdated(
+      _InventoryUpdated event, Emitter<InventoryManagementState> emit) async {
     emit(InventoryManagementState.loaded(event.inventory));
   }
 
@@ -142,7 +168,8 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
     }
   }
 
-  Future<void> _onAddProduct(_AddProduct event, Emitter<InventoryManagementState> emit) async {
+  Future<void> _onAddProduct(
+      _AddProduct event, Emitter<InventoryManagementState> emit) async {
     emit(const InventoryManagementState.loading());
     try {
       String? imagePath;
@@ -157,11 +184,12 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
       );
 
       await _repository.saveProduct(product);
-      
+
       if (event.modifierGroupUuids != null) {
-        await _repository.updateProductModifiers(uuid, event.modifierGroupUuids!);
+        await _repository.updateProductModifiers(
+            uuid, event.modifierGroupUuids!);
       }
-      
+
       // Success keeps it on same page or pops? Listing stays on loaded if stream persists.
       // But emit(success) overrides loaded. Listing page should handle it.
       emit(const InventoryManagementState.success());
@@ -170,7 +198,8 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
     }
   }
 
-  Future<void> _onUpdateProduct(_UpdateProduct event, Emitter<InventoryManagementState> emit) async {
+  Future<void> _onUpdateProduct(
+      _UpdateProduct event, Emitter<InventoryManagementState> emit) async {
     emit(const InventoryManagementState.loading());
     try {
       String? imagePath = event.product.imageUrl;
@@ -180,18 +209,20 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
 
       final product = event.product.copyWith(imageUrl: imagePath);
       await _repository.saveProduct(product);
-      
+
       if (event.modifierGroupUuids != null) {
-         await _repository.updateProductModifiers(product.uuid, event.modifierGroupUuids!);
+        await _repository.updateProductModifiers(
+            product.uuid, event.modifierGroupUuids!);
       }
-      
+
       emit(const InventoryManagementState.success());
     } catch (e) {
       emit(InventoryManagementState.error(e.toString()));
     }
   }
 
-  Future<void> _onDeleteProduct(_DeleteProduct event, Emitter<InventoryManagementState> emit) async {
+  Future<void> _onDeleteProduct(
+      _DeleteProduct event, Emitter<InventoryManagementState> emit) async {
     emit(const InventoryManagementState.loading());
     try {
       await _repository.deleteProduct(event.uuid);
@@ -201,18 +232,21 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
     }
   }
 
-  Future<void> _onUpdateStock(_UpdateStock event, Emitter<InventoryManagementState> emit) async {
+  Future<void> _onUpdateStock(
+      _UpdateStock event, Emitter<InventoryManagementState> emit) async {
     // Optimistic update - assume success or just fire and forget for UI speed?
     // Let's fire and forget for Kinetic feel, repository handles the rest.
     try {
-       await _repository.updateStock(event.uuid, event.delta);
-       // No emit success needed if we are just listening to stream in UI? 
-       // Ideally we might want to emit a transient state but streams handle data.
+      await _repository.updateStock(event.uuid, event.delta);
+      // No emit success needed if we are just listening to stream in UI?
+      // Ideally we might want to emit a transient state but streams handle data.
     } catch (e) {
-       // Silent fail or snackbar?
+      // Silent fail or snackbar?
     }
   }
-  Future<void> _onReceiveGoods(_ReceiveGoods event, Emitter<InventoryManagementState> emit) async {
+
+  Future<void> _onReceiveGoods(
+      _ReceiveGoods event, Emitter<InventoryManagementState> emit) async {
     emit(const InventoryManagementState.loading());
     try {
       // Convert items to Map<String, double> for quantities
@@ -231,12 +265,13 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
     }
   }
 
-  Future<void> _onFetchIncomingTransfers(_FetchIncomingTransfers event, Emitter<InventoryManagementState> emit) async {
+  Future<void> _onFetchIncomingTransfers(_FetchIncomingTransfers event,
+      Emitter<InventoryManagementState> emit) async {
     emit(const InventoryManagementState.loading());
     try {
       final warehouseId = _authBloc.state.activeWarehouseId;
       if (warehouseId == null) throw Exception("No active warehouse context.");
-      
+
       final transfers = await _getIncomingTransfers(warehouseId);
       emit(InventoryManagementState.incomingTransfersLoaded(transfers));
     } catch (e) {
@@ -244,14 +279,16 @@ class InventoryManagementBloc extends Bloc<InventoryManagementEvent, InventoryMa
     }
   }
 
-  Future<void> _onReceiveStockTransfer(_ReceiveStockTransfer event, Emitter<InventoryManagementState> emit) async {
+  Future<void> _onReceiveStockTransfer(_ReceiveStockTransfer event,
+      Emitter<InventoryManagementState> emit) async {
     emit(const InventoryManagementState.loading());
     try {
       final empId = _authBloc.state.employee?.uuid ?? 'unknown';
-      await _receiveStockTransfer(transferUuid: event.transferUuid, receiverId: empId);
-      
+      await _receiveStockTransfer(
+          transferUuid: event.transferUuid, receiverId: empId);
+
       emit(const InventoryManagementState.success());
-      
+
       add(const InventoryManagementEvent.fetchIncomingTransfers());
     } catch (e) {
       emit(InventoryManagementState.error(e.toString()));

@@ -17,31 +17,48 @@ class CommandBar extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           decoration: BoxDecoration(
-            color: Colors.black87, // Dark command bar regardless of theme usually looks cool
+            color: Colors
+                .black87, // Dark command bar regardless of theme usually looks cool
             borderRadius: BorderRadius.circular(theme.shapes.radiusPill),
             border: Border.all(color: Colors.white24),
             boxShadow: [
-               BoxShadow(color: Colors.black45, blurRadius: 20, spreadRadius: 0, offset: Offset(0, 10))
+              BoxShadow(
+                  color: Colors.black45,
+                  blurRadius: 20,
+                  spreadRadius: 0,
+                  offset: Offset(0, 10))
             ],
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-               _CmdAction(icon: Icons.lock, label: 'Lock POS', onTap: () {
-                 HapticFeedback.lightImpact();
-                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('POS Terminals Locked')));
-               }),
-               _Divider(),
-               _CmdAction(icon: Icons.campaign, label: 'Broadcast', onTap: () {
-                 HapticFeedback.lightImpact();
-                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Message Broadcasted')));
-               }),
-               _Divider(),
-               _CmdAction(icon: Icons.sync, label: 'Flush', onTap: () {
-                 HapticFeedback.heavyImpact();
-                 // Trigger sync logic
-                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Cache Flushed')));
-               }),
+              _CmdAction(
+                  icon: Icons.lock,
+                  label: 'Lock POS',
+                  onTap: () {
+                    HapticFeedback.lightImpact();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('POS Terminals Locked')));
+                  }),
+              _Divider(),
+              _CmdAction(
+                  icon: Icons.campaign,
+                  label: 'Broadcast',
+                  onTap: () {
+                    HapticFeedback.lightImpact();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Message Broadcasted')));
+                  }),
+              _Divider(),
+              _CmdAction(
+                  icon: Icons.sync,
+                  label: 'Flush',
+                  onTap: () {
+                    HapticFeedback.heavyImpact();
+                    // Trigger sync logic
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text('Cache Flushed')));
+                  }),
             ],
           ),
         ),
@@ -55,7 +72,8 @@ class _CmdAction extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
 
-  const _CmdAction({required this.icon, required this.label, required this.onTap});
+  const _CmdAction(
+      {required this.icon, required this.label, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +86,9 @@ class _CmdAction extends StatelessWidget {
           children: [
             Icon(icon, color: Colors.white, size: 18),
             SizedBox(width: 8),
-            Text(label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
+            Text(label,
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.w500)),
           ],
         ),
       ),

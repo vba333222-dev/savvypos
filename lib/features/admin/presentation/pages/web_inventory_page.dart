@@ -18,14 +18,16 @@ class _WebInventoryAppState extends State<WebInventoryPage> {
   final TextEditingController _searchCtrl = TextEditingController();
 
   // Mock Data
-  final List<_ProductRow> _products = List.generate(20, (index) => _ProductRow(
-    id: 'P-$index',
-    name: 'Product Item #$index',
-    sku: 'SKU-${1000+index}',
-    price: (index * 5.5) + 10,
-    stock: index % 5 == 0 ? 0 : (index % 3 == 0 ? 5 : 50),
-    category: index % 2 == 0 ? 'Coffee' : 'Pastry',
-  ));
+  final List<_ProductRow> _products = List.generate(
+      20,
+      (index) => _ProductRow(
+            id: 'P-$index',
+            name: 'Product Item #$index',
+            sku: 'SKU-${1000 + index}',
+            price: (index * 5.5) + 10,
+            stock: index % 5 == 0 ? 0 : (index % 3 == 0 ? 5 : 50),
+            category: index % 2 == 0 ? 'Coffee' : 'Pastry',
+          ));
 
   @override
   void initState() {
@@ -68,7 +70,9 @@ class _WebInventoryAppState extends State<WebInventoryPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SavvyText('Tactile Warehouse', style: SavvyTextStyle.h2),
-                    SavvyText('Inventory Management', style: SavvyTextStyle.labelMedium, color: theme.colors.textSecondary),
+                    SavvyText('Inventory Management',
+                        style: SavvyTextStyle.labelMedium,
+                        color: theme.colors.textSecondary),
                   ],
                 ),
                 Spacer(),
@@ -78,11 +82,18 @@ class _WebInventoryAppState extends State<WebInventoryPage> {
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
                     color: theme.colors.bgElevated,
-                    borderRadius: BorderRadius.circular(theme.shapes.radiusPill),
-                    border: Border.all(color: _searchFocus.hasFocus ? theme.colors.brandPrimary : theme.colors.borderDefault),
+                    borderRadius:
+                        BorderRadius.circular(theme.shapes.radiusPill),
+                    border: Border.all(
+                        color: _searchFocus.hasFocus
+                            ? theme.colors.brandPrimary
+                            : theme.colors.borderDefault),
                     boxShadow: [
-                      if (_searchFocus.hasFocus) 
-                        BoxShadow(color: theme.colors.brandPrimary.withValues(alpha: 0.2), blurRadius: 8)
+                      if (_searchFocus.hasFocus)
+                        BoxShadow(
+                            color: theme.colors.brandPrimary
+                                .withValues(alpha: 0.2),
+                            blurRadius: 8)
                     ],
                   ),
                   child: Row(
@@ -107,20 +118,24 @@ class _WebInventoryAppState extends State<WebInventoryPage> {
                 ),
               ],
             ),
-            
+
             SizedBox(height: theme.shapes.spacingLg),
 
             // DATA TABLE (App-Like)
             Expanded(
-              child: BentoTile( // Reuse Bento wrapper for glass/shadow look
+              child: BentoTile(
+                // Reuse Bento wrapper for glass/shadow look
                 child: Theme(
                   data: Theme.of(context).copyWith(
                     dividerColor: Colors.transparent, // Remove default dividers
                     dataTableTheme: DataTableThemeData(
-                      headingRowColor: WidgetStateProperty.all(theme.colors.bgInverse.withValues(alpha: 0.05)),
+                      headingRowColor: WidgetStateProperty.all(
+                          theme.colors.bgInverse.withValues(alpha: 0.05)),
                       dataRowColor: WidgetStateProperty.resolveWith((states) {
-                         if (states.contains(WidgetState.hovered)) return theme.colors.brandPrimary.withValues(alpha: 0.05);
-                         return Colors.transparent;
+                        if (states.contains(WidgetState.hovered))
+                          return theme.colors.brandPrimary
+                              .withValues(alpha: 0.05);
+                        return Colors.transparent;
                       }),
                     ),
                   ),
@@ -133,27 +148,56 @@ class _WebInventoryAppState extends State<WebInventoryPage> {
                         dataRowMinHeight: 56,
                         dataRowMaxHeight: 56,
                         columns: [
-                          DataColumn(label: SavvyText('SKU', style: SavvyTextStyle.labelMedium)),
-                          DataColumn(label: SavvyText('PRODUCT', style: SavvyTextStyle.labelMedium)),
-                          DataColumn(label: SavvyText('CATEGORY', style: SavvyTextStyle.labelMedium)),
-                          DataColumn(label: SavvyText('PRICE', style: SavvyTextStyle.labelMedium)),
-                          DataColumn(label: SavvyText('STOCK', style: SavvyTextStyle.labelMedium)),
-                          DataColumn(label: SavvyText('ACTIONS', style: SavvyTextStyle.labelMedium)), // Quick Actions
+                          DataColumn(
+                              label: SavvyText('SKU',
+                                  style: SavvyTextStyle.labelMedium)),
+                          DataColumn(
+                              label: SavvyText('PRODUCT',
+                                  style: SavvyTextStyle.labelMedium)),
+                          DataColumn(
+                              label: SavvyText('CATEGORY',
+                                  style: SavvyTextStyle.labelMedium)),
+                          DataColumn(
+                              label: SavvyText('PRICE',
+                                  style: SavvyTextStyle.labelMedium)),
+                          DataColumn(
+                              label: SavvyText('STOCK',
+                                  style: SavvyTextStyle.labelMedium)),
+                          DataColumn(
+                              label: SavvyText('ACTIONS',
+                                  style: SavvyTextStyle
+                                      .labelMedium)), // Quick Actions
                         ],
-                        rows: _products.where((p) => p.name.toLowerCase().contains(_searchCtrl.text.toLowerCase())).map((product) {
+                        rows: _products
+                            .where((p) => p.name
+                                .toLowerCase()
+                                .contains(_searchCtrl.text.toLowerCase()))
+                            .map((product) {
                           return DataRow(
                             onSelectChanged: (_) {}, // Enable hover effect
                             cells: [
-                              DataCell(Text(product.sku, style: TextStyle(fontFamily: 'Courier', fontSize: 12))),
-                              DataCell(Text(product.name, style: TextStyle(fontWeight: FontWeight.w500))),
+                              DataCell(Text(product.sku,
+                                  style: TextStyle(
+                                      fontFamily: 'Courier', fontSize: 12))),
+                              DataCell(Text(product.name,
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.w500))),
                               DataCell(Container(
-                                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                decoration: BoxDecoration(color: Colors.blue.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
-                                child: Text(product.category, style: TextStyle(color: Colors.blue, fontSize: 11)),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                    color: Colors.blue.withValues(alpha: 0.1),
+                                    borderRadius: BorderRadius.circular(4)),
+                                child: Text(product.category,
+                                    style: TextStyle(
+                                        color: Colors.blue, fontSize: 11)),
                               )),
-                              DataCell(Text('\$${product.price.toStringAsFixed(2)}')),
-                              DataCell(StockLevelIndicator(stock: product.stock)),
-                              DataCell(_ActionCell(product: product)), // Hover Actions
+                              DataCell(Text(
+                                  '\$${product.price.toStringAsFixed(2)}')),
+                              DataCell(
+                                  StockLevelIndicator(stock: product.stock)),
+                              DataCell(_ActionCell(
+                                  product: product)), // Hover Actions
                             ],
                           );
                         }).toList(),
@@ -177,7 +221,13 @@ class _ProductRow {
   final double price;
   final int stock;
   final String category;
-  _ProductRow({required this.id, required this.name, required this.sku, required this.price, required this.stock, required this.category});
+  _ProductRow(
+      {required this.id,
+      required this.name,
+      required this.sku,
+      required this.price,
+      required this.stock,
+      required this.category});
 }
 
 class _ActionCell extends StatefulWidget {
@@ -202,9 +252,18 @@ class _ActionCellState extends State<_ActionCell> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-             IconButton(icon: Icon(Icons.edit, size: 18, color: Colors.grey), onPressed: () {}, tooltip: 'Edit'),
-             IconButton(icon: Icon(Icons.print, size: 18, color: Colors.grey), onPressed: () {}, tooltip: 'Print Label'),
-             IconButton(icon: Icon(Icons.add_box, size: 18, color: Colors.blue), onPressed: () {}, tooltip: 'Adjust Stock'),
+            IconButton(
+                icon: Icon(Icons.edit, size: 18, color: Colors.grey),
+                onPressed: () {},
+                tooltip: 'Edit'),
+            IconButton(
+                icon: Icon(Icons.print, size: 18, color: Colors.grey),
+                onPressed: () {},
+                tooltip: 'Print Label'),
+            IconButton(
+                icon: Icon(Icons.add_box, size: 18, color: Colors.blue),
+                onPressed: () {},
+                tooltip: 'Adjust Stock'),
           ],
         ),
       ),

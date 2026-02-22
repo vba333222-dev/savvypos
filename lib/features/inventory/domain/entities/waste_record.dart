@@ -23,8 +23,9 @@ class WasteRecord with _$WasteRecord {
     required double costLoss,
     String? note,
     String? itemName, // Denormalized for easier display
-    String? unit,     // Denormalized
+    String? unit, // Denormalized
   }) = _WasteRecord;
 
-  factory WasteRecord.fromJson(Map<String, dynamic> json) => _$WasteRecordFromJson(json);
+  factory WasteRecord.fromJson(Map<String, dynamic> json) =>
+      _$WasteRecordFromJson(json);
 }

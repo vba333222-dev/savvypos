@@ -56,10 +56,10 @@ class _SupervisorPinDialogState extends State<SupervisorPinDialog> {
 
     try {
       final db = GetIt.I<AppDatabase>();
-      
+
       final employee = await (db.select(db.employeeTable)
-        ..where((t) => t.pin.equals(pin)))
-        .getSingleOrNull();
+            ..where((t) => t.pin.equals(pin)))
+          .getSingleOrNull();
 
       if (employee != null) {
         final role = UserRole.fromString(employee.role);
@@ -68,15 +68,15 @@ class _SupervisorPinDialogState extends State<SupervisorPinDialog> {
           if (mounted) Navigator.pop(context, true);
         } else {
           setState(() {
-             _isLoading = false;
-             _error = 'Insufficient Privileges';
+            _isLoading = false;
+            _error = 'Insufficient Privileges';
           });
         }
       } else {
-         setState(() {
-            _isLoading = false;
-            _error = 'Invalid PIN';
-         });
+        setState(() {
+          _isLoading = false;
+          _error = 'Invalid PIN';
+        });
       }
     } catch (e) {
       setState(() {
@@ -101,24 +101,22 @@ class _SupervisorPinDialogState extends State<SupervisorPinDialog> {
             const SizedBox(height: 16),
             SavvyText.h3(widget.title),
             const SizedBox(height: 8),
-            SavvyText.body(widget.reason, color: context.savvy.colors.textSecondary),
+            SavvyText.body(widget.reason,
+                color: context.savvy.colors.textSecondary),
             const SizedBox(height: 24),
-            
             SavvyTextField(
-               controller: _pinController,
-               hintText: 'Enter Supervisor PIN',
-               obscureText: true,
-               keyboardType: TextInputType.number,
-               maxLength: 6,
-               autoFocus: true,
+              controller: _pinController,
+              hintText: 'Enter Supervisor PIN',
+              obscureText: true,
+              keyboardType: TextInputType.number,
+              maxLength: 6,
+              autoFocus: true,
             ),
-            
             if (_error != null)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: SavvyText.label(_error!, color: Colors.red),
               ),
-
             const SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,

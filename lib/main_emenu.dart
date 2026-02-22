@@ -22,7 +22,9 @@ class EMenuApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Savvy E-Menu',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(extensions: [SavvyTheme.light()]), // Default to light or custom emenu theme
+      theme: ThemeData(extensions: [
+        SavvyTheme.light()
+      ]), // Default to light or custom emenu theme
       routerConfig: _router,
     );
   }
@@ -35,10 +37,10 @@ final _router = GoRouter(
       path: '/',
       builder: (context, state) {
         // Parse Query Params for Guest Session (Safe fallback)
-        final uri = Uri.parse(state.location); 
+        final uri = Uri.parse(state.location);
         final storeId = uri.queryParameters['store'];
         final tableId = uri.queryParameters['table'];
-        
+
         return EMenuHomePage(storeId: storeId, tableId: tableId);
       },
     ),

@@ -22,7 +22,8 @@ class LiquidReceiptOverlay extends StatefulWidget {
   State<LiquidReceiptOverlay> createState() => _LiquidReceiptOverlayState();
 }
 
-class _LiquidReceiptOverlayState extends State<LiquidReceiptOverlay> with TickerProviderStateMixin {
+class _LiquidReceiptOverlayState extends State<LiquidReceiptOverlay>
+    with TickerProviderStateMixin {
   // Animation Controller for "Printing" Entrance
   late AnimationController _printController;
   late Animation<double> _printAnimation; // Translation Y: -Height -> 0
@@ -36,18 +37,17 @@ class _LiquidReceiptOverlayState extends State<LiquidReceiptOverlay> with Ticker
   @override
   void initState() {
     super.initState();
-    
+
     // Setup Print Animation (Curve: Starts fast, slows down like paper stopping)
-    _printController = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
-    _printAnimation = Tween<double>(begin: -800, end: 0).animate(CurvedAnimation(
-      parent: _printController, 
-      curve: Curves.easeOutQuart 
-    ));
+    _printController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 600));
+    _printAnimation = Tween<double>(begin: -800, end: 0).animate(
+        CurvedAnimation(parent: _printController, curve: Curves.easeOutQuart));
 
     // Start Printing
     WidgetsBinding.instance.addPostFrameCallback((_) {
-       _printController.forward();
-       _playPrintingSound();
+      _printController.forward();
+      _playPrintingSound();
     });
   }
 
@@ -60,9 +60,9 @@ class _LiquidReceiptOverlayState extends State<LiquidReceiptOverlay> with Ticker
   void _playPrintingSound() async {
     // Simulate "Zzzt-zzzt"
     for (int i = 0; i < 4; i++) {
-       if (!mounted) break;
-       await Future.delayed(100.ms);
-       HapticFeedback.lightImpact();
+      if (!mounted) break;
+      await Future.delayed(100.ms);
+      HapticFeedback.lightImpact();
     }
     await Future.delayed(50.ms);
     HapticFeedback.mediumImpact(); // Cut
@@ -70,9 +70,8 @@ class _LiquidReceiptOverlayState extends State<LiquidReceiptOverlay> with Ticker
 
   void _onPanUpdate(DragUpdateDetails details) {
     if (_isTearing) return;
-    
-    setState(() {
 
+    setState(() {
       _dragOffset += details.delta;
       // Pendulum swing calculation
       _rotation = (_dragOffset.dx / 800).clamp(-0.3, 0.3);
@@ -84,13 +83,13 @@ class _LiquidReceiptOverlayState extends State<LiquidReceiptOverlay> with Ticker
 
     // Tear-off Threshold
     if (_dragOffset.dy > 150) {
-       _performTearOff();
+      _performTearOff();
     } else {
-       // Snap Back Spring
-       setState(() {
-         _dragOffset = Offset.zero;
-         _rotation = 0.0;
-       });
+      // Snap Back Spring
+      setState(() {
+        _dragOffset = Offset.zero;
+        _rotation = 0.0;
+      });
     }
   }
 
@@ -104,7 +103,7 @@ class _LiquidReceiptOverlayState extends State<LiquidReceiptOverlay> with Ticker
   Widget build(BuildContext context) {
     // Calculation
     final double total = widget.items.fold(0, (sum, item) => sum + item.total);
-    final double subtotal = total / 1.1; 
+    final double subtotal = total / 1.1;
     final double tax = total - subtotal;
 
     return Scaffold(
@@ -115,7 +114,8 @@ class _LiquidReceiptOverlayState extends State<LiquidReceiptOverlay> with Ticker
           // 1. PRINTER SLOT (Visual Hole/Shadow at top)
           Positioned(
             top: -30,
-            left: 0, right: 0,
+            left: 0,
+            right: 0,
             height: 60,
             child: Container(
               decoration: BoxDecoration(
@@ -124,7 +124,10 @@ class _LiquidReceiptOverlayState extends State<LiquidReceiptOverlay> with Ticker
                   end: Alignment.bottomCenter,
                   colors: [Colors.black, Colors.transparent],
                 ),
-                boxShadow: [BoxShadow(color: Colors.black, blurRadius: 40, spreadRadius: 10)],
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black, blurRadius: 40, spreadRadius: 10)
+                ],
               ),
             ),
           ),
@@ -134,10 +137,10 @@ class _LiquidReceiptOverlayState extends State<LiquidReceiptOverlay> with Ticker
             animation: _printController,
             builder: (context, child) {
               double yPos = _printAnimation.value;
-              
+
               if (_isTearing) {
                 // Gravity fall
-                yPos += 1000; 
+                yPos += 1000;
               } else {
                 yPos += _dragOffset.dy;
               }
@@ -157,11 +160,11 @@ class _LiquidReceiptOverlayState extends State<LiquidReceiptOverlay> with Ticker
                         margin: const EdgeInsets.only(top: 40),
                         decoration: BoxDecoration(
                           boxShadow: [
-                             BoxShadow(
-                               color: Colors.black26, 
-                               blurRadius: 20, 
-                               offset: Offset(_dragOffset.dx * 0.1, 10 + _dragOffset.dy * 0.1)
-                             )
+                            BoxShadow(
+                                color: Colors.black26,
+                                blurRadius: 20,
+                                offset: Offset(_dragOffset.dx * 0.1,
+                                    10 + _dragOffset.dy * 0.1))
                           ],
                         ),
                         // Using existing DigitalReceiptWidget
@@ -171,8 +174,10 @@ class _LiquidReceiptOverlayState extends State<LiquidReceiptOverlay> with Ticker
                           subtotal: subtotal,
                           tax: tax,
                           discount: 0,
-                          change: 0, // Mock for now or pass from cart if available
-                          orderNumber: 'ORD-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}',
+                          change:
+                              0, // Mock for now or pass from cart if available
+                          orderNumber:
+                              'ORD-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}',
                           date: DateTime.now(),
                         ),
                       ),
@@ -191,11 +196,17 @@ class _LiquidReceiptOverlayState extends State<LiquidReceiptOverlay> with Ticker
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _RoundActionBtn(icon: Icons.print, label: 'Print', onTap: widget.onPrint),
+                  _RoundActionBtn(
+                      icon: Icons.print, label: 'Print', onTap: widget.onPrint),
                   SizedBox(width: 24),
-                  _RoundActionBtn(icon: Icons.share, label: 'Share', onTap: widget.onEmail),
+                  _RoundActionBtn(
+                      icon: Icons.share, label: 'Share', onTap: widget.onEmail),
                   SizedBox(width: 24),
-                  _RoundActionBtn(icon: Icons.close, label: 'Close', filled: true, onTap: widget.onDismiss),
+                  _RoundActionBtn(
+                      icon: Icons.close,
+                      label: 'Close',
+                      filled: true,
+                      onTap: widget.onDismiss),
                 ],
               ),
             ),
@@ -212,7 +223,11 @@ class _RoundActionBtn extends StatelessWidget {
   final VoidCallback onTap;
   final bool filled;
 
-  const _RoundActionBtn({required this.icon, required this.label, required this.onTap, this.filled = false});
+  const _RoundActionBtn(
+      {required this.icon,
+      required this.label,
+      required this.onTap,
+      this.filled = false});
 
   @override
   Widget build(BuildContext context) {

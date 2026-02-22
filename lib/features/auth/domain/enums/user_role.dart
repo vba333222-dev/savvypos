@@ -30,7 +30,7 @@ class RolePermissions {
   static bool canPerformManagerOverride(UserRole role) {
     return role == UserRole.owner || role == UserRole.manager;
   }
-  
+
   static bool canApprovePO(UserRole role) {
     return role == UserRole.owner || role == UserRole.manager;
   }

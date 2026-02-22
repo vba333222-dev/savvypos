@@ -11,12 +11,12 @@ class GetModifiersUseCase {
   Future<List<ModifierGroupWithItems>> call(String productUuid) async {
     final groups = await _repository.getModifierGroups(productUuid);
     final List<ModifierGroupWithItems> result = [];
-    
+
     for (final group in groups) {
       final items = await _repository.getModifierItems(group.uuid);
       result.add(ModifierGroupWithItems(group: group, items: items));
     }
-    
+
     return result;
   }
 }

@@ -42,7 +42,8 @@ class DeliveryOrderCard extends StatelessWidget {
 
     // Determine layout and buttons based on status
     final isNew = order.status == DeliveryStatus.newUnaccepted;
-    final isPreparing = order.status == DeliveryStatus.accepted || order.status == DeliveryStatus.preparing;
+    final isPreparing = order.status == DeliveryStatus.accepted ||
+        order.status == DeliveryStatus.preparing;
     final isReady = order.status == DeliveryStatus.readyForPickup;
 
     return Card(
@@ -51,7 +52,8 @@ class DeliveryOrderCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(shapes.radiusLg),
         side: BorderSide(
-          color: isNew ? brandColor.withValues(alpha: 0.5) : colors.borderDefault,
+          color:
+              isNew ? brandColor.withValues(alpha: 0.5) : colors.borderDefault,
           width: isNew ? 2 : 1,
         ),
       ),
@@ -60,27 +62,36 @@ class DeliveryOrderCard extends StatelessWidget {
         children: [
           // ── HEADER ──
           Container(
-            padding: EdgeInsets.symmetric(horizontal: shapes.spacingMd, vertical: shapes.spacingSm),
+            padding: EdgeInsets.symmetric(
+                horizontal: shapes.spacingMd, vertical: shapes.spacingSm),
             decoration: BoxDecoration(
               color: brandColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(shapes.radiusLg)),
+              borderRadius:
+                  BorderRadius.vertical(top: Radius.circular(shapes.radiusLg)),
             ),
             child: Row(
               children: [
                 Icon(brandIcon, color: brandColor, size: 20),
                 const Gap(8),
-                Text(brandName, style: TextStyle(color: brandColor, fontWeight: FontWeight.bold)),
+                Text(brandName,
+                    style: TextStyle(
+                        color: brandColor, fontWeight: FontWeight.bold)),
                 const Spacer(),
                 if (isNew)
-                   const Icon(Icons.timer, size: 16, color: Colors.orange)
+                  const Icon(Icons.timer, size: 16, color: Colors.orange)
                       .animate(onPlay: (c) => c.repeat(reverse: true))
                       .fade(),
                 if (isNew) const Gap(4),
-                if (isNew) const Text('ETA: 5m', style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold, fontSize: 12)),
+                if (isNew)
+                  const Text('ETA: 5m',
+                      style: TextStyle(
+                          color: Colors.orange,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12)),
               ],
             ),
           ),
-          
+
           Padding(
             padding: EdgeInsets.all(shapes.spacingMd),
             child: Column(
@@ -89,57 +100,66 @@ class DeliveryOrderCard extends StatelessWidget {
                 // ── ORDER ID ──
                 Text(
                   order.externalOrderId,
-                  style: typography.titleLarge?.copyWith(fontWeight: FontWeight.w900, letterSpacing: 1.2),
+                  style: typography.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w900, letterSpacing: 1.2),
                 ),
                 const Gap(4),
                 Text(
                   '1x Nasi Goreng Spesial\n1x Es Teh Manis', // Mock Items for now
                   style: typography.bodyMedium,
                 ),
-                
+
                 // ── DRIVER INFO (Expandable) ──
                 if (order.driverDetails != null)
-                  _DriverInfoWidget(brandColor: brandColor, driverName: order.driverDetails!.name, driverPlate: order.driverDetails!.licensePlate),
+                  _DriverInfoWidget(
+                      brandColor: brandColor,
+                      driverName: order.driverDetails!.name,
+                      driverPlate: order.driverDetails!.licensePlate),
 
                 const Gap(16),
-                
+
                 // ── ACTIONS ──
                 if (isNew)
                   Row(
                     children: [
-                      Expanded(child: OutlinedButton(
-                         style: OutlinedButton.styleFrom(foregroundColor: colors.stateError),
-                         onPressed: onReject, 
-                         child: const Text('Tolak')
-                      )),
+                      Expanded(
+                          child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                  foregroundColor: colors.stateError),
+                              onPressed: onReject,
+                              child: const Text('Tolak'))),
                       const Gap(8),
                       Expanded(
                         flex: 2,
                         child: ElevatedButton(
-                           style: ElevatedButton.styleFrom(backgroundColor: brandColor, foregroundColor: Colors.white),
-                           onPressed: onAccept, 
-                           child: const Text('Terima & Proses')
-                        ),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: brandColor,
+                                foregroundColor: Colors.white),
+                            onPressed: onAccept,
+                            child: const Text('Terima & Proses')),
                       ),
                     ],
                   ),
-                  
+
                 if (isPreparing)
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(backgroundColor: colors.stateSuccess, foregroundColor: colors.textInverse),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: colors.stateSuccess,
+                          foregroundColor: colors.textInverse),
                       icon: const Icon(Icons.check_circle_outline),
                       label: const Text('Tandai Selesai (Ready)'),
                       onPressed: onMarkReady,
                     ),
                   ),
-                  
+
                 if (isReady)
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton.icon(
-                      style: OutlinedButton.styleFrom(foregroundColor: colors.textPrimary),
+                      style: OutlinedButton.styleFrom(
+                          foregroundColor: colors.textPrimary),
                       icon: const Icon(Icons.hail),
                       label: const Text('Konfirmasi Pickup'),
                       onPressed: onComplete,
@@ -159,43 +179,54 @@ class _DriverInfoWidget extends StatelessWidget {
   final String driverName;
   final String driverPlate;
 
-  const _DriverInfoWidget({required this.brandColor, required this.driverName, required this.driverPlate});
+  const _DriverInfoWidget(
+      {required this.brandColor,
+      required this.driverName,
+      required this.driverPlate});
 
   @override
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: ExpansionTile(
-         tilePadding: EdgeInsets.zero,
-         title: Row(
-           children: [
-             Icon(Icons.two_wheeler, color: brandColor, size: 20),
-             const Gap(8),
-             Text('Info Driver', style: TextStyle(fontSize: 14, color: brandColor, fontWeight: FontWeight.bold)),
-           ],
-         ),
-         children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
+        tilePadding: EdgeInsets.zero,
+        title: Row(
+          children: [
+            Icon(Icons.two_wheeler, color: brandColor, size: 20),
+            const Gap(8),
+            Text('Info Driver',
+                style: TextStyle(
+                    fontSize: 14,
+                    color: brandColor,
+                    fontWeight: FontWeight.bold)),
+          ],
+        ),
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                borderRadius: BorderRadius.circular(8)
-              ),
-              child: Row(
-                children: [
-                  CircleAvatar(backgroundColor: brandColor.withValues(alpha: 0.2), child: Icon(Icons.person, color: brandColor)),
-                  const Gap(12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(driverName, style: const TextStyle(fontWeight: FontWeight.bold)),
-                      Text(driverPlate, style: const TextStyle(fontSize: 12, color: Colors.grey)),
-                    ],
-                  )
-                ],
-              ),
-            )
-         ],
+                borderRadius: BorderRadius.circular(8)),
+            child: Row(
+              children: [
+                CircleAvatar(
+                    backgroundColor: brandColor.withValues(alpha: 0.2),
+                    child: Icon(Icons.person, color: brandColor)),
+                const Gap(12),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(driverName,
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    Text(driverPlate,
+                        style:
+                            const TextStyle(fontSize: 12, color: Colors.grey)),
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

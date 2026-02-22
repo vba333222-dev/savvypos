@@ -15,7 +15,8 @@ class AccessControlWrapper extends StatefulWidget {
     super.key,
     required this.child,
     required this.permissionCheck,
-    this.restrictedMessage = 'You do not have permission to access this feature.',
+    this.restrictedMessage =
+        'You do not have permission to access this feature.',
   });
 
   @override
@@ -35,42 +36,43 @@ class _AccessControlWrapperState extends State<AccessControlWrapper> {
       builder: (context, state) {
         final employee = state.employee;
         UserRole role = UserRole.unknown;
-        
+
         if (employee != null) {
           role = UserRole.fromString(employee.role);
         }
 
         if (widget.permissionCheck(role)) {
-           return widget.child;
+          return widget.child;
         }
 
         // Locked Access View
         return Center(
           child: Container(
-             padding: const EdgeInsets.all(32),
-             constraints: const BoxConstraints(maxWidth: 400),
-             child: Column(
-               mainAxisAlignment: MainAxisAlignment.center,
-               children: [
-                 Icon(Icons.lock_outline, size: 64, color: context.savvy.colors.textDisabled),
-                 const SizedBox(height: 16),
-                 const SavvyText.h3('Restricted Access'),
-                 const SizedBox(height: 8),
-                 SavvyText.body(widget.restrictedMessage),
-                 const SizedBox(height: 32),
-                 SavvyButton(
-                   text: 'MANAGER OVERRIDE',
-                   style: SavvyButtonStyle.outline,
-                   icon: Icons.vpn_key,
-                   onPressed: () async {
-                      final approved = await SupervisorPinDialog.show(context);
-                      if (approved) {
-                        setState(() => _isOverrideActive = true);
-                      }
-                   },
-                 )
-               ],
-             ),
+            padding: const EdgeInsets.all(32),
+            constraints: const BoxConstraints(maxWidth: 400),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.lock_outline,
+                    size: 64, color: context.savvy.colors.textDisabled),
+                const SizedBox(height: 16),
+                const SavvyText.h3('Restricted Access'),
+                const SizedBox(height: 8),
+                SavvyText.body(widget.restrictedMessage),
+                const SizedBox(height: 32),
+                SavvyButton(
+                  text: 'MANAGER OVERRIDE',
+                  style: SavvyButtonStyle.outline,
+                  icon: Icons.vpn_key,
+                  onPressed: () async {
+                    final approved = await SupervisorPinDialog.show(context);
+                    if (approved) {
+                      setState(() => _isOverrideActive = true);
+                    }
+                  },
+                )
+              ],
+            ),
           ),
         );
       },

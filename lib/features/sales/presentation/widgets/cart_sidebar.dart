@@ -20,17 +20,23 @@ class CartSidebar extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Current Order', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                  const Text('Current Order',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   IconButton(
                     icon: const Icon(Icons.delete_outline),
-                    onPressed: state.cart.items.isEmpty ? null : () {
-                      context.read<SalesBloc>().add(const SalesEvent.clearCart());
-                    },
+                    onPressed: state.cart.items.isEmpty
+                        ? null
+                        : () {
+                            context
+                                .read<SalesBloc>()
+                                .add(const SalesEvent.clearCart());
+                          },
                   ),
                 ],
               ),
             ),
-            
+
             // Items
             Expanded(
               child: state.cart.items.isEmpty
@@ -55,32 +61,42 @@ class CartSidebar extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
                                       child: Text(
                                         item.product.name,
-                                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
                                       ),
                                     ),
                                     Text(
                                       '\$${item.total.toStringAsFixed(2)}',
-                                      style: const TextStyle(fontWeight: FontWeight.bold),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ],
                                 ),
                                 if (item.modifiers.isNotEmpty) ...[
                                   const SizedBox(height: 4),
                                   Text(
-                                    item.modifiers.join(', '), // Needs resolving names ideally
-                                    style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                                    item.modifiers.join(
+                                        ', '), // Needs resolving names ideally
+                                    style: TextStyle(
+                                        color: Colors.grey[600], fontSize: 13),
                                   ),
                                 ],
-                                if (item.note != null && item.note!.isNotEmpty) ...[
+                                if (item.note != null &&
+                                    item.note!.isNotEmpty) ...[
                                   const SizedBox(height: 4),
                                   Text(
                                     'Note: ${item.note}',
-                                    style: TextStyle(color: Colors.orange[800], fontSize: 13, fontStyle: FontStyle.italic),
+                                    style: TextStyle(
+                                        color: Colors.orange[800],
+                                        fontSize: 13,
+                                        fontStyle: FontStyle.italic),
                                   ),
                                 ],
                                 const SizedBox(height: 8),
@@ -94,27 +110,34 @@ class CartSidebar extends StatelessWidget {
                                       child: Row(
                                         children: [
                                           IconButton(
-                                            icon: const Icon(Icons.remove, size: 16),
-                                            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                                            icon: const Icon(Icons.remove,
+                                                size: 16),
+                                            constraints: const BoxConstraints(
+                                                minWidth: 32, minHeight: 32),
                                             padding: EdgeInsets.zero,
                                             onPressed: () {
                                               context.read<SalesBloc>().add(
-                                                SalesEvent.updateQuantity(item.id, item.quantity - 1)
-                                              );
+                                                  SalesEvent.updateQuantity(
+                                                      item.id,
+                                                      item.quantity - 1));
                                             },
                                           ),
                                           Text(
                                             '${item.quantity}',
-                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
                                           ),
                                           IconButton(
-                                            icon: const Icon(Icons.add, size: 16),
-                                            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                                            icon:
+                                                const Icon(Icons.add, size: 16),
+                                            constraints: const BoxConstraints(
+                                                minWidth: 32, minHeight: 32),
                                             padding: EdgeInsets.zero,
                                             onPressed: () {
                                               context.read<SalesBloc>().add(
-                                                SalesEvent.updateQuantity(item.id, item.quantity + 1)
-                                              );
+                                                  SalesEvent.updateQuantity(
+                                                      item.id,
+                                                      item.quantity + 1));
                                             },
                                           ),
                                         ],
@@ -129,7 +152,7 @@ class CartSidebar extends StatelessWidget {
                       },
                     ),
             ),
-            
+
             // Totals
             Container(
               padding: const EdgeInsets.all(16),
@@ -157,8 +180,12 @@ class CartSidebar extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Total', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                      Text('\$${state.cart.total.toStringAsFixed(2)}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      const Text('Total',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
+                      Text('\$${state.cart.total.toStringAsFixed(2)}',
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -173,9 +200,10 @@ class CartSidebar extends StatelessWidget {
                         backgroundColor: Theme.of(context).primaryColor,
                         foregroundColor: Colors.white,
                       ),
-                      child: state.isLoading 
-                         ? const CircularProgressIndicator(color: Colors.white)
-                         : const Text('PAY / SEND', style: TextStyle(fontSize: 18)),
+                      child: state.isLoading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text('PAY / SEND',
+                              style: TextStyle(fontSize: 18)),
                     ),
                   ),
                 ],

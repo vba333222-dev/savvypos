@@ -50,7 +50,8 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
   }
 
   void _submit() {
-    widget.onSubmit(_rating, _selectedTags, _commentCtrl.text.isEmpty ? null : _commentCtrl.text);
+    widget.onSubmit(_rating, _selectedTags,
+        _commentCtrl.text.isEmpty ? null : _commentCtrl.text);
   }
 
   @override
@@ -80,11 +81,14 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
           transitionBuilder: (child, animation) => FadeTransition(
             opacity: animation,
             child: SlideTransition(
-              position: Tween<Offset>(begin: const Offset(0.2, 0), end: Offset.zero).animate(animation),
+              position:
+                  Tween<Offset>(begin: const Offset(0.2, 0), end: Offset.zero)
+                      .animate(animation),
               child: child,
             ),
           ),
-          child: _step == 0 ? _buildRatingStep(colors) : _buildDetailStep(colors),
+          child:
+              _step == 0 ? _buildRatingStep(colors) : _buildDetailStep(colors),
         ),
       ),
     ).animate().scale(duration: 400.ms, curve: Curves.easeOutBack);
@@ -97,11 +101,17 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
       children: [
         Icon(Icons.thumb_up_alt_outlined, size: 48, color: colors.brandPrimary)
             .animate(onPlay: (c) => c.repeat(reverse: true))
-            .scale(begin: const Offset(1, 1), end: const Offset(1.1, 1.1), duration: 1000.ms),
+            .scale(
+                begin: const Offset(1, 1),
+                end: const Offset(1.1, 1.1),
+                duration: 1000.ms),
         const SizedBox(height: 24),
         Text(
           'How was your experience?',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: colors.textPrimary),
+          style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: colors.textPrimary),
         ),
         const SizedBox(height: 8),
         Text(
@@ -118,9 +128,13 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
               child: GestureDetector(
                 onTap: () => _handleRating(star),
                 child: Icon(
-                  _rating >= star ? Icons.star_rounded : Icons.star_outline_rounded,
+                  _rating >= star
+                      ? Icons.star_rounded
+                      : Icons.star_outline_rounded,
                   size: 48,
-                  color: _rating >= star ? Colors.amber : colors.textSecondary.withValues(alpha: 0.3),
+                  color: _rating >= star
+                      ? Colors.amber
+                      : colors.textSecondary.withValues(alpha: 0.3),
                 ),
               ),
             );
@@ -142,7 +156,10 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
       children: [
         Text(
           _rating >= 4 ? 'Glad you liked it!' : 'Tell us more',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: colors.textPrimary),
+          style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: colors.textPrimary),
         ),
         const SizedBox(height: 24),
         Wrap(
@@ -155,12 +172,14 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
               onTap: () => _toggleTag(tag),
               child: AnimatedContainer(
                 duration: 200.ms,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   color: isSelected ? colors.brandPrimary : colors.bgPrimary,
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: isSelected ? colors.brandPrimary : colors.borderDefault,
+                    color:
+                        isSelected ? colors.brandPrimary : colors.borderDefault,
                   ),
                 ),
                 child: Text(
@@ -201,8 +220,10 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: colors.brandPrimary,
                 foregroundColor: colors.textInverse,
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
               ),
               child: const Text('Submit Feedback'),
             ),
@@ -214,13 +235,20 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
 
   String _formatTag(FeedbackTag tag) {
     switch (tag) {
-      case FeedbackTag.foodQuality: return 'Food Quality';
-      case FeedbackTag.service: return 'Service';
-      case FeedbackTag.ambience: return 'Ambience';
-      case FeedbackTag.speed: return 'Speed';
-      case FeedbackTag.value: return 'Value';
-      case FeedbackTag.cleanliness: return 'Cleanliness';
-      case FeedbackTag.other: return 'Other';
+      case FeedbackTag.foodQuality:
+        return 'Food Quality';
+      case FeedbackTag.service:
+        return 'Service';
+      case FeedbackTag.ambience:
+        return 'Ambience';
+      case FeedbackTag.speed:
+        return 'Speed';
+      case FeedbackTag.value:
+        return 'Value';
+      case FeedbackTag.cleanliness:
+        return 'Cleanliness';
+      case FeedbackTag.other:
+        return 'Other';
     }
   }
 }

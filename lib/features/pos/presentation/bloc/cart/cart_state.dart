@@ -9,27 +9,17 @@ import 'package:savvy_pos/features/sales/domain/entities/promotion.dart';
 part 'cart_state.freezed.dart';
 
 /// Course type for pacing
-enum CourseType {
-  appetizer,
-  mainCourse,
-  dessert,
-  beverage,
-  defaultCourse
-}
+enum CourseType { appetizer, mainCourse, dessert, beverage, defaultCourse }
 
 /// Status of the item relative to the kitchen
-enum FiringStatus {
-  hold,
-  fired,
-  cooking,
-  ready
-}
+enum FiringStatus { hold, fired, cooking, ready }
 
 /// Represents a single line item in the cart
 @freezed
 class CartItem with _$CartItem {
   const factory CartItem({
-    required String uuid, // Unique ID for this line item (to distinguish variants)
+    required String
+        uuid, // Unique ID for this line item (to distinguish variants)
     required Product product,
     required int quantity,
     required double total, // (price + modifiers) * quantity - discount
@@ -50,22 +40,21 @@ class CartState with _$CartState {
     @Default(0.0) double tax,
     @Default(0.0) double discount,
     @Default(0.0) double total,
-    
+
     // CRM & Advanced
     Customer? customer,
-    @Default(0.0) double discountPercent, 
+    @Default(0.0) double discountPercent,
     @Default(0.0) double discountFixed,
-    
+
     // Promotions
     @Default([]) List<Promotion> activePromotions,
-    
+
     // Dine-In
     String? activeTableUuid,
     String? activeOrderUuid, // Only if retrieving an OPEN order
-    
+
     String? lastOrderNumber,
     OrderTableData? lastCompletedOrder,
-
     @Default(false) bool isLoading,
     @Default(false) bool isSuccess,
     String? error,

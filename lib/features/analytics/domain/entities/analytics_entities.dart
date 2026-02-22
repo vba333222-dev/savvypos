@@ -15,7 +15,8 @@ class SalesSummary with _$SalesSummary {
     required double taxTotal,
   }) = _SalesSummary;
 
-  factory SalesSummary.fromJson(Map<String, dynamic> json) => _$SalesSummaryFromJson(json);
+  factory SalesSummary.fromJson(Map<String, dynamic> json) =>
+      _$SalesSummaryFromJson(json);
 }
 
 @freezed
@@ -27,14 +28,15 @@ class LaborMetric with _$LaborMetric {
     required double totalLaborHours,
   }) = _LaborMetric;
 
-  factory LaborMetric.fromJson(Map<String, dynamic> json) => _$LaborMetricFromJson(json);
+  factory LaborMetric.fromJson(Map<String, dynamic> json) =>
+      _$LaborMetricFromJson(json);
 }
 
 enum MenuItemCategory {
-  star,       // High Profit, High Volume
-  plowhorse,  // Low Profit, High Volume
-  puzzle,     // High Profit, Low Volume
-  dog,        // Low Profit, Low Volume
+  star, // High Profit, High Volume
+  plowhorse, // Low Profit, High Volume
+  puzzle, // High Profit, Low Volume
+  dog, // Low Profit, Low Volume
 }
 
 @freezed
@@ -49,7 +51,8 @@ class MenuPerformance with _$MenuPerformance {
     required MenuItemCategory category,
   }) = _MenuPerformance;
 
-  factory MenuPerformance.fromJson(Map<String, dynamic> json) => _$MenuPerformanceFromJson(json);
+  factory MenuPerformance.fromJson(Map<String, dynamic> json) =>
+      _$MenuPerformanceFromJson(json);
 }
 
 @freezed
@@ -60,5 +63,6 @@ class HourlySales with _$HourlySales {
     required int transactionCount,
   }) = _HourlySales;
 
-  factory HourlySales.fromJson(Map<String, dynamic> json) => _$HourlySalesFromJson(json);
+  factory HourlySales.fromJson(Map<String, dynamic> json) =>
+      _$HourlySalesFromJson(json);
 }

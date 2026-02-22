@@ -8,7 +8,7 @@ class FinancialAggregationResult {
   final double totalServiceCharge;
   final double totalDiscounts;
   final double estimatedCogs;
-  
+
   const FinancialAggregationResult({
     this.grossSales = 0,
     this.netSales = 0,
@@ -25,33 +25,35 @@ class CalculateEodFinancialsUseCase {
 
   CalculateEodFinancialsUseCase(this._orderRepo);
 
-  Future<FinancialAggregationResult> call(DateTime shiftStartTime, {DateTime? shiftEndTime}) async {
+  Future<FinancialAggregationResult> call(DateTime shiftStartTime,
+      {DateTime? shiftEndTime}) async {
     final endTime = shiftEndTime ?? DateTime.now();
-    
+
     // Retrieve all completed orders for this shift timeframe
-    final orders = await _orderRepo.getOrdersByDateRange(shiftStartTime, endTime);
-    
+    final orders =
+        await _orderRepo.getOrdersByDateRange(shiftStartTime, endTime);
+
     double gross = 0;
     double net = 0;
     double tax = 0;
     double service = 0;
     double discounts = 0;
     double cogs = 0;
-    
+
     for (final order in orders) {
-       // Only aggregate completed transactions
-       if (order.status != 'COMPLETED') continue;
-       
-       gross += order.subtotal;
-       tax += order.taxTotal;
-       service += 0; // Not explicitly tracked in OrderTableData currently
-       
-       discounts += order.discountTotal;
-       
-       net += (order.subtotal - order.discountTotal);
-       
-       // Fallback COGS estimate
-       cogs += (order.subtotal) * 0.35; 
+      // Only aggregate completed transactions
+      if (order.status != 'COMPLETED') continue;
+
+      gross += order.subtotal;
+      tax += order.taxTotal;
+      service += 0; // Not explicitly tracked in OrderTableData currently
+
+      discounts += order.discountTotal;
+
+      net += (order.subtotal - order.discountTotal);
+
+      // Fallback COGS estimate
+      cogs += (order.subtotal) * 0.35;
     }
 
     return FinancialAggregationResult(

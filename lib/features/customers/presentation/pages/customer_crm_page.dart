@@ -16,7 +16,7 @@ class CustomerCrmPage extends StatefulWidget {
 class _CustomerCrmPageState extends State<CustomerCrmPage> {
   final _repo = GetIt.I<ICustomerCrmRepository>();
   final _searchController = TextEditingController();
-  
+
   List<CustomerProfile> _customers = [];
   CustomerInsights? _insights;
   CustomerSegment? _selectedSegment;
@@ -37,9 +37,10 @@ class _CustomerCrmPageState extends State<CustomerCrmPage> {
   Future<void> _loadData() async {
     setState(() => _isLoading = true);
     try {
-      final customers = await _repo.getAllCustomers(segment: _selectedSegment, searchQuery: _searchController.text);
+      final customers = await _repo.getAllCustomers(
+          segment: _selectedSegment, searchQuery: _searchController.text);
       final insights = await _repo.getInsights();
-      
+
       if (mounted) {
         setState(() {
           _customers = customers;
@@ -54,22 +55,32 @@ class _CustomerCrmPageState extends State<CustomerCrmPage> {
 
   Color _segmentColor(CustomerSegment segment) {
     switch (segment) {
-      case CustomerSegment.newGuest: return Colors.blue;
-      case CustomerSegment.returning: return Colors.green;
-      case CustomerSegment.regular: return Colors.orange;
-      case CustomerSegment.vip: return Colors.purple;
-      case CustomerSegment.lapsed: return Colors.red;
+      case CustomerSegment.newGuest:
+        return Colors.blue;
+      case CustomerSegment.returning:
+        return Colors.green;
+      case CustomerSegment.regular:
+        return Colors.orange;
+      case CustomerSegment.vip:
+        return Colors.purple;
+      case CustomerSegment.lapsed:
+        return Colors.red;
     }
   }
 
   String _segmentLabel(CustomerSegment? segment) {
     if (segment == null) return 'All';
     switch (segment) {
-      case CustomerSegment.newGuest: return 'New';
-      case CustomerSegment.returning: return 'Returning';
-      case CustomerSegment.regular: return 'Regular';
-      case CustomerSegment.vip: return 'VIP';
-      case CustomerSegment.lapsed: return 'Lapsed';
+      case CustomerSegment.newGuest:
+        return 'New';
+      case CustomerSegment.returning:
+        return 'Returning';
+      case CustomerSegment.regular:
+        return 'Regular';
+      case CustomerSegment.vip:
+        return 'VIP';
+      case CustomerSegment.lapsed:
+        return 'Lapsed';
     }
   }
 
@@ -94,14 +105,26 @@ class _CustomerCrmPageState extends State<CustomerCrmPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _InsightChip(label: 'New', value: _insights!.totalNewGuests.toString(), color: Colors.blue),
-                  _InsightChip(label: 'Returning', value: _insights!.totalReturning.toString(), color: Colors.green),
-                  _InsightChip(label: 'Lapsed', value: _insights!.totalLapsed.toString(), color: Colors.red),
-                  _InsightChip(label: 'Avg Spend', value: currFmt.format(_insights!.averageSpendAll), color: Colors.purple),
+                  _InsightChip(
+                      label: 'New',
+                      value: _insights!.totalNewGuests.toString(),
+                      color: Colors.blue),
+                  _InsightChip(
+                      label: 'Returning',
+                      value: _insights!.totalReturning.toString(),
+                      color: Colors.green),
+                  _InsightChip(
+                      label: 'Lapsed',
+                      value: _insights!.totalLapsed.toString(),
+                      color: Colors.red),
+                  _InsightChip(
+                      label: 'Avg Spend',
+                      value: currFmt.format(_insights!.averageSpendAll),
+                      color: Colors.purple),
                 ],
               ),
             ).animate().fadeIn(),
-          
+
           // Search & Filter Bar
           Padding(
             padding: const EdgeInsets.all(16),
@@ -113,7 +136,8 @@ class _CustomerCrmPageState extends State<CustomerCrmPage> {
                     decoration: InputDecoration(
                       hintText: 'Search by name or phone...',
                       prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
                       isDense: true,
                     ),
                     onSubmitted: (_) => _loadData(),
@@ -128,41 +152,53 @@ class _CustomerCrmPageState extends State<CustomerCrmPage> {
                   },
                   itemBuilder: (_) => [
                     const PopupMenuItem(value: null, child: Text('All')),
-                    ...CustomerSegment.values.map((s) => PopupMenuItem(value: s, child: Text(_segmentLabel(s)))),
+                    ...CustomerSegment.values.map((s) =>
+                        PopupMenuItem(value: s, child: Text(_segmentLabel(s)))),
                   ],
                 ),
               ],
             ),
           ),
-          
+
           // Segment Chips
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: [
-                ChoiceChip(label: const Text('All'), selected: _selectedSegment == null, onSelected: (_) { setState(() => _selectedSegment = null); _loadData(); }),
+                ChoiceChip(
+                    label: const Text('All'),
+                    selected: _selectedSegment == null,
+                    onSelected: (_) {
+                      setState(() => _selectedSegment = null);
+                      _loadData();
+                    }),
                 const Gap(8),
                 ...CustomerSegment.values.map((s) => Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: ChoiceChip(
-                    label: Text(_segmentLabel(s)),
-                    selected: _selectedSegment == s,
-                    selectedColor: _segmentColor(s).withValues(alpha: 0.3),
-                    onSelected: (_) { setState(() => _selectedSegment = s); _loadData(); },
-                  ),
-                )),
+                      padding: const EdgeInsets.only(right: 8),
+                      child: ChoiceChip(
+                        label: Text(_segmentLabel(s)),
+                        selected: _selectedSegment == s,
+                        selectedColor: _segmentColor(s).withValues(alpha: 0.3),
+                        onSelected: (_) {
+                          setState(() => _selectedSegment = s);
+                          _loadData();
+                        },
+                      ),
+                    )),
               ],
             ),
           ),
           const Gap(12),
-          
+
           // Customer List
           Expanded(
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : _customers.isEmpty
-                    ? const Center(child: Text('No customers found', style: TextStyle(color: Colors.grey)))
+                    ? const Center(
+                        child: Text('No customers found',
+                            style: TextStyle(color: Colors.grey)))
                     : ListView.builder(
                         padding: const EdgeInsets.all(16),
                         itemCount: _customers.length,
@@ -171,8 +207,14 @@ class _CustomerCrmPageState extends State<CustomerCrmPage> {
                           return Card(
                             child: ListTile(
                               leading: CircleAvatar(
-                                backgroundColor: _segmentColor(c.segment).withValues(alpha: 0.2),
-                                child: Text(c.name.isNotEmpty ? c.name[0].toUpperCase() : '?', style: TextStyle(color: _segmentColor(c.segment))),
+                                backgroundColor: _segmentColor(c.segment)
+                                    .withValues(alpha: 0.2),
+                                child: Text(
+                                    c.name.isNotEmpty
+                                        ? c.name[0].toUpperCase()
+                                        : '?',
+                                    style: TextStyle(
+                                        color: _segmentColor(c.segment))),
                               ),
                               title: Row(
                                 children: [
@@ -180,19 +222,31 @@ class _CustomerCrmPageState extends State<CustomerCrmPage> {
                                   if (c.isVip) ...[
                                     const Gap(8),
                                     Container(
-                                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                      decoration: BoxDecoration(color: Colors.purple, borderRadius: BorderRadius.circular(4)),
-                                      child: const Text('VIP', style: TextStyle(color: Colors.white, fontSize: 10)),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 6, vertical: 2),
+                                      decoration: BoxDecoration(
+                                          color: Colors.purple,
+                                          borderRadius:
+                                              BorderRadius.circular(4)),
+                                      child: const Text('VIP',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 10)),
                                     ),
                                   ],
                                 ],
                               ),
-                              subtitle: Text('${c.visitCount} visits • ${currFmt.format(c.totalSpent)} total'),
+                              subtitle: Text(
+                                  '${c.visitCount} visits • ${currFmt.format(c.totalSpent)} total'),
                               trailing: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  Chip(label: Text(_segmentLabel(c.segment), style: const TextStyle(fontSize: 10)), backgroundColor: _segmentColor(c.segment).withValues(alpha: 0.2)),
+                                  Chip(
+                                      label: Text(_segmentLabel(c.segment),
+                                          style: const TextStyle(fontSize: 10)),
+                                      backgroundColor: _segmentColor(c.segment)
+                                          .withValues(alpha: 0.2)),
                                 ],
                               ),
                               onTap: () => _openCustomerDetail(c),
@@ -210,7 +264,8 @@ class _CustomerCrmPageState extends State<CustomerCrmPage> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (_) => _CustomerDetailSheet(customer: customer, repo: _repo, onRefresh: _loadData),
+      builder: (_) => _CustomerDetailSheet(
+          customer: customer, repo: _repo, onRefresh: _loadData),
     );
   }
 }
@@ -220,13 +275,16 @@ class _InsightChip extends StatelessWidget {
   final String value;
   final Color color;
 
-  const _InsightChip({required this.label, required this.value, required this.color});
+  const _InsightChip(
+      {required this.label, required this.value, required this.color});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(value, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: color)),
+        Text(value,
+            style: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.bold, color: color)),
         Text(label, style: const TextStyle(color: Colors.grey, fontSize: 12)),
       ],
     );
@@ -238,7 +296,8 @@ class _CustomerDetailSheet extends StatefulWidget {
   final ICustomerCrmRepository repo;
   final VoidCallback onRefresh;
 
-  const _CustomerDetailSheet({required this.customer, required this.repo, required this.onRefresh});
+  const _CustomerDetailSheet(
+      {required this.customer, required this.repo, required this.onRefresh});
 
   @override
   State<_CustomerDetailSheet> createState() => _CustomerDetailSheetState();
@@ -282,24 +341,37 @@ class _CustomerDetailSheetState extends State<_CustomerDetailSheet> {
 
     return Container(
       padding: const EdgeInsets.all(24),
-      constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.85),
+      constraints:
+          BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.85),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           // Header
           Row(
             children: [
-              CircleAvatar(radius: 32, child: Text(_customer.name[0].toUpperCase(), style: const TextStyle(fontSize: 28))),
+              CircleAvatar(
+                  radius: 32,
+                  child: Text(_customer.name[0].toUpperCase(),
+                      style: const TextStyle(fontSize: 28))),
               const Gap(16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(_customer.name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                    if (_customer.phoneNumber != null) Text(_customer.phoneNumber!, style: const TextStyle(color: Colors.grey)),
+                    Text(_customer.name,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    if (_customer.phoneNumber != null)
+                      Text(_customer.phoneNumber!,
+                          style: const TextStyle(color: Colors.grey)),
                     Wrap(
                       spacing: 4,
-                      children: _customer.tags.map((t) => Chip(label: Text(t, style: const TextStyle(fontSize: 10)), padding: EdgeInsets.zero)).toList(),
+                      children: _customer.tags
+                          .map((t) => Chip(
+                              label:
+                                  Text(t, style: const TextStyle(fontSize: 10)),
+                              padding: EdgeInsets.zero))
+                          .toList(),
                     ),
                   ],
                 ),
@@ -307,27 +379,38 @@ class _CustomerDetailSheetState extends State<_CustomerDetailSheet> {
             ],
           ),
           const Gap(20),
-          
+
           // Stats Row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _StatTile(label: 'Visits', value: _customer.visitCount.toString()),
-              _StatTile(label: 'Total Spent', value: currFmt.format(_customer.totalSpent)),
-              _StatTile(label: 'Avg Order', value: currFmt.format(_customer.averageOrderValue)),
+              _StatTile(
+                  label: 'Visits', value: _customer.visitCount.toString()),
+              _StatTile(
+                  label: 'Total Spent',
+                  value: currFmt.format(_customer.totalSpent)),
+              _StatTile(
+                  label: 'Avg Order',
+                  value: currFmt.format(_customer.averageOrderValue)),
             ],
           ),
           const Divider(height: 32),
-          
+
           // Notes Section
-          Align(alignment: Alignment.centerLeft, child: Text('Notes (${_customer.notes.length})', style: const TextStyle(fontWeight: FontWeight.bold))),
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Notes (${_customer.notes.length})',
+                  style: const TextStyle(fontWeight: FontWeight.bold))),
           const Gap(8),
           Row(
             children: [
               Expanded(
                 child: TextField(
                   controller: _noteController,
-                  decoration: const InputDecoration(hintText: 'Add a note...', border: OutlineInputBorder(), isDense: true),
+                  decoration: const InputDecoration(
+                      hintText: 'Add a note...',
+                      border: OutlineInputBorder(),
+                      isDense: true),
                 ),
               ),
               const Gap(8),
@@ -337,30 +420,42 @@ class _CustomerDetailSheetState extends State<_CustomerDetailSheet> {
           const Gap(8),
           if (_customer.notes.isNotEmpty)
             ...(_customer.notes.take(3).map((n) => ListTile(
-              dense: true,
-              leading: n.isCritical ? const Icon(Icons.warning, color: Colors.red, size: 18) : const Icon(Icons.note, size: 18),
-              title: Text(n.content, style: TextStyle(color: n.isCritical ? Colors.red : null)),
-              subtitle: Text('${n.createdBy} • ${dateFmt.format(n.createdAt)}', style: const TextStyle(fontSize: 11)),
-            ))),
-          
+                  dense: true,
+                  leading: n.isCritical
+                      ? const Icon(Icons.warning, color: Colors.red, size: 18)
+                      : const Icon(Icons.note, size: 18),
+                  title: Text(n.content,
+                      style:
+                          TextStyle(color: n.isCritical ? Colors.red : null)),
+                  subtitle: Text(
+                      '${n.createdBy} • ${dateFmt.format(n.createdAt)}',
+                      style: const TextStyle(fontSize: 11)),
+                ))),
+
           const Gap(16),
-          
+
           // Order History
-          Align(alignment: Alignment.centerLeft, child: Text('Recent Orders (${_orders.length})', style: const TextStyle(fontWeight: FontWeight.bold))),
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Text('Recent Orders (${_orders.length})',
+                  style: const TextStyle(fontWeight: FontWeight.bold))),
           const Gap(8),
           if (_orders.isEmpty)
             const Text('No orders yet', style: TextStyle(color: Colors.grey))
           else
             ...(_orders.take(5).map((o) => ListTile(
-              dense: true,
-              leading: const Icon(Icons.receipt_long, size: 18),
-              title: Text(currFmt.format(o.total)),
-              subtitle: Text(dateFmt.format(o.orderDate)),
-              trailing: Text(o.paymentMethod, style: const TextStyle(fontSize: 11)),
-            ))),
-          
+                  dense: true,
+                  leading: const Icon(Icons.receipt_long, size: 18),
+                  title: Text(currFmt.format(o.total)),
+                  subtitle: Text(dateFmt.format(o.orderDate)),
+                  trailing: Text(o.paymentMethod,
+                      style: const TextStyle(fontSize: 11)),
+                ))),
+
           const Gap(16),
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Close')),
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Close')),
         ],
       ),
     );
@@ -377,7 +472,8 @@ class _StatTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        Text(value,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         Text(label, style: const TextStyle(color: Colors.grey, fontSize: 12)),
       ],
     );

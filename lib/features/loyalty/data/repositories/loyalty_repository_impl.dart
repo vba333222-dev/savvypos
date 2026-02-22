@@ -16,13 +16,14 @@ class LoyaltyRepositoryImpl implements ILoyaltyRepository {
     final row = await db.select(db.loyaltyProgramTable).getSingleOrNull();
     if (row == null) {
       // Return default and optionally save it
-      return const LoyaltyConfig(); 
+      return const LoyaltyConfig();
     }
     return LoyaltyConfig(
       pointsPerDollar: row.pointsPerCurrency,
-      redeemThreshold: 100, // DB doesn't have this column yet in schema I defined? Let's check schema.
+      redeemThreshold:
+          100, // DB doesn't have this column yet in schema I defined? Let's check schema.
       // My schema had pointsPerCurrency and exchangeRate.
-      // I should map correctly. 
+      // I should map correctly.
       // LoyaltyConfig entity has: pointsPerDollar, pointsForVisit, signupBonus, birthdayBonus, redeemThreshold, redeemValue
       // My Table has: pointsPerCurrency, exchangeRate, tiersJson.
       // Mismatch between Schema and Entity. I should have aligned them.
@@ -36,67 +37,73 @@ class LoyaltyRepositoryImpl implements ILoyaltyRepository {
   Future<void> updateConfig(LoyaltyConfig config) async {
     // Upsert
     await db.into(db.loyaltyProgramTable).insertOnConflictUpdate(
-      LoyaltyProgramTableCompanion(
-        id: const Value(1), // Singleton
-        pointsPerCurrency: Value(config.pointsPerDollar),
-        // Mapping other fields if table supported them
-      ),
-    );
+          LoyaltyProgramTableCompanion(
+            id: const Value(1), // Singleton
+            pointsPerCurrency: Value(config.pointsPerDollar),
+            // Mapping other fields if table supported them
+          ),
+        );
   }
 
   @override
-  Future<LoyaltyMember> enrollCustomer(String customerUuid, String customerName, String phoneNumber, {DateTime? birthday}) async {
+  Future<LoyaltyMember> enrollCustomer(
+      String customerUuid, String customerName, String phoneNumber,
+      {DateTime? birthday}) async {
     final uuid = const Uuid().v4();
     final now = DateTime.now();
-    
+
     // Check Config for Bonus
     final config = await getConfig();
     final bonus = config.signupBonus;
 
     await db.transaction(() async {
-       await db.into(db.loyaltyMemberTable).insert(
-         LoyaltyMemberTableCompanion.insert(
-           uuid: uuid,
-           customerUuid: customerUuid,
-           pointsBalance: Value(bonus.toDouble()),
-           lifetimePoints: Value(bonus.toDouble()),
-           currentTier: const Value('Bronze'),
-           joinedAt: Value(now),
-         ),
-       );
-       
-       if (bonus > 0) {
-         await db.into(db.loyaltyTransactionTable).insert(
-           LoyaltyTransactionTableCompanion.insert(
-             uuid: const Uuid().v4(),
-             memberUuid: uuid,
-             type: 'BONUS',
-             pointsDelta: bonus.toDouble(),
-             reason: const Value('Signup Bonus'),
-             createdAt: Value(now),
-           ),
-         );
-       }
+      await db.into(db.loyaltyMemberTable).insert(
+            LoyaltyMemberTableCompanion.insert(
+              uuid: uuid,
+              customerUuid: customerUuid,
+              pointsBalance: Value(bonus.toDouble()),
+              lifetimePoints: Value(bonus.toDouble()),
+              currentTier: const Value('Bronze'),
+              joinedAt: Value(now),
+            ),
+          );
+
+      if (bonus > 0) {
+        await db.into(db.loyaltyTransactionTable).insert(
+              LoyaltyTransactionTableCompanion.insert(
+                uuid: const Uuid().v4(),
+                memberUuid: uuid,
+                type: 'BONUS',
+                pointsDelta: bonus.toDouble(),
+                reason: const Value('Signup Bonus'),
+                createdAt: Value(now),
+              ),
+            );
+      }
     });
-    
+
     return getMember(customerUuid).then((m) => m!);
   }
 
   @override
   Future<LoyaltyMember?> getMember(String customerUuid) async {
-    final row = await (db.select(db.loyaltyMemberTable)..where((t) => t.customerUuid.equals(customerUuid))).getSingleOrNull();
+    final row = await (db.select(db.loyaltyMemberTable)
+          ..where((t) => t.customerUuid.equals(customerUuid)))
+        .getSingleOrNull();
     if (row == null) return null;
-    
+
     return _mapMember(row);
   }
-  
+
   // Helper
   Future<LoyaltyMember> _mapMember(LoyaltyMemberData row) async {
     // Need customer details? we have name/phone in args usually or join?
-    // The entity requires name/phone. 
+    // The entity requires name/phone.
     // Join with CustomerTable
-    final customer = await (db.select(db.customerTable)..where((t) => t.uuid.equals(row.customerUuid))).getSingle();
-    
+    final customer = await (db.select(db.customerTable)
+          ..where((t) => t.uuid.equals(row.customerUuid)))
+        .getSingle();
+
     return LoyaltyMember(
       customerUuid: row.customerUuid,
       customerName: customer.name,
@@ -108,13 +115,17 @@ class LoyaltyRepositoryImpl implements ILoyaltyRepository {
       lastEarnedAt: row.lastTransactionAt,
     );
   }
-  
+
   LoyaltyTier _parseTier(String t) {
-    switch(t.toLowerCase()) {
-      case 'silver': return LoyaltyTier.silver;
-      case 'gold': return LoyaltyTier.gold;
-      case 'platinum': return LoyaltyTier.platinum;
-      default: return LoyaltyTier.bronze;
+    switch (t.toLowerCase()) {
+      case 'silver':
+        return LoyaltyTier.silver;
+      case 'gold':
+        return LoyaltyTier.gold;
+      case 'platinum':
+        return LoyaltyTier.platinum;
+      default:
+        return LoyaltyTier.bronze;
     }
   }
 
@@ -122,12 +133,14 @@ class LoyaltyRepositoryImpl implements ILoyaltyRepository {
   Future<LoyaltyMember?> getMemberByPhone(String phoneNumber) async {
     // Join Member -> Customer
     final query = db.select(db.loyaltyMemberTable).join([
-      innerJoin(db.customerTable, db.customerTable.uuid.equalsExp(db.loyaltyMemberTable.customerUuid))
-    ])..where(db.customerTable.phone.equals(phoneNumber));
-    
+      innerJoin(db.customerTable,
+          db.customerTable.uuid.equalsExp(db.loyaltyMemberTable.customerUuid))
+    ])
+      ..where(db.customerTable.phone.equals(phoneNumber));
+
     final row = await query.getSingleOrNull();
     if (row == null) return null;
-    
+
     final memberRow = row.readTable(db.loyaltyMemberTable);
     return _mapMember(memberRow);
   }
@@ -144,113 +157,131 @@ class LoyaltyRepositoryImpl implements ILoyaltyRepository {
   }
 
   @override
-  Future<LoyaltyMember> earnPoints(String customerUuid, double orderTotal, {String? orderUuid}) async {
+  Future<LoyaltyMember> earnPoints(String customerUuid, double orderTotal,
+      {String? orderUuid}) async {
     final config = await getConfig();
     final points = (orderTotal * config.pointsPerDollar).floor();
-    
+
     if (points <= 0) return (await getMember(customerUuid))!;
-    
-    final member = await (db.select(db.loyaltyMemberTable)..where((t) => t.customerUuid.equals(customerUuid))).getSingle();
-    
+
+    final member = await (db.select(db.loyaltyMemberTable)
+          ..where((t) => t.customerUuid.equals(customerUuid)))
+        .getSingle();
+
     final newBalance = member.pointsBalance + points;
     final newLifetime = member.lifetimePoints + points;
-    
+
     // Tier Logic
     String newTier = member.currentTier;
-    if (newLifetime >= 1000) newTier = 'Platinum';
-    else if (newLifetime >= 500) newTier = 'Gold';
+    if (newLifetime >= 1000)
+      newTier = 'Platinum';
+    else if (newLifetime >= 500)
+      newTier = 'Gold';
     else if (newLifetime >= 100) newTier = 'Silver';
-    
+
     await db.transaction(() async {
-       await (db.update(db.loyaltyMemberTable)..where((t) => t.uuid.equals(member.uuid))).write(
-         LoyaltyMemberTableCompanion(
-           pointsBalance: Value(newBalance),
-           lifetimePoints: Value(newLifetime),
-           currentTier: Value(newTier),
-           lastTransactionAt: Value(DateTime.now()),
-         )
-       );
-       
-       await db.into(db.loyaltyTransactionTable).insert(
-         LoyaltyTransactionTableCompanion.insert(
-           uuid: const Uuid().v4(),
-           memberUuid: member.uuid,
-           type: 'EARN',
-           pointsDelta: points.toDouble(),
-           reason: const Value('Purchase'),
-           orderUuid: Value(orderUuid),
-           createdAt: Value(DateTime.now()),
-         )
-       );
+      await (db.update(db.loyaltyMemberTable)
+            ..where((t) => t.uuid.equals(member.uuid)))
+          .write(LoyaltyMemberTableCompanion(
+        pointsBalance: Value(newBalance),
+        lifetimePoints: Value(newLifetime),
+        currentTier: Value(newTier),
+        lastTransactionAt: Value(DateTime.now()),
+      ));
+
+      await db
+          .into(db.loyaltyTransactionTable)
+          .insert(LoyaltyTransactionTableCompanion.insert(
+            uuid: const Uuid().v4(),
+            memberUuid: member.uuid,
+            type: 'EARN',
+            pointsDelta: points.toDouble(),
+            reason: const Value('Purchase'),
+            orderUuid: Value(orderUuid),
+            createdAt: Value(DateTime.now()),
+          ));
     });
-    
+
     return (await getMember(customerUuid))!;
   }
 
   @override
-  Future<LoyaltyMember> redeemPoints(String customerUuid, int points, String reason, {String? orderUuid}) async {
-     final member = await (db.select(db.loyaltyMemberTable)..where((t) => t.customerUuid.equals(customerUuid))).getSingle();
-     
-     if (member.pointsBalance < points) {
-       throw Exception('Insufficient points');
-     }
-     
-     await db.transaction(() async {
-       await (db.update(db.loyaltyMemberTable)..where((t) => t.uuid.equals(member.uuid))).write(
-         LoyaltyMemberTableCompanion(
-           pointsBalance: Value(member.pointsBalance - points),
-           lastTransactionAt: Value(DateTime.now()),
-         )
-       );
-       
-        await db.into(db.loyaltyTransactionTable).insert(
-         LoyaltyTransactionTableCompanion.insert(
-           uuid: const Uuid().v4(),
-           memberUuid: member.uuid,
-           type: 'REDEEM',
-           pointsDelta: -points.toDouble(),
-           reason: Value(reason),
-           orderUuid: Value(orderUuid),
-           createdAt: Value(DateTime.now()),
-         )
-       );
-     });
-     
-     return (await getMember(customerUuid))!;
+  Future<LoyaltyMember> redeemPoints(
+      String customerUuid, int points, String reason,
+      {String? orderUuid}) async {
+    final member = await (db.select(db.loyaltyMemberTable)
+          ..where((t) => t.customerUuid.equals(customerUuid)))
+        .getSingle();
+
+    if (member.pointsBalance < points) {
+      throw Exception('Insufficient points');
+    }
+
+    await db.transaction(() async {
+      await (db.update(db.loyaltyMemberTable)
+            ..where((t) => t.uuid.equals(member.uuid)))
+          .write(LoyaltyMemberTableCompanion(
+        pointsBalance: Value(member.pointsBalance - points),
+        lastTransactionAt: Value(DateTime.now()),
+      ));
+
+      await db
+          .into(db.loyaltyTransactionTable)
+          .insert(LoyaltyTransactionTableCompanion.insert(
+            uuid: const Uuid().v4(),
+            memberUuid: member.uuid,
+            type: 'REDEEM',
+            pointsDelta: -points.toDouble(),
+            reason: Value(reason),
+            orderUuid: Value(orderUuid),
+            createdAt: Value(DateTime.now()),
+          ));
+    });
+
+    return (await getMember(customerUuid))!;
   }
 
   @override
-  Future<List<LoyaltyTransaction>> getTransactionHistory(String customerUuid, {int limit = 50}) async {
-    final member = await (db.select(db.loyaltyMemberTable)..where((t) => t.customerUuid.equals(customerUuid))).getSingle();
-    
+  Future<List<LoyaltyTransaction>> getTransactionHistory(String customerUuid,
+      {int limit = 50}) async {
+    final member = await (db.select(db.loyaltyMemberTable)
+          ..where((t) => t.customerUuid.equals(customerUuid)))
+        .getSingle();
+
     final rows = await (db.select(db.loyaltyTransactionTable)
-      ..where((t) => t.memberUuid.equals(member.uuid))
-      ..orderBy([(t) => OrderingTerm.desc(t.createdAt)])
-      ..limit(limit))
-      .get();
-      
-    return rows.map((r) => LoyaltyTransaction(
-      id: r.uuid,
-      customerUuid: customerUuid,
-      pointsChange: r.pointsDelta.toInt(),
-      reason: r.reason ?? '',
-      transactionDate: r.createdAt,
-      orderUuid: r.orderUuid,
-    )).toList();
+          ..where((t) => t.memberUuid.equals(member.uuid))
+          ..orderBy([(t) => OrderingTerm.desc(t.createdAt)])
+          ..limit(limit))
+        .get();
+
+    return rows
+        .map((r) => LoyaltyTransaction(
+              id: r.uuid,
+              customerUuid: customerUuid,
+              pointsChange: r.pointsDelta.toInt(),
+              reason: r.reason ?? '',
+              transactionDate: r.createdAt,
+              orderUuid: r.orderUuid,
+            ))
+        .toList();
   }
 
   @override
   Future<List<LoyaltyReward>> getAvailableRewards() async {
-    final rows = await (db.select(db.loyaltyRewardTable)..where((t) => t.isActive.equals(true))).get();
-    return rows.map((r) => LoyaltyReward(
-      id: r.uuid,
-      name: r.name,
-      pointsCost: r.pointsCost.toInt(),
-      type: r.discountType,
-      discountAmount: r.discountValue,
-      freeItemUuid: r.applicableProductUuid,
-      isActive: r.isActive,
-    )).toList();
+    final rows = await (db.select(db.loyaltyRewardTable)
+          ..where((t) => t.isActive.equals(true)))
+        .get();
+    return rows
+        .map((r) => LoyaltyReward(
+              id: r.uuid,
+              name: r.name,
+              pointsCost: r.pointsCost.toInt(),
+              type: r.discountType,
+              discountAmount: r.discountValue,
+              freeItemUuid: r.applicableProductUuid,
+              isActive: r.isActive,
+            ))
+        .toList();
   }
 
   @override
@@ -260,6 +291,6 @@ class LoyaltyRepositoryImpl implements ILoyaltyRepository {
     // Schema: LoyaltyMemberTable doesn't have birthday. CustomerTable might?
     // CustomerTable has 'phone', 'email', 'name'. Doesn't seem to have birthday.
     // We should assume it's not implemented yet or check CustomerTable.
-    return false; 
+    return false;
   }
 }

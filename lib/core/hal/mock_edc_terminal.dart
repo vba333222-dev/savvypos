@@ -41,7 +41,8 @@ class MockEdcTerminal implements IPaymentTerminalDevice {
     required double amount,
     required String referenceId,
   }) async {
-    _logger.i('MockEdcTerminal: Simulating EDC payment (Ref: $referenceId, Amount: $amount)');
+    _logger.i(
+        'MockEdcTerminal: Simulating EDC payment (Ref: $referenceId, Amount: $amount)');
 
     // Step 1: Simulate brief connection phase
     _statusController.add(EdcTerminalStatus.connecting);

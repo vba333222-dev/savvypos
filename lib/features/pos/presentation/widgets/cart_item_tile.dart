@@ -35,7 +35,8 @@ class CartItemTile extends StatelessWidget {
         }
         return false; // BLoC controls list rebuild, not Dismissible
       },
-      background: _SwipeHoldBackground(isHeld: item.firingStatus == FiringStatus.hold),
+      background:
+          _SwipeHoldBackground(isHeld: item.firingStatus == FiringStatus.hold),
       secondaryBackground: _SwipeDeleteBackground(),
       child: _CartItemBody(item: item, isDiscounted: isDiscounted),
     );
@@ -60,7 +61,8 @@ class _SwipeHoldBackground extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(isHeld ? Icons.play_arrow_rounded : Icons.pan_tool_rounded, color: Colors.white, size: 24),
+          Icon(isHeld ? Icons.play_arrow_rounded : Icons.pan_tool_rounded,
+              color: Colors.white, size: 24),
           const SizedBox(height: 2),
           Text(
             isHeld ? 'FIRE' : 'HOLD',
@@ -126,8 +128,13 @@ class _CartItemBody extends StatelessWidget {
       margin: EdgeInsets.only(bottom: theme.shapes.spacingSm),
       padding: EdgeInsets.all(theme.shapes.spacingSm),
       decoration: BoxDecoration(
-        color: isHeld ? theme.colors.stateWarning.withValues(alpha: 0.05) : theme.colors.bgElevated,
-        border: Border.all(color: isHeld ? theme.colors.stateWarning : theme.colors.borderDefault),
+        color: isHeld
+            ? theme.colors.stateWarning.withValues(alpha: 0.05)
+            : theme.colors.bgElevated,
+        border: Border.all(
+            color: isHeld
+                ? theme.colors.stateWarning
+                : theme.colors.borderDefault),
         borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
         boxShadow: theme.elevations.sm,
       ),
@@ -146,9 +153,8 @@ class _CartItemBody extends StatelessWidget {
                   icon: Icons.add,
                   onTap: () {
                     HapticFeedback.selectionClick();
-                    context
-                        .read<CartBloc>()
-                        .add(CartEvent.updateQuantity(item.uuid, item.quantity + 1));
+                    context.read<CartBloc>().add(
+                        CartEvent.updateQuantity(item.uuid, item.quantity + 1));
                   },
                 ),
                 Padding(
@@ -163,9 +169,8 @@ class _CartItemBody extends StatelessWidget {
                   icon: Icons.remove,
                   onTap: () {
                     HapticFeedback.selectionClick();
-                    context
-                        .read<CartBloc>()
-                        .add(CartEvent.updateQuantity(item.uuid, item.quantity - 1));
+                    context.read<CartBloc>().add(
+                        CartEvent.updateQuantity(item.uuid, item.quantity - 1));
                   },
                 ),
               ],
@@ -183,7 +188,8 @@ class _CartItemBody extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (isHeld) ...[
-                      Icon(Icons.pan_tool_rounded, size: 14, color: theme.colors.stateWarning),
+                      Icon(Icons.pan_tool_rounded,
+                          size: 14, color: theme.colors.stateWarning),
                       const SizedBox(width: 4),
                     ],
                     Expanded(
@@ -225,13 +231,14 @@ class _CartItemBody extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
                         color: theme.colors.stateSuccess.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(4),
                         border: Border.all(
-                            color:
-                                theme.colors.stateSuccess.withValues(alpha: 0.3)),
+                            color: theme.colors.stateSuccess
+                                .withValues(alpha: 0.3)),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -273,9 +280,7 @@ class _CartItemBody extends StatelessWidget {
                 color: isDiscounted
                     ? theme.colors.stateSuccess
                     : theme.colors.brandPrimary,
-              )
-                  .animate(key: ValueKey(item.total))
-                  .scale(
+              ).animate(key: ValueKey(item.total)).scale(
                     duration: 150.ms, // was 200ms — snappier price update
                     curve: Curves.easeOut,
                     begin: const Offset(1.1, 1.1),
@@ -294,8 +299,7 @@ class _CartItemBody extends StatelessWidget {
                       'void',
                       style: TextStyle(
                           fontSize: 9,
-                          color:
-                              theme.colors.textMuted.withValues(alpha: 0.5)),
+                          color: theme.colors.textMuted.withValues(alpha: 0.5)),
                     ),
                   ],
                 ),

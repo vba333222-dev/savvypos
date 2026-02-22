@@ -44,7 +44,7 @@ class _InteractiveSalesChartState extends State<InteractiveSalesChart> {
               setState(() => _touchedIndex = null);
               return;
             }
-            
+
             final newIndex = barTouchResponse.spot!.touchedBarGroupIndex;
             if (newIndex != _touchedIndex) {
               HapticFeedback.selectionClick(); // Scrub tick
@@ -63,7 +63,10 @@ class _InteractiveSalesChartState extends State<InteractiveSalesChart> {
                 children: [
                   TextSpan(
                     text: '\$${rod.toY.toStringAsFixed(0)}',
-                    style: TextStyle(color: theme.colors.brandPrimary, fontWeight: FontWeight.bold, fontSize: 14),
+                    style: TextStyle(
+                        color: theme.colors.brandPrimary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14),
                   ),
                 ],
               );
@@ -74,23 +77,25 @@ class _InteractiveSalesChartState extends State<InteractiveSalesChart> {
         titlesData: FlTitlesData(
           show: true,
           bottomTitles: AxisTitles(
-             sideTitles: SideTitles(
-               showTitles: true,
-               getTitlesWidget: (val, meta) {
-                 if (val.toInt() >= 0 && val.toInt() < widget.data.length) {
-                   // Only show every 2nd label if many points
-                   if (widget.data.length > 7 && val.toInt() % 2 != 0) return const SizedBox.shrink();
-                   return Padding(
-                     padding: const EdgeInsets.only(top: 8.0),
-                     child: Text(
-                       widget.data[val.toInt()].label.substring(0, 3), // Abbrev
-                       style: TextStyle(color: theme.colors.textMuted, fontSize: 10),
-                     ),
-                   );
-                 }
-                 return const SizedBox.shrink();
-               },
-             ),
+            sideTitles: SideTitles(
+              showTitles: true,
+              getTitlesWidget: (val, meta) {
+                if (val.toInt() >= 0 && val.toInt() < widget.data.length) {
+                  // Only show every 2nd label if many points
+                  if (widget.data.length > 7 && val.toInt() % 2 != 0)
+                    return const SizedBox.shrink();
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      widget.data[val.toInt()].label.substring(0, 3), // Abbrev
+                      style: TextStyle(
+                          color: theme.colors.textMuted, fontSize: 10),
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
           ),
           leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
@@ -105,14 +110,21 @@ class _InteractiveSalesChartState extends State<InteractiveSalesChart> {
               BarChartRodData(
                 toY: dp.value,
                 gradient: LinearGradient(
-                  colors: isTouched 
-                     ? [theme.colors.brandAccent, theme.colors.brandAccent] // Highlight
-                     : [theme.colors.brandPrimary, theme.colors.brandPrimary.withValues(alpha: 0.6)],
+                  colors: isTouched
+                      ? [
+                          theme.colors.brandAccent,
+                          theme.colors.brandAccent
+                        ] // Highlight
+                      : [
+                          theme.colors.brandPrimary,
+                          theme.colors.brandPrimary.withValues(alpha: 0.6)
+                        ],
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
                 ),
                 width: isTouched ? 22 : 16, // Zoom effect
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(6)),
                 backDrawRodData: BackgroundBarChartRodData(
                   show: true,
                   toY: widget.maxY * 1.2,
@@ -125,6 +137,9 @@ class _InteractiveSalesChartState extends State<InteractiveSalesChart> {
       ),
       duration: const Duration(milliseconds: 300), // Morph animation
       curve: Curves.easeOut,
-    ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.1, end: 0, curve: Curves.easeOut);
+    )
+        .animate()
+        .fadeIn(duration: 400.ms)
+        .slideY(begin: 0.1, end: 0, curve: Curves.easeOut);
   }
 }

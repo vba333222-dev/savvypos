@@ -26,12 +26,13 @@ class DataHealthTile extends StatelessWidget {
             children: [
               Icon(Icons.cloud_sync, color: theme.colors.brandPrimary),
               const SizedBox(width: 8),
-              Text('DATA HEALTH', style: TextStyle(
-                fontSize: 12, 
-                fontWeight: FontWeight.bold, 
-                color: theme.colors.textSecondary,
-                letterSpacing: 1.0,
-              )),
+              Text('DATA HEALTH',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: theme.colors.textSecondary,
+                    letterSpacing: 1.0,
+                  )),
             ],
           ),
           const SizedBox(height: 16),
@@ -42,19 +43,28 @@ class DataHealthTile extends StatelessWidget {
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: isHealthy ? theme.colors.stateSuccess.withValues(alpha: 0.1) : theme.colors.stateWarning.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
-                      border: Border.all(color: isHealthy ? theme.colors.stateSuccess : theme.colors.stateWarning),
+                      color: isHealthy
+                          ? theme.colors.stateSuccess.withValues(alpha: 0.1)
+                          : theme.colors.stateWarning.withValues(alpha: 0.1),
+                      borderRadius:
+                          BorderRadius.circular(theme.shapes.radiusMd),
+                      border: Border.all(
+                          color: isHealthy
+                              ? theme.colors.stateSuccess
+                              : theme.colors.stateWarning),
                     ),
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
                         // Imagine an Animated Liquid fill here
                         Icon(
-                          isHealthy ? Icons.check_circle_outline : Icons.sync_problem, 
-                          size: 48, 
-                          color: isHealthy ? theme.colors.stateSuccess : theme.colors.stateWarning
-                        ),
+                            isHealthy
+                                ? Icons.check_circle_outline
+                                : Icons.sync_problem,
+                            size: 48,
+                            color: isHealthy
+                                ? theme.colors.stateSuccess
+                                : theme.colors.stateWarning),
                       ],
                     ),
                   ),
@@ -64,18 +74,29 @@ class DataHealthTile extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(dbSize, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: theme.colors.textPrimary)),
-                    Text('Local DB Size', style: TextStyle(color: theme.colors.textSecondary)),
+                    Text(dbSize,
+                        style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: theme.colors.textPrimary)),
+                    Text('Local DB Size',
+                        style: TextStyle(color: theme.colors.textSecondary)),
                     const SizedBox(height: 8),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
-                        color: isHealthy ? theme.colors.stateSuccess : theme.colors.stateWarning,
+                        color: isHealthy
+                            ? theme.colors.stateSuccess
+                            : theme.colors.stateWarning,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
                         isHealthy ? 'ALL SYNCED' : '$pendingSync PENDING',
-                        style: TextStyle(color: theme.colors.textInverse, fontSize: 10, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            color: theme.colors.textInverse,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],

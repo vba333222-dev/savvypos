@@ -34,15 +34,13 @@ class _LoginView extends StatelessWidget {
       listener: (context, state) {
         if (state.employee != null) {
           // Success
-          Navigator.pushReplacement(
-            context, 
-            MaterialPageRoute(builder: (_) => const MainShellPage())
-          );
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (_) => const MainShellPage()));
         }
         if (state.error != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.error!), backgroundColor: theme.colors.stateError)
-          );
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(state.error!),
+              backgroundColor: theme.colors.stateError));
         }
       },
       child: Scaffold(
@@ -53,10 +51,12 @@ class _LoginView extends StatelessWidget {
             Positioned.fill(
               child: Opacity(
                 opacity: 0.05,
-                child: Center(child: Icon(Icons.storefront, size: 400, color: theme.colors.textPrimary)),
+                child: Center(
+                    child: Icon(Icons.storefront,
+                        size: 400, color: theme.colors.textPrimary)),
               ),
             ),
-            
+
             // Avatar Grid Login
             const Center(
               child: QuickLoginView(),

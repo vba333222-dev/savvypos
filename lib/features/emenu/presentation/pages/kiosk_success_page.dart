@@ -58,7 +58,8 @@ class _KioskSuccessPageState extends State<KioskSuccessPage> {
     );
   }
 
-  Future<void> _submitFeedback(int rating, List<FeedbackTag> tags, String? comment) async {
+  Future<void> _submitFeedback(
+      int rating, List<FeedbackTag> tags, String? comment) async {
     final repo = getIt<IFeedbackRepository>();
     final feedback = CustomerFeedback(
       uuid: const Uuid().v4(),
@@ -67,7 +68,11 @@ class _KioskSuccessPageState extends State<KioskSuccessPage> {
       tags: tags,
       comment: comment,
       createdAt: DateTime.now(),
-      sentiment: rating >= 4 ? FeedbackSentiment.positive : (rating <= 2 ? FeedbackSentiment.negative : FeedbackSentiment.neutral),
+      sentiment: rating >= 4
+          ? FeedbackSentiment.positive
+          : (rating <= 2
+              ? FeedbackSentiment.negative
+              : FeedbackSentiment.neutral),
     );
     await repo.submitFeedback(feedback);
   }
@@ -88,31 +93,31 @@ class _KioskSuccessPageState extends State<KioskSuccessPage> {
                     .scale(duration: 500.ms, curve: Curves.elasticOut)
                     .then(delay: 200.ms)
                     .shake(hz: 4),
-                
                 const SizedBox(height: 32),
-                
                 const Text(
                   'THANK YOU!',
-                  style: TextStyle(fontSize: 48, fontWeight: FontWeight.w900, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: 48,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white),
                 ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.2, end: 0),
-                
                 const SizedBox(height: 16),
-                
                 const Text(
                   'Please take your receipt.',
                   style: TextStyle(fontSize: 24, color: Colors.white70),
                 ).animate().fadeIn(delay: 500.ms),
-                
                 const SizedBox(height: 48),
-                
                 ElevatedButton(
                   onPressed: widget.onDone,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.green,
-                    padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 24),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 48, vertical: 24),
                   ),
-                  child: const Text('DONE', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  child: const Text('DONE',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 ).animate().scale(delay: 800.ms),
               ],
             ),

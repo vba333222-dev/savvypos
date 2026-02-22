@@ -14,13 +14,15 @@ class InventoryDashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<InventoryBloc>()..add(const InventoryEvent.started()),
+      create: (_) =>
+          getIt<InventoryBloc>()..add(const InventoryEvent.started()),
       child: Scaffold(
         appBar: AppBar(title: const Text('Inventory Management')),
         body: BlocBuilder<InventoryBloc, InventoryState>(
           builder: (context, state) {
-            if (state.isLoading) return const Center(child: CircularProgressIndicator());
-            
+            if (state.isLoading)
+              return const Center(child: CircularProgressIndicator());
+
             return Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -37,7 +39,8 @@ class InventoryDashboardPage extends StatelessWidget {
                           children: [
                             _KpiCard(
                               title: 'Stock Value',
-                              value: '\$${state.totalStockValue.toStringAsFixed(2)}',
+                              value:
+                                  '\$${state.totalStockValue.toStringAsFixed(2)}',
                               icon: Icons.attach_money,
                               color: Colors.green,
                             ),
@@ -58,9 +61,11 @@ class InventoryDashboardPage extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 32),
-                        
+
                         // Active Purchase Orders
-                        const Text('Active Purchase Orders', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                        const Text('Active Purchase Orders',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 16),
                         Card(
                           child: ListView.separated(
@@ -71,15 +76,17 @@ class InventoryDashboardPage extends StatelessWidget {
                             itemBuilder: (context, index) {
                               final po = state.activePurchaseOrders[index];
                               return ListTile(
-                                leading: const CircleAvatar(child: Icon(Icons.description)),
-                                title: Text(po.referenceNumber ?? 'PO #${po.uuid.substring(0,6)}'),
-                                subtitle: Text('Total: \$${po.totalCost.toStringAsFixed(2)} - ${po.status.name}'),
+                                leading: const CircleAvatar(
+                                    child: Icon(Icons.description)),
+                                title: Text(po.referenceNumber ??
+                                    'PO #${po.uuid.substring(0, 6)}'),
+                                subtitle: Text(
+                                    'Total: \$${po.totalCost.toStringAsFixed(2)} - ${po.status.name}'),
                                 trailing: ElevatedButton(
-                                  onPressed: () {
-                                     // Navigate to Receive Page (Todo)
-                                  }, 
-                                  child: const Text('Receive')
-                                ),
+                                    onPressed: () {
+                                      // Navigate to Receive Page (Todo)
+                                    },
+                                    child: const Text('Receive')),
                               );
                             },
                           ),
@@ -88,7 +95,7 @@ class InventoryDashboardPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                
+
                 // RIGHT: Actions Sidebar
                 Expanded(
                   flex: 1,
@@ -101,73 +108,87 @@ class InventoryDashboardPage extends StatelessWidget {
                           width: double.infinity,
                           height: 50,
                           child: FilledButton.icon(
-                            onPressed: () {
-                              // Create PO Dialog (Todo)
-                            }, 
-                            icon: const Icon(Icons.add), 
-                            label: const Text('New Purchase Order')
-                          ),
+                              onPressed: () {
+                                // Create PO Dialog (Todo)
+                              },
+                              icon: const Icon(Icons.add),
+                              label: const Text('New Purchase Order')),
                         ),
                         const SizedBox(height: 16),
                         SizedBox(
                           width: double.infinity,
                           height: 50,
                           child: OutlinedButton.icon(
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (_) => const ProductListPage()));
-                            }, 
-                            icon: const Icon(Icons.inventory), 
-                            label: const Text('Products')
-                          ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) =>
+                                            const ProductListPage()));
+                              },
+                              icon: const Icon(Icons.inventory),
+                              label: const Text('Products')),
                         ),
                         const SizedBox(height: 16),
                         SizedBox(
                           width: double.infinity,
                           height: 50,
                           child: OutlinedButton.icon(
-                            onPressed: () {
-                               Navigator.push(context, MaterialPageRoute(builder: (_) => const SupplierListPage()));
-                            }, 
-                            icon: const Icon(Icons.people), 
-                            label: const Text('Suppliers')
-                          ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) =>
+                                            const SupplierListPage()));
+                              },
+                              icon: const Icon(Icons.people),
+                              label: const Text('Suppliers')),
                         ),
                         const SizedBox(height: 16),
                         SizedBox(
                           width: double.infinity,
                           height: 50,
                           child: OutlinedButton.icon(
-                            onPressed: () {
-                               Navigator.push(context, MaterialPageRoute(builder: (_) => const ModifierManagePage()));
-                            }, 
-                            icon: const Icon(Icons.list_alt), 
-                            label: const Text('Menu Modifiers')
-                          ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) =>
+                                            const ModifierManagePage()));
+                              },
+                              icon: const Icon(Icons.list_alt),
+                              label: const Text('Menu Modifiers')),
                         ),
                         const SizedBox(height: 16),
                         SizedBox(
                           width: double.infinity,
                           height: 50,
                           child: OutlinedButton.icon(
-                            onPressed: () {
-                               Navigator.push(context, MaterialPageRoute(builder: (_) => const PurchaseOrderListPage()));
-                            }, 
-                            icon: const Icon(Icons.description), 
-                            label: const Text('Purchase Orders')
-                          ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) =>
+                                            const PurchaseOrderListPage()));
+                              },
+                              icon: const Icon(Icons.description),
+                              label: const Text('Purchase Orders')),
                         ),
                         const SizedBox(height: 16),
                         SizedBox(
                           width: double.infinity,
                           height: 50,
                           child: OutlinedButton.icon(
-                            onPressed: () {
-                               // Navigate to Gift Cards
-                               Navigator.push(context, MaterialPageRoute(builder: (_) => const GiftCardDashboardPage()));
-                            }, 
-                            icon: const Icon(Icons.card_giftcard), 
-                            label: const Text('Gift Cards')
-                          ),
+                              onPressed: () {
+                                // Navigate to Gift Cards
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) =>
+                                            const GiftCardDashboardPage()));
+                              },
+                              icon: const Icon(Icons.card_giftcard),
+                              label: const Text('Gift Cards')),
                         ),
                       ],
                     ),
@@ -188,7 +209,11 @@ class _KpiCard extends StatelessWidget {
   final IconData icon;
   final Color color;
 
-  const _KpiCard({required this.title, required this.value, required this.icon, required this.color});
+  const _KpiCard(
+      {required this.title,
+      required this.value,
+      required this.icon,
+      required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -200,11 +225,13 @@ class _KpiCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Icon(icon, color: color, size: 32),
-               const SizedBox(height: 16),
-               Text(value, style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-               const SizedBox(height: 4),
-               Text(title, style: TextStyle(color: Colors.grey[600])),
+              Icon(icon, color: color, size: 32),
+              const SizedBox(height: 16),
+              Text(value,
+                  style: const TextStyle(
+                      fontSize: 28, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 4),
+              Text(title, style: TextStyle(color: Colors.grey[600])),
             ],
           ),
         ),

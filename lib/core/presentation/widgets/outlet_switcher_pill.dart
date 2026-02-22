@@ -8,7 +8,6 @@ import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
 class OutletSwitcherPill extends StatelessWidget {
   const OutletSwitcherPill({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
@@ -16,15 +15,16 @@ class OutletSwitcherPill extends StatelessWidget {
       listener: (context, state) {
         if (state.isLoading) {
           showDialog(
-             context: context,
-             barrierDismissible: false,
-             builder: (_) => const Center(child: CircularProgressIndicator()),
+            context: context,
+            barrierDismissible: false,
+            builder: (_) => const Center(child: CircularProgressIndicator()),
           );
         } else {
-             // If we used a dialog loader, pop it. But checking if dialog is open is tricky.
-             // Instead, let's rely on the global overlay if strictly requested.
-             // But for this specific file, user asked "Show a generic loading indicator".
-             Navigator.of(context, rootNavigator: true).popUntil((route) => route is! PopupRoute);
+          // If we used a dialog loader, pop it. But checking if dialog is open is tricky.
+          // Instead, let's rely on the global overlay if strictly requested.
+          // But for this specific file, user asked "Show a generic loading indicator".
+          Navigator.of(context, rootNavigator: true)
+              .popUntil((route) => route is! PopupRoute);
         }
       },
       builder: (context, state) {
@@ -34,14 +34,16 @@ class OutletSwitcherPill extends StatelessWidget {
           'outlet-002': 'Pop-up Store - Brooklyn',
           'outlet-003': 'Airport Kiosk',
         };
-        final outletName = scopeOutlets[state.activeOutletId] ?? 'Main Cafe - Downtown';
-        
+        final outletName =
+            scopeOutlets[state.activeOutletId] ?? 'Main Cafe - Downtown';
+
         final scopeWarehouses = {
           'wh-001': 'Main Warehouse',
-          'wh-002': 'Downtown WH', 
+          'wh-002': 'Downtown WH',
           'wh-003': 'Terminal 4 WH',
         };
-        final warehouseName = scopeWarehouses[state.activeWarehouseId] ?? 'Main Warehouse';
+        final warehouseName =
+            scopeWarehouses[state.activeWarehouseId] ?? 'Main Warehouse';
 
         return GestureDetector(
           onTap: () => _showOutletSelectionDialog(context),
@@ -63,18 +65,23 @@ class OutletSwitcherPill extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                
+
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SavvyText.label(outletName, textStyle: const TextStyle(fontSize: 10), color: context.savvy.colors.textSecondary),
-                    SavvyText.body(warehouseName, textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+                    SavvyText.label(outletName,
+                        textStyle: const TextStyle(fontSize: 10),
+                        color: context.savvy.colors.textSecondary),
+                    SavvyText.body(warehouseName,
+                        textStyle: const TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w600)),
                   ],
                 ),
-                
+
                 const SizedBox(width: 8),
-                Icon(Icons.keyboard_arrow_down, size: 16, color: context.savvy.colors.textSecondary),
+                Icon(Icons.keyboard_arrow_down,
+                    size: 16, color: context.savvy.colors.textSecondary),
               ],
             ),
           ),
@@ -90,35 +97,37 @@ class OutletSwitcherPill extends StatelessWidget {
         title: const SavvyText.h3('Select Context'),
         backgroundColor: Theme.of(context).cardColor,
         children: [
-           SimpleDialogOption(
-             padding: const EdgeInsets.all(16),
-             onPressed: () {
-               context.read<AuthBloc>().add(const AuthEvent.changeActiveOutlet('outlet-001', 'wh-001'));
-               Navigator.pop(ctx);
-             },
-             child: const Column(
-               crossAxisAlignment: CrossAxisAlignment.start,
-               children: [
-                 SavvyText.h4('Main Outlet'),
-                 SavvyText.body('Main Warehouse'),
-               ],
-             ),
-           ),
-           const Divider(),
-           SimpleDialogOption(
-             padding: const EdgeInsets.all(16),
-             onPressed: () {
-               context.read<AuthBloc>().add(const AuthEvent.changeActiveOutlet('outlet-002', 'wh-002'));
-               Navigator.pop(ctx);
-             },
-             child: const Column(
-               crossAxisAlignment: CrossAxisAlignment.start,
-               children: [
-                 SavvyText.h4('Outlet Downtown'),
-                 SavvyText.body('Downtown WH'),
-               ],
-             ),
-           ),
+          SimpleDialogOption(
+            padding: const EdgeInsets.all(16),
+            onPressed: () {
+              context.read<AuthBloc>().add(
+                  const AuthEvent.changeActiveOutlet('outlet-001', 'wh-001'));
+              Navigator.pop(ctx);
+            },
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SavvyText.h4('Main Outlet'),
+                SavvyText.body('Main Warehouse'),
+              ],
+            ),
+          ),
+          const Divider(),
+          SimpleDialogOption(
+            padding: const EdgeInsets.all(16),
+            onPressed: () {
+              context.read<AuthBloc>().add(
+                  const AuthEvent.changeActiveOutlet('outlet-002', 'wh-002'));
+              Navigator.pop(ctx);
+            },
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SavvyText.h4('Outlet Downtown'),
+                SavvyText.body('Downtown WH'),
+              ],
+            ),
+          ),
         ],
       ),
     );

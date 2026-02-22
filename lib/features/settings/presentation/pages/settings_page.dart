@@ -46,29 +46,29 @@ class _SettingsPageState extends State<SettingsPage> {
                 // In a real app, use a ThemeCubit to toggle
                 // In a real app, use a ThemeCubit to toggle
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Theme logic not connected yet')),
+                  const SnackBar(
+                      content: Text('Theme logic not connected yet')),
                 );
               },
             ),
           ),
           const SizedBox(height: 32),
           Divider(color: colors.borderDefault),
-          
+
           // Inventory Management
           Text(
             'Inventory',
-            style: typography.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            style:
+                typography.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
           ListTile(
             leading: const Icon(Icons.inventory_2),
             title: const Text('Manage Products'),
-             subtitle: const Text('Add, edit, or remove products'),
+            subtitle: const Text('Add, edit, or remove products'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-             onTap: () => Navigator.push(
-               context, 
-               MaterialPageRoute(builder: (_) => const InventoryListPage())
-             ),
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const InventoryListPage())),
           ),
           // Additional settings tiles (as per the provided snippet context)
           ...[
@@ -76,23 +76,35 @@ class _SettingsPageState extends State<SettingsPage> {
             'Staff Permissions',
             'Business Profile',
           ].map((title) => ListTile(
-            title: Text(title, style: TextStyle(color: typography.bodyMedium?.color)), // Using typography color
-            trailing: Icon(Icons.arrow_forward_ios, size: 16, color: colors.textMuted),
-            contentPadding: EdgeInsets.zero,
-          )),
+                title: Text(title,
+                    style: TextStyle(
+                        color: typography
+                            .bodyMedium?.color)), // Using typography color
+                trailing: Icon(Icons.arrow_forward_ios,
+                    size: 16, color: colors.textMuted),
+                contentPadding: EdgeInsets.zero,
+              )),
 
           // Secret Entry
           GestureDetector(
             onDoubleTap: () {
-               // Hint or easter egg?
+              // Hint or easter egg?
             },
             onLongPress: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => const DiagnosticsHubPage()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const DiagnosticsHubPage()));
             },
             child: ListTile(
-              title: Text('About Antigravity OS', style: TextStyle(color: typography.bodyMedium?.color)), // Using typography color
-              trailing: Icon(Icons.info_outline, size: 16, color: colors.textMuted),
-              subtitle: const Text("v1.0.0 (Build 404)", style: TextStyle(fontSize: 10, color: Colors.grey)),
+              title: Text('About Antigravity OS',
+                  style: TextStyle(
+                      color: typography
+                          .bodyMedium?.color)), // Using typography color
+              trailing:
+                  Icon(Icons.info_outline, size: 16, color: colors.textMuted),
+              subtitle: const Text("v1.0.0 (Build 404)",
+                  style: TextStyle(fontSize: 10, color: Colors.grey)),
               contentPadding: EdgeInsets.zero,
             ),
           ),
@@ -102,83 +114,106 @@ class _SettingsPageState extends State<SettingsPage> {
           // Employee & Data (Protected)
           BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
-               final role = state.employee?.role;
-               final isOwner = role == 'OWNER';
-               final isManager = role == 'MANAGER' || isOwner;
-               
-               if (!isManager) return const SizedBox.shrink();
+              final role = state.employee?.role;
+              final isOwner = role == 'OWNER';
+              final isManager = role == 'MANAGER' || isOwner;
 
-               return Column(
-                 crossAxisAlignment: CrossAxisAlignment.start,
-                 children: [
-                    Text('Administration', style: typography.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 16),
-                    ListTile(
-                      leading: const Icon(Icons.people),
-                      title: const Text('Employees'),
-                      subtitle: const Text('Manage staff & access'),
-                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const EmployeeListPage())),
-                    ),
-                    if (isOwner) ...[
-                      // Backup Tiles via BackupBloc
-                      BlocProvider(
-                        create: (_) => GetIt.I<BackupBloc>(),
-                        child: Builder(
-                          builder: (ctx) => Column(
-                            children: [
-                              ListTile(
-                                leading: const Icon(Icons.download),
-                                title: const Text('Backup Data'),
-                                onTap: () {
-                                   ctx.read<BackupBloc>().add(const BackupEvent.createBackup());
-                                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Backup Started...')));
-                                },
-                              ),
-                              ListTile(
-                                leading: const Icon(Icons.upload_file),
-                                title: const Text('Restore Data'),
-                                onTap: () {
-                                   ctx.read<BackupBloc>().add(const BackupEvent.restoreBackup());
-                                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Restore Started... Check file picker.')));
-                                },
-                              ),
-                              ListTile(
-                                leading: const Icon(Icons.sync),
-                                title: const Text('Sync Data Now'),
-                                subtitle: const Text('Push pending & pull new data'),
-                                onTap: () async {
-                                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Sync Started...')));
-                                   try {
-                                     // Direct usage of Sync Logic
-                                     await processSyncQueue(GetIt.I<AppDatabase>(), Logger());
-                                     if (context.mounted) {
-                                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Sync Complete!')));
-                                     }
-                                   } catch (e) {
-                                     if (context.mounted) {
-                                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Sync Failed: $e')));
-                                     }
-                                   }
-                                },
-                              ),
-                            ],
-                          ),
+              if (!isManager) return const SizedBox.shrink();
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Administration',
+                      style: typography.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 16),
+                  ListTile(
+                    leading: const Icon(Icons.people),
+                    title: const Text('Employees'),
+                    subtitle: const Text('Manage staff & access'),
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const EmployeeListPage())),
+                  ),
+                  if (isOwner) ...[
+                    // Backup Tiles via BackupBloc
+                    BlocProvider(
+                      create: (_) => GetIt.I<BackupBloc>(),
+                      child: Builder(
+                        builder: (ctx) => Column(
+                          children: [
+                            ListTile(
+                              leading: const Icon(Icons.download),
+                              title: const Text('Backup Data'),
+                              onTap: () {
+                                ctx
+                                    .read<BackupBloc>()
+                                    .add(const BackupEvent.createBackup());
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Backup Started...')));
+                              },
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.upload_file),
+                              title: const Text('Restore Data'),
+                              onTap: () {
+                                ctx
+                                    .read<BackupBloc>()
+                                    .add(const BackupEvent.restoreBackup());
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            'Restore Started... Check file picker.')));
+                              },
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.sync),
+                              title: const Text('Sync Data Now'),
+                              subtitle:
+                                  const Text('Push pending & pull new data'),
+                              onTap: () async {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text('Sync Started...')));
+                                try {
+                                  // Direct usage of Sync Logic
+                                  await processSyncQueue(
+                                      GetIt.I<AppDatabase>(), Logger());
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text('Sync Complete!')));
+                                  }
+                                } catch (e) {
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text('Sync Failed: $e')));
+                                  }
+                                }
+                              },
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                    const SizedBox(height: 32),
-                    Divider(color: colors.borderDefault),
-                 ],
-               );
+                    ),
+                  ],
+                  const SizedBox(height: 32),
+                  Divider(color: colors.borderDefault),
+                ],
+              );
             },
           ),
           const SizedBox(height: 32),
           Divider(color: colors.borderDefault),
-          
+
           // Shift Management
           Text(
             'Shift Management',
-            style: typography.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            style:
+                typography.titleMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
           BlocBuilder<ShiftBloc, ShiftState>(

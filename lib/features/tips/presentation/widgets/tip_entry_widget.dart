@@ -9,7 +9,7 @@ class TipEntryWidget extends StatefulWidget {
   final double orderTotal;
   final Function(double tipAmount, bool isCustom) onTipSelected;
   final double? initialTip;
-  
+
   const TipEntryWidget({
     super.key,
     required this.orderTotal,
@@ -26,9 +26,9 @@ class _TipEntryWidgetState extends State<TipEntryWidget> {
   double _customAmount = 0;
   bool _isCustom = false;
   final _customController = TextEditingController();
-  
+
   static const _percentages = [15, 18, 20, 25];
-  
+
   @override
   void initState() {
     super.initState();
@@ -38,13 +38,13 @@ class _TipEntryWidgetState extends State<TipEntryWidget> {
       _customController.text = widget.initialTip!.toStringAsFixed(2);
     }
   }
-  
+
   @override
   void dispose() {
     _customController.dispose();
     super.dispose();
   }
-  
+
   double get _currentTip {
     if (_isCustom) return _customAmount;
     if (_selectedPercentage != null) {
@@ -52,7 +52,7 @@ class _TipEntryWidgetState extends State<TipEntryWidget> {
     }
     return 0;
   }
-  
+
   void _selectPercentage(int percentage) {
     HapticFeedback.lightImpact();
     setState(() {
@@ -61,7 +61,7 @@ class _TipEntryWidgetState extends State<TipEntryWidget> {
     });
     widget.onTipSelected(_currentTip, false);
   }
-  
+
   void _enterCustomAmount() {
     HapticFeedback.selectionClick();
     setState(() {
@@ -69,7 +69,7 @@ class _TipEntryWidgetState extends State<TipEntryWidget> {
       _selectedPercentage = null;
     });
   }
-  
+
   void _updateCustomAmount(String value) {
     final amount = double.tryParse(value) ?? 0;
     setState(() {
@@ -77,7 +77,7 @@ class _TipEntryWidgetState extends State<TipEntryWidget> {
     });
     widget.onTipSelected(amount, true);
   }
-  
+
   void _skipTip() {
     HapticFeedback.lightImpact();
     setState(() {
@@ -92,7 +92,7 @@ class _TipEntryWidgetState extends State<TipEntryWidget> {
   Widget build(BuildContext context) {
     final theme = context.savvy;
     final colors = theme.colors;
-    
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -126,7 +126,8 @@ class _TipEntryWidgetState extends State<TipEntryWidget> {
             children: [
               Row(
                 children: [
-                  Icon(Icons.volunteer_activism, color: colors.brandPrimary, size: 24),
+                  Icon(Icons.volunteer_activism,
+                      color: colors.brandPrimary, size: 24),
                   const SizedBox(width: 10),
                   Text(
                     'Add a Tip',
@@ -140,7 +141,8 @@ class _TipEntryWidgetState extends State<TipEntryWidget> {
               ),
               if (_currentTip > 0)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
                     color: colors.stateSuccess.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(20),
@@ -153,23 +155,25 @@ class _TipEntryWidgetState extends State<TipEntryWidget> {
                       fontSize: 16,
                     ),
                   ),
-                )
-                .animate(target: 1)
-                .scale(begin: const Offset(0.8, 0.8), duration: 200.ms, curve: Curves.elasticOut),
+                ).animate(target: 1).scale(
+                    begin: const Offset(0.8, 0.8),
+                    duration: 200.ms,
+                    curve: Curves.elasticOut),
             ],
           ),
-          
+
           const SizedBox(height: 20),
-          
+
           // Percentage buttons
           Row(
             children: _percentages.map((pct) {
               final isSelected = _selectedPercentage == pct && !_isCustom;
               final tipAmount = widget.orderTotal * pct / 100;
-              
+
               return Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(right: pct != _percentages.last ? 10 : 0),
+                  padding:
+                      EdgeInsets.only(right: pct != _percentages.last ? 10 : 0),
                   child: _TipPercentageButton(
                     percentage: pct,
                     tipAmount: tipAmount,
@@ -180,14 +184,16 @@ class _TipEntryWidgetState extends State<TipEntryWidget> {
               );
             }).toList(),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Custom amount input
           AnimatedContainer(
             duration: 200.ms,
             decoration: BoxDecoration(
-              color: _isCustom ? colors.brandPrimary.withValues(alpha: 0.1) : colors.bgPrimary,
+              color: _isCustom
+                  ? colors.brandPrimary.withValues(alpha: 0.1)
+                  : colors.bgPrimary,
               borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
               border: Border.all(
                 color: _isCustom ? colors.brandPrimary : colors.borderDefault,
@@ -196,7 +202,8 @@ class _TipEntryWidgetState extends State<TipEntryWidget> {
             ),
             child: TextField(
               controller: _customController,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
               onTap: _enterCustomAmount,
               onChanged: _updateCustomAmount,
               style: TextStyle(
@@ -207,20 +214,23 @@ class _TipEntryWidgetState extends State<TipEntryWidget> {
               decoration: InputDecoration(
                 hintText: 'Enter custom amount',
                 hintStyle: TextStyle(color: colors.textSecondary),
-                prefixIcon: Icon(Icons.attach_money, color: colors.textSecondary),
+                prefixIcon:
+                    Icon(Icons.attach_money, color: colors.textSecondary),
                 border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               ),
             ),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // No tip option
           Center(
             child: TextButton.icon(
               onPressed: _skipTip,
-              icon: Icon(Icons.not_interested, size: 18, color: colors.textSecondary),
+              icon: Icon(Icons.not_interested,
+                  size: 18, color: colors.textSecondary),
               label: Text(
                 'No Tip',
                 style: TextStyle(color: colors.textSecondary),
@@ -229,10 +239,8 @@ class _TipEntryWidgetState extends State<TipEntryWidget> {
           ),
         ],
       ),
-    )
-    .animate()
-    .fadeIn(duration: 300.ms)
-    .slideY(begin: 0.1, end: 0, duration: 300.ms, curve: Curves.easeOutQuad);
+    ).animate().fadeIn(duration: 300.ms).slideY(
+        begin: 0.1, end: 0, duration: 300.ms, curve: Curves.easeOutQuad);
   }
 }
 
@@ -241,7 +249,7 @@ class _TipPercentageButton extends StatefulWidget {
   final double tipAmount;
   final bool isSelected;
   final VoidCallback onTap;
-  
+
   const _TipPercentageButton({
     required this.percentage,
     required this.tipAmount,
@@ -260,7 +268,7 @@ class _TipPercentageButtonState extends State<_TipPercentageButton> {
   Widget build(BuildContext context) {
     final colors = context.savvy.colors;
     final shapes = context.savvy.shapes;
-    
+
     return GestureDetector(
       onTapDown: (_) => setState(() => _isPressed = true),
       onTapUp: (_) => setState(() => _isPressed = false),
@@ -286,7 +294,9 @@ class _TipPercentageButtonState extends State<_TipPercentageButton> {
             color: widget.isSelected ? null : colors.bgPrimary,
             borderRadius: BorderRadius.circular(shapes.radiusMd),
             border: Border.all(
-              color: widget.isSelected ? colors.brandPrimary : colors.borderDefault,
+              color: widget.isSelected
+                  ? colors.brandPrimary
+                  : colors.borderDefault,
               width: widget.isSelected ? 0 : 1,
             ),
             boxShadow: widget.isSelected
@@ -305,7 +315,9 @@ class _TipPercentageButtonState extends State<_TipPercentageButton> {
               Text(
                 '${widget.percentage}%',
                 style: TextStyle(
-                  color: widget.isSelected ? colors.textInverse : colors.textPrimary,
+                  color: widget.isSelected
+                      ? colors.textInverse
+                      : colors.textPrimary,
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
@@ -314,7 +326,7 @@ class _TipPercentageButtonState extends State<_TipPercentageButton> {
               Text(
                 '\$${widget.tipAmount.toStringAsFixed(2)}',
                 style: TextStyle(
-                  color: widget.isSelected 
+                  color: widget.isSelected
                       ? colors.textInverse.withValues(alpha: 0.8)
                       : colors.textSecondary,
                   fontSize: 12,
@@ -325,9 +337,15 @@ class _TipPercentageButtonState extends State<_TipPercentageButton> {
         ),
       ),
     )
-    .animate(target: widget.isSelected ? 1 : 0)
-    .scale(begin: const Offset(1, 1), end: const Offset(1.05, 1.05), duration: 150.ms)
-    .then()
-    .scale(begin: const Offset(1.05, 1.05), end: const Offset(1, 1), duration: 100.ms);
+        .animate(target: widget.isSelected ? 1 : 0)
+        .scale(
+            begin: const Offset(1, 1),
+            end: const Offset(1.05, 1.05),
+            duration: 150.ms)
+        .then()
+        .scale(
+            begin: const Offset(1.05, 1.05),
+            end: const Offset(1, 1),
+            duration: 100.ms);
   }
 }

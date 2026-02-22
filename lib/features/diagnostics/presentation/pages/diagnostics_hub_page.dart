@@ -9,7 +9,8 @@ class DiagnosticsHubPage extends StatefulWidget {
   State<DiagnosticsHubPage> createState() => _DiagnosticsHubPageState();
 }
 
-class _DiagnosticsHubPageState extends State<DiagnosticsHubPage> with SingleTickerProviderStateMixin {
+class _DiagnosticsHubPageState extends State<DiagnosticsHubPage>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -24,7 +25,11 @@ class _DiagnosticsHubPageState extends State<DiagnosticsHubPage> with SingleTick
       backgroundColor: Colors.black, // Matrix theme
       appBar: AppBar(
         backgroundColor: Colors.grey[900],
-        title: const Text("BLACK BOX DIAGNOSTICS", style: TextStyle(color: Colors.greenAccent, fontFamily: 'monospace', letterSpacing: 2)),
+        title: const Text("BLACK BOX DIAGNOSTICS",
+            style: TextStyle(
+                color: Colors.greenAccent,
+                fontFamily: 'monospace',
+                letterSpacing: 2)),
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: Colors.greenAccent,
@@ -60,13 +65,18 @@ class _DangerZone extends StatelessWidget {
         children: [
           const Icon(Icons.warning_amber_rounded, size: 80, color: Colors.red),
           const SizedBox(height: 24),
-          const Text("EMERGENCY ACTIONS", style: TextStyle(color: Colors.red, fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: 2)),
+          const Text("EMERGENCY ACTIONS",
+              style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 2)),
           const SizedBox(height: 48),
-          
           _DangerButton(
             label: "PURGE DATABASE",
             onLongPress: () {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Database Purged! (Mock)")));
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Database Purged! (Mock)")));
             },
           ),
           const SizedBox(height: 24),
@@ -76,9 +86,9 @@ class _DangerZone extends StatelessWidget {
               throw Exception("Manual Force Crash Triggered");
             },
           ),
-          
           const SizedBox(height: 24),
-          const Text("Hold for 3 seconds to execute", style: TextStyle(color: Colors.grey)),
+          const Text("Hold for 3 seconds to execute",
+              style: TextStyle(color: Colors.grey)),
         ],
       ),
     );
@@ -103,7 +113,9 @@ class _DangerButton extends StatelessWidget {
           border: Border.all(color: Colors.red, width: 2),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Text(label, style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 18)),
+        child: Text(label,
+            style: const TextStyle(
+                color: Colors.red, fontWeight: FontWeight.bold, fontSize: 18)),
       ),
     );
   }

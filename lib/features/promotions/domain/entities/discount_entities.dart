@@ -5,21 +5,21 @@ part 'discount_entities.g.dart';
 
 /// Discount type enumeration
 enum DiscountType {
-  percentage,   // X% off
-  fixed,        // $X off
-  bogo,         // Buy one get one
-  buyXGetY,     // Buy X get Y free/discounted
-  tiered,       // Spend $X get Y% off
-  freeItem,     // Free item
-  bundle,       // Bundle pricing
+  percentage, // X% off
+  fixed, // $X off
+  bogo, // Buy one get one
+  buyXGetY, // Buy X get Y free/discounted
+  tiered, // Spend $X get Y% off
+  freeItem, // Free item
+  bundle, // Bundle pricing
 }
 
 /// Discount application scope
 enum DiscountScope {
-  order,        // Applies to entire order
-  item,         // Applies to specific items
-  category,     // Applies to category
-  customer,     // Customer-specific
+  order, // Applies to entire order
+  item, // Applies to specific items
+  category, // Applies to category
+  customer, // Customer-specific
 }
 
 /// Discount status
@@ -36,61 +36,62 @@ class Discount with _$Discount {
   const factory Discount({
     required String uuid,
     required String name,
-    required String code,              // Promo code
+    required String code, // Promo code
     String? description,
-    
     required DiscountType type,
     required DiscountScope scope,
     @Default(DiscountStatus.active) DiscountStatus status,
-    
+
     // Value based on type
-    double? percentageOff,             // For percentage type
-    double? fixedAmountOff,            // For fixed type
-    int? buyQuantity,                  // For BOGO/buyXGetY
-    int? getQuantity,                  // For BOGO/buyXGetY
-    double? getDiscountPercent,        // Discount on the "get" items
-    
+    double? percentageOff, // For percentage type
+    double? fixedAmountOff, // For fixed type
+    int? buyQuantity, // For BOGO/buyXGetY
+    int? getQuantity, // For BOGO/buyXGetY
+    double? getDiscountPercent, // Discount on the "get" items
+
     // Tier thresholds (for tiered discounts)
     @Default([]) List<DiscountTier> tiers,
-    
+
     // Restrictions
     double? minOrderAmount,
     double? maxDiscountAmount,
     int? maxUsesTotal,
     int? maxUsesPerCustomer,
     int? currentUsageCount,
-    
+
     // Scope restrictions
     @Default([]) List<String> applicableProductUuids,
     @Default([]) List<String> applicableCategoryUuids,
     @Default([]) List<String> applicableCustomerUuids,
-    
+
     // Scheduling
     DateTime? validFrom,
     DateTime? validUntil,
-    @Default([]) List<int> validDaysOfWeek,  // 1-7 (Mon-Sun)
-    String? validTimeStart,            // "11:00"
-    String? validTimeEnd,              // "14:00"
-    
+    @Default([]) List<int> validDaysOfWeek, // 1-7 (Mon-Sun)
+    String? validTimeStart, // "11:00"
+    String? validTimeEnd, // "14:00"
+
     // Stacking rules
     @Default(false) bool canStackWithOthers,
-    @Default(0) int stackPriority,     // Lower = applies first
-    
+    @Default(0) int stackPriority, // Lower = applies first
+
     DateTime? createdAt,
     DateTime? updatedAt,
   }) = _Discount;
-  
-  factory Discount.fromJson(Map<String, dynamic> json) => _$DiscountFromJson(json);
-  
+
+  factory Discount.fromJson(Map<String, dynamic> json) =>
+      _$DiscountFromJson(json);
+
   const Discount._();
-  
+
   /// Check if discount is currently valid
   bool get isValid {
     final now = DateTime.now();
     if (status != DiscountStatus.active) return false;
     if (validFrom != null && now.isBefore(validFrom!)) return false;
     if (validUntil != null && now.isAfter(validUntil!)) return false;
-    if (maxUsesTotal != null && (currentUsageCount ?? 0) >= maxUsesTotal!) return false;
+    if (maxUsesTotal != null && (currentUsageCount ?? 0) >= maxUsesTotal!)
+      return false;
     return true;
   }
 }
@@ -102,8 +103,9 @@ class DiscountTier with _$DiscountTier {
     required double minAmount,
     required double discountPercent,
   }) = _DiscountTier;
-  
-  factory DiscountTier.fromJson(Map<String, dynamic> json) => _$DiscountTierFromJson(json);
+
+  factory DiscountTier.fromJson(Map<String, dynamic> json) =>
+      _$DiscountTierFromJson(json);
 }
 
 /// Applied discount record
@@ -117,16 +119,16 @@ class AppliedDiscount with _$AppliedDiscount {
     required String discountCode,
     required DiscountType type,
     required double discountAmount,
-    
+
     // Item-specific details
     String? appliedToItemUuid,
     String? appliedToItemName,
-    
     required DateTime appliedAt,
     String? appliedByUuid,
   }) = _AppliedDiscount;
-  
-  factory AppliedDiscount.fromJson(Map<String, dynamic> json) => _$AppliedDiscountFromJson(json);
+
+  factory AppliedDiscount.fromJson(Map<String, dynamic> json) =>
+      _$AppliedDiscountFromJson(json);
 }
 
 /// Quick discount for UI (commonly used)
@@ -137,8 +139,9 @@ class QuickDiscount with _$QuickDiscount {
     required double percentage,
     required IconType iconType,
   }) = _QuickDiscount;
-  
-  factory QuickDiscount.fromJson(Map<String, dynamic> json) => _$QuickDiscountFromJson(json);
+
+  factory QuickDiscount.fromJson(Map<String, dynamic> json) =>
+      _$QuickDiscountFromJson(json);
 }
 
 /// Icon type for quick discounts

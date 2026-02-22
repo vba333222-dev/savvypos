@@ -32,45 +32,60 @@ class _InventoryListPageState extends State<InventoryListPage> {
         backgroundColor: theme.colors.bgPrimary,
         floatingActionButton: FloatingActionButton(
           backgroundColor: theme.colors.brandPrimary,
-          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ProductFormPage())),
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const ProductFormPage())),
           elevation: 4,
           child: const Icon(Icons.add, color: Colors.white),
         ),
         body: BlocBuilder<InventoryManagementBloc, InventoryManagementState>(
           builder: (context, state) {
-            
             // Map state to products list
             final List<ProductStock> allItems = state.maybeWhen(
               loaded: (items) => items,
               orElse: () => [],
             );
-            
-            final isLoading = state.maybeWhen(loading: () => true, orElse: () => false);
 
-            final filtered = _query.isEmpty 
-               ? allItems 
-               : allItems.where((item) => 
-                   item.product.name.toLowerCase().contains(_query.toLowerCase()) || 
-                   (item.product.sku?.contains(_query) ?? false)
-                 ).toList();
+            final isLoading =
+                state.maybeWhen(loading: () => true, orElse: () => false);
+
+            final filtered = _query.isEmpty
+                ? allItems
+                : allItems
+                    .where((item) =>
+                        item.product.name
+                            .toLowerCase()
+                            .contains(_query.toLowerCase()) ||
+                        (item.product.sku?.contains(_query) ?? false))
+                    .toList();
 
             return CustomScrollView(
               slivers: [
                 // 1. App Bar
                 SliverAppBar(
-                  title: Text('INVENTORY', style: TextStyle(color: theme.colors.textPrimary, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+                  title: Text('INVENTORY',
+                      style: TextStyle(
+                          color: theme.colors.textPrimary,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.2)),
                   centerTitle: true,
                   pinned: true,
                   floating: false,
                   backgroundColor: theme.colors.bgPrimary,
                   elevation: 0,
                   actions: [
-                     IconButton(
-                       icon: Icon(Icons.delete_outline, color: theme.colors.textSecondary),
-                       tooltip: 'Waste & Loss',
-                       onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const WasteDashboardPage())),
-                     ),
-                     IconButton(icon: Icon(Icons.filter_list, color: theme.colors.textSecondary), onPressed: (){}),
+                    IconButton(
+                      icon: Icon(Icons.delete_outline,
+                          color: theme.colors.textSecondary),
+                      tooltip: 'Waste & Loss',
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const WasteDashboardPage())),
+                    ),
+                    IconButton(
+                        icon: Icon(Icons.filter_list,
+                            color: theme.colors.textSecondary),
+                        onPressed: () {}),
                   ],
                 ),
 
@@ -80,7 +95,8 @@ class _InventoryListPageState extends State<InventoryListPage> {
                     minExtent: 80,
                     maxExtent: 80,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
                       child: TextField(
                         controller: _searchCtrl,
                         onChanged: (val) => setState(() => _query = val),
@@ -88,11 +104,15 @@ class _InventoryListPageState extends State<InventoryListPage> {
                         decoration: InputDecoration(
                           hintText: 'Search stock...',
                           hintStyle: TextStyle(color: theme.colors.textMuted),
-                          prefixIcon: Icon(Icons.search, color: theme.colors.textMuted),
+                          prefixIcon:
+                              Icon(Icons.search, color: theme.colors.textMuted),
                           filled: true,
                           fillColor: theme.colors.bgElevated,
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide.none),
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 20),
                         ),
                       ),
                     ),
@@ -101,10 +121,14 @@ class _InventoryListPageState extends State<InventoryListPage> {
                 ),
 
                 // 3. Product List
-                if (isLoading && allItems.isEmpty) 
-                   const SliverFillRemaining(child: Center(child: CircularProgressIndicator()))
+                if (isLoading && allItems.isEmpty)
+                  const SliverFillRemaining(
+                      child: Center(child: CircularProgressIndicator()))
                 else if (filtered.isEmpty)
-                   SliverFillRemaining(child: Center(child: Text('No items found', style: TextStyle(color: theme.colors.textMuted))))
+                  SliverFillRemaining(
+                      child: Center(
+                          child: Text('No items found',
+                              style: TextStyle(color: theme.colors.textMuted))))
                 else
                   SliverPadding(
                     padding: const EdgeInsets.all(16),
@@ -118,21 +142,28 @@ class _InventoryListPageState extends State<InventoryListPage> {
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 12),
                             child: TactileInventoryCard(
-                              key: ValueKey(product.uuid), 
+                              key: ValueKey(product.uuid),
                               product: product,
                               currentStock: stock,
                               onStockUpdate: (delta) {
-                                context.read<InventoryManagementBloc>().add(InventoryManagementEvent.updateStock(product.uuid, delta));
+                                context.read<InventoryManagementBloc>().add(
+                                    InventoryManagementEvent.updateStock(
+                                        product.uuid, delta));
                               },
-                              onEdit: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductFormPage(product: product))),
-                            ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.1, end: 0, curve: Curves.easeOutQuint),
+                              onEdit: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) =>
+                                          ProductFormPage(product: product))),
+                            ).animate().fadeIn(duration: 300.ms).slideY(
+                                begin: 0.1, end: 0, curve: Curves.easeOutQuint),
                           );
                         },
                         childCount: filtered.length,
                       ),
                     ),
                   ),
-                
+
                 const SliverToBoxAdapter(child: SizedBox(height: 100)),
               ],
             );
@@ -148,17 +179,23 @@ class _DynamicSearchHeader extends SliverPersistentHeaderDelegate {
   final double _maxExtent;
   final Widget child;
 
-  _DynamicSearchHeader({required double minExtent, required double maxExtent, required this.child}) : _minExtent = minExtent, _maxExtent = maxExtent;
+  _DynamicSearchHeader(
+      {required double minExtent,
+      required double maxExtent,
+      required this.child})
+      : _minExtent = minExtent,
+        _maxExtent = maxExtent;
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     // "Dynamic Island" Effect
     final double progress = shrinkOffset / _maxExtent;
     final double scale = 1.0 - (progress * 0.05); // 1.0 -> 0.95
     final double elevation = progress * 4;
 
     return Container(
-      color: Theme.of(context).scaffoldBackgroundColor, 
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: Center(
         child: Transform.scale(
           scale: scale.clamp(0.95, 1.0),
@@ -175,10 +212,10 @@ class _DynamicSearchHeader extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(covariant _DynamicSearchHeader oldDelegate) => false;
-  
+
   @override
   double get minExtent => _minExtent;
-  
+
   @override
   double get maxExtent => _maxExtent;
 }

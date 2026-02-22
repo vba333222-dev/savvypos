@@ -15,7 +15,8 @@ class AuthInterceptor extends Interceptor {
   AuthInterceptor(this.dio);
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  void onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('auth_token');
     final tenantId = prefs.getString('tenant_id');
@@ -43,7 +44,8 @@ class AuthInterceptor extends Interceptor {
 
         // Push current failed request to queue
         final completer = Completer<Response>();
-        _failedRequestsQueue.add({'options': err.requestOptions, 'completer': completer});
+        _failedRequestsQueue
+            .add({'options': err.requestOptions, 'completer': completer});
 
         try {
           _logger.i('AuthInterceptor: 401 Detected. Refreshing Token...');
@@ -55,11 +57,13 @@ class AuthInterceptor extends Interceptor {
           bool isRefreshSuccess = DateTime.now().millisecondsSinceEpoch > 0;
 
           if (isRefreshSuccess) {
-            final newToken = 'mock-token-refreshed-${DateTime.now().millisecondsSinceEpoch}';
+            final newToken =
+                'mock-token-refreshed-${DateTime.now().millisecondsSinceEpoch}';
             final prefs = await SharedPreferences.getInstance();
             await prefs.setString('auth_token', newToken);
 
-            _logger.i('AuthInterceptor: Token Refreshed. Replaying \${_failedRequestsQueue.length} requests.');
+            _logger.i(
+                'AuthInterceptor: Token Refreshed. Replaying \${_failedRequestsQueue.length} requests.');
 
             // Sequentially replay all requests that were waiting
             for (var entry in _failedRequestsQueue) {
@@ -94,15 +98,17 @@ class AuthInterceptor extends Interceptor {
         }
       } else {
         // We are already refreshing. Queue this request and wait.
-        _logger.w('AuthInterceptor: Concurrent 401 Request Intercepted. Queuing...');
+        _logger.w(
+            'AuthInterceptor: Concurrent 401 Request Intercepted. Queuing...');
         final completer = Completer<Response>();
-        _failedRequestsQueue.add({'options': err.requestOptions, 'completer': completer});
-        
+        _failedRequestsQueue
+            .add({'options': err.requestOptions, 'completer': completer});
+
         try {
-           final retryResponse = await completer.future;
-           return handler.resolve(retryResponse);
+          final retryResponse = await completer.future;
+          return handler.resolve(retryResponse);
         } catch (e) {
-           return handler.reject(err);
+          return handler.reject(err);
         }
       }
     } else {
@@ -118,7 +124,7 @@ class AuthInterceptor extends Interceptor {
     if (GetIt.I.isRegistered<AuthBloc>()) {
       GetIt.I<AuthBloc>().add(const AuthEvent.logout());
     }
-    
+
     return handler.next(err);
   }
 }

@@ -19,7 +19,7 @@ class _ReportWasteDialogState extends State<ReportWasteDialog> {
   final _itemUuidCtrl = TextEditingController();
   final _quantityCtrl = TextEditingController();
   final _noteCtrl = TextEditingController();
-  
+
   WasteItemType _itemType = WasteItemType.ingredient;
   WasteReason _reason = WasteReason.expired;
   bool _isSubmitting = false;
@@ -60,9 +60,11 @@ class _ReportWasteDialogState extends State<ReportWasteDialog> {
                   border: OutlineInputBorder(),
                 ),
                 items: WasteItemType.values
-                    .map((e) => DropdownMenuItem(value: e, child: Text(e.name.toUpperCase())))
+                    .map((e) => DropdownMenuItem(
+                        value: e, child: Text(e.name.toUpperCase())))
                     .toList(),
-                onChanged: (v) => setState(() => _itemType = v ?? WasteItemType.ingredient),
+                onChanged: (v) =>
+                    setState(() => _itemType = v ?? WasteItemType.ingredient),
               ),
               const Gap(16),
               TextFormField(
@@ -72,7 +74,8 @@ class _ReportWasteDialogState extends State<ReportWasteDialog> {
                   border: OutlineInputBorder(),
                   suffixText: 'Units',
                 ),
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 validator: (v) {
                   if (v == null || v.isEmpty) return 'Required';
                   final num = double.tryParse(v);
@@ -90,9 +93,11 @@ class _ReportWasteDialogState extends State<ReportWasteDialog> {
                   border: OutlineInputBorder(),
                 ),
                 items: WasteReason.values
-                    .map((e) => DropdownMenuItem(value: e, child: Text(e.label)))
+                    .map(
+                        (e) => DropdownMenuItem(value: e, child: Text(e.label)))
                     .toList(),
-                onChanged: (v) => setState(() => _reason = v ?? WasteReason.expired),
+                onChanged: (v) =>
+                    setState(() => _reason = v ?? WasteReason.expired),
               ),
               const Gap(16),
               TextFormField(
@@ -114,8 +119,11 @@ class _ReportWasteDialogState extends State<ReportWasteDialog> {
         ),
         FilledButton(
           onPressed: _isSubmitting ? null : _submit,
-          child: _isSubmitting 
-              ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+          child: _isSubmitting
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2))
               : const Text('Submit Waste'),
         ),
       ],
@@ -125,11 +133,11 @@ class _ReportWasteDialogState extends State<ReportWasteDialog> {
   Future<void> _submit() async {
     if (_formKey.currentState?.validate() ?? false) {
       setState(() => _isSubmitting = true);
-      
+
       // ignore: unused_local_variable - placeholder for future repo.recordWaste implementation
       final repo = GetIt.I<IInventoryRepository>();
       final authState = GetIt.I<AuthBloc>().state;
-      
+
       final staffId = authState.employee?.uuid ?? 'unknown_staff';
       final warehouseId = authState.activeWarehouseId ?? 'default_warehouse';
 
@@ -142,28 +150,29 @@ class _ReportWasteDialogState extends State<ReportWasteDialog> {
           quantity: double.parse(_quantityCtrl.text),
           reason: _reason,
           recordedAt: DateTime.now(),
-          staffId: staffId, 
-          warehouseId: warehouseId, 
+          staffId: staffId,
+          warehouseId: warehouseId,
           costLoss: 0.0, // Calculated in Repo
           note: _noteCtrl.text.isEmpty ? null : _noteCtrl.text,
         );
 
         // TODO: Add recordWaste method to IInventoryRepository when implementing
         // await repo.recordWaste(record);
-        
+
         if (mounted) {
           Navigator.of(context).pop(true);
           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(
-               content: Text('Waste recorded successfully. Stock adjusted in $warehouseId.'),
-               backgroundColor: Colors.green,
-             ),
+            SnackBar(
+              content: Text(
+                  'Waste recorded successfully. Stock adjusted in $warehouseId.'),
+              backgroundColor: Colors.green,
+            ),
           );
         }
       } catch (e) {
         if (mounted) {
-           ScaffoldMessenger.of(context).showSnackBar(
-             SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
           );
         }
       } finally {

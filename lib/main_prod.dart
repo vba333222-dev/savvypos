@@ -8,6 +8,6 @@ void main() async {
     apiBaseUrl: 'https://api.savvypos.com',
     enableLogs: false,
   );
-  
+
   await bootstrap(config);
 }

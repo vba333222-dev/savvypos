@@ -9,9 +9,9 @@ class GlobalLoadingOverlay extends StatelessWidget {
   final String message;
 
   const GlobalLoadingOverlay({
-    super.key, 
-    required this.child, 
-    required this.isLoading, 
+    super.key,
+    required this.child,
+    required this.isLoading,
     this.message = 'Processing...',
   });
 
@@ -25,12 +25,16 @@ class GlobalLoadingOverlay extends StatelessWidget {
             color: Colors.black.withValues(alpha: 0.5),
             child: Center(
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
                 decoration: BoxDecoration(
-                  color: context.savvy.colors.bgSurface,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.2), blurRadius: 20)]
-                ),
+                    color: context.savvy.colors.bgSurface,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.2),
+                          blurRadius: 20)
+                    ]),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

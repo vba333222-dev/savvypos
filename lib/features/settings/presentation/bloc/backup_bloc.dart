@@ -28,7 +28,8 @@ class BackupBloc extends Bloc<BackupEvent, BackupState> {
     on<_RestoreBackup>(_onRestoreBackup);
   }
 
-  Future<void> _onCreateBackup(_CreateBackup event, Emitter<BackupState> emit) async {
+  Future<void> _onCreateBackup(
+      _CreateBackup event, Emitter<BackupState> emit) async {
     emit(const BackupState.loading());
     try {
       final msg = await _backupService.exportDb();
@@ -38,7 +39,8 @@ class BackupBloc extends Bloc<BackupEvent, BackupState> {
     }
   }
 
-  Future<void> _onRestoreBackup(_RestoreBackup event, Emitter<BackupState> emit) async {
+  Future<void> _onRestoreBackup(
+      _RestoreBackup event, Emitter<BackupState> emit) async {
     emit(const BackupState.loading());
     try {
       final msg = await _backupService.importDb();

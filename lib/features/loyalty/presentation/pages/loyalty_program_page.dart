@@ -25,52 +25,57 @@ class _LoyaltyProgramView extends StatelessWidget {
       appBar: AppBar(title: const Text('Loyalty Program')),
       body: BlocBuilder<LoyaltyBloc, LoyaltyState>(
         builder: (context, state) {
-          if (state.isLoading) return const Center(child: CircularProgressIndicator());
-          
+          if (state.isLoading)
+            return const Center(child: CircularProgressIndicator());
+
           final config = state.config;
-          if (config == null) return const Center(child: Text("Loading Config..."));
+          if (config == null)
+            return const Center(child: Text("Loading Config..."));
 
           return ListView(
             padding: const EdgeInsets.all(24),
             children: [
-               _ConfigCard(
-                 title: 'Earning Rules',
-                 children: [
-                   ListTile(
-                     title: const Text('Points Per Dollar'),
-                     subtitle: Text('${config.pointsPerDollar} points'),
-                     trailing: const Icon(Icons.edit),
-                     onTap: () {
-                       // Show dialog to edit
-                     },
-                   ),
-                   ListTile(
-                     title: const Text('Signup Bonus'),
-                     subtitle: Text('${config.signupBonus} points'),
-                     trailing: const Icon(Icons.edit),
-                   ),
-                 ],
-               ),
-               const SizedBox(height: 24),
-               _ConfigCard(
-                 title: 'Active Rewards',
-                 children: [
-                   if (state.availableRewards.isEmpty)
-                      const Padding(padding: EdgeInsets.all(16), child: Text("No active rewards defined.")),
-                   
-                   ...state.availableRewards.map((r) => ListTile(
-                     title: Text(r.name),
-                     subtitle: Text('${r.pointsCost} pts'),
-                     leading: const Icon(Icons.card_giftcard),
-                     trailing: Switch(value: r.isActive, onChanged: (v){}),
-                   )),
-                   
-                   Padding(
-                     padding: const EdgeInsets.all(16),
-                     child: ElevatedButton.icon(onPressed: (){}, icon: const Icon(Icons.add), label: const Text("Add Reward")),
-                   )
-                 ],
-               ),
+              _ConfigCard(
+                title: 'Earning Rules',
+                children: [
+                  ListTile(
+                    title: const Text('Points Per Dollar'),
+                    subtitle: Text('${config.pointsPerDollar} points'),
+                    trailing: const Icon(Icons.edit),
+                    onTap: () {
+                      // Show dialog to edit
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('Signup Bonus'),
+                    subtitle: Text('${config.signupBonus} points'),
+                    trailing: const Icon(Icons.edit),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              _ConfigCard(
+                title: 'Active Rewards',
+                children: [
+                  if (state.availableRewards.isEmpty)
+                    const Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Text("No active rewards defined.")),
+                  ...state.availableRewards.map((r) => ListTile(
+                        title: Text(r.name),
+                        subtitle: Text('${r.pointsCost} pts'),
+                        leading: const Icon(Icons.card_giftcard),
+                        trailing: Switch(value: r.isActive, onChanged: (v) {}),
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: ElevatedButton.icon(
+                        onPressed: () {},
+                        icon: const Icon(Icons.add),
+                        label: const Text("Add Reward")),
+                  )
+                ],
+              ),
             ],
           );
         },
@@ -90,12 +95,12 @@ class _ConfigCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           Padding(
-             padding: const EdgeInsets.all(16),
-             child: Text(title, style: Theme.of(context).textTheme.titleLarge),
-           ),
-           const Divider(height: 1),
-           ...children,
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(title, style: Theme.of(context).textTheme.titleLarge),
+          ),
+          const Divider(height: 1),
+          ...children,
         ],
       ),
     );

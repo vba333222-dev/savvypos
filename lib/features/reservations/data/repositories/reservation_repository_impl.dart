@@ -17,11 +17,13 @@ class ReservationRepositoryImpl implements IReservationRepository {
   }
 
   @override
-  Future<List<ReservationTableData>> getReservations(DateTime start, DateTime end) {
+  Future<List<ReservationTableData>> getReservations(
+      DateTime start, DateTime end) {
     return (db.select(db.reservationTable)
-      ..where((t) => t.reservationTime.isBetween(Variable(start), Variable(end)))
-      ..orderBy([(t) => OrderingTerm(expression: t.reservationTime)])
-    ).get();
+          ..where((t) =>
+              t.reservationTime.isBetween(Variable(start), Variable(end)))
+          ..orderBy([(t) => OrderingTerm(expression: t.reservationTime)]))
+        .get();
   }
 
   @override
@@ -30,8 +32,10 @@ class ReservationRepositoryImpl implements IReservationRepository {
   }
 
   @override
-  Future<void> updateStatus(String uuid, String status, {String? tableUuid}) async {
-    await (db.update(db.reservationTable)..where((t) => t.uuid.equals(uuid))).write(
+  Future<void> updateStatus(String uuid, String status,
+      {String? tableUuid}) async {
+    await (db.update(db.reservationTable)..where((t) => t.uuid.equals(uuid)))
+        .write(
       ReservationTableCompanion(
         status: Value(status),
         tableUuid: Value(tableUuid),

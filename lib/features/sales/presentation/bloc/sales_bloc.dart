@@ -14,24 +14,32 @@ part 'sales_bloc.freezed.dart';
 @freezed
 class SalesEvent with _$SalesEvent {
   const factory SalesEvent.started() = _Started;
-  
+
   // Menu
-  const factory SalesEvent.categorySelected(String? categoryId) = _CategorySelected;
-  const factory SalesEvent.searchQueryChanged(String query) = _SearchQueryChanged;
-  const factory SalesEvent.selectProduct(Product product) = _SelectProduct; // New event to trigger modifier check
-  
+  const factory SalesEvent.categorySelected(String? categoryId) =
+      _CategorySelected;
+  const factory SalesEvent.searchQueryChanged(String query) =
+      _SearchQueryChanged;
+  const factory SalesEvent.selectProduct(Product product) =
+      _SelectProduct; // New event to trigger modifier check
+
   // Cart
-  const factory SalesEvent.addToCart(Product product, {int? quantity, List<String>? modifiers, String? note}) = _AddToCart;
+  const factory SalesEvent.addToCart(Product product,
+      {int? quantity, List<String>? modifiers, String? note}) = _AddToCart;
   const factory SalesEvent.removeFromCart(String cartItemId) = _RemoveFromCart;
-  const factory SalesEvent.updateQuantity(String cartItemId, int quantity) = _UpdateQuantity;
+  const factory SalesEvent.updateQuantity(String cartItemId, int quantity) =
+      _UpdateQuantity;
   const factory SalesEvent.clearCart() = _ClearCart;
-  
+
   // Order
-  const factory SalesEvent.createOrder({String? tableUuid, String? customerUuid}) = _CreateOrder;
-  
+  const factory SalesEvent.createOrder(
+      {String? tableUuid, String? customerUuid}) = _CreateOrder;
+
   // Internal
-  const factory SalesEvent.categoriesUpdated(List<Category> categories) = _CategoriesUpdated;
-  const factory SalesEvent.productsUpdated(List<Product> products) = _ProductsUpdated;
+  const factory SalesEvent.categoriesUpdated(List<Category> categories) =
+      _CategoriesUpdated;
+  const factory SalesEvent.productsUpdated(List<Product> products) =
+      _ProductsUpdated;
 }
 
 @freezed
@@ -76,38 +84,43 @@ class SalesBloc extends Bloc<SalesEvent, SalesState> {
     on<_UpdateQuantity>(_onUpdateQuantity);
     on<_ClearCart>(_onClearCart);
     on<_CreateOrder>(_onCreateOrder);
-    on<_CategoriesUpdated>((event, emit) => emit(state.copyWith(categories: event.categories, isLoading: false)));
-    on<_ProductsUpdated>((event, emit) => emit(state.copyWith(products: event.products)));
+    on<_CategoriesUpdated>((event, emit) =>
+        emit(state.copyWith(categories: event.categories, isLoading: false)));
+    on<_ProductsUpdated>(
+        (event, emit) => emit(state.copyWith(products: event.products)));
   }
 
   Future<void> _onStarted(_Started event, Emitter<SalesState> emit) async {
     emit(state.copyWith(isLoading: true));
-    
+
     _categoriesSub?.cancel();
     _categoriesSub = _watchCategories().listen((categories) {
-       add(SalesEvent.categoriesUpdated(categories));
-       // Select first category by default if none selected?
-       // For now keep null (All)
+      add(SalesEvent.categoriesUpdated(categories));
+      // Select first category by default if none selected?
+      // For now keep null (All)
     });
-    
+
     _watchProductsStream();
   }
 
   void _watchProductsStream() {
     _productsSub?.cancel();
-    _productsSub = _watchProducts(categoryId: state.selectedCategoryId).listen((products) {
+    _productsSub =
+        _watchProducts(categoryId: state.selectedCategoryId).listen((products) {
       add(SalesEvent.productsUpdated(products));
     });
   }
 
-  Future<void> _onCategorySelected(_CategorySelected event, Emitter<SalesState> emit) async {
+  Future<void> _onCategorySelected(
+      _CategorySelected event, Emitter<SalesState> emit) async {
     if (state.selectedCategoryId == event.categoryId) return;
-    
+
     emit(state.copyWith(selectedCategoryId: event.categoryId));
     _watchProductsStream();
   }
-  
-  Future<void> _onSelectProduct(_SelectProduct event, Emitter<SalesState> emit) async {
+
+  Future<void> _onSelectProduct(
+      _SelectProduct event, Emitter<SalesState> emit) async {
     final modifiers = await _getModifiers(event.product.uuid);
     if (modifiers.isEmpty) {
       // No modifiers, add directly
@@ -115,9 +128,8 @@ class SalesBloc extends Bloc<SalesEvent, SalesState> {
     } else {
       // Show dialog with modifiers
       emit(state.copyWith(
-        selectedProductForModifiers: event.product, 
-        modifierGroups: modifiers
-      ));
+          selectedProductForModifiers: event.product,
+          modifierGroups: modifiers));
     }
   }
 
@@ -135,24 +147,30 @@ class SalesBloc extends Bloc<SalesEvent, SalesState> {
     ));
   }
 
-  Future<void> _onRemoveFromCart(_RemoveFromCart event, Emitter<SalesState> emit) async {
+  Future<void> _onRemoveFromCart(
+      _RemoveFromCart event, Emitter<SalesState> emit) async {
     emit(state.copyWith(cart: state.cart.removeItem(event.cartItemId)));
   }
 
-  Future<void> _onUpdateQuantity(_UpdateQuantity event, Emitter<SalesState> emit) async {
-    emit(state.copyWith(cart: state.cart.updateQuantity(event.cartItemId, event.quantity)));
+  Future<void> _onUpdateQuantity(
+      _UpdateQuantity event, Emitter<SalesState> emit) async {
+    emit(state.copyWith(
+        cart: state.cart.updateQuantity(event.cartItemId, event.quantity)));
   }
-  
+
   Future<void> _onClearCart(_ClearCart event, Emitter<SalesState> emit) async {
     emit(state.copyWith(cart: state.cart.clear()));
   }
 
-  Future<void> _onCreateOrder(_CreateOrder event, Emitter<SalesState> emit) async {
-    emit(state.copyWith(isLoading: true, isOrderSuccess: false, errorMessage: null));
+  Future<void> _onCreateOrder(
+      _CreateOrder event, Emitter<SalesState> emit) async {
+    emit(state.copyWith(
+        isLoading: true, isOrderSuccess: false, errorMessage: null));
     try {
-      final orderUuid = await _createOrder(state.cart, tableUuid: event.tableUuid, customerUuid: event.customerUuid);
+      final orderUuid = await _createOrder(state.cart,
+          tableUuid: event.tableUuid, customerUuid: event.customerUuid);
       emit(state.copyWith(
-        isLoading: false, 
+        isLoading: false,
         isOrderSuccess: true,
         lastCreatedOrderUuid: orderUuid,
         cart: state.cart.clear(), // Clear cart on success

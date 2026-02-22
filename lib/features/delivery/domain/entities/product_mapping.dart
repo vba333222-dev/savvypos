@@ -12,5 +12,6 @@ class ProductMapping with _$ProductMapping {
     required DeliveryChannel channel,
   }) = _ProductMapping;
 
-  factory ProductMapping.fromJson(Map<String, dynamic> json) => _$ProductMappingFromJson(json);
+  factory ProductMapping.fromJson(Map<String, dynamic> json) =>
+      _$ProductMappingFromJson(json);
 }

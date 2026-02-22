@@ -46,7 +46,7 @@ class AuditLogTable extends Table {
   TextColumn get supervisorRole => text()();
 
   // What was done
-  TextColumn get action => text()();          // AuditAction.name
+  TextColumn get action => text()(); // AuditAction.name
   TextColumn? get orderUuid => text().nullable()();
   TextColumn? get orderItemUuid => text().nullable()();
 

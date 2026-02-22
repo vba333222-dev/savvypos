@@ -56,10 +56,10 @@ class _WebAdminLayoutState extends State<WebAdminLayout> {
               child: Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Center(
-                    child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 1200), // Max width constraint
-                        child: _pages[_selectedIndex]
-                    ),
+                  child: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                          maxWidth: 1200), // Max width constraint
+                      child: _pages[_selectedIndex]),
                 ),
               ),
             ),

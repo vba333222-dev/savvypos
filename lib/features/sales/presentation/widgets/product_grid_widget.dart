@@ -10,13 +10,16 @@ class ProductGridWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<SalesBloc, SalesState>(
       builder: (context, state) {
-        if (state.isLoading) return const Center(child: CircularProgressIndicator());
-        if (state.products.isEmpty) return const Center(child: Text('No Products'));
+        if (state.isLoading)
+          return const Center(child: CircularProgressIndicator());
+        if (state.products.isEmpty)
+          return const Center(child: Text('No Products'));
 
         return GridView.builder(
           padding: const EdgeInsets.all(8),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3, // Responsive logic needed for real app (LayoutBuilder)
+            crossAxisCount:
+                3, // Responsive logic needed for real app (LayoutBuilder)
             childAspectRatio: 0.8,
             crossAxisSpacing: 8,
             mainAxisSpacing: 8,
@@ -26,7 +29,9 @@ class ProductGridWidget extends StatelessWidget {
             final product = state.products[index];
             return InkWell(
               onTap: () {
-                context.read<SalesBloc>().add(SalesEvent.selectProduct(product));
+                context
+                    .read<SalesBloc>()
+                    .add(SalesEvent.selectProduct(product));
               },
               child: Card(
                 elevation: 2,
@@ -38,11 +43,13 @@ class ProductGridWidget extends StatelessWidget {
                           ? CachedNetworkImage(
                               imageUrl: product.imageUrl!,
                               fit: BoxFit.cover,
-                              errorWidget: (_, __, ___) => const Icon(Icons.image_not_supported),
+                              errorWidget: (_, __, ___) =>
+                                  const Icon(Icons.image_not_supported),
                             )
                           : Container(
                               color: Colors.blueGrey[100],
-                              child: const Icon(Icons.fastfood, size: 40, color: Colors.blueGrey),
+                              child: const Icon(Icons.fastfood,
+                                  size: 40, color: Colors.blueGrey),
                             ),
                     ),
                     Padding(
@@ -51,8 +58,8 @@ class ProductGridWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            product.name, 
-                            maxLines: 2, 
+                            product.name,
+                            maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),

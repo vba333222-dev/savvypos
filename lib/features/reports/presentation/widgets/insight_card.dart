@@ -45,7 +45,10 @@ class InsightCard extends StatelessWidget {
                 child: Icon(icon, size: 18, color: activeColor),
               ),
               const SizedBox(width: 8),
-              Text(label, style: TextStyle(color: theme.colors.textSecondary, fontWeight: FontWeight.w600)),
+              Text(label,
+                  style: TextStyle(
+                      color: theme.colors.textSecondary,
+                      fontWeight: FontWeight.w600)),
             ],
           ),
           const Spacer(),
@@ -54,12 +57,16 @@ class InsightCard extends StatelessWidget {
             textBaseline: TextBaseline.alphabetic,
             children: [
               if (prefix.isNotEmpty)
-                Text(prefix, style: TextStyle(color: theme.colors.textPrimary, fontSize: 20, fontWeight: FontWeight.bold)),
+                Text(prefix,
+                    style: TextStyle(
+                        color: theme.colors.textPrimary,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold)),
               SavvyTicker(
                 value: value,
                 style: TextStyle(
-                  fontSize: 28, 
-                  fontWeight: FontWeight.w900, 
+                  fontSize: 28,
+                  fontWeight: FontWeight.w900,
                   color: theme.colors.textPrimary,
                 ),
               ),

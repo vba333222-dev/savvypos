@@ -13,11 +13,14 @@ class ReportRepositoryImpl implements IReportRepository {
   ReportRepositoryImpl(this.db);
 
   @override
-  Future<List<SalesReportItem>> getSalesReport(DateTime start, DateTime end) async {
+  Future<List<SalesReportItem>> getSalesReport(
+      DateTime start, DateTime end) async {
     // 1. Query Orders in Range (Main Isolate)
     final query = db.select(db.orderItemTable).join([
-      innerJoin(db.orderTable, db.orderTable.uuid.equalsExp(db.orderItemTable.orderUuid)),
-      innerJoin(db.productTable, db.productTable.uuid.equalsExp(db.orderItemTable.productUuid)),
+      innerJoin(db.orderTable,
+          db.orderTable.uuid.equalsExp(db.orderItemTable.orderUuid)),
+      innerJoin(db.productTable,
+          db.productTable.uuid.equalsExp(db.orderItemTable.productUuid)),
     ])
       ..where(db.orderTable.transactionDate.isBetweenValues(start, end) &
           db.orderTable.status.equals('COMPLETED'));
@@ -30,7 +33,7 @@ class ReportRepositoryImpl implements IReportRepository {
       final product = row.readTable(db.productTable);
       return _RawSaleItem(
         productUuid: product.uuid,
-        categoryName: product.categoryId, 
+        categoryName: product.categoryId,
         productName: product.name,
         quantity: item.quantity,
         revenue: item.total,
@@ -45,10 +48,12 @@ class ReportRepositoryImpl implements IReportRepository {
   @override
   Future<List<StockLedgerItem>> getStockLedger(String productUuid) async {
     final rows = await (db.select(db.inventoryLedgerTable)
-      ..where((t) => t.productUuid.equals(productUuid))
-      ..orderBy([(t) => OrderingTerm(expression: t.timestamp, mode: OrderingMode.asc)]))
-      .get();
-      
+          ..where((t) => t.productUuid.equals(productUuid))
+          ..orderBy([
+            (t) => OrderingTerm(expression: t.timestamp, mode: OrderingMode.asc)
+          ]))
+        .get();
+
     double runningStock = 0;
     final List<StockLedgerItem> result = [];
 
@@ -62,7 +67,7 @@ class ReportRepositoryImpl implements IReportRepository {
         newStockLevel: runningStock,
       ));
     }
-    
+
     // Reverse to show newest first?
     return result.reversed.toList();
   }
@@ -94,7 +99,7 @@ List<SalesReportItem> _aggregateSales(List<_RawSaleItem> items) {
   for (var item in items) {
     final key = item.productUuid;
     final current = aggregation[key];
-    
+
     final cost = item.costPrice * item.quantity;
     final profit = item.revenue - cost;
 
@@ -118,7 +123,4 @@ List<SalesReportItem> _aggregateSales(List<_RawSaleItem> items) {
   }
 
   return aggregation.values.toList();
-
-
-
 }

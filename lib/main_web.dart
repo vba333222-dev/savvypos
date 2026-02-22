@@ -26,14 +26,14 @@ class WebApp extends StatelessWidget {
       theme: ThemeData(extensions: [SavvyTheme.light()]),
       darkTheme: ThemeData(extensions: [SavvyTheme.dark()]),
       home: const EmployeeLoginPage(
-        // On success, navigate to WebAdminShell
-        // We might need to modify EmployeeLoginPage to accept a generic 'onSuccess' callback 
-        // or handle navigation logic inside it based on platform.
-        // For now, let's assume standard routing or that logic is internal.
-        // Actually EmployeeLoginPage typically pushes route. 
-        // If we want to force Shell, we might need a wrapper or modified logic.
-        // For simple start:
-      ),
+          // On success, navigate to WebAdminShell
+          // We might need to modify EmployeeLoginPage to accept a generic 'onSuccess' callback
+          // or handle navigation logic inside it based on platform.
+          // For now, let's assume standard routing or that logic is internal.
+          // Actually EmployeeLoginPage typically pushes route.
+          // If we want to force Shell, we might need a wrapper or modified logic.
+          // For simple start:
+          ),
       routes: {
         '/admin': (context) => const WebAdminShell(),
       },

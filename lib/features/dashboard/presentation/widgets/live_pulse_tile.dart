@@ -26,16 +26,22 @@ class LivePulseTile extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               gradient: RadialGradient(
-                colors: [theme.colors.stateSuccess.withValues(alpha: 0.1), Colors.transparent],
+                colors: [
+                  theme.colors.stateSuccess.withValues(alpha: 0.1),
+                  Colors.transparent
+                ],
                 stops: const [0.5, 1.0],
                 center: Alignment.center,
                 radius: 1.2,
               ),
             ),
           )
-          .animate(onPlay: (c) => c.repeat(reverse: true))
-          .scale(begin: const Offset(0.9, 0.9), end: const Offset(1.1, 1.1), duration: 2.seconds)
-          .fade(begin: 0.3, end: 0.6),
+              .animate(onPlay: (c) => c.repeat(reverse: true))
+              .scale(
+                  begin: const Offset(0.9, 0.9),
+                  end: const Offset(1.1, 1.1),
+                  duration: 2.seconds)
+              .fade(begin: 0.3, end: 0.6),
         ),
 
         // Content
@@ -48,16 +54,26 @@ class LivePulseTile extends StatelessWidget {
                 children: [
                   Icon(Icons.monitor_heart, color: theme.colors.stateSuccess),
                   SizedBox(width: 8),
-                  SavvyText('Live Pulse', style: SavvyTextStyle.labelMedium, color: theme.colors.textSecondary),
+                  SavvyText('Live Pulse',
+                      style: SavvyTextStyle.labelMedium,
+                      color: theme.colors.textSecondary),
                 ],
               ),
               Spacer(),
-              
-              _StatRow(label: 'Active Tables', value: '$activeTables', color: theme.colors.textPrimary),
+              _StatRow(
+                  label: 'Active Tables',
+                  value: '$activeTables',
+                  color: theme.colors.textPrimary),
               SizedBox(height: 8),
-              _StatRow(label: 'Pending Orders', value: '$pendingOrders', color: theme.colors.stateWarning),
-               SizedBox(height: 8),
-              _StatRow(label: 'Staff Online', value: '$staffActive', color: theme.colors.brandSecondary),
+              _StatRow(
+                  label: 'Pending Orders',
+                  value: '$pendingOrders',
+                  color: theme.colors.stateWarning),
+              SizedBox(height: 8),
+              _StatRow(
+                  label: 'Staff Online',
+                  value: '$staffActive',
+                  color: theme.colors.brandSecondary),
             ],
           ),
         ),
@@ -71,7 +87,8 @@ class _StatRow extends StatelessWidget {
   final String value;
   final Color color;
 
-  const _StatRow({required this.label, required this.value, required this.color});
+  const _StatRow(
+      {required this.label, required this.value, required this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +96,9 @@ class _StatRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(label, style: TextStyle(color: Colors.black54, fontSize: 13)),
-        Text(value, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: color)),
+        Text(value,
+            style: TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold, color: color)),
       ],
     );
   }

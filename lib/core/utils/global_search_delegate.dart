@@ -44,7 +44,6 @@ class GlobalSearchDelegate extends SearchDelegate {
   }
 
   Widget _buildSearchResults(BuildContext context) {
-    
     return FutureBuilder(
       future: Future.wait([
         GetIt.I<IProductRepository>().searchProducts(query),
@@ -54,14 +53,14 @@ class GlobalSearchDelegate extends SearchDelegate {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
-        
+
         if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         }
 
         final products = snapshot.data![0] as List<Product>;
         final customers = snapshot.data![1] as List<Customer>;
-        
+
         if (products.isEmpty && customers.isEmpty) {
           return const Center(child: Text('No results found.'));
         }
@@ -70,35 +69,40 @@ class GlobalSearchDelegate extends SearchDelegate {
           padding: const EdgeInsets.all(16),
           children: [
             if (products.isNotEmpty) ...[
-              Text('Products', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
+              Text('Products',
+                  style: TextStyle(
+                      color: Colors.grey, fontWeight: FontWeight.bold)),
               const Divider(),
               ...products.map((p) => ListTile(
-                leading: Icon(Icons.inventory_2, color: Colors.blue),
-                title: Text(p.name),
-                subtitle: Text(p.sku ?? ''),
-                trailing: Text('\$${p.price.toStringAsFixed(2)}'),
-                onTap: () {
-                  context.read<CartBloc>().add(CartEvent.addProduct(p));
-                  close(context, null);
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${p.name} added to cart')));
-                },
-              )),
+                    leading: Icon(Icons.inventory_2, color: Colors.blue),
+                    title: Text(p.name),
+                    subtitle: Text(p.sku ?? ''),
+                    trailing: Text('\$${p.price.toStringAsFixed(2)}'),
+                    onTap: () {
+                      context.read<CartBloc>().add(CartEvent.addProduct(p));
+                      close(context, null);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('${p.name} added to cart')));
+                    },
+                  )),
               const SizedBox(height: 16),
             ],
-            
             if (customers.isNotEmpty) ...[
-              Text('Customers', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
+              Text('Customers',
+                  style: TextStyle(
+                      color: Colors.grey, fontWeight: FontWeight.bold)),
               const Divider(),
               ...customers.map((c) => ListTile(
-                leading: Icon(Icons.person, color: Colors.green),
-                title: Text(c.name),
-                subtitle: Text(c.phone ?? c.email ?? ''),
-                onTap: () {
-                  context.read<CartBloc>().add(CartEvent.selectCustomer(c));
-                  close(context, null);
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Customer ${c.name} selected')));
-                },
-              )),
+                    leading: Icon(Icons.person, color: Colors.green),
+                    title: Text(c.name),
+                    subtitle: Text(c.phone ?? c.email ?? ''),
+                    onTap: () {
+                      context.read<CartBloc>().add(CartEvent.selectCustomer(c));
+                      close(context, null);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Customer ${c.name} selected')));
+                    },
+                  )),
             ],
           ],
         );

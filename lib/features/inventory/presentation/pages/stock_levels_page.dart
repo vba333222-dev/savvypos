@@ -40,11 +40,14 @@ class _StockLevelsContentState extends State<_StockLevelsContent> {
   }
 
   void _applyFilters() {
-    context.read<AdvancedInventoryBloc>().add(AdvancedInventoryEvent.loadStockLevels(
-      searchQuery: _searchController.text.isEmpty ? null : _searchController.text,
-      lowStockOnly: _selectedFilter == 'low',
-      outOfStockOnly: _selectedFilter == 'out',
-    ));
+    context
+        .read<AdvancedInventoryBloc>()
+        .add(AdvancedInventoryEvent.loadStockLevels(
+          searchQuery:
+              _searchController.text.isEmpty ? null : _searchController.text,
+          lowStockOnly: _selectedFilter == 'low',
+          outOfStockOnly: _selectedFilter == 'out',
+        ));
   }
 
   @override
@@ -71,12 +74,14 @@ class _StockLevelsContentState extends State<_StockLevelsContent> {
                 icon: Icon(Icons.warehouse, color: theme.colors.textSecondary),
                 onSelected: (uuid) {
                   context.read<AdvancedInventoryBloc>().add(
-                    AdvancedInventoryEvent.loadStockLevels(warehouseUuid: uuid.isEmpty ? null : uuid),
-                  );
+                        AdvancedInventoryEvent.loadStockLevels(
+                            warehouseUuid: uuid.isEmpty ? null : uuid),
+                      );
                 },
                 itemBuilder: (context) => [
                   const PopupMenuItem(value: '', child: Text('All Warehouses')),
-                  ...state.warehouses.map((w) => PopupMenuItem(value: w.uuid, child: Text(w.name))),
+                  ...state.warehouses.map(
+                      (w) => PopupMenuItem(value: w.uuid, child: Text(w.name))),
                 ],
               );
             },
@@ -116,7 +121,8 @@ class _StockLevelsContentState extends State<_StockLevelsContent> {
                             },
                           )
                         : null,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12)),
                     filled: true,
                     fillColor: theme.colors.bgCanvas,
                   ),
@@ -176,9 +182,12 @@ class _StockLevelsContentState extends State<_StockLevelsContent> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.inventory_2, size: 64, color: theme.colors.textSecondary),
+                        Icon(Icons.inventory_2,
+                            size: 64, color: theme.colors.textSecondary),
                         const SizedBox(height: 16),
-                        Text('No stock data found', style: TextStyle(color: theme.colors.textSecondary)),
+                        Text('No stock data found',
+                            style:
+                                TextStyle(color: theme.colors.textSecondary)),
                       ],
                     ),
                   );
@@ -233,7 +242,8 @@ class _FilterChip extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected ? chipColor : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: isSelected ? chipColor : theme.colors.border),
+          border:
+              Border.all(color: isSelected ? chipColor : theme.colors.border),
         ),
         child: Text(
           label,
@@ -255,21 +265,23 @@ class _StockLevelTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     // Determine stock status
     Color statusColor;
     String statusText;
     IconData statusIcon;
-    
+
     if (stock.quantity <= 0) {
       statusColor = Colors.red;
       statusText = 'Out of Stock';
       statusIcon = Icons.remove_shopping_cart;
-    } else if (stock.reorderPoint != null && stock.quantity <= stock.reorderPoint!) {
+    } else if (stock.reorderPoint != null &&
+        stock.quantity <= stock.reorderPoint!) {
       statusColor = Colors.orange;
       statusText = 'Low Stock';
       statusIcon = Icons.warning_amber;
-    } else if (stock.maxStockLevel != null && stock.quantity >= stock.maxStockLevel!) {
+    } else if (stock.maxStockLevel != null &&
+        stock.quantity >= stock.maxStockLevel!) {
       statusColor = Colors.blue;
       statusText = 'Overstocked';
       statusIcon = Icons.inventory;
@@ -308,7 +320,7 @@ class _StockLevelTile extends StatelessWidget {
                       child: Icon(statusIcon, color: statusColor, size: 24),
                     ),
                     const SizedBox(width: 12),
-                    
+
                     // Product Info
                     Expanded(
                       child: Column(
@@ -328,19 +340,25 @@ class _StockLevelTile extends StatelessWidget {
                               if (stock.productSku != null) ...[
                                 Text(
                                   stock.productSku!,
-                                  style: TextStyle(fontSize: 12, color: theme.colors.textSecondary),
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      color: theme.colors.textSecondary),
                                 ),
                                 const SizedBox(width: 8),
                               ],
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 2),
                                 decoration: BoxDecoration(
                                   color: statusColor.withValues(alpha: 0.15),
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: Text(
                                   statusText,
-                                  style: TextStyle(fontSize: 10, color: statusColor, fontWeight: FontWeight.w600),
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      color: statusColor,
+                                      fontWeight: FontWeight.w600),
                                 ),
                               ),
                             ],
@@ -348,13 +366,17 @@ class _StockLevelTile extends StatelessWidget {
                         ],
                       ),
                     ),
-                    
+
                     // Quantity Display
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          stock.quantity.toStringAsFixed(stock.quantity.truncateToDouble() == stock.quantity ? 0 : 1),
+                          stock.quantity.toStringAsFixed(
+                              stock.quantity.truncateToDouble() ==
+                                      stock.quantity
+                                  ? 0
+                                  : 1),
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -364,7 +386,9 @@ class _StockLevelTile extends StatelessWidget {
                         if (stock.warehouseName != null)
                           Text(
                             stock.warehouseName!,
-                            style: TextStyle(fontSize: 10, color: theme.colors.textSecondary),
+                            style: TextStyle(
+                                fontSize: 10,
+                                color: theme.colors.textSecondary),
                           ),
                       ],
                     ),
@@ -415,7 +439,8 @@ class _StockLevelTile extends StatelessWidget {
                         onPressed: () {
                           HapticFeedback.mediumImpact();
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Quick Reorder - Coming Soon')),
+                            const SnackBar(
+                                content: Text('Quick Reorder - Coming Soon')),
                           );
                         },
                         icon: const Icon(Icons.add_shopping_cart, size: 18),
@@ -480,8 +505,14 @@ class _InfoPill extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(value, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: theme.colors.textPrimary)),
-              Text(label, style: TextStyle(fontSize: 9, color: theme.colors.textSecondary)),
+              Text(value,
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: theme.colors.textPrimary)),
+              Text(label,
+                  style: TextStyle(
+                      fontSize: 9, color: theme.colors.textSecondary)),
             ],
           ),
         ],

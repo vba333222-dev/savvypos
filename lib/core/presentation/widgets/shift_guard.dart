@@ -13,8 +13,10 @@ class ShiftGuard extends StatelessWidget {
     return BlocBuilder<ShiftBloc, ShiftState>(
       builder: (context, state) {
         return state.when(
-          initial: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
-          loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
+          initial: () =>
+              const Scaffold(body: Center(child: CircularProgressIndicator())),
+          loading: () =>
+              const Scaffold(body: Center(child: CircularProgressIndicator())),
           error: (message) => Scaffold(
             body: Center(
               child: Column(
@@ -25,7 +27,9 @@ class ShiftGuard extends StatelessWidget {
                   Text('Shift Error: $message'),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () => context.read<ShiftBloc>().add(const ShiftEvent.checkStatus()),
+                    onPressed: () => context
+                        .read<ShiftBloc>()
+                        .add(const ShiftEvent.checkStatus()),
                     child: const Text('Retry'),
                   )
                 ],

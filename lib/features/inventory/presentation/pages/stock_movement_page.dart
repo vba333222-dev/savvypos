@@ -15,7 +15,8 @@ class StockMovementPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => GetIt.I<AdvancedInventoryBloc>()..add(const AdvancedInventoryEvent.loadMovements()),
+      create: (_) => GetIt.I<AdvancedInventoryBloc>()
+        ..add(const AdvancedInventoryEvent.loadMovements()),
       child: const _StockMovementContent(),
     );
   }
@@ -34,10 +35,12 @@ class _StockMovementContentState extends State<_StockMovementContent> {
   DateTime? _endDate;
 
   void _applyFilters() {
-    context.read<AdvancedInventoryBloc>().add(AdvancedInventoryEvent.loadMovements(
-      startDate: _startDate,
-      endDate: _endDate,
-    ));
+    context
+        .read<AdvancedInventoryBloc>()
+        .add(AdvancedInventoryEvent.loadMovements(
+          startDate: _startDate,
+          endDate: _endDate,
+        ));
   }
 
   @override
@@ -80,9 +83,11 @@ class _StockMovementContentState extends State<_StockMovementContent> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.history, size: 64, color: theme.colors.textSecondary),
+                  Icon(Icons.history,
+                      size: 64, color: theme.colors.textSecondary),
                   const SizedBox(height: 16),
-                  Text('No movements recorded', style: TextStyle(color: theme.colors.textSecondary)),
+                  Text('No movements recorded',
+                      style: TextStyle(color: theme.colors.textSecondary)),
                 ],
               ),
             );
@@ -112,9 +117,11 @@ class _StockMovementContentState extends State<_StockMovementContent> {
                     child: Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
-                            color: theme.colors.brandPrimary.withValues(alpha: 0.1),
+                            color: theme.colors.brandPrimary
+                                .withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
@@ -129,7 +136,8 @@ class _StockMovementContentState extends State<_StockMovementContent> {
                         const SizedBox(width: 8),
                         Text(
                           '${movements.length} movements',
-                          style: TextStyle(fontSize: 12, color: theme.colors.textSecondary),
+                          style: TextStyle(
+                              fontSize: 12, color: theme.colors.textSecondary),
                         ),
                       ],
                     ),
@@ -169,7 +177,7 @@ class _StockMovementContentState extends State<_StockMovementContent> {
 
   void _showFilterSheet(BuildContext context) {
     final theme = context.savvy;
-    
+
     showModalBottomSheet(
       context: context,
       backgroundColor: theme.colors.bgSurface,
@@ -184,7 +192,7 @@ class _StockMovementContentState extends State<_StockMovementContent> {
           children: [
             const SavvyText.h4('Filter Movements'),
             const SizedBox(height: 16),
-            
+
             // Movement Type Filter
             Wrap(
               spacing: 8,
@@ -204,9 +212,9 @@ class _StockMovementContentState extends State<_StockMovementContent> {
                 );
               }).toList(),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Date Range
             Row(
               children: [
@@ -215,8 +223,10 @@ class _StockMovementContentState extends State<_StockMovementContent> {
                     onPressed: () async {
                       final date = await showDatePicker(
                         context: context,
-                        initialDate: _startDate ?? DateTime.now().subtract(const Duration(days: 7)),
-                        firstDate: DateTime.now().subtract(const Duration(days: 365)),
+                        initialDate: _startDate ??
+                            DateTime.now().subtract(const Duration(days: 7)),
+                        firstDate:
+                            DateTime.now().subtract(const Duration(days: 365)),
                         lastDate: DateTime.now(),
                       );
                       if (date != null) {
@@ -224,7 +234,9 @@ class _StockMovementContentState extends State<_StockMovementContent> {
                       }
                     },
                     icon: const Icon(Icons.calendar_today, size: 16),
-                    label: Text(_startDate != null ? DateFormat('MMM d').format(_startDate!) : 'Start Date'),
+                    label: Text(_startDate != null
+                        ? DateFormat('MMM d').format(_startDate!)
+                        : 'Start Date'),
                   ),
                 ),
                 const Padding(
@@ -237,7 +249,8 @@ class _StockMovementContentState extends State<_StockMovementContent> {
                       final date = await showDatePicker(
                         context: context,
                         initialDate: _endDate ?? DateTime.now(),
-                        firstDate: _startDate ?? DateTime.now().subtract(const Duration(days: 365)),
+                        firstDate: _startDate ??
+                            DateTime.now().subtract(const Duration(days: 365)),
                         lastDate: DateTime.now(),
                       );
                       if (date != null) {
@@ -245,14 +258,16 @@ class _StockMovementContentState extends State<_StockMovementContent> {
                       }
                     },
                     icon: const Icon(Icons.calendar_today, size: 16),
-                    label: Text(_endDate != null ? DateFormat('MMM d').format(_endDate!) : 'End Date'),
+                    label: Text(_endDate != null
+                        ? DateFormat('MMM d').format(_endDate!)
+                        : 'End Date'),
                   ),
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 20),
-            
+
             SizedBox(
               width: double.infinity,
               child: FilledButton(
@@ -271,14 +286,22 @@ class _StockMovementContentState extends State<_StockMovementContent> {
 
   String _getTypeName(MovementType type) {
     switch (type) {
-      case MovementType.sale: return 'Sale';
-      case MovementType.purchase: return 'Purchase';
-      case MovementType.adjustment: return 'Adjustment';
-      case MovementType.transferIn: return 'Transfer In';
-      case MovementType.transferOut: return 'Transfer Out';
-      case MovementType.waste: return 'Waste';
-      case MovementType.countVariance: return 'Count Variance';
-      case MovementType.returnStock: return 'Return';
+      case MovementType.sale:
+        return 'Sale';
+      case MovementType.purchase:
+        return 'Purchase';
+      case MovementType.adjustment:
+        return 'Adjustment';
+      case MovementType.transferIn:
+        return 'Transfer In';
+      case MovementType.transferOut:
+        return 'Transfer Out';
+      case MovementType.waste:
+        return 'Waste';
+      case MovementType.countVariance:
+        return 'Count Variance';
+      case MovementType.returnStock:
+        return 'Return';
     }
   }
 }
@@ -297,7 +320,7 @@ class _MovementTimelineTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     final isPositive = movement.quantityChange > 0;
     final typeColor = _getTypeColor(movement.movementType);
     final typeIcon = _getTypeIcon(movement.movementType);
@@ -356,9 +379,12 @@ class _MovementTimelineTile extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
-                          color: isPositive ? Colors.green.withValues(alpha: 0.15) : Colors.red.withValues(alpha: 0.15),
+                          color: isPositive
+                              ? Colors.green.withValues(alpha: 0.15)
+                              : Colors.red.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
@@ -375,20 +401,25 @@ class _MovementTimelineTile extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
                           color: typeColor.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
                           _getTypeName(movement.movementType),
-                          style: TextStyle(fontSize: 10, color: typeColor, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                              fontSize: 10,
+                              color: typeColor,
+                              fontWeight: FontWeight.w600),
                         ),
                       ),
                       const SizedBox(width: 8),
                       Text(
                         DateFormat('h:mm a').format(movement.timestamp),
-                        style: TextStyle(fontSize: 12, color: theme.colors.textSecondary),
+                        style: TextStyle(
+                            fontSize: 12, color: theme.colors.textSecondary),
                       ),
                     ],
                   ),
@@ -396,22 +427,26 @@ class _MovementTimelineTile extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text(
                       movement.notes!,
-                      style: TextStyle(fontSize: 12, color: theme.colors.textSecondary),
+                      style: TextStyle(
+                          fontSize: 12, color: theme.colors.textSecondary),
                     ),
                   ],
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      Icon(Icons.person, size: 12, color: theme.colors.textSecondary),
+                      Icon(Icons.person,
+                          size: 12, color: theme.colors.textSecondary),
                       const SizedBox(width: 4),
                       Text(
                         movement.performedByName,
-                        style: TextStyle(fontSize: 11, color: theme.colors.textSecondary),
+                        style: TextStyle(
+                            fontSize: 11, color: theme.colors.textSecondary),
                       ),
                       const Spacer(),
                       Text(
                         '${movement.balanceBefore.toStringAsFixed(0)} → ${movement.balanceAfter.toStringAsFixed(0)}',
-                        style: TextStyle(fontSize: 11, color: theme.colors.textSecondary),
+                        style: TextStyle(
+                            fontSize: 11, color: theme.colors.textSecondary),
                       ),
                     ],
                   ),
@@ -426,40 +461,64 @@ class _MovementTimelineTile extends StatelessWidget {
 
   Color _getTypeColor(MovementType type) {
     switch (type) {
-      case MovementType.sale: return Colors.blue;
-      case MovementType.purchase: return Colors.green;
-      case MovementType.adjustment: return Colors.orange;
-      case MovementType.transferIn: return Colors.teal;
-      case MovementType.transferOut: return Colors.purple;
-      case MovementType.waste: return Colors.red;
-      case MovementType.countVariance: return Colors.amber;
-      case MovementType.returnStock: return Colors.indigo;
+      case MovementType.sale:
+        return Colors.blue;
+      case MovementType.purchase:
+        return Colors.green;
+      case MovementType.adjustment:
+        return Colors.orange;
+      case MovementType.transferIn:
+        return Colors.teal;
+      case MovementType.transferOut:
+        return Colors.purple;
+      case MovementType.waste:
+        return Colors.red;
+      case MovementType.countVariance:
+        return Colors.amber;
+      case MovementType.returnStock:
+        return Colors.indigo;
     }
   }
 
   IconData _getTypeIcon(MovementType type) {
     switch (type) {
-      case MovementType.sale: return Icons.shopping_cart;
-      case MovementType.purchase: return Icons.add_shopping_cart;
-      case MovementType.adjustment: return Icons.tune;
-      case MovementType.transferIn: return Icons.call_received;
-      case MovementType.transferOut: return Icons.call_made;
-      case MovementType.waste: return Icons.delete;
-      case MovementType.countVariance: return Icons.calculate;
-      case MovementType.returnStock: return Icons.keyboard_return;
+      case MovementType.sale:
+        return Icons.shopping_cart;
+      case MovementType.purchase:
+        return Icons.add_shopping_cart;
+      case MovementType.adjustment:
+        return Icons.tune;
+      case MovementType.transferIn:
+        return Icons.call_received;
+      case MovementType.transferOut:
+        return Icons.call_made;
+      case MovementType.waste:
+        return Icons.delete;
+      case MovementType.countVariance:
+        return Icons.calculate;
+      case MovementType.returnStock:
+        return Icons.keyboard_return;
     }
   }
 
   String _getTypeName(MovementType type) {
     switch (type) {
-      case MovementType.sale: return 'Sale';
-      case MovementType.purchase: return 'Purchase';
-      case MovementType.adjustment: return 'Adjustment';
-      case MovementType.transferIn: return 'Transfer In';
-      case MovementType.transferOut: return 'Transfer Out';
-      case MovementType.waste: return 'Waste';
-      case MovementType.countVariance: return 'Count Variance';
-      case MovementType.returnStock: return 'Return';
+      case MovementType.sale:
+        return 'Sale';
+      case MovementType.purchase:
+        return 'Purchase';
+      case MovementType.adjustment:
+        return 'Adjustment';
+      case MovementType.transferIn:
+        return 'Transfer In';
+      case MovementType.transferOut:
+        return 'Transfer Out';
+      case MovementType.waste:
+        return 'Waste';
+      case MovementType.countVariance:
+        return 'Count Variance';
+      case MovementType.returnStock:
+        return 'Return';
     }
   }
 }

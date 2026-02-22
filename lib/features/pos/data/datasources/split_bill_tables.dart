@@ -10,7 +10,7 @@ class SplitBillTable extends Table {
   IntColumn get guestCount => integer()();
   TextColumn get splitMode => text()(); // equal, byItem, custom, byGuest
   TextColumn get status => text().withDefault(const Constant('active'))();
-  
+
   TextColumn get createdByUuid => text()();
   TextColumn get createdByName => text()();
   DateTimeColumn get createdAt => dateTime()();
@@ -24,10 +24,10 @@ class GuestBillTable extends Table {
   TextColumn get splitBillUuid => text()();
   IntColumn get guestNumber => integer()();
   TextColumn get guestName => text().nullable()();
-  
+
   RealColumn get totalAmount => real()();
   RealColumn get tipAmount => real().nullable()();
-  
+
   BoolColumn get isPaid => boolean().withDefault(const Constant(false))();
   TextColumn get paymentMethod => text().nullable()();
   TextColumn get paymentTransactionUuid => text().nullable()();

@@ -73,7 +73,8 @@ class IntentEdcTerminal implements IPaymentTerminalDevice {
         _resultsController.add(EdcPaymentCancelled(referenceId: referenceId));
       } else {
         _statusController.add(EdcTerminalStatus.declined);
-        _resultsController.add(EdcPaymentFailed(referenceId: referenceId, reason: message));
+        _resultsController
+            .add(EdcPaymentFailed(referenceId: referenceId, reason: message));
       }
     } on PlatformException catch (e) {
       _logger.e('IntentEdcTerminal: PlatformException', error: e);
@@ -88,11 +89,13 @@ class IntentEdcTerminal implements IPaymentTerminalDevice {
   @override
   Future<void> cancelPayment({required String referenceId}) async {
     try {
-      await _methodChannel.invokeMethod('cancelPayment', {'referenceId': referenceId});
+      await _methodChannel
+          .invokeMethod('cancelPayment', {'referenceId': referenceId});
       _statusController.add(EdcTerminalStatus.idle);
       _resultsController.add(EdcPaymentCancelled(referenceId: referenceId));
     } on PlatformException catch (e) {
-      _logger.w('IntentEdcTerminal: Cancel failed with PlatformException: ${e.message}');
+      _logger.w(
+          'IntentEdcTerminal: Cancel failed with PlatformException: ${e.message}');
     }
   }
 

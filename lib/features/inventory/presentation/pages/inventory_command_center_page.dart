@@ -19,7 +19,8 @@ class InventoryCommandCenterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => GetIt.I<AdvancedInventoryBloc>()..add(const AdvancedInventoryEvent.loadDashboard()),
+      create: (_) => GetIt.I<AdvancedInventoryBloc>()
+        ..add(const AdvancedInventoryEvent.loadDashboard()),
       child: const _CommandCenterContent(),
     );
   }
@@ -31,13 +32,15 @@ class _CommandCenterContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     return Scaffold(
       backgroundColor: theme.colors.bgCanvas,
       body: RefreshIndicator(
         onRefresh: () async {
           HapticFeedback.mediumImpact();
-          context.read<AdvancedInventoryBloc>().add(const AdvancedInventoryEvent.refreshDashboard());
+          context
+              .read<AdvancedInventoryBloc>()
+              .add(const AdvancedInventoryEvent.refreshDashboard());
         },
         child: CustomScrollView(
           slivers: [
@@ -51,9 +54,12 @@ class _CommandCenterContent extends StatelessWidget {
                 title: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.inventory_2, color: theme.colors.brandPrimary, size: 24),
+                    Icon(Icons.inventory_2,
+                        color: theme.colors.brandPrimary, size: 24),
                     const SizedBox(width: 8),
-                    const Text('Inventory Command Center', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                    const Text('Inventory Command Center',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600)),
                   ],
                 ),
                 centerTitle: false,
@@ -67,24 +73,36 @@ class _CommandCenterContent extends StatelessWidget {
                       icon: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.warehouse, color: theme.colors.textSecondary),
+                          Icon(Icons.warehouse,
+                              color: theme.colors.textSecondary),
                           const SizedBox(width: 4),
                           Text(
-                            state.warehouses.firstWhere(
-                              (w) => w.uuid == state.selectedWarehouseUuid,
-                              orElse: () => const Warehouse(uuid: '', name: 'All Locations', code: 'ALL'),
-                            ).name,
-                            style: TextStyle(color: theme.colors.textPrimary, fontSize: 14),
+                            state.warehouses
+                                .firstWhere(
+                                  (w) => w.uuid == state.selectedWarehouseUuid,
+                                  orElse: () => const Warehouse(
+                                      uuid: '',
+                                      name: 'All Locations',
+                                      code: 'ALL'),
+                                )
+                                .name,
+                            style: TextStyle(
+                                color: theme.colors.textPrimary, fontSize: 14),
                           ),
-                          Icon(Icons.arrow_drop_down, color: theme.colors.textSecondary),
+                          Icon(Icons.arrow_drop_down,
+                              color: theme.colors.textSecondary),
                         ],
                       ),
                       onSelected: (uuid) {
-                        context.read<AdvancedInventoryBloc>().add(AdvancedInventoryEvent.selectWarehouse(uuid.isEmpty ? null : uuid));
+                        context.read<AdvancedInventoryBloc>().add(
+                            AdvancedInventoryEvent.selectWarehouse(
+                                uuid.isEmpty ? null : uuid));
                       },
                       itemBuilder: (context) => [
-                        const PopupMenuItem(value: '', child: Text('All Locations')),
-                        ...state.warehouses.map((w) => PopupMenuItem(value: w.uuid, child: Text(w.name))),
+                        const PopupMenuItem(
+                            value: '', child: Text('All Locations')),
+                        ...state.warehouses.map((w) =>
+                            PopupMenuItem(value: w.uuid, child: Text(w.name))),
                       ],
                     );
                   },
@@ -97,9 +115,13 @@ class _CommandCenterContent extends StatelessWidget {
                       icon: Badge(
                         isLabelVisible: state.unacknowledgedAlertCount > 0,
                         label: Text('${state.unacknowledgedAlertCount}'),
-                        child: Icon(Icons.notifications_outlined, color: theme.colors.textSecondary),
+                        child: Icon(Icons.notifications_outlined,
+                            color: theme.colors.textSecondary),
                       ),
-                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const InventoryAlertsPage())),
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const InventoryAlertsPage())),
                     );
                   },
                 ),
@@ -122,12 +144,17 @@ class _CommandCenterContent extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.error_outline, size: 64, color: theme.colors.stateError),
+                          Icon(Icons.error_outline,
+                              size: 64, color: theme.colors.stateError),
                           const SizedBox(height: 16),
-                          Text(state.error!, style: TextStyle(color: theme.colors.stateError)),
+                          Text(state.error!,
+                              style: TextStyle(color: theme.colors.stateError)),
                           const SizedBox(height: 16),
                           ElevatedButton.icon(
-                            onPressed: () => context.read<AdvancedInventoryBloc>().add(const AdvancedInventoryEvent.loadDashboard()),
+                            onPressed: () => context
+                                .read<AdvancedInventoryBloc>()
+                                .add(const AdvancedInventoryEvent
+                                    .loadDashboard()),
                             icon: const Icon(Icons.refresh),
                             label: const Text('Retry'),
                           ),
@@ -137,33 +164,49 @@ class _CommandCenterContent extends StatelessWidget {
                   );
                 }
 
-                final stats = state.dashboardStats ?? const InventoryDashboardStats();
+                final stats =
+                    state.dashboardStats ?? const InventoryDashboardStats();
 
                 return SliverPadding(
                   padding: const EdgeInsets.all(16),
                   sliver: SliverList(
                     delegate: SliverChildListDelegate([
                       // KPI Cards Row
-                      _KpiCardsRow(stats: stats).animate().fadeIn(duration: 300.ms).slideY(begin: 0.1, end: 0),
+                      _KpiCardsRow(stats: stats)
+                          .animate()
+                          .fadeIn(duration: 300.ms)
+                          .slideY(begin: 0.1, end: 0),
                       const SizedBox(height: 24),
 
                       // Quick Actions Grid
-                      _QuickActionsGrid().animate().fadeIn(duration: 300.ms, delay: 100.ms).slideY(begin: 0.1, end: 0),
+                      _QuickActionsGrid()
+                          .animate()
+                          .fadeIn(duration: 300.ms, delay: 100.ms)
+                          .slideY(begin: 0.1, end: 0),
                       const SizedBox(height: 24),
 
                       // Stock Health Overview
-                      _StockHealthCard(stats: stats).animate().fadeIn(duration: 300.ms, delay: 200.ms).slideY(begin: 0.1, end: 0),
+                      _StockHealthCard(stats: stats)
+                          .animate()
+                          .fadeIn(duration: 300.ms, delay: 200.ms)
+                          .slideY(begin: 0.1, end: 0),
                       const SizedBox(height: 24),
 
                       // Recent Alerts
                       if (state.alerts.isNotEmpty) ...[
-                        _RecentAlertsCard(alerts: state.alerts.take(5).toList()).animate().fadeIn(duration: 300.ms, delay: 300.ms).slideY(begin: 0.1, end: 0),
+                        _RecentAlertsCard(alerts: state.alerts.take(5).toList())
+                            .animate()
+                            .fadeIn(duration: 300.ms, delay: 300.ms)
+                            .slideY(begin: 0.1, end: 0),
                         const SizedBox(height: 24),
                       ],
 
                       // AI Insights
                       if (state.insights.isNotEmpty) ...[
-                        _InsightsCard(insights: state.insights).animate().fadeIn(duration: 300.ms, delay: 400.ms).slideY(begin: 0.1, end: 0),
+                        _InsightsCard(insights: state.insights)
+                            .animate()
+                            .fadeIn(duration: 300.ms, delay: 400.ms)
+                            .slideY(begin: 0.1, end: 0),
                         const SizedBox(height: 24),
                       ],
 
@@ -186,7 +229,7 @@ class _CommandCenterContent extends StatelessWidget {
 
 class _KpiCardsRow extends StatelessWidget {
   final InventoryDashboardStats stats;
-  
+
   const _KpiCardsRow({required this.stats});
 
   @override
@@ -256,7 +299,7 @@ class _GlassmorphicKpiCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     return Container(
       width: 160,
       padding: const EdgeInsets.all(16),
@@ -324,31 +367,35 @@ class _QuickActionsGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     final actions = [
       _QuickAction(
         icon: Icons.list_alt,
         label: 'Stock Levels',
         color: theme.colors.brandPrimary,
-        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const StockLevelsPage())),
+        onTap: () => Navigator.push(context,
+            MaterialPageRoute(builder: (_) => const StockLevelsPage())),
       ),
       _QuickAction(
         icon: Icons.swap_horiz,
         label: 'Transfers',
         color: Colors.teal,
-        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const StockTransfersPage())),
+        onTap: () => Navigator.push(context,
+            MaterialPageRoute(builder: (_) => const StockTransfersPage())),
       ),
       _QuickAction(
         icon: Icons.history,
         label: 'Movements',
         color: Colors.indigo,
-        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const StockMovementPage())),
+        onTap: () => Navigator.push(context,
+            MaterialPageRoute(builder: (_) => const StockMovementPage())),
       ),
       _QuickAction(
         icon: Icons.qr_code_scanner,
         label: 'Batches',
         color: Colors.deepPurple,
-        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const BatchManagementPage())),
+        onTap: () => Navigator.push(context,
+            MaterialPageRoute(builder: (_) => const BatchManagementPage())),
       ),
       _QuickAction(
         icon: Icons.calculate,
@@ -386,7 +433,9 @@ class _QuickActionsGrid extends StatelessWidget {
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
           childAspectRatio: 1.2,
-          children: actions.map((action) => _QuickActionTile(action: action)).toList(),
+          children: actions
+              .map((action) => _QuickActionTile(action: action))
+              .toList(),
         ),
       ],
     );
@@ -415,7 +464,7 @@ class _QuickActionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     return Material(
       color: theme.colors.bgSurface,
       borderRadius: BorderRadius.circular(12),
@@ -473,8 +522,11 @@ class _StockHealthCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.savvy;
     final total = stats.totalProducts > 0 ? stats.totalProducts : 1;
-    final healthyPercent = ((total - stats.lowStockCount - stats.outOfStockCount) / total * 100).clamp(0, 100).toDouble();
-    
+    final healthyPercent =
+        ((total - stats.lowStockCount - stats.outOfStockCount) / total * 100)
+            .clamp(0, 100)
+            .toDouble();
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -508,7 +560,8 @@ class _StockHealthCard extends StatelessWidget {
               value: healthyPercent / 100,
               minHeight: 8,
               backgroundColor: theme.colors.border,
-              valueColor: AlwaysStoppedAnimation(_getHealthColor(healthyPercent)),
+              valueColor:
+                  AlwaysStoppedAnimation(_getHealthColor(healthyPercent)),
             ),
           ),
           const SizedBox(height: 16),
@@ -563,7 +616,7 @@ class _HealthIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     return Column(
       children: [
         Container(
@@ -607,7 +660,7 @@ class _RecentAlertsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -625,7 +678,10 @@ class _RecentAlertsCard extends StatelessWidget {
               const SavvyText.h4('Recent Alerts'),
               const Spacer(),
               TextButton(
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const InventoryAlertsPage())),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const InventoryAlertsPage())),
                 child: const Text('View All'),
               ),
             ],
@@ -646,10 +702,10 @@ class _AlertTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     Color alertColor;
     IconData alertIcon;
-    
+
     switch (alert.alertType) {
       case AlertType.outOfStock:
         alertColor = Colors.red;
@@ -687,11 +743,14 @@ class _AlertTile extends StatelessWidget {
               children: [
                 Text(
                   alert.productName,
-                  style: TextStyle(fontWeight: FontWeight.w600, color: theme.colors.textPrimary),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: theme.colors.textPrimary),
                 ),
                 Text(
                   alert.message,
-                  style: TextStyle(fontSize: 12, color: theme.colors.textSecondary),
+                  style: TextStyle(
+                      fontSize: 12, color: theme.colors.textSecondary),
                 ),
               ],
             ),
@@ -723,7 +782,7 @@ class _InsightsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -736,7 +795,8 @@ class _InsightsCard extends StatelessWidget {
           ],
         ),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: theme.colors.brandPrimary.withValues(alpha: 0.3)),
+        border:
+            Border.all(color: theme.colors.brandPrimary.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -758,7 +818,8 @@ class _InsightsCard extends StatelessWidget {
                   const SavvyText.h4('AI Insights'),
                   Text(
                     '${insights.length} recommendations',
-                    style: TextStyle(fontSize: 12, color: theme.colors.textSecondary),
+                    style: TextStyle(
+                        fontSize: 12, color: theme.colors.textSecondary),
                   ),
                 ],
               ),
@@ -780,7 +841,7 @@ class _InsightTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(12),
@@ -796,12 +857,15 @@ class _InsightTile extends StatelessWidget {
               children: [
                 Text(
                   insight.title,
-                  style: TextStyle(fontWeight: FontWeight.w600, color: theme.colors.textPrimary),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: theme.colors.textPrimary),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   insight.description,
-                  style: TextStyle(fontSize: 12, color: theme.colors.textSecondary),
+                  style: TextStyle(
+                      fontSize: 12, color: theme.colors.textSecondary),
                 ),
               ],
             ),

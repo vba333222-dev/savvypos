@@ -25,11 +25,23 @@ class Product extends Equatable {
     this.isComposite = false, // Added
     this.printerCategory = 'OTHER',
   });
-  
+
   final String printerCategory; // 'FOOD', 'BEVERAGE', 'OTHER'
 
   @override
-  List<Object?> get props => [uuid, name, sku, price, imageUrl, colorHex, categoryId, trackStock, isService, isComposite, printerCategory];
+  List<Object?> get props => [
+        uuid,
+        name,
+        sku,
+        price,
+        imageUrl,
+        colorHex,
+        categoryId,
+        trackStock,
+        isService,
+        isComposite,
+        printerCategory
+      ];
 
   Product copyWith({
     String? uuid,

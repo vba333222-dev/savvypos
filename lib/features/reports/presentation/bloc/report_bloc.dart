@@ -9,16 +9,20 @@ part 'report_bloc.freezed.dart';
 
 @freezed
 class ReportEvent with _$ReportEvent {
-  const factory ReportEvent.loadSalesReport(DateTime start, DateTime end) = _LoadSalesReport;
-  const factory ReportEvent.loadStockLedger(String productUuid) = _LoadStockLedger;
+  const factory ReportEvent.loadSalesReport(DateTime start, DateTime end) =
+      _LoadSalesReport;
+  const factory ReportEvent.loadStockLedger(String productUuid) =
+      _LoadStockLedger;
 }
 
 @freezed
 class ReportState with _$ReportState {
   const factory ReportState.initial() = _Initial;
   const factory ReportState.loading() = _Loading;
-  const factory ReportState.salesLoaded(List<SalesReportItem> report) = _SalesLoaded;
-  const factory ReportState.stockLoaded(List<StockLedgerItem> ledger) = _StockLoaded;
+  const factory ReportState.salesLoaded(List<SalesReportItem> report) =
+      _SalesLoaded;
+  const factory ReportState.stockLoaded(List<StockLedgerItem> ledger) =
+      _StockLoaded;
   const factory ReportState.error(String message) = _Error;
 }
 
@@ -31,7 +35,8 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
     on<_LoadStockLedger>(_onLoadStockLedger);
   }
 
-  Future<void> _onLoadSalesReport(_LoadSalesReport event, Emitter<ReportState> emit) async {
+  Future<void> _onLoadSalesReport(
+      _LoadSalesReport event, Emitter<ReportState> emit) async {
     emit(const ReportState.loading());
     try {
       final report = await _repository.getSalesReport(event.start, event.end);
@@ -41,7 +46,8 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
     }
   }
 
-  Future<void> _onLoadStockLedger(_LoadStockLedger event, Emitter<ReportState> emit) async {
+  Future<void> _onLoadStockLedger(
+      _LoadStockLedger event, Emitter<ReportState> emit) async {
     emit(const ReportState.loading());
     try {
       final ledger = await _repository.getStockLedger(event.productUuid);

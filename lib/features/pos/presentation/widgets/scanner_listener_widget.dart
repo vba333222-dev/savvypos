@@ -45,43 +45,44 @@ class _ScannerListenerWidgetState extends State<ScannerListenerWidget> {
       }
 
       if (event.logicalKey == LogicalKeyboardKey.enter) {
-        if (_buffer.length >= 8) { // Valid barcode heuristic length
+        if (_buffer.length >= 8) {
+          // Valid barcode heuristic length
           final code = _buffer.toString();
-          
+
           // Execute callback safely in next event loop to free keyboard listener
           WidgetsBinding.instance.addPostFrameCallback((_) {
-              widget.onScanned(code);
-              if (mounted) _showScanFeedback(code);
+            widget.onScanned(code);
+            if (mounted) _showScanFeedback(code);
           });
-          
+
           _buffer.clear();
           return true; // We handled the scanner ENTER key, don't submit forms accidentally
         } else {
-           _buffer.clear();
-           return false; // Random fast enter? Let it through just in case
+          _buffer.clear();
+          return false; // Random fast enter? Let it through just in case
         }
       } else {
-        // Only append printable characters. 
+        // Only append printable characters.
         if (event.character != null && event.character!.isNotEmpty) {
-           // It's typing fast (< 50ms), so it's likely a scanner character. 
-           // Buffer it and PREVENT it from reaching any focused TextField.
-           _buffer.write(event.character);
-           return true; 
+          // It's typing fast (< 50ms), so it's likely a scanner character.
+          // Buffer it and PREVENT it from reaching any focused TextField.
+          _buffer.write(event.character);
+          return true;
         }
       }
     }
-    
+
     // Ignore KeyUpEvents or unprintable modifiers but don't consume them randomly
     return false;
   }
 
   void _showScanFeedback(String code) {
     if (!mounted) return;
-    
+
     // Quick Overlay
     final overlay = Overlay.of(context);
     late OverlayEntry entry;
-    
+
     entry = OverlayEntry(
       builder: (context) => Positioned(
         bottom: 80,
@@ -95,14 +96,22 @@ class _ScannerListenerWidgetState extends State<ScannerListenerWidget> {
               decoration: BoxDecoration(
                 color: Colors.black87,
                 borderRadius: BorderRadius.circular(30),
-                boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0, 4))],
+                boxShadow: const [
+                  BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 10,
+                      offset: Offset(0, 4))
+                ],
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                   const Icon(Icons.qr_code_scanner, color: Colors.white, size: 20),
-                   const SizedBox(width: 12),
-                   Text(code, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                  const Icon(Icons.qr_code_scanner,
+                      color: Colors.white, size: 20),
+                  const SizedBox(width: 12),
+                  Text(code,
+                      style: const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
@@ -113,13 +122,13 @@ class _ScannerListenerWidgetState extends State<ScannerListenerWidget> {
 
     overlay.insert(entry);
     Future.delayed(const Duration(seconds: 2), () {
-       if (entry.mounted) entry.remove();
+      if (entry.mounted) entry.remove();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // We no longer wrap the child in an obsolete Focus Node KeyboardListener! 
+    // We no longer wrap the child in an obsolete Focus Node KeyboardListener!
     // The HardwareKeyboard singleton interceptor is active globally while this widget lives in the tree.
     return widget.child;
   }

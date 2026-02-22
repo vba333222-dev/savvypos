@@ -31,7 +31,8 @@ class PaymentPart extends Equatable {
   });
 
   @override
-  List<Object?> get props => [method, amount, tendered, change, referenceId, note];
+  List<Object?> get props =>
+      [method, amount, tendered, change, referenceId, note];
 }
 
 class PaymentTransaction extends Equatable {
@@ -58,5 +59,15 @@ class PaymentTransaction extends Equatable {
   });
 
   @override
-  List<Object?> get props => [uuid, orderUuid, method, amount, status, createdAt, tendered, change, note];
+  List<Object?> get props => [
+        uuid,
+        orderUuid,
+        method,
+        amount,
+        status,
+        createdAt,
+        tendered,
+        change,
+        note
+      ];
 }

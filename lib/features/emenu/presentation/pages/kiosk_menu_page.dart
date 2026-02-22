@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:savvy_pos/core/di/injection.dart';
 import 'package:savvy_pos/features/emenu/domain/entities/kiosk_entities.dart';
 import 'package:savvy_pos/features/emenu/domain/repositories/i_kiosk_repository.dart';
-// import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart'; 
+// import 'package:savvy_pos/features/inventory/domain/repositories/i_product_repository.dart';
 // import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 
 class KioskMenuPage extends StatefulWidget {
@@ -23,7 +23,7 @@ class _KioskMenuPageState extends State<KioskMenuPage> {
   // Using Mock data for now to focus on UI, or could inject repo
   // final _productRepo = getIt<IProductRepository>();
   final _kioskRepo = getIt<IKioskRepository>();
-  
+
   String _selectedCategory = 'Burgers';
   final List<String> _categories = ['Burgers', 'Drinks', 'Sides', 'Desserts'];
 
@@ -53,7 +53,7 @@ class _KioskMenuPageState extends State<KioskMenuPage> {
       'image': 'assets/images/drink_cola.jpg',
       'desc': 'Ice cold cola',
     },
-     {
+    {
       'uuid': 'p4',
       'name': 'Fries',
       'price': 3.99,
@@ -65,9 +65,8 @@ class _KioskMenuPageState extends State<KioskMenuPage> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredProducts = _allProducts
-        .where((p) => p['category'] == _selectedCategory)
-        .toList();
+    final filteredProducts =
+        _allProducts.where((p) => p['category'] == _selectedCategory).toList();
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
@@ -75,10 +74,10 @@ class _KioskMenuPageState extends State<KioskMenuPage> {
         children: [
           // Header
           _buildHeader(),
-          
+
           // Categories
           _buildCategoryTabs(),
-          
+
           // Grid
           Expanded(
             child: GridView.builder(
@@ -114,24 +113,26 @@ class _KioskMenuPageState extends State<KioskMenuPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Savvy Burger', 
+                'Savvy Burger',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               Text(
-                'ORDER HERE', 
-                style: TextStyle(fontSize: 14, color: Colors.grey, letterSpacing: 1.2),
+                'ORDER HERE',
+                style: TextStyle(
+                    fontSize: 14, color: Colors.grey, letterSpacing: 1.2),
               ),
             ],
           ),
           const Spacer(),
           // Cancel/Reset Button
           TextButton.icon(
-             onPressed: () {
-               // Restart
-               _kioskRepo.updateStep(widget.session.uuid, KioskFlowStep.welcome);
-             },
-             icon: const Icon(Icons.refresh, color: Colors.red),
-             label: const Text('START OVER', style: TextStyle(color: Colors.red)),
+            onPressed: () {
+              // Restart
+              _kioskRepo.updateStep(widget.session.uuid, KioskFlowStep.welcome);
+            },
+            icon: const Icon(Icons.refresh, color: Colors.red),
+            label:
+                const Text('START OVER', style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -146,7 +147,7 @@ class _KioskMenuPageState extends State<KioskMenuPage> {
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         scrollDirection: Axis.horizontal,
         itemCount: _categories.length,
-        separatorBuilder: (_,__) => const SizedBox(width: 16),
+        separatorBuilder: (_, __) => const SizedBox(width: 16),
         itemBuilder: (context, index) {
           final category = _categories[index];
           final isSelected = category == _selectedCategory;
@@ -186,7 +187,7 @@ class _KioskMenuPageState extends State<KioskMenuPage> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
-             BoxShadow(
+            BoxShadow(
               color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 10,
               offset: const Offset(0, 4),
@@ -203,7 +204,8 @@ class _KioskMenuPageState extends State<KioskMenuPage> {
               child: Container(
                 color: Colors.grey.shade200,
                 alignment: Alignment.center,
-                child: Icon(Icons.lunch_dining, size: 60, color: Colors.grey.shade400),
+                child: Icon(Icons.lunch_dining,
+                    size: 60, color: Colors.grey.shade400),
                 // In real app: Image.network(product['image']...)
               ),
             ),
@@ -217,16 +219,18 @@ class _KioskMenuPageState extends State<KioskMenuPage> {
                   children: [
                     Text(
                       product['name'],
-                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
                     Text(
-                       product['desc'],
-                       style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
-                       maxLines: 2,
-                       overflow: TextOverflow.ellipsis,
+                      product['desc'],
+                      style:
+                          TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const Spacer(),
                     Row(
@@ -234,7 +238,10 @@ class _KioskMenuPageState extends State<KioskMenuPage> {
                       children: [
                         Text(
                           '\$${product['price']}',
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.orange),
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.orange),
                         ),
                         Container(
                           padding: const EdgeInsets.all(8),
@@ -242,7 +249,8 @@ class _KioskMenuPageState extends State<KioskMenuPage> {
                             color: Colors.orange,
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(Icons.add, color: Colors.white, size: 20),
+                          child: const Icon(Icons.add,
+                              color: Colors.white, size: 20),
                         ),
                       ],
                     ),
@@ -257,9 +265,10 @@ class _KioskMenuPageState extends State<KioskMenuPage> {
   }
 
   Widget _buildCartButton() {
-    final count = widget.session.cartItems.fold(0, (sum, item) => sum + item.quantity);
+    final count =
+        widget.session.cartItems.fold(0, (sum, item) => sum + item.quantity);
     final total = widget.session.totalAmount;
-    
+
     if (count == 0) return const SizedBox.shrink();
 
     return GestureDetector(
@@ -267,16 +276,15 @@ class _KioskMenuPageState extends State<KioskMenuPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         decoration: BoxDecoration(
-          color: Colors.green,
-          borderRadius: BorderRadius.circular(40),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.green.withValues(alpha: 0.4),
-              blurRadius: 16,
-              offset: const Offset(0, 8),
-            )
-          ]
-        ),
+            color: Colors.green,
+            borderRadius: BorderRadius.circular(40),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.green.withValues(alpha: 0.4),
+                blurRadius: 16,
+                offset: const Offset(0, 8),
+              )
+            ]),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -288,18 +296,27 @@ class _KioskMenuPageState extends State<KioskMenuPage> {
               ),
               child: Text(
                 '$count',
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),
               ),
             ),
             const SizedBox(width: 16),
             const Text(
               'VIEW ORDER',
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18),
             ),
             const SizedBox(width: 16),
-             Text(
+            Text(
               '\$${total.toStringAsFixed(2)}',
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18),
             ),
           ],
         ),
@@ -317,9 +334,9 @@ class _KioskMenuPageState extends State<KioskMenuPage> {
       unitPrice: product['price'],
       quantity: 1,
     );
-    
+
     _kioskRepo.addToCart(widget.session.uuid, item);
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('${product['name']} added to order'),

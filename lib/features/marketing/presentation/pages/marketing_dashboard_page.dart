@@ -47,17 +47,18 @@ class _MarketingDashboardPageState extends State<MarketingDashboardPage> {
     try {
       final count = await _repo.runAutomations();
       if (mounted) {
-         ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(
-             content: Text('Automation Complete. $count messages sent.'),
-             backgroundColor: Colors.green,
-           ),
-         );
-         _loadData(); // Refresh stats
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Automation Complete. $count messages sent.'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        _loadData(); // Refresh stats
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     } finally {
       if (mounted) setState(() => _isRunningAutomation = false);
@@ -68,14 +69,21 @@ class _MarketingDashboardPageState extends State<MarketingDashboardPage> {
   Widget build(BuildContext context) {
     // Stats
     final activeCount = _campaigns?.where((c) => c.isActive).length ?? 0;
-    final totalSent = _campaigns?.fold<int>(0, (sum, c) => sum + c.sentCount) ?? 0;
-    
+    final totalSent =
+        _campaigns?.fold<int>(0, (sum, c) => sum + c.sentCount) ?? 0;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Smart Marketing'),
         actions: [
           if (_isRunningAutomation)
-            const Center(child: Padding(padding: EdgeInsets.only(right: 16), child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))))
+            const Center(
+                child: Padding(
+                    padding: EdgeInsets.only(right: 16),
+                    child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2))))
           else
             IconButton(
               icon: const Icon(Icons.flash_on),
@@ -86,65 +94,77 @@ class _MarketingDashboardPageState extends State<MarketingDashboardPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-           await Navigator.push(context, MaterialPageRoute(builder: (_) => const CampaignBuilderPage()));
-           _loadData();
+          await Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const CampaignBuilderPage()));
+          _loadData();
         },
         label: const Text('New Campaign'),
         icon: const Icon(Icons.add),
       ),
-      body: _isLoading 
-        ? const Center(child: CircularProgressIndicator())
-        : RefreshIndicator(
-            onRefresh: _loadData,
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      children: [
-                        Expanded(child: _StatCard(title: 'Active Campaigns', value: '$activeCount', icon: Icons.campaign)),
-                        const Gap(16),
-                        Expanded(child: _StatCard(title: 'Messages Sent', value: '$totalSent', icon: Icons.send, color: Colors.blue)),
-                      ],
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : RefreshIndicator(
+              onRefresh: _loadData,
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: _StatCard(
+                                  title: 'Active Campaigns',
+                                  value: '$activeCount',
+                                  icon: Icons.campaign)),
+                          const Gap(16),
+                          Expanded(
+                              child: _StatCard(
+                                  title: 'Messages Sent',
+                                  value: '$totalSent',
+                                  icon: Icons.send,
+                                  color: Colors.blue)),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                
-                if (_campaigns != null && _campaigns!.isEmpty)
-                   SliverFillRemaining(
-                     child: Center(
-                       child: Column(
-                         mainAxisAlignment: MainAxisAlignment.center,
-                         children: [
-                           Icon(Icons.mark_email_unread_outlined, size: 64, color: Colors.grey[300]),
-                           const Gap(16),
-                           const Text('No Active Campaigns', style: TextStyle(color: Colors.grey, fontSize: 18)),
-                           const Gap(8),
-                           TextButton(onPressed: () {}, child: const Text('Create your first automation'))
-                         ],
-                       ),
-                     ),
-                   )
-                else
-                   SliverList(
-                     delegate: SliverChildBuilderDelegate(
-                       (context, index) {
-                         final campaign = _campaigns![index];
-                         return _CampaignCard(
-                           campaign: campaign, 
-                           onDelete: () async {
-                              await _repo.deleteCampaign(campaign.id);
-                              _loadData();
-                           },
-                         );
-                       },
-                       childCount: _campaigns?.length ?? 0
-                     ),
-                   ),
-              ],
+                  if (_campaigns != null && _campaigns!.isEmpty)
+                    SliverFillRemaining(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.mark_email_unread_outlined,
+                                size: 64, color: Colors.grey[300]),
+                            const Gap(16),
+                            const Text('No Active Campaigns',
+                                style: TextStyle(
+                                    color: Colors.grey, fontSize: 18)),
+                            const Gap(8),
+                            TextButton(
+                                onPressed: () {},
+                                child:
+                                    const Text('Create your first automation'))
+                          ],
+                        ),
+                      ),
+                    )
+                  else
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        final campaign = _campaigns![index];
+                        return _CampaignCard(
+                          campaign: campaign,
+                          onDelete: () async {
+                            await _repo.deleteCampaign(campaign.id);
+                            _loadData();
+                          },
+                        );
+                      }, childCount: _campaigns?.length ?? 0),
+                    ),
+                ],
+              ),
             ),
-          ),
     );
   }
 }
@@ -155,7 +175,11 @@ class _StatCard extends StatelessWidget {
   final IconData icon;
   final Color color;
 
-  const _StatCard({required this.title, required this.value, required this.icon, this.color = Colors.orange});
+  const _StatCard(
+      {required this.title,
+      required this.value,
+      required this.icon,
+      this.color = Colors.orange});
 
   @override
   Widget build(BuildContext context) {
@@ -164,15 +188,23 @@ class _StatCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.5)),
+        border: Border.all(
+            color: Theme.of(context)
+                .colorScheme
+                .outlineVariant
+                .withValues(alpha: 0.5)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           Icon(icon, color: color),
-           const Gap(12),
-           Text(value, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-           Text(title, style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color)),
+          Icon(icon, color: color),
+          const Gap(12),
+          Text(value,
+              style:
+                  const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+          Text(title,
+              style: TextStyle(
+                  color: Theme.of(context).textTheme.bodySmall?.color)),
         ],
       ),
     ).animate().scale(duration: 300.ms, curve: Curves.easeOut);
@@ -190,50 +222,69 @@ class _CampaignCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 0,
-       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: Colors.grey.withValues(alpha: 0.2))),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: BorderSide(color: Colors.grey.withValues(alpha: 0.2))),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             Row(
-               children: [
-                 Container(
-                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                   decoration: BoxDecoration(
-                     color: campaign.isActive ? Colors.green.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.1),
-                     borderRadius: BorderRadius.circular(8),
-                   ),
-                   child: Text(
-                     campaign.isActive ? 'ACTIVE' : 'PAUSED',
-                     style: TextStyle(
-                       fontSize: 10, 
-                       color: campaign.isActive ? Colors.green : Colors.grey, 
-                       fontWeight: FontWeight.bold
-                     ),
-                   ),
-                 ),
-                 const Spacer(),
-                 IconButton(icon: const Icon(Icons.delete_outline, size: 20), onPressed: onDelete),
-               ],
-             ),
-             const Gap(8),
-             Text(campaign.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-             Row(
-               children: [
-                 Icon(campaign.channel == CampaignChannel.sms ? Icons.sms : Icons.email, size: 14, color: Colors.grey),
-                 const Gap(4),
-                 Text('${campaign.channel.name.toUpperCase()} • ${campaign.triggerType.label}', style: const TextStyle(fontSize: 12, color: Colors.grey)),
-               ],
-             ),
-             const Divider(height: 24),
-             Row(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               children: [
-                 _Stat(label: 'Sent', value: '${campaign.sentCount}'),
-                 _Stat(label: 'Last Run', value: campaign.lastRunAt != null ? DateFormat('MM/dd HH:mm').format(campaign.lastRunAt!) : '-'),
-               ],
-             )
+            Row(
+              children: [
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: campaign.isActive
+                        ? Colors.green.withValues(alpha: 0.1)
+                        : Colors.grey.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    campaign.isActive ? 'ACTIVE' : 'PAUSED',
+                    style: TextStyle(
+                        fontSize: 10,
+                        color: campaign.isActive ? Colors.green : Colors.grey,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const Spacer(),
+                IconButton(
+                    icon: const Icon(Icons.delete_outline, size: 20),
+                    onPressed: onDelete),
+              ],
+            ),
+            const Gap(8),
+            Text(campaign.name,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            Row(
+              children: [
+                Icon(
+                    campaign.channel == CampaignChannel.sms
+                        ? Icons.sms
+                        : Icons.email,
+                    size: 14,
+                    color: Colors.grey),
+                const Gap(4),
+                Text(
+                    '${campaign.channel.name.toUpperCase()} • ${campaign.triggerType.label}',
+                    style: const TextStyle(fontSize: 12, color: Colors.grey)),
+              ],
+            ),
+            const Divider(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _Stat(label: 'Sent', value: '${campaign.sentCount}'),
+                _Stat(
+                    label: 'Last Run',
+                    value: campaign.lastRunAt != null
+                        ? DateFormat('MM/dd HH:mm').format(campaign.lastRunAt!)
+                        : '-'),
+              ],
+            )
           ],
         ),
       ),

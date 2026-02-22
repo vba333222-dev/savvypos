@@ -19,20 +19,20 @@ class CategorySelectorWidget extends StatelessWidget {
             itemBuilder: (context, index) {
               final isAll = index == 0;
               final category = isAll ? null : state.categories[index - 1];
-              final isSelected = isAll 
-                  ? state.selectedCategoryId == null 
+              final isSelected = isAll
+                  ? state.selectedCategoryId == null
                   : state.selectedCategoryId == category!.id;
 
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 4.0, vertical: 8),
                 child: ChoiceChip(
                   label: Text(isAll ? 'All' : category!.name),
                   selected: isSelected,
                   onSelected: (selected) {
                     if (selected) {
-                      context.read<SalesBloc>().add(
-                        SalesEvent.categorySelected(isAll ? null : category!.id)
-                      );
+                      context.read<SalesBloc>().add(SalesEvent.categorySelected(
+                          isAll ? null : category!.id));
                     }
                   },
                 ),

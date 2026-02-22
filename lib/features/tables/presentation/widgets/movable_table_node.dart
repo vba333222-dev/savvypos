@@ -9,7 +9,8 @@ class MovableTableNode extends StatefulWidget {
   final SavvyTable tableStatus;
   final FloorMode mode;
   final VoidCallback onTap;
-  final Function(String sourceUuid, String targetUuid)? onOrderMerge; // Service Mode
+  final Function(String sourceUuid, String targetUuid)?
+      onOrderMerge; // Service Mode
   final Function(DragUpdateDetails)? onDragUpdate; // Layout Mode: for Ghost
 
   const MovableTableNode({
@@ -41,23 +42,30 @@ class _MovableTableNodeState extends State<MovableTableNode> {
         feedback: Material(
           color: Colors.transparent,
           type: MaterialType.transparency,
-          child: ConstrainedBox( // Constrain feedback size
-             constraints: const BoxConstraints(maxWidth: 160, maxHeight: 120),
-             child: TableNode(tableStatus: widget.tableStatus, onTap: () {}),
+          child: ConstrainedBox(
+            // Constrain feedback size
+            constraints: const BoxConstraints(maxWidth: 160, maxHeight: 120),
+            child: TableNode(tableStatus: widget.tableStatus, onTap: () {}),
           ),
         )
-        .animate()
-        // Pop Effect: Scale from 1.0 to 1.15 elastic
-        .scale(begin: const Offset(1, 1), end: const Offset(1.15, 1.15), duration: 400.ms, curve: Curves.elasticOut) 
-        .boxShadow(begin: BoxShadow(color: Colors.black26, blurRadius: 0), end: BoxShadow(color: Colors.black45, blurRadius: 20)), 
-        
+            .animate()
+            // Pop Effect: Scale from 1.0 to 1.15 elastic
+            .scale(
+                begin: const Offset(1, 1),
+                end: const Offset(1.15, 1.15),
+                duration: 400.ms,
+                curve: Curves.elasticOut)
+            .boxShadow(
+                begin: BoxShadow(color: Colors.black26, blurRadius: 0),
+                end: BoxShadow(color: Colors.black45, blurRadius: 20)),
         childWhenDragging: Opacity(
           opacity: 0.3,
-          child: TableNode(tableStatus: widget.tableStatus, onTap: () {}), 
+          child: TableNode(tableStatus: widget.tableStatus, onTap: () {}),
         ),
         onDragStarted: () => HapticFeedback.selectionClick(),
-        child: TableNode(tableStatus: widget.tableStatus, onTap: () {}), 
-      ).animate(target: 1).shimmer(duration: 1.seconds, delay: 2.seconds); // Subtle hint it's editable
+        child: TableNode(tableStatus: widget.tableStatus, onTap: () {}),
+      ).animate(target: 1).shimmer(
+          duration: 1.seconds, delay: 2.seconds); // Subtle hint it's editable
     }
 
     // --- SERVICE MODE: Move Orders ---
@@ -79,12 +87,17 @@ class _MovableTableNodeState extends State<MovableTableNode> {
         widget.onOrderMerge?.call(details.data, t.id);
       },
       builder: (context, candidates, rejected) {
-        Widget child = TableNode(tableStatus: widget.tableStatus, onTap: widget.onTap);
-        
+        Widget child =
+            TableNode(tableStatus: widget.tableStatus, onTap: widget.onTap);
+
         // Pulse effect if hovering
         if (_isHovering) {
-          child = child.animate(onPlay: (c) => c.repeat(reverse: true))
-              .scale(begin: const Offset(1, 1), end: const Offset(1.1, 1.1), duration: 200.ms)
+          child = child
+              .animate(onPlay: (c) => c.repeat(reverse: true))
+              .scale(
+                  begin: const Offset(1, 1),
+                  end: const Offset(1.1, 1.1),
+                  duration: 200.ms)
               .tint(color: Colors.greenAccent.withValues(alpha: 0.4));
         }
 
@@ -95,8 +108,14 @@ class _MovableTableNodeState extends State<MovableTableNode> {
             feedback: Material(
               color: Colors.transparent,
               child: Container(
-                width: 60, height: 60,
-                decoration: BoxDecoration(color: Colors.orange, shape: BoxShape.circle, boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 10)]),
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                    color: Colors.orange,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(color: Colors.black26, blurRadius: 10)
+                    ]),
                 alignment: Alignment.center,
                 child: Icon(Icons.receipt, color: Colors.white),
               ),
@@ -106,7 +125,7 @@ class _MovableTableNodeState extends State<MovableTableNode> {
             child: child,
           );
         }
-        
+
         return child;
       },
     );

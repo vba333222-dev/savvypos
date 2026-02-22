@@ -2,7 +2,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'promotion.freezed.dart';
 
-
 @freezed
 class Promotion with _$Promotion {
   const Promotion._();
@@ -30,10 +29,8 @@ class Promotion with _$Promotion {
     required int buyQty,
     required int getQty,
     required String buyProductId, // 'ANY' or specific UUID
-     @Default(PromotionConstraints()) PromotionConstraints constraints,
+    @Default(PromotionConstraints()) PromotionConstraints constraints,
   }) = BuyXGetYPromotion;
-
-
 
   bool isValidNow() {
     final now = DateTime.now();
@@ -58,16 +55,14 @@ class PromotionConstraints with _$PromotionConstraints {
     HappyHourTimeRange? happyHourTimeRange,
   }) = _PromotionConstraints;
 
-
-
   bool isValid(DateTime date) {
     if (startDate != null && date.isBefore(startDate!)) return false;
     if (endDate != null && date.isAfter(endDate!)) return false;
-    
+
     if (happyHourTimeRange != null) {
       if (!happyHourTimeRange!.isActive(date)) return false;
     }
-    
+
     return true;
   }
 }
@@ -83,13 +78,11 @@ class HappyHourTimeRange with _$HappyHourTimeRange {
     required int endMinute,
   }) = _HappyHourTimeRange;
 
-
-
   bool isActive(DateTime date) {
     final currentMinutes = date.hour * 60 + date.minute;
     final startMinutes = startHour * 60 + startMinute;
     final endMinutes = endHour * 60 + endMinute;
-    
+
     return currentMinutes >= startMinutes && currentMinutes <= endMinutes;
   }
 }

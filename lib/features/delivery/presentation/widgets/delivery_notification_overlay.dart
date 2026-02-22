@@ -59,7 +59,8 @@ class DeliveryNotificationOverlay extends StatelessWidget {
               ),
               child: Icon(brandIcon, color: brandColor, size: 32)
                   .animate(onPlay: (c) => c.repeat())
-                  .shake(hz: 8, curve: Curves.easeInOutCubic, duration: 1500.ms),
+                  .shake(
+                      hz: 8, curve: Curves.easeInOutCubic, duration: 1500.ms),
             ),
             const Gap(16),
             Expanded(
@@ -69,7 +70,8 @@ class DeliveryNotificationOverlay extends StatelessWidget {
                 children: [
                   Text(
                     'Pesanan Baru dari $brandName!',
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                   Text(
                     'Order #${order.externalOrderId}',
@@ -87,7 +89,8 @@ class DeliveryNotificationOverlay extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: brandColor,
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
               ),
               onPressed: onView,
               child: const Text('Lihat Pesanan'),

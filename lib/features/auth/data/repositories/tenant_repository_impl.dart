@@ -22,23 +22,27 @@ class TenantRepositoryImpl implements ITenantRepository {
   }
 
   @override
-  Future<void> saveConfig(String outletName, String address, String currency) async {
-    await db.into(db.tenantConfigTable).insert(TenantConfigTableCompanion.insert(
-      tenantId: _uuid.v4(),
-      outletName: outletName,
-      address: address,
-      currencySymbol: currency,
-      tier: 0, // Free tier default
-      isAdsEnabled: true,
-      updatedAt: DateTime.now(),
-    ));
+  Future<void> saveConfig(
+      String outletName, String address, String currency) async {
+    await db
+        .into(db.tenantConfigTable)
+        .insert(TenantConfigTableCompanion.insert(
+          tenantId: _uuid.v4(),
+          outletName: outletName,
+          address: address,
+          currencySymbol: currency,
+          tier: 0, // Free tier default
+          isAdsEnabled: true,
+          updatedAt: DateTime.now(),
+        ));
   }
+
   @override
   Future<void> saveActiveScope(String outletId, String warehouseId) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('active_outlet_id', outletId);
     await prefs.setString('active_warehouse_id', warehouseId);
-    
+
     // Broadcast the change for Global State Purge (Multi-Store Isolation)
     _outletChangedSubject.add(outletId);
   }

@@ -45,7 +45,7 @@ class KioskCartPage extends StatelessWidget {
               ],
             ),
           ),
-          
+
           // List
           Expanded(
             child: session.cartItems.isEmpty
@@ -60,10 +60,9 @@ class KioskCartPage extends StatelessWidget {
                     },
                   ),
           ),
-          
+
           // Footer
-          if (session.cartItems.isNotEmpty)
-            _buildFooter(context, session),
+          if (session.cartItems.isNotEmpty) _buildFooter(context, session),
         ],
       ),
     );
@@ -74,11 +73,13 @@ class KioskCartPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.shopping_cart_outlined, size: 100, color: Colors.grey.shade300),
+          Icon(Icons.shopping_cart_outlined,
+              size: 100, color: Colors.grey.shade300),
           const SizedBox(height: 24),
           const Text(
             'Your cart is empty',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.grey),
+            style: TextStyle(
+                fontSize: 24, fontWeight: FontWeight.bold, color: Colors.grey),
           ),
           const SizedBox(height: 32),
           ElevatedButton(
@@ -95,7 +96,8 @@ class KioskCartPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCartItem(BuildContext context, KioskCartItem item, IKioskRepository repo) {
+  Widget _buildCartItem(
+      BuildContext context, KioskCartItem item, IKioskRepository repo) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -115,16 +117,21 @@ class KioskCartPage extends StatelessWidget {
           Column(
             children: [
               IconButton(
-                onPressed: () => repo.updateCartItemQuantity(session.uuid, item.uuid, item.quantity + 1),
-                icon: const Icon(Icons.add_circle_outline, color: Colors.green, size: 32),
+                onPressed: () => repo.updateCartItemQuantity(
+                    session.uuid, item.uuid, item.quantity + 1),
+                icon: const Icon(Icons.add_circle_outline,
+                    color: Colors.green, size: 32),
               ),
               Text(
                 '${item.quantity}',
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               IconButton(
-                onPressed: () => repo.updateCartItemQuantity(session.uuid, item.uuid, item.quantity - 1),
-                icon: const Icon(Icons.remove_circle_outline, color: Colors.red, size: 32),
+                onPressed: () => repo.updateCartItemQuantity(
+                    session.uuid, item.uuid, item.quantity - 1),
+                icon: const Icon(Icons.remove_circle_outline,
+                    color: Colors.red, size: 32),
               ),
             ],
           ),
@@ -136,11 +143,15 @@ class KioskCartPage extends StatelessWidget {
               children: [
                 Text(
                   item.name,
-                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 Text(
                   '\$${(item.unitPrice * item.quantity).toStringAsFixed(2)}',
-                  style: TextStyle(fontSize: 20, color: Colors.grey.shade600, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w500),
                 ),
                 if (item.modifiers.isNotEmpty)
                   Padding(
@@ -166,25 +177,24 @@ class KioskCartPage extends StatelessWidget {
   Widget _buildFooter(BuildContext context, KioskSession session) {
     return Container(
       padding: const EdgeInsets.all(32),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 20,
-            offset: const Offset(0, -5),
-          )
-        ]
-      ),
+      decoration: BoxDecoration(color: Colors.white, boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.1),
+          blurRadius: 20,
+          offset: const Offset(0, -5),
+        )
+      ]),
       child: Row(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('TOTAL', style: TextStyle(fontSize: 16, color: Colors.grey)),
+              const Text('TOTAL',
+                  style: TextStyle(fontSize: 16, color: Colors.grey)),
               Text(
                 '\$${session.totalAmount.toStringAsFixed(2)}',
-                style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w900),
+                style:
+                    const TextStyle(fontSize: 32, fontWeight: FontWeight.w900),
               ),
             ],
           ),
@@ -195,10 +205,12 @@ class KioskCartPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 64, vertical: 24),
               backgroundColor: Colors.green,
               foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
               elevation: 4,
             ),
-            child: const Text('CHECKOUT', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            child: const Text('CHECKOUT',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
           ),
         ],
       ),

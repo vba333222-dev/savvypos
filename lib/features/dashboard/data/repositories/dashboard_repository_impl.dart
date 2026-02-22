@@ -34,35 +34,38 @@ class DashboardRepositoryImpl implements IDashboardRepository {
   Future<List<HourlySalesData>> getHourlySales(DateTime date) async {
     // Start and End of the specific day
     final startOfDay = DateTime(date.year, date.month, date.day);
-    final endOfDay = startOfDay.add(const Duration(days: 1)).subtract(const Duration(seconds: 1));
+    final endOfDay = startOfDay
+        .add(const Duration(days: 1))
+        .subtract(const Duration(seconds: 1));
 
     // SQLite 'strftime' to extract hour.
     // Note: Drift stores DateTime as Unix timestamp (seconds) usually in NativeDatabase.
-    // We use 'unixepoch' modifier if it's int, or just %H if text. 
-    // Safer approach in pure Drift: Fetch all for the day and aggregate in Dart 
-    // IF we are unsure of storage. 
+    // We use 'unixepoch' modifier if it's int, or just %H if text.
+    // Safer approach in pure Drift: Fetch all for the day and aggregate in Dart
+    // IF we are unsure of storage.
     // BUT the user demanded SQL Group By.
     // Let's assume standard Drift Native setup: Int (Unix Seconds).
     // strftime('%H', transaction_date, 'unixepoch', 'localtime')
-    
+
     // Custom Expression for Hour
     // We'll trust Drift's `hour` getter if available, otherwise raw SQL.
     // Drift doesn't have a direct `.hour` on expression yet in all versions.
     // Let's use custom expression.
-    
+
     final hourExp = FunctionCallExpression('strftime', [
       const Constant<String>('%H'),
       db.orderTable.transactionDate,
       const Constant<String>('unixepoch'),
       const Constant<String>('localtime'),
     ]);
-    
+
     final totalExp = db.orderTable.grandTotal.sum();
 
     final query = db.selectOnly(db.orderTable)
       ..addColumns([hourExp, totalExp])
-      ..where(db.orderTable.transactionDate.isBetweenValues(startOfDay, endOfDay) &
-          db.orderTable.status.equals('COMPLETED'))
+      ..where(
+          db.orderTable.transactionDate.isBetweenValues(startOfDay, endOfDay) &
+              db.orderTable.status.equals('COMPLETED'))
       ..groupBy([hourExp]);
 
     final results = await query.get();
@@ -75,17 +78,22 @@ class DashboardRepositoryImpl implements IDashboardRepository {
   }
 
   @override
-  Future<List<TopProductData>> getTopProducts(DateTime start, DateTime end, {int limit = 5}) async {
+  Future<List<TopProductData>> getTopProducts(DateTime start, DateTime end,
+      {int limit = 5}) async {
     final qtySum = db.orderItemTable.quantity.sum();
     final salesSum = db.orderItemTable.total.sum();
 
     // Join Orders, OrderItems, Products
     final query = db.selectOnly(db.orderItemTable)
       ..join([
-        innerJoin(db.orderTable, db.orderTable.uuid.equalsExp(db.orderItemTable.orderUuid)),
-        innerJoin(db.productTable, db.productTable.uuid.equalsExp(db.orderItemTable.productUuid)), // Assuming productUuid link
-        // Note: OrderItemTable has productUuid column based on tables.dart? 
-        // tables.dart: TextColumn get productUuid => text()(); 
+        innerJoin(db.orderTable,
+            db.orderTable.uuid.equalsExp(db.orderItemTable.orderUuid)),
+        innerJoin(
+            db.productTable,
+            db.productTable.uuid.equalsExp(
+                db.orderItemTable.productUuid)), // Assuming productUuid link
+        // Note: OrderItemTable has productUuid column based on tables.dart?
+        // tables.dart: TextColumn get productUuid => text()();
         // It's not a reference() but a manual link. That's fine.
       ])
       ..addColumns([db.productTable.name, qtySum, salesSum])

@@ -12,5 +12,6 @@ class DriverDetails with _$DriverDetails {
     DateTime? eta,
   }) = _DriverDetails;
 
-  factory DriverDetails.fromJson(Map<String, dynamic> json) => _$DriverDetailsFromJson(json);
+  factory DriverDetails.fromJson(Map<String, dynamic> json) =>
+      _$DriverDetailsFromJson(json);
 }

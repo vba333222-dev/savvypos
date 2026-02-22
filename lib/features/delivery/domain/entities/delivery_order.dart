@@ -11,27 +11,26 @@ part 'delivery_order.g.dart';
 @freezed
 class DeliveryOrder with _$DeliveryOrder {
   const factory DeliveryOrder({
-    required String deliveryUuid, // Unique ID within Savvy for this delivery request
+    required String
+        deliveryUuid, // Unique ID within Savvy for this delivery request
     required String externalOrderId, // The ID from Gojek/Grab
     required DeliveryChannel channel,
     @Default(DeliveryStatus.newUnaccepted) DeliveryStatus status,
-    
     @Default(0.0) double deliveryFee,
     @Default(0.0) double packagingFee,
-    
     DriverDetails? driverDetails,
-    
+
     // Internal Order Reference
     // Since Savvy relies heavily on OrderTableData internally, we store the UUID
     // that connects this delivery request to a real, fulfilled transaction.
-    String? internalOrderUuid, 
-    
-    // Instead of directly wrapping the whole SQL row in a Freezed class, 
+    String? internalOrderUuid,
+
+    // Instead of directly wrapping the whole SQL row in a Freezed class,
     // we use @JsonKey(includeFromJson: false, includeToJson: false) to keep the object in memory when queried.
     @JsonKey(includeFromJson: false, includeToJson: false)
     OrderTableData? internalOrder,
-
   }) = _DeliveryOrder;
 
-  factory DeliveryOrder.fromJson(Map<String, dynamic> json) => _$DeliveryOrderFromJson(json);
+  factory DeliveryOrder.fromJson(Map<String, dynamic> json) =>
+      _$DeliveryOrderFromJson(json);
 }

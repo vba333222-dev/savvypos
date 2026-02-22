@@ -14,7 +14,8 @@ class LifecycleManager extends StatefulWidget {
   State<LifecycleManager> createState() => _LifecycleManagerState();
 }
 
-class _LifecycleManagerState extends State<LifecycleManager> with WidgetsBindingObserver {
+class _LifecycleManagerState extends State<LifecycleManager>
+    with WidgetsBindingObserver {
   DateTime? _backgroundTime;
   static const Duration _lockTimeout = Duration(minutes: 5);
 
@@ -33,7 +34,7 @@ class _LifecycleManagerState extends State<LifecycleManager> with WidgetsBinding
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    
+
     if (state == AppLifecycleState.paused) {
       // App went to background
       _backgroundTime = DateTime.now();

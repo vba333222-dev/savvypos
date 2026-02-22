@@ -49,7 +49,8 @@ class _KdsPageState extends State<KdsPage> {
   Widget build(BuildContext context) {
     // Provide KitchenBloc for the page tree
     return BlocProvider(
-      create: (_) => getIt<KitchenBloc>()..add(const KitchenEvent.startListening()),
+      create: (_) =>
+          getIt<KitchenBloc>()..add(const KitchenEvent.startListening()),
       child: _KdsPageBody(
         kdsRepo: _kdsRepo,
         isExpoMode: _isExpoMode,
@@ -151,7 +152,8 @@ class _HorizontalMasonryGrid extends StatelessWidget {
       itemCount: columnCount,
       itemBuilder: (context, colIndex) {
         final startIndex = colIndex * _kRowsPerColumn;
-        final endIndex = (startIndex + _kRowsPerColumn).clamp(0, tickets.length);
+        final endIndex =
+            (startIndex + _kRowsPerColumn).clamp(0, tickets.length);
         final columnTickets = tickets.sublist(startIndex, endIndex);
 
         return SizedBox(
@@ -176,7 +178,8 @@ class _HorizontalMasonryGrid extends StatelessWidget {
                             kdsRepo.bumpTicket(columnTickets[rowIdx].uuid);
                             // Also fire BLoC event to sync via WebSocket
                             context.read<KitchenBloc>().add(
-                                  KitchenEvent.markAsDone(columnTickets[rowIdx].orderUuid),
+                                  KitchenEvent.markAsDone(
+                                      columnTickets[rowIdx].orderUuid),
                                 );
                           },
                           onRecall: () {
@@ -189,11 +192,13 @@ class _HorizontalMasonryGrid extends StatelessWidget {
                                   KitchenEvent.markItemDone(itemUuid),
                                 );
                             // Also update KDS repository directly
-                            final item = columnTickets[rowIdx].items
+                            final item = columnTickets[rowIdx]
+                                .items
                                 .firstWhere((i) => i.uuid == itemUuid);
-                            final nextStatus = item.status == KDSTicketStatus.ready
-                                ? KDSTicketStatus.prep
-                                : KDSTicketStatus.ready;
+                            final nextStatus =
+                                item.status == KDSTicketStatus.ready
+                                    ? KDSTicketStatus.prep
+                                    : KDSTicketStatus.ready;
                             kdsRepo.updateItemStatus(itemUuid, nextStatus);
                           },
                         ),
@@ -229,7 +234,8 @@ class _AnimatedTicketEntry extends StatelessWidget {
   Widget build(BuildContext context) {
     return child
         .animate(delay: Duration(milliseconds: delayMs))
-        .slideX(begin: 0.15, end: 0, duration: 350.ms, curve: Curves.easeOutCubic)
+        .slideX(
+            begin: 0.15, end: 0, duration: 350.ms, curve: Curves.easeOutCubic)
         .fadeIn(duration: 300.ms);
   }
 }
@@ -244,9 +250,13 @@ class _AllCaughtUpState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.check_circle_outline, size: 96, color: Colors.green.shade700)
+          Icon(Icons.check_circle_outline,
+                  size: 96, color: Colors.green.shade700)
               .animate(onPlay: (c) => c.repeat(reverse: true))
-              .scale(begin: const Offset(0.95, 0.95), end: const Offset(1.05, 1.05), duration: 1500.ms),
+              .scale(
+                  begin: const Offset(0.95, 0.95),
+                  end: const Offset(1.05, 1.05),
+                  duration: 1500.ms),
           const SizedBox(height: 20),
           const Text(
             'ALL CAUGHT UP!',
@@ -299,7 +309,8 @@ class _KdsAppBar extends StatelessWidget implements PreferredSizeWidget {
               shape: BoxShape.circle,
               color: Color(0xFF00E676),
               boxShadow: [
-                BoxShadow(color: Color(0xFF00E676), blurRadius: 8, spreadRadius: 1),
+                BoxShadow(
+                    color: Color(0xFF00E676), blurRadius: 8, spreadRadius: 1),
               ],
             ),
           )
@@ -328,7 +339,8 @@ class _KdsAppBar extends StatelessWidget implements PreferredSizeWidget {
             return Center(
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 decoration: BoxDecoration(
                   color: count >= 10 ? Colors.red : const Color(0xFF00E676),
                   borderRadius: BorderRadius.circular(20),
@@ -362,12 +374,16 @@ class _KdsAppBar extends StatelessWidget implements PreferredSizeWidget {
             segments: const [
               ButtonSegment<bool>(
                 value: false,
-                label: Text('CHEF', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 12)),
+                label: Text('CHEF',
+                    style:
+                        TextStyle(fontWeight: FontWeight.w800, fontSize: 12)),
                 icon: Icon(Icons.grid_view, size: 16),
               ),
               ButtonSegment<bool>(
                 value: true,
-                label: Text('EXPO', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 12)),
+                label: Text('EXPO',
+                    style:
+                        TextStyle(fontWeight: FontWeight.w800, fontSize: 12)),
                 icon: Icon(Icons.list_alt, size: 16),
               ),
             ],

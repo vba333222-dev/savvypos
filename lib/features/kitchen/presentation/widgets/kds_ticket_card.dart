@@ -180,20 +180,33 @@ class _KdsTicketCardState extends State<KdsTicketCard> {
             ),
 
           // Delivery Badge (Gojek / Grab)
-          if (widget.ticket.tableName != null && widget.ticket.tableName!.toUpperCase().contains('GOJEK'))
-             Container(
+          if (widget.ticket.tableName != null &&
+              widget.ticket.tableName!.toUpperCase().contains('GOJEK'))
+            Container(
               margin: const EdgeInsets.only(right: 8),
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(color: Colors.green[800], borderRadius: BorderRadius.circular(4)),
-              child: const Text('GOFOOD', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w900)),
-             )
-          else if (widget.ticket.tableName != null && widget.ticket.tableName!.toUpperCase().contains('GRAB'))
-             Container(
+              decoration: BoxDecoration(
+                  color: Colors.green[800],
+                  borderRadius: BorderRadius.circular(4)),
+              child: const Text('GOFOOD',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w900)),
+            )
+          else if (widget.ticket.tableName != null &&
+              widget.ticket.tableName!.toUpperCase().contains('GRAB'))
+            Container(
               margin: const EdgeInsets.only(right: 8),
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(4)),
-              child: const Text('GRAB', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w900)),
-             ),
+              decoration: BoxDecoration(
+                  color: Colors.green, borderRadius: BorderRadius.circular(4)),
+              child: const Text('GRAB',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w900)),
+            ),
 
           // Order number — largest element for visibility at 3+ metres
           Text(
@@ -493,7 +506,8 @@ class _KdsItemRowState extends State<_KdsItemRow> {
                     if (widget.item.status == KDSTicketStatus.fired) ...[
                       const SizedBox(height: 3),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
                           color: Colors.blueAccent.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(4),
@@ -502,7 +516,8 @@ class _KdsItemRowState extends State<_KdsItemRow> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.bolt, size: 12, color: Colors.blueAccent),
+                            const Icon(Icons.bolt,
+                                size: 12, color: Colors.blueAccent),
                             const SizedBox(width: 3),
                             Text(
                               'FIRED: ${widget.item.course.name.toUpperCase()}',

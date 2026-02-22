@@ -31,7 +31,7 @@ class AdminSidebar extends StatelessWidget {
               selectedIcon: Icon(Icons.dashboard),
               label: Text('Dashboard'),
             ),
-            isVisible: true, 
+            isVisible: true,
           ),
           _SidebarItem(
             destination: const NavigationRailDestination(
@@ -39,7 +39,7 @@ class AdminSidebar extends StatelessWidget {
               selectedIcon: Icon(Icons.shopping_cart),
               label: Text('POS'),
             ),
-             // Assuming POS is always visible or check permission
+            // Assuming POS is always visible or check permission
             isVisible: true,
           ),
           _SidebarItem(
@@ -68,11 +68,13 @@ class AdminSidebar extends StatelessWidget {
           ),
         ];
 
-        final visibleDestinations = allDestinations.where((item) => item.isVisible).toList();
+        final visibleDestinations =
+            allDestinations.where((item) => item.isVisible).toList();
 
         return NavigationRail(
-          selectedIndex: selectedIndex >= visibleDestinations.length ? 0 : selectedIndex,
-          onDestinationSelected: onDestinationSelected, 
+          selectedIndex:
+              selectedIndex >= visibleDestinations.length ? 0 : selectedIndex,
+          onDestinationSelected: onDestinationSelected,
           labelType: NavigationRailLabelType.all,
           destinations: visibleDestinations.map((e) => e.destination).toList(),
         );

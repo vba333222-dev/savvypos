@@ -27,9 +27,11 @@ class SupplierCard extends StatelessWidget {
   Widget build(BuildContext context) {
     // Visual Hierarchy: Selected cards are slightly larger/elevated
     final scale = isSelected ? 1.05 : 1.0;
-    final borderColor = isSelected 
-        ? context.savvy.colors.primary 
-        : (isBestPrice ? context.savvy.colors.success.withValues(alpha: 0.5) : context.savvy.colors.border);
+    final borderColor = isSelected
+        ? context.savvy.colors.primary
+        : (isBestPrice
+            ? context.savvy.colors.success.withValues(alpha: 0.5)
+            : context.savvy.colors.border);
 
     return GestureDetector(
       onTap: onTap,
@@ -41,7 +43,9 @@ class SupplierCard extends StatelessWidget {
             SavvyBox(
               width: 160,
               height: 140,
-              color: isSelected ? context.savvy.colors.bgSurface : context.savvy.colors.bgCanvas,
+              color: isSelected
+                  ? context.savvy.colors.bgSurface
+                  : context.savvy.colors.bgCanvas,
               border: Border.all(color: borderColor, width: isSelected ? 2 : 1),
               borderRadius: BorderRadius.circular(12),
               padding: const EdgeInsets.all(12),
@@ -54,35 +58,39 @@ class SupplierCard extends StatelessWidget {
                     children: [
                       SavvyText.h5(name, maxLines: 2),
                       const SizedBox(height: 4),
-                      SavvyText.label('Lead Time: $leadTimeDays days', color: context.savvy.colors.textSecondary),
+                      SavvyText.label('Lead Time: $leadTimeDays days',
+                          color: context.savvy.colors.textSecondary),
                     ],
                   ),
-                  
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SavvyText.h4('\$${cost.toStringAsFixed(2)}'),
-                      if (isSelected) 
-                        Icon(Icons.check_circle, color: context.savvy.colors.primary, size: 20),
+                      if (isSelected)
+                        Icon(Icons.check_circle,
+                            color: context.savvy.colors.primary, size: 20),
                     ],
                   ),
                 ],
               ),
             ),
-            
+
             // Badges
             if (isBestPrice)
               Positioned(
                 top: -8,
                 right: 8,
-                child: _Badge(text: 'BEST PRICE', color: context.savvy.colors.success),
+                child: _Badge(
+                    text: 'BEST PRICE', color: context.savvy.colors.success),
               ),
-            
-            if (isFastest && !isBestPrice) // Prefer Best Price badge if both apply or stack them
+
+            if (isFastest &&
+                !isBestPrice) // Prefer Best Price badge if both apply or stack them
               Positioned(
                 top: -8,
                 right: 8,
-                child: _Badge(text: 'FASTEST', color: context.savvy.colors.accent),
+                child:
+                    _Badge(text: 'FASTEST', color: context.savvy.colors.accent),
               ),
           ],
         ),

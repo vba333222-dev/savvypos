@@ -25,31 +25,51 @@ extension SavvyTextStyleX on SavvyTextStyle {
   TextStyle get style {
     switch (this) {
       case SavvyTextStyle.h1:
-        return GoogleFonts.outfit(fontSize: 32, fontWeight: FontWeight.bold, height: 1.2);
+        return GoogleFonts.outfit(
+            fontSize: 32, fontWeight: FontWeight.bold, height: 1.2);
       case SavvyTextStyle.h2:
-        return GoogleFonts.outfit(fontSize: 24, fontWeight: FontWeight.w600, height: 1.3);
+        return GoogleFonts.outfit(
+            fontSize: 24, fontWeight: FontWeight.w600, height: 1.3);
       case SavvyTextStyle.h3:
-        return GoogleFonts.outfit(fontSize: 20, fontWeight: FontWeight.w600, height: 1.4);
+        return GoogleFonts.outfit(
+            fontSize: 20, fontWeight: FontWeight.w600, height: 1.4);
       case SavvyTextStyle.h4:
-        return GoogleFonts.outfit(fontSize: 18, fontWeight: FontWeight.w600, height: 1.4);
+        return GoogleFonts.outfit(
+            fontSize: 18, fontWeight: FontWeight.w600, height: 1.4);
       case SavvyTextStyle.h5:
-        return GoogleFonts.outfit(fontSize: 16, fontWeight: FontWeight.w600, height: 1.5);
+        return GoogleFonts.outfit(
+            fontSize: 16, fontWeight: FontWeight.w600, height: 1.5);
       case SavvyTextStyle.bodyLarge:
       case SavvyTextStyle.bodyLg:
-        return GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.normal, height: 1.5);
+        return GoogleFonts.inter(
+            fontSize: 16, fontWeight: FontWeight.normal, height: 1.5);
       case SavvyTextStyle.bodyMedium:
-        return GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.normal, height: 1.5);
+        return GoogleFonts.inter(
+            fontSize: 14, fontWeight: FontWeight.normal, height: 1.5);
       case SavvyTextStyle.bodySmall:
       case SavvyTextStyle.bodySm:
-        return GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.normal, height: 1.5);
+        return GoogleFonts.inter(
+            fontSize: 12, fontWeight: FontWeight.normal, height: 1.5);
       case SavvyTextStyle.labelLarge:
       case SavvyTextStyle.label: // Alias check
       case SavvyTextStyle.labelLg:
-        return GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.1, height: 1.2);
+        return GoogleFonts.inter(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.1,
+            height: 1.2);
       case SavvyTextStyle.labelMedium:
-        return GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w600, letterSpacing: 0.5, height: 1.2);
+        return GoogleFonts.inter(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.5,
+            height: 1.2);
       case SavvyTextStyle.labelSmall:
-        return GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 0.5, height: 1.2);
+        return GoogleFonts.inter(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.5,
+            height: 1.2);
     }
   }
 
@@ -128,15 +148,71 @@ class SavvyText extends StatelessWidget {
     this.overflow,
   });
 
-  const SavvyText.h1(this.text, {super.key, this.textStyle, this.color, this.align, this.maxLines, this.overflow}) : style = SavvyTextStyle.h1;
-  const SavvyText.h2(this.text, {super.key, this.textStyle, this.color, this.align, this.maxLines, this.overflow}) : style = SavvyTextStyle.h2;
-  const SavvyText.h3(this.text, {super.key, this.textStyle, this.color, this.align, this.maxLines, this.overflow}) : style = SavvyTextStyle.h3;
-  const SavvyText.h4(this.text, {super.key, this.textStyle, this.color, this.align, this.maxLines, this.overflow}) : style = SavvyTextStyle.h4; 
-  const SavvyText.h5(this.text, {super.key, this.textStyle, this.color, this.align, this.maxLines, this.overflow}) : style = SavvyTextStyle.h5; 
-  
-  const SavvyText.body(this.text, {super.key, this.textStyle, this.color, this.align, this.maxLines, this.overflow}) : style = SavvyTextStyle.bodyMedium;
-  const SavvyText.label(this.text, {super.key, this.textStyle, this.color, this.align, this.maxLines, this.overflow}) : style = SavvyTextStyle.labelMedium;
-  const SavvyText.small(this.text, {super.key, this.textStyle, this.color, this.align, this.maxLines, this.overflow}) : style = SavvyTextStyle.bodySmall;
+  const SavvyText.h1(this.text,
+      {super.key,
+      this.textStyle,
+      this.color,
+      this.align,
+      this.maxLines,
+      this.overflow})
+      : style = SavvyTextStyle.h1;
+  const SavvyText.h2(this.text,
+      {super.key,
+      this.textStyle,
+      this.color,
+      this.align,
+      this.maxLines,
+      this.overflow})
+      : style = SavvyTextStyle.h2;
+  const SavvyText.h3(this.text,
+      {super.key,
+      this.textStyle,
+      this.color,
+      this.align,
+      this.maxLines,
+      this.overflow})
+      : style = SavvyTextStyle.h3;
+  const SavvyText.h4(this.text,
+      {super.key,
+      this.textStyle,
+      this.color,
+      this.align,
+      this.maxLines,
+      this.overflow})
+      : style = SavvyTextStyle.h4;
+  const SavvyText.h5(this.text,
+      {super.key,
+      this.textStyle,
+      this.color,
+      this.align,
+      this.maxLines,
+      this.overflow})
+      : style = SavvyTextStyle.h5;
+
+  const SavvyText.body(this.text,
+      {super.key,
+      this.textStyle,
+      this.color,
+      this.align,
+      this.maxLines,
+      this.overflow})
+      : style = SavvyTextStyle.bodyMedium;
+  const SavvyText.label(this.text,
+      {super.key,
+      this.textStyle,
+      this.color,
+      this.align,
+      this.maxLines,
+      this.overflow})
+      : style = SavvyTextStyle.labelMedium;
+  const SavvyText.small(this.text,
+      {super.key,
+      this.textStyle,
+      this.color,
+      this.align,
+      this.maxLines,
+      this.overflow})
+      : style = SavvyTextStyle.bodySmall;
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +244,7 @@ class SavvyText extends StatelessWidget {
         );
         break;
       case SavvyTextStyle.h4:
-            textStyle = GoogleFonts.outfit(
+        textStyle = GoogleFonts.outfit(
           fontSize: 18,
           fontWeight: FontWeight.w600,
           height: 1.4,
@@ -228,20 +304,32 @@ class SavvyText extends StatelessWidget {
         break;
       // Compatibility Aliases - Mapping to existing styles
       case SavvyTextStyle.bodyLg:
-        textStyle = GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.normal, height: 1.5);
+        textStyle = GoogleFonts.inter(
+            fontSize: 16, fontWeight: FontWeight.normal, height: 1.5);
         break;
       case SavvyTextStyle.bodySm:
-        textStyle = GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.normal, height: 1.5);
+        textStyle = GoogleFonts.inter(
+            fontSize: 12, fontWeight: FontWeight.normal, height: 1.5);
         break;
       case SavvyTextStyle.label:
-        textStyle = GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w600, letterSpacing: 0.5, height: 1.2);
+        textStyle = GoogleFonts.inter(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.5,
+            height: 1.2);
         break;
       case SavvyTextStyle.labelLg:
-        textStyle = GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.1, height: 1.2);
+        textStyle = GoogleFonts.inter(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.1,
+            height: 1.2);
         break;
     }
 
-    final finalStyle = textStyle.merge(this.textStyle).copyWith(color: color ?? this.textStyle?.color ?? defaultColor);
+    final finalStyle = textStyle
+        .merge(this.textStyle)
+        .copyWith(color: color ?? this.textStyle?.color ?? defaultColor);
 
     return Text(
       text,

@@ -60,19 +60,25 @@ class _SupplierListPageState extends State<SupplierListPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                   const Icon(Icons.local_shipping_outlined, size: 64, color: Colors.grey),
-                   const Gap(16),
-                   Text('No Suppliers Yet', style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.grey)),
-                   const Gap(8),
-                   ElevatedButton(
-                     onPressed: () async {
-                       await Navigator.of(context).push(
-                         MaterialPageRoute(builder: (_) => const SupplierEditorPage()),
-                       );
-                       _refresh();
-                     },
-                     child: const Text('Add Supplier'),
-                   )
+                  const Icon(Icons.local_shipping_outlined,
+                      size: 64, color: Colors.grey),
+                  const Gap(16),
+                  Text('No Suppliers Yet',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(color: Colors.grey)),
+                  const Gap(8),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (_) => const SupplierEditorPage()),
+                      );
+                      _refresh();
+                    },
+                    child: const Text('Add Supplier'),
+                  )
                 ],
               ),
             );
@@ -88,17 +94,24 @@ class _SupplierListPageState extends State<SupplierListPage> {
                 margin: const EdgeInsets.only(bottom: 12),
                 child: ListTile(
                   leading: CircleAvatar(child: Text(supplier.name[0])),
-                  title: Text(supplier.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                  subtitle: Text('${supplier.email ?? '-'} • ${supplier.phone ?? '-'}'),
+                  title: Text(supplier.name,
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Text(
+                      '${supplier.email ?? '-'} • ${supplier.phone ?? '-'}'),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () async {
                     await Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => SupplierEditorPage(supplier: supplier)),
+                      MaterialPageRoute(
+                          builder: (_) =>
+                              SupplierEditorPage(supplier: supplier)),
                     );
                     _refresh();
                   },
                 ),
-              ).animate().fadeIn().slideY(begin: 0.1, end: 0, delay: (index * 50).ms);
+              )
+                  .animate()
+                  .fadeIn()
+                  .slideY(begin: 0.1, end: 0, delay: (index * 50).ms);
             },
           );
         },
@@ -131,7 +144,8 @@ class _SupplierEditorPageState extends State<SupplierEditorPage> {
     _emailCtrl = TextEditingController(text: widget.supplier?.email);
     _phoneCtrl = TextEditingController(text: widget.supplier?.phone);
     _addressCtrl = TextEditingController(text: widget.supplier?.address);
-    _leadTimeCtrl = TextEditingController(text: widget.supplier?.leadTimeDays.toString() ?? '0');
+    _leadTimeCtrl = TextEditingController(
+        text: widget.supplier?.leadTimeDays.toString() ?? '0');
   }
 
   Future<void> _save() async {
@@ -167,29 +181,40 @@ class _SupplierEditorPageState extends State<SupplierEditorPage> {
           children: [
             TextFormField(
               controller: _nameCtrl,
-              decoration: const InputDecoration(labelText: 'Supplier Name', border: OutlineInputBorder()),
+              decoration: const InputDecoration(
+                  labelText: 'Supplier Name', border: OutlineInputBorder()),
               validator: (v) => v == null || v.isEmpty ? 'Required' : null,
             ),
             const Gap(16),
             TextFormField(
               controller: _emailCtrl,
-              decoration: const InputDecoration(labelText: 'Email', border: OutlineInputBorder(), prefixIcon: Icon(Icons.email)),
+              decoration: const InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.email)),
             ),
             const Gap(16),
             TextFormField(
               controller: _phoneCtrl,
-              decoration: const InputDecoration(labelText: 'Phone', border: OutlineInputBorder(), prefixIcon: Icon(Icons.phone)),
+              decoration: const InputDecoration(
+                  labelText: 'Phone',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.phone)),
             ),
             const Gap(16),
             TextFormField(
               controller: _addressCtrl,
-              decoration: const InputDecoration(labelText: 'Address', border: OutlineInputBorder(), prefixIcon: Icon(Icons.location_on)),
+              decoration: const InputDecoration(
+                  labelText: 'Address',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.location_on)),
               maxLines: 2,
             ),
             const Gap(16),
             TextFormField(
               controller: _leadTimeCtrl,
-              decoration: const InputDecoration(labelText: 'Lead Time (Days)', border: OutlineInputBorder()),
+              decoration: const InputDecoration(
+                  labelText: 'Lead Time (Days)', border: OutlineInputBorder()),
               keyboardType: TextInputType.number,
             ),
             const Gap(32),

@@ -12,10 +12,11 @@ class LoyaltyDashboardPage extends StatefulWidget {
   State<LoyaltyDashboardPage> createState() => _LoyaltyDashboardPageState();
 }
 
-class _LoyaltyDashboardPageState extends State<LoyaltyDashboardPage> with SingleTickerProviderStateMixin {
+class _LoyaltyDashboardPageState extends State<LoyaltyDashboardPage>
+    with SingleTickerProviderStateMixin {
   final _repo = GetIt.I<ILoyaltyRepository>();
   late TabController _tabController;
-  
+
   List<LoyaltyMember> _members = [];
   List<LoyaltyReward> _rewards = [];
   LoyaltyConfig _config = const LoyaltyConfig();
@@ -42,7 +43,7 @@ class _LoyaltyDashboardPageState extends State<LoyaltyDashboardPage> with Single
       final config = await _repo.getConfig();
       final members = await _repo.getAllMembers();
       final rewards = await _repo.getAvailableRewards();
-      
+
       if (mounted) {
         setState(() {
           _config = config;
@@ -58,19 +59,27 @@ class _LoyaltyDashboardPageState extends State<LoyaltyDashboardPage> with Single
 
   Color _tierColor(LoyaltyTier tier) {
     switch (tier) {
-      case LoyaltyTier.bronze: return Colors.brown;
-      case LoyaltyTier.silver: return Colors.grey;
-      case LoyaltyTier.gold: return Colors.amber;
-      case LoyaltyTier.platinum: return Colors.blueGrey;
+      case LoyaltyTier.bronze:
+        return Colors.brown;
+      case LoyaltyTier.silver:
+        return Colors.grey;
+      case LoyaltyTier.gold:
+        return Colors.amber;
+      case LoyaltyTier.platinum:
+        return Colors.blueGrey;
     }
   }
 
   String _tierIcon(LoyaltyTier tier) {
     switch (tier) {
-      case LoyaltyTier.bronze: return '🥉';
-      case LoyaltyTier.silver: return '🥈';
-      case LoyaltyTier.gold: return '🥇';
-      case LoyaltyTier.platinum: return '💎';
+      case LoyaltyTier.bronze:
+        return '🥉';
+      case LoyaltyTier.silver:
+        return '🥈';
+      case LoyaltyTier.gold:
+        return '🥇';
+      case LoyaltyTier.platinum:
+        return '💎';
     }
   }
 
@@ -83,7 +92,8 @@ class _LoyaltyDashboardPageState extends State<LoyaltyDashboardPage> with Single
       _showMemberCard(member);
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Member not found'), backgroundColor: Colors.orange),
+        const SnackBar(
+            content: Text('Member not found'), backgroundColor: Colors.orange),
       );
     }
   }
@@ -92,7 +102,8 @@ class _LoyaltyDashboardPageState extends State<LoyaltyDashboardPage> with Single
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (_) => _MemberDetailSheet(member: member, config: _config, rewards: _rewards, repo: _repo),
+      builder: (_) => _MemberDetailSheet(
+          member: member, config: _config, rewards: _rewards, repo: _repo),
     );
   }
 
@@ -118,12 +129,18 @@ class _LoyaltyDashboardPageState extends State<LoyaltyDashboardPage> with Single
       body: TabBarView(
         controller: _tabController,
         children: [
-          _MembersTab(members: _members, tierColor: _tierColor, tierIcon: _tierIcon, onMemberTap: _showMemberCard),
+          _MembersTab(
+              members: _members,
+              tierColor: _tierColor,
+              tierIcon: _tierIcon,
+              onMemberTap: _showMemberCard),
           _RewardsTab(rewards: _rewards),
-          _SettingsTab(config: _config, onSave: (c) async {
-            await _repo.updateConfig(c);
-            _loadData();
-          }),
+          _SettingsTab(
+              config: _config,
+              onSave: (c) async {
+                await _repo.updateConfig(c);
+                _loadData();
+              }),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -150,8 +167,15 @@ class _LoyaltyDashboardPageState extends State<LoyaltyDashboardPage> with Single
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-          ElevatedButton(onPressed: () { Navigator.pop(context); _lookupMember(); }, child: const Text('Search')),
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel')),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                _lookupMember();
+              },
+              child: const Text('Search')),
         ],
       ),
     );
@@ -164,7 +188,11 @@ class _MembersTab extends StatelessWidget {
   final String Function(LoyaltyTier) tierIcon;
   final void Function(LoyaltyMember) onMemberTap;
 
-  const _MembersTab({required this.members, required this.tierColor, required this.tierIcon, required this.onMemberTap});
+  const _MembersTab(
+      {required this.members,
+      required this.tierColor,
+      required this.tierIcon,
+      required this.onMemberTap});
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +203,8 @@ class _MembersTab extends StatelessWidget {
           children: [
             const Icon(Icons.people_outline, size: 64, color: Colors.grey),
             const Gap(16),
-            const Text('No loyalty members yet', style: TextStyle(color: Colors.grey)),
+            const Text('No loyalty members yet',
+                style: TextStyle(color: Colors.grey)),
           ],
         ).animate().fadeIn(),
       );
@@ -190,12 +219,14 @@ class _MembersTab extends StatelessWidget {
           child: ListTile(
             leading: CircleAvatar(
               backgroundColor: tierColor(m.tier).withValues(alpha: 0.2),
-              child: Text(tierIcon(m.tier), style: const TextStyle(fontSize: 20)),
+              child:
+                  Text(tierIcon(m.tier), style: const TextStyle(fontSize: 20)),
             ),
             title: Text(m.customerName),
             subtitle: Text('${m.phoneNumber} • ${m.currentPoints} pts'),
             trailing: Chip(
-              label: Text(m.tier.name.toUpperCase(), style: const TextStyle(fontSize: 10)),
+              label: Text(m.tier.name.toUpperCase(),
+                  style: const TextStyle(fontSize: 10)),
               backgroundColor: tierColor(m.tier).withValues(alpha: 0.2),
             ),
             onTap: () => onMemberTap(m),
@@ -252,9 +283,12 @@ class _SettingsTabState extends State<_SettingsTab> {
   @override
   void initState() {
     super.initState();
-    _pointsPerDollar = TextEditingController(text: widget.config.pointsPerDollar.toString());
-    _signupBonus = TextEditingController(text: widget.config.signupBonus.toString());
-    _birthdayBonus = TextEditingController(text: widget.config.birthdayBonus.toString());
+    _pointsPerDollar =
+        TextEditingController(text: widget.config.pointsPerDollar.toString());
+    _signupBonus =
+        TextEditingController(text: widget.config.signupBonus.toString());
+    _birthdayBonus =
+        TextEditingController(text: widget.config.birthdayBonus.toString());
   }
 
   @override
@@ -270,13 +304,28 @@ class _SettingsTabState extends State<_SettingsTab> {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        const Text('Earn Settings', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+        const Text('Earn Settings',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
         const Gap(12),
-        TextField(controller: _pointsPerDollar, decoration: const InputDecoration(labelText: 'Points per \$1 spent', border: OutlineInputBorder()), keyboardType: TextInputType.number),
+        TextField(
+            controller: _pointsPerDollar,
+            decoration: const InputDecoration(
+                labelText: 'Points per \$1 spent',
+                border: OutlineInputBorder()),
+            keyboardType: TextInputType.number),
         const Gap(12),
-        TextField(controller: _signupBonus, decoration: const InputDecoration(labelText: 'Signup Bonus Points', border: OutlineInputBorder()), keyboardType: TextInputType.number),
+        TextField(
+            controller: _signupBonus,
+            decoration: const InputDecoration(
+                labelText: 'Signup Bonus Points', border: OutlineInputBorder()),
+            keyboardType: TextInputType.number),
         const Gap(12),
-        TextField(controller: _birthdayBonus, decoration: const InputDecoration(labelText: 'Birthday Bonus Points', border: OutlineInputBorder()), keyboardType: TextInputType.number),
+        TextField(
+            controller: _birthdayBonus,
+            decoration: const InputDecoration(
+                labelText: 'Birthday Bonus Points',
+                border: OutlineInputBorder()),
+            keyboardType: TextInputType.number),
         const Gap(24),
         ElevatedButton.icon(
           onPressed: () async {
@@ -288,7 +337,9 @@ class _SettingsTabState extends State<_SettingsTab> {
             await widget.onSave(newConfig);
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Settings saved'), backgroundColor: Colors.green),
+                const SnackBar(
+                    content: Text('Settings saved'),
+                    backgroundColor: Colors.green),
               );
             }
           },
@@ -306,7 +357,11 @@ class _MemberDetailSheet extends StatelessWidget {
   final List<LoyaltyReward> rewards;
   final ILoyaltyRepository repo;
 
-  const _MemberDetailSheet({required this.member, required this.config, required this.rewards, required this.repo});
+  const _MemberDetailSheet(
+      {required this.member,
+      required this.config,
+      required this.rewards,
+      required this.repo});
 
   @override
   Widget build(BuildContext context) {
@@ -321,23 +376,31 @@ class _MemberDetailSheet extends StatelessWidget {
               CircleAvatar(
                 radius: 32,
                 backgroundColor: Colors.amber.withValues(alpha: 0.2),
-                child: Text(member.tier.name[0].toUpperCase(), style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                child: Text(member.tier.name[0].toUpperCase(),
+                    style: const TextStyle(
+                        fontSize: 28, fontWeight: FontWeight.bold)),
               ),
               const Gap(16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(member.customerName, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                    Text(member.phoneNumber, style: const TextStyle(color: Colors.grey)),
-                    Text('${member.tier.name.toUpperCase()} Member', style: TextStyle(color: Colors.amber[700], fontWeight: FontWeight.w600)),
+                    Text(member.customerName,
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    Text(member.phoneNumber,
+                        style: const TextStyle(color: Colors.grey)),
+                    Text('${member.tier.name.toUpperCase()} Member',
+                        style: TextStyle(
+                            color: Colors.amber[700],
+                            fontWeight: FontWeight.w600)),
                   ],
                 ),
               ),
             ],
           ),
           const Gap(24),
-          
+
           // Points Card
           Container(
             width: double.infinity,
@@ -352,16 +415,23 @@ class _MemberDetailSheet extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Text('${member.currentPoints}', style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Colors.white)),
-                const Text('Available Points', style: TextStyle(color: Colors.white70)),
+                Text('${member.currentPoints}',
+                    style: const TextStyle(
+                        fontSize: 48,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white)),
+                const Text('Available Points',
+                    style: TextStyle(color: Colors.white70)),
                 const Gap(8),
-                Text('Lifetime: ${member.lifetimePoints} pts', style: const TextStyle(color: Colors.white54, fontSize: 12)),
+                Text('Lifetime: ${member.lifetimePoints} pts',
+                    style:
+                        const TextStyle(color: Colors.white54, fontSize: 12)),
               ],
             ),
           ).animate().scale(duration: 300.ms),
-          
+
           const Gap(24),
-          
+
           // Quick Actions
           Row(
             children: [
@@ -382,9 +452,11 @@ class _MemberDetailSheet extends StatelessWidget {
               ),
             ],
           ),
-          
+
           const Gap(16),
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Close')),
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Close')),
         ],
       ),
     );

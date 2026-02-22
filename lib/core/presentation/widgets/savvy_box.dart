@@ -40,7 +40,8 @@ class SavvyBox extends StatelessWidget {
         padding: padding ?? EdgeInsets.all(theme.shapes.spacingMd),
         decoration: BoxDecoration(
           color: color ?? theme.colors.bgElevated,
-          borderRadius: borderRadius ?? BorderRadius.circular(theme.shapes.radiusMd),
+          borderRadius:
+              borderRadius ?? BorderRadius.circular(theme.shapes.radiusMd),
           border: border,
           boxShadow: shadow ?? theme.elevations.sm,
         ),

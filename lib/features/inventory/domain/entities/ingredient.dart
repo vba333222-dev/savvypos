@@ -13,5 +13,6 @@ class Ingredient with _$Ingredient {
     required double costPerUnit,
   }) = _Ingredient;
 
-  factory Ingredient.fromJson(Map<String, dynamic> json) => _$IngredientFromJson(json);
+  factory Ingredient.fromJson(Map<String, dynamic> json) =>
+      _$IngredientFromJson(json);
 }

@@ -74,9 +74,11 @@ class _NotificationTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isAlert = item.type == 'ALERT';
-    
+
     return ListTile(
-      tileColor: item.isRead ? null : context.savvy.colors.primary.withValues(alpha: 0.05),
+      tileColor: item.isRead
+          ? null
+          : context.savvy.colors.primary.withValues(alpha: 0.05),
       leading: CircleAvatar(
         backgroundColor: isAlert ? Colors.red.shade100 : Colors.blue.shade100,
         child: Icon(
@@ -85,7 +87,9 @@ class _NotificationTile extends StatelessWidget {
           size: 20,
         ),
       ),
-      title: SavvyText.body(item.title, textStyle: TextStyle(fontWeight: item.isRead ? FontWeight.normal : FontWeight.bold)),
+      title: SavvyText.body(item.title,
+          textStyle: TextStyle(
+              fontWeight: item.isRead ? FontWeight.normal : FontWeight.bold)),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -93,13 +97,15 @@ class _NotificationTile extends StatelessWidget {
           Text(item.body, maxLines: 2, overflow: TextOverflow.ellipsis),
           const SizedBox(height: 4),
           Text(
-            '${item.createdAt.hour}:${item.createdAt.minute.toString().padLeft(2,'0')}', // Simplified time
+            '${item.createdAt.hour}:${item.createdAt.minute.toString().padLeft(2, '0')}', // Simplified time
             style: TextStyle(fontSize: 10, color: Colors.grey),
           ),
         ],
       ),
       onTap: () {
-        context.read<NotificationBloc>().add(NotificationEvent.markAsRead(item.id));
+        context
+            .read<NotificationBloc>()
+            .add(NotificationEvent.markAsRead(item.id));
         // Deep link logic here
         Navigator.pop(context); // Close Drawer
       },

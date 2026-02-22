@@ -19,7 +19,7 @@ class _CampaignBuilderPageState extends State<CampaignBuilderPage> {
   final _nameCtrl = TextEditingController();
   final _contentCtrl = TextEditingController();
   final _triggerValueCtrl = TextEditingController();
-  
+
   CampaignChannel _channel = CampaignChannel.sms;
   CampaignTriggerType _trigger = CampaignTriggerType.inactive30Days;
   bool _isSaving = false;
@@ -35,10 +35,9 @@ class _CampaignBuilderPageState extends State<CampaignBuilderPage> {
   void _recalcAudience() async {
     setState(() => _calculatingAudience = true);
     try {
-      final members = await GetIt.I<GetSegmentedMembersUseCase>().call(
-        _trigger, 
-        value: _triggerValueCtrl.text.isEmpty ? null : _triggerValueCtrl.text
-      );
+      final members = await GetIt.I<GetSegmentedMembersUseCase>().call(_trigger,
+          value:
+              _triggerValueCtrl.text.isEmpty ? null : _triggerValueCtrl.text);
       if (mounted) setState(() => _audienceSize = members.length);
     } catch (_) {
     } finally {
@@ -56,7 +55,7 @@ class _CampaignBuilderPageState extends State<CampaignBuilderPage> {
 
   void _onSave() async {
     if (!_formKey.currentState!.validate()) return;
-    
+
     setState(() => _isSaving = true);
     try {
       final campaign = MarketingCampaign(
@@ -64,21 +63,24 @@ class _CampaignBuilderPageState extends State<CampaignBuilderPage> {
         name: _nameCtrl.text,
         channel: _channel,
         triggerType: _trigger,
-        triggerValue: _triggerValueCtrl.text.isEmpty ? null : _triggerValueCtrl.text,
+        triggerValue:
+            _triggerValueCtrl.text.isEmpty ? null : _triggerValueCtrl.text,
         content: _contentCtrl.text,
         isActive: true,
       );
 
       await GetIt.I<IMarketingRepository>().saveCampaign(campaign);
-      
+
       if (mounted) {
         Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Campaign Saved')));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Campaign Saved')));
       }
     } catch (e) {
       if (mounted) {
-         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
-         setState(() => _isSaving = false);
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Error: $e')));
+        setState(() => _isSaving = false);
       }
     }
   }
@@ -87,11 +89,13 @@ class _CampaignBuilderPageState extends State<CampaignBuilderPage> {
     // Mock AI generation
     String content = '';
     if (_trigger == CampaignTriggerType.inactive30Days) {
-       content = "We miss you! 🥺 Come back to Savvy POS and get 10% off your next order. Show this text!";
+      content =
+          "We miss you! 🥺 Come back to Savvy POS and get 10% off your next order. Show this text!";
     } else if (_trigger == CampaignTriggerType.bigSpender) {
-       content = "You're a VIP! 🌟 Thanks for being a top customer. Enjoy a free dessert on us next time.";
+      content =
+          "You're a VIP! 🌟 Thanks for being a top customer. Enjoy a free dessert on us next time.";
     } else if (_trigger == CampaignTriggerType.birthday) {
-       content = "Happy Birthday! 🎂 Treat yourself to a free meal today!";
+      content = "Happy Birthday! 🎂 Treat yourself to a free meal today!";
     }
     _contentCtrl.text = content;
   }
@@ -107,68 +111,80 @@ class _CampaignBuilderPageState extends State<CampaignBuilderPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Campaign Details', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const Text('Campaign Details',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               const Gap(16),
-              
               TextFormField(
                 controller: _nameCtrl,
-                decoration: const InputDecoration(labelText: 'Campaign Name', border: OutlineInputBorder()),
+                decoration: const InputDecoration(
+                    labelText: 'Campaign Name', border: OutlineInputBorder()),
                 validator: (v) => v == null || v.isEmpty ? 'Required' : null,
               ),
               const Gap(16),
-              
-              const Text('Target Audience & Trigger', style: TextStyle(fontWeight: FontWeight.w600)),
+              const Text('Target Audience & Trigger',
+                  style: TextStyle(fontWeight: FontWeight.w600)),
               const Gap(8),
               DropdownButtonFormField<CampaignTriggerType>(
                 // ignore: deprecated_member_use
                 value: _trigger,
                 decoration: const InputDecoration(border: OutlineInputBorder()),
-                items: CampaignTriggerType.values.map((t) => DropdownMenuItem(value: t, child: Text(t.label))).toList(),
+                items: CampaignTriggerType.values
+                    .map(
+                        (t) => DropdownMenuItem(value: t, child: Text(t.label)))
+                    .toList(),
                 onChanged: (v) {
-                   setState(() => _trigger = v!);
-                   _recalcAudience();
+                  setState(() => _trigger = v!);
+                  _recalcAudience();
                 },
               ),
               const Gap(8),
-              if (_calculatingAudience) 
-                 const Text("Calculating audience...", style: TextStyle(color: Colors.grey))
+              if (_calculatingAudience)
+                const Text("Calculating audience...",
+                    style: TextStyle(color: Colors.grey))
               else if (_audienceSize != null)
-                 Text("Est. Audience: $_audienceSize customers", style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue)),
-              
+                Text("Est. Audience: $_audienceSize customers",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.blue)),
               if (_trigger == CampaignTriggerType.bigSpender) ...[
-                 const Gap(8),
-                 TextFormField(
-                    controller: _triggerValueCtrl,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'Minimum Spend (\$)'),
-                    onChanged: (_) => _recalcAudience(), // Debounce ideally
-                 ),
+                const Gap(8),
+                TextFormField(
+                  controller: _triggerValueCtrl,
+                  keyboardType: TextInputType.number,
+                  decoration:
+                      const InputDecoration(labelText: 'Minimum Spend (\$)'),
+                  onChanged: (_) => _recalcAudience(), // Debounce ideally
+                ),
               ],
-              
               const Gap(24),
-              const Text('Communication Channel', style: TextStyle(fontWeight: FontWeight.w600)),
+              const Text('Communication Channel',
+                  style: TextStyle(fontWeight: FontWeight.w600)),
               const Gap(8),
               SegmentedButton<CampaignChannel>(
                 segments: const [
-                  ButtonSegment(value: CampaignChannel.sms, label: Text('SMS'), icon: Icon(Icons.sms)),
-                  ButtonSegment(value: CampaignChannel.email, label: Text('Email'), icon: Icon(Icons.email)),
-                ], 
+                  ButtonSegment(
+                      value: CampaignChannel.sms,
+                      label: Text('SMS'),
+                      icon: Icon(Icons.sms)),
+                  ButtonSegment(
+                      value: CampaignChannel.email,
+                      label: Text('Email'),
+                      icon: Icon(Icons.email)),
+                ],
                 selected: {_channel},
                 onSelectionChanged: (Set<CampaignChannel> newSelection) {
                   setState(() => _channel = newSelection.first);
                 },
               ),
-              
               const Gap(24),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                   const Text('Message Content', style: TextStyle(fontWeight: FontWeight.w600)),
-                   TextButton.icon(
-                     onPressed: _generateAIContent, 
-                     icon: const Icon(Icons.auto_awesome), 
-                     label: const Text('AI Write')
-                   )
+                  const Text('Message Content',
+                      style: TextStyle(fontWeight: FontWeight.w600)),
+                  TextButton.icon(
+                      onPressed: _generateAIContent,
+                      icon: const Icon(Icons.auto_awesome),
+                      label: const Text('AI Write'))
                 ],
               ),
               const Gap(8),
@@ -176,21 +192,22 @@ class _CampaignBuilderPageState extends State<CampaignBuilderPage> {
                 controller: _contentCtrl,
                 maxLines: 4,
                 decoration: const InputDecoration(
-                  labelText: 'Message Body', 
-                  border: OutlineInputBorder(),
-                  helperText: 'Use {name} to insert customer name'
-                ),
+                    labelText: 'Message Body',
+                    border: OutlineInputBorder(),
+                    helperText: 'Use {name} to insert customer name'),
                 validator: (v) => v == null || v.isEmpty ? 'Required' : null,
               ),
-              
               const Gap(32),
               SizedBox(
                 width: double.infinity,
                 child: FilledButton(
                   onPressed: _isSaving ? null : _onSave,
-                  child: _isSaving 
-                    ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)) 
-                    : const Text('Launch Campaign'),
+                  child: _isSaving
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2))
+                      : const Text('Launch Campaign'),
                 ),
               ),
             ],

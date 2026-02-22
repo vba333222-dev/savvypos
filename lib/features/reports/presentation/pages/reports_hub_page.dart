@@ -31,11 +31,11 @@ class _ReportsHubPageState extends State<ReportsHubPage> {
       // Mock Data Generation based on date seed
       final seed = date.day * date.month;
       final rnd = Random(seed);
-      
+
       _chartData = List.generate(24, (i) {
         // Peaks at lunch (12-14) and dinner (19-21)
         double base = 100.0 + rnd.nextInt(200);
-        if (i >= 11 && i <= 14) base *= 2.5; 
+        if (i >= 11 && i <= 14) base *= 2.5;
         if (i >= 18 && i <= 21) base *= 3.0;
         if (i < 8) base *= 0.1; // Early morning
         return ChartDataPoint(i, '$i:00', base);
@@ -59,7 +59,8 @@ class _ReportsHubPageState extends State<ReportsHubPage> {
           children: [
             Icon(Icons.hub, color: theme.colors.brandPrimary),
             const SizedBox(width: 8),
-            Text('NEURAL HUB', style: TextStyle(letterSpacing: 2, fontSize: 16)),
+            Text('NEURAL HUB',
+                style: TextStyle(letterSpacing: 2, fontSize: 16)),
           ],
         ),
         centerTitle: true,
@@ -78,7 +79,7 @@ class _ReportsHubPageState extends State<ReportsHubPage> {
               onDateSelected: _updateData,
             ),
           ),
-          
+
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(16),
@@ -86,26 +87,37 @@ class _ReportsHubPageState extends State<ReportsHubPage> {
                 // 2. Smart Advice Chip
                 Center(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: isGoodDay 
-                        ? [Colors.orange.shade900, Colors.deepOrange]
-                        : [Colors.blueGrey.shade800, Colors.blueGrey.shade600]
-                      ),
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                         BoxShadow(color: (isGoodDay ? Colors.orange : Colors.blueGrey).withValues(alpha: 0.4), blurRadius: 10, offset: Offset(0, 4))
-                      ]
-                    ),
+                        gradient: LinearGradient(
+                            colors: isGoodDay
+                                ? [Colors.orange.shade900, Colors.deepOrange]
+                                : [
+                                    Colors.blueGrey.shade800,
+                                    Colors.blueGrey.shade600
+                                  ]),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                              color:
+                                  (isGoodDay ? Colors.orange : Colors.blueGrey)
+                                      .withValues(alpha: 0.4),
+                              blurRadius: 10,
+                              offset: Offset(0, 4))
+                        ]),
                     child: Text(
-                      isGoodDay ? "🔥 ON FIRE: +12% vs Yesterday" : "❄️ QUIET DAY: -5% vs Avg",
-                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      isGoodDay
+                          ? "🔥 ON FIRE: +12% vs Yesterday"
+                          : "❄️ QUIET DAY: -5% vs Avg",
+                      style: const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // 3. Sonar Chart
                 Container(
                   padding: const EdgeInsets.all(16),
@@ -116,19 +128,24 @@ class _ReportsHubPageState extends State<ReportsHubPage> {
                     border: Border.all(color: theme.colors.borderDefault),
                   ),
                   child: Column(
-                     crossAxisAlignment: CrossAxisAlignment.start,
-                     children: [
-                       Text("HOURLY VELOCITY", style: TextStyle(fontSize: 10, color: theme.colors.textSecondary, letterSpacing: 1.5)),
-                       const SizedBox(height: 16),
-                       Expanded(
-                         child: InteractiveSalesChart(data: _chartData, maxY: _maxY),
-                       ),
-                     ],
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("HOURLY VELOCITY",
+                          style: TextStyle(
+                              fontSize: 10,
+                              color: theme.colors.textSecondary,
+                              letterSpacing: 1.5)),
+                      const SizedBox(height: 16),
+                      Expanded(
+                        child: InteractiveSalesChart(
+                            data: _chartData, maxY: _maxY),
+                      ),
+                    ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // 4. Insight Deck
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -157,7 +174,7 @@ class _ReportsHubPageState extends State<ReportsHubPage> {
                         ),
                       ),
                       const SizedBox(width: 16),
-                       SizedBox(
+                      SizedBox(
                         width: 160,
                         height: 140,
                         child: InsightCard(
@@ -170,7 +187,7 @@ class _ReportsHubPageState extends State<ReportsHubPage> {
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
               ],
             ),

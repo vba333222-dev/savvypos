@@ -16,7 +16,8 @@ class TokenLoader {
 
   Future<void> load() async {
     try {
-      final String jsonString = await rootBundle.loadString('assets/config/token.json');
+      final String jsonString =
+          await rootBundle.loadString('assets/config/token.json');
       final Map<String, dynamic> jsonMap = json.decode(jsonString);
       _config = SavvyThemeConfig.fromJson(jsonMap);
     } catch (e) {

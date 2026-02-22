@@ -9,8 +9,8 @@ class KitchenOrderCard extends StatefulWidget {
   final VoidCallback onBump;
 
   const KitchenOrderCard({
-    super.key, 
-    required this.order, 
+    super.key,
+    required this.order,
     required this.onBump,
   });
 
@@ -18,7 +18,8 @@ class KitchenOrderCard extends StatefulWidget {
   State<KitchenOrderCard> createState() => _KitchenOrderCardState();
 }
 
-class _KitchenOrderCardState extends State<KitchenOrderCard> with TickerProviderStateMixin {
+class _KitchenOrderCardState extends State<KitchenOrderCard>
+    with TickerProviderStateMixin {
   late Timer _timer;
   late Duration _elapsed;
   late AnimationController _urgencyController;
@@ -28,20 +29,22 @@ class _KitchenOrderCardState extends State<KitchenOrderCard> with TickerProvider
   void initState() {
     super.initState();
     _updateElapsed();
-    
+
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (mounted) setState(() => _updateElapsed());
     });
 
-    _urgencyController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
-    _exitController = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
+    _urgencyController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    _exitController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 300));
   }
 
   void _updateElapsed() {
     _elapsed = DateTime.now().difference(widget.order.orderTime);
     // Pulse if critical (> 15m)
     if (_elapsed.inMinutes >= 15 && !_urgencyController.isAnimating) {
-       _urgencyController.repeat(reverse: true);
+      _urgencyController.repeat(reverse: true);
     }
   }
 
@@ -60,7 +63,7 @@ class _KitchenOrderCardState extends State<KitchenOrderCard> with TickerProvider
   }
 
   Color _getUrgencyColor(SavvyTheme theme) {
-    if (_elapsed.inMinutes < 5) return theme.colors.stateSuccess; 
+    if (_elapsed.inMinutes < 5) return theme.colors.stateSuccess;
     if (_elapsed.inMinutes < 15) return theme.colors.stateWarning;
     return theme.colors.stateError;
   }
@@ -70,27 +73,39 @@ class _KitchenOrderCardState extends State<KitchenOrderCard> with TickerProvider
     final theme = context.savvy;
     final urgencyColor = _getUrgencyColor(theme);
     final isCritical = _elapsed.inMinutes >= 15;
-    
+
     return ScaleTransition(
-      scale: Tween<double>(begin: 1.0, end: 0.0).animate(CurvedAnimation(parent: _exitController, curve: Curves.easeInBack)),
+      scale: Tween<double>(begin: 1.0, end: 0.0).animate(
+          CurvedAnimation(parent: _exitController, curve: Curves.easeInBack)),
       child: AnimatedBuilder(
         animation: _urgencyController,
         builder: (context, child) {
           final pulse = isCritical ? _urgencyController.value * 4 : 0.0;
-          
+
           return Container(
             decoration: BoxDecoration(
               color: theme.colors.bgElevated,
               borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
               border: Border.all(
-                color: isCritical 
-                    ? urgencyColor.withValues(alpha: 0.5 + (_urgencyController.value * 0.5)) 
+                color: isCritical
+                    ? urgencyColor.withValues(
+                        alpha: 0.5 + (_urgencyController.value * 0.5))
                     : theme.colors.borderDefault,
                 width: isCritical ? 2 : 1,
               ),
-              boxShadow: isCritical 
-                 ? [BoxShadow(color: urgencyColor.withValues(alpha: 0.3), blurRadius: 10 + pulse, spreadRadius: pulse)]
-                 : [BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2))],
+              boxShadow: isCritical
+                  ? [
+                      BoxShadow(
+                          color: urgencyColor.withValues(alpha: 0.3),
+                          blurRadius: 10 + pulse,
+                          spreadRadius: pulse)
+                    ]
+                  : [
+                      BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 4,
+                          offset: Offset(0, 2))
+                    ],
             ),
             child: child,
           );
@@ -103,65 +118,84 @@ class _KitchenOrderCardState extends State<KitchenOrderCard> with TickerProvider
               onDoubleTap: _handleBump,
               onLongPress: _handleBump,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
-                  color: urgencyColor.withValues(alpha: isCritical ? 0.3 : 0.15),
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(theme.shapes.radiusMd)),
+                  color:
+                      urgencyColor.withValues(alpha: isCritical ? 0.3 : 0.15),
+                  borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(theme.shapes.radiusMd)),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       '#${widget.order.displayId}',
-                      style: TextStyle(fontWeight: FontWeight.w900, color: theme.colors.textPrimary, fontSize: 18),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          color: theme.colors.textPrimary,
+                          fontSize: 18),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
                         color: urgencyColor,
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
                         '${_elapsed.inMinutes}:${(_elapsed.inSeconds % 60).toString().padLeft(2, '0')}',
-                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 14, fontFeatures: [FontFeature.tabularFigures()]),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontFeatures: [FontFeature.tabularFigures()]),
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-            
+
             // BODY
             Padding(
               padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   Row(
-                     children: [
-                       Icon(Icons.table_restaurant, size: 16, color: theme.colors.textSecondary),
-                       const SizedBox(width: 4),
-                       Text(
-                         widget.order.type == KitchenOrderType.takeaway ? 'TAKEAWAY' : 'Table ${widget.order.tableNumber ?? "-"}',
-                         style: TextStyle(fontWeight: FontWeight.w600, color: theme.colors.textSecondary),
-                       ),
-                     ],
-                   ),
-                   const Divider(height: 16, thickness: 0.5),
-                   
-                   // ITEMS
-                   ...widget.order.items.map((item) => _KitchenItemRow(item: item, theme: theme)),
+                  Row(
+                    children: [
+                      Icon(Icons.table_restaurant,
+                          size: 16, color: theme.colors.textSecondary),
+                      const SizedBox(width: 4),
+                      Text(
+                        widget.order.type == KitchenOrderType.takeaway
+                            ? 'TAKEAWAY'
+                            : 'Table ${widget.order.tableNumber ?? "-"}',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: theme.colors.textSecondary),
+                      ),
+                    ],
+                  ),
+                  const Divider(height: 16, thickness: 0.5),
+
+                  // ITEMS
+                  ...widget.order.items
+                      .map((item) => _KitchenItemRow(item: item, theme: theme)),
                 ],
               ),
             ),
-            
+
             const Spacer(),
-            
+
             // FOOTER
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: Center(
-                child: Text('Double-Tap Header to Bump', style: TextStyle(fontSize: 10, color: theme.colors.textMuted)),
+                child: Text('Double-Tap Header to Bump',
+                    style:
+                        TextStyle(fontSize: 10, color: theme.colors.textMuted)),
               ),
             ),
           ],
@@ -187,8 +221,10 @@ class _KitchenItemRowState extends State<_KitchenItemRow> {
   @override
   Widget build(BuildContext context) {
     // Dim if done
-    final color = _isDone ? widget.theme.colors.textMuted : widget.theme.colors.textPrimary;
-    
+    final color = _isDone
+        ? widget.theme.colors.textMuted
+        : widget.theme.colors.textPrimary;
+
     return InkWell(
       onTap: () {
         HapticFeedback.lightImpact();
@@ -202,16 +238,22 @@ class _KitchenItemRowState extends State<_KitchenItemRow> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '${widget.item.quantity}x', 
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: color, decoration: _isDone ? TextDecoration.lineThrough : null)
-                ),
+                Text('${widget.item.quantity}x',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: color,
+                        decoration:
+                            _isDone ? TextDecoration.lineThrough : null)),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Text(
-                    widget.item.productName, 
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: color, decoration: _isDone ? TextDecoration.lineThrough : null)
-                  ),
+                  child: Text(widget.item.productName,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: color,
+                          decoration:
+                              _isDone ? TextDecoration.lineThrough : null)),
                 ),
               ],
             ),
@@ -219,8 +261,12 @@ class _KitchenItemRowState extends State<_KitchenItemRow> {
               Padding(
                 padding: const EdgeInsets.only(left: 28),
                 child: Text(
-                  widget.item.modifiers.join(', '), 
-                  style: TextStyle(color: widget.theme.colors.textSecondary.withValues(alpha: _isDone ? 0.5 : 1.0), fontSize: 12, fontStyle: FontStyle.italic),
+                  widget.item.modifiers.join(', '),
+                  style: TextStyle(
+                      color: widget.theme.colors.textSecondary
+                          .withValues(alpha: _isDone ? 0.5 : 1.0),
+                      fontSize: 12,
+                      fontStyle: FontStyle.italic),
                 ),
               ),
             if (widget.item.note != null && widget.item.note!.isNotEmpty)
@@ -228,7 +274,11 @@ class _KitchenItemRowState extends State<_KitchenItemRow> {
                 padding: const EdgeInsets.only(left: 28),
                 child: Text(
                   'NOTE: ${widget.item.note}',
-                  style: TextStyle(color: widget.theme.colors.stateError.withValues(alpha: _isDone ? 0.5 : 1.0), fontWeight: FontWeight.bold, fontSize: 12),
+                  style: TextStyle(
+                      color: widget.theme.colors.stateError
+                          .withValues(alpha: _isDone ? 0.5 : 1.0),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12),
                 ),
               ),
           ],

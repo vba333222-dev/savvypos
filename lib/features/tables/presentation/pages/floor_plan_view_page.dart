@@ -6,7 +6,6 @@ import 'package:savvy_pos/features/tables/domain/usecases/floor_plan_usecases.da
 import 'package:savvy_pos/features/sales/presentation/pages/order_page.dart';
 import 'package:savvy_pos/features/cash/presentation/pages/cash_management_page.dart';
 
-
 class FloorPlanViewPage extends StatefulWidget {
   const FloorPlanViewPage({super.key});
 
@@ -20,10 +19,14 @@ class _FloorPlanViewPageState extends State<FloorPlanViewPage> {
     return StreamBuilder<List<Zone>>(
       stream: getIt<WatchZonesUseCase>().call(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const Scaffold(body: Center(child: CircularProgressIndicator()));
-        
+        if (!snapshot.hasData)
+          return const Scaffold(
+              body: Center(child: CircularProgressIndicator()));
+
         final zones = snapshot.data!;
-        if (zones.isEmpty) return const Scaffold(body: Center(child: Text('No Zones Configured')));
+        if (zones.isEmpty)
+          return const Scaffold(
+              body: Center(child: Text('No Zones Configured')));
 
         return DefaultTabController(
           length: zones.length,
@@ -35,17 +38,17 @@ class _FloorPlanViewPageState extends State<FloorPlanViewPage> {
                 tabs: zones.map((z) => Tab(text: z.name)).toList(),
               ),
               actions: [
-                  IconButton(
-                    icon: const Icon(Icons.refresh),
-                    onPressed: () {
-                      // Refresh logic if needed, but streams auto-update
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: ElevatedButton.icon(
+                IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: () {
+                    // Refresh logic if needed, but streams auto-update
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueGrey, 
+                        backgroundColor: Colors.blueGrey,
                         foregroundColor: Colors.white,
                         elevation: 0,
                       ),
@@ -57,16 +60,17 @@ class _FloorPlanViewPageState extends State<FloorPlanViewPage> {
                         // In a real app, this comes from the Auth/Shift Context.
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => const CashManagementPage(shiftUuid: 'DEMO-SHIFT-001'),
+                            builder: (context) => const CashManagementPage(
+                                shiftUuid: 'DEMO-SHIFT-001'),
                           ),
                         );
-                      }
-                    ),
-                  ),
+                      }),
+                ),
               ],
             ),
             body: TabBarView(
-              children: zones.map((zone) => _ZoneView(zoneId: zone.id)).toList(),
+              children:
+                  zones.map((zone) => _ZoneView(zoneId: zone.id)).toList(),
             ),
           ),
         );
@@ -84,10 +88,11 @@ class _ZoneView extends StatelessWidget {
     return StreamBuilder<List<SavvyTable>>(
       stream: getIt<WatchTablesUseCase>().call(),
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-        
+        if (!snapshot.hasData)
+          return const Center(child: CircularProgressIndicator());
+
         final tables = snapshot.data!.where((t) => t.zoneId == zoneId).toList();
-        
+
         return InteractiveViewer(
           constrained: false,
           boundaryMargin: const EdgeInsets.all(100),
@@ -109,7 +114,8 @@ class _ZoneView extends StatelessWidget {
                           builder: (context) => OrderPage(
                             tableUuid: table.id,
                             tableName: table.name,
-                            customerUuid: null, // Could be fetched from table metadata
+                            customerUuid:
+                                null, // Could be fetched from table metadata
                           ),
                         ),
                       );
@@ -118,19 +124,30 @@ class _ZoneView extends StatelessWidget {
                       width: table.width,
                       height: table.height,
                       decoration: BoxDecoration(
-                        color: table.isOccupied ? Colors.red[100] : Colors.green[100],
-                        border: Border.all(color: table.isOccupied ? Colors.red : Colors.green, width: 2),
-                        shape: table.shape == TableShape.round ? BoxShape.circle : BoxShape.rectangle,
+                        color: table.isOccupied
+                            ? Colors.red[100]
+                            : Colors.green[100],
+                        border: Border.all(
+                            color: table.isOccupied ? Colors.red : Colors.green,
+                            width: 2),
+                        shape: table.shape == TableShape.round
+                            ? BoxShape.circle
+                            : BoxShape.rectangle,
                         boxShadow: [
-                          BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 4),
+                          BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.1),
+                              blurRadius: 4),
                         ],
                       ),
                       alignment: Alignment.center,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(table.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                          Text('${table.capacity} Pax', style: const TextStyle(fontSize: 10)),
+                          Text(table.name,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
+                          Text('${table.capacity} Pax',
+                              style: const TextStyle(fontSize: 10)),
                         ],
                       ),
                     ),

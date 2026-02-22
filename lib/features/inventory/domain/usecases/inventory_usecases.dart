@@ -43,7 +43,8 @@ class ReceiveStockUseCase {
 
   ReceiveStockUseCase(this._repository);
 
-  Future<void> call(String poUuid, Map<String, double> receivedQuantities) async {
+  Future<void> call(
+      String poUuid, Map<String, double> receivedQuantities) async {
     await _repository.receivePurchaseOrder(poUuid, receivedQuantities);
   }
 }
@@ -62,6 +63,6 @@ class GetLowStockItemsUseCase {
     // This requires iterating products and checking stock.
     // Ideally Repository has `getLowStockProducts()`.
     // For now returning empty list as placeholder / simple implementation
-    return []; 
+    return [];
   }
 }

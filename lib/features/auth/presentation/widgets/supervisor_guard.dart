@@ -58,8 +58,10 @@ class SupervisorGuard {
     String? orderUuid,
     String? orderItemUuid,
     String? detail,
+
     /// Called only on successful authorization, before returning.
     Future<void> Function()? onSuccess,
+
     /// Optional: called when user cancels — for graceful UI cleanup.
     VoidCallback? onDenied,
   }) async {
@@ -157,7 +159,8 @@ class SupervisorGuard {
       context: context,
       action: AuditAction.applyDiscount,
       title: 'High Discount Approval',
-      reason: 'Discounts above $discountThresholdPercent% require manager authorization.',
+      reason:
+          'Discounts above $discountThresholdPercent% require manager authorization.',
       orderUuid: orderUuid,
       detail: 'Discount: ${discountPercent.toStringAsFixed(1)}%',
       onSuccess: onSuccess,
@@ -182,7 +185,8 @@ class SupervisorGuard {
       reason: 'Changing item prices requires manager authorization.',
       orderUuid: orderUuid,
       orderItemUuid: orderItemUuid,
-      detail: '$itemName: \$${originalPrice.toStringAsFixed(2)} → \$${newPrice.toStringAsFixed(2)} (${diff.toStringAsFixed(1)}% change)',
+      detail:
+          '$itemName: \$${originalPrice.toStringAsFixed(2)} → \$${newPrice.toStringAsFixed(2)} (${diff.toStringAsFixed(1)}% change)',
       onSuccess: onSuccess,
     );
   }
@@ -208,13 +212,20 @@ class SupervisorGuard {
   // ── Internal helpers ─────────────────────────────────────────────────────
   static String _defaultReason(AuditAction action) {
     switch (action) {
-      case AuditAction.voidItem:       return 'Voiding items requires manager authorization.';
-      case AuditAction.voidOrder:      return 'Voiding orders requires manager authorization.';
-      case AuditAction.openCashDrawer: return 'Cash drawer release requires manager authorization.';
-      case AuditAction.applyDiscount:  return 'High discounts require manager authorization.';
-      case AuditAction.priceOverride:  return 'Price overrides require manager authorization.';
-      case AuditAction.refund:         return 'Refunds require manager authorization.';
-      case AuditAction.supervisorLogin:return 'This action requires supervisor authorization.';
+      case AuditAction.voidItem:
+        return 'Voiding items requires manager authorization.';
+      case AuditAction.voidOrder:
+        return 'Voiding orders requires manager authorization.';
+      case AuditAction.openCashDrawer:
+        return 'Cash drawer release requires manager authorization.';
+      case AuditAction.applyDiscount:
+        return 'High discounts require manager authorization.';
+      case AuditAction.priceOverride:
+        return 'Price overrides require manager authorization.';
+      case AuditAction.refund:
+        return 'Refunds require manager authorization.';
+      case AuditAction.supervisorLogin:
+        return 'This action requires supervisor authorization.';
     }
   }
 }

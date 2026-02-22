@@ -21,9 +21,12 @@ class _TableEditDialogState extends State<TableEditDialog> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.table.name);
-    _capacityController = TextEditingController(text: widget.table.capacity.toString());
-    _widthController = TextEditingController(text: widget.table.width.toString());
-    _heightController = TextEditingController(text: widget.table.height.toString());
+    _capacityController =
+        TextEditingController(text: widget.table.capacity.toString());
+    _widthController =
+        TextEditingController(text: widget.table.width.toString());
+    _heightController =
+        TextEditingController(text: widget.table.height.toString());
     _shape = widget.table.shape;
   }
 
@@ -101,9 +104,12 @@ class _TableEditDialogState extends State<TableEditDialog> {
             final updatedTable = widget.table.copyWith(
               name: _nameController.text,
               shape: _shape,
-              capacity: int.tryParse(_capacityController.text) ?? widget.table.capacity,
-              width: double.tryParse(_widthController.text) ?? widget.table.width,
-              height: double.tryParse(_heightController.text) ?? widget.table.height,
+              capacity: int.tryParse(_capacityController.text) ??
+                  widget.table.capacity,
+              width:
+                  double.tryParse(_widthController.text) ?? widget.table.width,
+              height: double.tryParse(_heightController.text) ??
+                  widget.table.height,
             );
             Navigator.of(context).pop(updatedTable);
           },

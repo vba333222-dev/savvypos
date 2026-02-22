@@ -7,7 +7,8 @@ class ReservationCalendarPage extends StatefulWidget {
   const ReservationCalendarPage({super.key});
 
   @override
-  State<ReservationCalendarPage> createState() => _ReservationCalendarPageState();
+  State<ReservationCalendarPage> createState() =>
+      _ReservationCalendarPageState();
 }
 
 class _ReservationCalendarPageState extends State<ReservationCalendarPage> {
@@ -29,7 +30,8 @@ class _ReservationCalendarPageState extends State<ReservationCalendarPage> {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-               Navigator.of(context).push(MaterialPageRoute(builder: (_) => const CreateReservationWizard()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const CreateReservationWizard()));
             },
           ),
         ],
@@ -53,27 +55,29 @@ class _ReservationCalendarPageState extends State<ReservationCalendarPage> {
                     });
                   },
                   calendarStyle: const CalendarStyle(
-                    todayDecoration: BoxDecoration(color: Colors.blueAccent, shape: BoxShape.circle),
-                    selectedDecoration: BoxDecoration(color: Colors.deepPurple, shape: BoxShape.circle),
+                    todayDecoration: BoxDecoration(
+                        color: Colors.blueAccent, shape: BoxShape.circle),
+                    selectedDecoration: BoxDecoration(
+                        color: Colors.deepPurple, shape: BoxShape.circle),
                   ),
                 ),
                 const Divider(),
                 const Expanded(
                   child: Center(
-                     // Future: Show summary stats for day? "24 Bookings"
-                     child: Text('Select a date to manage bookings'),
+                    // Future: Show summary stats for day? "24 Bookings"
+                    child: Text('Select a date to manage bookings'),
                   ),
                 )
               ],
             ),
           ),
           const VerticalDivider(width: 1),
-          
+
           // Right: Timeline
           Expanded(
-            child: _selectedDay == null 
-               ? const Center(child: Text('Please select a date'))
-               : ReservationTimelinePage(selectedDate: _selectedDay!),
+            child: _selectedDay == null
+                ? const Center(child: Text('Please select a date'))
+                : ReservationTimelinePage(selectedDate: _selectedDay!),
           ),
         ],
       ),

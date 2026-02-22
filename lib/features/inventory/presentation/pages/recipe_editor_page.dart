@@ -17,12 +17,12 @@ class RecipeEditorPage extends StatefulWidget {
 class _RecipeEditorPageState extends State<RecipeEditorPage> {
   final _recipeRepo = getIt<IRecipeRepository>();
   final _db = getIt<AppDatabase>();
-  
+
   ProductTableData? _selectedProduct;
   Recipe? _currentRecipe;
   List<ProductTableData> _searchResults = [];
   bool _isLoading = false;
-  
+
   // Ingredients Cache
   List<Ingredient> _availableIngredients = [];
 
@@ -46,10 +46,10 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
     // Direct DB query via AppDatabase (MVP)
     // Ideally this goes through ProductRepository
     final results = await (_db.select(_db.productTable)
-      ..where((tbl) => tbl.name.like('%$query%'))
-      ..limit(10))
-      .get();
-      
+          ..where((tbl) => tbl.name.like('%$query%'))
+          ..limit(10))
+        .get();
+
     setState(() => _searchResults = results);
   }
 
@@ -59,9 +59,9 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
       _isLoading = true;
       _searchResults = []; // clear search
     });
-    
+
     final recipe = await _recipeRepo.getRecipeForProduct(product.uuid);
-    
+
     if (mounted) {
       setState(() {
         _currentRecipe = recipe ?? Recipe(productUuid: product.uuid, items: []);
@@ -76,29 +76,32 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
     await _recipeRepo.saveRecipe(_currentRecipe!);
     if (mounted) {
       setState(() => _isLoading = false);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Recipe Saved!')));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Recipe Saved!')));
     }
   }
-  
+
   void _addIngredient(Ingredient ingredient, double quantity) {
     if (_currentRecipe == null) return;
-    
+
     final newItem = RecipeItem(
       ingredientUuid: ingredient.uuid,
       quantityRequired: quantity,
       ingredientName: ingredient.name,
       unit: ingredient.unit,
     );
-    
-    final updatedItems = List<RecipeItem>.from(_currentRecipe!.items)..add(newItem);
+
+    final updatedItems = List<RecipeItem>.from(_currentRecipe!.items)
+      ..add(newItem);
     setState(() {
       _currentRecipe = _currentRecipe!.copyWith(items: updatedItems);
     });
   }
-  
+
   void _removeIngredient(int index) {
     if (_currentRecipe == null) return;
-    final updatedItems = List<RecipeItem>.from(_currentRecipe!.items)..removeAt(index);
+    final updatedItems = List<RecipeItem>.from(_currentRecipe!.items)
+      ..removeAt(index);
     setState(() {
       _currentRecipe = _currentRecipe!.copyWith(items: updatedItems);
     });
@@ -148,18 +151,18 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
           // Right: Editor
           Expanded(
             flex: 2,
-            child: _selectedProduct == null 
-              ? const Center(child: Text('Select a product to edit recipe')) 
-              : _buildEditor(),
+            child: _selectedProduct == null
+                ? const Center(child: Text('Select a product to edit recipe'))
+                : _buildEditor(),
           ),
         ],
       ),
     );
   }
-  
+
   Widget _buildEditor() {
     if (_isLoading) return const Center(child: CircularProgressIndicator());
-    
+
     return Column(
       children: [
         Padding(
@@ -170,8 +173,11 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Recipe for: ${_selectedProduct!.name}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  Text('${_currentRecipe?.items.length ?? 0} Ingredients', style: Colors.grey.asTextStyle),
+                  Text('Recipe for: ${_selectedProduct!.name}',
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold)),
+                  Text('${_currentRecipe?.items.length ?? 0} Ingredients',
+                      style: Colors.grey.asTextStyle),
                 ],
               ),
               ElevatedButton.icon(
@@ -189,33 +195,33 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
         const Divider(),
         Expanded(
           child: _currentRecipe!.items.isEmpty
-            ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.kitchen, size: 64, color: Colors.grey[300]),
-                    const Gap(16),
-                    const Text('No ingredients linked yet'),
-                  ],
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.kitchen, size: 64, color: Colors.grey[300]),
+                      const Gap(16),
+                      const Text('No ingredients linked yet'),
+                    ],
+                  ),
+                )
+              : ListView.separated(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: _currentRecipe!.items.length,
+                  separatorBuilder: (_, __) => const Divider(),
+                  itemBuilder: (context, index) {
+                    final item = _currentRecipe!.items[index];
+                    return ListTile(
+                      leading: CircleAvatar(child: Text('${index + 1}')),
+                      title: Text(item.ingredientName ?? 'Unknown Ingredient'),
+                      subtitle: Text('${item.quantityRequired} ${item.unit}'),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () => _removeIngredient(index),
+                      ),
+                    ).animate().fadeIn();
+                  },
                 ),
-              )
-            : ListView.separated(
-                padding: const EdgeInsets.all(16),
-                itemCount: _currentRecipe!.items.length,
-                separatorBuilder: (_, __) => const Divider(),
-                itemBuilder: (context, index) {
-                  final item = _currentRecipe!.items[index];
-                  return ListTile(
-                    leading: CircleAvatar(child: Text('${index + 1}')),
-                    title: Text(item.ingredientName ?? 'Unknown Ingredient'),
-                    subtitle: Text('${item.quantityRequired} ${item.unit}'),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () => _removeIngredient(index),
-                    ),
-                  ).animate().fadeIn();
-                },
-              ),
         ),
         Container(
           padding: const EdgeInsets.all(16),
@@ -243,6 +249,7 @@ class _RecipeEditorPageState extends State<RecipeEditorPage> {
     );
   }
 }
+
 extension TextStyleX on Color {
   TextStyle get asTextStyle => TextStyle(color: this);
 }
@@ -270,10 +277,12 @@ class _AddIngredientDialogState extends State<_AddIngredientDialog> {
         children: [
           DropdownButtonFormField<Ingredient>(
             decoration: const InputDecoration(labelText: 'Select Ingredient'),
-            items: widget.ingredients.map((ing) => DropdownMenuItem(
-              value: ing,
-              child: Text('${ing.name} (${ing.unit})'),
-            )).toList(),
+            items: widget.ingredients
+                .map((ing) => DropdownMenuItem(
+                      value: ing,
+                      child: Text('${ing.name} (${ing.unit})'),
+                    ))
+                .toList(),
             onChanged: (val) => setState(() => _selected = val),
           ),
           const Gap(16),
@@ -285,15 +294,19 @@ class _AddIngredientDialogState extends State<_AddIngredientDialog> {
         ],
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+        TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel')),
         ElevatedButton(
-          onPressed: _selected == null ? null : () {
-            final qty = double.tryParse(_qtyCtrl.text) ?? 0;
-            if (qty > 0) {
-              widget.onAdd(_selected!, qty);
-              Navigator.pop(context);
-            }
-          }, 
+          onPressed: _selected == null
+              ? null
+              : () {
+                  final qty = double.tryParse(_qtyCtrl.text) ?? 0;
+                  if (qty > 0) {
+                    widget.onAdd(_selected!, qty);
+                    Navigator.pop(context);
+                  }
+                },
           child: const Text('Add'),
         ),
       ],

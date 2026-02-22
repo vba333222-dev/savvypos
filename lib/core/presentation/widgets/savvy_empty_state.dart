@@ -45,11 +45,16 @@ class SavvyEmptyState extends StatelessWidget {
               ),
               child: Icon(icon, size: 64, color: theme.colors.textMuted),
             )
-            .animate(onPlay: (controller) => controller.repeat(reverse: true))
-            .moveY(begin: 0, end: -10, duration: 2000.ms, curve: Curves.easeInOut), // Bobbing effect
+                .animate(
+                    onPlay: (controller) => controller.repeat(reverse: true))
+                .moveY(
+                    begin: 0,
+                    end: -10,
+                    duration: 2000.ms,
+                    curve: Curves.easeInOut), // Bobbing effect
 
             const SizedBox(height: 24),
-            
+
             Text(
               title,
               style: TextStyle(
@@ -59,9 +64,9 @@ class SavvyEmptyState extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2, end: 0),
-            
+
             const SizedBox(height: 8),
-            
+
             Text(
               message,
               style: TextStyle(
@@ -76,14 +81,17 @@ class SavvyEmptyState extends StatelessWidget {
               const SizedBox(height: 32),
               ElevatedButton.icon(
                 onPressed: onAction,
-                icon: const Icon(Icons.refresh), // Generic icon, user can customize if needed
+                icon: const Icon(Icons
+                    .refresh), // Generic icon, user can customize if needed
                 label: Text(actionLabel!),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: theme.colors.brandPrimary,
                   foregroundColor: theme.colors.textInverse,
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 ),
-              ).animate().scale(delay: 400.ms, duration: 400.ms, curve: Curves.elasticOut),
+              ).animate().scale(
+                  delay: 400.ms, duration: 400.ms, curve: Curves.elasticOut),
             ]
           ],
         ),

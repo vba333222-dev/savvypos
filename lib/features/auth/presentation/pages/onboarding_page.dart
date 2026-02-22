@@ -21,7 +21,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
-      
+
       try {
         await GetIt.I<ITenantRepository>().saveConfig(
           _nameController.text,
@@ -30,14 +30,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
         );
 
         if (mounted) {
-           Navigator.pushReplacement(
-             context, 
-             MaterialPageRoute(builder: (_) => const MainShellPage())
-           );
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (_) => const MainShellPage()));
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('Error: $e')));
         }
       } finally {
         if (mounted) setState(() => _isLoading = false);
@@ -61,7 +60,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
             child: Card(
               elevation: 4,
               color: colors.bgElevated,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(shapes.radiusLg)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(shapes.radiusLg)),
               child: Padding(
                 padding: EdgeInsets.all(shapes.spacingXl),
                 child: Form(
@@ -73,38 +73,45 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       SizedBox(height: shapes.spacingLg),
                       Text(
                         'Welcome to Savvy POS',
-                        style: typography.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+                        style: typography.headlineMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: shapes.spacingSm),
                       Text(
                         'Let\'s set up your store profile.',
-                        style: typography.bodyMedium?.copyWith(color: colors.textSecondary),
+                        style: typography.bodyMedium
+                            ?.copyWith(color: colors.textSecondary),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: shapes.spacingXl),
-                      
                       TextFormField(
                         controller: _nameController,
-                        decoration: const InputDecoration(labelText: 'Store Name', border: OutlineInputBorder()),
-                        validator: (v) => v == null || v.isEmpty ? 'Required' : null,
+                        decoration: const InputDecoration(
+                            labelText: 'Store Name',
+                            border: OutlineInputBorder()),
+                        validator: (v) =>
+                            v == null || v.isEmpty ? 'Required' : null,
                       ),
                       SizedBox(height: shapes.spacingMd),
-                      
                       TextFormField(
                         controller: _addressController,
-                        decoration: const InputDecoration(labelText: 'Store Address', border: OutlineInputBorder()),
-                        validator: (v) => v == null || v.isEmpty ? 'Required' : null,
+                        decoration: const InputDecoration(
+                            labelText: 'Store Address',
+                            border: OutlineInputBorder()),
+                        validator: (v) =>
+                            v == null || v.isEmpty ? 'Required' : null,
                       ),
                       SizedBox(height: shapes.spacingMd),
-                      
                       TextFormField(
                         controller: _currencyController,
-                        decoration: const InputDecoration(labelText: 'Currency Symbol', border: OutlineInputBorder()),
-                        validator: (v) => v == null || v.isEmpty ? 'Required' : null,
+                        decoration: const InputDecoration(
+                            labelText: 'Currency Symbol',
+                            border: OutlineInputBorder()),
+                        validator: (v) =>
+                            v == null || v.isEmpty ? 'Required' : null,
                       ),
                       SizedBox(height: shapes.spacingXl),
-                      
                       SizedBox(
                         width: double.infinity,
                         height: 50,
@@ -114,9 +121,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             backgroundColor: colors.brandPrimary,
                             foregroundColor: colors.textInverse,
                           ),
-                          child: _isLoading 
-                             ? const CircularProgressIndicator(color: Colors.white)
-                             : const Text('Setup POS'),
+                          child: _isLoading
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white)
+                              : const Text('Setup POS'),
                         ),
                       ),
                     ],

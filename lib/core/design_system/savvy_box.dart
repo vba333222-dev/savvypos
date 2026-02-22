@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 // Constrained Box that forces usage of tokens
 class SavvyBox extends StatelessWidget {
   final Widget? child;
-  final Color? color; // Must come from context.savvy.colors... ideally, but we accept Color for flexibility if needed, or we can restrict it.
-  final double? width; // Still allow explicit dims if absolutely needed, but prefer layout.
+  final Color?
+      color; // Must come from context.savvy.colors... ideally, but we accept Color for flexibility if needed, or we can restrict it.
+  final double?
+      width; // Still allow explicit dims if absolutely needed, but prefer layout.
   final double? height;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;

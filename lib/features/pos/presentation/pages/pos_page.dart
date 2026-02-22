@@ -53,7 +53,9 @@ class PosPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget content = MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => GetIt.I<ProductBloc>()..add(const ProductEvent.load())),
+        BlocProvider(
+            create: (_) =>
+                GetIt.I<ProductBloc>()..add(const ProductEvent.load())),
         BlocProvider(create: (_) => GetIt.I<CustomerBloc>()),
         BlocProvider(create: (_) => GetIt.I<LoyaltyBloc>()),
         BlocProvider(create: (_) => GetIt.I<DeliveryManagementBloc>()),
@@ -89,7 +91,8 @@ class _PosShellState extends State<_PosShell> {
   // ── Add-to-Cart Handler ──────────────────────────────────────────────────
   // Intercepts AddToCartNotification from the ProductCard widget tree,
   // triggers the parabolic flight animation, then checks for modifiers.
-  void _handleAddToCart(BuildContext context, AddToCartNotification notification) async {
+  void _handleAddToCart(
+      BuildContext context, AddToCartNotification notification) async {
     // 1. Trigger parabolic-flight animation toward cart target
     FlyAnimationLayer.of(context)?.trigger(
       sourceKey: notification.sourceKey,
@@ -136,10 +139,13 @@ class _PosShellState extends State<_PosShell> {
           );
           if (selection != null && mounted) {
             // ignore: use_build_context_synchronously
-            context.read<CartBloc>().add(CartEvent.addProduct(product, modifiers: selection));
+            context
+                .read<CartBloc>()
+                .add(CartEvent.addProduct(product, modifiers: selection));
           }
         } else {
-          if (mounted) context.read<CartBloc>().add(CartEvent.addProduct(product));
+          if (mounted)
+            context.read<CartBloc>().add(CartEvent.addProduct(product));
         }
       },
     );
@@ -162,7 +168,8 @@ class _PosShellState extends State<_PosShell> {
               onView: () {
                 if (overlayEntry.mounted) overlayEntry.remove();
                 // Navigate or open deliveries dialog
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Membuka detail pesanan...')));
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Membuka detail pesanan...')));
               },
               onDismiss: () {
                 if (overlayEntry.mounted) overlayEntry.remove();
@@ -188,13 +195,15 @@ class _PosShellState extends State<_PosShell> {
       appBar: AppBar(
         backgroundColor: colors.bgSecondary,
         elevation: 0,
-        title: const Text('Savvy POS', style: TextStyle(fontWeight: FontWeight.w700)),
+        title: const Text('Savvy POS',
+            style: TextStyle(fontWeight: FontWeight.w700)),
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
             tooltip: 'Search Products',
             onPressed: () {
-              showSearch(context: context, delegate: GlobalSearchDelegate(context));
+              showSearch(
+                  context: context, delegate: GlobalSearchDelegate(context));
             },
           ),
           const SizedBox(width: 8),
@@ -205,7 +214,8 @@ class _PosShellState extends State<_PosShell> {
         child: Builder(
           builder: (innerContext) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              FlyAnimationLayer.of(innerContext)?.registerTarget(_cartTargetKey);
+              FlyAnimationLayer.of(innerContext)
+                  ?.registerTarget(_cartTargetKey);
             });
 
             return NotificationListener<AddToCartNotification>(
@@ -213,54 +223,60 @@ class _PosShellState extends State<_PosShell> {
                 _handleAddToCart(context, notification);
                 return true;
               },
-              child: BlocListener<DeliveryManagementBloc, DeliveryManagementState>(
-                listenWhen: (prev, curr) => prev.lastReceivedOrder != curr.lastReceivedOrder && curr.lastReceivedOrder != null,
+              child:
+                  BlocListener<DeliveryManagementBloc, DeliveryManagementState>(
+                listenWhen: (prev, curr) =>
+                    prev.lastReceivedOrder != curr.lastReceivedOrder &&
+                    curr.lastReceivedOrder != null,
                 listener: (context, state) {
-                   _showDeliveryPopup(context, state.lastReceivedOrder!);
+                  _showDeliveryPopup(context, state.lastReceivedOrder!);
                 },
                 child: BlocListener<CartBloc, CartState>(
                   listener: (context, state) {
-                  if (state.isSuccess) {
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-                    showGeneralDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      barrierLabel: 'Receipt',
-                      barrierColor: Colors.transparent,
-                      pageBuilder: (_, __, ___) => LiquidReceiptOverlay(
-                        items: state.items,
-                        onDismiss: () {
-                          context.read<CartBloc>().add(const CartEvent.clearCart());
-                          Navigator.of(context).pop();
-                        },
-                        onPrint: () => HapticFeedback.mediumImpact(),
-                        onEmail: () => HapticFeedback.lightImpact(),
-                      ),
-                      transitionDuration: Duration.zero,
-                    );
-                  } else if (state.error != null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(state.error ?? 'Checkout Failed'),
-                        backgroundColor: context.savvy.colors.stateError,
-                      ),
-                    );
-                  }
-                },
-                // ── Shift Gate ─────────────────────────────────────────────────
-                child: BlocConsumer<ShiftBloc, ShiftState>(
-                  listener: (context, state) {},
-                  builder: (context, shiftState) {
-                    return shiftState.maybeWhen(
-                      loading: () => const Center(child: CircularProgressIndicator()),
-                      orElse: () => const OpenShiftPage(),
-                      open: (shift, payIn, payOut, safeDrop, sales) =>
-                          _TabletSplitLayout(cartTargetKey: _cartTargetKey),
-                    );
+                    if (state.isSuccess) {
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                      showGeneralDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        barrierLabel: 'Receipt',
+                        barrierColor: Colors.transparent,
+                        pageBuilder: (_, __, ___) => LiquidReceiptOverlay(
+                          items: state.items,
+                          onDismiss: () {
+                            context
+                                .read<CartBloc>()
+                                .add(const CartEvent.clearCart());
+                            Navigator.of(context).pop();
+                          },
+                          onPrint: () => HapticFeedback.mediumImpact(),
+                          onEmail: () => HapticFeedback.lightImpact(),
+                        ),
+                        transitionDuration: Duration.zero,
+                      );
+                    } else if (state.error != null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.error ?? 'Checkout Failed'),
+                          backgroundColor: context.savvy.colors.stateError,
+                        ),
+                      );
+                    }
                   },
+                  // ── Shift Gate ─────────────────────────────────────────────────
+                  child: BlocConsumer<ShiftBloc, ShiftState>(
+                    listener: (context, state) {},
+                    builder: (context, shiftState) {
+                      return shiftState.maybeWhen(
+                        loading: () =>
+                            const Center(child: CircularProgressIndicator()),
+                        orElse: () => const OpenShiftPage(),
+                        open: (shift, payIn, payOut, safeDrop, sales) =>
+                            _TabletSplitLayout(cartTargetKey: _cartTargetKey),
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
             );
           },
         ),
@@ -340,7 +356,10 @@ class _PosDrawer extends StatelessWidget {
             decoration: BoxDecoration(color: colors.brandPrimary),
             child: Text(
               'Operations',
-              style: TextStyle(color: colors.textInverse, fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: colors.textInverse,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
             ),
           ),
           ListTile(
@@ -348,15 +367,20 @@ class _PosDrawer extends StatelessWidget {
             title: const Text('Pay In (Cash Drop)'),
             onTap: () {
               Navigator.pop(context);
-              showDialog(context: context, builder: (_) => const CashManagementDialog(type: 'PAY_IN'));
+              showDialog(
+                  context: context,
+                  builder: (_) => const CashManagementDialog(type: 'PAY_IN'));
             },
           ),
           ListTile(
-            leading: Icon(Icons.remove_circle_outline, color: colors.stateError),
+            leading:
+                Icon(Icons.remove_circle_outline, color: colors.stateError),
             title: const Text('Pay Out (Expenses)'),
             onTap: () {
               Navigator.pop(context);
-              showDialog(context: context, builder: (_) => const CashManagementDialog(type: 'PAY_OUT'));
+              showDialog(
+                  context: context,
+                  builder: (_) => const CashManagementDialog(type: 'PAY_OUT'));
             },
           ),
           const Divider(),
@@ -365,7 +389,10 @@ class _PosDrawer extends StatelessWidget {
             title: const Text('Kitchen Monitor (KDS)'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => const KitchenMonitorPage()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const KitchenMonitorPage()));
             },
           ),
           const Divider(),
@@ -424,7 +451,8 @@ class _MobileCartFabState extends State<_MobileCartFab> {
   Widget build(BuildContext context) {
     return BlocBuilder<CartBloc, CartState>(
       builder: (context, state) {
-        final itemCount = state.items.fold(0, (sum, item) => sum + item.quantity);
+        final itemCount =
+            state.items.fold(0, (sum, item) => sum + item.quantity);
         final totalStr = state.total.toStringAsFixed(2);
         final theme = context.savvy;
 

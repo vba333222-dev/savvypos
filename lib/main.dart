@@ -14,11 +14,10 @@ import 'package:savvy_pos/features/shifts/presentation/bloc/shift_bloc.dart';
 import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workmanager/workmanager.dart';
 
-
 void main() async {
   // Ensure binding
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // 1. Lock Orientation (Landscape Only for POS Kiosk)
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
@@ -32,17 +31,14 @@ void main() async {
   ErrorWidget.builder = (FlutterErrorDetails details) {
     return GlobalErrorShield(details: details);
   };
-  
+
   // Init Workmanager
-  await Workmanager().initialize(
-    callbackDispatcher, 
-    isInDebugMode: true 
-  );
-  
+  await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+
   await Workmanager().registerPeriodicTask(
     "1",
     "fiveMinuteSync",
-    frequency: const Duration(minutes: 15), 
+    frequency: const Duration(minutes: 15),
   );
 
   // Initialize Antigravity Design System
@@ -82,7 +78,8 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // PREVENT OOM: Aggressively clear image caches when app moves to background
-    if (state == AppLifecycleState.paused || state == AppLifecycleState.hidden) {
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.hidden) {
       PaintingBinding.instance.imageCache.clear();
       PaintingBinding.instance.imageCache.clearLiveImages();
     }
@@ -118,7 +115,9 @@ class _AppState extends State<App> with WidgetsBindingObserver {
               return MultiBlocProvider(
                 providers: [
                   BlocProvider.value(value: GetIt.I<AuthBloc>()),
-                  BlocProvider.value(value: GetIt.I<ShiftBloc>()..add(const ShiftEvent.checkStatus())),
+                  BlocProvider.value(
+                      value: GetIt.I<ShiftBloc>()
+                        ..add(const ShiftEvent.checkStatus())),
                   BlocProvider(create: (_) => GetIt.I<CartBloc>()),
                 ],
                 child: child!,
@@ -142,9 +141,12 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       scaffoldBackgroundColor: savvyTheme.colors.bgPrimary,
       navigationRailTheme: NavigationRailThemeData(
         backgroundColor: savvyTheme.colors.bgPrimary,
-        selectedIconTheme: IconThemeData(color: savvyTheme.colors.brandPrimary, size: 28),
-        unselectedIconTheme: IconThemeData(color: savvyTheme.colors.textMuted, size: 24),
-        selectedLabelTextStyle: TextStyle(color: savvyTheme.colors.brandPrimary, fontWeight: FontWeight.bold),
+        selectedIconTheme:
+            IconThemeData(color: savvyTheme.colors.brandPrimary, size: 28),
+        unselectedIconTheme:
+            IconThemeData(color: savvyTheme.colors.textMuted, size: 24),
+        selectedLabelTextStyle: TextStyle(
+            color: savvyTheme.colors.brandPrimary, fontWeight: FontWeight.bold),
         unselectedLabelTextStyle: TextStyle(color: savvyTheme.colors.textMuted),
         useIndicator: true,
         indicatorColor: savvyTheme.colors.brandPrimary.withValues(alpha: 0.1),
@@ -159,5 +161,3 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     );
   }
 }
-
-

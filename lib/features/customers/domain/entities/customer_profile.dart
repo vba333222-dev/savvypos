@@ -4,11 +4,11 @@ part 'customer_profile.freezed.dart';
 part 'customer_profile.g.dart';
 
 enum CustomerSegment {
-  newGuest,     // First visit
-  returning,    // 2-5 visits
-  regular,      // 6+ visits
-  vip,          // High spender
-  lapsed,       // No visit in 60+ days
+  newGuest, // First visit
+  returning, // 2-5 visits
+  regular, // 6+ visits
+  vip, // High spender
+  lapsed, // No visit in 60+ days
 }
 
 @freezed
@@ -29,13 +29,16 @@ class CustomerProfile with _$CustomerProfile {
     @Default(CustomerSegment.newGuest) CustomerSegment segment,
   }) = _CustomerProfile;
 
-  factory CustomerProfile.fromJson(Map<String, dynamic> json) => _$CustomerProfileFromJson(json);
+  factory CustomerProfile.fromJson(Map<String, dynamic> json) =>
+      _$CustomerProfileFromJson(json);
 }
 
 extension CustomerProfileX on CustomerProfile {
-  bool get isLapsed => lastVisit != null && DateTime.now().difference(lastVisit!).inDays > 60;
+  bool get isLapsed =>
+      lastVisit != null && DateTime.now().difference(lastVisit!).inDays > 60;
   bool get isVip => totalSpent > 500;
-  bool get hasBirthdayThisMonth => birthday != null && birthday!.month == DateTime.now().month;
+  bool get hasBirthdayThisMonth =>
+      birthday != null && birthday!.month == DateTime.now().month;
 }
 
 @freezed
@@ -48,7 +51,8 @@ class CustomerNote with _$CustomerNote {
     @Default(false) bool isCritical, // Show popup on order
   }) = _CustomerNote;
 
-  factory CustomerNote.fromJson(Map<String, dynamic> json) => _$CustomerNoteFromJson(json);
+  factory CustomerNote.fromJson(Map<String, dynamic> json) =>
+      _$CustomerNoteFromJson(json);
 }
 
 @freezed
@@ -62,7 +66,8 @@ class OrderHistoryItem with _$OrderHistoryItem {
     String? channel, // 'dine_in', 'takeout', 'delivery'
   }) = _OrderHistoryItem;
 
-  factory OrderHistoryItem.fromJson(Map<String, dynamic> json) => _$OrderHistoryItemFromJson(json);
+  factory OrderHistoryItem.fromJson(Map<String, dynamic> json) =>
+      _$OrderHistoryItemFromJson(json);
 }
 
 @freezed
@@ -76,5 +81,6 @@ class CustomerInsights with _$CustomerInsights {
     String? lastOrderChannel,
   }) = _CustomerInsights;
 
-  factory CustomerInsights.fromJson(Map<String, dynamic> json) => _$CustomerInsightsFromJson(json);
+  factory CustomerInsights.fromJson(Map<String, dynamic> json) =>
+      _$CustomerInsightsFromJson(json);
 }

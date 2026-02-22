@@ -3,7 +3,7 @@ import 'package:savvy_pos/features/kitchen/domain/entities/kds_entities.dart';
 
 class KdsExpoView extends StatelessWidget {
   final KDSExpoSummary summary;
-  
+
   const KdsExpoView({
     super.key,
     required this.summary,
@@ -54,11 +54,13 @@ class KdsExpoView extends StatelessWidget {
   Widget _buildStatsHeader() {
     return Row(
       children: [
-        _buildStatBox('ACTIVE TICKETS', '${summary.totalActiveTickets}', Colors.blue),
+        _buildStatBox(
+            'ACTIVE TICKETS', '${summary.totalActiveTickets}', Colors.blue),
         const SizedBox(width: 16),
         _buildStatBox('ITEMS IN PREP', '${summary.itemsInPrep}', Colors.orange),
         const SizedBox(width: 16),
-        _buildStatBox('AVG PREP TIME', '${summary.avgPrepTimeMinutes}m', Colors.purple),
+        _buildStatBox(
+            'AVG PREP TIME', '${summary.avgPrepTimeMinutes}m', Colors.purple),
       ],
     );
   }

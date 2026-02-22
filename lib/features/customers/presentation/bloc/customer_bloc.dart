@@ -19,7 +19,8 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     add(const CustomerEvent.refresh()); // Initial load
   }
 
-  Future<void> _onRefresh(RefreshCustomers event, Emitter<CustomerState> emit) async {
+  Future<void> _onRefresh(
+      RefreshCustomers event, Emitter<CustomerState> emit) async {
     emit(state.copyWith(isLoading: true, error: null));
     try {
       final customers = await _repo.getAllCustomers(
@@ -27,9 +28,9 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         searchQuery: state.searchQuery,
       );
       final insights = await _repo.getInsights();
-      
+
       emit(state.copyWith(
-        isLoading: false, 
+        isLoading: false,
         customers: customers,
         insights: insights,
       ));
@@ -38,17 +39,20 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     }
   }
 
-  Future<void> _onSearch(SearchCustomers event, Emitter<CustomerState> emit) async {
+  Future<void> _onSearch(
+      SearchCustomers event, Emitter<CustomerState> emit) async {
     emit(state.copyWith(searchQuery: event.query));
     add(const CustomerEvent.refresh());
   }
 
-  Future<void> _onFilter(FilterBySegment event, Emitter<CustomerState> emit) async {
+  Future<void> _onFilter(
+      FilterBySegment event, Emitter<CustomerState> emit) async {
     emit(state.copyWith(activeFilter: event.segment));
     add(const CustomerEvent.refresh());
   }
 
-  Future<void> _onSelect(SelectCustomer event, Emitter<CustomerState> emit) async {
+  Future<void> _onSelect(
+      SelectCustomer event, Emitter<CustomerState> emit) async {
     try {
       final customer = await _repo.getCustomer(event.uuid);
       emit(state.copyWith(selectedCustomer: customer));
@@ -59,7 +63,8 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
 
   Future<void> _onAddNote(AddNote event, Emitter<CustomerState> emit) async {
     try {
-      await _repo.addNote(event.customerUuid, event.content, 'Staff', isCritical: event.isCritical);
+      await _repo.addNote(event.customerUuid, event.content, 'Staff',
+          isCritical: event.isCritical);
       // Refresh current selected if matches
       if (state.selectedCustomer?.uuid == event.customerUuid) {
         add(CustomerEvent.selectCustomer(event.customerUuid));
@@ -69,7 +74,8 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     }
   }
 
-  Future<void> _onAddCustomer(AddCustomer event, Emitter<CustomerState> emit) async {
+  Future<void> _onAddCustomer(
+      AddCustomer event, Emitter<CustomerState> emit) async {
     try {
       await _repo.createCustomer(event.name, event.phone, event.email);
       add(const CustomerEvent.refresh());

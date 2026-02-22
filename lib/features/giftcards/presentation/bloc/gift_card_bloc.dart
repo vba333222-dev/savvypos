@@ -31,13 +31,14 @@ class GiftCardBloc extends Bloc<GiftCardEvent, GiftCardState> {
     }
   }
 
-  Future<void> _onSearchCards(_SearchCards event, Emitter<GiftCardState> emit) async {
+  Future<void> _onSearchCards(
+      _SearchCards event, Emitter<GiftCardState> emit) async {
     // Keep current summary if possible
     final currentSummary = state.maybeMap(
       loaded: (s) => s.summary,
       orElse: () => null,
     );
-    
+
     emit(const GiftCardState.loading());
     try {
       final cards = await _repository.getGiftCards(searchQuery: event.query);
@@ -50,7 +51,8 @@ class GiftCardBloc extends Bloc<GiftCardEvent, GiftCardState> {
     }
   }
 
-  Future<void> _onIssueCard(_IssueCard event, Emitter<GiftCardState> emit) async {
+  Future<void> _onIssueCard(
+      _IssueCard event, Emitter<GiftCardState> emit) async {
     try {
       await _repository.activateGiftCard(
         cardNumber: event.cardNumber,
@@ -63,16 +65,18 @@ class GiftCardBloc extends Bloc<GiftCardEvent, GiftCardState> {
       add(const GiftCardEvent.started());
     } catch (e) {
       emit(GiftCardState.error(e.toString()));
-       // Re-fetch to restore state? Or just emit error overlay.
-       // For now simple error state, but ideally show snackbar and stay loaded.
+      // Re-fetch to restore state? Or just emit error overlay.
+      // For now simple error state, but ideally show snackbar and stay loaded.
     }
   }
-  
-  Future<void> _onRedeemCard(_RedeemCard event, Emitter<GiftCardState> emit) async {
-     // Usually handled by Sales Bloc or separate Pay Dialog, but good to have here.
+
+  Future<void> _onRedeemCard(
+      _RedeemCard event, Emitter<GiftCardState> emit) async {
+    // Usually handled by Sales Bloc or separate Pay Dialog, but good to have here.
   }
 
-  Future<void> _onWatchTransactions(_WatchTransactions event, Emitter<GiftCardState> emit) async {
-      // Implement if needed for detailed view
+  Future<void> _onWatchTransactions(
+      _WatchTransactions event, Emitter<GiftCardState> emit) async {
+    // Implement if needed for detailed view
   }
 }

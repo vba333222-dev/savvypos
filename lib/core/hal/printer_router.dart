@@ -9,15 +9,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PrinterRouter {
   final IPrinterService _printerService;
   final List<Map<String, dynamic>> failedPrintJobs = [];
-  
+
   String? _kitchenPrinterAddress;
-  PrinterConnectionType _kitchenPrinterType = PrinterConnectionType.network; // Kitchen defaults to Network
-  
+  PrinterConnectionType _kitchenPrinterType =
+      PrinterConnectionType.network; // Kitchen defaults to Network
+
   String? _barPrinterAddress;
   PrinterConnectionType _barPrinterType = PrinterConnectionType.network;
-  
+
   String? _cashierPrinterAddress;
-  PrinterConnectionType _cashierPrinterType = PrinterConnectionType.bluetooth; // Cashier defaults to Bluetooth
+  PrinterConnectionType _cashierPrinterType =
+      PrinterConnectionType.bluetooth; // Cashier defaults to Bluetooth
 
   PrinterRouter(this._printerService);
 
@@ -27,15 +29,18 @@ class PrinterRouter {
 
   Future<void> loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
-    
+
     _kitchenPrinterAddress = prefs.getString('printer_kitchen_address');
-    _kitchenPrinterType = _parseConnectionType(prefs.getString('printer_kitchen_type') ?? 'network');
+    _kitchenPrinterType = _parseConnectionType(
+        prefs.getString('printer_kitchen_type') ?? 'network');
 
     _barPrinterAddress = prefs.getString('printer_bar_address');
-    _barPrinterType = _parseConnectionType(prefs.getString('printer_bar_type') ?? 'network');
+    _barPrinterType =
+        _parseConnectionType(prefs.getString('printer_bar_type') ?? 'network');
 
     _cashierPrinterAddress = prefs.getString('printer_cashier_address');
-    _cashierPrinterType = _parseConnectionType(prefs.getString('printer_cashier_type') ?? 'bluetooth');
+    _cashierPrinterType = _parseConnectionType(
+        prefs.getString('printer_cashier_type') ?? 'bluetooth');
   }
 
   PrinterConnectionType _parseConnectionType(String type) {
@@ -51,9 +56,12 @@ class PrinterRouter {
   }
 
   Future<void> saveSettings({
-    String? kitchenAddr, PrinterConnectionType? kitchenType,
-    String? barAddr, PrinterConnectionType? barType,
-    String? cashierAddr, PrinterConnectionType? cashierType,
+    String? kitchenAddr,
+    PrinterConnectionType? kitchenType,
+    String? barAddr,
+    PrinterConnectionType? barType,
+    String? cashierAddr,
+    PrinterConnectionType? cashierType,
   }) async {
     final prefs = await SharedPreferences.getInstance();
     if (kitchenAddr != null) {
@@ -61,7 +69,8 @@ class PrinterRouter {
       await prefs.setString('printer_kitchen_address', kitchenAddr);
       if (kitchenType != null) {
         _kitchenPrinterType = kitchenType;
-        await prefs.setString('printer_kitchen_type', _typeToString(kitchenType));
+        await prefs.setString(
+            'printer_kitchen_type', _typeToString(kitchenType));
       }
     }
     // Repeat for bar/cashier...
@@ -70,36 +79,41 @@ class PrinterRouter {
       await prefs.setString('printer_cashier_address', cashierAddr);
       if (cashierType != null) {
         _cashierPrinterType = cashierType;
-        await prefs.setString('printer_cashier_type', _typeToString(cashierType));
+        await prefs.setString(
+            'printer_cashier_type', _typeToString(cashierType));
       }
     }
   }
 
-  Future<List<PrinterDevice>> scanDevices({PrinterConnectionType type = PrinterConnectionType.bluetooth}) => _printerService.scan(type: type);
+  Future<List<PrinterDevice>> scanDevices(
+          {PrinterConnectionType type = PrinterConnectionType.bluetooth}) =>
+      _printerService.scan(type: type);
 
-  Future<void> routeAndPrint(String orderNumber, List<CartItem> items, {String? table, bool isReprint = false}) async {
+  Future<void> routeAndPrint(String orderNumber, List<CartItem> items,
+      {String? table, bool isReprint = false}) async {
     // 1. Receipt Printer (Full Bill)
     if (_cashierPrinterAddress != null) {
       await _dispatchTextTicket(
-        _cashierPrinterAddress!, 
+        _cashierPrinterAddress!,
         _cashierPrinterType,
-        isReprint ? 'COPY RECEIPT' : 'RECEIPT', 
-        orderNumber, 
-        items, 
+        isReprint ? 'COPY RECEIPT' : 'RECEIPT',
+        orderNumber,
+        items,
         table: table,
         showPrices: true,
       );
     }
 
     // 2. Kitchen Printer (Food)
-    final foodItems = items.where((i) => i.product.printerCategory == 'FOOD').toList();
+    final foodItems =
+        items.where((i) => i.product.printerCategory == 'FOOD').toList();
     if (foodItems.isNotEmpty && _kitchenPrinterAddress != null) {
       await _dispatchTextTicket(
-        _kitchenPrinterAddress!, 
+        _kitchenPrinterAddress!,
         _kitchenPrinterType,
-        'KITCHEN TICKET', 
-        orderNumber, 
-        foodItems, 
+        'KITCHEN TICKET',
+        orderNumber,
+        foodItems,
         table: table,
         showPrices: false,
         largeFont: true,
@@ -107,14 +121,15 @@ class PrinterRouter {
     }
 
     // 3. Bar Printer (Beverage)
-    final barItems = items.where((i) => i.product.printerCategory == 'BEVERAGE').toList();
+    final barItems =
+        items.where((i) => i.product.printerCategory == 'BEVERAGE').toList();
     if (barItems.isNotEmpty && _barPrinterAddress != null) {
       await _dispatchTextTicket(
-        _barPrinterAddress!, 
+        _barPrinterAddress!,
         _barPrinterType,
-        'BAR TICKET', 
-        orderNumber, 
-        barItems, 
+        'BAR TICKET',
+        orderNumber,
+        barItems,
         table: table,
         showPrices: false,
         largeFont: true,
@@ -123,51 +138,57 @@ class PrinterRouter {
   }
 
   Future<void> _dispatchTextTicket(
-    String targetAddress, 
-    PrinterConnectionType type,
-    String title, 
-    String orderNo, 
-    List<CartItem> items, 
-    {String? table, bool showPrices = false, bool largeFont = false}
-  ) async {
+      String targetAddress,
+      PrinterConnectionType type,
+      String title,
+      String orderNo,
+      List<CartItem> items,
+      {String? table,
+      bool showPrices = false,
+      bool largeFont = false}) async {
     try {
       // Setup connection context (Service auto-connects if needed on print command)
-      await _printerService.connect(targetAddress, type: type).timeout(const Duration(seconds: 5));
-      
-      // We only string-build here. The actual layout ESC/POS byte translation 
+      await _printerService
+          .connect(targetAddress, type: type)
+          .timeout(const Duration(seconds: 5));
+
+      // We only string-build here. The actual layout ESC/POS byte translation
       // happens inside the background Isolate via PrinterService.
       StringBuffer buffer = StringBuffer();
-      
-      if (largeFont) buffer.writeln("!SIZE_DOUBLE!"); 
+
+      if (largeFont) buffer.writeln("!SIZE_DOUBLE!");
       buffer.writeln("=== $title ===");
       if (table != null) buffer.writeln("TABLE: $table");
       buffer.writeln("Order: $orderNo");
       buffer.writeln("Time: ${DateTime.now().toString().substring(11, 16)}");
       buffer.writeln("--------------------------------");
-      
+
       for (final item in items) {
         String line = "${item.quantity}x ${item.product.name}";
         if (showPrices) {
-             buffer.writeln(line);
-             buffer.writeln("   @ \$${item.product.price.toStringAsFixed(2)} = \$${item.total.toStringAsFixed(2)}");
+          buffer.writeln(line);
+          buffer.writeln(
+              "   @ \$${item.product.price.toStringAsFixed(2)} = \$${item.total.toStringAsFixed(2)}");
         } else {
-             buffer.writeln(line);
+          buffer.writeln(line);
         }
-        
+
         if (item.modifiers.isNotEmpty) {
-           for (final m in item.modifiers) {
-              buffer.writeln("    + ${m.name}");
-           }
+          for (final m in item.modifiers) {
+            buffer.writeln("    + ${m.name}");
+          }
         }
-        
-        if (item.note != null && item.note!.isNotEmpty) buffer.writeln("    [NOTE]: ${item.note}");
+
+        if (item.note != null && item.note!.isNotEmpty)
+          buffer.writeln("    [NOTE]: ${item.note}");
       }
       buffer.writeln("--------------------------------");
       buffer.writeln("\n\n");
-      
+
       // Spool to Background Isolate Queue
-      await _printerService.printText(buffer.toString(), isLarge: largeFont).timeout(const Duration(seconds: 5));
-      
+      await _printerService
+          .printText(buffer.toString(), isLarge: largeFont)
+          .timeout(const Duration(seconds: 5));
     } on TimeoutException catch (e) {
       debugPrint('Printer Router Timeout ($title): $e');
       failedPrintJobs.add({
@@ -193,10 +214,12 @@ class PrinterRouter {
 
   Future<void> printQRSessionTicket(String tableNumber, String url) async {
     if (_cashierPrinterAddress == null) return;
-    
+
     try {
-      await _printerService.connect(_cashierPrinterAddress!, type: _cashierPrinterType).timeout(const Duration(seconds: 5));
-      
+      await _printerService
+          .connect(_cashierPrinterAddress!, type: _cashierPrinterType)
+          .timeout(const Duration(seconds: 5));
+
       StringBuffer buffer = StringBuffer();
       buffer.writeln("=== TABLE QR ORDERING ===");
       buffer.writeln("TABLE: $tableNumber");
@@ -207,8 +230,10 @@ class PrinterRouter {
       buffer.writeln("Thank you!");
       buffer.writeln("--------------------------------");
       buffer.writeln("\n\n");
-      
-      await _printerService.printText(buffer.toString(), isLarge: false).timeout(const Duration(seconds: 5));
+
+      await _printerService
+          .printText(buffer.toString(), isLarge: false)
+          .timeout(const Duration(seconds: 5));
     } on TimeoutException catch (e) {
       debugPrint('Printer Router QR Timeout: $e');
       failedPrintJobs.add({

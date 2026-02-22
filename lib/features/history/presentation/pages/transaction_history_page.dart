@@ -13,7 +13,8 @@ class TransactionHistoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     // Provide the Bloc here
     return BlocProvider(
-      create: (_) => GetIt.I<HistoryBloc>()..add(const HistoryEvent.loadHistory()),
+      create: (_) =>
+          GetIt.I<HistoryBloc>()..add(const HistoryEvent.loadHistory()),
       child: const _HistoryView(),
     );
   }
@@ -35,14 +36,15 @@ class _HistoryView extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.download),
             onPressed: () async {
-               final range = await showDateRangePicker(
-                 context: context, 
-                 firstDate: DateTime(2020), 
-                 lastDate: DateTime.now(),
-               );
-               if (range != null && context.mounted) {
-                 context.read<HistoryBloc>().add(HistoryEvent.exportHistoryToCsv(range.start, range.end));
-               }
+              final range = await showDateRangePicker(
+                context: context,
+                firstDate: DateTime(2020),
+                lastDate: DateTime.now(),
+              );
+              if (range != null && context.mounted) {
+                context.read<HistoryBloc>().add(
+                    HistoryEvent.exportHistoryToCsv(range.start, range.end));
+              }
             },
           ),
         ],
@@ -54,7 +56,9 @@ class _HistoryView extends StatelessWidget {
           }
 
           if (state.orders.isEmpty) {
-            return Center(child: Text('No transactions found', style: typography.bodyLarge));
+            return Center(
+                child:
+                    Text('No transactions found', style: typography.bodyLarge));
           }
 
           return ListView.separated(
@@ -68,19 +72,24 @@ class _HistoryView extends StatelessWidget {
                   backgroundColor: colors.bgElevated,
                   child: Icon(Icons.receipt_long, color: colors.brandPrimary),
                 ),
-                title: Text('Order #${order.orderNumber}', style: typography.titleMedium),
-                subtitle: Text(DateFormat('MMM dd, HH:mm').format(order.transactionDate)),
+                title: Text('Order #${order.orderNumber}',
+                    style: typography.titleMedium),
+                subtitle: Text(
+                    DateFormat('MMM dd, HH:mm').format(order.transactionDate)),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       '\$${order.grandTotal.toStringAsFixed(2)}',
-                      style: typography.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                      style: typography.titleMedium
+                          ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(width: 8),
                     Icon(
                       order.isSynced ? Icons.cloud_done : Icons.cloud_off,
-                      color: order.isSynced ? colors.stateSuccess : colors.textMuted,
+                      color: order.isSynced
+                          ? colors.stateSuccess
+                          : colors.textMuted,
                       size: 16,
                     ),
                   ],

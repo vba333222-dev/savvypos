@@ -33,7 +33,8 @@ class RemoteDashboardRepositoryImpl implements IDashboardRepository {
   }
 
   @override
-  Future<List<TopProductData>> getTopProducts(DateTime start, DateTime end, {int limit = 5}) async {
+  Future<List<TopProductData>> getTopProducts(DateTime start, DateTime end,
+      {int limit = 5}) async {
     final data = await apiClient.getTopProducts(); // Pass dates if API supports
     return data.take(limit).map((e) {
       return TopProductData(
@@ -46,13 +47,13 @@ class RemoteDashboardRepositoryImpl implements IDashboardRepository {
 
   @override
   Future<DashboardStats> getStatsForPeriod(DateTime start, DateTime end) async {
-     // Mock or fetch from API
-     return DashboardStats(
-       totalSales: 0.0,
-       transactionCount: 0,
-       avgBasketSize: 0.0,
-       topCategory: 'N/A',
-     );
+    // Mock or fetch from API
+    return DashboardStats(
+      totalSales: 0.0,
+      transactionCount: 0,
+      avgBasketSize: 0.0,
+      topCategory: 'N/A',
+    );
   }
 
   @override

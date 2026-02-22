@@ -16,7 +16,7 @@ class AppConfig {
     this.enableLogs = false,
     this.userApp,
   });
-  
+
   bool get isProd => flavor == Flavor.prod;
   bool get isDev => flavor == Flavor.dev;
 }

@@ -49,10 +49,11 @@ class _CartViewState extends State<CartView> {
           children: [
             // CART HEADER WITH TABS
             Container(
-              padding: EdgeInsets.fromLTRB(theme.shapes.spacingMd, theme.shapes.spacingMd, theme.shapes.spacingMd, 0),
+              padding: EdgeInsets.fromLTRB(theme.shapes.spacingMd,
+                  theme.shapes.spacingMd, theme.shapes.spacingMd, 0),
               decoration: BoxDecoration(
-                border:
-                    Border(bottom: BorderSide(color: theme.colors.borderDefault)),
+                border: Border(
+                    bottom: BorderSide(color: theme.colors.borderDefault)),
               ),
               child: Column(
                 children: [
@@ -75,7 +76,8 @@ class _CartViewState extends State<CartView> {
                               curve: Curves.elasticOut),
                       SizedBox(width: theme.shapes.spacingSm),
                       SavvyText('Current Order',
-                          style: SavvyTextStyle.h3, color: theme.colors.textPrimary),
+                          style: SavvyTextStyle.h3,
+                          color: theme.colors.textPrimary),
                       const Spacer(),
                       _CustomerInfoButton(),
                     ],
@@ -105,37 +107,38 @@ class _CartViewState extends State<CartView> {
                 ],
               ),
             ),
-          // STICKY FOOTER
-          BlocBuilder<CartBloc, CartState>(
-            builder: (context, state) {
-              return _CartFooter(
-                state: state,
-                onChargePressed: (pressed) =>
-                    setState(() => _isChargePressed = pressed),
-                onChargeTap: () {
-                  if (state.items.isEmpty) return;
-                  HapticFeedback.mediumImpact();
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    barrierColor: Colors.black54,
-                    builder: (_) => PaymentSheet(totalAmount: state.total),
-                  );
-                },
-                isChargePressed: _isChargePressed,
-              );
-            },
-          ),
-        ],
+            // STICKY FOOTER
+            BlocBuilder<CartBloc, CartState>(
+              builder: (context, state) {
+                return _CartFooter(
+                  state: state,
+                  onChargePressed: (pressed) =>
+                      setState(() => _isChargePressed = pressed),
+                  onChargeTap: () {
+                    if (state.items.isEmpty) return;
+                    HapticFeedback.mediumImpact();
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      barrierColor: Colors.black54,
+                      builder: (_) => PaymentSheet(totalAmount: state.total),
+                    );
+                  },
+                  isChargePressed: _isChargePressed,
+                );
+              },
+            ),
+          ],
+        ),
       ),
-    ),
-   );
+    );
   }
 
   Widget _buildCartListArea(SavvyTheme theme, bool showHeldTasks) {
     return DragTarget<Product>(
-      onWillAcceptWithDetails: (details) => !showHeldTasks, // Only accept drags on Active tab
+      onWillAcceptWithDetails: (details) =>
+          !showHeldTasks, // Only accept drags on Active tab
       onAcceptWithDetails: (details) {
         HapticFeedback.mediumImpact();
         context.read<CartBloc>().add(CartEvent.addProduct(details.data));
@@ -148,15 +151,20 @@ class _CartViewState extends State<CartView> {
           decoration: isHovering
               ? BoxDecoration(
                   color: theme.colors.brandPrimary.withValues(alpha: 0.05),
-                  border: Border.all(color: theme.colors.brandPrimary, width: 2),
+                  border:
+                      Border.all(color: theme.colors.brandPrimary, width: 2),
                   borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
                 )
               : null,
           child: BlocBuilder<CartBloc, CartState>(
             builder: (context, state) {
-              final itemsToDisplay = showHeldTasks 
-                  ? _displayedItems.where((i) => i.firingStatus == FiringStatus.hold).toList()
-                  : _displayedItems.where((i) => i.firingStatus != FiringStatus.hold).toList();
+              final itemsToDisplay = showHeldTasks
+                  ? _displayedItems
+                      .where((i) => i.firingStatus == FiringStatus.hold)
+                      .toList()
+                  : _displayedItems
+                      .where((i) => i.firingStatus != FiringStatus.hold)
+                      .toList();
 
               if (itemsToDisplay.isEmpty) {
                 return _EmptyCartState(isHoldTab: showHeldTasks);
@@ -167,10 +175,10 @@ class _CartViewState extends State<CartView> {
                 itemCount: itemsToDisplay.length,
                 itemBuilder: (context, index) {
                   final item = itemsToDisplay[index];
-                  
-                  return showHeldTasks 
-                    ? _buildHeldItemCell(context, item, theme)
-                    : CartItemTile(key: ValueKey(item.uuid), item: item);
+
+                  return showHeldTasks
+                      ? _buildHeldItemCell(context, item, theme)
+                      : CartItemTile(key: ValueKey(item.uuid), item: item);
                 },
               );
             },
@@ -180,35 +188,39 @@ class _CartViewState extends State<CartView> {
     );
   }
 
-  Widget _buildHeldItemCell(BuildContext context, CartItem item, SavvyTheme theme) {
-     return Padding(
-       padding: EdgeInsets.only(bottom: theme.shapes.spacingSm),
-       child: Stack(
-         children: [
-            CartItemTile(key: ValueKey(item.uuid), item: item),
-            Positioned(
-              right: 8,
-              top: 8,
-              bottom: 8,
-              child: Center(
-                child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.colors.stateWarning,
-                    foregroundColor: theme.colors.textInverse,
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  ),
-                  onPressed: () {
-                    HapticFeedback.mediumImpact();
-                    context.read<CartBloc>().add(CartEvent.fireItem(item.uuid));
-                  },
-                  icon: const Icon(Icons.whatshot, size: 16),
-                  label: const Text('Fire Now', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+  Widget _buildHeldItemCell(
+      BuildContext context, CartItem item, SavvyTheme theme) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: theme.shapes.spacingSm),
+      child: Stack(
+        children: [
+          CartItemTile(key: ValueKey(item.uuid), item: item),
+          Positioned(
+            right: 8,
+            top: 8,
+            bottom: 8,
+            child: Center(
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: theme.colors.stateWarning,
+                  foregroundColor: theme.colors.textInverse,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 ),
+                onPressed: () {
+                  HapticFeedback.mediumImpact();
+                  context.read<CartBloc>().add(CartEvent.fireItem(item.uuid));
+                },
+                icon: const Icon(Icons.whatshot, size: 16),
+                label: const Text('Fire Now',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
               ),
             ),
-         ],
-       ),
-     );
+          ),
+        ],
+      ),
+    );
   }
 
   void _updateList(List<CartItem> newItems) {
@@ -274,8 +286,6 @@ class _CartViewState extends State<CartView> {
     setState(() {});
   }
 }
-
-
 
 class _CartFooter extends StatelessWidget {
   final CartState state;
@@ -490,7 +500,10 @@ class _EmptyCartState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(isHoldTab ? Icons.pause_circle_outline : Icons.shopping_bag_outlined,
+          Icon(
+                  isHoldTab
+                      ? Icons.pause_circle_outline
+                      : Icons.shopping_bag_outlined,
                   size: 64,
                   color: theme.colors.textMuted.withValues(alpha: 0.5))
               .animate()
@@ -498,8 +511,12 @@ class _EmptyCartState extends StatelessWidget {
           SizedBox(height: theme.shapes.spacingMd),
           SavvyText(isHoldTab ? 'No Items on Hold' : 'Cart is empty',
               style: SavvyTextStyle.bodyLarge, color: theme.colors.textMuted),
-          SavvyText(isHoldTab ? 'Swipe right on an item to hold' : 'Add items to start order',
-              style: SavvyTextStyle.bodySmall, color: theme.colors.textMuted),
+          SavvyText(
+              isHoldTab
+                  ? 'Swipe right on an item to hold'
+                  : 'Add items to start order',
+              style: SavvyTextStyle.bodySmall,
+              color: theme.colors.textMuted),
         ],
       ),
     );

@@ -14,14 +14,15 @@ class ProductListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // BlocProvider is likely already above (in MainShellPage or globally?), 
-    // but the previous impl wrapped it. If MainShellPage adds it to _pages list, 
+    // BlocProvider is likely already above (in MainShellPage or globally?),
+    // but the previous impl wrapped it. If MainShellPage adds it to _pages list,
     // it expects the page to be self-contained or provided above.
     // In MainShellPage: routes are just widgets.
     // Best practice: The Page creates its provider if it's a "Page".
     // But since this is a tab view, keep the provider here.
     return BlocProvider(
-      create: (context) => GetIt.I<ProductBloc>()..add(const ProductEvent.load()),
+      create: (context) =>
+          GetIt.I<ProductBloc>()..add(const ProductEvent.load()),
       child: const _ProductListView(),
     );
   }
@@ -40,31 +41,37 @@ class _ProductListViewState extends State<_ProductListView> {
   @override
   Widget build(BuildContext context) {
     final savvy = context.savvy;
-    
+
     return Scaffold(
       backgroundColor: savvy.colors.bgPrimary,
       appBar: AppBar(
-        title: SavvyText('Product Catalog', style: SavvyTextStyle.h3, color: savvy.colors.textPrimary),
+        title: SavvyText('Product Catalog',
+            style: SavvyTextStyle.h3, color: savvy.colors.textPrimary),
         backgroundColor: savvy.colors.bgElevated,
         iconTheme: IconThemeData(color: savvy.colors.textPrimary),
         elevation: 0,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(70),
           child: Padding(
-            padding: EdgeInsets.fromLTRB(savvy.shapes.spacingMd, 0, savvy.shapes.spacingMd, savvy.shapes.spacingMd),
+            padding: EdgeInsets.fromLTRB(savvy.shapes.spacingMd, 0,
+                savvy.shapes.spacingMd, savvy.shapes.spacingMd),
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Search products...',
-                hintStyle: savvy.colors.textMuted.let((c) => TextStyle(color: c)),
-                prefixIcon: Icon(Icons.search, color: savvy.colors.textSecondary),
+                hintStyle:
+                    savvy.colors.textMuted.let((c) => TextStyle(color: c)),
+                prefixIcon:
+                    Icon(Icons.search, color: savvy.colors.textSecondary),
                 filled: true,
                 fillColor: savvy.colors.bgSecondary,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(savvy.shapes.radiusMd),
                   borderSide: BorderSide.none,
                 ),
-                contentPadding: EdgeInsets.symmetric(horizontal: savvy.shapes.spacingMd, vertical: savvy.shapes.spacingSm),
+                contentPadding: EdgeInsets.symmetric(
+                    horizontal: savvy.shapes.spacingMd,
+                    vertical: savvy.shapes.spacingSm),
               ),
               onChanged: (query) {
                 if (query.isEmpty) {
@@ -81,7 +88,8 @@ class _ProductListViewState extends State<_ProductListView> {
         builder: (context, state) {
           return state.maybeWhen(
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (msg) => Center(child: SavvyText(msg, color: savvy.colors.stateError)),
+            error: (msg) =>
+                Center(child: SavvyText(msg, color: savvy.colors.stateError)),
             loaded: (products) {
               if (products.isEmpty) {
                 return const SavvyEmptyState(
@@ -93,7 +101,8 @@ class _ProductListViewState extends State<_ProductListView> {
               return GridView.builder(
                 padding: EdgeInsets.all(savvy.shapes.spacingMd),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // Simple responsive logic could apply here too
+                  crossAxisCount:
+                      2, // Simple responsive logic could apply here too
                   childAspectRatio: 0.75,
                   crossAxisSpacing: 16,
                   mainAxisSpacing: 16,
@@ -105,10 +114,18 @@ class _ProductListViewState extends State<_ProductListView> {
                   return ProductCard(
                     product: product,
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => ProductEditorPage(product: product)))
+                      Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      ProductEditorPage(product: product)))
                           .then((_) {
-                            if (mounted) this.context.read<ProductBloc>().add(const ProductEvent.load());
-                          });
+                        if (mounted)
+                          this
+                              .context
+                              .read<ProductBloc>()
+                              .add(const ProductEvent.load());
+                      });
                     },
                   ).animate(delay: (50 * index).ms).fadeIn().scale();
                 },
@@ -120,10 +137,12 @@ class _ProductListViewState extends State<_ProductListView> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-           Navigator.push(context, MaterialPageRoute(builder: (_) => const ProductEditorPage()))
-               .then((_) {
-                 if (mounted) this.context.read<ProductBloc>().add(const ProductEvent.load());
-               });
+          Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => const ProductEditorPage()))
+              .then((_) {
+            if (mounted)
+              this.context.read<ProductBloc>().add(const ProductEvent.load());
+          });
         },
         backgroundColor: savvy.colors.brandPrimary,
         label: const SavvyText.label('Add Product', color: Colors.white),

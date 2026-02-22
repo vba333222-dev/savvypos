@@ -30,9 +30,9 @@ class _CurrentOrderViewState extends State<CurrentOrderView> {
         if (state.isSuccess) {
           // Close Generic BottomSheet if open (Mobile)
           if (Navigator.canPop(context)) {
-             Navigator.pop(context);
+            Navigator.pop(context);
           }
-          
+
           showDialog(
             context: context,
             barrierDismissible: false,
@@ -57,109 +57,119 @@ class _CurrentOrderViewState extends State<CurrentOrderView> {
       },
       child: Column(
         children: [
-        // Header
-        Padding(
-          padding: EdgeInsets.all(shapes.spacingMd),
-          child: Row(
-            children: [
-              Icon(Icons.shopping_cart_outlined, color: colors.brandPrimary),
-              SizedBox(width: shapes.spacingSm),
-              Text(
-                'Current Order',
-                style: typography.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: colors.textPrimary,
+          // Header
+          Padding(
+            padding: EdgeInsets.all(shapes.spacingMd),
+            child: Row(
+              children: [
+                Icon(Icons.shopping_cart_outlined, color: colors.brandPrimary),
+                SizedBox(width: shapes.spacingSm),
+                Text(
+                  'Current Order',
+                  style: typography.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: colors.textPrimary,
+                  ),
                 ),
-              ),
-              const Spacer(),
-              // Customer Selector
-              BlocBuilder<CartBloc, CartState>(
-                builder: (ctx, state) {
-                  final customer = state.customer;
-                  return InkWell(
-                    onTap: () async {
-                      final selected = await showDialog<Customer>(
-                        context: ctx, // using builder context for dialog
-                        builder: (_) => const Dialog(child: CustomerSelectionDialog()),
-                      );
-                      if (selected != null && mounted) {
-                         // ignore: use_build_context_synchronously
-                         context.read<CartBloc>().add(CartEvent.selectCustomer(selected));
-                      }
-                    },
-                    borderRadius: BorderRadius.circular(shapes.radiusSm),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: colors.bgElevated,
-                        border: Border.all(color: colors.borderDefault),
-                        borderRadius: BorderRadius.circular(shapes.radiusSm),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.person_outline, size: 16, color: colors.textSecondary),
-                          const SizedBox(width: 8),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                customer?.name ?? 'Walk-In',
-                                style: typography.bodyMedium?.copyWith(fontWeight: FontWeight.bold, color: colors.textPrimary),
-                              ),
-                              if (customer != null)
+                const Spacer(),
+                // Customer Selector
+                BlocBuilder<CartBloc, CartState>(
+                  builder: (ctx, state) {
+                    final customer = state.customer;
+                    return InkWell(
+                      onTap: () async {
+                        final selected = await showDialog<Customer>(
+                          context: ctx, // using builder context for dialog
+                          builder: (_) =>
+                              const Dialog(child: CustomerSelectionDialog()),
+                        );
+                        if (selected != null && mounted) {
+                          // ignore: use_build_context_synchronously
+                          context
+                              .read<CartBloc>()
+                              .add(CartEvent.selectCustomer(selected));
+                        }
+                      },
+                      borderRadius: BorderRadius.circular(shapes.radiusSm),
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: colors.bgElevated,
+                          border: Border.all(color: colors.borderDefault),
+                          borderRadius: BorderRadius.circular(shapes.radiusSm),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.person_outline,
+                                size: 16, color: colors.textSecondary),
+                            const SizedBox(width: 8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
                                 Text(
-                                  '${customer.totalPoints.toInt()} pts',
-                                  style: typography.bodySmall?.copyWith(fontSize: 10, color: colors.brandPrimary),
+                                  customer?.name ?? 'Walk-In',
+                                  style: typography.bodyMedium?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: colors.textPrimary),
                                 ),
-                            ],
-                          ),
-                          const SizedBox(width: 4),
-                          Icon(Icons.arrow_drop_down, color: colors.textSecondary),
-                        ],
+                                if (customer != null)
+                                  Text(
+                                    '${customer.totalPoints.toInt()} pts',
+                                    style: typography.bodySmall?.copyWith(
+                                        fontSize: 10,
+                                        color: colors.brandPrimary),
+                                  ),
+                              ],
+                            ),
+                            const SizedBox(width: 4),
+                            Icon(Icons.arrow_drop_down,
+                                color: colors.textSecondary),
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(width: 8),
-              // Clear Button
-              IconButton(
-                icon: Icon(Icons.delete_outline, color: colors.stateError),
-                onPressed: () {
-                   context.read<CartBloc>().add(const CartEvent.clearCart());
-                },
-                tooltip: 'Clear Cart',
-              ),
-            ],
+                    );
+                  },
+                ),
+                const SizedBox(width: 8),
+                // Clear Button
+                IconButton(
+                  icon: Icon(Icons.delete_outline, color: colors.stateError),
+                  onPressed: () {
+                    context.read<CartBloc>().add(const CartEvent.clearCart());
+                  },
+                  tooltip: 'Clear Cart',
+                ),
+              ],
+            ),
           ),
-        ),
-        Divider(height: 1, color: colors.borderDefault),
+          Divider(height: 1, color: colors.borderDefault),
 
-        // List
-        Expanded(
-          child: BlocBuilder<CartBloc, CartState>(
-            builder: (context, state) {
-              if (state.items.isEmpty) {
-                return _EmptyState();
-              }
+          // List
+          Expanded(
+            child: BlocBuilder<CartBloc, CartState>(
+              builder: (context, state) {
+                if (state.items.isEmpty) {
+                  return _EmptyState();
+                }
 
-              return ListView.builder(
-                padding: EdgeInsets.all(shapes.spacingMd),
-                itemCount: state.items.length,
-                itemBuilder: (context, index) {
-                  final item = state.items[index];
-                  return CartItemTile(
-                    key: ValueKey(item.product.uuid), 
-                    item: item,
-                  );
-                },
-              );
-            },
+                return ListView.builder(
+                  padding: EdgeInsets.all(shapes.spacingMd),
+                  itemCount: state.items.length,
+                  itemBuilder: (context, index) {
+                    final item = state.items[index];
+                    return CartItemTile(
+                      key: ValueKey(item.product.uuid),
+                      item: item,
+                    );
+                  },
+                );
+              },
+            ),
           ),
-        ),
 
-        // Summary & Checkout
-        const CurrentOrderSummary(),
+          // Summary & Checkout
+          const CurrentOrderSummary(),
         ],
       ),
     );
@@ -176,10 +186,10 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.shopping_bag_outlined, 
-            size: 64, 
-            color: colors.textMuted.withValues(alpha: 0.5)
-          ).animate().scale(duration: 600.ms, curve: Curves.elasticOut),
+          Icon(Icons.shopping_bag_outlined,
+                  size: 64, color: colors.textMuted.withValues(alpha: 0.5))
+              .animate()
+              .scale(duration: 600.ms, curve: Curves.elasticOut),
           const SizedBox(height: 16),
           Text(
             'Cart is empty',

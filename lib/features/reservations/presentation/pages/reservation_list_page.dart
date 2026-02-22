@@ -15,7 +15,8 @@ class ReservationListPage extends StatefulWidget {
   State<ReservationListPage> createState() => _ReservationListPageState();
 }
 
-class _ReservationListPageState extends State<ReservationListPage> with SingleTickerProviderStateMixin {
+class _ReservationListPageState extends State<ReservationListPage>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -40,18 +41,20 @@ class _ReservationListPageState extends State<ReservationListPage> with SingleTi
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-               // Use new Wizard
-               Navigator.of(context).push(MaterialPageRoute(builder: (_) => const CreateReservationWizard()));
+              // Use new Wizard
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => const CreateReservationWizard()));
             },
           ),
         ],
       ),
       body: TabBarView(
         controller: _tabController,
-        physics: const NeverScrollableScrollPhysics(), // Calendar needs its own touch handling
+        physics:
+            const NeverScrollableScrollPhysics(), // Calendar needs its own touch handling
         children: const [
-           _ReservationListView(),
-           ReservationCalendarPage(),
+          _ReservationListView(),
+          ReservationCalendarPage(),
         ],
       ),
     );
@@ -64,7 +67,7 @@ class _ReservationListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.savvy.colors;
-    
+
     return BlocBuilder<ReservationBloc, ReservationState>(
       builder: (context, state) {
         return state.when(
@@ -72,8 +75,9 @@ class _ReservationListView extends StatelessWidget {
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (msg) => Center(child: Text('Error: $msg')),
           loaded: (reservations) {
-            if (reservations.isEmpty) return const Center(child: Text('No Reservations'));
-            
+            if (reservations.isEmpty)
+              return const Center(child: Text('No Reservations'));
+
             // Sort by time
             final sorted = List<ReservationTableData>.from(reservations)
               ..sort((a, b) => a.reservationTime.compareTo(b.reservationTime));
@@ -82,23 +86,32 @@ class _ReservationListView extends StatelessWidget {
               itemCount: sorted.length,
               itemBuilder: (context, index) {
                 final r = sorted[index];
-                final timeStr = DateFormat('MMM dd, HH:mm').format(r.reservationTime);
-                
+                final timeStr =
+                    DateFormat('MMM dd, HH:mm').format(r.reservationTime);
+
                 return Card(
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: ListTile(
                     leading: CircleAvatar(
                       backgroundColor: colors.brandPrimary,
-                      child: Text('${r.pax}', style: TextStyle(color: colors.textInverse)),
+                      child: Text('${r.pax}',
+                          style: TextStyle(color: colors.textInverse)),
                     ),
                     title: Text(r.customerName),
-                    subtitle: Text('$timeStr - ${r.phone ?? "No Phone"}\nStatus: ${r.status}'),
-                    trailing: (r.status == 'PENDING') 
-                      ? ElevatedButton(
-                          onPressed: () => _showCheckInDialog(context, r),
-                          child: const Text('Check In'),
-                        )
-                      : Text(r.status, style: TextStyle(fontWeight: FontWeight.bold, color: r.status == 'SEATED' ? colors.stateSuccess : colors.textSecondary)),
+                    subtitle: Text(
+                        '$timeStr - ${r.phone ?? "No Phone"}\nStatus: ${r.status}'),
+                    trailing: (r.status == 'PENDING')
+                        ? ElevatedButton(
+                            onPressed: () => _showCheckInDialog(context, r),
+                            child: const Text('Check In'),
+                          )
+                        : Text(r.status,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: r.status == 'SEATED'
+                                    ? colors.stateSuccess
+                                    : colors.textSecondary)),
                   ),
                 );
               },
@@ -124,10 +137,13 @@ class _ReservationListView extends StatelessWidget {
               BlocBuilder<TableBloc, TableState>(
                 builder: (context, state) {
                   if (state.isLoading) return const CircularProgressIndicator();
-                  final availableTables = state.tables.where((t) => !t.isOccupied).toList();
-                  
-                  if (availableTables.isEmpty) return const Text('No available tables!', style: TextStyle(color: Colors.red));
-                  
+                  final availableTables =
+                      state.tables.where((t) => !t.isOccupied).toList();
+
+                  if (availableTables.isEmpty)
+                    return const Text('No available tables!',
+                        style: TextStyle(color: Colors.red));
+
                   return SizedBox(
                     height: 200,
                     child: ListView.builder(
@@ -138,11 +154,14 @@ class _ReservationListView extends StatelessWidget {
                           title: Text(t.name),
                           subtitle: Text('Capacity: ${t.capacity}'),
                           onTap: () {
-                            context.read<ReservationBloc>().add(ReservationEvent.updateStatus(r.uuid, 'SEATED'));
-                            context.read<TableBloc>().add(TableEvent.toggleOccupied(t.id, true));
+                            context.read<ReservationBloc>().add(
+                                ReservationEvent.updateStatus(
+                                    r.uuid, 'SEATED'));
+                            context
+                                .read<TableBloc>()
+                                .add(TableEvent.toggleOccupied(t.id, true));
                             Navigator.pop(ctx);
                           },
-
                         );
                       },
                     ),
@@ -153,7 +172,8 @@ class _ReservationListView extends StatelessWidget {
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
         ],
       ),
     );

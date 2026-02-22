@@ -11,8 +11,10 @@ class PurgeOldDataUseCase {
   /// Typically called silently after daily shift closures.
   Future<void> call({int olderThanDays = 30}) async {
     try {
-      final rowsDeleted = await _repository.purgeOldData(olderThanDays: olderThanDays);
-      print('Auto-Purge Complete: Freed up local database by removing $rowsDeleted stale synced records.');
+      final rowsDeleted =
+          await _repository.purgeOldData(olderThanDays: olderThanDays);
+      print(
+          'Auto-Purge Complete: Freed up local database by removing $rowsDeleted stale synced records.');
     } catch (e) {
       print('Auto-Purge Error: Failed to clear old records: $e');
     }

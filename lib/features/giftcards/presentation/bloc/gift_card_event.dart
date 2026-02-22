@@ -14,5 +14,6 @@ class GiftCardEvent with _$GiftCardEvent {
     required String cardUuid,
     required double amount,
   }) = _RedeemCard;
-  const factory GiftCardEvent.watchTransactions(String cardUuid) = _WatchTransactions;
+  const factory GiftCardEvent.watchTransactions(String cardUuid) =
+      _WatchTransactions;
 }

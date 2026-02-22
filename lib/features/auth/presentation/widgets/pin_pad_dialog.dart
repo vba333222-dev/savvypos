@@ -7,7 +7,7 @@ import 'package:savvy_pos/core/utils/haptic_helper.dart';
 
 class PinPadDialog extends StatefulWidget {
   final bool isLogin;
-  final String? expectedPin; 
+  final String? expectedPin;
 
   const PinPadDialog({
     super.key,
@@ -46,12 +46,9 @@ class _PinPadDialogState extends State<PinPadDialog> {
       } else {
         HapticHelper.onError();
         setState(() => _pin = '');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const SavvyText.body('Invalid PIN', color: Colors.white), 
-            backgroundColor: context.savvy.colors.stateError
-          )
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: const SavvyText.body('Invalid PIN', color: Colors.white),
+            backgroundColor: context.savvy.colors.stateError));
       }
     } else {
       HapticHelper.onSelection();
@@ -65,7 +62,8 @@ class _PinPadDialogState extends State<PinPadDialog> {
 
     return Dialog(
       backgroundColor: theme.colors.bgElevated,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(theme.shapes.radiusLg)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(theme.shapes.radiusLg)),
       child: Container(
         padding: EdgeInsets.all(theme.shapes.spacingLg),
         width: 360,
@@ -73,12 +71,12 @@ class _PinPadDialogState extends State<PinPadDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             SavvyText(
-              widget.isLogin ? 'Staff Login' : 'Enter PIN', 
+              widget.isLogin ? 'Staff Login' : 'Enter PIN',
               style: SavvyTextStyle.h3,
               color: theme.colors.textPrimary,
             ),
             SizedBox(height: theme.shapes.spacingXl),
-            
+
             // PIN Display
             Container(
               height: 40,
@@ -90,19 +88,22 @@ class _PinPadDialogState extends State<PinPadDialog> {
                   return AnimatedContainer(
                     duration: theme.motion.durationFast,
                     curve: Curves.easeOutBack,
-                    margin: EdgeInsets.symmetric(horizontal: theme.shapes.spacingXs),
+                    margin: EdgeInsets.symmetric(
+                        horizontal: theme.shapes.spacingXs),
                     width: isFilled ? 18 : 12,
                     height: isFilled ? 18 : 12,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: isFilled ? theme.colors.brandPrimary : theme.colors.textMuted.withValues(alpha: 0.2),
+                      color: isFilled
+                          ? theme.colors.brandPrimary
+                          : theme.colors.textMuted.withValues(alpha: 0.2),
                       boxShadow: isFilled ? theme.elevations.sm : [],
                     ),
                   );
                 }),
               ),
             ),
-            
+
             SizedBox(height: theme.shapes.spacingXl),
 
             // Numpad
@@ -117,21 +118,23 @@ class _PinPadDialogState extends State<PinPadDialog> {
               ),
               itemCount: 12,
               itemBuilder: (context, index) {
-                if (index == 9) return const SizedBox.shrink(); // Empty bottom-left
-                
+                if (index == 9)
+                  return const SizedBox.shrink(); // Empty bottom-left
+
                 if (index == 10) {
                   return _PinButton(
-                     label: '0', 
-                     onTap: () => _onKeyPress('0'),
-                     theme: theme,
+                    label: '0',
+                    onTap: () => _onKeyPress('0'),
+                    theme: theme,
                   );
                 }
-                
+
                 if (index == 11) {
                   return InkWell(
                     onTap: _onDelete,
                     borderRadius: BorderRadius.circular(theme.shapes.radiusMd),
-                    child: Icon(Icons.backspace_outlined, color: theme.colors.textMuted, size: 28),
+                    child: Icon(Icons.backspace_outlined,
+                        color: theme.colors.textMuted, size: 28),
                   );
                 }
 
@@ -144,9 +147,9 @@ class _PinPadDialogState extends State<PinPadDialog> {
                 );
               },
             ),
-            
+
             SizedBox(height: theme.shapes.spacingXl),
-            
+
             // Submit
             SizedBox(
               width: double.infinity,
@@ -159,15 +162,20 @@ class _PinPadDialogState extends State<PinPadDialog> {
                   disabledBackgroundColor: theme.colors.bgSecondary,
                   disabledForegroundColor: theme.colors.textMuted,
                   elevation: 0,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(theme.shapes.radiusMd)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(theme.shapes.radiusMd)),
                 ),
-                child: const SavvyText('Confirm', style: SavvyTextStyle.labelLarge, color: Colors.white),
+                child: const SavvyText('Confirm',
+                    style: SavvyTextStyle.labelLarge, color: Colors.white),
               ),
             ),
           ],
         ),
       ),
-    ).animate().scale(duration: theme.motion.durationFast, curve: Curves.easeOutBack);
+    )
+        .animate()
+        .scale(duration: theme.motion.durationFast, curve: Curves.easeOutBack);
   }
 }
 
@@ -175,8 +183,9 @@ class _PinButton extends StatefulWidget {
   final String label;
   final VoidCallback onTap;
   final SavvyTheme theme;
-  
-  const _PinButton({required this.label, required this.onTap, required this.theme});
+
+  const _PinButton(
+      {required this.label, required this.onTap, required this.theme});
 
   @override
   State<_PinButton> createState() => _PinButtonState();
@@ -189,8 +198,8 @@ class _PinButtonState extends State<_PinButton> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTapDown: (_) {
-         setState(() => _isPressed = true);
-         widget.onTap();
+        setState(() => _isPressed = true);
+        widget.onTap();
       },
       onTapUp: (_) => setState(() => _isPressed = false),
       onTapCancel: () => setState(() => _isPressed = false),
@@ -198,9 +207,13 @@ class _PinButtonState extends State<_PinButton> {
         scale: _isPressed ? 0.9 : 1.0,
         duration: const Duration(milliseconds: 100),
         child: SavvyBox(
-          color: _isPressed ? widget.theme.colors.brandPrimary.withValues(alpha: 0.1) : widget.theme.colors.bgPrimary,
+          color: _isPressed
+              ? widget.theme.colors.brandPrimary.withValues(alpha: 0.1)
+              : widget.theme.colors.bgPrimary,
           border: Border.all(
-            color: _isPressed ? widget.theme.colors.brandPrimary : widget.theme.colors.borderDefault,
+            color: _isPressed
+                ? widget.theme.colors.brandPrimary
+                : widget.theme.colors.borderDefault,
             width: 1.5,
           ),
           borderRadius: BorderRadius.circular(widget.theme.shapes.radiusMd),
@@ -208,7 +221,9 @@ class _PinButtonState extends State<_PinButton> {
             child: SavvyText(
               widget.label,
               style: SavvyTextStyle.h2,
-              color: _isPressed ? widget.theme.colors.brandPrimary : widget.theme.colors.textPrimary,
+              color: _isPressed
+                  ? widget.theme.colors.brandPrimary
+                  : widget.theme.colors.textPrimary,
             ),
           ),
         ),

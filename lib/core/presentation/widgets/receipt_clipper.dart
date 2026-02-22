@@ -18,12 +18,12 @@ class ReceiptZigZagClipper extends CustomClipper<Path> {
     final double adjustedToothWidth = toothWidth + (remainder / count);
 
     for (int i = 0; i < count; i++) {
-       double x = i * adjustedToothWidth;
-       path.lineTo(x + (adjustedToothWidth / 2), size.height);
-       path.lineTo(x + adjustedToothWidth, size.height - sawToothDepth);
+      double x = i * adjustedToothWidth;
+      path.lineTo(x + (adjustedToothWidth / 2), size.height);
+      path.lineTo(x + adjustedToothWidth, size.height - sawToothDepth);
     }
 
-    path.lineTo(size.width, 0); 
+    path.lineTo(size.width, 0);
     path.close();
     return path;
   }

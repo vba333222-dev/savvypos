@@ -24,7 +24,8 @@ Future<void> resetSyncState() async {
 
 /// Helper method to add an action to the local Advanced Sync Queue.
 /// This will be picked up by the background isolate for processing.
-Future<void> enqueueSyncAction(AppDatabase db, String actionType, Map<String, dynamic> payload) async {
+Future<void> enqueueSyncAction(
+    AppDatabase db, String actionType, Map<String, dynamic> payload) async {
   final logger = Logger();
   try {
     final idempotencyKey = const Uuid().v4();
@@ -36,12 +37,14 @@ Future<void> enqueueSyncAction(AppDatabase db, String actionType, Map<String, dy
       status: const Value('PENDING'),
       retryCount: const Value(0),
     );
-    
+
     await db.into(db.syncQueue).insert(item);
-    logger.i('Successfully enqueued $actionType to SyncQueue (Key: $idempotencyKey)');
+    logger.i(
+        'Successfully enqueued $actionType to SyncQueue (Key: $idempotencyKey)');
   } catch (e) {
     logger.e('Failed to enqueue sync action $actionType', error: e);
-    await SyncFileLogger.logError('FAILED_ENQUEUE', 'Action: $actionType. Error: $e');
+    await SyncFileLogger.logError(
+        'FAILED_ENQUEUE', 'Action: $actionType. Error: $e');
   }
 }
 
@@ -57,7 +60,7 @@ class SyncFileLogger {
       final file = await _localFile;
       final timestamp = DateTime.now().toIso8601String();
       final logEntry = '[$timestamp] [$type] $message\n';
-      
+
       await file.writeAsString(logEntry, mode: FileMode.append, flush: true);
     } catch (e) {
       // Fallback to console logger if file writing fails

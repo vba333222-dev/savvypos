@@ -12,21 +12,29 @@ enum EmployeeRole {
   host,
   bartender,
   kitchen;
-  
+
   String get displayName {
     switch (this) {
-      case EmployeeRole.owner: return 'Owner';
-      case EmployeeRole.manager: return 'Manager';
-      case EmployeeRole.cashier: return 'Cashier';
-      case EmployeeRole.server: return 'Server';
-      case EmployeeRole.host: return 'Host';
-      case EmployeeRole.bartender: return 'Bartender';
-      case EmployeeRole.kitchen: return 'Kitchen Staff';
+      case EmployeeRole.owner:
+        return 'Owner';
+      case EmployeeRole.manager:
+        return 'Manager';
+      case EmployeeRole.cashier:
+        return 'Cashier';
+      case EmployeeRole.server:
+        return 'Server';
+      case EmployeeRole.host:
+        return 'Host';
+      case EmployeeRole.bartender:
+        return 'Bartender';
+      case EmployeeRole.kitchen:
+        return 'Kitchen Staff';
     }
   }
-  
+
   /// Check if role has management permissions
-  bool get isManager => this == EmployeeRole.owner || this == EmployeeRole.manager;
+  bool get isManager =>
+      this == EmployeeRole.owner || this == EmployeeRole.manager;
 }
 
 /// Employment status
@@ -46,7 +54,7 @@ class Employee with _$Employee {
     String? phone,
     String? email,
     String? avatarUrl,
-    
+
     // Employment details
     @Default(EmploymentStatus.active) EmploymentStatus status,
     @Default(PayType.hourly) PayType payType,
@@ -54,21 +62,22 @@ class Employee with _$Employee {
     @Default(0.0) double salary,
     DateTime? hireDate,
     DateTime? terminationDate,
-    
+
     // Time & Attendance
     @Default(false) bool isClockedIn,
     DateTime? lastClockIn,
     DateTime? lastClockOut,
-    
+
     // Permissions (for RBAC)
     @Default([]) List<String> permissions,
-    
+
     // Metadata
     DateTime? createdAt,
     DateTime? updatedAt,
   }) = _Employee;
-  
-  factory Employee.fromJson(Map<String, dynamic> json) => _$EmployeeFromJson(json);
+
+  factory Employee.fromJson(Map<String, dynamic> json) =>
+      _$EmployeeFromJson(json);
 }
 
 /// Time Entry for tracking work hours
@@ -81,36 +90,35 @@ class TimeEntry with _$TimeEntry {
     DateTime? clockOut,
     DateTime? breakStart,
     DateTime? breakEnd,
-    
+
     // Calculated (can be computed or stored)
     @Default(0.0) double regularHours,
     @Default(0.0) double overtimeHours,
     @Default(0.0) double breakMinutes,
-    
+
     // Tips for the shift
     @Default(0.0) double cashTips,
     @Default(0.0) double cardTips,
-    
     String? shiftUuid, // Link to shift session if applicable
     String? notes,
-    
+
     // Auto-approved or needs manager review
     @Default(false) bool isApproved,
     String? approvedBy,
-    
     DateTime? createdAt,
   }) = _TimeEntry;
-  
-  factory TimeEntry.fromJson(Map<String, dynamic> json) => _$TimeEntryFromJson(json);
-  
+
+  factory TimeEntry.fromJson(Map<String, dynamic> json) =>
+      _$TimeEntryFromJson(json);
+
   const TimeEntry._();
-  
+
   /// Calculate total worked hours
   double get totalHours => regularHours + overtimeHours;
-  
+
   /// Check if entry is open (still clocked in)
   bool get isOpen => clockOut == null;
-  
+
   /// Calculate break duration in minutes
   double get calculatedBreakMinutes {
     if (breakStart == null || breakEnd == null) return 0;
@@ -127,25 +135,23 @@ class ScheduledShift with _$ScheduledShift {
     required DateTime date,
     required DateTime startTime,
     required DateTime endTime,
-    
     String? position, // e.g., "Cashier", "Bar", "Floor"
     String? notes,
-    
     @Default(false) bool isPublished,
     @Default(false) bool isAcknowledged,
-    
+
     // Swap request
     String? swapRequestedWith, // Another employee's UUID
     @Default(false) bool isSwapPending,
-    
     DateTime? createdAt,
     DateTime? updatedAt,
   }) = _ScheduledShift;
-  
-  factory ScheduledShift.fromJson(Map<String, dynamic> json) => _$ScheduledShiftFromJson(json);
-  
+
+  factory ScheduledShift.fromJson(Map<String, dynamic> json) =>
+      _$ScheduledShiftFromJson(json);
+
   const ScheduledShift._();
-  
+
   /// Calculate scheduled hours
   double get scheduledHours => endTime.difference(startTime).inMinutes / 60.0;
 }
@@ -165,6 +171,7 @@ class LaborSummary with _$LaborSummary {
     DateTime? periodStart,
     DateTime? periodEnd,
   }) = _LaborSummary;
-  
-  factory LaborSummary.fromJson(Map<String, dynamic> json) => _$LaborSummaryFromJson(json);
+
+  factory LaborSummary.fromJson(Map<String, dynamic> json) =>
+      _$LaborSummaryFromJson(json);
 }

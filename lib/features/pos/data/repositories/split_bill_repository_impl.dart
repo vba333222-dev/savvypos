@@ -9,13 +9,13 @@ import 'package:uuid/uuid.dart';
 class SplitBillRepositoryImpl implements ISplitBillRepository {
   final AppDatabase _db;
   final _uuid = const Uuid();
-  
+
   SplitBillRepositoryImpl(this._db);
-  
+
   // ===================================
   // SPLIT BILL CRUD
   // ===================================
-  
+
   @override
   Future<SplitBill> createSplitBill({
     required String orderUuid,
@@ -28,25 +28,23 @@ class SplitBillRepositoryImpl implements ISplitBillRepository {
   }) async {
     final uuid = _uuid.v4();
     final now = DateTime.now();
-    
-    await _db.into(_db.splitBillTable).insert(
-      SplitBillTableCompanion(
-        uuid: Value(uuid),
-        orderUuid: Value(orderUuid),
-        orderNumber: Value(orderNumber),
-        originalTotal: Value(originalTotal),
-        guestCount: Value(guestCount),
-        splitMode: Value(mode.name),
-        status: Value(SplitBillStatus.active.name),
-        createdByUuid: Value(createdByUuid),
-        createdByName: Value(createdByName),
-        createdAt: Value(now),
-      )
-    );
-    
+
+    await _db.into(_db.splitBillTable).insert(SplitBillTableCompanion(
+          uuid: Value(uuid),
+          orderUuid: Value(orderUuid),
+          orderNumber: Value(orderNumber),
+          originalTotal: Value(originalTotal),
+          guestCount: Value(guestCount),
+          splitMode: Value(mode.name),
+          status: Value(SplitBillStatus.active.name),
+          createdByUuid: Value(createdByUuid),
+          createdByName: Value(createdByName),
+          createdAt: Value(now),
+        ));
+
     // Create guest bills based on mode
     final List<GuestBill> guestBills = [];
-    
+
     if (mode == SplitMode.equal) {
       final amounts = calculateEqualSplit(originalTotal, guestCount);
       for (int i = 0; i < guestCount; i++) {
@@ -68,7 +66,7 @@ class SplitBillRepositoryImpl implements ISplitBillRepository {
         guestBills.add(guestBill);
       }
     }
-    
+
     return SplitBill(
       uuid: uuid,
       orderUuid: orderUuid,
@@ -83,51 +81,50 @@ class SplitBillRepositoryImpl implements ISplitBillRepository {
       createdAt: now,
     );
   }
-  
+
   @override
   Future<SplitBill?> getSplitBillByOrder(String orderUuid) async {
     final row = await (_db.select(_db.splitBillTable)
-      ..where((t) => t.orderUuid.equals(orderUuid)))
-      .getSingleOrNull();
-    
+          ..where((t) => t.orderUuid.equals(orderUuid)))
+        .getSingleOrNull();
+
     if (row == null) return null;
     return _mapToSplitBill(row);
   }
-  
+
   @override
   Future<SplitBill?> getSplitBill(String uuid) async {
     final row = await (_db.select(_db.splitBillTable)
-      ..where((t) => t.uuid.equals(uuid)))
-      .getSingleOrNull();
-    
+          ..where((t) => t.uuid.equals(uuid)))
+        .getSingleOrNull();
+
     if (row == null) return null;
     return _mapToSplitBill(row);
   }
-  
+
   @override
   Future<void> updateSplitBill(SplitBill splitBill) async {
     await (_db.update(_db.splitBillTable)
-      ..where((t) => t.uuid.equals(splitBill.uuid)))
-      .write(SplitBillTableCompanion(
-        guestCount: Value(splitBill.guestCount),
-        status: Value(splitBill.status.name),
-        completedAt: Value(splitBill.completedAt),
-      ));
+          ..where((t) => t.uuid.equals(splitBill.uuid)))
+        .write(SplitBillTableCompanion(
+      guestCount: Value(splitBill.guestCount),
+      status: Value(splitBill.status.name),
+      completedAt: Value(splitBill.completedAt),
+    ));
   }
-  
+
   @override
   Future<void> cancelSplitBill(String uuid) async {
-    await (_db.update(_db.splitBillTable)
-      ..where((t) => t.uuid.equals(uuid)))
-      .write(const SplitBillTableCompanion(
-        status: Value('cancelled'),
-      ));
+    await (_db.update(_db.splitBillTable)..where((t) => t.uuid.equals(uuid)))
+        .write(const SplitBillTableCompanion(
+      status: Value('cancelled'),
+    ));
   }
-  
+
   // ===================================
   // GUEST BILL MANAGEMENT
   // ===================================
-  
+
   @override
   Future<GuestBill> addGuest({
     required String splitBillUuid,
@@ -136,17 +133,15 @@ class SplitBillRepositoryImpl implements ISplitBillRepository {
     required double amount,
   }) async {
     final uuid = _uuid.v4();
-    
-    await _db.into(_db.guestBillTable).insert(
-      GuestBillTableCompanion(
-        uuid: Value(uuid),
-        splitBillUuid: Value(splitBillUuid),
-        guestNumber: Value(guestNumber),
-        guestName: Value(guestName),
-        totalAmount: Value(amount),
-      )
-    );
-    
+
+    await _db.into(_db.guestBillTable).insert(GuestBillTableCompanion(
+          uuid: Value(uuid),
+          splitBillUuid: Value(splitBillUuid),
+          guestNumber: Value(guestNumber),
+          guestName: Value(guestName),
+          totalAmount: Value(amount),
+        ));
+
     return GuestBill(
       uuid: uuid,
       splitBillUuid: splitBillUuid,
@@ -155,31 +150,31 @@ class SplitBillRepositoryImpl implements ISplitBillRepository {
       totalAmount: amount,
     );
   }
-  
+
   @override
   Future<void> updateGuestBill(GuestBill guestBill) async {
     await (_db.update(_db.guestBillTable)
-      ..where((t) => t.uuid.equals(guestBill.uuid)))
-      .write(GuestBillTableCompanion(
-        guestName: Value(guestBill.guestName),
-        totalAmount: Value(guestBill.totalAmount),
-        tipAmount: Value(guestBill.tipAmount),
-      ));
+          ..where((t) => t.uuid.equals(guestBill.uuid)))
+        .write(GuestBillTableCompanion(
+      guestName: Value(guestBill.guestName),
+      totalAmount: Value(guestBill.totalAmount),
+      tipAmount: Value(guestBill.tipAmount),
+    ));
   }
-  
+
   @override
   Future<void> removeGuest(String guestBillUuid) async {
     // Remove items first
     await (_db.delete(_db.splitBillItemTable)
-      ..where((t) => t.guestBillUuid.equals(guestBillUuid)))
-      .go();
-    
+          ..where((t) => t.guestBillUuid.equals(guestBillUuid)))
+        .go();
+
     // Remove guest bill
     await (_db.delete(_db.guestBillTable)
-      ..where((t) => t.uuid.equals(guestBillUuid)))
-      .go();
+          ..where((t) => t.uuid.equals(guestBillUuid)))
+        .go();
   }
-  
+
   @override
   Future<void> assignItemsToGuest({
     required String guestBillUuid,
@@ -187,36 +182,34 @@ class SplitBillRepositoryImpl implements ISplitBillRepository {
   }) async {
     // Clear existing items
     await (_db.delete(_db.splitBillItemTable)
-      ..where((t) => t.guestBillUuid.equals(guestBillUuid)))
-      .go();
-    
+          ..where((t) => t.guestBillUuid.equals(guestBillUuid)))
+        .go();
+
     // Add new items
     for (final item in items) {
-      await _db.into(_db.splitBillItemTable).insert(
-        SplitBillItemTableCompanion(
-          uuid: Value(item.uuid.isEmpty ? _uuid.v4() : item.uuid),
-          guestBillUuid: Value(guestBillUuid),
-          orderItemUuid: Value(item.orderItemUuid),
-          productName: Value(item.productName),
-          price: Value(item.price),
-          quantity: Value(item.quantity),
-          shareCount: Value(item.shareCount),
-          shareIndex: Value(item.shareIndex),
-        )
-      );
+      await _db.into(_db.splitBillItemTable).insert(SplitBillItemTableCompanion(
+            uuid: Value(item.uuid.isEmpty ? _uuid.v4() : item.uuid),
+            guestBillUuid: Value(guestBillUuid),
+            orderItemUuid: Value(item.orderItemUuid),
+            productName: Value(item.productName),
+            price: Value(item.price),
+            quantity: Value(item.quantity),
+            shareCount: Value(item.shareCount),
+            shareIndex: Value(item.shareIndex),
+          ));
     }
-    
+
     // Update guest bill total
     final total = items.fold<double>(0, (sum, item) => sum + item.shareAmount);
     await (_db.update(_db.guestBillTable)
-      ..where((t) => t.uuid.equals(guestBillUuid)))
-      .write(GuestBillTableCompanion(totalAmount: Value(total)));
+          ..where((t) => t.uuid.equals(guestBillUuid)))
+        .write(GuestBillTableCompanion(totalAmount: Value(total)));
   }
-  
+
   // ===================================
   // PAYMENT
   // ===================================
-  
+
   @override
   Future<void> markGuestPaid({
     required String guestBillUuid,
@@ -225,64 +218,65 @@ class SplitBillRepositoryImpl implements ISplitBillRepository {
     double? tipAmount,
   }) async {
     await (_db.update(_db.guestBillTable)
-      ..where((t) => t.uuid.equals(guestBillUuid)))
-      .write(GuestBillTableCompanion(
-        isPaid: const Value(true),
-        paymentMethod: Value(paymentMethod),
-        paymentTransactionUuid: Value(paymentTransactionUuid),
-        tipAmount: Value(tipAmount),
-        paidAt: Value(DateTime.now()),
-      ));
+          ..where((t) => t.uuid.equals(guestBillUuid)))
+        .write(GuestBillTableCompanion(
+      isPaid: const Value(true),
+      paymentMethod: Value(paymentMethod),
+      paymentTransactionUuid: Value(paymentTransactionUuid),
+      tipAmount: Value(tipAmount),
+      paidAt: Value(DateTime.now()),
+    ));
   }
-  
+
   @override
   Future<bool> isSplitComplete(String splitBillUuid) async {
     final guestBills = await (_db.select(_db.guestBillTable)
-      ..where((t) => t.splitBillUuid.equals(splitBillUuid)))
-      .get();
-    
+          ..where((t) => t.splitBillUuid.equals(splitBillUuid)))
+        .get();
+
     return guestBills.every((g) => g.isPaid);
   }
-  
+
   @override
   Future<void> completeSplitBill(String splitBillUuid) async {
     await (_db.update(_db.splitBillTable)
-      ..where((t) => t.uuid.equals(splitBillUuid)))
-      .write(SplitBillTableCompanion(
-        status: Value(SplitBillStatus.completed.name),
-        completedAt: Value(DateTime.now()),
-      ));
+          ..where((t) => t.uuid.equals(splitBillUuid)))
+        .write(SplitBillTableCompanion(
+      status: Value(SplitBillStatus.completed.name),
+      completedAt: Value(DateTime.now()),
+    ));
   }
-  
+
   // ===================================
   // UTILITIES
   // ===================================
-  
+
   @override
   List<double> calculateEqualSplit(double total, int guestCount) {
     if (guestCount <= 0) return [];
-    
+
     final baseAmount = (total / guestCount * 100).floor() / 100;
     final remainder = total - (baseAmount * guestCount);
-    
+
     return List.generate(guestCount, (i) {
       // Add remainder to first guest
       return i == 0 ? baseAmount + remainder : baseAmount;
     });
   }
-  
+
   @override
-  Map<int, double> calculateWithTip(double total, int guestCount, double tipPercent) {
+  Map<int, double> calculateWithTip(
+      double total, int guestCount, double tipPercent) {
     final tipAmount = total * tipPercent / 100;
     final grandTotal = total + tipAmount;
     final amounts = calculateEqualSplit(grandTotal, guestCount);
-    
+
     return Map.fromIterables(
       List.generate(guestCount, (i) => i + 1),
       amounts,
     );
   }
-  
+
   @override
   List<SplitPreset> getSplitPresets() {
     return const [
@@ -293,21 +287,20 @@ class SplitBillRepositoryImpl implements ISplitBillRepository {
       SplitPreset(label: 'Custom', guestCount: 2, mode: SplitMode.custom),
     ];
   }
-  
+
   // ===================================
   // MAPPERS
   // ===================================
-  
+
   Future<SplitBill> _mapToSplitBill(SplitBillTableData row) async {
     // Get guest bills
     final guestRows = await (_db.select(_db.guestBillTable)
-      ..where((t) => t.splitBillUuid.equals(row.uuid)))
-      .get();
-    
-    final guestBills = await Future.wait(
-      guestRows.map((g) => _mapToGuestBill(g))
-    );
-    
+          ..where((t) => t.splitBillUuid.equals(row.uuid)))
+        .get();
+
+    final guestBills =
+        await Future.wait(guestRows.map((g) => _mapToGuestBill(g)));
+
     return SplitBill(
       uuid: row.uuid,
       orderUuid: row.orderUuid,
@@ -329,23 +322,25 @@ class SplitBillRepositoryImpl implements ISplitBillRepository {
       completedAt: row.completedAt,
     );
   }
-  
+
   Future<GuestBill> _mapToGuestBill(GuestBillTableData row) async {
     // Get items
     final itemRows = await (_db.select(_db.splitBillItemTable)
-      ..where((t) => t.guestBillUuid.equals(row.uuid)))
-      .get();
-    
-    final items = itemRows.map((i) => SplitBillItem(
-      uuid: i.uuid,
-      orderItemUuid: i.orderItemUuid,
-      productName: i.productName,
-      price: i.price,
-      quantity: i.quantity,
-      shareCount: i.shareCount,
-      shareIndex: i.shareIndex,
-    )).toList();
-    
+          ..where((t) => t.guestBillUuid.equals(row.uuid)))
+        .get();
+
+    final items = itemRows
+        .map((i) => SplitBillItem(
+              uuid: i.uuid,
+              orderItemUuid: i.orderItemUuid,
+              productName: i.productName,
+              price: i.price,
+              quantity: i.quantity,
+              shareCount: i.shareCount,
+              shareIndex: i.shareIndex,
+            ))
+        .toList();
+
     return GuestBill(
       uuid: row.uuid,
       splitBillUuid: row.splitBillUuid,

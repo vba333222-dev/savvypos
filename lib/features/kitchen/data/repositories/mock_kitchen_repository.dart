@@ -21,13 +21,14 @@ class MockKitchenRepository implements IKitchenRepository {
   void _startSimulation() {
     // Initial Load
     _addMockOrder(age: const Duration(minutes: 16)); // Critical
-    _addMockOrder(age: const Duration(minutes: 8));  // Warning
-    _addMockOrder(age: const Duration(minutes: 2));  // Fresh
+    _addMockOrder(age: const Duration(minutes: 8)); // Warning
+    _addMockOrder(age: const Duration(minutes: 2)); // Fresh
     _emit();
 
     // Stream inputs every 30s
     Timer.periodic(const Duration(seconds: 30), (timer) {
-      if (_currentOrders.length < 15) { // Cap at 15 to avoid chaos
+      if (_currentOrders.length < 15) {
+        // Cap at 15 to avoid chaos
         _addMockOrder();
         _emit();
       }
@@ -37,8 +38,9 @@ class MockKitchenRepository implements IKitchenRepository {
   }
 
   void _emit() {
-    _controller.add(List.from(_currentOrders.reversed)); // Newest first for list, or Oldest first? 
-    // Usually KDS sorts by Urgency (Oldest first). 
+    _controller.add(List.from(
+        _currentOrders.reversed)); // Newest first for list, or Oldest first?
+    // Usually KDS sorts by Urgency (Oldest first).
     // If we want "Slide IN from Left" and "Push existing Right", then Newest should be at index 0?
     // Let's stick to: Index 0 is Newest (Leftmost). Oldest at end.
     // Wait, KDS usually prioritizes Oldest (Red ones).
@@ -60,7 +62,10 @@ class MockKitchenRepository implements IKitchenRepository {
       id: 0,
       uuid: id,
       orderNumber: 'ORD-${_rnd.nextInt(9999)}',
-      grandTotal: 0.0, subtotal: 0.0, taxTotal: 0.0, discountTotal: 0.0,
+      grandTotal: 0.0,
+      subtotal: 0.0,
+      taxTotal: 0.0,
+      discountTotal: 0.0,
       status: 'CONFIRMED',
       paymentStatus: 'PAID',
       paymentMethod: 'CASH',
@@ -72,7 +77,15 @@ class MockKitchenRepository implements IKitchenRepository {
       updatedAt: now,
     );
 
-    final itemNames = ['Burger', 'Fries', 'Cola', 'Pizza', 'Salad', 'Coffee', 'Cake'];
+    final itemNames = [
+      'Burger',
+      'Fries',
+      'Cola',
+      'Pizza',
+      'Salad',
+      'Coffee',
+      'Cake'
+    ];
     final items = List.generate(_rnd.nextInt(4) + 1, (i) {
       return KitchenOrderItem(
         item: OrderItemTableData(

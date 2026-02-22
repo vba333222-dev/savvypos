@@ -1,7 +1,7 @@
 class SmartCashHelper {
   static List<double> generateSuggestions(double total) {
     final Set<double> suggestions = {};
-    
+
     // 1. Exact amount
     suggestions.add(total);
 
@@ -13,13 +13,17 @@ class SmartCashHelper {
       // Next $5
       if (total % 5 != 0) suggestions.add(((total / 5).ceil() * 5).toDouble());
       // Next $10
-      if (total % 10 != 0) suggestions.add(((total / 10).ceil() * 10).toDouble());
+      if (total % 10 != 0)
+        suggestions.add(((total / 10).ceil() * 10).toDouble());
       // Next $20
-      if (total % 20 != 0) suggestions.add(((total / 20).ceil() * 20).toDouble());
+      if (total % 20 != 0)
+        suggestions.add(((total / 20).ceil() * 20).toDouble());
       // Next $50
-      if (total % 50 != 0) suggestions.add(((total / 50).ceil() * 50).toDouble());
+      if (total % 50 != 0)
+        suggestions.add(((total / 50).ceil() * 50).toDouble());
       // Next $100
-      if (total % 100 != 0) suggestions.add(((total / 100).ceil() * 100).toDouble());
+      if (total % 100 != 0)
+        suggestions.add(((total / 100).ceil() * 100).toDouble());
     } else {
       // "Rupiah/Yen" Mode (Large Denominations)
       // Next 1k
@@ -40,7 +44,7 @@ class SmartCashHelper {
         .toSet() // Dedupe
         .toList()
       ..sort();
-    
+
     // Return Top 4 unique suggestions taking the smallest viable ones
     return sorted.take(4).toList();
   }

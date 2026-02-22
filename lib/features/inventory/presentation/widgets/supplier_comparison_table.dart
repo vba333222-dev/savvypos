@@ -29,15 +29,30 @@ class SupplierComparisonTable extends StatelessWidget {
         // Header
         Row(
           children: [
-            Expanded(flex: 2, child: SavvyText.label('SUPPLIER', color: context.savvy.colors.textSecondary)),
-            Expanded(flex: 1, child: SavvyText.label('COST/UNIT', color: context.savvy.colors.textSecondary, align: TextAlign.right)),
-            Expanded(flex: 1, child: SavvyText.label('LEAD TIME', color: context.savvy.colors.textSecondary, align: TextAlign.right)),
-            Expanded(flex: 1, child: SavvyText.label('TOTAL', color: context.savvy.colors.textSecondary, align: TextAlign.right)),
+            Expanded(
+                flex: 2,
+                child: SavvyText.label('SUPPLIER',
+                    color: context.savvy.colors.textSecondary)),
+            Expanded(
+                flex: 1,
+                child: SavvyText.label('COST/UNIT',
+                    color: context.savvy.colors.textSecondary,
+                    align: TextAlign.right)),
+            Expanded(
+                flex: 1,
+                child: SavvyText.label('LEAD TIME',
+                    color: context.savvy.colors.textSecondary,
+                    align: TextAlign.right)),
+            Expanded(
+                flex: 1,
+                child: SavvyText.label('TOTAL',
+                    color: context.savvy.colors.textSecondary,
+                    align: TextAlign.right)),
             const SizedBox(width: 48), // Action space
           ],
         ),
         const SizedBox(height: 8),
-        
+
         // List
         ...suppliers.map((s) {
           final isBest = s == suppliers.first; // Assumes sorted list passed in
@@ -46,48 +61,63 @@ class SupplierComparisonTable extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.only(bottom: 8.0),
             child: SavvyBox(
-              color: isSelected ? context.savvy.colors.surface : null, // Highlight if selected
-              border: isSelected ? Border.all(color: context.savvy.colors.accent, width: 2) : null,
+              color: isSelected
+                  ? context.savvy.colors.surface
+                  : null, // Highlight if selected
+              border: isSelected
+                  ? Border.all(color: context.savvy.colors.accent, width: 2)
+                  : null,
               padding: const EdgeInsets.all(12),
               borderRadius: BorderRadius.circular(8),
               child: Row(
                 children: [
-                   Expanded(
-                     flex: 2, 
-                     child: Column(
-                       crossAxisAlignment: CrossAxisAlignment.start,
-                       children: [
-                         SavvyText.body(s.supplierName, textStyle: const TextStyle(fontWeight: FontWeight.w600)),
-                         if (isBest) 
-                           Padding(
-                             padding: const EdgeInsets.only(top: 4),
-                             child: Container(
-                               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                               decoration: BoxDecoration(
-                                 color: context.savvy.colors.success.withValues(alpha: 0.2),
-                                 borderRadius: BorderRadius.circular(4),
-                               ),
-                               child: SavvyText.small('BEST CHOICE', color: context.savvy.colors.success),
-                             ),
-                           )
-                       ],
-                     )
-                   ),
-                   Expanded(flex: 1, child: SavvyText.body('\$${s.cost.toStringAsFixed(2)}', align: TextAlign.right)),
-                   Expanded(flex: 1, child: SavvyText.body('${s.leadTime} days', align: TextAlign.right)),
-                   Expanded(flex: 1, child: SavvyText.h4('\$${s.totalCost.toStringAsFixed(2)}', align: TextAlign.right)),
-                   
-                   const SizedBox(width: 16),
-                   
-                   isSelected 
-                     ? FilledButton(
-                         onPressed: () => onSelect(s.supplierUuid),
-                         child: const Text('SELECTED'),
-                       )
-                     : OutlinedButton(
-                         onPressed: () => onSelect(s.supplierUuid),
-                         child: const Text('SELECT'),
-                       ),
+                  Expanded(
+                      flex: 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SavvyText.body(s.supplierName,
+                              textStyle:
+                                  const TextStyle(fontWeight: FontWeight.w600)),
+                          if (isBest)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: context.savvy.colors.success
+                                      .withValues(alpha: 0.2),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: SavvyText.small('BEST CHOICE',
+                                    color: context.savvy.colors.success),
+                              ),
+                            )
+                        ],
+                      )),
+                  Expanded(
+                      flex: 1,
+                      child: SavvyText.body('\$${s.cost.toStringAsFixed(2)}',
+                          align: TextAlign.right)),
+                  Expanded(
+                      flex: 1,
+                      child: SavvyText.body('${s.leadTime} days',
+                          align: TextAlign.right)),
+                  Expanded(
+                      flex: 1,
+                      child: SavvyText.h4('\$${s.totalCost.toStringAsFixed(2)}',
+                          align: TextAlign.right)),
+                  const SizedBox(width: 16),
+                  isSelected
+                      ? FilledButton(
+                          onPressed: () => onSelect(s.supplierUuid),
+                          child: const Text('SELECTED'),
+                        )
+                      : OutlinedButton(
+                          onPressed: () => onSelect(s.supplierUuid),
+                          child: const Text('SELECT'),
+                        ),
                 ],
               ),
             ),

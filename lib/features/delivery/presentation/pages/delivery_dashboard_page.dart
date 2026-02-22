@@ -16,7 +16,8 @@ class DeliveryDashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => GetIt.I<DeliveryManagementBloc>()..add(const DeliveryManagementEvent.loadPendingOrders()),
+      create: (_) => GetIt.I<DeliveryManagementBloc>()
+        ..add(const DeliveryManagementEvent.loadPendingOrders()),
       child: const _DeliveryDashboardView(),
     );
   }
@@ -48,19 +49,29 @@ class _DeliveryDashboardView extends StatelessWidget {
       ),
       body: BlocBuilder<DeliveryManagementBloc, DeliveryManagementState>(
         builder: (context, state) {
-          if (state.isLoading && state.pendingOrders.isEmpty && state.activeOrders.isEmpty) {
+          if (state.isLoading &&
+              state.pendingOrders.isEmpty &&
+              state.activeOrders.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
 
           // Segregate orders based on status
-          final newOrders = state.pendingOrders.where((o) => o.status == DeliveryStatus.newUnaccepted).toList();
-          final preparingOrders = state.activeOrders.where((o) => o.status == DeliveryStatus.accepted || o.status == DeliveryStatus.preparing).toList();
-          final readyOrders = state.activeOrders.where((o) => o.status == DeliveryStatus.readyForPickup).toList();
+          final newOrders = state.pendingOrders
+              .where((o) => o.status == DeliveryStatus.newUnaccepted)
+              .toList();
+          final preparingOrders = state.activeOrders
+              .where((o) =>
+                  o.status == DeliveryStatus.accepted ||
+                  o.status == DeliveryStatus.preparing)
+              .toList();
+          final readyOrders = state.activeOrders
+              .where((o) => o.status == DeliveryStatus.readyForPickup)
+              .toList();
 
           return LayoutBuilder(
             builder: (context, constraints) {
               final isDesktop = constraints.maxWidth >= 900;
-              
+
               if (isDesktop) {
                 // ── 3-Column Kanban Layout ──
                 return Padding(
@@ -68,17 +79,34 @@ class _DeliveryDashboardView extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(child: _KanbanColumn(title: 'Masuk / Baru', icon: Icons.inbox, orders: newOrders, color: Colors.blue)),
+                      Expanded(
+                          child: _KanbanColumn(
+                              title: 'Masuk / Baru',
+                              icon: Icons.inbox,
+                              orders: newOrders,
+                              color: Colors.blue)),
                       const Gap(16),
-                      Expanded(child: _KanbanColumn(title: 'Diproses Dapur', icon: Icons.soup_kitchen, orders: preparingOrders, color: Colors.orange)),
+                      Expanded(
+                          child: _KanbanColumn(
+                              title: 'Diproses Dapur',
+                              icon: Icons.soup_kitchen,
+                              orders: preparingOrders,
+                              color: Colors.orange)),
                       const Gap(16),
-                      Expanded(child: _KanbanColumn(title: 'Menunggu Pickup', icon: Icons.two_wheeler, orders: readyOrders, color: Colors.green)),
+                      Expanded(
+                          child: _KanbanColumn(
+                              title: 'Menunggu Pickup',
+                              icon: Icons.two_wheeler,
+                              orders: readyOrders,
+                              color: Colors.green)),
                     ],
                   ),
                 );
               } else {
-                 // ── Mobile/Tablet Portrait Fallback (Not optimized for this task, placeholder) ──
-                 return const Center(child: Text('Gunakan mode Lanskap / Tablet untuk melihat Kanban Board.'));
+                // ── Mobile/Tablet Portrait Fallback (Not optimized for this task, placeholder) ──
+                return const Center(
+                    child: Text(
+                        'Gunakan mode Lanskap / Tablet untuk melihat Kanban Board.'));
               }
             },
           );
@@ -120,8 +148,10 @@ class _KanbanColumn extends StatelessWidget {
             padding: EdgeInsets.all(shapes.spacingMd),
             decoration: BoxDecoration(
               color: color.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(shapes.radiusLg)),
-              border: Border(bottom: BorderSide(color: color.withValues(alpha: 0.2))),
+              borderRadius:
+                  BorderRadius.vertical(top: Radius.circular(shapes.radiusLg)),
+              border: Border(
+                  bottom: BorderSide(color: color.withValues(alpha: 0.2))),
             ),
             child: Row(
               children: [
@@ -129,18 +159,23 @@ class _KanbanColumn extends StatelessWidget {
                 const Gap(8),
                 Text(
                   title,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: color),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16, color: color),
                 ),
                 const Spacer(),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(12)),
-                  child: Text('${orders.length}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                      color: color, borderRadius: BorderRadius.circular(12)),
+                  child: Text('${orders.length}',
+                      style: const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
           ),
-          
+
           // Orders List
           Expanded(
             child: ListView.separated(
@@ -150,19 +185,22 @@ class _KanbanColumn extends StatelessWidget {
               itemBuilder: (context, index) {
                 final order = orders[index];
                 return DeliveryOrderCard(
-                  order: order,
-                  onAccept: () => bloc.add(DeliveryManagementEvent.acceptOrder(order.deliveryUuid)),
-                  onReject: () => bloc.add(DeliveryManagementEvent.rejectOrder(order.deliveryUuid, 'Stock kosong')), 
-                  // TODO: Real reject requires a dialog for reason
-                  
-                  onMarkReady: () {
-                     // TODO: In real app, this updates DB status to ReadyForPickup
-                     // For UI simulation, we might need a dummy event in BLoC
-                  },
-                  onComplete: () {
-                     // TODO: Complete order
-                  }
-                );
+                    order: order,
+                    onAccept: () => bloc.add(
+                        DeliveryManagementEvent.acceptOrder(
+                            order.deliveryUuid)),
+                    onReject: () => bloc.add(
+                        DeliveryManagementEvent.rejectOrder(
+                            order.deliveryUuid, 'Stock kosong')),
+                    // TODO: Real reject requires a dialog for reason
+
+                    onMarkReady: () {
+                      // TODO: In real app, this updates DB status to ReadyForPickup
+                      // For UI simulation, we might need a dummy event in BLoC
+                    },
+                    onComplete: () {
+                      // TODO: Complete order
+                    });
               },
             ),
           ),

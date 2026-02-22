@@ -102,11 +102,13 @@ class _StockAdjustmentDialogState extends State<StockAdjustmentDialog> {
                       children: [
                         const Text(
                           'Adjust Stock',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         Text(
                           widget.productName,
-                          style: TextStyle(fontSize: 13, color: theme.colors.textSecondary),
+                          style: TextStyle(
+                              fontSize: 13, color: theme.colors.textSecondary),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],
@@ -136,7 +138,8 @@ class _StockAdjustmentDialogState extends State<StockAdjustmentDialog> {
                       children: [
                         Text(
                           'Current Stock',
-                          style: TextStyle(fontSize: 12, color: theme.colors.textSecondary),
+                          style: TextStyle(
+                              fontSize: 12, color: theme.colors.textSecondary),
                         ),
                         Text(
                           widget.currentQuantity.toStringAsFixed(0),
@@ -148,20 +151,23 @@ class _StockAdjustmentDialogState extends State<StockAdjustmentDialog> {
                         ),
                       ],
                     ),
-                    Icon(Icons.arrow_forward, color: theme.colors.textSecondary),
+                    Icon(Icons.arrow_forward,
+                        color: theme.colors.textSecondary),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
                           'New Stock',
-                          style: TextStyle(fontSize: 12, color: theme.colors.textSecondary),
+                          style: TextStyle(
+                              fontSize: 12, color: theme.colors.textSecondary),
                         ),
                         Text(
                           _newQuantity.toStringAsFixed(0),
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
-                            color: _newQuantity >= 0 ? Colors.green : Colors.red,
+                            color:
+                                _newQuantity >= 0 ? Colors.green : Colors.red,
                           ),
                         ),
                       ],
@@ -173,7 +179,9 @@ class _StockAdjustmentDialogState extends State<StockAdjustmentDialog> {
               const SizedBox(height: 20),
 
               // Adjustment Type
-              Text('Adjustment Type', style: TextStyle(fontSize: 13, color: theme.colors.textSecondary)),
+              Text('Adjustment Type',
+                  style: TextStyle(
+                      fontSize: 13, color: theme.colors.textSecondary)),
               const SizedBox(height: 8),
               Row(
                 children: [
@@ -224,17 +232,30 @@ class _StockAdjustmentDialogState extends State<StockAdjustmentDialog> {
               const SizedBox(height: 20),
 
               // Quantity Input
-              Text('Quantity', style: TextStyle(fontSize: 13, color: theme.colors.textSecondary)),
+              Text('Quantity',
+                  style: TextStyle(
+                      fontSize: 13, color: theme.colors.textSecondary)),
               const SizedBox(height: 8),
               TextField(
                 controller: _quantityController,
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
-                  hintText: _adjustmentType == 'set' ? 'New quantity' : 'Quantity to $_adjustmentType',
+                  hintText: _adjustmentType == 'set'
+                      ? 'New quantity'
+                      : 'Quantity to $_adjustmentType',
                   prefixIcon: Icon(
-                    _adjustmentType == 'add' ? Icons.add : _adjustmentType == 'remove' ? Icons.remove : Icons.edit,
-                    color: _adjustmentType == 'add' ? Colors.green : _adjustmentType == 'remove' ? Colors.red : Colors.blue,
+                    _adjustmentType == 'add'
+                        ? Icons.add
+                        : _adjustmentType == 'remove'
+                            ? Icons.remove
+                            : Icons.edit,
+                    color: _adjustmentType == 'add'
+                        ? Colors.green
+                        : _adjustmentType == 'remove'
+                            ? Colors.red
+                            : Colors.blue,
                   ),
                 ),
                 autofocus: true,
@@ -243,7 +264,9 @@ class _StockAdjustmentDialogState extends State<StockAdjustmentDialog> {
               const SizedBox(height: 20),
 
               // Reason Selector
-              Text('Reason', style: TextStyle(fontSize: 13, color: theme.colors.textSecondary)),
+              Text('Reason',
+                  style: TextStyle(
+                      fontSize: 13, color: theme.colors.textSecondary)),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
@@ -256,24 +279,35 @@ class _StockAdjustmentDialogState extends State<StockAdjustmentDialog> {
                       setState(() => _reason = r.$1);
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
                       decoration: BoxDecoration(
-                        color: isSelected ? theme.colors.brandPrimary : Colors.transparent,
+                        color: isSelected
+                            ? theme.colors.brandPrimary
+                            : Colors.transparent,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
-                          color: isSelected ? theme.colors.brandPrimary : theme.colors.border,
+                          color: isSelected
+                              ? theme.colors.brandPrimary
+                              : theme.colors.border,
                         ),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(r.$3, size: 16, color: isSelected ? Colors.white : theme.colors.textSecondary),
+                          Icon(r.$3,
+                              size: 16,
+                              color: isSelected
+                                  ? Colors.white
+                                  : theme.colors.textSecondary),
                           const SizedBox(width: 6),
                           Text(
                             r.$2,
                             style: TextStyle(
                               fontSize: 13,
-                              color: isSelected ? Colors.white : theme.colors.textPrimary,
+                              color: isSelected
+                                  ? Colors.white
+                                  : theme.colors.textPrimary,
                             ),
                           ),
                         ],
@@ -286,7 +320,9 @@ class _StockAdjustmentDialogState extends State<StockAdjustmentDialog> {
               const SizedBox(height: 20),
 
               // Notes
-              Text('Notes (Optional)', style: TextStyle(fontSize: 13, color: theme.colors.textSecondary)),
+              Text('Notes (Optional)',
+                  style: TextStyle(
+                      fontSize: 13, color: theme.colors.textSecondary)),
               const SizedBox(height: 8),
               TextField(
                 controller: _notesController,
@@ -315,26 +351,32 @@ class _StockAdjustmentDialogState extends State<StockAdjustmentDialog> {
                       onPressed: _quantityController.text.isNotEmpty
                           ? () {
                               HapticFeedback.mediumImpact();
-                              
-                              double change = double.tryParse(_quantityController.text) ?? 0;
+
+                              double change =
+                                  double.tryParse(_quantityController.text) ??
+                                      0;
                               if (_adjustmentType == 'remove') change = -change;
-                              if (_adjustmentType == 'set') change = change - widget.currentQuantity;
-                              
+                              if (_adjustmentType == 'set')
+                                change = change - widget.currentQuantity;
+
                               context.read<AdvancedInventoryBloc>().add(
-                                AdvancedInventoryEvent.adjustStock(
-                                  productUuid: widget.productUuid,
-                                  warehouseUuid: widget.warehouseUuid,
-                                  quantityChange: change,
-                                  reason: _reason,
-                                  notes: _notesController.text.isEmpty ? null : _notesController.text,
-                                ),
-                              );
-                              
+                                    AdvancedInventoryEvent.adjustStock(
+                                      productUuid: widget.productUuid,
+                                      warehouseUuid: widget.warehouseUuid,
+                                      quantityChange: change,
+                                      reason: _reason,
+                                      notes: _notesController.text.isEmpty
+                                          ? null
+                                          : _notesController.text,
+                                    ),
+                                  );
+
                               Navigator.pop(context);
-                              
+
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('Stock adjusted: ${change >= 0 ? '+' : ''}${change.toStringAsFixed(0)}'),
+                                  content: Text(
+                                      'Stock adjusted: ${change >= 0 ? '+' : ''}${change.toStringAsFixed(0)}'),
                                   backgroundColor: Colors.green,
                                 ),
                               );
@@ -378,7 +420,8 @@ class _TypeButton extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? color.withValues(alpha: 0.15) : Colors.transparent,
+          color:
+              isSelected ? color.withValues(alpha: 0.15) : Colors.transparent,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: isSelected ? color : theme.colors.border,

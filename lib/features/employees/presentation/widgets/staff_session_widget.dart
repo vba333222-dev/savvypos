@@ -6,13 +6,12 @@ class StaffSessionWidget extends StatefulWidget {
   final String employeeName;
   final String employeeInitials;
   final DateTime shiftStartTime;
-  
-  const StaffSessionWidget({
-    super.key, 
-    required this.employeeName, 
-    required this.employeeInitials, 
-    required this.shiftStartTime
-  });
+
+  const StaffSessionWidget(
+      {super.key,
+      required this.employeeName,
+      required this.employeeInitials,
+      required this.shiftStartTime});
 
   @override
   State<StaffSessionWidget> createState() => _StaffSessionWidgetState();
@@ -27,7 +26,7 @@ class _StaffSessionWidgetState extends State<StaffSessionWidget> {
     super.initState();
     _updateTime();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if(mounted) setState(() => _updateTime());
+      if (mounted) setState(() => _updateTime());
     });
   }
 
@@ -46,7 +45,7 @@ class _StaffSessionWidgetState extends State<StaffSessionWidget> {
     final theme = context.savvy;
     final h = _duration.inHours.toString().padLeft(2, '0');
     final m = (_duration.inMinutes % 60).toString().padLeft(2, '0');
-    
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -67,12 +66,22 @@ class _StaffSessionWidgetState extends State<StaffSessionWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(widget.employeeName, style: TextStyle(fontWeight: FontWeight.bold, color: theme.colors.textPrimary)),
+                Text(widget.employeeName,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: theme.colors.textPrimary)),
                 Row(
                   children: [
-                    Container(width: 8, height: 8, decoration: BoxDecoration(color: theme.colors.stateSuccess, shape: BoxShape.circle)),
+                    Container(
+                        width: 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                            color: theme.colors.stateSuccess,
+                            shape: BoxShape.circle)),
                     const SizedBox(width: 4),
-                    Text('On Shift • $h:$m', style: TextStyle(fontSize: 12, color: theme.colors.textSecondary)),
+                    Text('On Shift • $h:$m',
+                        style: TextStyle(
+                            fontSize: 12, color: theme.colors.textSecondary)),
                   ],
                 ),
               ],

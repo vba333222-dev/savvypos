@@ -19,36 +19,39 @@ class WaitlistEntry with _$WaitlistEntry {
     required String guestName,
     required String phoneNumber,
     required int partySize,
-    
+
     // Preferences
     String? specialRequests,
     @Default(false) bool highchairNeeded,
     @Default(false) bool wheelchairAccessible,
-    String? tablePreference,  // indoor, outdoor, bar, etc.
-    
+    String? tablePreference, // indoor, outdoor, bar, etc.
+
     // Status tracking
     @Default(WaitlistStatus.waiting) WaitlistStatus status,
     required DateTime createdAt,
-    DateTime? quotedWaitTime,     // When we expect to seat them
-    DateTime? notifiedAt,         // When SMS was sent
+    DateTime? quotedWaitTime, // When we expect to seat them
+    DateTime? notifiedAt, // When SMS was sent
     DateTime? seatedAt,
     String? seatedTableUuid,
-    
+
     // Queue position
     int? queuePosition,
   }) = _WaitlistEntry;
-  
-  factory WaitlistEntry.fromJson(Map<String, dynamic> json) => _$WaitlistEntryFromJson(json);
-  
+
+  factory WaitlistEntry.fromJson(Map<String, dynamic> json) =>
+      _$WaitlistEntryFromJson(json);
+
   const WaitlistEntry._();
-  
+
   /// Actual wait time in minutes
-  int get actualWaitMinutes => status == WaitlistStatus.seated && seatedAt != null
-      ? seatedAt!.difference(createdAt).inMinutes
-      : DateTime.now().difference(createdAt).inMinutes;
-  
+  int get actualWaitMinutes =>
+      status == WaitlistStatus.seated && seatedAt != null
+          ? seatedAt!.difference(createdAt).inMinutes
+          : DateTime.now().difference(createdAt).inMinutes;
+
   /// Is ready to notify (within 5 mins of quoted time)
-  bool get isReadyToNotify => quotedWaitTime != null &&
+  bool get isReadyToNotify =>
+      quotedWaitTime != null &&
       DateTime.now().difference(quotedWaitTime!).inMinutes >= -5;
 }
 
@@ -59,8 +62,9 @@ class WaitlistSummary with _$WaitlistSummary {
     required int totalWaiting,
     required int avgWaitMinutes,
     required int longestWaitMinutes,
-    required Map<int, int> partySizeDistribution,  // partySize -> count
+    required Map<int, int> partySizeDistribution, // partySize -> count
   }) = _WaitlistSummary;
-  
-  factory WaitlistSummary.fromJson(Map<String, dynamic> json) => _$WaitlistSummaryFromJson(json);
+
+  factory WaitlistSummary.fromJson(Map<String, dynamic> json) =>
+      _$WaitlistSummaryFromJson(json);
 }

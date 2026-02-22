@@ -12,7 +12,8 @@ class SavvySwitch extends StatefulWidget {
   State<SavvySwitch> createState() => _SavvySwitchState();
 }
 
-class _SavvySwitchState extends State<SavvySwitch> with SingleTickerProviderStateMixin {
+class _SavvySwitchState extends State<SavvySwitch>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
   late Animation<Alignment> _alignment;
@@ -22,9 +23,10 @@ class _SavvySwitchState extends State<SavvySwitch> with SingleTickerProviderStat
     super.initState();
     _controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 300));
-    
-    _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOutBack);
-    
+
+    _animation =
+        CurvedAnimation(parent: _controller, curve: Curves.easeInOutBack);
+
     _alignment = AlignmentTween(
       begin: Alignment.centerLeft,
       end: Alignment.centerRight,
@@ -62,15 +64,15 @@ class _SavvySwitchState extends State<SavvySwitch> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     final theme = context.savvy;
-    
+
     return GestureDetector(
       onTap: _onTap,
       child: AnimatedBuilder(
         animation: _controller,
         builder: (context, child) {
-          final color = Color.lerp(
-              theme.colors.bgSurface, theme.colors.brandPrimary, _animation.value)!;
-          
+          final color = Color.lerp(theme.colors.bgSurface,
+              theme.colors.brandPrimary, _animation.value)!;
+
           return Container(
             width: 52,
             height: 32,
@@ -91,17 +93,26 @@ class _SavvySwitchState extends State<SavvySwitch> with SingleTickerProviderStat
                 color: theme.colors.textInverse,
                 shape: BoxShape.circle,
                 boxShadow: [
-                  BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2))
+                  BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 4,
+                      offset: Offset(0, 2))
                 ],
               ),
               // Morphing shape effect during transition could be added here
               // For now, let's keep it a circle but maybe add an icon inside?
               child: Transform.scale(
-                scale: 0.8 + (_controller.value < 0.5 ? _controller.value : (1 - _controller.value)) * 0.4, // Slight bounce
+                scale: 0.8 +
+                    (_controller.value < 0.5
+                            ? _controller.value
+                            : (1 - _controller.value)) *
+                        0.4, // Slight bounce
                 child: Icon(
                   widget.value ? Icons.check : Icons.close,
                   size: 16,
-                  color: widget.value ? theme.colors.brandPrimary : theme.colors.textMuted,
+                  color: widget.value
+                      ? theme.colors.brandPrimary
+                      : theme.colors.textMuted,
                 ),
               ),
             ),

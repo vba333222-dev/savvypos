@@ -11,10 +11,14 @@ part 'shift_bloc.freezed.dart';
 @freezed
 class ShiftEvent with _$ShiftEvent {
   const factory ShiftEvent.checkStatus() = _CheckStatus;
-  const factory ShiftEvent.openShift(double startCash, String userId, String userName) = _OpenShift;
-  const factory ShiftEvent.closeShift(double actualCash, {String? varianceReason}) = _CloseShift;
-  const factory ShiftEvent.closeShiftWithEod(double actualCash, {String? varianceReason}) = _CloseShiftWithEod;
-  const factory ShiftEvent.verifyCashCount(double actualCash) = _VerifyCashCount;
+  const factory ShiftEvent.openShift(
+      double startCash, String userId, String userName) = _OpenShift;
+  const factory ShiftEvent.closeShift(double actualCash,
+      {String? varianceReason}) = _CloseShift;
+  const factory ShiftEvent.closeShiftWithEod(double actualCash,
+      {String? varianceReason}) = _CloseShiftWithEod;
+  const factory ShiftEvent.verifyCashCount(double actualCash) =
+      _VerifyCashCount;
   const factory ShiftEvent.payIn(double amount, String reason) = _PayIn;
   const factory ShiftEvent.payOut(double amount, String reason) = _PayOut;
   const factory ShiftEvent.safeDrop(double amount, String reason) = _SafeDrop;
@@ -24,13 +28,15 @@ class ShiftEvent with _$ShiftEvent {
 class ShiftState with _$ShiftState {
   const factory ShiftState.initial() = _Initial;
   const factory ShiftState.loading() = _Loading;
-  const factory ShiftState.open(ShiftSession shift, {
+  const factory ShiftState.open(
+    ShiftSession shift, {
     @Default(0.0) double totalPayIn,
     @Default(0.0) double totalPayOut,
     @Default(0.0) double totalSafeDrops,
     @Default(0.0) double totalSales,
   }) = _Open;
-  const factory ShiftState.varianceWarning(double variance, double actualCash) = _VarianceWarning;
+  const factory ShiftState.varianceWarning(double variance, double actualCash) =
+      _VarianceWarning;
   const factory ShiftState.closed() = _Closed;
   const factory ShiftState.syncingEod() = _SyncingEod;
   const factory ShiftState.syncSuccess() = _SyncSuccess;
@@ -43,7 +49,8 @@ class ShiftBloc extends Bloc<ShiftEvent, ShiftState> {
   final CalculateEodFinancialsUseCase _calcEod;
   final SyncEodToAccountingUseCase _syncEod;
 
-  ShiftBloc(this._repository, this._calcEod, this._syncEod) : super(const ShiftState.initial()) {
+  ShiftBloc(this._repository, this._calcEod, this._syncEod)
+      : super(const ShiftState.initial()) {
     on<_CheckStatus>(_onCheckStatus);
     on<_OpenShift>(_onOpenShift);
     on<_CloseShift>(_onCloseShift);
@@ -54,21 +61,22 @@ class ShiftBloc extends Bloc<ShiftEvent, ShiftState> {
     on<_SafeDrop>(_onSafeDrop);
   }
 
-  Future<void> _onCheckStatus(_CheckStatus event, Emitter<ShiftState> emit) async {
+  Future<void> _onCheckStatus(
+      _CheckStatus event, Emitter<ShiftState> emit) async {
     emit(const ShiftState.loading());
     try {
       // Find any active shift for this device context
       final activeShifts = await _repository.getActiveShifts();
-      
+
       if (activeShifts.isNotEmpty) {
         final shift = activeShifts.first;
         // Load Details
         final summary = await _repository.getCashTransactionSummary(shift.id);
         final sales = await _repository.getShiftSalesTotal(shift.id);
-        
+
         emit(ShiftState.open(
-          shift, 
-          totalPayIn: summary['payIn'] ?? 0.0, 
+          shift,
+          totalPayIn: summary['payIn'] ?? 0.0,
           totalPayOut: summary['payOut'] ?? 0.0,
           totalSafeDrops: summary['safeDrop'] ?? 0.0,
           totalSales: sales,
@@ -84,14 +92,16 @@ class ShiftBloc extends Bloc<ShiftEvent, ShiftState> {
   Future<void> _onOpenShift(_OpenShift event, Emitter<ShiftState> emit) async {
     emit(const ShiftState.loading());
     try {
-      await _repository.openCashShift(event.startCash, event.userId, event.userName);
+      await _repository.openCashShift(
+          event.startCash, event.userId, event.userName);
       add(const ShiftEvent.checkStatus());
     } catch (e) {
       emit(ShiftState.error(e.toString()));
     }
   }
 
-  Future<void> _onVerifyCashCount(_VerifyCashCount event, Emitter<ShiftState> emit) async {
+  Future<void> _onVerifyCashCount(
+      _VerifyCashCount event, Emitter<ShiftState> emit) async {
     final currentState = state;
     if (currentState is! _Open) return;
 
@@ -99,21 +109,23 @@ class ShiftBloc extends Bloc<ShiftEvent, ShiftState> {
       // 1. Check Open Orders
       final openOrders = await _repository.getOpenOrderCount();
       if (openOrders > 0) {
-        emit(ShiftState.error('Cannot close shift: $openOrders parked order(s) must be cleared first.'));
+        emit(ShiftState.error(
+            'Cannot close shift: $openOrders parked order(s) must be cleared first.'));
         return;
       }
 
       emit(const ShiftState.loading());
 
       // 2. Calculate System Totals
-      final summary = await _repository.getCashTransactionSummary(currentState.shift.id);
+      final summary =
+          await _repository.getCashTransactionSummary(currentState.shift.id);
       final sales = await _repository.getShiftSalesTotal(currentState.shift.id);
-      
+
       final startCash = currentState.shift.startCash;
       final payIn = summary['payIn'] ?? 0.0;
       final payOut = summary['payOut'] ?? 0.0;
       final safeDrop = summary['safeDrop'] ?? 0.0;
-      
+
       // Formula: Start + PayIn - PayOut - SafeDrop + Sales
       final expectedCash = startCash + payIn - payOut - safeDrop + sales;
       final variance = event.actualCash - expectedCash;
@@ -133,14 +145,15 @@ class ShiftBloc extends Bloc<ShiftEvent, ShiftState> {
     }
   }
 
-  Future<void> _onCloseShift(_CloseShift event, Emitter<ShiftState> emit) async {
+  Future<void> _onCloseShift(
+      _CloseShift event, Emitter<ShiftState> emit) async {
     // Re-calculating system totals just to be safe, but we know the actualCash
     // if this is called directly from verifyCashCount (0 variance) or after reason (has variance)
-    
+
     // Check if we have an active shift ID (since state might be VarianceWarning)
     // Actually, state is no longer _Open if we came from VarianceWarning.
     // Let's modify approach: We should fetch active shift.
-    
+
     try {
       emit(const ShiftState.loading());
       final activeShifts = await _repository.getActiveShifts();
@@ -152,16 +165,15 @@ class ShiftBloc extends Bloc<ShiftEvent, ShiftState> {
 
       final summary = await _repository.getCashTransactionSummary(shift.id);
       final sales = await _repository.getShiftSalesTotal(shift.id);
-      
+
       final startCash = shift.startCash;
       final payIn = summary['payIn'] ?? 0.0;
       final payOut = summary['payOut'] ?? 0.0;
       final safeDrop = summary['safeDrop'] ?? 0.0;
-      
+
       final systemEndCash = startCash + payIn - payOut - safeDrop + sales;
 
-      await _repository.closeShift(
-          shift.id, systemEndCash, event.actualCash,
+      await _repository.closeShift(shift.id, systemEndCash, event.actualCash,
           varianceReason: event.varianceReason);
       emit(const ShiftState.closed());
     } catch (e) {
@@ -169,7 +181,8 @@ class ShiftBloc extends Bloc<ShiftEvent, ShiftState> {
     }
   }
 
-  Future<void> _onCloseShiftWithEod(_CloseShiftWithEod event, Emitter<ShiftState> emit) async {
+  Future<void> _onCloseShiftWithEod(
+      _CloseShiftWithEod event, Emitter<ShiftState> emit) async {
     try {
       emit(const ShiftState.loading());
       final activeShifts = await _repository.getActiveShifts();
@@ -181,27 +194,26 @@ class ShiftBloc extends Bloc<ShiftEvent, ShiftState> {
 
       final summary = await _repository.getCashTransactionSummary(shift.id);
       final sales = await _repository.getShiftSalesTotal(shift.id);
-      
+
       final startCash = shift.startCash;
       final payIn = summary['payIn'] ?? 0.0;
       final payOut = summary['payOut'] ?? 0.0;
       final safeDrop = summary['safeDrop'] ?? 0.0;
-      
+
       final systemEndCash = startCash + payIn - payOut - safeDrop + sales;
 
       emit(const ShiftState.syncingEod());
       // Compile Financials
       final financials = await _calcEod(shift.startTime);
-      
+
       // Dispatch API to Go Backend
       await _syncEod(shift.id, financials);
       emit(const ShiftState.syncSuccess());
 
       // Finally close locally
-      await _repository.closeShift(
-          shift.id, systemEndCash, event.actualCash,
+      await _repository.closeShift(shift.id, systemEndCash, event.actualCash,
           varianceReason: event.varianceReason);
-      
+
       emit(const ShiftState.closed());
     } catch (e) {
       emit(ShiftState.error(e.toString()));
@@ -211,36 +223,39 @@ class ShiftBloc extends Bloc<ShiftEvent, ShiftState> {
   Future<void> _onPayIn(_PayIn event, Emitter<ShiftState> emit) async {
     final currentState = state;
     if (currentState is! _Open) return;
-    
+
     try {
-        await _repository.addCashTransaction(currentState.shift.id, 'PAY_IN', event.amount, event.reason);
-        add(const ShiftEvent.checkStatus());
+      await _repository.addCashTransaction(
+          currentState.shift.id, 'PAY_IN', event.amount, event.reason);
+      add(const ShiftEvent.checkStatus());
     } catch (e) {
-        emit(ShiftState.error(e.toString()));
+      emit(ShiftState.error(e.toString()));
     }
   }
 
   Future<void> _onPayOut(_PayOut event, Emitter<ShiftState> emit) async {
     final currentState = state;
     if (currentState is! _Open) return;
-    
+
     try {
-        await _repository.addCashTransaction(currentState.shift.id, 'PAY_OUT', event.amount, event.reason);
-        add(const ShiftEvent.checkStatus());
+      await _repository.addCashTransaction(
+          currentState.shift.id, 'PAY_OUT', event.amount, event.reason);
+      add(const ShiftEvent.checkStatus());
     } catch (e) {
-        emit(ShiftState.error(e.toString()));
+      emit(ShiftState.error(e.toString()));
     }
   }
 
   Future<void> _onSafeDrop(_SafeDrop event, Emitter<ShiftState> emit) async {
     final currentState = state;
     if (currentState is! _Open) return;
-    
+
     try {
-        await _repository.addCashTransaction(currentState.shift.id, 'SAFE_DROP', event.amount, event.reason);
-        add(const ShiftEvent.checkStatus());
+      await _repository.addCashTransaction(
+          currentState.shift.id, 'SAFE_DROP', event.amount, event.reason);
+      add(const ShiftEvent.checkStatus());
     } catch (e) {
-        emit(ShiftState.error(e.toString()));
+      emit(ShiftState.error(e.toString()));
     }
   }
 }

@@ -21,17 +21,21 @@ class CustomerRepositoryImpl implements ICustomerRepository {
   @override
   Future<List<Customer>> searchCustomers(String query) async {
     final rows = await (db.select(db.customerTable)
-          ..where((t) => 
-              t.isDeleted.equals(false) & 
-              (t.name.contains(query) | t.phone.contains(query) | t.email.contains(query))))
+          ..where((t) =>
+              t.isDeleted.equals(false) &
+              (t.name.contains(query) |
+                  t.phone.contains(query) |
+                  t.email.contains(query))))
         .get();
-        
+
     return rows.map(_mapToDomain).toList();
   }
-  
+
   @override
   Future<Customer?> getCustomerByUuid(String uuid) async {
-    final row = await (db.select(db.customerTable)..where((t) => t.uuid.equals(uuid))).getSingleOrNull();
+    final row = await (db.select(db.customerTable)
+          ..where((t) => t.uuid.equals(uuid)))
+        .getSingleOrNull();
     return row != null ? _mapToDomain(row) : null;
   }
 
@@ -48,7 +52,7 @@ class CustomerRepositoryImpl implements ICustomerRepository {
       isSynced: const Value(false),
       isDeleted: const Value(false),
     );
-    
+
     await db.into(db.customerTable).insertOnConflictUpdate(companion);
   }
 
@@ -56,10 +60,10 @@ class CustomerRepositoryImpl implements ICustomerRepository {
   Future<void> deleteCustomer(String uuid) async {
     await (db.update(db.customerTable)..where((t) => t.uuid.equals(uuid)))
         .write(CustomerTableCompanion(
-            isDeleted: const Value(true),
-            updatedAt: Value(DateTime.now()),
-            isSynced: const Value(false),
-        ));
+      isDeleted: const Value(true),
+      updatedAt: Value(DateTime.now()),
+      isSynced: const Value(false),
+    ));
   }
 
   Customer _mapToDomain(CustomerTableData row) {

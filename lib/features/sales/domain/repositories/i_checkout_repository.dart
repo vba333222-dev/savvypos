@@ -5,6 +5,7 @@ abstract class ICheckoutRepository {
   Future<void> addPayment(PaymentTransaction transaction);
   Stream<List<PaymentTransaction>> watchPayments(String orderUuid);
   Future<List<PaymentTransaction>> getPayments(String orderUuid);
-  Future<void> updateOrderStatus(String orderUuid, String status); // PARTIAL, PAID
+  Future<void> updateOrderStatus(
+      String orderUuid, String status); // PARTIAL, PAID
   Future<List<OrderItemTableData>> getOrderItems(String orderUuid);
 }

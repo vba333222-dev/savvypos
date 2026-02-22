@@ -13,15 +13,19 @@ part 'advanced_inventory_bloc.freezed.dart';
 @freezed
 class AdvancedInventoryEvent with _$AdvancedInventoryEvent {
   // Dashboard
-  const factory AdvancedInventoryEvent.loadDashboard({String? warehouseUuid}) = _LoadDashboard;
+  const factory AdvancedInventoryEvent.loadDashboard({String? warehouseUuid}) =
+      _LoadDashboard;
   const factory AdvancedInventoryEvent.refreshDashboard() = _RefreshDashboard;
-  
+
   // Warehouses
   const factory AdvancedInventoryEvent.loadWarehouses() = _LoadWarehouses;
-  const factory AdvancedInventoryEvent.selectWarehouse(String? uuid) = _SelectWarehouse;
-  const factory AdvancedInventoryEvent.createWarehouse(Warehouse warehouse) = _CreateWarehouse;
-  const factory AdvancedInventoryEvent.updateWarehouse(Warehouse warehouse) = _UpdateWarehouse;
-  
+  const factory AdvancedInventoryEvent.selectWarehouse(String? uuid) =
+      _SelectWarehouse;
+  const factory AdvancedInventoryEvent.createWarehouse(Warehouse warehouse) =
+      _CreateWarehouse;
+  const factory AdvancedInventoryEvent.updateWarehouse(Warehouse warehouse) =
+      _UpdateWarehouse;
+
   // Stock Levels
   const factory AdvancedInventoryEvent.loadStockLevels({
     String? warehouseUuid,
@@ -30,7 +34,7 @@ class AdvancedInventoryEvent with _$AdvancedInventoryEvent {
     bool? lowStockOnly,
     bool? outOfStockOnly,
   }) = _LoadStockLevels;
-  
+
   // Stock Adjustments
   const factory AdvancedInventoryEvent.adjustStock({
     required String productUuid,
@@ -39,7 +43,7 @@ class AdvancedInventoryEvent with _$AdvancedInventoryEvent {
     required String reason,
     String? notes,
   }) = _AdjustStock;
-  
+
   // Movements
   const factory AdvancedInventoryEvent.loadMovements({
     String? productUuid,
@@ -47,32 +51,41 @@ class AdvancedInventoryEvent with _$AdvancedInventoryEvent {
     DateTime? startDate,
     DateTime? endDate,
   }) = _LoadMovements;
-  
+
   // Batches
   const factory AdvancedInventoryEvent.loadBatches({
     String? productUuid,
     String? warehouseUuid,
     bool? expiringOnly,
   }) = _LoadBatches;
-  
+
   // Alerts
-  const factory AdvancedInventoryEvent.loadAlerts({AlertSeverity? severity}) = _LoadAlerts;
-  const factory AdvancedInventoryEvent.acknowledgeAlert(String uuid) = _AcknowledgeAlert;
-  const factory AdvancedInventoryEvent.resolveAlert(String uuid, String action) = _ResolveAlert;
+  const factory AdvancedInventoryEvent.loadAlerts({AlertSeverity? severity}) =
+      _LoadAlerts;
+  const factory AdvancedInventoryEvent.acknowledgeAlert(String uuid) =
+      _AcknowledgeAlert;
+  const factory AdvancedInventoryEvent.resolveAlert(
+      String uuid, String action) = _ResolveAlert;
   const factory AdvancedInventoryEvent.generateAlerts() = _GenerateAlerts;
-  
+
   // Transfers
-  const factory AdvancedInventoryEvent.loadTransfers({TransferStatus? status}) = _LoadTransfers;
-  const factory AdvancedInventoryEvent.createTransfer(AdvancedStockTransfer transfer) = _CreateTransfer;
-  const factory AdvancedInventoryEvent.approveTransfer(String uuid) = _ApproveTransfer;
-  const factory AdvancedInventoryEvent.shipTransfer(String uuid, List<AdvancedStockTransferItem> items) = _ShipTransfer;
-  const factory AdvancedInventoryEvent.receiveTransfer(String uuid, List<AdvancedStockTransferItem> items) = _ReceiveTransfer;
-  
+  const factory AdvancedInventoryEvent.loadTransfers({TransferStatus? status}) =
+      _LoadTransfers;
+  const factory AdvancedInventoryEvent.createTransfer(
+      AdvancedStockTransfer transfer) = _CreateTransfer;
+  const factory AdvancedInventoryEvent.approveTransfer(String uuid) =
+      _ApproveTransfer;
+  const factory AdvancedInventoryEvent.shipTransfer(
+      String uuid, List<AdvancedStockTransferItem> items) = _ShipTransfer;
+  const factory AdvancedInventoryEvent.receiveTransfer(
+      String uuid, List<AdvancedStockTransferItem> items) = _ReceiveTransfer;
+
   // Insights
   const factory AdvancedInventoryEvent.loadInsights() = _LoadInsights;
-  
+
   // Physical Count
-  const factory AdvancedInventoryEvent.startPhysicalCount(String warehouseUuid) = _StartPhysicalCount;
+  const factory AdvancedInventoryEvent.startPhysicalCount(
+      String warehouseUuid) = _StartPhysicalCount;
 }
 
 // ==============================================================================
@@ -86,40 +99,40 @@ class AdvancedInventoryState with _$AdvancedInventoryState {
     @Default(false) bool isLoading,
     @Default(false) bool isRefreshing,
     String? error,
-    
+
     // Dashboard
     InventoryDashboardStats? dashboardStats,
-    
+
     // Warehouses
     @Default([]) List<Warehouse> warehouses,
     String? selectedWarehouseUuid,
-    
+
     // Stock Levels
     @Default([]) List<StockLevel> stockLevels,
     @Default(false) bool isLoadingStock,
-    
+
     // Movements
     @Default([]) List<StockMovement> movements,
     @Default(false) bool isLoadingMovements,
-    
+
     // Batches
     @Default([]) List<Batch> batches,
     @Default(false) bool isLoadingBatches,
-    
+
     // Alerts
     @Default([]) List<StockAlert> alerts,
     @Default(0) int unacknowledgedAlertCount,
-    
+
     // Transfers
     @Default([]) List<AdvancedStockTransfer> transfers,
     @Default(false) bool isLoadingTransfers,
-    
+
     // Insights
     @Default([]) List<InventoryInsight> insights,
-    
+
     // Physical Count
     String? activeCountSessionUuid,
-    
+
     // Operation success/failure
     String? successMessage,
   }) = _AdvancedInventoryState;
@@ -130,10 +143,12 @@ class AdvancedInventoryState with _$AdvancedInventoryState {
 // ==============================================================================
 
 @injectable
-class AdvancedInventoryBloc extends Bloc<AdvancedInventoryEvent, AdvancedInventoryState> {
+class AdvancedInventoryBloc
+    extends Bloc<AdvancedInventoryEvent, AdvancedInventoryState> {
   final IAdvancedInventoryRepository _repository;
-  
-  AdvancedInventoryBloc(this._repository) : super(const AdvancedInventoryState()) {
+
+  AdvancedInventoryBloc(this._repository)
+      : super(const AdvancedInventoryState()) {
     on<_LoadDashboard>(_onLoadDashboard);
     on<_RefreshDashboard>(_onRefreshDashboard);
     on<_LoadWarehouses>(_onLoadWarehouses);
@@ -157,14 +172,17 @@ class AdvancedInventoryBloc extends Bloc<AdvancedInventoryEvent, AdvancedInvento
     on<_StartPhysicalCount>(_onStartPhysicalCount);
   }
 
-  Future<void> _onLoadDashboard(_LoadDashboard event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onLoadDashboard(
+      _LoadDashboard event, Emitter<AdvancedInventoryState> emit) async {
     emit(state.copyWith(isLoading: true, error: null));
     try {
       final warehouses = await _repository.getWarehouses();
-      final stats = await _repository.getDashboardStats(warehouseUuid: event.warehouseUuid);
+      final stats = await _repository.getDashboardStats(
+          warehouseUuid: event.warehouseUuid);
       final alerts = await _repository.getActiveAlerts(limit: 10);
-      final insights = await _repository.generateInsights(warehouseUuid: event.warehouseUuid);
-      
+      final insights = await _repository.generateInsights(
+          warehouseUuid: event.warehouseUuid);
+
       emit(state.copyWith(
         isLoading: false,
         warehouses: warehouses,
@@ -179,10 +197,12 @@ class AdvancedInventoryBloc extends Bloc<AdvancedInventoryEvent, AdvancedInvento
     }
   }
 
-  Future<void> _onRefreshDashboard(_RefreshDashboard event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onRefreshDashboard(
+      _RefreshDashboard event, Emitter<AdvancedInventoryState> emit) async {
     emit(state.copyWith(isRefreshing: true));
     try {
-      final stats = await _repository.getDashboardStats(warehouseUuid: state.selectedWarehouseUuid);
+      final stats = await _repository.getDashboardStats(
+          warehouseUuid: state.selectedWarehouseUuid);
       final alerts = await _repository.getActiveAlerts(limit: 10);
       emit(state.copyWith(
         isRefreshing: false,
@@ -195,7 +215,8 @@ class AdvancedInventoryBloc extends Bloc<AdvancedInventoryEvent, AdvancedInvento
     }
   }
 
-  Future<void> _onLoadWarehouses(_LoadWarehouses event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onLoadWarehouses(
+      _LoadWarehouses event, Emitter<AdvancedInventoryState> emit) async {
     try {
       final warehouses = await _repository.getWarehouses();
       emit(state.copyWith(warehouses: warehouses));
@@ -204,32 +225,38 @@ class AdvancedInventoryBloc extends Bloc<AdvancedInventoryEvent, AdvancedInvento
     }
   }
 
-  Future<void> _onSelectWarehouse(_SelectWarehouse event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onSelectWarehouse(
+      _SelectWarehouse event, Emitter<AdvancedInventoryState> emit) async {
     emit(state.copyWith(selectedWarehouseUuid: event.uuid));
     add(AdvancedInventoryEvent.loadDashboard(warehouseUuid: event.uuid));
   }
 
-  Future<void> _onCreateWarehouse(_CreateWarehouse event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onCreateWarehouse(
+      _CreateWarehouse event, Emitter<AdvancedInventoryState> emit) async {
     try {
       await _repository.createWarehouse(event.warehouse);
       final warehouses = await _repository.getWarehouses();
-      emit(state.copyWith(warehouses: warehouses, successMessage: 'Warehouse created'));
+      emit(state.copyWith(
+          warehouses: warehouses, successMessage: 'Warehouse created'));
     } catch (e) {
       emit(state.copyWith(error: e.toString()));
     }
   }
 
-  Future<void> _onUpdateWarehouse(_UpdateWarehouse event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onUpdateWarehouse(
+      _UpdateWarehouse event, Emitter<AdvancedInventoryState> emit) async {
     try {
       await _repository.updateWarehouse(event.warehouse);
       final warehouses = await _repository.getWarehouses();
-      emit(state.copyWith(warehouses: warehouses, successMessage: 'Warehouse updated'));
+      emit(state.copyWith(
+          warehouses: warehouses, successMessage: 'Warehouse updated'));
     } catch (e) {
       emit(state.copyWith(error: e.toString()));
     }
   }
 
-  Future<void> _onLoadStockLevels(_LoadStockLevels event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onLoadStockLevels(
+      _LoadStockLevels event, Emitter<AdvancedInventoryState> emit) async {
     emit(state.copyWith(isLoadingStock: true));
     try {
       final levels = await _repository.getStockLevels(
@@ -245,7 +272,8 @@ class AdvancedInventoryBloc extends Bloc<AdvancedInventoryEvent, AdvancedInvento
     }
   }
 
-  Future<void> _onAdjustStock(_AdjustStock event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onAdjustStock(
+      _AdjustStock event, Emitter<AdvancedInventoryState> emit) async {
     try {
       await _repository.recordMovement(
         productUuid: event.productUuid,
@@ -258,13 +286,15 @@ class AdvancedInventoryBloc extends Bloc<AdvancedInventoryEvent, AdvancedInvento
         notes: event.notes,
       );
       emit(state.copyWith(successMessage: 'Stock adjusted'));
-      add(AdvancedInventoryEvent.loadStockLevels(warehouseUuid: event.warehouseUuid));
+      add(AdvancedInventoryEvent.loadStockLevels(
+          warehouseUuid: event.warehouseUuid));
     } catch (e) {
       emit(state.copyWith(error: e.toString()));
     }
   }
 
-  Future<void> _onLoadMovements(_LoadMovements event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onLoadMovements(
+      _LoadMovements event, Emitter<AdvancedInventoryState> emit) async {
     emit(state.copyWith(isLoadingMovements: true));
     try {
       final movements = await _repository.getMovementHistory(
@@ -279,7 +309,8 @@ class AdvancedInventoryBloc extends Bloc<AdvancedInventoryEvent, AdvancedInvento
     }
   }
 
-  Future<void> _onLoadBatches(_LoadBatches event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onLoadBatches(
+      _LoadBatches event, Emitter<AdvancedInventoryState> emit) async {
     emit(state.copyWith(isLoadingBatches: true));
     try {
       final batches = await _repository.getBatches(
@@ -294,9 +325,11 @@ class AdvancedInventoryBloc extends Bloc<AdvancedInventoryEvent, AdvancedInvento
     }
   }
 
-  Future<void> _onLoadAlerts(_LoadAlerts event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onLoadAlerts(
+      _LoadAlerts event, Emitter<AdvancedInventoryState> emit) async {
     try {
-      final alerts = await _repository.getActiveAlerts(severity: event.severity);
+      final alerts =
+          await _repository.getActiveAlerts(severity: event.severity);
       emit(state.copyWith(
         alerts: alerts,
         unacknowledgedAlertCount: alerts.where((a) => !a.isAcknowledged).length,
@@ -306,7 +339,8 @@ class AdvancedInventoryBloc extends Bloc<AdvancedInventoryEvent, AdvancedInvento
     }
   }
 
-  Future<void> _onAcknowledgeAlert(_AcknowledgeAlert event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onAcknowledgeAlert(
+      _AcknowledgeAlert event, Emitter<AdvancedInventoryState> emit) async {
     try {
       await _repository.acknowledgeAlert(event.uuid, 'current-user');
       add(const AdvancedInventoryEvent.loadAlerts());
@@ -315,7 +349,8 @@ class AdvancedInventoryBloc extends Bloc<AdvancedInventoryEvent, AdvancedInvento
     }
   }
 
-  Future<void> _onResolveAlert(_ResolveAlert event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onResolveAlert(
+      _ResolveAlert event, Emitter<AdvancedInventoryState> emit) async {
     try {
       await _repository.resolveAlert(event.uuid, event.action);
       add(const AdvancedInventoryEvent.loadAlerts());
@@ -325,7 +360,8 @@ class AdvancedInventoryBloc extends Bloc<AdvancedInventoryEvent, AdvancedInvento
     }
   }
 
-  Future<void> _onGenerateAlerts(_GenerateAlerts event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onGenerateAlerts(
+      _GenerateAlerts event, Emitter<AdvancedInventoryState> emit) async {
     try {
       await _repository.checkAndGenerateAlerts();
       add(const AdvancedInventoryEvent.loadAlerts());
@@ -334,7 +370,8 @@ class AdvancedInventoryBloc extends Bloc<AdvancedInventoryEvent, AdvancedInvento
     }
   }
 
-  Future<void> _onLoadTransfers(_LoadTransfers event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onLoadTransfers(
+      _LoadTransfers event, Emitter<AdvancedInventoryState> emit) async {
     emit(state.copyWith(isLoadingTransfers: true));
     try {
       final transfers = await _repository.getTransfers(status: event.status);
@@ -344,7 +381,8 @@ class AdvancedInventoryBloc extends Bloc<AdvancedInventoryEvent, AdvancedInvento
     }
   }
 
-  Future<void> _onCreateTransfer(_CreateTransfer event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onCreateTransfer(
+      _CreateTransfer event, Emitter<AdvancedInventoryState> emit) async {
     try {
       await _repository.createTransfer(event.transfer);
       add(const AdvancedInventoryEvent.loadTransfers());
@@ -354,9 +392,12 @@ class AdvancedInventoryBloc extends Bloc<AdvancedInventoryEvent, AdvancedInvento
     }
   }
 
-  Future<void> _onApproveTransfer(_ApproveTransfer event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onApproveTransfer(
+      _ApproveTransfer event, Emitter<AdvancedInventoryState> emit) async {
     try {
-      await _repository.updateTransferStatus(event.uuid, TransferStatus.approved, approvedBy: 'current-user');
+      await _repository.updateTransferStatus(
+          event.uuid, TransferStatus.approved,
+          approvedBy: 'current-user');
       add(const AdvancedInventoryEvent.loadTransfers());
       emit(state.copyWith(successMessage: 'Transfer approved'));
     } catch (e) {
@@ -364,7 +405,8 @@ class AdvancedInventoryBloc extends Bloc<AdvancedInventoryEvent, AdvancedInvento
     }
   }
 
-  Future<void> _onShipTransfer(_ShipTransfer event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onShipTransfer(
+      _ShipTransfer event, Emitter<AdvancedInventoryState> emit) async {
     try {
       await _repository.shipTransfer(event.uuid, event.items);
       add(const AdvancedInventoryEvent.loadTransfers());
@@ -374,9 +416,11 @@ class AdvancedInventoryBloc extends Bloc<AdvancedInventoryEvent, AdvancedInvento
     }
   }
 
-  Future<void> _onReceiveTransfer(_ReceiveTransfer event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onReceiveTransfer(
+      _ReceiveTransfer event, Emitter<AdvancedInventoryState> emit) async {
     try {
-      await _repository.receiveTransfer(event.uuid, event.items, 'current-user');
+      await _repository.receiveTransfer(
+          event.uuid, event.items, 'current-user');
       add(const AdvancedInventoryEvent.loadTransfers());
       emit(state.copyWith(successMessage: 'Transfer received'));
     } catch (e) {
@@ -384,23 +428,28 @@ class AdvancedInventoryBloc extends Bloc<AdvancedInventoryEvent, AdvancedInvento
     }
   }
 
-  Future<void> _onLoadInsights(_LoadInsights event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onLoadInsights(
+      _LoadInsights event, Emitter<AdvancedInventoryState> emit) async {
     try {
-      final insights = await _repository.generateInsights(warehouseUuid: state.selectedWarehouseUuid);
+      final insights = await _repository.generateInsights(
+          warehouseUuid: state.selectedWarehouseUuid);
       emit(state.copyWith(insights: insights));
     } catch (e) {
       emit(state.copyWith(error: e.toString()));
     }
   }
 
-  Future<void> _onStartPhysicalCount(_StartPhysicalCount event, Emitter<AdvancedInventoryState> emit) async {
+  Future<void> _onStartPhysicalCount(
+      _StartPhysicalCount event, Emitter<AdvancedInventoryState> emit) async {
     try {
       final sessionUuid = await _repository.startPhysicalCount(
         warehouseUuid: event.warehouseUuid,
         initiatedBy: 'current-user',
         initiatedByName: 'Current User',
       );
-      emit(state.copyWith(activeCountSessionUuid: sessionUuid, successMessage: 'Physical count started'));
+      emit(state.copyWith(
+          activeCountSessionUuid: sessionUuid,
+          successMessage: 'Physical count started'));
     } catch (e) {
       emit(state.copyWith(error: e.toString()));
     }

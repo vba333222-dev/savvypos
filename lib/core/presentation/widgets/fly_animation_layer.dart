@@ -15,9 +15,13 @@ class FlyAnimationLayer extends StatefulWidget {
   State<FlyAnimationLayer> createState() => FlyAnimationLayerState();
 }
 
-class FlyAnimationLayerState extends State<FlyAnimationLayer> with TickerProviderStateMixin<FlyAnimationLayer>, FlightAnimationController<FlyAnimationLayer> {
+class FlyAnimationLayerState extends State<FlyAnimationLayer>
+    with
+        TickerProviderStateMixin<FlyAnimationLayer>,
+        FlightAnimationController<FlyAnimationLayer> {
   GlobalKey? _targetKey;
-  final StreamController<void> _hitController = StreamController<void>.broadcast();
+  final StreamController<void> _hitController =
+      StreamController<void>.broadcast();
 
   Stream<void> get onTargetHit => _hitController.stream;
 
@@ -30,7 +34,8 @@ class FlyAnimationLayerState extends State<FlyAnimationLayer> with TickerProvide
     required Widget child,
   }) {
     if (_targetKey == null) {
-      debugPrint("FlyAnimationLayer: No target registered. Call registerTarget first.");
+      debugPrint(
+          "FlyAnimationLayer: No target registered. Call registerTarget first.");
       return;
     }
 

@@ -16,7 +16,8 @@ class NumpadWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final buttonSize = constraints.maxWidth / 3 - 8; // approx size with spacing
+        final buttonSize =
+            constraints.maxWidth / 3 - 8; // approx size with spacing
         return Column(
           children: [
             _buildRow(['1', '2', '3'], buttonSize),
@@ -44,7 +45,8 @@ class NumpadWidget extends StatelessWidget {
               padding: EdgeInsets.zero,
               backgroundColor: Colors.white,
               foregroundColor: Colors.black,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
               elevation: 1,
             ),
             onPressed: () {
@@ -56,9 +58,11 @@ class NumpadWidget extends StatelessWidget {
                 onKeyPressed(key);
               }
             },
-            child: key == 'DEL' 
-               ? const Icon(Icons.backspace_outlined) 
-               : Text(key, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            child: key == 'DEL'
+                ? const Icon(Icons.backspace_outlined)
+                : Text(key,
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.bold)),
           ),
         );
       }).toList(),

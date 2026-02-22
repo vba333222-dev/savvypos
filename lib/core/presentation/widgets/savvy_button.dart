@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
@@ -53,9 +54,10 @@ class SavvyButton extends StatefulWidget {
 
 class _SavvyButtonState extends State<SavvyButton> {
   bool _isPressed = false;
+  bool _isThrottled = false;
 
   void _handleTapDown(TapDownDetails _) {
-    if (widget.onPressed == null || widget.isLoading) return;
+    if (widget.onPressed == null || widget.isLoading || _isThrottled) return;
     // Haptic fires on finger-down — matches the physical press sensation
     HapticFeedback.lightImpact();
     setState(() => _isPressed = true);
@@ -63,7 +65,14 @@ class _SavvyButtonState extends State<SavvyButton> {
 
   void _handleTapUp(TapUpDetails _) {
     setState(() => _isPressed = false);
-    if (!widget.isLoading) widget.onPressed?.call();
+    if (!widget.isLoading && !_isThrottled && widget.onPressed != null) {
+      setState(() => _isThrottled = true);
+      widget.onPressed!();
+      
+      Timer(const Duration(milliseconds: 1500), () {
+        if (mounted) setState(() => _isThrottled = false);
+      });
+    }
   }
 
   void _handleTapCancel() {
@@ -109,7 +118,7 @@ class _SavvyButtonState extends State<SavvyButton> {
     if (widget.foregroundColor != null) fgColor = widget.foregroundColor!;
 
     // Disabled state
-    final isEnabled = widget.onPressed != null && !widget.isLoading;
+    final isEnabled = widget.onPressed != null && !widget.isLoading && !_isThrottled;
     if (!isEnabled) {
       bgColor = theme.colors.bgDisabled;
       fgColor = theme.colors.textDisabled;
@@ -136,7 +145,7 @@ class _SavvyButtonState extends State<SavvyButton> {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        if (widget.isLoading)
+        if (widget.isLoading || _isThrottled)
           SizedBox(
             width: 16,
             height: 16,
@@ -146,7 +155,7 @@ class _SavvyButtonState extends State<SavvyButton> {
           Icon(widget.icon, size: 18),
           SizedBox(width: theme.shapes.spacingSm),
         ],
-        if (!widget.isLoading)
+        if (!widget.isLoading && !_isThrottled)
           SavvyText(
             widget.text,
             style: SavvyTextStyle.labelMedium,

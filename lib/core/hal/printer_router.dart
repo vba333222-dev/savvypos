@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/hal/printer_interface.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
@@ -7,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 @lazySingleton
 class PrinterRouter {
   final IPrinterService _printerService;
+  final List<Map<String, dynamic>> failedPrintJobs = [];
   
   String? _kitchenPrinterAddress;
   PrinterConnectionType _kitchenPrinterType = PrinterConnectionType.network; // Kitchen defaults to Network
@@ -130,7 +132,7 @@ class PrinterRouter {
   ) async {
     try {
       // Setup connection context (Service auto-connects if needed on print command)
-      await _printerService.connect(targetAddress, type: type);
+      await _printerService.connect(targetAddress, type: type).timeout(const Duration(seconds: 5));
       
       // We only string-build here. The actual layout ESC/POS byte translation 
       // happens inside the background Isolate via PrinterService.
@@ -164,10 +166,28 @@ class PrinterRouter {
       buffer.writeln("\n\n");
       
       // Spool to Background Isolate Queue
-      await _printerService.printText(buffer.toString(), isLarge: largeFont);
+      await _printerService.printText(buffer.toString(), isLarge: largeFont).timeout(const Duration(seconds: 5));
       
+    } on TimeoutException catch (e) {
+      debugPrint('Printer Router Timeout ($title): $e');
+      failedPrintJobs.add({
+        'title': title,
+        'orderNo': orderNo,
+        'targetAddress': targetAddress,
+        'type': _typeToString(type),
+        'timestamp': DateTime.now().toIso8601String(),
+        'error': 'TimeoutException'
+      });
     } catch (e) {
       debugPrint('Printer Router Error ($title): $e');
+      failedPrintJobs.add({
+        'title': title,
+        'orderNo': orderNo,
+        'targetAddress': targetAddress,
+        'type': _typeToString(type),
+        'timestamp': DateTime.now().toIso8601String(),
+        'error': e.toString()
+      });
     }
   }
 
@@ -175,7 +195,7 @@ class PrinterRouter {
     if (_cashierPrinterAddress == null) return;
     
     try {
-      await _printerService.connect(_cashierPrinterAddress!, type: _cashierPrinterType);
+      await _printerService.connect(_cashierPrinterAddress!, type: _cashierPrinterType).timeout(const Duration(seconds: 5));
       
       StringBuffer buffer = StringBuffer();
       buffer.writeln("=== TABLE QR ORDERING ===");
@@ -188,9 +208,23 @@ class PrinterRouter {
       buffer.writeln("--------------------------------");
       buffer.writeln("\n\n");
       
-      await _printerService.printText(buffer.toString(), isLarge: false);
+      await _printerService.printText(buffer.toString(), isLarge: false).timeout(const Duration(seconds: 5));
+    } on TimeoutException catch (e) {
+      debugPrint('Printer Router QR Timeout: $e');
+      failedPrintJobs.add({
+        'title': 'QR_SESSION',
+        'targetAddress': _cashierPrinterAddress,
+        'timestamp': DateTime.now().toIso8601String(),
+        'error': 'TimeoutException'
+      });
     } catch (e) {
       debugPrint('Printer Router QR Error: $e');
+      failedPrintJobs.add({
+        'title': 'QR_SESSION',
+        'targetAddress': _cashierPrinterAddress,
+        'timestamp': DateTime.now().toIso8601String(),
+        'error': e.toString()
+      });
     }
   }
 }

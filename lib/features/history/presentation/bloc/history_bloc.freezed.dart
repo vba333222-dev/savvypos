@@ -19,6 +19,7 @@ mixin _$HistoryEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loadHistory,
+    required TResult Function() fetchMoreTransactions,
     required TResult Function(String orderUuid) loadOrderItems,
     required TResult Function(DateTime start, DateTime end) exportHistoryToCsv,
   }) =>
@@ -26,6 +27,7 @@ mixin _$HistoryEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadHistory,
+    TResult? Function()? fetchMoreTransactions,
     TResult? Function(String orderUuid)? loadOrderItems,
     TResult? Function(DateTime start, DateTime end)? exportHistoryToCsv,
   }) =>
@@ -33,6 +35,7 @@ mixin _$HistoryEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadHistory,
+    TResult Function()? fetchMoreTransactions,
     TResult Function(String orderUuid)? loadOrderItems,
     TResult Function(DateTime start, DateTime end)? exportHistoryToCsv,
     required TResult orElse(),
@@ -41,6 +44,8 @@ mixin _$HistoryEvent {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_LoadHistory value) loadHistory,
+    required TResult Function(_FetchMoreTransactions value)
+        fetchMoreTransactions,
     required TResult Function(_LoadOrderItems value) loadOrderItems,
     required TResult Function(_ExportHistoryToCsv value) exportHistoryToCsv,
   }) =>
@@ -48,6 +53,7 @@ mixin _$HistoryEvent {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_LoadHistory value)? loadHistory,
+    TResult? Function(_FetchMoreTransactions value)? fetchMoreTransactions,
     TResult? Function(_LoadOrderItems value)? loadOrderItems,
     TResult? Function(_ExportHistoryToCsv value)? exportHistoryToCsv,
   }) =>
@@ -55,6 +61,7 @@ mixin _$HistoryEvent {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoadHistory value)? loadHistory,
+    TResult Function(_FetchMoreTransactions value)? fetchMoreTransactions,
     TResult Function(_LoadOrderItems value)? loadOrderItems,
     TResult Function(_ExportHistoryToCsv value)? exportHistoryToCsv,
     required TResult orElse(),
@@ -125,6 +132,7 @@ class _$LoadHistoryImpl implements _LoadHistory {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loadHistory,
+    required TResult Function() fetchMoreTransactions,
     required TResult Function(String orderUuid) loadOrderItems,
     required TResult Function(DateTime start, DateTime end) exportHistoryToCsv,
   }) {
@@ -135,6 +143,7 @@ class _$LoadHistoryImpl implements _LoadHistory {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadHistory,
+    TResult? Function()? fetchMoreTransactions,
     TResult? Function(String orderUuid)? loadOrderItems,
     TResult? Function(DateTime start, DateTime end)? exportHistoryToCsv,
   }) {
@@ -145,6 +154,7 @@ class _$LoadHistoryImpl implements _LoadHistory {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadHistory,
+    TResult Function()? fetchMoreTransactions,
     TResult Function(String orderUuid)? loadOrderItems,
     TResult Function(DateTime start, DateTime end)? exportHistoryToCsv,
     required TResult orElse(),
@@ -159,6 +169,8 @@ class _$LoadHistoryImpl implements _LoadHistory {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_LoadHistory value) loadHistory,
+    required TResult Function(_FetchMoreTransactions value)
+        fetchMoreTransactions,
     required TResult Function(_LoadOrderItems value) loadOrderItems,
     required TResult Function(_ExportHistoryToCsv value) exportHistoryToCsv,
   }) {
@@ -169,6 +181,7 @@ class _$LoadHistoryImpl implements _LoadHistory {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_LoadHistory value)? loadHistory,
+    TResult? Function(_FetchMoreTransactions value)? fetchMoreTransactions,
     TResult? Function(_LoadOrderItems value)? loadOrderItems,
     TResult? Function(_ExportHistoryToCsv value)? exportHistoryToCsv,
   }) {
@@ -179,6 +192,7 @@ class _$LoadHistoryImpl implements _LoadHistory {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoadHistory value)? loadHistory,
+    TResult Function(_FetchMoreTransactions value)? fetchMoreTransactions,
     TResult Function(_LoadOrderItems value)? loadOrderItems,
     TResult Function(_ExportHistoryToCsv value)? exportHistoryToCsv,
     required TResult orElse(),
@@ -192,6 +206,126 @@ class _$LoadHistoryImpl implements _LoadHistory {
 
 abstract class _LoadHistory implements HistoryEvent {
   const factory _LoadHistory() = _$LoadHistoryImpl;
+}
+
+/// @nodoc
+abstract class _$$FetchMoreTransactionsImplCopyWith<$Res> {
+  factory _$$FetchMoreTransactionsImplCopyWith(
+          _$FetchMoreTransactionsImpl value,
+          $Res Function(_$FetchMoreTransactionsImpl) then) =
+      __$$FetchMoreTransactionsImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$FetchMoreTransactionsImplCopyWithImpl<$Res>
+    extends _$HistoryEventCopyWithImpl<$Res, _$FetchMoreTransactionsImpl>
+    implements _$$FetchMoreTransactionsImplCopyWith<$Res> {
+  __$$FetchMoreTransactionsImplCopyWithImpl(_$FetchMoreTransactionsImpl _value,
+      $Res Function(_$FetchMoreTransactionsImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of HistoryEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$FetchMoreTransactionsImpl implements _FetchMoreTransactions {
+  const _$FetchMoreTransactionsImpl();
+
+  @override
+  String toString() {
+    return 'HistoryEvent.fetchMoreTransactions()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FetchMoreTransactionsImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loadHistory,
+    required TResult Function() fetchMoreTransactions,
+    required TResult Function(String orderUuid) loadOrderItems,
+    required TResult Function(DateTime start, DateTime end) exportHistoryToCsv,
+  }) {
+    return fetchMoreTransactions();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loadHistory,
+    TResult? Function()? fetchMoreTransactions,
+    TResult? Function(String orderUuid)? loadOrderItems,
+    TResult? Function(DateTime start, DateTime end)? exportHistoryToCsv,
+  }) {
+    return fetchMoreTransactions?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadHistory,
+    TResult Function()? fetchMoreTransactions,
+    TResult Function(String orderUuid)? loadOrderItems,
+    TResult Function(DateTime start, DateTime end)? exportHistoryToCsv,
+    required TResult orElse(),
+  }) {
+    if (fetchMoreTransactions != null) {
+      return fetchMoreTransactions();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoadHistory value) loadHistory,
+    required TResult Function(_FetchMoreTransactions value)
+        fetchMoreTransactions,
+    required TResult Function(_LoadOrderItems value) loadOrderItems,
+    required TResult Function(_ExportHistoryToCsv value) exportHistoryToCsv,
+  }) {
+    return fetchMoreTransactions(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadHistory value)? loadHistory,
+    TResult? Function(_FetchMoreTransactions value)? fetchMoreTransactions,
+    TResult? Function(_LoadOrderItems value)? loadOrderItems,
+    TResult? Function(_ExportHistoryToCsv value)? exportHistoryToCsv,
+  }) {
+    return fetchMoreTransactions?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadHistory value)? loadHistory,
+    TResult Function(_FetchMoreTransactions value)? fetchMoreTransactions,
+    TResult Function(_LoadOrderItems value)? loadOrderItems,
+    TResult Function(_ExportHistoryToCsv value)? exportHistoryToCsv,
+    required TResult orElse(),
+  }) {
+    if (fetchMoreTransactions != null) {
+      return fetchMoreTransactions(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _FetchMoreTransactions implements HistoryEvent {
+  const factory _FetchMoreTransactions() = _$FetchMoreTransactionsImpl;
 }
 
 /// @nodoc
@@ -265,6 +399,7 @@ class _$LoadOrderItemsImpl implements _LoadOrderItems {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loadHistory,
+    required TResult Function() fetchMoreTransactions,
     required TResult Function(String orderUuid) loadOrderItems,
     required TResult Function(DateTime start, DateTime end) exportHistoryToCsv,
   }) {
@@ -275,6 +410,7 @@ class _$LoadOrderItemsImpl implements _LoadOrderItems {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadHistory,
+    TResult? Function()? fetchMoreTransactions,
     TResult? Function(String orderUuid)? loadOrderItems,
     TResult? Function(DateTime start, DateTime end)? exportHistoryToCsv,
   }) {
@@ -285,6 +421,7 @@ class _$LoadOrderItemsImpl implements _LoadOrderItems {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadHistory,
+    TResult Function()? fetchMoreTransactions,
     TResult Function(String orderUuid)? loadOrderItems,
     TResult Function(DateTime start, DateTime end)? exportHistoryToCsv,
     required TResult orElse(),
@@ -299,6 +436,8 @@ class _$LoadOrderItemsImpl implements _LoadOrderItems {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_LoadHistory value) loadHistory,
+    required TResult Function(_FetchMoreTransactions value)
+        fetchMoreTransactions,
     required TResult Function(_LoadOrderItems value) loadOrderItems,
     required TResult Function(_ExportHistoryToCsv value) exportHistoryToCsv,
   }) {
@@ -309,6 +448,7 @@ class _$LoadOrderItemsImpl implements _LoadOrderItems {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_LoadHistory value)? loadHistory,
+    TResult? Function(_FetchMoreTransactions value)? fetchMoreTransactions,
     TResult? Function(_LoadOrderItems value)? loadOrderItems,
     TResult? Function(_ExportHistoryToCsv value)? exportHistoryToCsv,
   }) {
@@ -319,6 +459,7 @@ class _$LoadOrderItemsImpl implements _LoadOrderItems {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoadHistory value)? loadHistory,
+    TResult Function(_FetchMoreTransactions value)? fetchMoreTransactions,
     TResult Function(_LoadOrderItems value)? loadOrderItems,
     TResult Function(_ExportHistoryToCsv value)? exportHistoryToCsv,
     required TResult orElse(),
@@ -420,6 +561,7 @@ class _$ExportHistoryToCsvImpl implements _ExportHistoryToCsv {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loadHistory,
+    required TResult Function() fetchMoreTransactions,
     required TResult Function(String orderUuid) loadOrderItems,
     required TResult Function(DateTime start, DateTime end) exportHistoryToCsv,
   }) {
@@ -430,6 +572,7 @@ class _$ExportHistoryToCsvImpl implements _ExportHistoryToCsv {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loadHistory,
+    TResult? Function()? fetchMoreTransactions,
     TResult? Function(String orderUuid)? loadOrderItems,
     TResult? Function(DateTime start, DateTime end)? exportHistoryToCsv,
   }) {
@@ -440,6 +583,7 @@ class _$ExportHistoryToCsvImpl implements _ExportHistoryToCsv {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loadHistory,
+    TResult Function()? fetchMoreTransactions,
     TResult Function(String orderUuid)? loadOrderItems,
     TResult Function(DateTime start, DateTime end)? exportHistoryToCsv,
     required TResult orElse(),
@@ -454,6 +598,8 @@ class _$ExportHistoryToCsvImpl implements _ExportHistoryToCsv {
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(_LoadHistory value) loadHistory,
+    required TResult Function(_FetchMoreTransactions value)
+        fetchMoreTransactions,
     required TResult Function(_LoadOrderItems value) loadOrderItems,
     required TResult Function(_ExportHistoryToCsv value) exportHistoryToCsv,
   }) {
@@ -464,6 +610,7 @@ class _$ExportHistoryToCsvImpl implements _ExportHistoryToCsv {
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_LoadHistory value)? loadHistory,
+    TResult? Function(_FetchMoreTransactions value)? fetchMoreTransactions,
     TResult? Function(_LoadOrderItems value)? loadOrderItems,
     TResult? Function(_ExportHistoryToCsv value)? exportHistoryToCsv,
   }) {
@@ -474,6 +621,7 @@ class _$ExportHistoryToCsvImpl implements _ExportHistoryToCsv {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoadHistory value)? loadHistory,
+    TResult Function(_FetchMoreTransactions value)? fetchMoreTransactions,
     TResult Function(_LoadOrderItems value)? loadOrderItems,
     TResult Function(_ExportHistoryToCsv value)? exportHistoryToCsv,
     required TResult orElse(),
@@ -503,8 +651,10 @@ abstract class _ExportHistoryToCsv implements HistoryEvent {
 mixin _$HistoryState {
   List<OrderTableData> get orders => throw _privateConstructorUsedError;
   Map<String, List<OrderItemTableData>> get orderItems =>
-      throw _privateConstructorUsedError; // Cache items by Order UUID
+      throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
+  bool get isLoadingMore => throw _privateConstructorUsedError;
+  bool get hasReachedMax => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
   /// Create a copy of HistoryState
@@ -524,6 +674,8 @@ abstract class $HistoryStateCopyWith<$Res> {
       {List<OrderTableData> orders,
       Map<String, List<OrderItemTableData>> orderItems,
       bool isLoading,
+      bool isLoadingMore,
+      bool hasReachedMax,
       String? error});
 }
 
@@ -545,6 +697,8 @@ class _$HistoryStateCopyWithImpl<$Res, $Val extends HistoryState>
     Object? orders = null,
     Object? orderItems = null,
     Object? isLoading = null,
+    Object? isLoadingMore = null,
+    Object? hasReachedMax = null,
     Object? error = freezed,
   }) {
     return _then(_value.copyWith(
@@ -559,6 +713,14 @@ class _$HistoryStateCopyWithImpl<$Res, $Val extends HistoryState>
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isLoadingMore: null == isLoadingMore
+          ? _value.isLoadingMore
+          : isLoadingMore // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hasReachedMax: null == hasReachedMax
+          ? _value.hasReachedMax
+          : hasReachedMax // ignore: cast_nullable_to_non_nullable
               as bool,
       error: freezed == error
           ? _value.error
@@ -580,6 +742,8 @@ abstract class _$$HistoryStateImplCopyWith<$Res>
       {List<OrderTableData> orders,
       Map<String, List<OrderItemTableData>> orderItems,
       bool isLoading,
+      bool isLoadingMore,
+      bool hasReachedMax,
       String? error});
 }
 
@@ -599,6 +763,8 @@ class __$$HistoryStateImplCopyWithImpl<$Res>
     Object? orders = null,
     Object? orderItems = null,
     Object? isLoading = null,
+    Object? isLoadingMore = null,
+    Object? hasReachedMax = null,
     Object? error = freezed,
   }) {
     return _then(_$HistoryStateImpl(
@@ -613,6 +779,14 @@ class __$$HistoryStateImplCopyWithImpl<$Res>
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isLoadingMore: null == isLoadingMore
+          ? _value.isLoadingMore
+          : isLoadingMore // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hasReachedMax: null == hasReachedMax
+          ? _value.hasReachedMax
+          : hasReachedMax // ignore: cast_nullable_to_non_nullable
               as bool,
       error: freezed == error
           ? _value.error
@@ -629,6 +803,8 @@ class _$HistoryStateImpl implements _HistoryState {
       {final List<OrderTableData> orders = const [],
       final Map<String, List<OrderItemTableData>> orderItems = const {},
       this.isLoading = true,
+      this.isLoadingMore = false,
+      this.hasReachedMax = false,
       this.error})
       : _orders = orders,
         _orderItems = orderItems;
@@ -651,16 +827,21 @@ class _$HistoryStateImpl implements _HistoryState {
     return EqualUnmodifiableMapView(_orderItems);
   }
 
-// Cache items by Order UUID
   @override
   @JsonKey()
   final bool isLoading;
+  @override
+  @JsonKey()
+  final bool isLoadingMore;
+  @override
+  @JsonKey()
+  final bool hasReachedMax;
   @override
   final String? error;
 
   @override
   String toString() {
-    return 'HistoryState(orders: $orders, orderItems: $orderItems, isLoading: $isLoading, error: $error)';
+    return 'HistoryState(orders: $orders, orderItems: $orderItems, isLoading: $isLoading, isLoadingMore: $isLoadingMore, hasReachedMax: $hasReachedMax, error: $error)';
   }
 
   @override
@@ -673,6 +854,10 @@ class _$HistoryStateImpl implements _HistoryState {
                 .equals(other._orderItems, _orderItems) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
+            (identical(other.isLoadingMore, isLoadingMore) ||
+                other.isLoadingMore == isLoadingMore) &&
+            (identical(other.hasReachedMax, hasReachedMax) ||
+                other.hasReachedMax == hasReachedMax) &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -682,6 +867,8 @@ class _$HistoryStateImpl implements _HistoryState {
       const DeepCollectionEquality().hash(_orders),
       const DeepCollectionEquality().hash(_orderItems),
       isLoading,
+      isLoadingMore,
+      hasReachedMax,
       error);
 
   /// Create a copy of HistoryState
@@ -698,15 +885,20 @@ abstract class _HistoryState implements HistoryState {
       {final List<OrderTableData> orders,
       final Map<String, List<OrderItemTableData>> orderItems,
       final bool isLoading,
+      final bool isLoadingMore,
+      final bool hasReachedMax,
       final String? error}) = _$HistoryStateImpl;
 
   @override
   List<OrderTableData> get orders;
   @override
-  Map<String, List<OrderItemTableData>>
-      get orderItems; // Cache items by Order UUID
+  Map<String, List<OrderItemTableData>> get orderItems;
   @override
   bool get isLoading;
+  @override
+  bool get isLoadingMore;
+  @override
+  bool get hasReachedMax;
   @override
   String? get error;
 

@@ -12,15 +12,16 @@ class OrderRepositoryImpl implements IOrderRepository {
   OrderRepositoryImpl(this.db, this._tenantRepo);
 
   @override
-  Stream<List<OrderTableData>> getOrders() async* {
+  Future<List<OrderTableData>> getOrders({int limit = 50, int offset = 0}) async {
     final scope = await _tenantRepo.getActiveScope();
-    yield* (db.select(db.orderTable)
+    return (db.select(db.orderTable)
           ..where((t) => t.outletId.equals(scope['outletId'] ?? ''))
           ..orderBy([
             (t) => OrderingTerm(
                 expression: t.transactionDate, mode: OrderingMode.desc)
-          ]))
-        .watch();
+          ])
+          ..limit(limit, offset: offset))
+        .get();
   }
 
   @override

@@ -12,6 +12,7 @@ part 'history_bloc.freezed.dart';
 @freezed
 class HistoryEvent with _$HistoryEvent {
   const factory HistoryEvent.loadHistory() = _LoadHistory;
+  const factory HistoryEvent.fetchMoreTransactions() = _FetchMoreTransactions;
   const factory HistoryEvent.loadOrderItems(String orderUuid) = _LoadOrderItems;
   const factory HistoryEvent.exportHistoryToCsv(DateTime start, DateTime end) =
       _ExportHistoryToCsv;
@@ -21,10 +22,10 @@ class HistoryEvent with _$HistoryEvent {
 class HistoryState with _$HistoryState {
   const factory HistoryState({
     @Default([]) List<OrderTableData> orders,
-    @Default({})
-    Map<String, List<OrderItemTableData>>
-        orderItems, // Cache items by Order UUID
+    @Default({}) Map<String, List<OrderItemTableData>> orderItems, 
     @Default(true) bool isLoading,
+    @Default(false) bool isLoadingMore,
+    @Default(false) bool hasReachedMax,
     String? error,
   }) = _HistoryState;
 }
@@ -35,18 +36,47 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
 
   HistoryBloc(this._repository) : super(const HistoryState()) {
     on<_LoadHistory>(_onLoadHistory);
+    on<_FetchMoreTransactions>(_onFetchMoreTransactions);
     on<_LoadOrderItems>(_onLoadOrderItems);
     on<_ExportHistoryToCsv>(_onExportHistory);
   }
 
   Future<void> _onLoadHistory(
       _LoadHistory event, Emitter<HistoryState> emit) async {
-    emit(state.copyWith(isLoading: true));
-    await emit.forEach(
-      _repository.getOrders(),
-      onData: (orders) => state.copyWith(orders: orders, isLoading: false),
-      onError: (e, s) => state.copyWith(error: e.toString(), isLoading: false),
-    );
+    emit(state.copyWith(isLoading: true, hasReachedMax: false, error: null));
+    try {
+       final initialOrders = await _repository.getOrders(limit: 50, offset: 0);
+       emit(state.copyWith(
+          orders: initialOrders,
+          isLoading: false,
+          hasReachedMax: initialOrders.length < 50,
+       ));
+    } catch (e) {
+       emit(state.copyWith(error: e.toString(), isLoading: false));
+    }
+  }
+
+  Future<void> _onFetchMoreTransactions(
+      _FetchMoreTransactions event, Emitter<HistoryState> emit) async {
+    if (state.hasReachedMax || state.isLoadingMore || state.isLoading) return;
+    
+    emit(state.copyWith(isLoadingMore: true, error: null));
+    try {
+       final currentLength = state.orders.length;
+       final moreOrders = await _repository.getOrders(limit: 50, offset: currentLength);
+       
+       if (moreOrders.isEmpty) {
+          emit(state.copyWith(hasReachedMax: true, isLoadingMore: false));
+       } else {
+          emit(state.copyWith(
+             orders: List.of(state.orders)..addAll(moreOrders),
+             isLoadingMore: false,
+             hasReachedMax: moreOrders.length < 50
+          ));
+       }
+    } catch (e) {
+       emit(state.copyWith(error: e.toString(), isLoadingMore: false));
+    }
   }
 
   Future<void> _onLoadOrderItems(

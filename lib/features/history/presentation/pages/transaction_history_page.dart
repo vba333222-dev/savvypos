@@ -20,8 +20,34 @@ class TransactionHistoryPage extends StatelessWidget {
   }
 }
 
-class _HistoryView extends StatelessWidget {
+class _HistoryView extends StatefulWidget {
   const _HistoryView();
+
+  @override
+  State<_HistoryView> createState() => _HistoryViewState();
+}
+
+class _HistoryViewState extends State<_HistoryView> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      context.read<HistoryBloc>().add(const HistoryEvent.fetchMoreTransactions());
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +88,23 @@ class _HistoryView extends StatelessWidget {
           }
 
           return ListView.separated(
+            controller: _scrollController,
             padding: EdgeInsets.all(context.savvy.shapes.spacingMd),
-            itemCount: state.orders.length,
+            itemCount: state.orders.length + (state.isLoadingMore ? 1 : 0),
             separatorBuilder: (_, __) => Divider(color: colors.borderDefault),
             itemBuilder: (context, index) {
+              if (index == state.orders.length) {
+                return const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Center(
+                    child: SizedBox(
+                       width: 24, height: 24, 
+                       child: CircularProgressIndicator(strokeWidth: 2)
+                    )
+                  ),
+                );
+              }
+              
               final order = state.orders[index];
               return ListTile(
                 leading: CircleAvatar(

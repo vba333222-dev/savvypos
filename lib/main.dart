@@ -13,6 +13,8 @@ import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
 import 'package:savvy_pos/features/shifts/presentation/bloc/shift_bloc.dart';
 import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workmanager/workmanager.dart';
+import 'package:savvy_pos/features/sales/domain/usecases/check_hanging_transactions.dart';
+import 'package:savvy_pos/features/sales/presentation/widgets/crash_recovery_dialog.dart';
 
 void main() async {
   // Ensure binding
@@ -63,6 +65,8 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> with WidgetsBindingObserver {
+  bool _hasCheckedForCrashes = false;
+
   @override
   void initState() {
     super.initState();
@@ -73,6 +77,23 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  Future<void> _checkCrashes(BuildContext context) async {
+    if (_hasCheckedForCrashes) return;
+    _hasCheckedForCrashes = true;
+
+    try {
+      final useCase = GetIt.I<CheckHangingTransactionsUseCase>();
+      final hangingOrders = await useCase.execute();
+
+      if (hangingOrders.isNotEmpty && context.mounted) {
+        // Pop the un-dismissable Crash Recovery alert overlaying Route paths
+        await CrashRecoveryDialog.showPersistent(context, hangingOrders);
+      }
+    } catch (_) {
+      // Ignore initial boot exceptions, continue regular app loading
+    }
   }
 
   @override
@@ -112,6 +133,11 @@ class _AppState extends State<App> with WidgetsBindingObserver {
             theme: _buildMaterialTheme(lightTheme),
             darkTheme: _buildMaterialTheme(darkTheme),
             builder: (context, child) {
+              // Post-Frame callback to safely call showDialog upon first build
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                 _checkCrashes(context);
+              });
+
               return MultiBlocProvider(
                 providers: [
                   BlocProvider.value(value: GetIt.I<AuthBloc>()),

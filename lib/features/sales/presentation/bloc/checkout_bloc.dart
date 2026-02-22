@@ -189,7 +189,10 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     ));
 
     try {
-      // Record the payment in the database (same flow as manual card payment)
+      // 1. DRAFT -> PROCESSING_PAYMENT (Intermediate State to track crashes)
+      await _repository.updateOrderStatus(state.orderUuid, 'PROCESSING_PAYMENT');
+
+      // 2. Record the payment in the database (same flow as manual card payment)
       await _processPayment(
         orderUuid: state.orderUuid,
         method: PaymentMethod.card,
@@ -234,6 +237,10 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
       _ProcessPayment event, Emitter<CheckoutState> emit) async {
     emit(state.copyWith(isLoading: true, errorMessage: null));
     try {
+      // 1. DRAFT -> PROCESSING_PAYMENT (Intermediate State to track crashes)
+      await _repository.updateOrderStatus(state.orderUuid, 'PROCESSING_PAYMENT');
+
+      // 2. Proceed with Payment Execution
       await _processPayment(
         orderUuid: state.orderUuid,
         method: event.method,

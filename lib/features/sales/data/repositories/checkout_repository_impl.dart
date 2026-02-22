@@ -62,6 +62,13 @@ class CheckoutRepositoryImpl implements ICheckoutRepository {
   }
 
   @override
+  Future<List<OrderTableData>> getHangingTransactions() async {
+    return (_db.select(_db.orderTable)
+          ..where((t) => t.status.equals('PROCESSING_PAYMENT')))
+        .get();
+  }
+
+  @override
   Future<List<OrderItemTableData>> getOrderItems(String orderUuid) {
     return (_db.select(_db.orderItemTable)
           ..where((t) => t.orderUuid.equals(orderUuid)))

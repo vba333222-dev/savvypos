@@ -170,6 +170,8 @@ import '../../features/sales/domain/repositories/i_checkout_repository.dart'
     as _i98;
 import '../../features/sales/domain/repositories/i_sales_repository.dart'
     as _i639;
+import '../../features/sales/domain/usecases/check_hanging_transactions.dart'
+    as _i92;
 import '../../features/sales/domain/usecases/checkout_usecases.dart' as _i931;
 import '../../features/sales/domain/usecases/get_modifiers_usecase.dart'
     as _i105;
@@ -273,6 +275,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i931.ProcessPaymentUseCase(gh<_i98.ICheckoutRepository>()));
     gh.factory<_i931.GetOrderBalanceUseCase>(
         () => _i931.GetOrderBalanceUseCase(gh<_i98.ICheckoutRepository>()));
+    gh.factory<_i92.CheckHangingTransactionsUseCase>(() =>
+        _i92.CheckHangingTransactionsUseCase(gh<_i98.ICheckoutRepository>()));
     gh.lazySingleton<_i485.IDashboardRepository>(
       () => _i509.DashboardRepositoryImpl(gh<_i660.AppDatabase>()),
       registerFor: {_mobile},

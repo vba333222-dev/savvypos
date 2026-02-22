@@ -8,4 +8,6 @@ abstract class ICheckoutRepository {
   Future<void> updateOrderStatus(
       String orderUuid, String status); // PARTIAL, PAID
   Future<List<OrderItemTableData>> getOrderItems(String orderUuid);
+  
+  Future<List<OrderTableData>> getHangingTransactions();
 }

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:savvy_pos/core/network/auth_interceptor.dart';
 
 @lazySingleton
 class ApiClient {
@@ -23,35 +23,7 @@ class ApiClient {
       'Content-Type': 'application/json',
     },
   )) {
-    _dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) async {
-        final prefs = await SharedPreferences.getInstance();
-        final token = prefs.getString('auth_token');
-        final tenantId = prefs.getString('tenant_id');
-
-        if (token != null && tenantId != null) {
-          options.headers['Authorization'] = 'Bearer $token';
-          options.headers['X-Tenant-ID'] = tenantId;
-        } else {
-           // Abort Sync attempts if not logged in
-           // For simple endpoints, we might want to allow anonymous? 
-           // But user mission says "Secure Identity Injection".
-           // Rejecting here might cause errors in UI if not handled?
-           // Dio doesn't have a clean "Abort" in onRequest without throwing.
-           // We will let it proceed (maybe it's a login request?) or throw?
-           // Check path? '/sync/*' requires auth.
-           if (options.path.contains('/sync/')) {
-               return handler.reject(DioException(
-                   requestOptions: options, 
-                   error: 'Unauthorized: Missing Identity Keys', 
-                   type: DioExceptionType.cancel
-               ));
-           }
-        }
-        
-        return handler.next(options);
-      },
-    ));
+    _dio.interceptors.add(AuthInterceptor(_dio));
   }
 
   Future<Response?> pushItem(Map<String, dynamic> payload) async {

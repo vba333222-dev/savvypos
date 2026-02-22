@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:savvy_pos/core/services/socket_service.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
+import 'package:savvy_pos/core/presentation/widgets/savvy_button.dart';
 
 class DigitalPaymentWidget extends StatefulWidget {
   final double amount;
@@ -62,8 +63,14 @@ class _DigitalPaymentWidgetState extends State<DigitalPaymentWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, dynamic result) {
+        if (didPop) return;
+        if (!_isSuccess) widget.onCancel?.call();
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
       children: [
         const SizedBox(height: 24),
         SavvyText.h3('Scan to Pay'),
@@ -149,21 +156,16 @@ class _DigitalPaymentWidgetState extends State<DigitalPaymentWidget> {
 
         // Cancel Button (Critical Hardware Fallback)
         if (!_isSuccess)
-          Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: OutlinedButton.icon(
-              icon: const Icon(Icons.cancel, color: Colors.red),
-              label: const Text('Batalkan Pembayaran',
-                  style: TextStyle(color: Colors.red)),
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: Colors.red),
-              ),
-              onPressed: () {
-                if (widget.onCancel != null) widget.onCancel!();
-              },
-            ),
+          SavvyButton(
+            text: 'Cancel on POS',
+            icon: Icons.cancel_rounded,
+            style: SavvyButtonStyle.outline,
+            foregroundColor: context.savvy.colors.stateError,
+            onPressed: () {
+              if (widget.onCancel != null) widget.onCancel!();
+            },
           ).animate().fadeIn(delay: 500.ms),
       ],
-    );
+    ));
   }
 }

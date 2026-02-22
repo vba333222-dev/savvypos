@@ -22,6 +22,9 @@ class SyncWorker {
   final Logger logger;
 
   final PublishSubject<void> _syncIntent = PublishSubject<void>();
+  final BehaviorSubject<int> _pendingQueueCount = BehaviorSubject<int>.seeded(0);
+  Stream<int> get pendingQueueCountStatus => _pendingQueueCount.stream;
+
   StreamSubscription<void>? _syncSubscription;
   bool _isDisposed = false;
 
@@ -57,6 +60,7 @@ class SyncWorker {
     _syncSubscription?.cancel();
     _syncSubscription = null;
     _syncIntent.close();
+    _pendingQueueCount.close();
   }
 }
 
@@ -113,7 +117,19 @@ void callbackDispatcher() {
 Future<void> processSyncQueue(AppDatabase db, Logger logger) async {
   final apiClient = GetIt.I<ApiClient>();
 
-  // 1. Fetch PENDING or RETRY items where nextRetryAt is due
+  // 1. Broadly Count Full Queue for UI Progress Bar
+  try {
+    final countQuery = await db.customSelect('SELECT COUNT(*) AS c FROM sync_queue').getSingle();
+    final totalPending = countQuery.read<int>('c');
+    if (GetIt.I.isRegistered<SyncWorker>()) {
+        final worker = GetIt.I<SyncWorker>();
+        if (!worker._pendingQueueCount.isClosed) worker._pendingQueueCount.add(totalPending);
+    }
+  } catch (e) {
+    logger.d('Could not broadcast sync queue total.');
+  }
+
+  // 2. Fetch PENDING or RETRY items where nextRetryAt is due
   final now = DateTime.now();
   final pendingItems = await (db.select(db.syncQueue)
         ..where((t) =>

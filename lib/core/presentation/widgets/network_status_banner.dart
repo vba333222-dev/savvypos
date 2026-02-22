@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get_it/get_it.dart';
 import 'package:savvy_pos/core/services/socket_service.dart';
+import 'package:savvy_pos/core/sync/sync_worker.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // NetworkStatusBanner
@@ -110,19 +111,27 @@ class _BannerContent extends StatelessWidget {
         color: bgColor,
         alignment: Alignment.center,
         child: Row(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(width: 16),
             Icon(icon, size: 13, color: textColor),
             const SizedBox(width: 6),
-            Text(
-              labelText,
-              style: const TextStyle(
-                color: textColor,
-                fontWeight: FontWeight.w700,
-                fontSize: 11,
-                letterSpacing: 0.3,
+            Expanded(
+              child: Text(
+                labelText,
+                style: const TextStyle(
+                  color: textColor,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 11,
+                  letterSpacing: 0.3,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
+            if (!isOffline) const SyncCloudStatusIcon(),
+            const SizedBox(width: 16),
           ],
         ),
       );
@@ -155,5 +164,45 @@ class _BannerContent extends StatelessWidget {
         .animate()
         .slideY(begin: -1.0, end: 0, duration: 280.ms, curve: Curves.easeOutCubic)
         .fadeIn(duration: 200.ms);
+  }
+}
+
+class SyncCloudStatusIcon extends StatelessWidget {
+  const SyncCloudStatusIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    if (!GetIt.I.isRegistered<SyncWorker>()) return const SizedBox.shrink();
+    
+    return StreamBuilder<int>(
+      stream: GetIt.I<SyncWorker>().pendingQueueCountStatus,
+      initialData: 0,
+      builder: (context, snapshot) {
+        final count = snapshot.data ?? 0;
+        final isSyncing = count > 0;
+
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              isSyncing ? '$count queuing' : 'Synced',
+              style: TextStyle(
+                color: const Color(0xFF1A1A1A).withValues(alpha: isSyncing ? 1.0 : 0.6),
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(width: 4),
+            isSyncing 
+              ? const Icon(Icons.cloud_sync_outlined, size: 14, color: Color(0xFF1A1A1A))
+                  .animate(onPlay: (c) => c.repeat())
+                  .rotate(duration: 2.seconds)
+              : const Icon(Icons.cloud_done_outlined, size: 14, color: Color(0xFF1A1A1A))
+                  .animate()
+                  .fade(duration: 400.ms),
+          ],
+        );
+      }
+    );
   }
 }

@@ -23,6 +23,7 @@ mixin _$KitchenEvent {
     required TResult Function(String orderUuid) markAsDone,
     required TResult Function(String itemUuid) markItemDone,
     required TResult Function(String orderUuid) markOrderStarted,
+    required TResult Function() resetAndReload,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -32,6 +33,7 @@ mixin _$KitchenEvent {
     TResult? Function(String orderUuid)? markAsDone,
     TResult? Function(String itemUuid)? markItemDone,
     TResult? Function(String orderUuid)? markOrderStarted,
+    TResult? Function()? resetAndReload,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -41,6 +43,7 @@ mixin _$KitchenEvent {
     TResult Function(String orderUuid)? markAsDone,
     TResult Function(String itemUuid)? markItemDone,
     TResult Function(String orderUuid)? markOrderStarted,
+    TResult Function()? resetAndReload,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -51,6 +54,7 @@ mixin _$KitchenEvent {
     required TResult Function(_MarkAsDone value) markAsDone,
     required TResult Function(_MarkItemDone value) markItemDone,
     required TResult Function(_MarkOrderStarted value) markOrderStarted,
+    required TResult Function(_ResetAndReload value) resetAndReload,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -60,6 +64,7 @@ mixin _$KitchenEvent {
     TResult? Function(_MarkAsDone value)? markAsDone,
     TResult? Function(_MarkItemDone value)? markItemDone,
     TResult? Function(_MarkOrderStarted value)? markOrderStarted,
+    TResult? Function(_ResetAndReload value)? resetAndReload,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -69,6 +74,7 @@ mixin _$KitchenEvent {
     TResult Function(_MarkAsDone value)? markAsDone,
     TResult Function(_MarkItemDone value)? markItemDone,
     TResult Function(_MarkOrderStarted value)? markOrderStarted,
+    TResult Function(_ResetAndReload value)? resetAndReload,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -141,6 +147,7 @@ class _$StartListeningImpl implements _StartListening {
     required TResult Function(String orderUuid) markAsDone,
     required TResult Function(String itemUuid) markItemDone,
     required TResult Function(String orderUuid) markOrderStarted,
+    required TResult Function() resetAndReload,
   }) {
     return startListening();
   }
@@ -153,6 +160,7 @@ class _$StartListeningImpl implements _StartListening {
     TResult? Function(String orderUuid)? markAsDone,
     TResult? Function(String itemUuid)? markItemDone,
     TResult? Function(String orderUuid)? markOrderStarted,
+    TResult? Function()? resetAndReload,
   }) {
     return startListening?.call();
   }
@@ -165,6 +173,7 @@ class _$StartListeningImpl implements _StartListening {
     TResult Function(String orderUuid)? markAsDone,
     TResult Function(String itemUuid)? markItemDone,
     TResult Function(String orderUuid)? markOrderStarted,
+    TResult Function()? resetAndReload,
     required TResult orElse(),
   }) {
     if (startListening != null) {
@@ -181,6 +190,7 @@ class _$StartListeningImpl implements _StartListening {
     required TResult Function(_MarkAsDone value) markAsDone,
     required TResult Function(_MarkItemDone value) markItemDone,
     required TResult Function(_MarkOrderStarted value) markOrderStarted,
+    required TResult Function(_ResetAndReload value) resetAndReload,
   }) {
     return startListening(this);
   }
@@ -193,6 +203,7 @@ class _$StartListeningImpl implements _StartListening {
     TResult? Function(_MarkAsDone value)? markAsDone,
     TResult? Function(_MarkItemDone value)? markItemDone,
     TResult? Function(_MarkOrderStarted value)? markOrderStarted,
+    TResult? Function(_ResetAndReload value)? resetAndReload,
   }) {
     return startListening?.call(this);
   }
@@ -205,6 +216,7 @@ class _$StartListeningImpl implements _StartListening {
     TResult Function(_MarkAsDone value)? markAsDone,
     TResult Function(_MarkItemDone value)? markItemDone,
     TResult Function(_MarkOrderStarted value)? markOrderStarted,
+    TResult Function(_ResetAndReload value)? resetAndReload,
     required TResult orElse(),
   }) {
     if (startListening != null) {
@@ -297,6 +309,7 @@ class _$OrdersUpdatedImpl implements _OrdersUpdated {
     required TResult Function(String orderUuid) markAsDone,
     required TResult Function(String itemUuid) markItemDone,
     required TResult Function(String orderUuid) markOrderStarted,
+    required TResult Function() resetAndReload,
   }) {
     return ordersUpdated(orders);
   }
@@ -309,6 +322,7 @@ class _$OrdersUpdatedImpl implements _OrdersUpdated {
     TResult? Function(String orderUuid)? markAsDone,
     TResult? Function(String itemUuid)? markItemDone,
     TResult? Function(String orderUuid)? markOrderStarted,
+    TResult? Function()? resetAndReload,
   }) {
     return ordersUpdated?.call(orders);
   }
@@ -321,6 +335,7 @@ class _$OrdersUpdatedImpl implements _OrdersUpdated {
     TResult Function(String orderUuid)? markAsDone,
     TResult Function(String itemUuid)? markItemDone,
     TResult Function(String orderUuid)? markOrderStarted,
+    TResult Function()? resetAndReload,
     required TResult orElse(),
   }) {
     if (ordersUpdated != null) {
@@ -337,6 +352,7 @@ class _$OrdersUpdatedImpl implements _OrdersUpdated {
     required TResult Function(_MarkAsDone value) markAsDone,
     required TResult Function(_MarkItemDone value) markItemDone,
     required TResult Function(_MarkOrderStarted value) markOrderStarted,
+    required TResult Function(_ResetAndReload value) resetAndReload,
   }) {
     return ordersUpdated(this);
   }
@@ -349,6 +365,7 @@ class _$OrdersUpdatedImpl implements _OrdersUpdated {
     TResult? Function(_MarkAsDone value)? markAsDone,
     TResult? Function(_MarkItemDone value)? markItemDone,
     TResult? Function(_MarkOrderStarted value)? markOrderStarted,
+    TResult? Function(_ResetAndReload value)? resetAndReload,
   }) {
     return ordersUpdated?.call(this);
   }
@@ -361,6 +378,7 @@ class _$OrdersUpdatedImpl implements _OrdersUpdated {
     TResult Function(_MarkAsDone value)? markAsDone,
     TResult Function(_MarkItemDone value)? markItemDone,
     TResult Function(_MarkOrderStarted value)? markOrderStarted,
+    TResult Function(_ResetAndReload value)? resetAndReload,
     required TResult orElse(),
   }) {
     if (ordersUpdated != null) {
@@ -457,6 +475,7 @@ class _$MarkAsDoneImpl implements _MarkAsDone {
     required TResult Function(String orderUuid) markAsDone,
     required TResult Function(String itemUuid) markItemDone,
     required TResult Function(String orderUuid) markOrderStarted,
+    required TResult Function() resetAndReload,
   }) {
     return markAsDone(orderUuid);
   }
@@ -469,6 +488,7 @@ class _$MarkAsDoneImpl implements _MarkAsDone {
     TResult? Function(String orderUuid)? markAsDone,
     TResult? Function(String itemUuid)? markItemDone,
     TResult? Function(String orderUuid)? markOrderStarted,
+    TResult? Function()? resetAndReload,
   }) {
     return markAsDone?.call(orderUuid);
   }
@@ -481,6 +501,7 @@ class _$MarkAsDoneImpl implements _MarkAsDone {
     TResult Function(String orderUuid)? markAsDone,
     TResult Function(String itemUuid)? markItemDone,
     TResult Function(String orderUuid)? markOrderStarted,
+    TResult Function()? resetAndReload,
     required TResult orElse(),
   }) {
     if (markAsDone != null) {
@@ -497,6 +518,7 @@ class _$MarkAsDoneImpl implements _MarkAsDone {
     required TResult Function(_MarkAsDone value) markAsDone,
     required TResult Function(_MarkItemDone value) markItemDone,
     required TResult Function(_MarkOrderStarted value) markOrderStarted,
+    required TResult Function(_ResetAndReload value) resetAndReload,
   }) {
     return markAsDone(this);
   }
@@ -509,6 +531,7 @@ class _$MarkAsDoneImpl implements _MarkAsDone {
     TResult? Function(_MarkAsDone value)? markAsDone,
     TResult? Function(_MarkItemDone value)? markItemDone,
     TResult? Function(_MarkOrderStarted value)? markOrderStarted,
+    TResult? Function(_ResetAndReload value)? resetAndReload,
   }) {
     return markAsDone?.call(this);
   }
@@ -521,6 +544,7 @@ class _$MarkAsDoneImpl implements _MarkAsDone {
     TResult Function(_MarkAsDone value)? markAsDone,
     TResult Function(_MarkItemDone value)? markItemDone,
     TResult Function(_MarkOrderStarted value)? markOrderStarted,
+    TResult Function(_ResetAndReload value)? resetAndReload,
     required TResult orElse(),
   }) {
     if (markAsDone != null) {
@@ -616,6 +640,7 @@ class _$MarkItemDoneImpl implements _MarkItemDone {
     required TResult Function(String orderUuid) markAsDone,
     required TResult Function(String itemUuid) markItemDone,
     required TResult Function(String orderUuid) markOrderStarted,
+    required TResult Function() resetAndReload,
   }) {
     return markItemDone(itemUuid);
   }
@@ -628,6 +653,7 @@ class _$MarkItemDoneImpl implements _MarkItemDone {
     TResult? Function(String orderUuid)? markAsDone,
     TResult? Function(String itemUuid)? markItemDone,
     TResult? Function(String orderUuid)? markOrderStarted,
+    TResult? Function()? resetAndReload,
   }) {
     return markItemDone?.call(itemUuid);
   }
@@ -640,6 +666,7 @@ class _$MarkItemDoneImpl implements _MarkItemDone {
     TResult Function(String orderUuid)? markAsDone,
     TResult Function(String itemUuid)? markItemDone,
     TResult Function(String orderUuid)? markOrderStarted,
+    TResult Function()? resetAndReload,
     required TResult orElse(),
   }) {
     if (markItemDone != null) {
@@ -656,6 +683,7 @@ class _$MarkItemDoneImpl implements _MarkItemDone {
     required TResult Function(_MarkAsDone value) markAsDone,
     required TResult Function(_MarkItemDone value) markItemDone,
     required TResult Function(_MarkOrderStarted value) markOrderStarted,
+    required TResult Function(_ResetAndReload value) resetAndReload,
   }) {
     return markItemDone(this);
   }
@@ -668,6 +696,7 @@ class _$MarkItemDoneImpl implements _MarkItemDone {
     TResult? Function(_MarkAsDone value)? markAsDone,
     TResult? Function(_MarkItemDone value)? markItemDone,
     TResult? Function(_MarkOrderStarted value)? markOrderStarted,
+    TResult? Function(_ResetAndReload value)? resetAndReload,
   }) {
     return markItemDone?.call(this);
   }
@@ -680,6 +709,7 @@ class _$MarkItemDoneImpl implements _MarkItemDone {
     TResult Function(_MarkAsDone value)? markAsDone,
     TResult Function(_MarkItemDone value)? markItemDone,
     TResult Function(_MarkOrderStarted value)? markOrderStarted,
+    TResult Function(_ResetAndReload value)? resetAndReload,
     required TResult orElse(),
   }) {
     if (markItemDone != null) {
@@ -776,6 +806,7 @@ class _$MarkOrderStartedImpl implements _MarkOrderStarted {
     required TResult Function(String orderUuid) markAsDone,
     required TResult Function(String itemUuid) markItemDone,
     required TResult Function(String orderUuid) markOrderStarted,
+    required TResult Function() resetAndReload,
   }) {
     return markOrderStarted(orderUuid);
   }
@@ -788,6 +819,7 @@ class _$MarkOrderStartedImpl implements _MarkOrderStarted {
     TResult? Function(String orderUuid)? markAsDone,
     TResult? Function(String itemUuid)? markItemDone,
     TResult? Function(String orderUuid)? markOrderStarted,
+    TResult? Function()? resetAndReload,
   }) {
     return markOrderStarted?.call(orderUuid);
   }
@@ -800,6 +832,7 @@ class _$MarkOrderStartedImpl implements _MarkOrderStarted {
     TResult Function(String orderUuid)? markAsDone,
     TResult Function(String itemUuid)? markItemDone,
     TResult Function(String orderUuid)? markOrderStarted,
+    TResult Function()? resetAndReload,
     required TResult orElse(),
   }) {
     if (markOrderStarted != null) {
@@ -816,6 +849,7 @@ class _$MarkOrderStartedImpl implements _MarkOrderStarted {
     required TResult Function(_MarkAsDone value) markAsDone,
     required TResult Function(_MarkItemDone value) markItemDone,
     required TResult Function(_MarkOrderStarted value) markOrderStarted,
+    required TResult Function(_ResetAndReload value) resetAndReload,
   }) {
     return markOrderStarted(this);
   }
@@ -828,6 +862,7 @@ class _$MarkOrderStartedImpl implements _MarkOrderStarted {
     TResult? Function(_MarkAsDone value)? markAsDone,
     TResult? Function(_MarkItemDone value)? markItemDone,
     TResult? Function(_MarkOrderStarted value)? markOrderStarted,
+    TResult? Function(_ResetAndReload value)? resetAndReload,
   }) {
     return markOrderStarted?.call(this);
   }
@@ -840,6 +875,7 @@ class _$MarkOrderStartedImpl implements _MarkOrderStarted {
     TResult Function(_MarkAsDone value)? markAsDone,
     TResult Function(_MarkItemDone value)? markItemDone,
     TResult Function(_MarkOrderStarted value)? markOrderStarted,
+    TResult Function(_ResetAndReload value)? resetAndReload,
     required TResult orElse(),
   }) {
     if (markOrderStarted != null) {
@@ -860,6 +896,135 @@ abstract class _MarkOrderStarted implements KitchenEvent {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MarkOrderStartedImplCopyWith<_$MarkOrderStartedImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ResetAndReloadImplCopyWith<$Res> {
+  factory _$$ResetAndReloadImplCopyWith(_$ResetAndReloadImpl value,
+          $Res Function(_$ResetAndReloadImpl) then) =
+      __$$ResetAndReloadImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$ResetAndReloadImplCopyWithImpl<$Res>
+    extends _$KitchenEventCopyWithImpl<$Res, _$ResetAndReloadImpl>
+    implements _$$ResetAndReloadImplCopyWith<$Res> {
+  __$$ResetAndReloadImplCopyWithImpl(
+      _$ResetAndReloadImpl _value, $Res Function(_$ResetAndReloadImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of KitchenEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$ResetAndReloadImpl implements _ResetAndReload {
+  const _$ResetAndReloadImpl();
+
+  @override
+  String toString() {
+    return 'KitchenEvent.resetAndReload()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$ResetAndReloadImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() startListening,
+    required TResult Function(List<KitchenOrder> orders) ordersUpdated,
+    required TResult Function(String orderUuid) markAsDone,
+    required TResult Function(String itemUuid) markItemDone,
+    required TResult Function(String orderUuid) markOrderStarted,
+    required TResult Function() resetAndReload,
+  }) {
+    return resetAndReload();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? startListening,
+    TResult? Function(List<KitchenOrder> orders)? ordersUpdated,
+    TResult? Function(String orderUuid)? markAsDone,
+    TResult? Function(String itemUuid)? markItemDone,
+    TResult? Function(String orderUuid)? markOrderStarted,
+    TResult? Function()? resetAndReload,
+  }) {
+    return resetAndReload?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? startListening,
+    TResult Function(List<KitchenOrder> orders)? ordersUpdated,
+    TResult Function(String orderUuid)? markAsDone,
+    TResult Function(String itemUuid)? markItemDone,
+    TResult Function(String orderUuid)? markOrderStarted,
+    TResult Function()? resetAndReload,
+    required TResult orElse(),
+  }) {
+    if (resetAndReload != null) {
+      return resetAndReload();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_StartListening value) startListening,
+    required TResult Function(_OrdersUpdated value) ordersUpdated,
+    required TResult Function(_MarkAsDone value) markAsDone,
+    required TResult Function(_MarkItemDone value) markItemDone,
+    required TResult Function(_MarkOrderStarted value) markOrderStarted,
+    required TResult Function(_ResetAndReload value) resetAndReload,
+  }) {
+    return resetAndReload(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_StartListening value)? startListening,
+    TResult? Function(_OrdersUpdated value)? ordersUpdated,
+    TResult? Function(_MarkAsDone value)? markAsDone,
+    TResult? Function(_MarkItemDone value)? markItemDone,
+    TResult? Function(_MarkOrderStarted value)? markOrderStarted,
+    TResult? Function(_ResetAndReload value)? resetAndReload,
+  }) {
+    return resetAndReload?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_StartListening value)? startListening,
+    TResult Function(_OrdersUpdated value)? ordersUpdated,
+    TResult Function(_MarkAsDone value)? markAsDone,
+    TResult Function(_MarkItemDone value)? markItemDone,
+    TResult Function(_MarkOrderStarted value)? markOrderStarted,
+    TResult Function(_ResetAndReload value)? resetAndReload,
+    required TResult orElse(),
+  }) {
+    if (resetAndReload != null) {
+      return resetAndReload(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ResetAndReload implements KitchenEvent {
+  const factory _ResetAndReload() = _$ResetAndReloadImpl;
 }
 
 /// @nodoc

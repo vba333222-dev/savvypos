@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/core/services/socket_service.dart'; // Import SocketService
+import 'package:savvy_pos/features/auth/domain/repositories/i_tenant_repository.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/product.dart';
 import 'package:savvy_pos/features/sales/domain/entities/promotion.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_event.dart';
@@ -19,9 +21,16 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final SoundHelper _sound;
   final SyncWorker _syncWorker; // Injected
   final SocketService _socketService; // Injected
+  final ITenantRepository _tenantRepo; // Injected for Multi-Store State Purging
   final Uuid _uuid = const Uuid();
+  StreamSubscription? _outletChangeSubscription;
 
-  CartBloc(this.db, this._sound, this._syncWorker, this._socketService) : super(CartState.initial()) {
+  CartBloc(this.db, this._sound, this._syncWorker, this._socketService, this._tenantRepo) : super(CartState.initial()) {
+    // Drop all cart data globally whenever the active branch/store scope switches
+    _outletChangeSubscription = _tenantRepo.onOutletChanged.listen((_) {
+      add(const CartEvent.clearCart());
+    });
+    
     on<AddProduct>(_onAddProduct);
     on<UpdateQuantity>(_onUpdateQuantity);
     on<RemoveFromCart>(_onRemoveFromCart);
@@ -38,6 +47,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<ScanItem>(_onScanItem);
     on<ToggleItemHold>(_onToggleItemHold);
     on<FireItem>(_onFireItem);
+  }
+
+  @override
+  Future<void> close() {
+    _outletChangeSubscription?.cancel();
+    return super.close();
   }
 
   Future<void> _onScanItem(ScanItem event, Emitter<CartState> emit) async {

@@ -364,6 +364,10 @@ extension GetItInjectableX on _i174.GetIt {
         _i873.WatchProductsByCategoryUseCase(gh<_i639.ISalesRepository>()));
     gh.factory<_i873.CreateOrderUseCase>(
         () => _i873.CreateOrderUseCase(gh<_i639.ISalesRepository>()));
+    gh.factory<_i86.KitchenBloc>(() => _i86.KitchenBloc(
+          gh<_i856.IKitchenRepository>(),
+          gh<_i302.ITenantRepository>(),
+        ));
     gh.factory<_i821.StartShiftUseCase>(
         () => _i821.StartShiftUseCase(gh<_i24.ICashDrawerRepository>()));
     gh.factory<_i821.CloseShiftUseCase>(
@@ -401,6 +405,13 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i426.SaveTableUseCase>(),
           gh<_i426.DeleteTableUseCase>(),
         ));
+    gh.factory<_i177.CartBloc>(() => _i177.CartBloc(
+          gh<_i660.AppDatabase>(),
+          gh<_i842.SoundHelper>(),
+          gh<_i987.SyncWorker>(),
+          gh<_i411.SocketService>(),
+          gh<_i302.ITenantRepository>(),
+        ));
     gh.lazySingleton<_i67.IOrderRepository>(() => _i14.OrderRepositoryImpl(
           gh<_i660.AppDatabase>(),
           gh<_i302.ITenantRepository>(),
@@ -427,8 +438,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i821.GetShiftReportUseCase>(),
           gh<_i24.ICashDrawerRepository>(),
         ));
-    gh.factory<_i86.KitchenBloc>(
-        () => _i86.KitchenBloc(gh<_i856.IKitchenRepository>()));
     gh.factory<_i118.ReservationBloc>(
         () => _i118.ReservationBloc(gh<_i856.IReservationRepository>()));
     gh.factory<_i676.CustomerBloc>(
@@ -450,29 +459,24 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i1070.HistoryBloc>(
         () => _i1070.HistoryBloc(gh<_i67.IOrderRepository>()));
-    gh.factory<_i177.CartBloc>(() => _i177.CartBloc(
-          gh<_i660.AppDatabase>(),
-          gh<_i842.SoundHelper>(),
-          gh<_i987.SyncWorker>(),
-          gh<_i411.SocketService>(),
-        ));
     gh.factory<_i820.ProductBloc>(
         () => _i820.ProductBloc(gh<_i695.IProductRepository>()));
     gh.factory<_i705.LoyaltyBloc>(
         () => _i705.LoyaltyBloc(gh<_i63.ILoyaltyRepository>()));
     gh.factory<_i1053.GetProductsUseCase>(
         () => _i1053.GetProductsUseCase(gh<_i695.IProductRepository>()));
-    gh.factory<_i424.TableBloc>(() => _i424.TableBloc(
-          gh<_i22.ITableRepository>(),
-          gh<_i411.SocketService>(),
-          gh<_i430.PrinterRouter>(),
-        ));
     gh.factory<_i46.CalculateEodFinancialsUseCase>(
         () => _i46.CalculateEodFinancialsUseCase(gh<_i67.IOrderRepository>()));
     gh.lazySingleton<_i455.ShiftBloc>(() => _i455.ShiftBloc(
           gh<_i19.IShiftRepository>(),
           gh<_i46.CalculateEodFinancialsUseCase>(),
           gh<_i392.SyncEodToAccountingUseCase>(),
+        ));
+    gh.factory<_i424.TableBloc>(() => _i424.TableBloc(
+          gh<_i22.ITableRepository>(),
+          gh<_i411.SocketService>(),
+          gh<_i430.PrinterRouter>(),
+          gh<_i302.ITenantRepository>(),
         ));
     gh.singleton<_i678.DeliveryOrchestratorService>(
       () => _i678.DeliveryOrchestratorService(

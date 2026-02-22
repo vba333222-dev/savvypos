@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/services/socket_service.dart';
+import 'package:savvy_pos/features/auth/domain/repositories/i_tenant_repository.dart';
 import 'package:savvy_pos/core/hal/printer_router.dart';
 import 'package:savvy_pos/features/tables/domain/entities/table.dart';
 import 'package:savvy_pos/features/tables/domain/repositories/i_table_repository.dart';
@@ -20,6 +22,7 @@ class TableEvent with _$TableEvent {
   const factory TableEvent.transferTable(String sourceUuid, String targetUuid) = _TransferTable;
   const factory TableEvent.mergeTables(String sourceUuid, String targetUuid) = _MergeTables;
   const factory TableEvent.openQRSession(String tableUuid) = _OpenQRSession;
+  const factory TableEvent.resetAndReload() = _ResetAndReload;
 }
 
 @freezed
@@ -36,8 +39,14 @@ class TableBloc extends Bloc<TableEvent, TableState> {
   final ITableRepository _repository;
   final SocketService _socketService;
   final PrinterRouter _printerRouter;
+  final ITenantRepository _tenantRepo;
+  StreamSubscription? _outletChangeSubscription;
 
-  TableBloc(this._repository, this._socketService, this._printerRouter) : super(const TableState()) {
+  TableBloc(this._repository, this._socketService, this._printerRouter, this._tenantRepo) : super(const TableState()) {
+    _outletChangeSubscription = _tenantRepo.onOutletChanged.listen((_) {
+      add(const TableEvent.resetAndReload());
+    });
+    
     on<_LoadTables>(_onLoadTables);
     on<_TablesUpdated>(_onTablesUpdated);
     on<_AddTable>(_onAddTable);
@@ -47,6 +56,19 @@ class TableBloc extends Bloc<TableEvent, TableState> {
     on<_TransferTable>(_onTransferTable);
     on<_MergeTables>(_onMergeTables);
     on<_OpenQRSession>(_onOpenQRSession);
+    on<_ResetAndReload>(_onResetAndReload);
+  }
+
+  @override
+  Future<void> close() {
+    _outletChangeSubscription?.cancel();
+    return super.close();
+  }
+
+  Future<void> _onResetAndReload(_ResetAndReload event, Emitter<TableState> emit) async {
+    // Purge old tables directly from active RAM on outlet switch, then reload
+    emit(const TableState(tables: [], isLoading: true));
+    add(const TableEvent.loadTables());
   }
 
   Future<void> _onLoadTables(_LoadTables event, Emitter<TableState> emit) async {

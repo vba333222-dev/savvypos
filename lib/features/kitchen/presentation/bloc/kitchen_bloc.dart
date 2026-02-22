@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:savvy_pos/features/auth/domain/repositories/i_tenant_repository.dart';
 import 'package:savvy_pos/features/kitchen/domain/entities/kitchen_order.dart';
 import 'package:savvy_pos/features/kitchen/domain/repositories/i_kitchen_repository.dart';
 
@@ -16,6 +17,7 @@ class KitchenEvent with _$KitchenEvent {
   const factory KitchenEvent.markItemDone(String itemUuid) = _MarkItemDone;
   /// Bumps order status to "started" (swipe-right gesture confirmation)
   const factory KitchenEvent.markOrderStarted(String orderUuid) = _MarkOrderStarted;
+  const factory KitchenEvent.resetAndReload() = _ResetAndReload;
 }
 
 
@@ -30,20 +32,34 @@ class KitchenState with _$KitchenState {
 @injectable
 class KitchenBloc extends Bloc<KitchenEvent, KitchenState> {
   final IKitchenRepository _repository;
+  final ITenantRepository _tenantRepo;
   StreamSubscription<List<KitchenOrder>>? _subscription;
+  StreamSubscription? _outletChangeSubscription;
 
-  KitchenBloc(this._repository) : super(const KitchenState.initial()) {
+  KitchenBloc(this._repository, this._tenantRepo) : super(const KitchenState.initial()) {
+    _outletChangeSubscription = _tenantRepo.onOutletChanged.listen((_) {
+      add(const KitchenEvent.resetAndReload());
+    });
+
     on<_StartListening>(_onStartListening);
     on<_OrdersUpdated>(_onOrdersUpdated);
     on<_MarkAsDone>(_onMarkAsDone);
     on<_MarkItemDone>(_onMarkItemDone);
     on<_MarkOrderStarted>(_onMarkOrderStarted);
+    on<_ResetAndReload>(_onResetAndReload);
   }
 
   @override
   Future<void> close() {
     _subscription?.cancel();
+    _outletChangeSubscription?.cancel();
     return super.close();
+  }
+
+  Future<void> _onResetAndReload(_ResetAndReload event, Emitter<KitchenState> emit) async {
+    // Drop all KDS arrays in UI RAM, fallback to Initial loading and re-subscribe
+    emit(const KitchenState.initial());
+    add(const KitchenEvent.startListening());
   }
 
   Future<void> _onStartListening(_StartListening event, Emitter<KitchenState> emit) async {

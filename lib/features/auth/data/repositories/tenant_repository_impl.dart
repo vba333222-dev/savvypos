@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/features/auth/domain/repositories/i_tenant_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,8 +9,12 @@ import 'package:uuid/uuid.dart';
 class TenantRepositoryImpl implements ITenantRepository {
   final AppDatabase db;
   final Uuid _uuid = const Uuid();
+  final _outletChangedSubject = PublishSubject<String>();
 
   TenantRepositoryImpl(this.db);
+
+  @override
+  Stream<String> get onOutletChanged => _outletChangedSubject.stream;
 
   @override
   Future<TenantConfigTableData?> getConfig() async {
@@ -33,6 +38,9 @@ class TenantRepositoryImpl implements ITenantRepository {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('active_outlet_id', outletId);
     await prefs.setString('active_warehouse_id', warehouseId);
+    
+    // Broadcast the change for Global State Purge (Multi-Store Isolation)
+    _outletChangedSubject.add(outletId);
   }
 
   @override

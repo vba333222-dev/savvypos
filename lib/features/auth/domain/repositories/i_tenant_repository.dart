@@ -5,4 +5,5 @@ abstract class ITenantRepository {
   Future<void> saveConfig(String outletName, String address, String currency);
   Future<void> saveActiveScope(String outletId, String warehouseId);
   Future<Map<String, String?>> getActiveScope();
+  Stream<String> get onOutletChanged;
 }

@@ -28,6 +28,7 @@ mixin _$TableEvent {
         transferTable,
     required TResult Function(String sourceUuid, String targetUuid) mergeTables,
     required TResult Function(String tableUuid) openQRSession,
+    required TResult Function() resetAndReload,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -41,6 +42,7 @@ mixin _$TableEvent {
     TResult? Function(String sourceUuid, String targetUuid)? transferTable,
     TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult? Function(String tableUuid)? openQRSession,
+    TResult? Function()? resetAndReload,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -54,6 +56,7 @@ mixin _$TableEvent {
     TResult Function(String sourceUuid, String targetUuid)? transferTable,
     TResult Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult Function(String tableUuid)? openQRSession,
+    TResult Function()? resetAndReload,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -68,6 +71,7 @@ mixin _$TableEvent {
     required TResult Function(_TransferTable value) transferTable,
     required TResult Function(_MergeTables value) mergeTables,
     required TResult Function(_OpenQRSession value) openQRSession,
+    required TResult Function(_ResetAndReload value) resetAndReload,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -81,6 +85,7 @@ mixin _$TableEvent {
     TResult? Function(_TransferTable value)? transferTable,
     TResult? Function(_MergeTables value)? mergeTables,
     TResult? Function(_OpenQRSession value)? openQRSession,
+    TResult? Function(_ResetAndReload value)? resetAndReload,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -94,6 +99,7 @@ mixin _$TableEvent {
     TResult Function(_TransferTable value)? transferTable,
     TResult Function(_MergeTables value)? mergeTables,
     TResult Function(_OpenQRSession value)? openQRSession,
+    TResult Function(_ResetAndReload value)? resetAndReload,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -171,6 +177,7 @@ class _$LoadTablesImpl implements _LoadTables {
         transferTable,
     required TResult Function(String sourceUuid, String targetUuid) mergeTables,
     required TResult Function(String tableUuid) openQRSession,
+    required TResult Function() resetAndReload,
   }) {
     return loadTables();
   }
@@ -187,6 +194,7 @@ class _$LoadTablesImpl implements _LoadTables {
     TResult? Function(String sourceUuid, String targetUuid)? transferTable,
     TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult? Function(String tableUuid)? openQRSession,
+    TResult? Function()? resetAndReload,
   }) {
     return loadTables?.call();
   }
@@ -203,6 +211,7 @@ class _$LoadTablesImpl implements _LoadTables {
     TResult Function(String sourceUuid, String targetUuid)? transferTable,
     TResult Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult Function(String tableUuid)? openQRSession,
+    TResult Function()? resetAndReload,
     required TResult orElse(),
   }) {
     if (loadTables != null) {
@@ -223,6 +232,7 @@ class _$LoadTablesImpl implements _LoadTables {
     required TResult Function(_TransferTable value) transferTable,
     required TResult Function(_MergeTables value) mergeTables,
     required TResult Function(_OpenQRSession value) openQRSession,
+    required TResult Function(_ResetAndReload value) resetAndReload,
   }) {
     return loadTables(this);
   }
@@ -239,6 +249,7 @@ class _$LoadTablesImpl implements _LoadTables {
     TResult? Function(_TransferTable value)? transferTable,
     TResult? Function(_MergeTables value)? mergeTables,
     TResult? Function(_OpenQRSession value)? openQRSession,
+    TResult? Function(_ResetAndReload value)? resetAndReload,
   }) {
     return loadTables?.call(this);
   }
@@ -255,6 +266,7 @@ class _$LoadTablesImpl implements _LoadTables {
     TResult Function(_TransferTable value)? transferTable,
     TResult Function(_MergeTables value)? mergeTables,
     TResult Function(_OpenQRSession value)? openQRSession,
+    TResult Function(_ResetAndReload value)? resetAndReload,
     required TResult orElse(),
   }) {
     if (loadTables != null) {
@@ -352,6 +364,7 @@ class _$TablesUpdatedImpl implements _TablesUpdated {
         transferTable,
     required TResult Function(String sourceUuid, String targetUuid) mergeTables,
     required TResult Function(String tableUuid) openQRSession,
+    required TResult Function() resetAndReload,
   }) {
     return tablesUpdated(tables);
   }
@@ -368,6 +381,7 @@ class _$TablesUpdatedImpl implements _TablesUpdated {
     TResult? Function(String sourceUuid, String targetUuid)? transferTable,
     TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult? Function(String tableUuid)? openQRSession,
+    TResult? Function()? resetAndReload,
   }) {
     return tablesUpdated?.call(tables);
   }
@@ -384,6 +398,7 @@ class _$TablesUpdatedImpl implements _TablesUpdated {
     TResult Function(String sourceUuid, String targetUuid)? transferTable,
     TResult Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult Function(String tableUuid)? openQRSession,
+    TResult Function()? resetAndReload,
     required TResult orElse(),
   }) {
     if (tablesUpdated != null) {
@@ -404,6 +419,7 @@ class _$TablesUpdatedImpl implements _TablesUpdated {
     required TResult Function(_TransferTable value) transferTable,
     required TResult Function(_MergeTables value) mergeTables,
     required TResult Function(_OpenQRSession value) openQRSession,
+    required TResult Function(_ResetAndReload value) resetAndReload,
   }) {
     return tablesUpdated(this);
   }
@@ -420,6 +436,7 @@ class _$TablesUpdatedImpl implements _TablesUpdated {
     TResult? Function(_TransferTable value)? transferTable,
     TResult? Function(_MergeTables value)? mergeTables,
     TResult? Function(_OpenQRSession value)? openQRSession,
+    TResult? Function(_ResetAndReload value)? resetAndReload,
   }) {
     return tablesUpdated?.call(this);
   }
@@ -436,6 +453,7 @@ class _$TablesUpdatedImpl implements _TablesUpdated {
     TResult Function(_TransferTable value)? transferTable,
     TResult Function(_MergeTables value)? mergeTables,
     TResult Function(_OpenQRSession value)? openQRSession,
+    TResult Function(_ResetAndReload value)? resetAndReload,
     required TResult orElse(),
   }) {
     if (tablesUpdated != null) {
@@ -552,6 +570,7 @@ class _$AddTableImpl implements _AddTable {
         transferTable,
     required TResult Function(String sourceUuid, String targetUuid) mergeTables,
     required TResult Function(String tableUuid) openQRSession,
+    required TResult Function() resetAndReload,
   }) {
     return addTable(name, x, y);
   }
@@ -568,6 +587,7 @@ class _$AddTableImpl implements _AddTable {
     TResult? Function(String sourceUuid, String targetUuid)? transferTable,
     TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult? Function(String tableUuid)? openQRSession,
+    TResult? Function()? resetAndReload,
   }) {
     return addTable?.call(name, x, y);
   }
@@ -584,6 +604,7 @@ class _$AddTableImpl implements _AddTable {
     TResult Function(String sourceUuid, String targetUuid)? transferTable,
     TResult Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult Function(String tableUuid)? openQRSession,
+    TResult Function()? resetAndReload,
     required TResult orElse(),
   }) {
     if (addTable != null) {
@@ -604,6 +625,7 @@ class _$AddTableImpl implements _AddTable {
     required TResult Function(_TransferTable value) transferTable,
     required TResult Function(_MergeTables value) mergeTables,
     required TResult Function(_OpenQRSession value) openQRSession,
+    required TResult Function(_ResetAndReload value) resetAndReload,
   }) {
     return addTable(this);
   }
@@ -620,6 +642,7 @@ class _$AddTableImpl implements _AddTable {
     TResult? Function(_TransferTable value)? transferTable,
     TResult? Function(_MergeTables value)? mergeTables,
     TResult? Function(_OpenQRSession value)? openQRSession,
+    TResult? Function(_ResetAndReload value)? resetAndReload,
   }) {
     return addTable?.call(this);
   }
@@ -636,6 +659,7 @@ class _$AddTableImpl implements _AddTable {
     TResult Function(_TransferTable value)? transferTable,
     TResult Function(_MergeTables value)? mergeTables,
     TResult Function(_OpenQRSession value)? openQRSession,
+    TResult Function(_ResetAndReload value)? resetAndReload,
     required TResult orElse(),
   }) {
     if (addTable != null) {
@@ -754,6 +778,7 @@ class _$MoveTableImpl implements _MoveTable {
         transferTable,
     required TResult Function(String sourceUuid, String targetUuid) mergeTables,
     required TResult Function(String tableUuid) openQRSession,
+    required TResult Function() resetAndReload,
   }) {
     return moveTable(uuid, x, y);
   }
@@ -770,6 +795,7 @@ class _$MoveTableImpl implements _MoveTable {
     TResult? Function(String sourceUuid, String targetUuid)? transferTable,
     TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult? Function(String tableUuid)? openQRSession,
+    TResult? Function()? resetAndReload,
   }) {
     return moveTable?.call(uuid, x, y);
   }
@@ -786,6 +812,7 @@ class _$MoveTableImpl implements _MoveTable {
     TResult Function(String sourceUuid, String targetUuid)? transferTable,
     TResult Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult Function(String tableUuid)? openQRSession,
+    TResult Function()? resetAndReload,
     required TResult orElse(),
   }) {
     if (moveTable != null) {
@@ -806,6 +833,7 @@ class _$MoveTableImpl implements _MoveTable {
     required TResult Function(_TransferTable value) transferTable,
     required TResult Function(_MergeTables value) mergeTables,
     required TResult Function(_OpenQRSession value) openQRSession,
+    required TResult Function(_ResetAndReload value) resetAndReload,
   }) {
     return moveTable(this);
   }
@@ -822,6 +850,7 @@ class _$MoveTableImpl implements _MoveTable {
     TResult? Function(_TransferTable value)? transferTable,
     TResult? Function(_MergeTables value)? mergeTables,
     TResult? Function(_OpenQRSession value)? openQRSession,
+    TResult? Function(_ResetAndReload value)? resetAndReload,
   }) {
     return moveTable?.call(this);
   }
@@ -838,6 +867,7 @@ class _$MoveTableImpl implements _MoveTable {
     TResult Function(_TransferTable value)? transferTable,
     TResult Function(_MergeTables value)? mergeTables,
     TResult Function(_OpenQRSession value)? openQRSession,
+    TResult Function(_ResetAndReload value)? resetAndReload,
     required TResult orElse(),
   }) {
     if (moveTable != null) {
@@ -940,6 +970,7 @@ class _$DeleteTableImpl implements _DeleteTable {
         transferTable,
     required TResult Function(String sourceUuid, String targetUuid) mergeTables,
     required TResult Function(String tableUuid) openQRSession,
+    required TResult Function() resetAndReload,
   }) {
     return deleteTable(uuid);
   }
@@ -956,6 +987,7 @@ class _$DeleteTableImpl implements _DeleteTable {
     TResult? Function(String sourceUuid, String targetUuid)? transferTable,
     TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult? Function(String tableUuid)? openQRSession,
+    TResult? Function()? resetAndReload,
   }) {
     return deleteTable?.call(uuid);
   }
@@ -972,6 +1004,7 @@ class _$DeleteTableImpl implements _DeleteTable {
     TResult Function(String sourceUuid, String targetUuid)? transferTable,
     TResult Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult Function(String tableUuid)? openQRSession,
+    TResult Function()? resetAndReload,
     required TResult orElse(),
   }) {
     if (deleteTable != null) {
@@ -992,6 +1025,7 @@ class _$DeleteTableImpl implements _DeleteTable {
     required TResult Function(_TransferTable value) transferTable,
     required TResult Function(_MergeTables value) mergeTables,
     required TResult Function(_OpenQRSession value) openQRSession,
+    required TResult Function(_ResetAndReload value) resetAndReload,
   }) {
     return deleteTable(this);
   }
@@ -1008,6 +1042,7 @@ class _$DeleteTableImpl implements _DeleteTable {
     TResult? Function(_TransferTable value)? transferTable,
     TResult? Function(_MergeTables value)? mergeTables,
     TResult? Function(_OpenQRSession value)? openQRSession,
+    TResult? Function(_ResetAndReload value)? resetAndReload,
   }) {
     return deleteTable?.call(this);
   }
@@ -1024,6 +1059,7 @@ class _$DeleteTableImpl implements _DeleteTable {
     TResult Function(_TransferTable value)? transferTable,
     TResult Function(_MergeTables value)? mergeTables,
     TResult Function(_OpenQRSession value)? openQRSession,
+    TResult Function(_ResetAndReload value)? resetAndReload,
     required TResult orElse(),
   }) {
     if (deleteTable != null) {
@@ -1133,6 +1169,7 @@ class _$ToggleOccupiedImpl implements _ToggleOccupied {
         transferTable,
     required TResult Function(String sourceUuid, String targetUuid) mergeTables,
     required TResult Function(String tableUuid) openQRSession,
+    required TResult Function() resetAndReload,
   }) {
     return toggleOccupied(uuid, isOccupied);
   }
@@ -1149,6 +1186,7 @@ class _$ToggleOccupiedImpl implements _ToggleOccupied {
     TResult? Function(String sourceUuid, String targetUuid)? transferTable,
     TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult? Function(String tableUuid)? openQRSession,
+    TResult? Function()? resetAndReload,
   }) {
     return toggleOccupied?.call(uuid, isOccupied);
   }
@@ -1165,6 +1203,7 @@ class _$ToggleOccupiedImpl implements _ToggleOccupied {
     TResult Function(String sourceUuid, String targetUuid)? transferTable,
     TResult Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult Function(String tableUuid)? openQRSession,
+    TResult Function()? resetAndReload,
     required TResult orElse(),
   }) {
     if (toggleOccupied != null) {
@@ -1185,6 +1224,7 @@ class _$ToggleOccupiedImpl implements _ToggleOccupied {
     required TResult Function(_TransferTable value) transferTable,
     required TResult Function(_MergeTables value) mergeTables,
     required TResult Function(_OpenQRSession value) openQRSession,
+    required TResult Function(_ResetAndReload value) resetAndReload,
   }) {
     return toggleOccupied(this);
   }
@@ -1201,6 +1241,7 @@ class _$ToggleOccupiedImpl implements _ToggleOccupied {
     TResult? Function(_TransferTable value)? transferTable,
     TResult? Function(_MergeTables value)? mergeTables,
     TResult? Function(_OpenQRSession value)? openQRSession,
+    TResult? Function(_ResetAndReload value)? resetAndReload,
   }) {
     return toggleOccupied?.call(this);
   }
@@ -1217,6 +1258,7 @@ class _$ToggleOccupiedImpl implements _ToggleOccupied {
     TResult Function(_TransferTable value)? transferTable,
     TResult Function(_MergeTables value)? mergeTables,
     TResult Function(_OpenQRSession value)? openQRSession,
+    TResult Function(_ResetAndReload value)? resetAndReload,
     required TResult orElse(),
   }) {
     if (toggleOccupied != null) {
@@ -1328,6 +1370,7 @@ class _$TransferTableImpl implements _TransferTable {
         transferTable,
     required TResult Function(String sourceUuid, String targetUuid) mergeTables,
     required TResult Function(String tableUuid) openQRSession,
+    required TResult Function() resetAndReload,
   }) {
     return transferTable(sourceUuid, targetUuid);
   }
@@ -1344,6 +1387,7 @@ class _$TransferTableImpl implements _TransferTable {
     TResult? Function(String sourceUuid, String targetUuid)? transferTable,
     TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult? Function(String tableUuid)? openQRSession,
+    TResult? Function()? resetAndReload,
   }) {
     return transferTable?.call(sourceUuid, targetUuid);
   }
@@ -1360,6 +1404,7 @@ class _$TransferTableImpl implements _TransferTable {
     TResult Function(String sourceUuid, String targetUuid)? transferTable,
     TResult Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult Function(String tableUuid)? openQRSession,
+    TResult Function()? resetAndReload,
     required TResult orElse(),
   }) {
     if (transferTable != null) {
@@ -1380,6 +1425,7 @@ class _$TransferTableImpl implements _TransferTable {
     required TResult Function(_TransferTable value) transferTable,
     required TResult Function(_MergeTables value) mergeTables,
     required TResult Function(_OpenQRSession value) openQRSession,
+    required TResult Function(_ResetAndReload value) resetAndReload,
   }) {
     return transferTable(this);
   }
@@ -1396,6 +1442,7 @@ class _$TransferTableImpl implements _TransferTable {
     TResult? Function(_TransferTable value)? transferTable,
     TResult? Function(_MergeTables value)? mergeTables,
     TResult? Function(_OpenQRSession value)? openQRSession,
+    TResult? Function(_ResetAndReload value)? resetAndReload,
   }) {
     return transferTable?.call(this);
   }
@@ -1412,6 +1459,7 @@ class _$TransferTableImpl implements _TransferTable {
     TResult Function(_TransferTable value)? transferTable,
     TResult Function(_MergeTables value)? mergeTables,
     TResult Function(_OpenQRSession value)? openQRSession,
+    TResult Function(_ResetAndReload value)? resetAndReload,
     required TResult orElse(),
   }) {
     if (transferTable != null) {
@@ -1523,6 +1571,7 @@ class _$MergeTablesImpl implements _MergeTables {
         transferTable,
     required TResult Function(String sourceUuid, String targetUuid) mergeTables,
     required TResult Function(String tableUuid) openQRSession,
+    required TResult Function() resetAndReload,
   }) {
     return mergeTables(sourceUuid, targetUuid);
   }
@@ -1539,6 +1588,7 @@ class _$MergeTablesImpl implements _MergeTables {
     TResult? Function(String sourceUuid, String targetUuid)? transferTable,
     TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult? Function(String tableUuid)? openQRSession,
+    TResult? Function()? resetAndReload,
   }) {
     return mergeTables?.call(sourceUuid, targetUuid);
   }
@@ -1555,6 +1605,7 @@ class _$MergeTablesImpl implements _MergeTables {
     TResult Function(String sourceUuid, String targetUuid)? transferTable,
     TResult Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult Function(String tableUuid)? openQRSession,
+    TResult Function()? resetAndReload,
     required TResult orElse(),
   }) {
     if (mergeTables != null) {
@@ -1575,6 +1626,7 @@ class _$MergeTablesImpl implements _MergeTables {
     required TResult Function(_TransferTable value) transferTable,
     required TResult Function(_MergeTables value) mergeTables,
     required TResult Function(_OpenQRSession value) openQRSession,
+    required TResult Function(_ResetAndReload value) resetAndReload,
   }) {
     return mergeTables(this);
   }
@@ -1591,6 +1643,7 @@ class _$MergeTablesImpl implements _MergeTables {
     TResult? Function(_TransferTable value)? transferTable,
     TResult? Function(_MergeTables value)? mergeTables,
     TResult? Function(_OpenQRSession value)? openQRSession,
+    TResult? Function(_ResetAndReload value)? resetAndReload,
   }) {
     return mergeTables?.call(this);
   }
@@ -1607,6 +1660,7 @@ class _$MergeTablesImpl implements _MergeTables {
     TResult Function(_TransferTable value)? transferTable,
     TResult Function(_MergeTables value)? mergeTables,
     TResult Function(_OpenQRSession value)? openQRSession,
+    TResult Function(_ResetAndReload value)? resetAndReload,
     required TResult orElse(),
   }) {
     if (mergeTables != null) {
@@ -1709,6 +1763,7 @@ class _$OpenQRSessionImpl implements _OpenQRSession {
         transferTable,
     required TResult Function(String sourceUuid, String targetUuid) mergeTables,
     required TResult Function(String tableUuid) openQRSession,
+    required TResult Function() resetAndReload,
   }) {
     return openQRSession(tableUuid);
   }
@@ -1725,6 +1780,7 @@ class _$OpenQRSessionImpl implements _OpenQRSession {
     TResult? Function(String sourceUuid, String targetUuid)? transferTable,
     TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult? Function(String tableUuid)? openQRSession,
+    TResult? Function()? resetAndReload,
   }) {
     return openQRSession?.call(tableUuid);
   }
@@ -1741,6 +1797,7 @@ class _$OpenQRSessionImpl implements _OpenQRSession {
     TResult Function(String sourceUuid, String targetUuid)? transferTable,
     TResult Function(String sourceUuid, String targetUuid)? mergeTables,
     TResult Function(String tableUuid)? openQRSession,
+    TResult Function()? resetAndReload,
     required TResult orElse(),
   }) {
     if (openQRSession != null) {
@@ -1761,6 +1818,7 @@ class _$OpenQRSessionImpl implements _OpenQRSession {
     required TResult Function(_TransferTable value) transferTable,
     required TResult Function(_MergeTables value) mergeTables,
     required TResult Function(_OpenQRSession value) openQRSession,
+    required TResult Function(_ResetAndReload value) resetAndReload,
   }) {
     return openQRSession(this);
   }
@@ -1777,6 +1835,7 @@ class _$OpenQRSessionImpl implements _OpenQRSession {
     TResult? Function(_TransferTable value)? transferTable,
     TResult? Function(_MergeTables value)? mergeTables,
     TResult? Function(_OpenQRSession value)? openQRSession,
+    TResult? Function(_ResetAndReload value)? resetAndReload,
   }) {
     return openQRSession?.call(this);
   }
@@ -1793,6 +1852,7 @@ class _$OpenQRSessionImpl implements _OpenQRSession {
     TResult Function(_TransferTable value)? transferTable,
     TResult Function(_MergeTables value)? mergeTables,
     TResult Function(_OpenQRSession value)? openQRSession,
+    TResult Function(_ResetAndReload value)? resetAndReload,
     required TResult orElse(),
   }) {
     if (openQRSession != null) {
@@ -1812,6 +1872,160 @@ abstract class _OpenQRSession implements TableEvent {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$OpenQRSessionImplCopyWith<_$OpenQRSessionImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ResetAndReloadImplCopyWith<$Res> {
+  factory _$$ResetAndReloadImplCopyWith(_$ResetAndReloadImpl value,
+          $Res Function(_$ResetAndReloadImpl) then) =
+      __$$ResetAndReloadImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$ResetAndReloadImplCopyWithImpl<$Res>
+    extends _$TableEventCopyWithImpl<$Res, _$ResetAndReloadImpl>
+    implements _$$ResetAndReloadImplCopyWith<$Res> {
+  __$$ResetAndReloadImplCopyWithImpl(
+      _$ResetAndReloadImpl _value, $Res Function(_$ResetAndReloadImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of TableEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$ResetAndReloadImpl implements _ResetAndReload {
+  const _$ResetAndReloadImpl();
+
+  @override
+  String toString() {
+    return 'TableEvent.resetAndReload()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$ResetAndReloadImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() loadTables,
+    required TResult Function(List<SavvyTable> tables) tablesUpdated,
+    required TResult Function(String name, double x, double y) addTable,
+    required TResult Function(String uuid, double x, double y) moveTable,
+    required TResult Function(String uuid) deleteTable,
+    required TResult Function(String uuid, bool isOccupied) toggleOccupied,
+    required TResult Function(String sourceUuid, String targetUuid)
+        transferTable,
+    required TResult Function(String sourceUuid, String targetUuid) mergeTables,
+    required TResult Function(String tableUuid) openQRSession,
+    required TResult Function() resetAndReload,
+  }) {
+    return resetAndReload();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? loadTables,
+    TResult? Function(List<SavvyTable> tables)? tablesUpdated,
+    TResult? Function(String name, double x, double y)? addTable,
+    TResult? Function(String uuid, double x, double y)? moveTable,
+    TResult? Function(String uuid)? deleteTable,
+    TResult? Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult? Function(String sourceUuid, String targetUuid)? transferTable,
+    TResult? Function(String sourceUuid, String targetUuid)? mergeTables,
+    TResult? Function(String tableUuid)? openQRSession,
+    TResult? Function()? resetAndReload,
+  }) {
+    return resetAndReload?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? loadTables,
+    TResult Function(List<SavvyTable> tables)? tablesUpdated,
+    TResult Function(String name, double x, double y)? addTable,
+    TResult Function(String uuid, double x, double y)? moveTable,
+    TResult Function(String uuid)? deleteTable,
+    TResult Function(String uuid, bool isOccupied)? toggleOccupied,
+    TResult Function(String sourceUuid, String targetUuid)? transferTable,
+    TResult Function(String sourceUuid, String targetUuid)? mergeTables,
+    TResult Function(String tableUuid)? openQRSession,
+    TResult Function()? resetAndReload,
+    required TResult orElse(),
+  }) {
+    if (resetAndReload != null) {
+      return resetAndReload();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoadTables value) loadTables,
+    required TResult Function(_TablesUpdated value) tablesUpdated,
+    required TResult Function(_AddTable value) addTable,
+    required TResult Function(_MoveTable value) moveTable,
+    required TResult Function(_DeleteTable value) deleteTable,
+    required TResult Function(_ToggleOccupied value) toggleOccupied,
+    required TResult Function(_TransferTable value) transferTable,
+    required TResult Function(_MergeTables value) mergeTables,
+    required TResult Function(_OpenQRSession value) openQRSession,
+    required TResult Function(_ResetAndReload value) resetAndReload,
+  }) {
+    return resetAndReload(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoadTables value)? loadTables,
+    TResult? Function(_TablesUpdated value)? tablesUpdated,
+    TResult? Function(_AddTable value)? addTable,
+    TResult? Function(_MoveTable value)? moveTable,
+    TResult? Function(_DeleteTable value)? deleteTable,
+    TResult? Function(_ToggleOccupied value)? toggleOccupied,
+    TResult? Function(_TransferTable value)? transferTable,
+    TResult? Function(_MergeTables value)? mergeTables,
+    TResult? Function(_OpenQRSession value)? openQRSession,
+    TResult? Function(_ResetAndReload value)? resetAndReload,
+  }) {
+    return resetAndReload?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoadTables value)? loadTables,
+    TResult Function(_TablesUpdated value)? tablesUpdated,
+    TResult Function(_AddTable value)? addTable,
+    TResult Function(_MoveTable value)? moveTable,
+    TResult Function(_DeleteTable value)? deleteTable,
+    TResult Function(_ToggleOccupied value)? toggleOccupied,
+    TResult Function(_TransferTable value)? transferTable,
+    TResult Function(_MergeTables value)? mergeTables,
+    TResult Function(_OpenQRSession value)? openQRSession,
+    TResult Function(_ResetAndReload value)? resetAndReload,
+    required TResult orElse(),
+  }) {
+    if (resetAndReload != null) {
+      return resetAndReload(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ResetAndReload implements TableEvent {
+  const factory _ResetAndReload() = _$ResetAndReloadImpl;
 }
 
 /// @nodoc

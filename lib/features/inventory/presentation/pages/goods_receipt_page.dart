@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
 import 'package:savvy_pos/core/presentation/widgets/savvy_text.dart';
-import 'package:savvy_pos/core/presentation/widgets/scanner_listener_widget.dart';
+import 'package:savvy_pos/features/pos/presentation/widgets/scanner_listener_widget.dart';
 
 class GoodsReceiptPage extends StatefulWidget {
   final String purchaseOrderUuid;

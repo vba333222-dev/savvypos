@@ -16,48 +16,63 @@ class ScannerListenerWidget extends StatefulWidget {
 }
 
 class _ScannerListenerWidgetState extends State<ScannerListenerWidget> {
-  final FocusNode _focusNode = FocusNode();
   final StringBuffer _buffer = StringBuffer();
   DateTime _lastKeyTime = DateTime.now();
 
   @override
   void initState() {
     super.initState();
-    // Request focus so we can capture keys immediately
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) _focusNode.requestFocus();
-    });
+    HardwareKeyboard.instance.addHandler(_handleKey);
   }
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    HardwareKeyboard.instance.removeHandler(_handleKey);
     super.dispose();
   }
 
-  void _handleKey(KeyEvent event) {
+  bool _handleKey(KeyEvent event) {
     if (event is KeyDownEvent) {
       final now = DateTime.now();
-      // If keys are too slow (e.g. manual typing), clear buffer to avoid junk
-      if (now.difference(_lastKeyTime).inMilliseconds > 200) {
-        _buffer.clear();
-      }
+      final diff = now.difference(_lastKeyTime).inMilliseconds;
       _lastKeyTime = now;
 
+      // If keys are too slow (e.g. manual typing > 50ms), it's a human.
+      // Clear buffer to avoid junk and let the OS handle the key normally.
+      if (diff > 50) {
+        _buffer.clear();
+        return false; // Not handled here, let TextFields receive it
+      }
+
       if (event.logicalKey == LogicalKeyboardKey.enter) {
-        if (_buffer.isNotEmpty) {
+        if (_buffer.length >= 8) { // Valid barcode heuristic length
           final code = _buffer.toString();
-          widget.onScanned(code);
-          _showScanFeedback(code);
+          
+          // Execute callback safely in next event loop to free keyboard listener
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+              widget.onScanned(code);
+              if (mounted) _showScanFeedback(code);
+          });
+          
           _buffer.clear();
+          return true; // We handled the scanner ENTER key, don't submit forms accidentally
+        } else {
+           _buffer.clear();
+           return false; // Random fast enter? Let it through just in case
         }
       } else {
-        // Only append printable characters
+        // Only append printable characters. 
         if (event.character != null && event.character!.isNotEmpty) {
+           // It's typing fast (< 50ms), so it's likely a scanner character. 
+           // Buffer it and PREVENT it from reaching any focused TextField.
            _buffer.write(event.character);
+           return true; 
         }
       }
     }
+    
+    // Ignore KeyUpEvents or unprintable modifiers but don't consume them randomly
+    return false;
   }
 
   void _showScanFeedback(String code) {
@@ -104,10 +119,8 @@ class _ScannerListenerWidgetState extends State<ScannerListenerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return KeyboardListener(
-      focusNode: _focusNode,
-      onKeyEvent: _handleKey,
-      child: widget.child,
-    );
+    // We no longer wrap the child in an obsolete Focus Node KeyboardListener! 
+    // The HardwareKeyboard singleton interceptor is active globally while this widget lives in the tree.
+    return widget.child;
   }
 }

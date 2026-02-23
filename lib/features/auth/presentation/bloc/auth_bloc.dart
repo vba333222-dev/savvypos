@@ -19,6 +19,7 @@ class AuthEvent with _$AuthEvent {
   const factory AuthEvent.checkSession() = _CheckSession;
   const factory AuthEvent.changeActiveOutlet(
       String outletId, String warehouseId) = _ChangeActiveOutlet;
+  const factory AuthEvent.appOutdated() = _AppOutdated;
 }
 
 @freezed
@@ -28,6 +29,7 @@ class AuthState with _$AuthState {
     String? activeOutletId,
     String? activeWarehouseId,
     @Default(false) bool isLoading,
+    @Default(false) bool isOutdated,
     String? error,
   }) = _AuthState;
 }
@@ -42,6 +44,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<_Logout>(_onLogout);
     on<_CheckSession>(_onCheckSession);
     on<_ChangeActiveOutlet>(_onChangeActiveOutlet);
+    on<_AppOutdated>(_onAppOutdated);
+  }
+
+  void _onAppOutdated(_AppOutdated event, Emitter<AuthState> emit) {
+    emit(state.copyWith(isOutdated: true));
   }
 
   Future<void> _onLoginWithPin(

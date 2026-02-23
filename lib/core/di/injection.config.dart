@@ -271,12 +271,12 @@ extension GetItInjectableX on _i174.GetIt {
       ),
       registerFor: {_dev},
     );
+    gh.factory<_i92.CheckHangingTransactionsUseCase>(() =>
+        _i92.CheckHangingTransactionsUseCase(gh<_i98.ICheckoutRepository>()));
     gh.factory<_i931.ProcessPaymentUseCase>(
         () => _i931.ProcessPaymentUseCase(gh<_i98.ICheckoutRepository>()));
     gh.factory<_i931.GetOrderBalanceUseCase>(
         () => _i931.GetOrderBalanceUseCase(gh<_i98.ICheckoutRepository>()));
-    gh.factory<_i92.CheckHangingTransactionsUseCase>(() =>
-        _i92.CheckHangingTransactionsUseCase(gh<_i98.ICheckoutRepository>()));
     gh.lazySingleton<_i485.IDashboardRepository>(
       () => _i509.DashboardRepositoryImpl(gh<_i660.AppDatabase>()),
       registerFor: {_mobile},
@@ -346,20 +346,20 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i901.KitchenRepositoryImpl(gh<_i660.AppDatabase>()),
       registerFor: {_prod},
     );
+    gh.factory<_i81.ReceiveStockTransfer>(
+        () => _i81.ReceiveStockTransfer(gh<_i110.IInventoryRepository>()));
     gh.factory<_i595.ExecuteStockTransfer>(
         () => _i595.ExecuteStockTransfer(gh<_i110.IInventoryRepository>()));
     gh.factory<_i932.ReceiveGoods>(
         () => _i932.ReceiveGoods(gh<_i110.IInventoryRepository>()));
+    gh.factory<_i781.GetIncomingTransfers>(
+        () => _i781.GetIncomingTransfers(gh<_i110.IInventoryRepository>()));
     gh.factory<_i380.CreatePurchaseOrderUseCase>(() =>
         _i380.CreatePurchaseOrderUseCase(gh<_i110.IInventoryRepository>()));
     gh.factory<_i380.ReceiveStockUseCase>(
         () => _i380.ReceiveStockUseCase(gh<_i110.IInventoryRepository>()));
     gh.factory<_i380.GetLowStockItemsUseCase>(
         () => _i380.GetLowStockItemsUseCase(gh<_i110.IInventoryRepository>()));
-    gh.factory<_i81.ReceiveStockTransfer>(
-        () => _i81.ReceiveStockTransfer(gh<_i110.IInventoryRepository>()));
-    gh.factory<_i781.GetIncomingTransfers>(
-        () => _i781.GetIncomingTransfers(gh<_i110.IInventoryRepository>()));
     gh.factory<_i105.GetModifiersUseCase>(
         () => _i105.GetModifiersUseCase(gh<_i639.ISalesRepository>()));
     gh.factory<_i873.WatchCategoriesUseCase>(

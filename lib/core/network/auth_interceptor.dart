@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AuthInterceptor extends Interceptor {
   final Dio dio;
@@ -37,7 +38,17 @@ class AuthInterceptor extends Interceptor {
   }
 
   @override
+  void onResponse(Response response, ResponseInterceptorHandler handler) async {
+    await _checkMinVersion(response.headers);
+    return handler.next(response);
+  }
+
+  @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
+    if (err.response != null) {
+      await _checkMinVersion(err.response!.headers);
+    }
+
     if (err.response?.statusCode == 401) {
       if (!_isRefreshing) {
         _isRefreshing = true;
@@ -126,5 +137,36 @@ class AuthInterceptor extends Interceptor {
     }
 
     return handler.next(err);
+  }
+
+  Future<void> _checkMinVersion(Headers headers) async {
+    final minVersionStr = headers.value('x-min-supported-version');
+    if (minVersionStr != null && minVersionStr.isNotEmpty) {
+      try {
+        final packageInfo = await PackageInfo.fromPlatform();
+        final currentVersionStr = packageInfo.version;
+        if (_isVersionLower(currentVersionStr, minVersionStr)) {
+          if (GetIt.I.isRegistered<AuthBloc>()) {
+            GetIt.I<AuthBloc>().add(const AuthEvent.appOutdated());
+          }
+        }
+      } catch (e) {
+        _logger.w('Failed to check min version: $e');
+      }
+    }
+  }
+
+  bool _isVersionLower(String currentVersion, String minVersion) {
+    try {
+      final currentParts = currentVersion.split('.').map(int.parse).toList();
+      final minParts = minVersion.split('.').map(int.parse).toList();
+      for (int i = 0; i < currentParts.length && i < minParts.length; i++) {
+        if (currentParts[i] < minParts[i]) return true;
+        if (currentParts[i] > minParts[i]) return false;
+      }
+      return currentParts.length < minParts.length;
+    } catch (_) {
+      return false; // Fallback
+    }
   }
 }

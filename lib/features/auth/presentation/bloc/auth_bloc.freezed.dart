@@ -23,6 +23,7 @@ mixin _$AuthEvent {
     required TResult Function() checkSession,
     required TResult Function(String outletId, String warehouseId)
         changeActiveOutlet,
+    required TResult Function() appOutdated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -31,6 +32,7 @@ mixin _$AuthEvent {
     TResult? Function()? logout,
     TResult? Function()? checkSession,
     TResult? Function(String outletId, String warehouseId)? changeActiveOutlet,
+    TResult? Function()? appOutdated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -39,6 +41,7 @@ mixin _$AuthEvent {
     TResult Function()? logout,
     TResult Function()? checkSession,
     TResult Function(String outletId, String warehouseId)? changeActiveOutlet,
+    TResult Function()? appOutdated,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -48,6 +51,7 @@ mixin _$AuthEvent {
     required TResult Function(_Logout value) logout,
     required TResult Function(_CheckSession value) checkSession,
     required TResult Function(_ChangeActiveOutlet value) changeActiveOutlet,
+    required TResult Function(_AppOutdated value) appOutdated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -56,6 +60,7 @@ mixin _$AuthEvent {
     TResult? Function(_Logout value)? logout,
     TResult? Function(_CheckSession value)? checkSession,
     TResult? Function(_ChangeActiveOutlet value)? changeActiveOutlet,
+    TResult? Function(_AppOutdated value)? appOutdated,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -64,6 +69,7 @@ mixin _$AuthEvent {
     TResult Function(_Logout value)? logout,
     TResult Function(_CheckSession value)? checkSession,
     TResult Function(_ChangeActiveOutlet value)? changeActiveOutlet,
+    TResult Function(_AppOutdated value)? appOutdated,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -162,6 +168,7 @@ class _$LoginWithPinImpl implements _LoginWithPin {
     required TResult Function() checkSession,
     required TResult Function(String outletId, String warehouseId)
         changeActiveOutlet,
+    required TResult Function() appOutdated,
   }) {
     return loginWithPin(pin);
   }
@@ -173,6 +180,7 @@ class _$LoginWithPinImpl implements _LoginWithPin {
     TResult? Function()? logout,
     TResult? Function()? checkSession,
     TResult? Function(String outletId, String warehouseId)? changeActiveOutlet,
+    TResult? Function()? appOutdated,
   }) {
     return loginWithPin?.call(pin);
   }
@@ -184,6 +192,7 @@ class _$LoginWithPinImpl implements _LoginWithPin {
     TResult Function()? logout,
     TResult Function()? checkSession,
     TResult Function(String outletId, String warehouseId)? changeActiveOutlet,
+    TResult Function()? appOutdated,
     required TResult orElse(),
   }) {
     if (loginWithPin != null) {
@@ -199,6 +208,7 @@ class _$LoginWithPinImpl implements _LoginWithPin {
     required TResult Function(_Logout value) logout,
     required TResult Function(_CheckSession value) checkSession,
     required TResult Function(_ChangeActiveOutlet value) changeActiveOutlet,
+    required TResult Function(_AppOutdated value) appOutdated,
   }) {
     return loginWithPin(this);
   }
@@ -210,6 +220,7 @@ class _$LoginWithPinImpl implements _LoginWithPin {
     TResult? Function(_Logout value)? logout,
     TResult? Function(_CheckSession value)? checkSession,
     TResult? Function(_ChangeActiveOutlet value)? changeActiveOutlet,
+    TResult? Function(_AppOutdated value)? appOutdated,
   }) {
     return loginWithPin?.call(this);
   }
@@ -221,6 +232,7 @@ class _$LoginWithPinImpl implements _LoginWithPin {
     TResult Function(_Logout value)? logout,
     TResult Function(_CheckSession value)? checkSession,
     TResult Function(_ChangeActiveOutlet value)? changeActiveOutlet,
+    TResult Function(_AppOutdated value)? appOutdated,
     required TResult orElse(),
   }) {
     if (loginWithPin != null) {
@@ -288,6 +300,7 @@ class _$LogoutImpl implements _Logout {
     required TResult Function() checkSession,
     required TResult Function(String outletId, String warehouseId)
         changeActiveOutlet,
+    required TResult Function() appOutdated,
   }) {
     return logout();
   }
@@ -299,6 +312,7 @@ class _$LogoutImpl implements _Logout {
     TResult? Function()? logout,
     TResult? Function()? checkSession,
     TResult? Function(String outletId, String warehouseId)? changeActiveOutlet,
+    TResult? Function()? appOutdated,
   }) {
     return logout?.call();
   }
@@ -310,6 +324,7 @@ class _$LogoutImpl implements _Logout {
     TResult Function()? logout,
     TResult Function()? checkSession,
     TResult Function(String outletId, String warehouseId)? changeActiveOutlet,
+    TResult Function()? appOutdated,
     required TResult orElse(),
   }) {
     if (logout != null) {
@@ -325,6 +340,7 @@ class _$LogoutImpl implements _Logout {
     required TResult Function(_Logout value) logout,
     required TResult Function(_CheckSession value) checkSession,
     required TResult Function(_ChangeActiveOutlet value) changeActiveOutlet,
+    required TResult Function(_AppOutdated value) appOutdated,
   }) {
     return logout(this);
   }
@@ -336,6 +352,7 @@ class _$LogoutImpl implements _Logout {
     TResult? Function(_Logout value)? logout,
     TResult? Function(_CheckSession value)? checkSession,
     TResult? Function(_ChangeActiveOutlet value)? changeActiveOutlet,
+    TResult? Function(_AppOutdated value)? appOutdated,
   }) {
     return logout?.call(this);
   }
@@ -347,6 +364,7 @@ class _$LogoutImpl implements _Logout {
     TResult Function(_Logout value)? logout,
     TResult Function(_CheckSession value)? checkSession,
     TResult Function(_ChangeActiveOutlet value)? changeActiveOutlet,
+    TResult Function(_AppOutdated value)? appOutdated,
     required TResult orElse(),
   }) {
     if (logout != null) {
@@ -406,6 +424,7 @@ class _$CheckSessionImpl implements _CheckSession {
     required TResult Function() checkSession,
     required TResult Function(String outletId, String warehouseId)
         changeActiveOutlet,
+    required TResult Function() appOutdated,
   }) {
     return checkSession();
   }
@@ -417,6 +436,7 @@ class _$CheckSessionImpl implements _CheckSession {
     TResult? Function()? logout,
     TResult? Function()? checkSession,
     TResult? Function(String outletId, String warehouseId)? changeActiveOutlet,
+    TResult? Function()? appOutdated,
   }) {
     return checkSession?.call();
   }
@@ -428,6 +448,7 @@ class _$CheckSessionImpl implements _CheckSession {
     TResult Function()? logout,
     TResult Function()? checkSession,
     TResult Function(String outletId, String warehouseId)? changeActiveOutlet,
+    TResult Function()? appOutdated,
     required TResult orElse(),
   }) {
     if (checkSession != null) {
@@ -443,6 +464,7 @@ class _$CheckSessionImpl implements _CheckSession {
     required TResult Function(_Logout value) logout,
     required TResult Function(_CheckSession value) checkSession,
     required TResult Function(_ChangeActiveOutlet value) changeActiveOutlet,
+    required TResult Function(_AppOutdated value) appOutdated,
   }) {
     return checkSession(this);
   }
@@ -454,6 +476,7 @@ class _$CheckSessionImpl implements _CheckSession {
     TResult? Function(_Logout value)? logout,
     TResult? Function(_CheckSession value)? checkSession,
     TResult? Function(_ChangeActiveOutlet value)? changeActiveOutlet,
+    TResult? Function(_AppOutdated value)? appOutdated,
   }) {
     return checkSession?.call(this);
   }
@@ -465,6 +488,7 @@ class _$CheckSessionImpl implements _CheckSession {
     TResult Function(_Logout value)? logout,
     TResult Function(_CheckSession value)? checkSession,
     TResult Function(_ChangeActiveOutlet value)? changeActiveOutlet,
+    TResult Function(_AppOutdated value)? appOutdated,
     required TResult orElse(),
   }) {
     if (checkSession != null) {
@@ -562,6 +586,7 @@ class _$ChangeActiveOutletImpl implements _ChangeActiveOutlet {
     required TResult Function() checkSession,
     required TResult Function(String outletId, String warehouseId)
         changeActiveOutlet,
+    required TResult Function() appOutdated,
   }) {
     return changeActiveOutlet(outletId, warehouseId);
   }
@@ -573,6 +598,7 @@ class _$ChangeActiveOutletImpl implements _ChangeActiveOutlet {
     TResult? Function()? logout,
     TResult? Function()? checkSession,
     TResult? Function(String outletId, String warehouseId)? changeActiveOutlet,
+    TResult? Function()? appOutdated,
   }) {
     return changeActiveOutlet?.call(outletId, warehouseId);
   }
@@ -584,6 +610,7 @@ class _$ChangeActiveOutletImpl implements _ChangeActiveOutlet {
     TResult Function()? logout,
     TResult Function()? checkSession,
     TResult Function(String outletId, String warehouseId)? changeActiveOutlet,
+    TResult Function()? appOutdated,
     required TResult orElse(),
   }) {
     if (changeActiveOutlet != null) {
@@ -599,6 +626,7 @@ class _$ChangeActiveOutletImpl implements _ChangeActiveOutlet {
     required TResult Function(_Logout value) logout,
     required TResult Function(_CheckSession value) checkSession,
     required TResult Function(_ChangeActiveOutlet value) changeActiveOutlet,
+    required TResult Function(_AppOutdated value) appOutdated,
   }) {
     return changeActiveOutlet(this);
   }
@@ -610,6 +638,7 @@ class _$ChangeActiveOutletImpl implements _ChangeActiveOutlet {
     TResult? Function(_Logout value)? logout,
     TResult? Function(_CheckSession value)? checkSession,
     TResult? Function(_ChangeActiveOutlet value)? changeActiveOutlet,
+    TResult? Function(_AppOutdated value)? appOutdated,
   }) {
     return changeActiveOutlet?.call(this);
   }
@@ -621,6 +650,7 @@ class _$ChangeActiveOutletImpl implements _ChangeActiveOutlet {
     TResult Function(_Logout value)? logout,
     TResult Function(_CheckSession value)? checkSession,
     TResult Function(_ChangeActiveOutlet value)? changeActiveOutlet,
+    TResult Function(_AppOutdated value)? appOutdated,
     required TResult orElse(),
   }) {
     if (changeActiveOutlet != null) {
@@ -646,11 +676,136 @@ abstract class _ChangeActiveOutlet implements AuthEvent {
 }
 
 /// @nodoc
+abstract class _$$AppOutdatedImplCopyWith<$Res> {
+  factory _$$AppOutdatedImplCopyWith(
+          _$AppOutdatedImpl value, $Res Function(_$AppOutdatedImpl) then) =
+      __$$AppOutdatedImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$AppOutdatedImplCopyWithImpl<$Res>
+    extends _$AuthEventCopyWithImpl<$Res, _$AppOutdatedImpl>
+    implements _$$AppOutdatedImplCopyWith<$Res> {
+  __$$AppOutdatedImplCopyWithImpl(
+      _$AppOutdatedImpl _value, $Res Function(_$AppOutdatedImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of AuthEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$AppOutdatedImpl implements _AppOutdated {
+  const _$AppOutdatedImpl();
+
+  @override
+  String toString() {
+    return 'AuthEvent.appOutdated()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$AppOutdatedImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String pin) loginWithPin,
+    required TResult Function() logout,
+    required TResult Function() checkSession,
+    required TResult Function(String outletId, String warehouseId)
+        changeActiveOutlet,
+    required TResult Function() appOutdated,
+  }) {
+    return appOutdated();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String pin)? loginWithPin,
+    TResult? Function()? logout,
+    TResult? Function()? checkSession,
+    TResult? Function(String outletId, String warehouseId)? changeActiveOutlet,
+    TResult? Function()? appOutdated,
+  }) {
+    return appOutdated?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String pin)? loginWithPin,
+    TResult Function()? logout,
+    TResult Function()? checkSession,
+    TResult Function(String outletId, String warehouseId)? changeActiveOutlet,
+    TResult Function()? appOutdated,
+    required TResult orElse(),
+  }) {
+    if (appOutdated != null) {
+      return appOutdated();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoginWithPin value) loginWithPin,
+    required TResult Function(_Logout value) logout,
+    required TResult Function(_CheckSession value) checkSession,
+    required TResult Function(_ChangeActiveOutlet value) changeActiveOutlet,
+    required TResult Function(_AppOutdated value) appOutdated,
+  }) {
+    return appOutdated(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoginWithPin value)? loginWithPin,
+    TResult? Function(_Logout value)? logout,
+    TResult? Function(_CheckSession value)? checkSession,
+    TResult? Function(_ChangeActiveOutlet value)? changeActiveOutlet,
+    TResult? Function(_AppOutdated value)? appOutdated,
+  }) {
+    return appOutdated?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoginWithPin value)? loginWithPin,
+    TResult Function(_Logout value)? logout,
+    TResult Function(_CheckSession value)? checkSession,
+    TResult Function(_ChangeActiveOutlet value)? changeActiveOutlet,
+    TResult Function(_AppOutdated value)? appOutdated,
+    required TResult orElse(),
+  }) {
+    if (appOutdated != null) {
+      return appOutdated(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _AppOutdated implements AuthEvent {
+  const factory _AppOutdated() = _$AppOutdatedImpl;
+}
+
+/// @nodoc
 mixin _$AuthState {
   EmployeeTableData? get employee => throw _privateConstructorUsedError;
   String? get activeOutletId => throw _privateConstructorUsedError;
   String? get activeWarehouseId => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
+  bool get isOutdated => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
   /// Create a copy of AuthState
@@ -670,6 +825,7 @@ abstract class $AuthStateCopyWith<$Res> {
       String? activeOutletId,
       String? activeWarehouseId,
       bool isLoading,
+      bool isOutdated,
       String? error});
 }
 
@@ -692,6 +848,7 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
     Object? activeOutletId = freezed,
     Object? activeWarehouseId = freezed,
     Object? isLoading = null,
+    Object? isOutdated = null,
     Object? error = freezed,
   }) {
     return _then(_value.copyWith(
@@ -710,6 +867,10 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isOutdated: null == isOutdated
+          ? _value.isOutdated
+          : isOutdated // ignore: cast_nullable_to_non_nullable
               as bool,
       error: freezed == error
           ? _value.error
@@ -732,6 +893,7 @@ abstract class _$$AuthStateImplCopyWith<$Res>
       String? activeOutletId,
       String? activeWarehouseId,
       bool isLoading,
+      bool isOutdated,
       String? error});
 }
 
@@ -752,6 +914,7 @@ class __$$AuthStateImplCopyWithImpl<$Res>
     Object? activeOutletId = freezed,
     Object? activeWarehouseId = freezed,
     Object? isLoading = null,
+    Object? isOutdated = null,
     Object? error = freezed,
   }) {
     return _then(_$AuthStateImpl(
@@ -771,6 +934,10 @@ class __$$AuthStateImplCopyWithImpl<$Res>
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      isOutdated: null == isOutdated
+          ? _value.isOutdated
+          : isOutdated // ignore: cast_nullable_to_non_nullable
+              as bool,
       error: freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -787,6 +954,7 @@ class _$AuthStateImpl implements _AuthState {
       this.activeOutletId,
       this.activeWarehouseId,
       this.isLoading = false,
+      this.isOutdated = false,
       this.error});
 
   @override
@@ -799,11 +967,14 @@ class _$AuthStateImpl implements _AuthState {
   @JsonKey()
   final bool isLoading;
   @override
+  @JsonKey()
+  final bool isOutdated;
+  @override
   final String? error;
 
   @override
   String toString() {
-    return 'AuthState(employee: $employee, activeOutletId: $activeOutletId, activeWarehouseId: $activeWarehouseId, isLoading: $isLoading, error: $error)';
+    return 'AuthState(employee: $employee, activeOutletId: $activeOutletId, activeWarehouseId: $activeWarehouseId, isLoading: $isLoading, isOutdated: $isOutdated, error: $error)';
   }
 
   @override
@@ -818,6 +989,8 @@ class _$AuthStateImpl implements _AuthState {
                 other.activeWarehouseId == activeWarehouseId) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
+            (identical(other.isOutdated, isOutdated) ||
+                other.isOutdated == isOutdated) &&
             (identical(other.error, error) || other.error == error));
   }
 
@@ -828,6 +1001,7 @@ class _$AuthStateImpl implements _AuthState {
       activeOutletId,
       activeWarehouseId,
       isLoading,
+      isOutdated,
       error);
 
   /// Create a copy of AuthState
@@ -845,6 +1019,7 @@ abstract class _AuthState implements AuthState {
       final String? activeOutletId,
       final String? activeWarehouseId,
       final bool isLoading,
+      final bool isOutdated,
       final String? error}) = _$AuthStateImpl;
 
   @override
@@ -855,6 +1030,8 @@ abstract class _AuthState implements AuthState {
   String? get activeWarehouseId;
   @override
   bool get isLoading;
+  @override
+  bool get isOutdated;
   @override
   String? get error;
 

@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
@@ -86,7 +87,7 @@ class EmployeeRepositoryImpl implements IEmployeeRepository {
   @override
   Future<Employee> createEmployee(Employee employee) async {
     final uuid = employee.uuid.isEmpty ? _uuid.v4() : employee.uuid;
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     // Insert into main employee table
     await _db.into(_db.employeeTable).insert(EmployeeTableCompanion(
@@ -121,7 +122,7 @@ class EmployeeRepositoryImpl implements IEmployeeRepository {
 
   @override
   Future<void> updateEmployee(Employee employee) async {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     await (_db.update(_db.employeeTable)
           ..where((t) => t.uuid.equals(employee.uuid)))
@@ -151,7 +152,7 @@ class EmployeeRepositoryImpl implements IEmployeeRepository {
 
   @override
   Future<void> deactivateEmployee(String uuid) async {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     await (_db.update(_db.employeeTable)..where((t) => t.uuid.equals(uuid)))
         .write(EmployeeTableCompanion(
@@ -179,7 +180,7 @@ class EmployeeRepositoryImpl implements IEmployeeRepository {
     String? notes,
   }) async {
     final uuid = _uuid.v4();
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     await _db.into(_db.timeEntryTable).insert(TimeEntryTableCompanion(
           uuid: Value(uuid),
@@ -207,7 +208,7 @@ class EmployeeRepositoryImpl implements IEmployeeRepository {
     double? cardTips,
     String? notes,
   }) async {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     // Get entry to calculate hours
     final entry = await (_db.select(_db.timeEntryTable)
@@ -250,7 +251,7 @@ class EmployeeRepositoryImpl implements IEmployeeRepository {
     await (_db.update(_db.timeEntryTable)
           ..where((t) => t.uuid.equals(timeEntryUuid)))
         .write(TimeEntryTableCompanion(
-      breakStart: Value(DateTime.now()),
+      breakStart: Value(TimeHelper.now()),
     ));
   }
 
@@ -262,12 +263,12 @@ class EmployeeRepositoryImpl implements IEmployeeRepository {
 
     if (entry.breakStart != null) {
       final breakMins =
-          DateTime.now().difference(entry.breakStart!).inMinutes.toDouble();
+          TimeHelper.now().difference(entry.breakStart!).inMinutes.toDouble();
 
       await (_db.update(_db.timeEntryTable)
             ..where((t) => t.uuid.equals(timeEntryUuid)))
           .write(TimeEntryTableCompanion(
-        breakEnd: Value(DateTime.now()),
+        breakEnd: Value(TimeHelper.now()),
         breakMinutes: Value(entry.breakMinutes + breakMins),
       ));
     }
@@ -378,7 +379,7 @@ class EmployeeRepositoryImpl implements IEmployeeRepository {
   @override
   Future<ScheduledShift> createShift(ScheduledShift shift) async {
     final uuid = shift.uuid.isEmpty ? _uuid.v4() : shift.uuid;
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     await _db.into(_db.scheduledShiftTable).insert(ScheduledShiftTableCompanion(
           uuid: Value(uuid),
@@ -407,7 +408,7 @@ class EmployeeRepositoryImpl implements IEmployeeRepository {
       position: Value(shift.position),
       notes: Value(shift.notes),
       isPublished: Value(shift.isPublished),
-      updatedAt: Value(DateTime.now()),
+      updatedAt: Value(TimeHelper.now()),
     ));
   }
 
@@ -442,7 +443,7 @@ class EmployeeRepositoryImpl implements IEmployeeRepository {
         .write(ScheduledShiftTableCompanion(
       swapRequestedWith: Value(targetEmployeeUuid),
       isSwapPending: const Value(true),
-      updatedAt: Value(DateTime.now()),
+      updatedAt: Value(TimeHelper.now()),
     ));
   }
 
@@ -467,7 +468,7 @@ class EmployeeRepositoryImpl implements IEmployeeRepository {
           employeeUuid: Value(targetEmployee),
           swapRequestedWith: const Value(null),
           isSwapPending: const Value(false),
-          updatedAt: Value(DateTime.now()),
+          updatedAt: Value(TimeHelper.now()),
         ));
       }
     } else {
@@ -477,7 +478,7 @@ class EmployeeRepositoryImpl implements IEmployeeRepository {
           .write(ScheduledShiftTableCompanion(
         swapRequestedWith: const Value(null),
         isSwapPending: const Value(false),
-        updatedAt: Value(DateTime.now()),
+        updatedAt: Value(TimeHelper.now()),
       ));
     }
   }

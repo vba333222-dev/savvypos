@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -197,7 +198,7 @@ class _SalesReportPageState extends State<SalesReportPage> {
 
   ReportEvent _getEventForPeriod(SalesPeriod p) {
     // Determine dates
-    final now = DateTime.now();
+    final now = TimeHelper.now();
     DateTime start;
     switch (p) {
       case SalesPeriod.today:

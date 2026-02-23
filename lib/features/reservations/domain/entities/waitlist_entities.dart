@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'waitlist_entities.freezed.dart';
@@ -47,12 +48,12 @@ class WaitlistEntry with _$WaitlistEntry {
   int get actualWaitMinutes =>
       status == WaitlistStatus.seated && seatedAt != null
           ? seatedAt!.difference(createdAt).inMinutes
-          : DateTime.now().difference(createdAt).inMinutes;
+          : TimeHelper.now().difference(createdAt).inMinutes;
 
   /// Is ready to notify (within 5 mins of quoted time)
   bool get isReadyToNotify =>
       quotedWaitTime != null &&
-      DateTime.now().difference(quotedWaitTime!).inMinutes >= -5;
+      TimeHelper.now().difference(quotedWaitTime!).inMinutes >= -5;
 }
 
 /// Waitlist summary for display

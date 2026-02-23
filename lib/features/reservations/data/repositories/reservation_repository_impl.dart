@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
@@ -39,7 +40,7 @@ class ReservationRepositoryImpl implements IReservationRepository {
       ReservationTableCompanion(
         status: Value(status),
         tableUuid: Value(tableUuid),
-        updatedAt: Value(DateTime.now()),
+        updatedAt: Value(TimeHelper.now()),
       ),
     );
   }

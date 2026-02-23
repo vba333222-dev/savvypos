@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:savvy_pos/core/di/injection.dart';
@@ -158,7 +159,7 @@ class _SupplierEditorPageState extends State<SupplierEditorPage> {
       phone: _phoneCtrl.text.isEmpty ? null : _phoneCtrl.text,
       address: _addressCtrl.text.isEmpty ? null : _addressCtrl.text,
       leadTimeDays: int.tryParse(_leadTimeCtrl.text) ?? 0,
-      updatedAt: DateTime.now(),
+      updatedAt: TimeHelper.now(),
     );
 
     await getIt<IInventoryRepository>().saveSupplier(supplier);

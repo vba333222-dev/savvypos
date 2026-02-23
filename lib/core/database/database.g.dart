@@ -1049,6 +1049,14 @@ class $RestaurantTableTable extends RestaurantTable
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('CHECK ("is_deleted" IN (0, 1))'),
       defaultValue: const Constant(false));
+  static const VerificationMeta _versionMeta =
+      const VerificationMeta('version');
+  @override
+  late final GeneratedColumn<int> version = GeneratedColumn<int>(
+      'version', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(1));
   @override
   List<GeneratedColumn> get $columns => [
         id,
@@ -1068,7 +1076,8 @@ class $RestaurantTableTable extends RestaurantTable
         qrCodeUrl,
         sessionStatus,
         updatedAt,
-        isDeleted
+        isDeleted,
+        version
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1166,6 +1175,10 @@ class $RestaurantTableTable extends RestaurantTable
       context.handle(_isDeletedMeta,
           isDeleted.isAcceptableOrUnknown(data['is_deleted']!, _isDeletedMeta));
     }
+    if (data.containsKey('version')) {
+      context.handle(_versionMeta,
+          version.isAcceptableOrUnknown(data['version']!, _versionMeta));
+    }
     return context;
   }
 
@@ -1211,6 +1224,8 @@ class $RestaurantTableTable extends RestaurantTable
           .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
       isDeleted: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_deleted'])!,
+      version: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}version'])!,
     );
   }
 
@@ -1240,6 +1255,7 @@ class RestaurantTableData extends DataClass
   final String sessionStatus;
   final DateTime updatedAt;
   final bool isDeleted;
+  final int version;
   const RestaurantTableData(
       {required this.id,
       required this.uuid,
@@ -1258,7 +1274,8 @@ class RestaurantTableData extends DataClass
       this.qrCodeUrl,
       required this.sessionStatus,
       required this.updatedAt,
-      required this.isDeleted});
+      required this.isDeleted,
+      required this.version});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1288,6 +1305,7 @@ class RestaurantTableData extends DataClass
     map['session_status'] = Variable<String>(sessionStatus);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     map['is_deleted'] = Variable<bool>(isDeleted);
+    map['version'] = Variable<int>(version);
     return map;
   }
 
@@ -1319,6 +1337,7 @@ class RestaurantTableData extends DataClass
       sessionStatus: Value(sessionStatus),
       updatedAt: Value(updatedAt),
       isDeleted: Value(isDeleted),
+      version: Value(version),
     );
   }
 
@@ -1345,6 +1364,7 @@ class RestaurantTableData extends DataClass
       sessionStatus: serializer.fromJson<String>(json['sessionStatus']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       isDeleted: serializer.fromJson<bool>(json['isDeleted']),
+      version: serializer.fromJson<int>(json['version']),
     );
   }
   @override
@@ -1369,6 +1389,7 @@ class RestaurantTableData extends DataClass
       'sessionStatus': serializer.toJson<String>(sessionStatus),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'isDeleted': serializer.toJson<bool>(isDeleted),
+      'version': serializer.toJson<int>(version),
     };
   }
 
@@ -1390,7 +1411,8 @@ class RestaurantTableData extends DataClass
           Value<String?> qrCodeUrl = const Value.absent(),
           String? sessionStatus,
           DateTime? updatedAt,
-          bool? isDeleted}) =>
+          bool? isDeleted,
+          int? version}) =>
       RestaurantTableData(
         id: id ?? this.id,
         uuid: uuid ?? this.uuid,
@@ -1414,6 +1436,7 @@ class RestaurantTableData extends DataClass
         sessionStatus: sessionStatus ?? this.sessionStatus,
         updatedAt: updatedAt ?? this.updatedAt,
         isDeleted: isDeleted ?? this.isDeleted,
+        version: version ?? this.version,
       );
   RestaurantTableData copyWithCompanion(RestaurantTableCompanion data) {
     return RestaurantTableData(
@@ -1442,6 +1465,7 @@ class RestaurantTableData extends DataClass
           : this.sessionStatus,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       isDeleted: data.isDeleted.present ? data.isDeleted.value : this.isDeleted,
+      version: data.version.present ? data.version.value : this.version,
     );
   }
 
@@ -1465,7 +1489,8 @@ class RestaurantTableData extends DataClass
           ..write('qrCodeUrl: $qrCodeUrl, ')
           ..write('sessionStatus: $sessionStatus, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('isDeleted: $isDeleted')
+          ..write('isDeleted: $isDeleted, ')
+          ..write('version: $version')
           ..write(')'))
         .toString();
   }
@@ -1489,7 +1514,8 @@ class RestaurantTableData extends DataClass
       qrCodeUrl,
       sessionStatus,
       updatedAt,
-      isDeleted);
+      isDeleted,
+      version);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1511,7 +1537,8 @@ class RestaurantTableData extends DataClass
           other.qrCodeUrl == this.qrCodeUrl &&
           other.sessionStatus == this.sessionStatus &&
           other.updatedAt == this.updatedAt &&
-          other.isDeleted == this.isDeleted);
+          other.isDeleted == this.isDeleted &&
+          other.version == this.version);
 }
 
 class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
@@ -1533,6 +1560,7 @@ class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
   final Value<String> sessionStatus;
   final Value<DateTime> updatedAt;
   final Value<bool> isDeleted;
+  final Value<int> version;
   const RestaurantTableCompanion({
     this.id = const Value.absent(),
     this.uuid = const Value.absent(),
@@ -1552,6 +1580,7 @@ class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
     this.sessionStatus = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.isDeleted = const Value.absent(),
+    this.version = const Value.absent(),
   });
   RestaurantTableCompanion.insert({
     this.id = const Value.absent(),
@@ -1572,6 +1601,7 @@ class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
     this.sessionStatus = const Value.absent(),
     required DateTime updatedAt,
     this.isDeleted = const Value.absent(),
+    this.version = const Value.absent(),
   })  : uuid = Value(uuid),
         name = Value(name),
         updatedAt = Value(updatedAt);
@@ -1594,6 +1624,7 @@ class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
     Expression<String>? sessionStatus,
     Expression<DateTime>? updatedAt,
     Expression<bool>? isDeleted,
+    Expression<int>? version,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1615,6 +1646,7 @@ class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
       if (sessionStatus != null) 'session_status': sessionStatus,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (isDeleted != null) 'is_deleted': isDeleted,
+      if (version != null) 'version': version,
     });
   }
 
@@ -1636,7 +1668,8 @@ class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
       Value<String?>? qrCodeUrl,
       Value<String>? sessionStatus,
       Value<DateTime>? updatedAt,
-      Value<bool>? isDeleted}) {
+      Value<bool>? isDeleted,
+      Value<int>? version}) {
     return RestaurantTableCompanion(
       id: id ?? this.id,
       uuid: uuid ?? this.uuid,
@@ -1656,6 +1689,7 @@ class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
       sessionStatus: sessionStatus ?? this.sessionStatus,
       updatedAt: updatedAt ?? this.updatedAt,
       isDeleted: isDeleted ?? this.isDeleted,
+      version: version ?? this.version,
     );
   }
 
@@ -1717,6 +1751,9 @@ class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
     if (isDeleted.present) {
       map['is_deleted'] = Variable<bool>(isDeleted.value);
     }
+    if (version.present) {
+      map['version'] = Variable<int>(version.value);
+    }
     return map;
   }
 
@@ -1740,7 +1777,8 @@ class RestaurantTableCompanion extends UpdateCompanion<RestaurantTableData> {
           ..write('qrCodeUrl: $qrCodeUrl, ')
           ..write('sessionStatus: $sessionStatus, ')
           ..write('updatedAt: $updatedAt, ')
-          ..write('isDeleted: $isDeleted')
+          ..write('isDeleted: $isDeleted, ')
+          ..write('version: $version')
           ..write(')'))
         .toString();
   }
@@ -40549,6 +40587,7 @@ typedef $$RestaurantTableTableCreateCompanionBuilder = RestaurantTableCompanion
   Value<String> sessionStatus,
   required DateTime updatedAt,
   Value<bool> isDeleted,
+  Value<int> version,
 });
 typedef $$RestaurantTableTableUpdateCompanionBuilder = RestaurantTableCompanion
     Function({
@@ -40570,6 +40609,7 @@ typedef $$RestaurantTableTableUpdateCompanionBuilder = RestaurantTableCompanion
   Value<String> sessionStatus,
   Value<DateTime> updatedAt,
   Value<bool> isDeleted,
+  Value<int> version,
 });
 
 final class $$RestaurantTableTableReferences extends BaseReferences<
@@ -40655,6 +40695,9 @@ class $$RestaurantTableTableFilterComposer
   ColumnFilters<bool> get isDeleted => $composableBuilder(
       column: $table.isDeleted, builder: (column) => ColumnFilters(column));
 
+  ColumnFilters<int> get version => $composableBuilder(
+      column: $table.version, builder: (column) => ColumnFilters(column));
+
   $$ZoneTableTableFilterComposer get zoneUuid {
     final $$ZoneTableTableFilterComposer composer = $composerBuilder(
         composer: this,
@@ -40739,6 +40782,9 @@ class $$RestaurantTableTableOrderingComposer
   ColumnOrderings<bool> get isDeleted => $composableBuilder(
       column: $table.isDeleted, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<int> get version => $composableBuilder(
+      column: $table.version, builder: (column) => ColumnOrderings(column));
+
   $$ZoneTableTableOrderingComposer get zoneUuid {
     final $$ZoneTableTableOrderingComposer composer = $composerBuilder(
         composer: this,
@@ -40820,6 +40866,9 @@ class $$RestaurantTableTableAnnotationComposer
   GeneratedColumn<bool> get isDeleted =>
       $composableBuilder(column: $table.isDeleted, builder: (column) => column);
 
+  GeneratedColumn<int> get version =>
+      $composableBuilder(column: $table.version, builder: (column) => column);
+
   $$ZoneTableTableAnnotationComposer get zoneUuid {
     final $$ZoneTableTableAnnotationComposer composer = $composerBuilder(
         composer: this,
@@ -40883,6 +40932,7 @@ class $$RestaurantTableTableTableManager extends RootTableManager<
             Value<String> sessionStatus = const Value.absent(),
             Value<DateTime> updatedAt = const Value.absent(),
             Value<bool> isDeleted = const Value.absent(),
+            Value<int> version = const Value.absent(),
           }) =>
               RestaurantTableCompanion(
             id: id,
@@ -40903,6 +40953,7 @@ class $$RestaurantTableTableTableManager extends RootTableManager<
             sessionStatus: sessionStatus,
             updatedAt: updatedAt,
             isDeleted: isDeleted,
+            version: version,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
@@ -40923,6 +40974,7 @@ class $$RestaurantTableTableTableManager extends RootTableManager<
             Value<String> sessionStatus = const Value.absent(),
             required DateTime updatedAt,
             Value<bool> isDeleted = const Value.absent(),
+            Value<int> version = const Value.absent(),
           }) =>
               RestaurantTableCompanion.insert(
             id: id,
@@ -40943,6 +40995,7 @@ class $$RestaurantTableTableTableManager extends RootTableManager<
             sessionStatus: sessionStatus,
             updatedAt: updatedAt,
             isDeleted: isDeleted,
+            version: version,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) => (

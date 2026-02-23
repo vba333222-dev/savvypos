@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
@@ -36,7 +37,7 @@ class StaffAlertRepositoryImpl implements IStaffAlertRepository {
     bool vibrate = true,
   }) async {
     final uuid = _uuid.v4();
-    final now = DateTime.now();
+    final now = TimeHelper.now();
     final expiresAt = expiresIn != null ? now.add(expiresIn) : null;
 
     await _db.into(_db.staffAlertTable).insert(StaffAlertTableCompanion(
@@ -84,7 +85,7 @@ class StaffAlertRepositoryImpl implements IStaffAlertRepository {
 
   @override
   Future<List<StaffAlert>> getActiveAlerts() async {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     final rows = await (_db.select(_db.staffAlertTable)
           ..where((t) => t.status.equals(AlertStatus.active.name))
@@ -140,7 +141,7 @@ class StaffAlertRepositoryImpl implements IStaffAlertRepository {
     await (_db.update(_db.staffAlertTable)..where((t) => t.uuid.equals(uuid)))
         .write(StaffAlertTableCompanion(
       status: Value(AlertStatus.acknowledged.name),
-      acknowledgedAt: Value(DateTime.now()),
+      acknowledgedAt: Value(TimeHelper.now()),
       acknowledgedByUuid: Value(userUuid),
     ));
   }
@@ -150,7 +151,7 @@ class StaffAlertRepositoryImpl implements IStaffAlertRepository {
     await (_db.update(_db.staffAlertTable)..where((t) => t.uuid.equals(uuid)))
         .write(StaffAlertTableCompanion(
       status: Value(AlertStatus.resolved.name),
-      resolvedAt: Value(DateTime.now()),
+      resolvedAt: Value(TimeHelper.now()),
       resolvedByUuid: Value(userUuid),
     ));
   }
@@ -163,13 +164,13 @@ class StaffAlertRepositoryImpl implements IStaffAlertRepository {
         .write(StaffAlertTableCompanion(
       status:
           Value(AlertStatus.resolved.name), // Treat dismiss as resolve for UI
-      resolvedAt: Value(DateTime.now()),
+      resolvedAt: Value(TimeHelper.now()),
     ));
   }
 
   @override
   Future<int> expireOldAlerts() async {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
     return (_db.update(_db.staffAlertTable)
           ..where((t) => t.status.equals(AlertStatus.active.name))
           ..where((t) => t.expiresAt.isSmallerThanValue(now)))
@@ -195,7 +196,7 @@ class StaffAlertRepositoryImpl implements IStaffAlertRepository {
 
   @override
   Stream<int> watchActiveAlertCount() {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
     final count = _db.staffAlertTable.uuid.count();
 
     return (_db.selectOnly(_db.staffAlertTable)

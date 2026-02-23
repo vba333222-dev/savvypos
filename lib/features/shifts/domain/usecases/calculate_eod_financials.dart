@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/features/history/domain/repositories/i_order_repository.dart';
 
@@ -27,7 +28,7 @@ class CalculateEodFinancialsUseCase {
 
   Future<FinancialAggregationResult> call(DateTime shiftStartTime,
       {DateTime? shiftEndTime}) async {
-    final endTime = shiftEndTime ?? DateTime.now();
+    final endTime = shiftEndTime ?? TimeHelper.now();
 
     // Retrieve all completed orders for this shift timeframe
     final orders =

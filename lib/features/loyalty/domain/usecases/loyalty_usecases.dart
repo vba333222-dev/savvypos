@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/features/loyalty/domain/entities/loyalty_entities.dart';
 import 'package:savvy_pos/features/loyalty/domain/repositories/i_loyalty_repository.dart';
@@ -43,7 +44,7 @@ class GetSegmentedMembersUseCase {
 
     switch (trigger) {
       case CampaignTriggerType.inactive30Days:
-        final cutoff = DateTime.now().subtract(const Duration(days: 30));
+        final cutoff = TimeHelper.now().subtract(const Duration(days: 30));
         return allMembers.where((m) {
           // If lastEarnedAt is null, use enrolledAt
           final lastActivity = m.lastEarnedAt ?? m.enrolledAt;
@@ -55,7 +56,7 @@ class GetSegmentedMembersUseCase {
         return allMembers.where((m) => m.lifetimePoints >= threshold).toList();
 
       case CampaignTriggerType.birthday:
-        final now = DateTime.now();
+        final now = TimeHelper.now();
         return allMembers
             .where((m) =>
                 m.birthday != null &&

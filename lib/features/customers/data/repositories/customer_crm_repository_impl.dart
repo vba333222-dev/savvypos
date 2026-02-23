@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:drift/drift.dart';
 import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/features/customers/domain/entities/customer_profile.dart';
@@ -13,7 +14,7 @@ class CustomerCrmRepositoryImpl implements ICustomerCrmRepository {
 
   CustomerSegment _calculateSegment(
       int visitCount, double totalSpent, DateTime? lastVisit) {
-    if (lastVisit != null && DateTime.now().difference(lastVisit).inDays > 60) {
+    if (lastVisit != null && TimeHelper.now().difference(lastVisit).inDays > 60) {
       return CustomerSegment.lapsed;
     }
     if (totalSpent > 500) return CustomerSegment.vip;
@@ -156,7 +157,7 @@ class CustomerCrmRepositoryImpl implements ICustomerCrmRepository {
             customerUuid: customerUuid,
             content: content,
             createdBy: createdBy,
-            createdAt: DateTime.now(),
+            createdAt: TimeHelper.now(),
             isCritical: Value(isCritical),
           ),
         );
@@ -242,7 +243,7 @@ class CustomerCrmRepositoryImpl implements ICustomerCrmRepository {
             name: name,
             phone: Value(phone.isEmpty ? null : phone),
             email: Value(email.isEmpty ? null : email),
-            updatedAt: DateTime.now(),
+            updatedAt: TimeHelper.now(),
           ),
         );
 

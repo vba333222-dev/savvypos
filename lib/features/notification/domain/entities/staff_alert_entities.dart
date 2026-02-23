@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'staff_alert_entities.freezed.dart';
@@ -77,7 +78,7 @@ class StaffAlert with _$StaffAlert {
   /// Check if alert is still active
   bool get isActive =>
       status == AlertStatus.active &&
-      (expiresAt == null || DateTime.now().isBefore(expiresAt!));
+      (expiresAt == null || TimeHelper.now().isBefore(expiresAt!));
 }
 
 /// Quick alert templates

@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -333,10 +334,10 @@ class _KdsTicketTimerWidgetState extends State<KdsTicketTimerWidget>
   void initState() {
     super.initState();
     _elapsed = widget.ticket.duration;
-    _lastTick = DateTime.now();
+    _lastTick = TimeHelper.now();
 
     _ticker = createTicker((_) {
-      final now = DateTime.now();
+      final now = TimeHelper.now();
       if (now.difference(_lastTick).inSeconds >= 1) {
         _lastTick = now;
         setState(() {

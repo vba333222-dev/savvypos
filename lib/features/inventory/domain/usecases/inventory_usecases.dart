@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/inventory_entities.dart';
 import 'package:savvy_pos/features/inventory/domain/repositories/i_inventory_repository.dart';
@@ -29,7 +30,7 @@ class CreatePurchaseOrderUseCase {
       totalCost: total,
       notes: notes,
       items: items,
-      createdAt: DateTime.now(),
+      createdAt: TimeHelper.now(),
     );
 
     await _repository.savePurchaseOrder(po);

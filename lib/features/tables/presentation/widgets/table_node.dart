@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -61,8 +62,8 @@ class _TableNodeState extends State<TableNode> {
     // Since entity definition isn't fully visible, we'll use a mock start time derived from hashCode/random or just 0 for new sessions.
 
     // For this implementation, let's pretend 'updatedAt' is the start time.
-    final start = widget.tableStatus.updatedAt ?? DateTime.now();
-    final now = DateTime.now();
+    final start = widget.tableStatus.updatedAt ?? TimeHelper.now();
+    final now = TimeHelper.now();
     final diff = now.difference(start);
 
     setState(() => _elapsed = diff);

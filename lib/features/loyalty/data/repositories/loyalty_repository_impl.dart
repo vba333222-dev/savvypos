@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:drift/drift.dart';
 import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/features/loyalty/domain/entities/loyalty_entities.dart';
@@ -50,7 +51,7 @@ class LoyaltyRepositoryImpl implements ILoyaltyRepository {
       String customerUuid, String customerName, String phoneNumber,
       {DateTime? birthday}) async {
     final uuid = const Uuid().v4();
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     // Check Config for Bonus
     final config = await getConfig();
@@ -186,7 +187,7 @@ class LoyaltyRepositoryImpl implements ILoyaltyRepository {
         pointsBalance: Value(newBalance),
         lifetimePoints: Value(newLifetime),
         currentTier: Value(newTier),
-        lastTransactionAt: Value(DateTime.now()),
+        lastTransactionAt: Value(TimeHelper.now()),
       ));
 
       await db
@@ -198,7 +199,7 @@ class LoyaltyRepositoryImpl implements ILoyaltyRepository {
             pointsDelta: points.toDouble(),
             reason: const Value('Purchase'),
             orderUuid: Value(orderUuid),
-            createdAt: Value(DateTime.now()),
+            createdAt: Value(TimeHelper.now()),
           ));
     });
 
@@ -222,7 +223,7 @@ class LoyaltyRepositoryImpl implements ILoyaltyRepository {
             ..where((t) => t.uuid.equals(member.uuid)))
           .write(LoyaltyMemberTableCompanion(
         pointsBalance: Value(member.pointsBalance - points),
-        lastTransactionAt: Value(DateTime.now()),
+        lastTransactionAt: Value(TimeHelper.now()),
       ));
 
       await db
@@ -234,7 +235,7 @@ class LoyaltyRepositoryImpl implements ILoyaltyRepository {
             pointsDelta: -points.toDouble(),
             reason: Value(reason),
             orderUuid: Value(orderUuid),
-            createdAt: Value(DateTime.now()),
+            createdAt: Value(TimeHelper.now()),
           ));
     });
 

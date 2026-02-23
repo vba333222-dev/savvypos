@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -118,7 +119,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
       // Save & Share
       final directory = await getApplicationDocumentsDirectory();
       final path =
-          '${directory.path}/sales_report_${DateTime.now().millisecondsSinceEpoch}.csv';
+          '${directory.path}/sales_report_${TimeHelper.now().millisecondsSinceEpoch}.csv';
       final file = File(path);
       await file.writeAsString(csvBuffer.toString());
 

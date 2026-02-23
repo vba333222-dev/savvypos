@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,7 +18,7 @@ class ScannerListenerWidget extends StatefulWidget {
 
 class _ScannerListenerWidgetState extends State<ScannerListenerWidget> {
   final StringBuffer _buffer = StringBuffer();
-  DateTime _lastKeyTime = DateTime.now();
+  DateTime _lastKeyTime = TimeHelper.now();
 
   @override
   void initState() {
@@ -33,7 +34,7 @@ class _ScannerListenerWidgetState extends State<ScannerListenerWidget> {
 
   bool _handleKey(KeyEvent event) {
     if (event is KeyDownEvent) {
-      final now = DateTime.now();
+      final now = TimeHelper.now();
       final diff = now.difference(_lastKeyTime).inMilliseconds;
       _lastKeyTime = now;
 

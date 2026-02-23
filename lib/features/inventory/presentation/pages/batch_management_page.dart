@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -117,10 +118,10 @@ class _BatchManagementContentState extends State<_BatchManagementContent> {
           for (final batch in state.batches) {
             if (batch.status == BatchStatus.expired ||
                 (batch.expiryDate != null &&
-                    batch.expiryDate!.isBefore(DateTime.now()))) {
+                    batch.expiryDate!.isBefore(TimeHelper.now()))) {
               expired.add(batch);
             } else if (batch.expiryDate != null &&
-                batch.expiryDate!.difference(DateTime.now()).inDays <= 7) {
+                batch.expiryDate!.difference(TimeHelper.now()).inDays <= 7) {
               expiringSoon.add(batch);
             } else {
               active.add(batch);
@@ -324,7 +325,7 @@ class _BatchCard extends StatelessWidget {
     String expiryText = 'No expiry';
 
     if (batch.expiryDate != null) {
-      daysUntilExpiry = batch.expiryDate!.difference(DateTime.now()).inDays;
+      daysUntilExpiry = batch.expiryDate!.difference(TimeHelper.now()).inDays;
       if (daysUntilExpiry < 0) {
         expiryColor = Colors.red;
         expiryText = 'Expired ${-daysUntilExpiry}d ago';

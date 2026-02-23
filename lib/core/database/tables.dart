@@ -65,6 +65,7 @@ class RestaurantTable extends Table {
 
   DateTimeColumn get updatedAt => dateTime()();
   BoolColumn get isDeleted => boolean().withDefault(const Constant(false))();
+  IntColumn get version => integer().withDefault(const Constant(1))();
 }
 
 // ==============================================================================

@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -47,7 +48,7 @@ class _DeviceMeshPageState extends State<DeviceMeshPage>
       _particles.add(_DataParticle(
         start: const Offset(0.5, 0.5), // Center (Phone)
         end: endPos,
-        startTime: DateTime.now(),
+        startTime: TimeHelper.now(),
       ));
     });
     // Restart controller to drive animation loop if idle
@@ -137,7 +138,7 @@ class _DeviceMeshPageState extends State<DeviceMeshPage>
 
   Widget _buildParticle(_DataParticle particle, SavvyTheme theme) {
     // Calculate current position based on time
-    final now = DateTime.now();
+    final now = TimeHelper.now();
     final elapsed = now.difference(particle.startTime).inMilliseconds;
     final progress = (elapsed / 1000).clamp(0.0, 1.0); // 1 second travel time
     particle.progress = progress;

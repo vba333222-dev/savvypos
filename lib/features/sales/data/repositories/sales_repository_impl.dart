@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
@@ -88,7 +89,7 @@ class SalesRepositoryImpl implements ISalesRepository {
     if (cart.items.isEmpty) throw Exception("Cart is empty");
 
     final orderUuid = _uuid.v4();
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     await _db.transaction(() async {
       // 1. Create Order

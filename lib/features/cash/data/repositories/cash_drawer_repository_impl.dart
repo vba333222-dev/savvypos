@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:drift/drift.dart';
 import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/features/cash/domain/entities/cash_drawer_entities.dart';
@@ -82,7 +83,7 @@ class CashDrawerRepositoryImpl implements ICashDrawerRepository {
   Future<CashDrawer> openDrawer(String shiftUuid, String employeeUuid,
       String employeeName, double startingBalance) async {
     final uuid = const Uuid().v4();
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     await db.into(db.cashDrawerTable).insert(
           CashDrawerTableCompanion.insert(
@@ -124,7 +125,7 @@ class CashDrawerRepositoryImpl implements ICashDrawerRepository {
       String drawerUuid, CashEventType type, double amount, String reason,
       {String? comment, String? orderUuid}) async {
     final uuid = const Uuid().v4();
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     await db.into(db.cashEventTable).insert(
           CashEventTableCompanion.insert(
@@ -184,7 +185,7 @@ class CashDrawerRepositoryImpl implements ICashDrawerRepository {
   @override
   Future<CashDrawer> closeDrawer(
       String drawerUuid, double actualBalance) async {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
     final drawer = await (db.select(db.cashDrawerTable)
           ..where((t) => t.uuid.equals(drawerUuid)))
         .getSingle();

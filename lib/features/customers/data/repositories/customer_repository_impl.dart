@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
@@ -48,7 +49,7 @@ class CustomerRepositoryImpl implements ICustomerRepository {
       email: Value(customer.email),
       totalPoints: Value(customer.totalPoints),
       lastVisitAt: Value(customer.lastVisitAt),
-      updatedAt: Value(DateTime.now()),
+      updatedAt: Value(TimeHelper.now()),
       isSynced: const Value(false),
       isDeleted: const Value(false),
     );
@@ -61,7 +62,7 @@ class CustomerRepositoryImpl implements ICustomerRepository {
     await (db.update(db.customerTable)..where((t) => t.uuid.equals(uuid)))
         .write(CustomerTableCompanion(
       isDeleted: const Value(true),
-      updatedAt: Value(DateTime.now()),
+      updatedAt: Value(TimeHelper.now()),
       isSynced: const Value(false),
     ));
   }

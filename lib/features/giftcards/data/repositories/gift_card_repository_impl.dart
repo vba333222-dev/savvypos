@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'dart:math';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
@@ -98,7 +99,7 @@ class GiftCardRepositoryImpl implements IGiftCardRepository {
     String? notes,
   }) async {
     final uuid = _uuid.v4();
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     await _db.into(_db.giftCardTable).insert(GiftCardTableCompanion(
           uuid: Value(uuid),
@@ -172,7 +173,7 @@ class GiftCardRepositoryImpl implements IGiftCardRepository {
           ..where((t) => t.uuid.equals(giftCardUuid)))
         .write(GiftCardTableCompanion(
       currentBalance: Value(newBalance),
-      updatedAt: Value(DateTime.now()),
+      updatedAt: Value(TimeHelper.now()),
     ));
 
     // Record transaction
@@ -219,8 +220,8 @@ class GiftCardRepositoryImpl implements IGiftCardRepository {
         .write(GiftCardTableCompanion(
       currentBalance: Value(newBalance),
       status: Value(newStatus.name),
-      lastUsedAt: Value(DateTime.now()),
-      updatedAt: Value(DateTime.now()),
+      lastUsedAt: Value(TimeHelper.now()),
+      updatedAt: Value(TimeHelper.now()),
     ));
 
     // Record transaction
@@ -261,7 +262,7 @@ class GiftCardRepositoryImpl implements IGiftCardRepository {
         .write(GiftCardTableCompanion(
       currentBalance: Value(newBalance),
       status: Value(newStatus.name),
-      updatedAt: Value(DateTime.now()),
+      updatedAt: Value(TimeHelper.now()),
     ));
 
     return _recordTransaction(
@@ -289,7 +290,7 @@ class GiftCardRepositoryImpl implements IGiftCardRepository {
         .write(GiftCardTableCompanion(
       status: Value(GiftCardStatus.suspended.name),
       notes: Value(reason),
-      updatedAt: Value(DateTime.now()),
+      updatedAt: Value(TimeHelper.now()),
     ));
   }
 
@@ -299,7 +300,7 @@ class GiftCardRepositoryImpl implements IGiftCardRepository {
         .write(GiftCardTableCompanion(
       status: Value(GiftCardStatus.cancelled.name),
       notes: Value(reason),
-      updatedAt: Value(DateTime.now()),
+      updatedAt: Value(TimeHelper.now()),
     ));
   }
 
@@ -411,7 +412,7 @@ class GiftCardRepositoryImpl implements IGiftCardRepository {
 
   @override
   Future<int> processExpirations() async {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     // Find expired cards
     final query = _db.select(_db.giftCardTable)
@@ -505,7 +506,7 @@ class GiftCardRepositoryImpl implements IGiftCardRepository {
     String? notes,
   }) async {
     final uuid = _uuid.v4();
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     await _db
         .into(_db.giftCardTransactionTable)

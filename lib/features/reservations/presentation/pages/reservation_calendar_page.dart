@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:savvy_pos/features/reservations/presentation/pages/reservation_timeline_page.dart';
 import 'package:savvy_pos/features/reservations/presentation/pages/create_reservation_wizard.dart'; // Will create next
@@ -12,7 +13,7 @@ class ReservationCalendarPage extends StatefulWidget {
 }
 
 class _ReservationCalendarPageState extends State<ReservationCalendarPage> {
-  DateTime _focusedDay = DateTime.now();
+  DateTime _focusedDay = TimeHelper.now();
   DateTime? _selectedDay;
 
   @override

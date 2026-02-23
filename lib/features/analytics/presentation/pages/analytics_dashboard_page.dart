@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -20,8 +21,8 @@ class _AnalyticsDashboardPageState extends State<AnalyticsDashboardPage>
   late TabController _tabController;
 
   DateTimeRange _dateRange = DateTimeRange(
-    start: DateTime.now().subtract(const Duration(days: 7)),
-    end: DateTime.now(),
+    start: TimeHelper.now().subtract(const Duration(days: 7)),
+    end: TimeHelper.now(),
   );
 
   SalesSummary? _salesSummary;
@@ -50,7 +51,7 @@ class _AnalyticsDashboardPageState extends State<AnalyticsDashboardPage>
       final labor = await _repo.getLaborMetrics(_dateRange);
       final pmix = await _repo.getProductMix(_dateRange);
       final hourly =
-          await _repo.getHourlySales(DateTime.now()); // Demo: Today's hourly
+          await _repo.getHourlySales(TimeHelper.now()); // Demo: Today's hourly
 
       if (mounted) {
         setState(() {
@@ -70,7 +71,7 @@ class _AnalyticsDashboardPageState extends State<AnalyticsDashboardPage>
     final picked = await showDateRangePicker(
       context: context,
       firstDate: DateTime(2020),
-      lastDate: DateTime.now(),
+      lastDate: TimeHelper.now(),
       initialDateRange: _dateRange,
     );
     if (picked != null) {

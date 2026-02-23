@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'customer_profile.freezed.dart';
@@ -35,10 +36,10 @@ class CustomerProfile with _$CustomerProfile {
 
 extension CustomerProfileX on CustomerProfile {
   bool get isLapsed =>
-      lastVisit != null && DateTime.now().difference(lastVisit!).inDays > 60;
+      lastVisit != null && TimeHelper.now().difference(lastVisit!).inDays > 60;
   bool get isVip => totalSpent > 500;
   bool get hasBirthdayThisMonth =>
-      birthday != null && birthday!.month == DateTime.now().month;
+      birthday != null && birthday!.month == TimeHelper.now().month;
 }
 
 @freezed

@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -165,7 +166,7 @@ class _StockMovementContentState extends State<_StockMovementContent> {
   }
 
   String _formatDateHeader(DateTime date) {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
     final today = DateTime(now.year, now.month, now.day);
     final yesterday = today.subtract(const Duration(days: 1));
     final dateOnly = DateTime(date.year, date.month, date.day);
@@ -224,10 +225,10 @@ class _StockMovementContentState extends State<_StockMovementContent> {
                       final date = await showDatePicker(
                         context: context,
                         initialDate: _startDate ??
-                            DateTime.now().subtract(const Duration(days: 7)),
+                            TimeHelper.now().subtract(const Duration(days: 7)),
                         firstDate:
-                            DateTime.now().subtract(const Duration(days: 365)),
-                        lastDate: DateTime.now(),
+                            TimeHelper.now().subtract(const Duration(days: 365)),
+                        lastDate: TimeHelper.now(),
                       );
                       if (date != null) {
                         setState(() => _startDate = date);
@@ -248,10 +249,10 @@ class _StockMovementContentState extends State<_StockMovementContent> {
                     onPressed: () async {
                       final date = await showDatePicker(
                         context: context,
-                        initialDate: _endDate ?? DateTime.now(),
+                        initialDate: _endDate ?? TimeHelper.now(),
                         firstDate: _startDate ??
-                            DateTime.now().subtract(const Duration(days: 365)),
-                        lastDate: DateTime.now(),
+                            TimeHelper.now().subtract(const Duration(days: 365)),
+                        lastDate: TimeHelper.now(),
                       );
                       if (date != null) {
                         setState(() => _endDate = date);

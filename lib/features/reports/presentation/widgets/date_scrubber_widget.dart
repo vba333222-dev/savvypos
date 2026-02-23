@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -27,7 +28,7 @@ class _DateScrubberWidgetState extends State<DateScrubberWidget> {
     super.initState();
     // Generate last 30 days + next 7 days? Or just historical?
     // Let's do last 60 days
-    final now = DateTime.now();
+    final now = TimeHelper.now();
     for (int i = 59; i >= 0; i--) {
       _dates.add(now.subtract(Duration(days: i)));
     }

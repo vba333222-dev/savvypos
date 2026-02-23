@@ -1,6 +1,8 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
+import 'package:savvy_pos/core/error/failures.dart';
 import 'package:savvy_pos/features/tables/domain/entities/table.dart';
 import 'package:savvy_pos/features/tables/domain/entities/zone.dart';
 import 'package:savvy_pos/features/tables/domain/repositories/i_table_repository.dart';
@@ -55,6 +57,7 @@ class TableRepositoryImpl implements ITableRepository {
             (e) => e.name == row.sessionStatus,
             orElse: () => TableSessionStatus.locked,
           ),
+          version: row.version,
         );
       }).toList();
     });
@@ -74,7 +77,7 @@ class TableRepositoryImpl implements ITableRepository {
           name: Value(zone.name),
           width: Value(zone.width),
           height: Value(zone.height),
-          updatedAt: Value(DateTime.now()),
+          updatedAt: Value(TimeHelper.now()),
         ),
       );
     } else {
@@ -84,7 +87,7 @@ class TableRepositoryImpl implements ITableRepository {
               name: zone.name,
               width: Value(zone.width),
               height: Value(zone.height),
-              updatedAt: DateTime.now(),
+              updatedAt: TimeHelper.now(),
             ),
           );
     }
@@ -95,7 +98,7 @@ class TableRepositoryImpl implements ITableRepository {
     await (_db.update(_db.zoneTable)..where((t) => t.uuid.equals(uuid))).write(
       ZoneTableCompanion(
         isDeleted: const Value(true),
-        updatedAt: Value(DateTime.now()),
+        updatedAt: Value(TimeHelper.now()),
       ),
     );
   }
@@ -107,6 +110,11 @@ class TableRepositoryImpl implements ITableRepository {
         .getSingleOrNull();
 
     if (exists != null) {
+      if (exists.version != table.version) {
+        throw ConcurrencyException(
+            'Gagal menyimpan. Data meja disunting perangkat lain. Memuat ulang...');
+      }
+
       await (_db.update(_db.restaurantTable)
             ..where((t) => t.uuid.equals(table.id)))
           .write(
@@ -120,7 +128,8 @@ class TableRepositoryImpl implements ITableRepository {
           rotation: Value(table.rotation),
           shape: Value(table.shape == TableShape.round ? 'round' : 'rectangle'),
           capacity: Value(table.capacity),
-          updatedAt: Value(DateTime.now()),
+          updatedAt: Value(TimeHelper.now()),
+          version: Value(table.version + 1),
         ),
       );
     } else {
@@ -137,7 +146,7 @@ class TableRepositoryImpl implements ITableRepository {
               shape: Value(
                   table.shape == TableShape.round ? 'round' : 'rectangle'),
               capacity: Value(table.capacity),
-              updatedAt: DateTime.now(),
+              updatedAt: TimeHelper.now(),
             ),
           );
     }
@@ -149,7 +158,7 @@ class TableRepositoryImpl implements ITableRepository {
         .write(
       RestaurantTableCompanion(
         isDeleted: const Value(true),
-        updatedAt: Value(DateTime.now()),
+        updatedAt: Value(TimeHelper.now()),
       ),
     );
   }
@@ -157,13 +166,22 @@ class TableRepositoryImpl implements ITableRepository {
   @override
   Future<void> setTableOccupied(String tableUuid, bool isOccupied,
       {String? orderUuid}) async {
+    
+    final current = await (_db.select(_db.restaurantTable)
+          ..where((t) => t.uuid.equals(tableUuid)))
+        .getSingleOrNull();
+
+    if (current == null) return;
+
+    // Direct status updates (like seating) are usually authoritative, but we bump version regardless
     await (_db.update(_db.restaurantTable)
           ..where((t) => t.uuid.equals(tableUuid)))
         .write(
       RestaurantTableCompanion(
         isOccupied: Value(isOccupied),
         currentOrderUuid: Value(orderUuid),
-        updatedAt: Value(DateTime.now()),
+        updatedAt: Value(TimeHelper.now()),
+        version: Value(current.version + 1),
       ),
     );
   }
@@ -266,6 +284,12 @@ class TableRepositoryImpl implements ITableRepository {
   @override
   Future<void> updateSessionInfo(String tableUuid, String? token, String? url,
       TableSessionStatus status) async {
+    final current = await (_db.select(_db.restaurantTable)
+          ..where((t) => t.uuid.equals(tableUuid)))
+        .getSingleOrNull();
+
+    if (current == null) return;
+
     await (_db.update(_db.restaurantTable)
           ..where((t) => t.uuid.equals(tableUuid)))
         .write(
@@ -273,7 +297,8 @@ class TableRepositoryImpl implements ITableRepository {
         currentSessionToken: Value(token),
         qrCodeUrl: Value(url),
         sessionStatus: Value(status.name),
-        updatedAt: Value(DateTime.now()),
+        updatedAt: Value(TimeHelper.now()),
+        version: Value(current.version + 1),
       ),
     );
   }

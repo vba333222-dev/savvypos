@@ -41,7 +41,7 @@ void main() {
     
     test('props includes all fields', () {
        expect(table.props, [
-          table.id, table.name, table.zoneId, table.x, table.y, table.width, table.height, table.rotation, table.shape, table.capacity, table.isOccupied, table.currentOrderUuid, table.currentSessionToken, table.qrCodeUrl, table.sessionStatus, table.updatedAt
+          table.id, table.name, table.zoneId, table.x, table.y, table.width, table.height, table.rotation, table.shape, table.capacity, table.isOccupied, table.currentOrderUuid, table.currentSessionToken, table.qrCodeUrl, table.sessionStatus, table.updatedAt, table.version
        ]);
     });
   });

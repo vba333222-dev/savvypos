@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/features/sales/domain/entities/payment_transaction.dart';
 import 'package:savvy_pos/features/sales/domain/repositories/i_checkout_repository.dart';
@@ -27,7 +28,7 @@ class ProcessPaymentUseCase {
 
     // 3. Create Transaction
     final transaction = PaymentTransaction(
-      uuid: DateTime.now()
+      uuid: TimeHelper.now()
           .millisecondsSinceEpoch
           .toString(), // Temporary UUID gen
       orderUuid: orderUuid,
@@ -36,7 +37,7 @@ class ProcessPaymentUseCase {
       tendered: tendered,
       change: change,
       status: PaymentStatus.paid,
-      createdAt: DateTime.now(),
+      createdAt: TimeHelper.now(),
       note: note,
     );
 

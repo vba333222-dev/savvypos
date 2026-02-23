@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
@@ -82,8 +83,8 @@ class _PurchaseOrderListPageState extends State<PurchaseOrderListPage>
   Widget _buildList(PoStatus status) {
     final filtered = _allPos.where((p) => p.status == status).toList();
     // Sort by date desc
-    filtered.sort((a, b) => (b.createdAt ?? DateTime.now())
-        .compareTo(a.createdAt ?? DateTime.now()));
+    filtered.sort((a, b) => (b.createdAt ?? TimeHelper.now())
+        .compareTo(a.createdAt ?? TimeHelper.now()));
 
     if (filtered.isEmpty) {
       return const Center(
@@ -203,7 +204,7 @@ class _PurchaseOrderEditorPageState extends State<PurchaseOrderEditorPage> {
         }).toList();
       }
     } else {
-      _refNumber = 'PO-${DateTime.now().millisecondsSinceEpoch}';
+      _refNumber = 'PO-${TimeHelper.now().millisecondsSinceEpoch}';
     }
 
     setState(() => _isLoading = false);

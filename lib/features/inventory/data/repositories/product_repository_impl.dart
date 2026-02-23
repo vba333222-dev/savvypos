@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
@@ -90,7 +91,7 @@ class ProductRepositoryImpl implements IProductRepository {
       trackStock: Value(product.trackStock),
       isService: Value(product.isService),
       printerCategory: Value(product.printerCategory),
-      updatedAt: Value(DateTime.now()),
+      updatedAt: Value(TimeHelper.now()),
       isSynced: const Value(false),
     );
 
@@ -103,7 +104,7 @@ class ProductRepositoryImpl implements IProductRepository {
     await (db.update(db.productTable)..where((t) => t.uuid.equals(uuid)))
         .write(ProductTableCompanion(
       isDeleted: const Value(true),
-      updatedAt: Value(DateTime.now()),
+      updatedAt: Value(TimeHelper.now()),
       isSynced: const Value(false),
     ));
   }
@@ -196,7 +197,7 @@ class ProductRepositoryImpl implements IProductRepository {
             allowMultiSelect: Value(group.allowMultiSelect),
             minSelection: Value(group.minSelection),
             maxSelection: Value(group.maxSelection),
-            updatedAt: Value(DateTime.now()),
+            updatedAt: Value(TimeHelper.now()),
           ));
 
       // 2. Save Items
@@ -212,7 +213,7 @@ class ProductRepositoryImpl implements IProductRepository {
               groupUuid: group.uuid,
               name: item.name,
               priceDelta: Value(item.priceDelta),
-              updatedAt: DateTime.now(),
+              updatedAt: TimeHelper.now(),
             ));
       }
       return const Right(null);
@@ -308,7 +309,7 @@ class ProductRepositoryImpl implements IProductRepository {
             unit: Value(ingredient.unit),
             currentStock: Value(ingredient.currentStock),
             costPerUnit: Value(ingredient.costPerUnit),
-            updatedAt: Value(DateTime.now()),
+            updatedAt: Value(TimeHelper.now()),
           ));
       return const Right(null);
     } catch (e) {

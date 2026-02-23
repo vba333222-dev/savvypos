@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
@@ -72,7 +73,7 @@ class DiscountRepositoryImpl implements IDiscountRepository {
   @override
   Future<Discount> createDiscount(Discount discount) async {
     final uuid = discount.uuid.isEmpty ? _uuid.v4() : discount.uuid;
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     await _db.into(_db.discountTable).insert(DiscountTableCompanion(
           uuid: Value(uuid),
@@ -128,7 +129,7 @@ class DiscountRepositoryImpl implements IDiscountRepository {
           Value(jsonEncode(discount.tiers.map((e) => e.toJson()).toList())),
       validFrom: Value(discount.validFrom),
       validUntil: Value(discount.validUntil),
-      updatedAt: Value(DateTime.now()),
+      updatedAt: Value(TimeHelper.now()),
     ));
   }
 
@@ -235,7 +236,7 @@ class DiscountRepositoryImpl implements IDiscountRepository {
     if (discount == null) throw Exception('Discount not found');
 
     final uuid = _uuid.v4();
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     await _db
         .into(_db.appliedDiscountTable)
@@ -383,7 +384,7 @@ class DiscountRepositoryImpl implements IDiscountRepository {
     String? appliedByUuid,
   }) async {
     final uuid = _uuid.v4(); // ignore: unused_local_variable
-    final now = DateTime.now(); // ignore: unused_local_variable
+    final now = TimeHelper.now(); // ignore: unused_local_variable
 
     // Quick discounts are treated as ad-hoc applied discounts without a parent Discount entity definition in this simplified model,
     // OR we could create a temporary hidden Discount entity. For now, we'll just insert into applied table with dummy IDs or

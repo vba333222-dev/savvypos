@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -51,7 +52,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         body: 'Inventory is below 5 units.',
         type: 'ALERT',
         isRead: false,
-        createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        createdAt: TimeHelper.now().subtract(const Duration(minutes: 5)),
       ),
       NotificationItem(
         id: '2',
@@ -59,7 +60,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         body: 'Table 5 paid \$54.00 via QRIS.',
         type: 'INFO',
         isRead: true,
-        createdAt: DateTime.now().subtract(const Duration(hours: 1)),
+        createdAt: TimeHelper.now().subtract(const Duration(hours: 1)),
       ),
     ];
 

@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:drift/drift.dart' hide Batch;
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
@@ -70,8 +71,8 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
           contactPhone: Value(warehouse.contactPhone),
           isPrimary: Value(warehouse.isPrimary),
           isActive: Value(warehouse.isActive),
-          createdAt: Value(DateTime.now()),
-          updatedAt: Value(DateTime.now()),
+          createdAt: Value(TimeHelper.now()),
+          updatedAt: Value(TimeHelper.now()),
         ));
     return warehouse.copyWith(uuid: uuid);
   }
@@ -88,7 +89,7 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
       contactPhone: Value(warehouse.contactPhone),
       isPrimary: Value(warehouse.isPrimary),
       isActive: Value(warehouse.isActive),
-      updatedAt: Value(DateTime.now()),
+      updatedAt: Value(TimeHelper.now()),
     ));
   }
 
@@ -98,7 +99,7 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
         .write(WarehouseTableCompanion(
       isDeleted: const Value(true),
       isActive: const Value(false),
-      updatedAt: Value(DateTime.now()),
+      updatedAt: Value(TimeHelper.now()),
     ));
   }
 
@@ -224,7 +225,7 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
           warehouseUuid: Value(warehouseUuid),
           quantity: Value(newQuantity),
           availableQuantity: Value(newQuantity), // Simplified
-          updatedAt: Value(DateTime.now()),
+          updatedAt: Value(TimeHelper.now()),
         ));
   }
 
@@ -290,7 +291,7 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
             performedByName: Value(performedByName),
             balanceBefore: Value(currentQty),
             balanceAfter: Value(newQty),
-            timestamp: Value(DateTime.now()),
+            timestamp: Value(TimeHelper.now()),
           ));
 
       return StockMovement(
@@ -302,7 +303,7 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
         quantityChange: quantityChange,
         performedBy: performedBy,
         performedByName: performedByName,
-        timestamp: DateTime.now(),
+        timestamp: TimeHelper.now(),
         reasonCode: reasonCode,
         referenceNumber: referenceNumber,
         balanceBefore: currentQty,
@@ -378,7 +379,7 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
     if (status != null) query.where((t) => t.status.equals(status.name));
 
     if (expiringWithinDays && days != null) {
-      final expiryThreshold = DateTime.now().add(Duration(days: days));
+      final expiryThreshold = TimeHelper.now().add(Duration(days: days));
       query.where((t) =>
           t.expiryDate.isNotNull() &
           t.expiryDate.isSmallerOrEqualValue(expiryThreshold));
@@ -434,7 +435,7 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
     await (_db.update(_db.batchTable)..where((t) => t.uuid.equals(uuid)))
         .write(BatchTableCompanion(
       currentQuantity: Value(newQuantity),
-      updatedAt: Value(DateTime.now()),
+      updatedAt: Value(TimeHelper.now()),
     ));
   }
 
@@ -443,7 +444,7 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
     return (_db.update(_db.batchTable)..where((t) => t.uuid.equals(uuid)))
         .write(BatchTableCompanion(
       status: Value(status.name),
-      updatedAt: Value(DateTime.now()),
+      updatedAt: Value(TimeHelper.now()),
     ));
   }
 
@@ -492,7 +493,7 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
         .write(StockAlertTableCompanion(
       isAcknowledged: const Value(true),
       acknowledgedBy: Value(acknowledgedBy),
-      acknowledgedAt: Value(DateTime.now()),
+      acknowledgedAt: Value(TimeHelper.now()),
     ));
   }
 
@@ -502,7 +503,7 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
         .write(StockAlertTableCompanion(
       isResolved: const Value(true),
       actionTaken: Value(actionTaken),
-      resolvedAt: Value(DateTime.now()),
+      resolvedAt: Value(TimeHelper.now()),
     ));
   }
 
@@ -573,8 +574,8 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
           status: Value(TransferStatus.draft.name),
           createdByName: Value(transfer.createdByName),
           createdBy: Value('sys'),
-          createdAt: Value(DateTime.now()),
-          updatedAt: Value(DateTime.now()),
+          createdAt: Value(TimeHelper.now()),
+          updatedAt: Value(TimeHelper.now()),
         ));
     return transfer.copyWith(uuid: uuid);
   }
@@ -587,7 +588,7 @@ class AdvancedInventoryRepositoryImpl implements IAdvancedInventoryRepository {
         .write(StockTransferTableCompanion(
       status: Value(status.name),
       approvedBy: Value(approvedBy),
-      updatedAt: Value(DateTime.now()),
+      updatedAt: Value(TimeHelper.now()),
     ));
   }
 

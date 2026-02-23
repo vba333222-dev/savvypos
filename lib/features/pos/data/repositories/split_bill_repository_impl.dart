@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
@@ -27,7 +28,7 @@ class SplitBillRepositoryImpl implements ISplitBillRepository {
     required String createdByName,
   }) async {
     final uuid = _uuid.v4();
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     await _db.into(_db.splitBillTable).insert(SplitBillTableCompanion(
           uuid: Value(uuid),
@@ -224,7 +225,7 @@ class SplitBillRepositoryImpl implements ISplitBillRepository {
       paymentMethod: Value(paymentMethod),
       paymentTransactionUuid: Value(paymentTransactionUuid),
       tipAmount: Value(tipAmount),
-      paidAt: Value(DateTime.now()),
+      paidAt: Value(TimeHelper.now()),
     ));
   }
 
@@ -243,7 +244,7 @@ class SplitBillRepositoryImpl implements ISplitBillRepository {
           ..where((t) => t.uuid.equals(splitBillUuid)))
         .write(SplitBillTableCompanion(
       status: Value(SplitBillStatus.completed.name),
-      completedAt: Value(DateTime.now()),
+      completedAt: Value(TimeHelper.now()),
     ));
   }
 

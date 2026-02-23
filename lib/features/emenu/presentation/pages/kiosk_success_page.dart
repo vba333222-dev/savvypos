@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:savvy_pos/core/di/injection.dart';
@@ -67,7 +68,7 @@ class _KioskSuccessPageState extends State<KioskSuccessPage> {
       rating: rating,
       tags: tags,
       comment: comment,
-      createdAt: DateTime.now(),
+      createdAt: TimeHelper.now(),
       sentiment: rating >= 4
           ? FeedbackSentiment.positive
           : (rating <= 2

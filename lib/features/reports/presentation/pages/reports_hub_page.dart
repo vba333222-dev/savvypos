@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
@@ -13,7 +14,7 @@ class ReportsHubPage extends StatefulWidget {
 }
 
 class _ReportsHubPageState extends State<ReportsHubPage> {
-  DateTime _selectedDate = DateTime.now();
+  DateTime _selectedDate = TimeHelper.now();
   List<ChartDataPoint> _chartData = [];
   double _grossSales = 0;
   double _txnCheck = 0;

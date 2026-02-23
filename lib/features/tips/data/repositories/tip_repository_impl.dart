@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
@@ -35,7 +36,7 @@ class TipRepositoryImpl implements ITipRepository {
     String? notes,
   }) async {
     final uuid = _uuid.v4();
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     await _db.into(_db.tipTable).insert(TipTableCompanion(
           uuid: Value(uuid),
@@ -126,7 +127,7 @@ class TipRepositoryImpl implements ITipRepository {
   @override
   Future<TipPool> createPool(TipPool pool) async {
     final uuid = pool.uuid.isEmpty ? _uuid.v4() : pool.uuid;
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     await _db.into(_db.tipPoolConfigTable).insert(TipPoolConfigTableCompanion(
           uuid: Value(uuid),
@@ -153,7 +154,7 @@ class TipRepositoryImpl implements ITipRepository {
       rolePercentagesJson: Value(jsonEncode(pool.rolePercentages)),
       rolePointsJson: Value(jsonEncode(pool.rolePoints)),
       excludedRolesJson: Value(jsonEncode(pool.excludedRoles)),
-      updatedAt: Value(DateTime.now()),
+      updatedAt: Value(TimeHelper.now()),
     ));
   }
 
@@ -168,7 +169,7 @@ class TipRepositoryImpl implements ITipRepository {
           ..where((t) => t.uuid.equals(poolUuid)))
         .write(TipPoolConfigTableCompanion(
       isActive: const Value(true),
-      updatedAt: Value(DateTime.now()),
+      updatedAt: Value(TimeHelper.now()),
     ));
   }
 
@@ -190,7 +191,7 @@ class TipRepositoryImpl implements ITipRepository {
     if (pool == null) throw Exception('No active tip pool configured');
 
     final List<TipDistribution> distributions = [];
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     // Calculate distribution based on pool method
     Map<String, double> shares = {};
@@ -318,7 +319,7 @@ class TipRepositoryImpl implements ITipRepository {
     required List<String> distributionUuids,
     required String paidOutByUuid,
   }) async {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     for (final uuid in distributionUuids) {
       await (_db.update(_db.tipDistributionTable)

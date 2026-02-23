@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/core/di/injection.dart';
@@ -24,7 +25,7 @@ class _CreateReservationWizardState extends State<CreateReservationWizard> {
   final _formKey = GlobalKey<FormState>();
   final _nameCtrl = TextEditingController();
   final _phoneCtrl = TextEditingController();
-  DateTime _selectedDate = DateTime.now();
+  DateTime _selectedDate = TimeHelper.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
   int _pax = 2;
   String? _note;
@@ -98,8 +99,8 @@ class _CreateReservationWizardState extends State<CreateReservationWizard> {
       tableUuid: drift.Value(_selectedTable!.id),
       status: const drift.Value('PENDING'),
       note: drift.Value(_note),
-      createdAt: drift.Value(DateTime.now()),
-      updatedAt: drift.Value(DateTime.now()),
+      createdAt: drift.Value(TimeHelper.now()),
+      updatedAt: drift.Value(TimeHelper.now()),
     );
 
     await _resRepo.createReservation(res);
@@ -185,8 +186,8 @@ class _CreateReservationWizardState extends State<CreateReservationWizard> {
                   onTap: () async {
                     final d = await showDatePicker(
                         context: context,
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime.now().add(const Duration(days: 365)),
+                        firstDate: TimeHelper.now(),
+                        lastDate: TimeHelper.now().add(const Duration(days: 365)),
                         initialDate: _selectedDate);
                     if (d != null) setState(() => _selectedDate = d);
                   },

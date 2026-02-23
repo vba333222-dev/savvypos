@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
@@ -29,7 +30,7 @@ class _WasteDashboardPageState extends State<WasteDashboardPage> {
     setState(() => _isLoading = true);
     try {
       // Fetch last 30 days by default
-      final start = DateTime.now().subtract(const Duration(days: 30));
+      final start = TimeHelper.now().subtract(const Duration(days: 30));
       final records = await _repo.getWasteReports(from: start);
       // Sort by date desc
       records.sort((a, b) => b.recordedAt.compareTo(a.recordedAt));

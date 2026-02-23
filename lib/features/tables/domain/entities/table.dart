@@ -24,6 +24,7 @@ class SavvyTable extends Equatable {
   final TableSessionStatus sessionStatus;
 
   final DateTime? updatedAt;
+  final int version;
 
   const SavvyTable({
     required this.id,
@@ -42,6 +43,7 @@ class SavvyTable extends Equatable {
     this.qrCodeUrl,
     this.sessionStatus = TableSessionStatus.locked,
     this.updatedAt,
+    this.version = 1,
   });
 
   SavvyTable copyWith({
@@ -61,6 +63,7 @@ class SavvyTable extends Equatable {
     String? qrCodeUrl,
     TableSessionStatus? sessionStatus,
     DateTime? updatedAt,
+    int? version,
   }) {
     return SavvyTable(
       id: id ?? this.id,
@@ -79,6 +82,7 @@ class SavvyTable extends Equatable {
       qrCodeUrl: qrCodeUrl ?? this.qrCodeUrl,
       sessionStatus: sessionStatus ?? this.sessionStatus,
       updatedAt: updatedAt ?? this.updatedAt,
+      version: version ?? this.version,
     );
   }
 
@@ -99,6 +103,7 @@ class SavvyTable extends Equatable {
         currentSessionToken,
         qrCodeUrl,
         sessionStatus,
-        updatedAt
+        updatedAt,
+        version,
       ];
 }

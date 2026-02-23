@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart' show DateTimeRange;
 import 'package:savvy_pos/core/database/database.dart';
@@ -28,7 +29,7 @@ class ShiftRepositoryImpl implements IShiftRepository {
   @override
   Future<ShiftSession> clockIn(String employeeUuid, String employeeName) async {
     final uuid = const Uuid().v4();
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     await db.into(db.shiftSessionTable).insert(
           ShiftSessionTableCompanion.insert(
@@ -57,7 +58,7 @@ class ShiftRepositoryImpl implements IShiftRepository {
   @override
   Future<ShiftSession> clockOut(String employeeUuid,
       {double tipsDeclared = 0.0}) async {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     // Find active shift
     final activeShift = await (db.select(db.shiftSessionTable)
@@ -171,7 +172,7 @@ class ShiftRepositoryImpl implements IShiftRepository {
   @override
   Future<void> openCashShift(
       double startCash, String staffId, String staffName) async {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
     await db
         .into(db.shiftSessionTable)
         .insert(ShiftSessionTableCompanion.insert(
@@ -191,7 +192,7 @@ class ShiftRepositoryImpl implements IShiftRepository {
   Future<void> closeShift(
       String shiftUuid, double calculatedEndCash, double actualCash,
       {String? varianceReason}) async {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
     await (db.update(db.shiftSessionTable)
           ..where((t) => t.uuid.equals(shiftUuid)))
         .write(
@@ -238,7 +239,7 @@ class ShiftRepositoryImpl implements IShiftRepository {
   @override
   Future<void> addCashTransaction(
       String shiftUuid, String type, double amount, String reason) async {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
     // Assuming cashTransactionTable exists in schema as per old repo assumption
     await db
         .into(db.cashTransactionTable)

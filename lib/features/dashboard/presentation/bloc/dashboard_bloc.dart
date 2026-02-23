@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -41,7 +42,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       _LoadData event, Emitter<DashboardState> emit) async {
     emit(const DashboardState.loading());
     try {
-      final date = event.date ?? DateTime.now();
+      final date = event.date ?? TimeHelper.now();
 
       // Define Start/End of Day
       final start = DateTime(date.year, date.month, date.day);

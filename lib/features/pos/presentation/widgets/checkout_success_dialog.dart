@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
@@ -214,7 +215,7 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog>
                         discount: 0,
                         change: 12.50, // Mock
                         orderNumber: widget.order?.orderNumber ?? 'ORD-001',
-                        date: widget.order?.createdAt ?? DateTime.now(),
+                        date: widget.order?.createdAt ?? TimeHelper.now(),
                       ),
                     ),
                   ),
@@ -377,7 +378,7 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog>
       final pdfBytes = await compute(_generateReceiptIsolate, {
         'storeName': 'Savvy Bistro',
         'orderNumber': widget.order?.orderNumber ?? 'ORD-001',
-        'date': widget.order?.createdAt ?? DateTime.now(),
+        'date': widget.order?.createdAt ?? TimeHelper.now(),
         'items': widget.items
             .map((i) => {
                   'name': i.product.name,
@@ -409,7 +410,7 @@ class _CheckoutSuccessDialogState extends State<CheckoutSuccessDialog>
           phone: _whatsappNumber,
           email: '',
           totalPoints: 0,
-          lastVisitAt: DateTime.now(),
+          lastVisitAt: TimeHelper.now(),
         );
         await crmRepo.saveCustomer(newCustomer);
       }

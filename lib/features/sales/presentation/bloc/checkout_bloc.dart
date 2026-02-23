@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -137,7 +138,7 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
     ));
 
     final referenceId =
-        '${state.orderUuid}-${DateTime.now().millisecondsSinceEpoch}';
+        '${state.orderUuid}-${TimeHelper.now().millisecondsSinceEpoch}';
 
     // Subscribe to EDC results FIRST, THEN send request
     _edcResultSub = _edcTerminal.results.listen((result) {

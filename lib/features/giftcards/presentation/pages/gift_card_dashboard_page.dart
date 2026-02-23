@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:savvy_pos/core/di/injection.dart';
@@ -74,7 +75,7 @@ class GiftCardDashboardPage extends StatelessWidget {
                                     style: const TextStyle(fontSize: 12)),
                                 Text(
                                     DateFormat.yMMMd().format(
-                                        card.createdAt ?? DateTime.now()),
+                                        card.createdAt ?? TimeHelper.now()),
                                     style: const TextStyle(
                                         fontSize: 10, color: Colors.grey)),
                               ],
@@ -103,7 +104,7 @@ class GiftCardDashboardPage extends StatelessWidget {
 
     // Pre-fill mock
     cardNoCtrl.text =
-        "GC-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}";
+        "GC-${TimeHelper.now().millisecondsSinceEpoch.toString().substring(8)}";
 
     showDialog(
         context: context,

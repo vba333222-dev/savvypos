@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -192,7 +193,7 @@ class _SupervisorAuthDialogState extends State<SupervisorAuthDialog>
     }
 
     await db.into(db.auditLogTable).insert(AuditLogTableCompanion.insert(
-          timestamp: DateTime.now(),
+          timestamp: TimeHelper.now(),
           // Cashier context: in a real app, read from AuthBloc/session.
           // For now, label as 'POS Terminal' to avoid hard dependency on AuthBloc here.
           cashierId: 'terminal',

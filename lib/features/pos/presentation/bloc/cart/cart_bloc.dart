@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
@@ -248,7 +249,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
     try {
       final orderUuid = _uuid.v4();
-      final now = DateTime.now();
+      final now = TimeHelper.now();
       final orderNumber = 'ORD-${now.millisecondsSinceEpoch}';
 
       await db.transaction(() async {
@@ -442,7 +443,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
     try {
       await db.transaction(() async {
-        final now = DateTime.now();
+        final now = TimeHelper.now();
         // Use existing UUID if updating, else new
         final orderUuid = state.activeOrderUuid ?? _uuid.v4();
         final orderNumber =
@@ -617,7 +618,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
     try {
       await db.transaction(() async {
-        final now = DateTime.now();
+        final now = TimeHelper.now();
         final childOrderUuid = _uuid.v4();
         final childOrderNumber = 'SPLIT-${now.millisecondsSinceEpoch}';
 

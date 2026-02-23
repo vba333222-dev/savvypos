@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -434,7 +435,7 @@ class _SplitBillDialogState extends State<SplitBillDialog> {
   void _createSplit() {
     HapticFeedback.mediumImpact();
 
-    final now = DateTime.now();
+    final now = TimeHelper.now();
     final guestBills = List.generate(_guestCount, (i) {
       final amount = _selectedMode == SplitMode.custom
           ? (_customAmounts[i + 1] ?? 0)

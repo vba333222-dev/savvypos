@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'dart:convert';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
@@ -28,7 +29,7 @@ class KDSRepositoryImpl implements IKDSRepository {
     String? note,
   }) async {
     final uuid = _uuid.v4();
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     // Calculate target time (e.g. 15 mins default)
     // In a real app, this would be based on max(item.prepTime)
@@ -129,7 +130,7 @@ class KDSRepositoryImpl implements IKDSRepository {
   @override
   Future<void> updateTicketStatus(
       String ticketUuid, KDSTicketStatus status) async {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     final companion = KitchenTicketTableCompanion(
       status: Value(status.name),

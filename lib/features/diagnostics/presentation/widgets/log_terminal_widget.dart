@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -51,7 +52,7 @@ class _LogTerminalWidgetState extends State<LogTerminalWidget> {
   }
 
   LogEntry _generateMockLog() {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
     final types = ['INFO', 'DEBUG', 'WARN', 'ERROR', 'NET'];
     final tags = [
       'AuthBloc',

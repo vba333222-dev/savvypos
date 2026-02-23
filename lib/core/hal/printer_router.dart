@@ -4,6 +4,7 @@ import 'package:savvy_pos/core/hal/printer_interface.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:savvy_pos/core/utils/string_sanitizer.dart';
 
 @lazySingleton
 class PrinterRouter {
@@ -157,14 +158,16 @@ class PrinterRouter {
       StringBuffer buffer = StringBuffer();
 
       if (largeFont) buffer.writeln("!SIZE_DOUBLE!");
-      buffer.writeln("=== $title ===");
-      if (table != null) buffer.writeln("TABLE: $table");
-      buffer.writeln("Order: $orderNo");
+      buffer.writeln("=== ${StringSanitizer.sanitizeForPrinter(title)} ===");
+      if (table != null)
+        buffer.writeln("TABLE: ${StringSanitizer.sanitizeForPrinter(table)}");
+      buffer.writeln("Order: ${StringSanitizer.sanitizeForPrinter(orderNo)}");
       buffer.writeln("Time: ${DateTime.now().toString().substring(11, 16)}");
       buffer.writeln("--------------------------------");
 
       for (final item in items) {
-        String line = "${item.quantity}x ${item.product.name}";
+        String safeName = StringSanitizer.sanitizeForPrinter(item.product.name);
+        String line = "${item.quantity}x $safeName";
         if (showPrices) {
           buffer.writeln(line);
           buffer.writeln(
@@ -175,12 +178,12 @@ class PrinterRouter {
 
         if (item.modifiers.isNotEmpty) {
           for (final m in item.modifiers) {
-            buffer.writeln("    + ${m.name}");
+            buffer.writeln("    + ${StringSanitizer.sanitizeForPrinter(m.name)}");
           }
         }
 
         if (item.note != null && item.note!.isNotEmpty)
-          buffer.writeln("    [NOTE]: ${item.note}");
+          buffer.writeln("    [NOTE]: ${StringSanitizer.sanitizeForPrinter(item.note!)}");
       }
       buffer.writeln("--------------------------------");
       buffer.writeln("\n\n");

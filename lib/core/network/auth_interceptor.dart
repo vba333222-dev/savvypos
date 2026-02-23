@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:savvy_pos/core/utils/time_helper.dart';
 
 class AuthInterceptor extends Interceptor {
   final Dio dio;
@@ -40,6 +42,7 @@ class AuthInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) async {
     await _checkMinVersion(response.headers);
+    await _syncServerTime(response.headers);
     return handler.next(response);
   }
 
@@ -47,6 +50,7 @@ class AuthInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     if (err.response != null) {
       await _checkMinVersion(err.response!.headers);
+      await _syncServerTime(err.response!.headers);
     }
 
     if (err.response?.statusCode == 401) {
@@ -167,6 +171,20 @@ class AuthInterceptor extends Interceptor {
       return currentParts.length < minParts.length;
     } catch (_) {
       return false; // Fallback
+    }
+  }
+
+  Future<void> _syncServerTime(Headers headers) async {
+    final serverDateStr = headers.value('date');
+    if (serverDateStr != null) {
+      try {
+        // e.g., "Wed, 21 Oct 2015 07:28:00 GMT" (RFC1123 format standard for HTTP Date headers)
+        // Some servers might stringify it differently, but HttpDate parses RFC1123 securely.
+        final serverTime = HttpDate.parse(serverDateStr);
+        await TimeHelper.syncWithServer(serverTime);
+      } catch (e) {
+        _logger.w('AuthInterceptor: Failed to parse Server Date header', error: e);
+      }
     }
   }
 }

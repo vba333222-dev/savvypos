@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'dart:async';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/features/emenu/domain/entities/kiosk_entities.dart';
@@ -20,8 +21,8 @@ class KioskRepositoryImpl implements IKioskRepository {
   Future<KioskSession> startSession() async {
     final session = KioskSession(
       uuid: _uuid.v4(),
-      startedAt: DateTime.now(),
-      lastInteractionAt: DateTime.now(),
+      startedAt: TimeHelper.now(),
+      lastInteractionAt: TimeHelper.now(),
       currentStep: KioskFlowStep.welcome,
     );
     _updateSession(session);
@@ -32,7 +33,7 @@ class KioskRepositoryImpl implements IKioskRepository {
   Future<void> touchSession(String sessionUuid) async {
     if (_currentSession?.uuid != sessionUuid) return;
     _updateSession(
-        _currentSession!.copyWith(lastInteractionAt: DateTime.now()));
+        _currentSession!.copyWith(lastInteractionAt: TimeHelper.now()));
   }
 
   @override
@@ -40,7 +41,7 @@ class KioskRepositoryImpl implements IKioskRepository {
     if (_currentSession?.uuid != sessionUuid) return;
     _updateSession(_currentSession!.copyWith(
       currentStep: step,
-      lastInteractionAt: DateTime.now(),
+      lastInteractionAt: TimeHelper.now(),
     ));
   }
 
@@ -49,7 +50,7 @@ class KioskRepositoryImpl implements IKioskRepository {
     if (_currentSession?.uuid != sessionUuid) return;
     _updateSession(_currentSession!.copyWith(
       isDineIn: isDineIn,
-      lastInteractionAt: DateTime.now(),
+      lastInteractionAt: TimeHelper.now(),
     ));
   }
 
@@ -62,7 +63,7 @@ class KioskRepositoryImpl implements IKioskRepository {
 
     _updateSession(_currentSession!.copyWith(
       cartItems: currentItems,
-      lastInteractionAt: DateTime.now(),
+      lastInteractionAt: TimeHelper.now(),
     ));
   }
 
@@ -75,7 +76,7 @@ class KioskRepositoryImpl implements IKioskRepository {
 
     _updateSession(_currentSession!.copyWith(
       cartItems: currentItems,
-      lastInteractionAt: DateTime.now(),
+      lastInteractionAt: TimeHelper.now(),
     ));
   }
 
@@ -94,7 +95,7 @@ class KioskRepositoryImpl implements IKioskRepository {
 
     _updateSession(_currentSession!.copyWith(
       cartItems: currentItems,
-      lastInteractionAt: DateTime.now(),
+      lastInteractionAt: TimeHelper.now(),
     ));
   }
 
@@ -103,7 +104,7 @@ class KioskRepositoryImpl implements IKioskRepository {
     if (_currentSession?.uuid != sessionUuid) return;
     _updateSession(_currentSession!.copyWith(
       cartItems: [],
-      lastInteractionAt: DateTime.now(),
+      lastInteractionAt: TimeHelper.now(),
     ));
   }
 

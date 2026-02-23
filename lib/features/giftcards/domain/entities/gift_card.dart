@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'gift_card.freezed.dart';
@@ -81,11 +82,11 @@ class GiftCard with _$GiftCard {
   bool get isUsable =>
       status == GiftCardStatus.active &&
       currentBalance > 0 &&
-      (expiresAt == null || expiresAt!.isAfter(DateTime.now()));
+      (expiresAt == null || expiresAt!.isAfter(TimeHelper.now()));
 
   /// Check if card is expired
   bool get isExpired =>
-      expiresAt != null && expiresAt!.isBefore(DateTime.now());
+      expiresAt != null && expiresAt!.isBefore(TimeHelper.now());
 }
 
 /// Gift Card transaction for transaction history

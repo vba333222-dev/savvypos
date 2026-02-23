@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/inventory_entities.dart';
 import 'package:savvy_pos/features/inventory/domain/repositories/i_inventory_repository.dart';
@@ -34,7 +35,7 @@ class ExecuteStockTransfer {
       targetWarehouseUuid: targetWarehouseId,
       status: 'IN_TRANSIT',
       createdBy: createdBy,
-      createdAt: DateTime.now(),
+      createdAt: TimeHelper.now(),
       items: items,
     );
 

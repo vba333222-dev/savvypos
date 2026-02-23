@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -65,7 +66,7 @@ class _HistoryViewState extends State<_HistoryView> {
               final range = await showDateRangePicker(
                 context: context,
                 firstDate: DateTime(2020),
-                lastDate: DateTime.now(),
+                lastDate: TimeHelper.now(),
               );
               if (range != null && context.mounted) {
                 context.read<HistoryBloc>().add(

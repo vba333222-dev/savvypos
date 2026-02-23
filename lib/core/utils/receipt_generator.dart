@@ -1,5 +1,6 @@
 import 'package:esc_pos_utils_plus/esc_pos_utils_plus.dart';
 import 'package:intl/intl.dart';
+import 'package:savvy_pos/core/utils/string_sanitizer.dart';
 
 class ReceiptGenerator {
   static Future<List<int>> generateReceipt({
@@ -24,7 +25,7 @@ class ReceiptGenerator {
     final dateFormat = DateFormat('yyyy-MM-dd HH:mm');
 
     // Header
-    bytes += generator.text(storeName,
+    bytes += generator.text(StringSanitizer.sanitizeForPrinter(storeName),
         styles: const PosStyles(
           align: PosAlign.center,
           height: PosTextSize.size2,
@@ -38,7 +39,7 @@ class ReceiptGenerator {
     // Info
     bytes += generator.text('Date: ${dateFormat.format(date)}',
         styles: const PosStyles(align: PosAlign.left));
-    bytes += generator.text('Order: $orderNumber',
+    bytes += generator.text('Order: ${StringSanitizer.sanitizeForPrinter(orderNumber)}',
         styles: const PosStyles(align: PosAlign.left));
     bytes += generator.hr();
 
@@ -46,7 +47,7 @@ class ReceiptGenerator {
     for (final item in items) {
       // 58mm has limited width (approx 32 chars).
       // Qty (4) + Name (18) + Total (10)
-      final name = item['name'].toString();
+      final name = StringSanitizer.sanitizeForPrinter(item['name'].toString());
       final qty = item['qty'].toString();
       final price = currency.format(item['total']);
 
@@ -110,7 +111,7 @@ class ReceiptGenerator {
     bytes += generator.hr();
 
     // Payment Info
-    bytes += generator.text('Paid via: $paymentMethod');
+    bytes += generator.text('Paid via: ${StringSanitizer.sanitizeForPrinter(paymentMethod)}');
     if (tendered != null)
       bytes += generator.text('Tendered: ${currency.format(tendered)}');
     if (change != null)

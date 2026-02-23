@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'discount_entities.freezed.dart';
@@ -86,7 +87,7 @@ class Discount with _$Discount {
 
   /// Check if discount is currently valid
   bool get isValid {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
     if (status != DiscountStatus.active) return false;
     if (validFrom != null && now.isBefore(validFrom!)) return false;
     if (validUntil != null && now.isAfter(validUntil!)) return false;

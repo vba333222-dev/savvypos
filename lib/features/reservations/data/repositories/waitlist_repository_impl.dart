@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
@@ -27,7 +28,7 @@ class WaitlistRepositoryImpl implements IWaitlistRepository {
     String? tablePreference,
   }) async {
     final uuid = _uuid.v4();
-    final now = DateTime.now();
+    final now = TimeHelper.now();
     final estimatedMinutes = await estimateWaitTime(partySize);
     final quotedTime = now.add(Duration(minutes: estimatedMinutes));
 
@@ -121,7 +122,7 @@ class WaitlistRepositoryImpl implements IWaitlistRepository {
     await (_db.update(_db.waitlistTable)..where((t) => t.uuid.equals(uuid)))
         .write(WaitlistTableCompanion(
       status: Value(WaitlistStatus.seated.name),
-      seatedAt: Value(DateTime.now()),
+      seatedAt: Value(TimeHelper.now()),
       seatedTableUuid: Value(tableUuid),
       queuePosition: const Value(null),
     ));
@@ -160,7 +161,7 @@ class WaitlistRepositoryImpl implements IWaitlistRepository {
     // In real app, integrate with SMS provider (Twilio, etc.)
     await (_db.update(_db.waitlistTable)..where((t) => t.uuid.equals(uuid)))
         .write(WaitlistTableCompanion(
-      notifiedAt: Value(DateTime.now()),
+      notifiedAt: Value(TimeHelper.now()),
     ));
   }
 
@@ -184,7 +185,7 @@ class WaitlistRepositoryImpl implements IWaitlistRepository {
   @override
   Future<WaitlistSummary> getSummary() async {
     final waiting = await getWaitingEntries();
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     // Calculate stats
     int totalWaitMinutes = 0;

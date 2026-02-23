@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,7 +42,7 @@ class _KitchenOrderCardState extends State<KitchenOrderCard>
   }
 
   void _updateElapsed() {
-    _elapsed = DateTime.now().difference(widget.order.orderTime);
+    _elapsed = TimeHelper.now().difference(widget.order.orderTime);
     // Pulse if critical (> 15m)
     if (_elapsed.inMinutes >= 15 && !_urgencyController.isAnimating) {
       _urgencyController.repeat(reverse: true);

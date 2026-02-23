@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:savvy_pos/core/database/database.dart';
@@ -33,7 +34,7 @@ class TenantRepositoryImpl implements ITenantRepository {
           currencySymbol: currency,
           tier: 0, // Free tier default
           isAdsEnabled: true,
-          updatedAt: DateTime.now(),
+          updatedAt: TimeHelper.now(),
         ));
   }
 

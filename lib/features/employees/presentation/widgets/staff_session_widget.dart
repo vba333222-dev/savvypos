@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:savvy_pos/core/config/theme/savvy_theme.dart';
@@ -31,7 +32,7 @@ class _StaffSessionWidgetState extends State<StaffSessionWidget> {
   }
 
   void _updateTime() {
-    _duration = DateTime.now().difference(widget.shiftStartTime);
+    _duration = TimeHelper.now().difference(widget.shiftStartTime);
   }
 
   @override

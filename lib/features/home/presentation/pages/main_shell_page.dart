@@ -22,6 +22,7 @@ import 'package:savvy_pos/features/loyalty/presentation/pages/loyalty_dashboard_
 import 'package:savvy_pos/features/customers/presentation/pages/customer_crm_page.dart';
 import 'package:savvy_pos/core/presentation/widgets/network_status_banner.dart';
 import 'package:savvy_pos/features/pos/presentation/bloc/cart/cart_bloc.dart';
+import 'package:savvy_pos/features/home/presentation/widgets/inactivity_tracker_widget.dart';
 
 class MainShellPage extends StatefulWidget {
   const MainShellPage({super.key});
@@ -64,9 +65,11 @@ class _MainShellPageState extends State<MainShellPage> {
                     'Active: ${state.employee!.name} (${state.employee!.role})')));
           }
         },
-        child: _MainShellContent(
-          initialIndex: _selectedIndex,
-          onTap: (index) => setState(() => _selectedIndex = index),
+        child: InactivityTrackerWidget(
+          child: _MainShellContent(
+            initialIndex: _selectedIndex,
+            onTap: (index) => setState(() => _selectedIndex = index),
+          ),
         ),
       ),
     );
@@ -170,9 +173,12 @@ class _MainShellContentState extends State<_MainShellContent> {
           icon: Icon(Icons.settings), label: 'Settings'),
     ];
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxWidth > 900) {
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      behavior: HitTestBehavior.translucent,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth > 900) {
           // Desktop / Tablet
           return Scaffold(
             body: Stack(
@@ -264,6 +270,7 @@ class _MainShellContentState extends State<_MainShellContent> {
           );
         }
       },
+    ),
     );
   }
 }

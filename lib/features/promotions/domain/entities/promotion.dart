@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'promotion.freezed.dart';
@@ -43,7 +44,7 @@ class Promotion with _$Promotion {
 
   // Validation using map to access properties safely
   bool isValidNow() {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
     return map(
       percentage: (p) {
         if (p.startDate != null && now.isBefore(p.startDate!)) return false;

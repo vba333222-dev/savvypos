@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get_it/get_it.dart';
@@ -149,7 +150,7 @@ class _ReportWasteDialogState extends State<ReportWasteDialog> {
           itemType: _itemType,
           quantity: double.parse(_quantityCtrl.text),
           reason: _reason,
-          recordedAt: DateTime.now(),
+          recordedAt: TimeHelper.now(),
           staffId: staffId,
           warehouseId: warehouseId,
           costLoss: 0.0, // Calculated in Repo

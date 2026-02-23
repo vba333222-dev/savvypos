@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
@@ -41,7 +42,7 @@ class InventoryRepositoryImpl implements IInventoryRepository {
           phone: Value(supplier.phone),
           address: Value(supplier.address),
           leadTimeDays: Value(supplier.leadTimeDays),
-          updatedAt: Value(DateTime.now()),
+          updatedAt: Value(TimeHelper.now()),
         ));
   }
 
@@ -133,8 +134,8 @@ class InventoryRepositoryImpl implements IInventoryRepository {
             referenceNumber: Value(po.referenceNumber),
             notes: Value(po.notes),
             totalCost: Value(po.totalCost),
-            createdAt: Value(po.createdAt ?? DateTime.now()),
-            updatedAt: Value(DateTime.now()),
+            createdAt: Value(po.createdAt ?? TimeHelper.now()),
+            updatedAt: Value(TimeHelper.now()),
           ));
 
       await (_db.delete(_db.purchaseOrderItemTable)
@@ -225,7 +226,7 @@ class InventoryRepositoryImpl implements IInventoryRepository {
           quantityChange: quantityChange,
           referenceId: referenceId ?? '',
           type: quantityChange > 0 ? 'restock' : 'deduct',
-          timestamp: DateTime.now(),
+          timestamp: TimeHelper.now(),
         ));
 
     final currentStock = await (_db.select(_db.localStocksTable)
@@ -241,14 +242,14 @@ class InventoryRepositoryImpl implements IInventoryRepository {
             productUuid: productUuid,
             warehouseUuid: warehouseUuid,
             quantity: Value(quantityChange),
-            updatedAt: DateTime.now(),
+            updatedAt: TimeHelper.now(),
           ));
     } else {
       await (_db.update(_db.localStocksTable)
             ..where((t) => t.id.equals(currentStock.id)))
           .write(LocalStocksTableCompanion(
         quantity: Value(currentStock.quantity + quantityChange),
-        updatedAt: Value(DateTime.now()),
+        updatedAt: Value(TimeHelper.now()),
       ));
     }
   }
@@ -285,7 +286,7 @@ class InventoryRepositoryImpl implements IInventoryRepository {
             ..where((t) => t.uuid.equals(count.uuid)))
           .write(StockCountTableCompanion(
         status: const Value('COMPLETED'),
-        completedAt: Value(DateTime.now()),
+        completedAt: Value(TimeHelper.now()),
       ));
 
       for (final item in count.items) {
@@ -318,7 +319,7 @@ class InventoryRepositoryImpl implements IInventoryRepository {
           .into(_db.stockTransferTable)
           .insert(StockTransferTableCompanion.insert(
             uuid: transfer.uuid,
-            transferNumber: 'TRF-${DateTime.now().millisecondsSinceEpoch}',
+            transferNumber: 'TRF-${TimeHelper.now().millisecondsSinceEpoch}',
             sourceWarehouseUuid: transfer.sourceWarehouseUuid,
             sourceWarehouseName: 'Cache Source',
             targetWarehouseUuid: transfer.targetWarehouseUuid,
@@ -326,8 +327,8 @@ class InventoryRepositoryImpl implements IInventoryRepository {
             status: const Value('IN_TRANSIT'),
             createdBy: transfer.createdBy,
             createdByName: transfer.createdBy,
-            createdAt: DateTime.now(),
-            updatedAt: DateTime.now(),
+            createdAt: TimeHelper.now(),
+            updatedAt: TimeHelper.now(),
           ));
 
       for (final item in transfer.items) {
@@ -362,8 +363,8 @@ class InventoryRepositoryImpl implements IInventoryRepository {
             ..where((t) => t.uuid.equals(transferUuid)))
           .write(StockTransferTableCompanion(
         status: const Value('COMPLETED'),
-        receivedAt: Value(DateTime.now()),
-        updatedAt: Value(DateTime.now()),
+        receivedAt: Value(TimeHelper.now()),
+        updatedAt: Value(TimeHelper.now()),
       ));
 
       final items = await (_db.select(_db.stockTransferItemTable)

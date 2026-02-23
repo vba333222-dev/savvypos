@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'promotion.freezed.dart';
@@ -33,7 +34,7 @@ class Promotion with _$Promotion {
   }) = BuyXGetYPromotion;
 
   bool isValidNow() {
-    final now = DateTime.now();
+    final now = TimeHelper.now();
     return constraints.isValid(now);
   }
 

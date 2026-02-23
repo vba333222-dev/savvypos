@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:drift/drift.dart';
 import 'package:logger/logger.dart';
 import 'package:savvy_pos/core/database/database.dart';
@@ -41,7 +42,7 @@ class DeliveryRepositoryImpl implements IDeliveryRepository {
           isActive: Value(config.isActive),
           autoAcceptOrders: Value(config.autoAcceptOrders),
           surchargePercent: Value(config.surchargePercent),
-          lastSyncedAt: Value(DateTime.now()),
+          lastSyncedAt: Value(TimeHelper.now()),
         ));
   }
 
@@ -59,7 +60,7 @@ class DeliveryRepositoryImpl implements IDeliveryRepository {
     }
 
     final orderUuid = const Uuid().v4();
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     // 1. Create Core Order
     // In a real app, items would be parsed from payload mapping.
@@ -68,7 +69,7 @@ class DeliveryRepositoryImpl implements IDeliveryRepository {
       await db.into(db.orderTable).insert(OrderTableCompanion.insert(
             uuid: orderUuid,
             orderNumber:
-                payload['display_id'] ?? 'EXT-${DateTime.now().millisecond}',
+                payload['display_id'] ?? 'EXT-${TimeHelper.now().millisecond}',
             transactionDate: now,
             subtotal: 100.0, // Mock
             taxTotal: 10.0,
@@ -134,6 +135,6 @@ class DeliveryRepositoryImpl implements IDeliveryRepository {
     await (db.update(db.deliveryChannelTable)
           ..where((t) => t.id.equals(channelId)))
         .write(
-            DeliveryChannelTableCompanion(lastSyncedAt: Value(DateTime.now())));
+            DeliveryChannelTableCompanion(lastSyncedAt: Value(TimeHelper.now())));
   }
 }

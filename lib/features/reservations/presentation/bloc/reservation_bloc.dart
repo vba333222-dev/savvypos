@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:bloc/bloc.dart';
 import 'package:drift/drift.dart' hide JsonKey;
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -35,7 +36,7 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
   Future<void> _onAddReservation(
       _AddReservation event, Emitter<ReservationState> emit) async {
     try {
-      final now = DateTime.now();
+      final now = TimeHelper.now();
       await _repo.createReservation(ReservationTableCompanion.insert(
         uuid: _uuid.v4(),
         customerName: event.name,

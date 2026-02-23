@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:drift/drift.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
@@ -62,7 +63,7 @@ class OrderRepositoryImpl implements IOrderRepository {
     await (db.update(db.orderTable)..where((t) => t.uuid.equals(uuid)))
         .write(OrderTableCompanion(
       isFulfilled: const Value(true),
-      updatedAt: Value(DateTime.now()), // Timestamp updated for change tracking
+      updatedAt: Value(TimeHelper.now()), // Timestamp updated for change tracking
     ));
   }
 

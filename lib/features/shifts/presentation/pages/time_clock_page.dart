@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -136,7 +137,7 @@ class _TimeClockPageState extends State<TimeClockPage> {
 
   String _formatElapsed() {
     if (_currentShift == null) return '00:00:00';
-    final elapsed = DateTime.now().difference(_currentShift!.startTime);
+    final elapsed = TimeHelper.now().difference(_currentShift!.startTime);
     final hours = elapsed.inHours.toString().padLeft(2, '0');
     final minutes = (elapsed.inMinutes % 60).toString().padLeft(2, '0');
     final seconds = (elapsed.inSeconds % 60).toString().padLeft(2, '0');
@@ -269,7 +270,7 @@ class _TimeClockPageState extends State<TimeClockPage> {
                             itemBuilder: (context, index) {
                               final shift = _activeShifts[index];
                               final elapsed =
-                                  DateTime.now().difference(shift.startTime);
+                                  TimeHelper.now().difference(shift.startTime);
                               return ListTile(
                                 leading: CircleAvatar(
                                   backgroundColor:
@@ -326,7 +327,7 @@ class _TipDeclarationDialogState extends State<_TipDeclarationDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final elapsed = DateTime.now().difference(widget.shift.startTime);
+    final elapsed = TimeHelper.now().difference(widget.shift.startTime);
 
     return AlertDialog(
       title: const Text('Shift Review'),

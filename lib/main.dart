@@ -15,6 +15,7 @@ import 'package:savvy_pos/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:savvy_pos/features/sales/domain/usecases/check_hanging_transactions.dart';
 import 'package:savvy_pos/features/sales/presentation/widgets/crash_recovery_dialog.dart';
+import 'package:savvy_pos/core/utils/time_helper.dart';
 
 void main() async {
   // Ensure binding
@@ -36,6 +37,9 @@ void main() async {
 
   // Init Workmanager
   await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+
+  // Initialize TimeHelper Offline Sync Offset
+  await TimeHelper.loadPersistedOffset();
 
   await Workmanager().registerPeriodicTask(
     "1",

@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'shift_entities.freezed.dart';
@@ -36,7 +37,7 @@ extension ShiftSessionX on ShiftSession {
   double get workedHours {
     if (endTime == null) {
       // Still active, calculate from now
-      final duration = DateTime.now().difference(startTime);
+      final duration = TimeHelper.now().difference(startTime);
       return (duration.inMinutes - breakMinutes) / 60.0;
     }
     final duration = endTime!.difference(startTime);

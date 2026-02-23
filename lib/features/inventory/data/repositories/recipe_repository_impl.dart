@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/database/database.dart';
 import 'package:savvy_pos/features/inventory/domain/entities/recipe_entities.dart';
@@ -35,7 +36,7 @@ class RecipeRepositoryImpl implements IRecipeRepository {
             unit: ingredient.unit,
             currentStock: drift.Value(ingredient.currentStock),
             costPerUnit: drift.Value(ingredient.costPerUnit),
-            updatedAt: DateTime.now(),
+            updatedAt: TimeHelper.now(),
           ),
           mode: drift.InsertMode.insertOrReplace,
         );

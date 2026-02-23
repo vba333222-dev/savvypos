@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/material.dart';
 
@@ -63,12 +64,12 @@ class KDSTicket with _$KDSTicket {
   const KDSTicket._();
 
   /// Duration since fired
-  Duration get duration => DateTime.now().difference(firedAt);
+  Duration get duration => TimeHelper.now().difference(firedAt);
 
   /// Get current alert level based on duration vs target
   KDSAlertLevel get alertLevel {
     if (targetTime == null) return KDSAlertLevel.normal;
-    final now = DateTime.now();
+    final now = TimeHelper.now();
 
     if (now.isAfter(targetTime!)) return KDSAlertLevel.critical;
     if (now.add(const Duration(minutes: 5)).isAfter(targetTime!))

@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/network/api_client.dart';
 import 'package:savvy_pos/features/dashboard/domain/repositories/i_dashboard_repository.dart';
@@ -20,7 +21,7 @@ class RemoteDashboardRepositoryImpl implements IDashboardRepository {
     final data = await apiClient.getSalesChart();
     return data.map((e) {
       // Backend returns "YYYY-MM-DD"
-      final date = DateTime.tryParse(e['date'] as String) ?? DateTime.now();
+      final date = DateTime.tryParse(e['date'] as String) ?? TimeHelper.now();
       final total = (e['total'] as num).toDouble();
       return DailySalesData(date, total);
     }).toList();

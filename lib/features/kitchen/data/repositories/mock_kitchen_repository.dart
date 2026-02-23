@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'dart:async';
 import 'dart:math';
 import 'package:injectable/injectable.dart';
@@ -55,7 +56,7 @@ class MockKitchenRepository implements IKitchenRepository {
 
   void _addMockOrder({Duration age = Duration.zero}) {
     final id = _uuid.v4();
-    final now = DateTime.now().subtract(age);
+    final now = TimeHelper.now().subtract(age);
     final isDineIn = _rnd.nextBool();
 
     final order = OrderTableData(

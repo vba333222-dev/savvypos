@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:savvy_pos/core/services/socket_service.dart';
+import 'package:savvy_pos/core/error/failures.dart';
 import 'package:savvy_pos/features/auth/domain/repositories/i_tenant_repository.dart';
 import 'package:savvy_pos/core/hal/printer_router.dart';
 import 'package:savvy_pos/features/tables/domain/entities/table.dart';
@@ -98,25 +99,42 @@ class TableBloc extends Bloc<TableEvent, TableState> {
     try {
       await _repository.addTable(event.name, event.x, event.y);
     } catch (e) {
-      // Handle error
+      if (e is ConcurrencyException) {
+        emit(state.copyWith(error: e.message));
+        add(const TableEvent.loadTables());
+      } else {
+        emit(state.copyWith(error: 'Failed to add table: $e'));
+      }
     }
   }
 
   Future<void> _onMoveTable(_MoveTable event, Emitter<TableState> emit) async {
-    final status = state.tables.firstWhere((t) => t.id == event.uuid);
-    final updated = status.copyWith(
-        x: event.x, y: event.y /* , updatedAt: DateTime.now() */);
-    await _repository.updateTable(updated);
+    try {
+      // Find table based on current state memory
+      final status = state.tables.firstWhere((t) => t.id == event.uuid);
+      final updated = status.copyWith(x: event.x, y: event.y /* , updatedAt: TimeHelper.now() */);
+      await _repository.updateTable(updated);
+    } catch (e) {
+      if (e is ConcurrencyException) {
+        emit(state.copyWith(error: 'Collision detected: ${e.message}'));
+        add(const TableEvent.loadTables()); // Reload fresh state
+      } else {
+         emit(state.copyWith(error: 'Failed to move table: $e'));
+      }
+    }
   }
 
   Future<void> _onToggleOccupied(
       _ToggleOccupied event, Emitter<TableState> emit) async {
     try {
-      // The variable 'status' was unused.
-      // We use setTableOccupied to handle logic if needed
       await _repository.setTableOccupied(event.uuid, event.isOccupied);
     } catch (e) {
-      // Handle error
+      if (e is ConcurrencyException) {
+        emit(state.copyWith(error: 'Occupancy collision: ${e.message}'));
+        add(const TableEvent.loadTables());
+      } else {
+        emit(state.copyWith(error: 'Toggle occupied fail: $e'));
+      }
     }
   }
 
@@ -132,7 +150,12 @@ class TableBloc extends Bloc<TableEvent, TableState> {
       _socketService.emit('table_transferred',
           {'source': event.sourceUuid, 'target': event.targetUuid});
     } catch (e) {
-      emit(state.copyWith(error: 'Failed to transfer table: $e'));
+      if (e is ConcurrencyException) {
+        emit(state.copyWith(error: e.message));
+        add(const TableEvent.loadTables());
+      } else {
+        emit(state.copyWith(error: 'Failed to transfer table: $e'));
+      }
     }
   }
 
@@ -143,7 +166,12 @@ class TableBloc extends Bloc<TableEvent, TableState> {
       _socketService.emit('table_merged',
           {'source': event.sourceUuid, 'target': event.targetUuid});
     } catch (e) {
-      emit(state.copyWith(error: 'Failed to merge tables: $e'));
+      if (e is ConcurrencyException) {
+        emit(state.copyWith(error: e.message));
+        add(const TableEvent.loadTables());
+      } else {
+        emit(state.copyWith(error: 'Failed to merge tables: $e'));
+      }
     }
   }
 
@@ -162,7 +190,12 @@ class TableBloc extends Bloc<TableEvent, TableState> {
       // Print the QR Ticket
       await _printerRouter.printQRSessionTicket(table.name, url);
     } catch (e) {
-      emit(state.copyWith(error: 'Failed to open QR session: $e'));
+      if (e is ConcurrencyException) {
+        emit(state.copyWith(error: e.message));
+        add(const TableEvent.loadTables());
+      } else {
+        emit(state.copyWith(error: 'Failed to open QR session: $e'));
+      }
     }
   }
 }

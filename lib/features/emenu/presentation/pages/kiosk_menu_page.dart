@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:savvy_pos/core/di/injection.dart';
 import 'package:savvy_pos/features/emenu/domain/entities/kiosk_entities.dart';
@@ -328,7 +329,7 @@ class _KioskMenuPageState extends State<KioskMenuPage> {
     // In real app, show modifier dialog first
     // Here we just add directly
     final item = KioskCartItem(
-      uuid: DateTime.now().toIso8601String(), // Temp UUID
+      uuid: TimeHelper.now().toIso8601String(), // Temp UUID
       productUuid: product['uuid'],
       name: product['name'],
       unitPrice: product['price'],

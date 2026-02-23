@@ -23,3 +23,15 @@ class CacheFailure extends Failure {
 class AuthFailure extends Failure {
   const AuthFailure(super.message);
 }
+
+class ConcurrencyFailure extends Failure {
+  const ConcurrencyFailure(super.message);
+}
+
+class ConcurrencyException implements Exception {
+  final String message;
+  ConcurrencyException([this.message = 'A concurrency collision occurred.']);
+  
+  @override
+  String toString() => message;
+}

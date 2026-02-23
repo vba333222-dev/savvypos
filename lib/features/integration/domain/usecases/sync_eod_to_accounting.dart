@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:injectable/injectable.dart';
@@ -31,7 +32,7 @@ class SyncEodToAccountingUseCase {
     try {
       final payload = {
         'shift_id': shiftId,
-        'timestamp': DateTime.now().toIso8601String(),
+        'timestamp': TimeHelper.now().toIso8601String(),
         'metrics': {
           'gross_sales': financials.grossSales,
           'net_sales': financials.netSales,

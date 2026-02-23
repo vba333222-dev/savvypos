@@ -1,3 +1,4 @@
+import 'package:savvy_pos/core/utils/time_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -177,8 +178,8 @@ class _LiquidReceiptOverlayState extends State<LiquidReceiptOverlay>
                           change:
                               0, // Mock for now or pass from cart if available
                           orderNumber:
-                              'ORD-${DateTime.now().millisecondsSinceEpoch.toString().substring(8)}',
-                          date: DateTime.now(),
+                              'ORD-${TimeHelper.now().millisecondsSinceEpoch.toString().substring(8)}',
+                          date: TimeHelper.now(),
                         ),
                       ),
                     ),
